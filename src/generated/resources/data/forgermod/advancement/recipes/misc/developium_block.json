@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_developium_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:developium_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "forgermod:developium_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_developium_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "forgermod:developium_block"
+    ]
+  }
+}

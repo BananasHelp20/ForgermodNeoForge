@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sharpened_blade": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:sharpened_blade"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "forgermod:carbon_steel_ingot_from_blasting_sharpened_blade"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sharpened_blade"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "forgermod:carbon_steel_ingot_from_blasting_sharpened_blade"
+    ]
+  }
+}

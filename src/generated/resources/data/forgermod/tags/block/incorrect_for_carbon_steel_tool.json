@@ -1,0 +1,8 @@
+{
+  "remove": [
+    "#forgermod:needs_carbon_steel_tool"
+  ],
+  "values": [
+    "#forgermod:incorrect_for_steel_tool"
+  ]
+}

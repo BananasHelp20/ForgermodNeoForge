@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "forgermod:scrap_iron_sword"
+    },
+    "C": {
+      "item": "forgermod:scrap_iron_ingot"
+    },
+    "D": {
+      "item": "forgermod:reinforced_iron_ingot"
+    }
+  },
+  "pattern": [
+    " D ",
+    "CAC",
+    " D "
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:reinforced_iron_sword"
+  }
+}

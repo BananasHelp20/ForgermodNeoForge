@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ignisium_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:ignisium_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "forgermod:ignisium_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ignisium_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "forgermod:ignisium_block"
+    ]
+  }
+}

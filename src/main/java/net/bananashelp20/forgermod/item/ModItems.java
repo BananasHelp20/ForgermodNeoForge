@@ -2,7 +2,6 @@ package net.bananashelp20.forgermod.item;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
-//import net.bananashelp20.forgermod.util.ModToolTiers;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
@@ -33,14 +32,14 @@ public class ModItems {
                 });
     }
 
-    public static DeferredItem<Item> createSwordItem(String name, Tier tier, int damage, float speed) {
+    public static DeferredItem<SwordItem> createSwordItem(String name, Tier tier, int damage, float speed) {
         return ITEMS.register(
                 name, () -> new SwordItem(
                     tier, new Item.Properties().attributes(SwordItem.createAttributes(tier, damage, -speed)))
                 );
     }
 
-    public static DeferredItem<Item> createSwordItemWithDescription(String name, Tier tier, int damage, float speed, String descriptionName) {
+    public static DeferredItem<SwordItem> createSwordItemWithDescription(String name, Tier tier, int damage, float speed, String descriptionName) {
         return ITEMS.register(name,
                 () -> new SwordItem(tier, new Item.Properties()
                         .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
@@ -53,7 +52,7 @@ public class ModItems {
                 });
     }
 
-    public static DeferredItem<Item> createSwordItemWithRarityAndDescription(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName) {
+    public static DeferredItem<SwordItem> createSwordItemWithRarityAndDescription(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName) {
         return ITEMS.register(name,
                 () -> new SwordItem(tier, new Item.Properties()
                         .rarity(rarity)
@@ -67,7 +66,7 @@ public class ModItems {
                 });
     }
 
-    public static DeferredItem<Item> createSwordItemWithRarityAndDescriptionAndEffect(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
+    public static DeferredItem<SwordItem> createSwordItemWithRarityAndDescriptionAndEffect(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
         return ITEMS.register(name,
                 () -> new SwordItemWithEffect(tier, effect, durationInTicks, amplifier, new Item.Properties()
                         .rarity(rarity)
@@ -81,7 +80,7 @@ public class ModItems {
                 });
     }
 
-    public static DeferredItem<Item> createAmberUpgradedSpecialItem(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, String gemstoneExtraTooltip, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
+    public static DeferredItem<SwordItem> createAmberUpgradedSpecialItem(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, String gemstoneExtraTooltip, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
         return ITEMS.register(name,
                 () -> new SwordItemWithEffect(tier, effect, durationInTicks, amplifier, new Item.Properties()
                         .rarity(rarity)
@@ -97,7 +96,7 @@ public class ModItems {
                 });
     }
 
-    public static DeferredItem<Item> createGemstoneSpecialItem(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, String gemstoneExtraTooltip, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
+    public static DeferredItem<SwordItem> createGemstoneSpecialItem(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, String gemstoneExtraTooltip, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
         return ITEMS.register(name,
                 () -> new SwordItemWithEffect(tier, effect, durationInTicks, amplifier, new Item.Properties()
                         .rarity(rarity)
@@ -111,8 +110,6 @@ public class ModItems {
                     }
                 });
     }
-
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ForgerMod.MOD_ID);
 
     private static final int DEFAULT_RUSTY_DAMAGE = -2;
     private static final float DEFAULT_RUSTY_SPEED = 3.2f;
@@ -192,72 +189,72 @@ public class ModItems {
     /**Tools (incl. Swords)*/
 
     //swords and claymores
-    public static final DeferredItem<Item> STEEL_SWORD = createSwordItem("steel_sword", ModToolTiers.STEEL, STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED);
-    public static final DeferredItem<Item> STUMPFL_BAT = createSwordItemWithDescription("stumpfl_bat", ModToolTiers.DEVELOPIUM, 7770, 1f, "tooltips.forgermod.stumpfl_bat.tooltip");
-    public static final DeferredItem<Item> DAMASK_SWORD = createSwordItem("damask_sword", ModToolTiers.DAMASK, DAMASK_SWORD_DAMAGE, DAMASK_SWORD_SPEED);
-    public static final DeferredItem<Item> REINFORCED_IRON_SWORD = createSwordItem("reinforced_iron_sword", ModToolTiers.REINFORCED_IRON, REINFORCED_IRON_SWORD_DAMAGE, REINFOCED_IRON_SWORD_SPEED);
-    public static final DeferredItem<Item> SCRAP_IRON_SWORD = createSwordItem("scrap_iron_sword", ModToolTiers.SCRAP_IRON, SCRAP_IRON_SWORD_DAMAGE, SCRAP_IRON_SWORD_SPEED);
-    public static final DeferredItem<Item> SCRAP_SWORD = createSwordItem("scrap_sword", ModToolTiers.SCRAP, SCRAP_SWORD_DAMAGE, SCRAP_SWORD_SPEED);
-    public static final DeferredItem<Item> RUSTY_CLAYMORE = createSwordItemWithRarityAndDescription("rusty_claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_DAMAGE, DEFAULT_RUSTY_SPEED, "tooltips.forgermod.rusty_claymore.tooltip");
-    public static final DeferredItem<Item> CLAYMORE = createSwordItemWithRarityAndDescription("claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_CLAYMORE_DAMAGE, DEFAULT_CLAYMORE_SPEED, "tooltips.forgermod.claymore.tooltip");
-    public static final DeferredItem<Item> DAMASK_KNIFE = createSwordItem("damask_knife", ModToolTiers.DAMASK, KNIFE_DAMASK_DAMAGE, KNIFE_DAMASK_SPEED);
+    public static final DeferredItem<SwordItem> STEEL_SWORD = createSwordItem("steel_sword", ModToolTiers.STEEL, STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> STUMPFL_BAT = createSwordItemWithDescription("stumpfl_bat", ModToolTiers.DEVELOPIUM, 7770, 1f, "tooltips.forgermod.stumpfl_bat.tooltip");
+    public static final DeferredItem<SwordItem> DAMASK_SWORD = createSwordItem("damask_sword", ModToolTiers.DAMASK, DAMASK_SWORD_DAMAGE, DAMASK_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> REINFORCED_IRON_SWORD = createSwordItem("reinforced_iron_sword", ModToolTiers.REINFORCED_IRON, REINFORCED_IRON_SWORD_DAMAGE, REINFOCED_IRON_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> SCRAP_IRON_SWORD = createSwordItem("scrap_iron_sword", ModToolTiers.SCRAP_IRON, SCRAP_IRON_SWORD_DAMAGE, SCRAP_IRON_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> SCRAP_SWORD = createSwordItem("scrap_sword", ModToolTiers.SCRAP, SCRAP_SWORD_DAMAGE, SCRAP_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> RUSTY_CLAYMORE = createSwordItemWithRarityAndDescription("rusty_claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_DAMAGE, DEFAULT_RUSTY_SPEED, "tooltips.forgermod.rusty_claymore.tooltip");
+    public static final DeferredItem<SwordItem> CLAYMORE = createSwordItemWithRarityAndDescription("claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_CLAYMORE_DAMAGE, DEFAULT_CLAYMORE_SPEED, "tooltips.forgermod.claymore.tooltip");
+    public static final DeferredItem<SwordItem> DAMASK_KNIFE = createSwordItem("damask_knife", ModToolTiers.DAMASK, KNIFE_DAMASK_DAMAGE, KNIFE_DAMASK_SPEED);
 
     //special claymores
-    public static final DeferredItem<Item> OVERGROWN_CLAYMORE = createGemstoneSpecialItem("overgrown_claymore", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.HUNGER, 200, 3);
-    public static final DeferredItem<Item> HOLLOW_CLAYMORE = createGemstoneSpecialItem("hollow_claymore", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
-    public static final DeferredItem<Item> INFERNAL_CLAYMORE = createGemstoneSpecialItem("infernal_claymore", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.GLOWING, 2000, 1);
-    public static final DeferredItem<Item> CLAYMORE_OF_THE_VOID = createGemstoneSpecialItem("claymore_of_the_void", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
-    public static final DeferredItem<Item> CURSEBLOOD_CLAYMORE = createGemstoneSpecialItem("curseblood_claymore", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.WITHER, 80, 1);
-    public static final DeferredItem<Item> DREAMBOUND_CLAYMORE = createGemstoneSpecialItem("dreambound_claymore", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.CONFUSION, 80, 4);
-    public static final DeferredItem<Item> SHRIEKING_CLAYMORE = createGemstoneSpecialItem("shrieking_claymore", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.DARKNESS, 140, 5);
-    public static final DeferredItem<Item> CLAYMORE_OF_THUNDER = createGemstoneSpecialItem("claymore_of_thunder", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
-    public static final DeferredItem<Item> STORMING_CLAYMORE = createGemstoneSpecialItem("storming_claymore", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.LEVITATION, 60, 2);
+    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE = createGemstoneSpecialItem("overgrown_claymore", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.HUNGER, 200, 3);
+    public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE = createGemstoneSpecialItem("hollow_claymore", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
+    public static final DeferredItem<SwordItem> INFERNAL_CLAYMORE = createGemstoneSpecialItem("infernal_claymore", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.GLOWING, 2000, 1);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THE_VOID = createGemstoneSpecialItem("claymore_of_the_void", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
+    public static final DeferredItem<SwordItem> CURSEBLOOD_CLAYMORE = createGemstoneSpecialItem("curseblood_claymore", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.WITHER, 80, 1);
+    public static final DeferredItem<SwordItem> DREAMBOUND_CLAYMORE = createGemstoneSpecialItem("dreambound_claymore", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.CONFUSION, 80, 4);
+    public static final DeferredItem<SwordItem> SHRIEKING_CLAYMORE = createGemstoneSpecialItem("shrieking_claymore", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.DARKNESS, 140, 5);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER = createGemstoneSpecialItem("claymore_of_thunder", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE = createGemstoneSpecialItem("storming_claymore", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.LEVITATION, 60, 2);
 
     //gemstone infused variants
-    public static final DeferredItem<Item> CLAYMORE_OF_THUNDER_RUBY = createGemstoneSpecialItem("claymore_of_thunder_ruby", ModToolTiers.ELECTRIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
-    public static final DeferredItem<Item> CLAYMORE_OF_THUNDER_AMBER = createAmberUpgradedSpecialItem("claymore_of_thunder_amber", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
-    public static final DeferredItem<Item> CLAYMORE_OF_THUNDER_AMETHYST = createGemstoneSpecialItem("claymore_of_thunder_amethyst", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
-    public static final DeferredItem<Item> CLAYMORE_OF_THUNDER_JADE = createGemstoneSpecialItem("claymore_of_thunder_jade", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 120, 4);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_RUBY = createGemstoneSpecialItem("claymore_of_thunder_ruby", ModToolTiers.ELECTRIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_AMBER = createAmberUpgradedSpecialItem("claymore_of_thunder_amber", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_AMETHYST = createGemstoneSpecialItem("claymore_of_thunder_amethyst", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 100, 3);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_JADE = createGemstoneSpecialItem("claymore_of_thunder_jade", ModToolTiers.ELECTRIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_thunder.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.MOVEMENT_SLOWDOWN, 120, 4);
 
-    public static final DeferredItem<Item> SHRIEKING_CLAYMORE_RUBY = createGemstoneSpecialItem("shrieking_claymore_ruby", ModToolTiers.PULSITE, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.DARKNESS, 140, 5);
-    public static final DeferredItem<Item> SHRIEKING_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("shrieking_claymore_amber", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.DARKNESS, 140, 5);
-    public static final DeferredItem<Item> SHRIEKING_CLAYMORE_AMETHYST = createGemstoneSpecialItem("shrieking_claymore_amethyst", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.DARKNESS, 140, 5);
-    public static final DeferredItem<Item> SHRIEKING_CLAYMORE_JADE = createGemstoneSpecialItem("shrieking_claymore_jade", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.DARKNESS, 160, 6);
+    public static final DeferredItem<SwordItem> SHRIEKING_CLAYMORE_RUBY = createGemstoneSpecialItem("shrieking_claymore_ruby", ModToolTiers.PULSITE, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.DARKNESS, 140, 5);
+    public static final DeferredItem<SwordItem> SHRIEKING_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("shrieking_claymore_amber", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.DARKNESS, 140, 5);
+    public static final DeferredItem<SwordItem> SHRIEKING_CLAYMORE_AMETHYST = createGemstoneSpecialItem("shrieking_claymore_amethyst", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.DARKNESS, 140, 5);
+    public static final DeferredItem<SwordItem> SHRIEKING_CLAYMORE_JADE = createGemstoneSpecialItem("shrieking_claymore_jade", ModToolTiers.PULSITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.shrieking_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.DARKNESS, 160, 6);
 
-    public static final DeferredItem<Item> DREAMBOUND_CLAYMORE_RUBY = createGemstoneSpecialItem("dreambound_claymore_ruby", ModToolTiers.SOMNIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.CONFUSION, 80, 4);
-    public static final DeferredItem<Item> DREAMBOUND_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("dreambound_claymore_amber", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.CONFUSION, 80, 4);
-    public static final DeferredItem<Item> DREAMBOUND_CLAYMORE_AMETHYST = createGemstoneSpecialItem("dreambound_claymore_amethyst", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.CONFUSION, 80, 4);
-    public static final DeferredItem<Item> DREAMBOUND_CLAYMORE_JADE = createGemstoneSpecialItem("dreambound_claymore_jade", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.CONFUSION, 100, 5);
+    public static final DeferredItem<SwordItem> DREAMBOUND_CLAYMORE_RUBY = createGemstoneSpecialItem("dreambound_claymore_ruby", ModToolTiers.SOMNIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.CONFUSION, 80, 4);
+    public static final DeferredItem<SwordItem> DREAMBOUND_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("dreambound_claymore_amber", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.CONFUSION, 80, 4);
+    public static final DeferredItem<SwordItem> DREAMBOUND_CLAYMORE_AMETHYST = createGemstoneSpecialItem("dreambound_claymore_amethyst", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.CONFUSION, 80, 4);
+    public static final DeferredItem<SwordItem> DREAMBOUND_CLAYMORE_JADE = createGemstoneSpecialItem("dreambound_claymore_jade", ModToolTiers.SOMNIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.dreambound_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.CONFUSION, 100, 5);
 
-    public static final DeferredItem<Item> CURSEBLOOD_CLAYMORE_RUBY = createGemstoneSpecialItem("curseblood_claymore_ruby", ModToolTiers.VULNUSIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.WITHER, 80, 2);
-    public static final DeferredItem<Item> CURSEBLOOD_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("curseblood_claymore_amber", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.WITHER, 80, 2);
-    public static final DeferredItem<Item> CURSEBLOOD_CLAYMORE_AMETHYST = createGemstoneSpecialItem("curseblood_claymore_amethyst", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.WITHER, 80, 2);
-    public static final DeferredItem<Item> CURSEBLOOD_CLAYMORE_JADE = createGemstoneSpecialItem("curseblood_claymore_jade", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.WITHER, 100, 3);
+    public static final DeferredItem<SwordItem> CURSEBLOOD_CLAYMORE_RUBY = createGemstoneSpecialItem("curseblood_claymore_ruby", ModToolTiers.VULNUSIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.WITHER, 80, 2);
+    public static final DeferredItem<SwordItem> CURSEBLOOD_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("curseblood_claymore_amber", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.WITHER, 80, 2);
+    public static final DeferredItem<SwordItem> CURSEBLOOD_CLAYMORE_AMETHYST = createGemstoneSpecialItem("curseblood_claymore_amethyst", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.WITHER, 80, 2);
+    public static final DeferredItem<SwordItem> CURSEBLOOD_CLAYMORE_JADE = createGemstoneSpecialItem("curseblood_claymore_jade", ModToolTiers.VULNUSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.curseblood_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.WITHER, 100, 3);
 
-    public static final DeferredItem<Item> CLAYMORE_OF_THE_VOID_RUBY = createGemstoneSpecialItem("claymore_of_the_void_ruby", ModToolTiers.INANISIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
-    public static final DeferredItem<Item> CLAYMORE_OF_THE_VOID_AMBER = createAmberUpgradedSpecialItem("claymore_of_the_void_amber", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
-    public static final DeferredItem<Item> CLAYMORE_OF_THE_VOID_AMETHYST = createGemstoneSpecialItem("claymore_of_the_void_amethyst", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
-    public static final DeferredItem<Item> CLAYMORE_OF_THE_VOID_JADE = createGemstoneSpecialItem("claymore_of_the_void_jade", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.BLINDNESS, 100, 2);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THE_VOID_RUBY = createGemstoneSpecialItem("claymore_of_the_void_ruby", ModToolTiers.INANISIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THE_VOID_AMBER = createAmberUpgradedSpecialItem("claymore_of_the_void_amber", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THE_VOID_AMETHYST = createGemstoneSpecialItem("claymore_of_the_void_amethyst", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
+    public static final DeferredItem<SwordItem> CLAYMORE_OF_THE_VOID_JADE = createGemstoneSpecialItem("claymore_of_the_void_jade", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.BLINDNESS, 100, 2);
 
-    public static final DeferredItem<Item> INFERNAL_CLAYMORE_RUBY = createGemstoneSpecialItem("infernal_claymore_ruby", ModToolTiers.IGNISIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.GLOWING, 2000, 1);
-    public static final DeferredItem<Item> INFERNAL_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("infernal_claymore_amber", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.GLOWING, 2000, 1);
-    public static final DeferredItem<Item> INFERNAL_CLAYMORE_AMETHYST = createGemstoneSpecialItem("infernal_claymore_amethyst", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.GLOWING, 2000, 1);
-    public static final DeferredItem<Item> INFERNAL_CLAYMORE_JADE = createGemstoneSpecialItem("infernal_claymore_jade", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.GLOWING, 2020, 2);
+    public static final DeferredItem<SwordItem> INFERNAL_CLAYMORE_RUBY = createGemstoneSpecialItem("infernal_claymore_ruby", ModToolTiers.IGNISIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.GLOWING, 2000, 1);
+    public static final DeferredItem<SwordItem> INFERNAL_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("infernal_claymore_amber", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.GLOWING, 2000, 1);
+    public static final DeferredItem<SwordItem> INFERNAL_CLAYMORE_AMETHYST = createGemstoneSpecialItem("infernal_claymore_amethyst", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.GLOWING, 2000, 1);
+    public static final DeferredItem<SwordItem> INFERNAL_CLAYMORE_JADE = createGemstoneSpecialItem("infernal_claymore_jade", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.GLOWING, 2020, 2);
 
-    public static final DeferredItem<Item> HOLLOW_CLAYMORE_RUBY = createGemstoneSpecialItem("hollow_claymore_ruby", ModToolTiers.MORSIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
-    public static final DeferredItem<Item> HOLLOW_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("hollow_claymore_amber", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
-    public static final DeferredItem<Item> HOLLOW_CLAYMORE_AMETHYST = createGemstoneSpecialItem("hollow_claymore_amethyst", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
-    public static final DeferredItem<Item> HOLLOW_CLAYMORE_JADE = createGemstoneSpecialItem("hollow_claymore_jade", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.WEAKNESS, 120, 4);
+    public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_RUBY = createGemstoneSpecialItem("hollow_claymore_ruby", ModToolTiers.MORSIUM, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
+    public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("hollow_claymore_amber", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
+    public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_AMETHYST = createGemstoneSpecialItem("hollow_claymore_amethyst", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
+    public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_JADE = createGemstoneSpecialItem("hollow_claymore_jade", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.WEAKNESS, 120, 4);
 
-    public static final DeferredItem<Item> STORMING_CLAYMORE_RUBY = createGemstoneSpecialItem("storming_claymore_ruby", ModToolTiers.TAIFUNITE, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.LEVITATION, 60, 2);
-    public static final DeferredItem<Item> STORMING_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("storming_claymore_amber", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.LEVITATION, 60, 2);
-    public static final DeferredItem<Item> STORMING_CLAYMORE_AMETHYST = createGemstoneSpecialItem("storming_claymore_amethyst", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.LEVITATION, 60, 2);
-    public static final DeferredItem<Item> STORMING_CLAYMORE_JADE = createGemstoneSpecialItem("storming_claymore_jade", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.LEVITATION, 80, 3);
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_RUBY = createGemstoneSpecialItem("storming_claymore_ruby", ModToolTiers.TAIFUNITE, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.LEVITATION, 60, 2);
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("storming_claymore_amber", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.LEVITATION, 60, 2);
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_AMETHYST = createGemstoneSpecialItem("storming_claymore_amethyst", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.LEVITATION, 60, 2);
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_JADE = createGemstoneSpecialItem("storming_claymore_jade", ModToolTiers.TAIFUNITE, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.storming_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.LEVITATION, 80, 3);
 
-    public static final DeferredItem<Item> OVERGROWN_CLAYMORE_RUBY = createGemstoneSpecialItem("overgrown_claymore_ruby", ModToolTiers.LUSH, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.HUNGER, 200, 3);
-    public static final DeferredItem<Item> OVERGROWN_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("overgrown_claymore_amber", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.HUNGER, 200, 3);
-    public static final DeferredItem<Item> OVERGROWN_CLAYMORE_AMETHYST = createGemstoneSpecialItem("overgrown_claymore_amethyst", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.HUNGER, 200, 3);
-    public static final DeferredItem<Item> OVERGROWN_CLAYMORE_JADE = createGemstoneSpecialItem("overgrown_claymore_jade", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.HUNGER, 220, 4);
+    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_RUBY = createGemstoneSpecialItem("overgrown_claymore_ruby", ModToolTiers.LUSH, Rarity.EPIC, GEMSTONE_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.ruby.tooltip_extra", MobEffects.HUNGER, 200, 3);
+    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_AMBER = createAmberUpgradedSpecialItem("overgrown_claymore_amber", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.amber.tooltip_extra", MobEffects.HUNGER, 200, 3);
+    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_AMETHYST = createGemstoneSpecialItem("overgrown_claymore_amethyst", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, GEMSTONE_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.amethyst.tooltip_extra", MobEffects.HUNGER, 200, 3);
+    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_JADE = createGemstoneSpecialItem("overgrown_claymore_jade", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.jade.tooltip_extra", MobEffects.HUNGER, 220, 4);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

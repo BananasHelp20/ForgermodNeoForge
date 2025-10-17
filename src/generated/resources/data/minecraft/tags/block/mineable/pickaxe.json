@@ -1,0 +1,20 @@
+{
+  "values": [
+    "forgermod:damask_block",
+    "forgermod:inanisium_block",
+    "forgermod:ignisium_block",
+    "forgermod:reinforced_iron_block",
+    "forgermod:overgrown_block",
+    "forgermod:vulnusium_block",
+    "forgermod:somnium_block",
+    "forgermod:morsium_block",
+    "forgermod:scrap_block",
+    "forgermod:scrap_iron_block",
+    "forgermod:pulsite_block",
+    "forgermod:carbon_steel_block",
+    "forgermod:steel_block",
+    "forgermod:electrium_block",
+    "forgermod:taifunite_block",
+    "forgermod:developium_block"
+  ]
+}

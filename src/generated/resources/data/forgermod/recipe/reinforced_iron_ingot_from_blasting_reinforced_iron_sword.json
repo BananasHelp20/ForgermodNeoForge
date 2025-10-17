@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "reinforced_iron_ingot",
+  "ingredient": {
+    "item": "forgermod:reinforced_iron_sword"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:reinforced_iron_ingot"
+  }
+}

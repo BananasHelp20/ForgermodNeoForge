@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "forgermod:block/electrium_block"
+    }
+  }
+}

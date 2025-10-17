@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "carbon_steel_ingot",
+  "ingredient": {
+    "item": "forgermod:carbon_steel_cross_guard"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:carbon_steel_ingot"
+  }
+}

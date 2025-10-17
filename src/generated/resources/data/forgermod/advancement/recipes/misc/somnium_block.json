@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_somnium_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:somnium_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "forgermod:somnium_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_somnium_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "forgermod:somnium_block"
+    ]
+  }
+}

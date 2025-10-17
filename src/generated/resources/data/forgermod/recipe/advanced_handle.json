@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "forgermod:damask_ingot"
+    },
+    "B": {
+      "item": "forgermod:handle"
+    },
+    "C": {
+      "item": "forgermod:carbon_steel_ingot"
+    }
+  },
+  "pattern": [
+    " C ",
+    "ABA",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:advanced_handle"
+  }
+}

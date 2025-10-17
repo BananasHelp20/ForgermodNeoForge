@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "forgermod:damask_ingot"
+    },
+    "B": {
+      "item": "forgermod:handle"
+    }
+  },
+  "pattern": [
+    " ",
+    "A",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:damask_knife"
+  }
+}

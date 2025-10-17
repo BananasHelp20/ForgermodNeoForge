@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "forgermod:carbon_steel_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "forgermod:carbon_steel_ingot"
+  }
+}

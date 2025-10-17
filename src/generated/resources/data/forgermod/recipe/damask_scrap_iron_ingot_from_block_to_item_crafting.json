@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "forgermod:scrap_iron_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "forgermod:scrap_iron_ingot"
+  }
+}

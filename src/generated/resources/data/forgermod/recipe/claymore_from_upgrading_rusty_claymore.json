@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "forgermod:sharpened_blade"
+    },
+    "B": {
+      "item": "forgermod:rusty_claymore"
+    },
+    "C": {
+      "item": "forgermod:handle"
+    },
+    "D": {
+      "item": "forgermod:damask_ingot"
+    },
+    "E": {
+      "item": "forgermod:carbon_steel_ingot"
+    }
+  },
+  "pattern": [
+    " A ",
+    "DBE",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:claymore"
+  }
+}

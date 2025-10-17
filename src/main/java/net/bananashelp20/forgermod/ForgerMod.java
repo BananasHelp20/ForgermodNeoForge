@@ -1,8 +1,16 @@
 package net.bananashelp20.forgermod;
 
+import net.bananashelp20.forgermod.CreativeModeTabs.ModCreativeModeTabs;
+import net.bananashelp20.forgermod.block.ModBlocks;
+import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.RegistryClass;
+import net.bananashelp20.forgermod.recipe.ModRecipes;
+import net.bananashelp20.forgermod.screen.ModMenuTypes;
+import net.bananashelp20.forgermod.screen.custom.ForgeScreen;
+import net.bananashelp20.forgermod.screen.custom.InfusionTableScreen;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -38,12 +46,12 @@ public class ForgerMod {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
-//        ModCreativeModeTabs.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
-//        ModB3locks.register(modEventBus);
-//        ModMenuTypes.register(modEventBus);
-//        ModBlockEntities.register(modEventBus);
-//        ModRecipes.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -75,6 +83,11 @@ public class ForgerMod {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
 
+        }
+
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.FORGE_MENU.get(), ForgeScreen::new);
+            event.register(ModMenuTypes.INFUSION_TABLE_MENU.get(), InfusionTableScreen::new);
         }
     }
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:coal_block"
+    },
+    "B": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "forgermod:steel_ingot"
+    }
+  },
+  "pattern": [
+    "BAA",
+    "ACA",
+    "AAB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:unrefined_carbon_steel"
+  }
+}

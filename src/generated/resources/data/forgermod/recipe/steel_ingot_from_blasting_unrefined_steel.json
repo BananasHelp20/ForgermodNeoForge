@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "steel_ingot",
+  "ingredient": {
+    "item": "forgermod:unrefined_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:steel_ingot"
+  }
+}

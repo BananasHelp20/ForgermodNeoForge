@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.5,
+  "group": "reinforced_iron_ingot",
+  "ingredient": {
+    "item": "forgermod:scrap_iron_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:reinforced_iron_ingot"
+  }
+}

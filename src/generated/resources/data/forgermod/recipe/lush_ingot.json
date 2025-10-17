@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "forgermod:overgrown_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "forgermod:lush_ingot"
+  }
+}
