@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "forgermod:block/ancient_sword_stand"
+    },
+    "facing=south": {
+      "model": "forgermod:block/ancient_sword_stand",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "forgermod:block/ancient_sword_stand",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "forgermod:block/ancient_sword_stand",
+      "y": 270
+    }
+  }
+}
