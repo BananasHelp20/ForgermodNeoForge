@@ -43,4 +43,5 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
+
 }
