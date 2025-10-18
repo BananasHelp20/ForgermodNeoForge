@@ -1,11 +1,9 @@
 package net.bananashelp20.forgermod.block.custom;
 
 import com.mojang.serialization.MapCodec;
-import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.block.entity.custom.ForgeBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -45,8 +43,9 @@ public class ForgeBlock extends BaseEntityBlock {
         return CODEC;
     }
 
+    @Nullable
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new ForgeBlockEntity(pPos, pState);
     }
 
@@ -59,8 +58,8 @@ public class ForgeBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof ForgeBlockEntity forge) {
-                forge.drops();
+            if (blockEntity instanceof ForgeBlockEntity forgeEntity) {
+                forgeEntity.drops();
             }
         }
     }
@@ -72,26 +71,26 @@ public class ForgeBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if (!pLevel.isClientSide) {
+        if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof ForgeBlockEntity forge) {
-                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(forge, Component.literal("Forge")), pPos);
+            if (entity instanceof ForgeBlockEntity forgeEntity) {
+                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(forgeEntity, Component.literal("Forge")), pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
+        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if (pLevel.isClientSide) {
+        if (pLevel.isClientSide()) {
             return null;
         }
 
         return createTickerHelper(pBlockEntityType, ModBlockEntities.FORGE_BE.get(),
-                (level, blockPos, blockState, forge) -> forge.tick(level, blockPos, blockState));
+                (level, blockPos, blockState, forgeEntity) -> forgeEntity.tick(level, blockPos, blockState));
     }
 
     @Override

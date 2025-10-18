@@ -30,10 +30,10 @@ public class ForgeMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.addSlot(new SlotItemHandler(blockEntity.inventory, 3, 121, 31)); //output
-        this.addSlot(new SlotItemHandler(blockEntity.inventory, 1, 72, 31)); //ingot
-        this.addSlot(new SlotItemHandler(blockEntity.inventory, 2, 96, 53)); //template
-        this.addSlot(new SlotItemHandler(blockEntity.inventory, 0, 36, 31)); //shards
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 3, 121, 31)); //output
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 1, 72, 31)); //ingot
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 2, 96, 53)); //template
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 0, 36, 31)); //shards
 
         addDataSlots(data);
     }

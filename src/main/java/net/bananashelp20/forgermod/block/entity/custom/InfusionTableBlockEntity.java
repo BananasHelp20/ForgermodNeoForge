@@ -180,6 +180,8 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
             return "textures/gui/infusion_table_progress_amber.png";
         } else if (RECIPE_INPUTS[recipeUsed][0] == ModItems.AMETHYST_GEMSTONE.get()) {
             return "textures/gui/infusion_table_progress_amethyst.png";
+        } else if (RECIPE_INPUTS[recipeUsed][0] == ModItems.JADE_GEMSTONE.get()) {
+            return "textures/gui/infusion_table_progress_jade.png";
         }
         return "textures/gui/infusion_table_progress.png";
     }
