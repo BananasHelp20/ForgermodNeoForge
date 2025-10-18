@@ -24,15 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public class SwordItemWithEffect extends SwordItem {
-    public static Holder<MobEffect> effect;
-    public static int durationInTicks;
-    public static int effectAmplifier;
-
-    public SwordItemWithEffect(Tier pTier, Holder<MobEffect> effect, int durationInTicks, int amplifier, Properties pProperties) {
+    public SwordItemWithEffect(Tier pTier, Properties pProperties) {
         super(pTier, pProperties);
-        this.effect = effect;
-        this.durationInTicks = durationInTicks;
-        this.effectAmplifier = amplifier;
     }
 
     public static Tool createToolProperties() {
@@ -62,11 +55,11 @@ public class SwordItemWithEffect extends SwordItem {
         return true;
     }
 
-    @Override
-    public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-    }
+//    @Override
+//    public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+//        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+//        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
+//    }
 
     @Override
     public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {

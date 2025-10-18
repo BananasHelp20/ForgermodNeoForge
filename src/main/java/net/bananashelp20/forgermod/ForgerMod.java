@@ -66,9 +66,6 @@ public class ForgerMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            RegistryClass.acceptItemsToForgerIngredientsTab(event);
-        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -85,6 +82,7 @@ public class ForgerMod {
 
         }
 
+        @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.FORGE_MENU.get(), ForgeScreen::new);
             event.register(ModMenuTypes.INFUSION_TABLE_MENU.get(), InfusionTableScreen::new);

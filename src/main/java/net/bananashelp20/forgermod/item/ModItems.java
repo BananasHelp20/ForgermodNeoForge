@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.OvergrownWeapon;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -68,7 +69,7 @@ public class ModItems {
 
     public static DeferredItem<SwordItem> createSwordItemWithRarityAndDescriptionAndEffect(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
         return ITEMS.register(name,
-                () -> new SwordItemWithEffect(tier, effect, durationInTicks, amplifier, new Item.Properties()
+                () -> new OvergrownWeapon(tier, effect, durationInTicks, amplifier, new Item.Properties()
                         .rarity(rarity)
                         .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
                 {
@@ -82,7 +83,7 @@ public class ModItems {
 
     public static DeferredItem<SwordItem> createAmberUpgradedSpecialItem(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, String gemstoneExtraTooltip, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
         return ITEMS.register(name,
-                () -> new SwordItemWithEffect(tier, effect, durationInTicks, amplifier, new Item.Properties()
+                () -> new OvergrownWeapon(tier, effect, durationInTicks, amplifier, new Item.Properties()
                         .rarity(rarity)
                         .fireResistant()
                         .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
@@ -98,7 +99,7 @@ public class ModItems {
 
     public static DeferredItem<SwordItem> createGemstoneSpecialItem(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName, String gemstoneExtraTooltip, Holder<MobEffect> effect, int durationInTicks, int amplifier) {
         return ITEMS.register(name,
-                () -> new SwordItemWithEffect(tier, effect, durationInTicks, amplifier, new Item.Properties()
+                () -> new OvergrownWeapon(tier, effect, durationInTicks, amplifier, new Item.Properties()
                         .rarity(rarity)
                         .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
                 {
@@ -200,7 +201,7 @@ public class ModItems {
     public static final DeferredItem<SwordItem> DAMASK_KNIFE = createSwordItem("damask_knife", ModToolTiers.DAMASK, KNIFE_DAMASK_DAMAGE, KNIFE_DAMASK_SPEED);
 
     //special claymores
-    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE = createGemstoneSpecialItem("overgrown_claymore", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.HUNGER, 200, 3);
+    public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE = createGemstoneSpecialItem("overgrown_claymore", ModToolTiers.LUSH, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.overgrown_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.GLOWING, 200, 3);
     public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE = createGemstoneSpecialItem("hollow_claymore", ModToolTiers.MORSIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.hollow_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.WEAKNESS, 100, 3);
     public static final DeferredItem<SwordItem> INFERNAL_CLAYMORE = createGemstoneSpecialItem("infernal_claymore", ModToolTiers.IGNISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.infernal_claymore.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.GLOWING, 2000, 1);
     public static final DeferredItem<SwordItem> CLAYMORE_OF_THE_VOID = createGemstoneSpecialItem("claymore_of_the_void", ModToolTiers.INANISIUM, Rarity.EPIC, DEFAULT_SPECIAL_DAMAGE, DEFAULT_SPECIAL_SPEED, "tooltips.forgermod.claymore_of_the_void.tooltip", "tooltips.forgermod.no_gemstone.tooltip_extra", MobEffects.BLINDNESS, 80, 1);
