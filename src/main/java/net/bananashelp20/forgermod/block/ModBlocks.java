@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ForgerMod.MOD_ID);
 
-    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
+    public static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
