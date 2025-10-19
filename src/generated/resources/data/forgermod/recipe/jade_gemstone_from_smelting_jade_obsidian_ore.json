@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 2.0,
+  "group": "jade_gemstone",
+  "ingredient": {
+    "item": "forgermod:jade_obsidian_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:jade_gemstone"
+  }
+}

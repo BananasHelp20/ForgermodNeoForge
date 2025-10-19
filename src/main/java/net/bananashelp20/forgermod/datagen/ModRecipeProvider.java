@@ -25,10 +25,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.DAMASK_KNIFE.get(),
             ModItems.HANDLE.get()
     );
+
     protected static final List<ItemLike> REINFORCED_IRON_SMELTABLES = List.of(
             ModItems.SCRAP_IRON_INGOT.get(),
             ModItems.REINFORCED_IRON_SWORD.get()
     );
+
     protected static final List<ItemLike> CARBON_STEEL_SMELTABLES = List.of(
             ModItems.UNREFINED_CARBON_STEEL.get(),
             ModItems.CLAYMORE.get(),
@@ -36,8 +38,38 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.ADVANCED_HANDLE.get(),
             ModItems.SHARPENED_BLADE.get()
     );
+
     protected static final List<ItemLike> STEEL_SMELTABLES = List.of(
             ModItems.UNREFINED_STEEL.get()
+    );
+
+//    protected static final List<ItemLike> RUBY_SMELTABLES = List.of(
+//            ModBlocks.RUBY_END_ORE.get(),
+//            ModBlocks.RUBY_NETHER_ORE.get(),
+//            ModBlocks.RUBY_STONE_ORE.get()
+//            ModBlocks.RUBY_DEEPSLATE_ORE.get()
+//    );
+//
+//    protected static final List<ItemLike> AMBER_SMELTABLES = List.of(
+//            ModBlocks.AMBER_END_ORE.get(),
+//            ModBlocks.AMBER_NETHER_ORE.get(),
+//            ModBlocks.AMBER_STONE_ORE.get()
+//            ModBlocks.RUBY_DEEPSLATE_ORE.get()
+//    );
+//
+//    protected static final List<ItemLike> AMETHYST_SMELTABLES = List.of(
+//            ModBlocks.AMETHYST_END_ORE.get(),
+//            ModBlocks.AMETHYST_NETHER_ORE.get(),
+//            ModBlocks.AMETHYST_STONE_ORE.get()
+//            ModBlocks.AMETHYS_DEEPSLATE_ORE.get()
+//    );
+
+    protected static final List<ItemLike> JADE_SMELTABLES = List.of(
+            ModBlocks.JADE_END_ORE.get(),
+            ModBlocks.JADE_NETHER_ORE.get(),
+            ModBlocks.JADE_STONE_ORE.get(),
+            ModBlocks.JADE_DEEPSLATE_ORE.get(),
+            ModBlocks.JADE_OBSIDIAN_ORE.get()
     );
 
     @Override
@@ -352,188 +384,30 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(ModBlocks.SCRAP_IRON_BLOCK.get())
                 .unlockedBy(getHasName(ModBlocks.SCRAP_IRON_BLOCK.get()), has(ModBlocks.SCRAP_IRON_BLOCK.get())).save(output, ForgerMod.MOD_ID + ":damask_scrap_iron_ingot_from_block_to_item_crafting");
 
-        //gemstones
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CLAYMORE_OF_THE_VOID_RUBY.get(), 1)
-//                .requires(ModItems.CLAYMORE_OF_THE_VOID.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":claymore_of_the_void_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CLAYMORE_OF_THE_VOID_AMBER.get(), 1)
-//                .requires(ModItems.CLAYMORE_OF_THE_VOID.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":claymore_of_the_void_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CLAYMORE_OF_THE_VOID_AMETHYST.get(), 1)
-//                .requires(ModItems.CLAYMORE_OF_THE_VOID.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":claymore_of_the_void_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.INFERNAL_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.INFERNAL_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":infernal_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.INFERNAL_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.INFERNAL_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":infernal_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.INFERNAL_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.INFERNAL_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":infernal_claymore_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SHRIEKING_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.SHRIEKING_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":shrieking_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SHRIEKING_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.SHRIEKING_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":shrieking_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SHRIEKING_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.SHRIEKING_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":shrieking_claymore_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.HOLLOW_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.HOLLOW_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":hollow_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.HOLLOW_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.HOLLOW_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":hollow_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.HOLLOW_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.HOLLOW_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":hollow_claymore_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.DREAMBOUND_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.DREAMBOUND_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":dreambound_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.DREAMBOUND_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.DREAMBOUND_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":dreambound_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.DREAMBOUND_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.DREAMBOUND_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":dreambound_claymore_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CURSEBLOOD_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.CURSEBLOOD_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":curseblood_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CURSEBLOOD_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.CURSEBLOOD_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":curseblood_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CURSEBLOOD_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.CURSEBLOOD_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":curseblood_claymore_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.OVERGROWN_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.OVERGROWN_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":overgrown_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.OVERGROWN_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.OVERGROWN_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":overgrown_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.OVERGROWN_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.OVERGROWN_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":overgrown_claymore_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CLAYMORE_OF_THUNDER_RUBY.get(), 1)
-//                .requires(ModItems.CLAYMORE_OF_THUNDER.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":claymore_of_thunder_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CLAYMORE_OF_THUNDER_AMBER.get(), 1)
-//                .requires(ModItems.CLAYMORE_OF_THUNDER.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":claymore_of_thunder_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CLAYMORE_OF_THUNDER_AMETHYST.get(), 1)
-//                .requires(ModItems.CLAYMORE_OF_THUNDER.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":claymore_of_thunder_amethyst_from_crafting");
-//
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STORMING_CLAYMORE_RUBY.get(), 1)
-//                .requires(ModItems.STORMING_CLAYMORE.get())
-//                .requires(ModItems.RUBY_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":storming_claymore_ruby_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STORMING_CLAYMORE_AMBER.get(), 1)
-//                .requires(ModItems.STORMING_CLAYMORE.get())
-//                .requires(ModItems.AMBER_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":storming_claymore_amber_from_crafting");
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STORMING_CLAYMORE_AMETHYST.get(), 1)
-//                .requires(ModItems.STORMING_CLAYMORE.get())
-//                .requires(ModItems.AMETHYST_GEMSTONE.get())
-//                .requires(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-//                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get())).save(output, ForgerMod.MOD_ID + ":storming_claymore_amethyst_from_crafting");
     }
 
 
-        private static void smeltingAndBlastingRecipes(RecipeOutput p_297267_) {
-        oreSmelting(p_297267_, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 0.5f, 200, "damask_ingot");
-        oreBlasting(p_297267_, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 1f, 100, "damask_ingot");
+        private static void smeltingAndBlastingRecipes(RecipeOutput output) {
+        oreSmelting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 0.5f, 200, "damask_ingot");
+        oreBlasting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 1f, 100, "damask_ingot");
 
-        oreBlasting(p_297267_, CARBON_STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.CARBON_STEEL_INGOT.get(), 1f, 100, "carbon_steel_ingot");
-        oreBlasting(p_297267_, STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.STEEL_INGOT.get(), 1f, 100, "steel_ingot");
+        oreBlasting(output, CARBON_STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.CARBON_STEEL_INGOT.get(), 1f, 100, "carbon_steel_ingot");
+        oreBlasting(output, STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.STEEL_INGOT.get(), 1f, 100, "steel_ingot");
 
-        oreSmelting(p_297267_, REINFORCED_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 0.5f, 200, "reinforced_iron_ingot");
-        oreBlasting(p_297267_, REINFORCED_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 1f, 100, "reinforced_iron_ingot");
+        oreSmelting(output, REINFORCED_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 0.5f, 200, "reinforced_iron_ingot");
+        oreBlasting(output, REINFORCED_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 1f, 100, "reinforced_iron_ingot");
+
+        oreSmelting(output, JADE_SMELTABLES, RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
+        oreBlasting(output, JADE_SMELTABLES, RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
+
+//        oreSmelting(output, RUBY_SMELTABLES, RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
+//        oreBlasting(output, RUBY_SMELTABLES, RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
+
+//        oreSmelting(output, AMBER_SMELTABLES, RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
+//        oreBlasting(output, AMBER_SMELTABLES, RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
+
+//        oreSmelting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
+//        oreBlasting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,

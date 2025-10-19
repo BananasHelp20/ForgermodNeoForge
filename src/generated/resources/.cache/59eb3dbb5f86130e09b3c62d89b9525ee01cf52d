@@ -1,4 +1,4 @@
-// 1.21	2025-10-17T19:24:32.0725035	Loot Tables
+// 1.21	2025-10-19T16:29:23.7084126	Loot Tables
 01721e55f0d6ee2c4921c79975dac72e03bbd1fe data/forgermod/loot_table/blocks/ancient_sword_stand.json
 79c96364238d118b33205b7bf15c13970f8a3c62 data/forgermod/loot_table/blocks/carbon_steel_block.json
 ce3794d7b517c6872d66eae1502e9d8a9d63b98f data/forgermod/loot_table/blocks/damask_block.json
@@ -8,6 +8,11 @@ a8e048e1c9c87acab74ecc7ad8b40522b34dde5c data/forgermod/loot_table/blocks/electr
 e41c5ede3adfed9ed8ae00e519376d4dfa7aa856 data/forgermod/loot_table/blocks/ignisium_block.json
 55ac47cd0e0bd23b6b5cf46aa26a6e36ea38738b data/forgermod/loot_table/blocks/inanisium_block.json
 fc4b53256fa7929fc6a6e80818dd025b99b03185 data/forgermod/loot_table/blocks/infusion_table.json
+94fec9358ab9ef002e59e691b6e737d51637764f data/forgermod/loot_table/blocks/jade_deepslate_ore.json
+16421073cebf2166498f2ed832c8971b2cef68ae data/forgermod/loot_table/blocks/jade_end_ore.json
+93bd28dbfde3fd7401ff41ef2966563f706ceca5 data/forgermod/loot_table/blocks/jade_nether_ore.json
+1ca90babebf0131d26c53b5dd17b04ef2837dbf5 data/forgermod/loot_table/blocks/jade_obsidian_ore.json
+119070549c0ae39ca5dabad42ccdd8b02963e29a data/forgermod/loot_table/blocks/jade_stone_ore.json
 8dd7cc56f4f7fcb1d5d55488ab560f70ee911533 data/forgermod/loot_table/blocks/morsium_block.json
 e4f087303dc16ca3b9f1abfc9ee1d3b93fc4bf47 data/forgermod/loot_table/blocks/overgrown_block.json
 10396d6fdb7d46abe51ce929f7db923b9d021e06 data/forgermod/loot_table/blocks/pulsite_block.json

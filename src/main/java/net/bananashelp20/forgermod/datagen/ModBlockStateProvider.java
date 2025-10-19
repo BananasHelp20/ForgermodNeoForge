@@ -31,6 +31,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.TAIFUNITE_BLOCK);
         blockWithItem(ModBlocks.DEVELOPIUM_BLOCK);
         blockWithItem(ModBlocks.INFUSION_TABLE);
+        blockWithItem(ModBlocks.JADE_NETHER_ORE);
+        blockWithItem(ModBlocks.JADE_END_ORE);
+        blockWithItem(ModBlocks.JADE_STONE_ORE);
+        blockWithItem(ModBlocks.JADE_DEEPSLATE_ORE);
+        blockWithItem(ModBlocks.JADE_OBSIDIAN_ORE);
     }
 
     private void blockWithItem(DeferredBlock<?> deferredBlock) {

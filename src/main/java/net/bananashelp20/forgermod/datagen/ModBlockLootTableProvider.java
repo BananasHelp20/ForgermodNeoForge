@@ -47,6 +47,11 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.INFUSION_TABLE.get());
         dropWhenSilkTouch(ModBlocks.ANCIENT_SWORD_STAND.get());
         dropOther(ModBlocks.ANCIENT_SWORD_STAND.get(), ModItems.RUSTY_CLAYMORE.get());
+        dropOther(ModBlocks.JADE_END_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_NETHER_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_STONE_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_DEEPSLATE_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_OBSIDIAN_ORE.get(), ModItems.JADE_GEMSTONE.get());
     }
 
     protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {

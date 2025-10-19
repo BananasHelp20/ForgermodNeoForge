@@ -37,14 +37,21 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.ELECTRIUM_BLOCK.get())
                 .add(ModBlocks.TAIFUNITE_BLOCK.get())
                 .add(ModBlocks.DEVELOPIUM_BLOCK.get())
+                .add(ModBlocks.JADE_STONE_ORE.get())
+                .add(ModBlocks.JADE_NETHER_ORE.get())
+                .add(ModBlocks.JADE_STONE_ORE.get())
+                .add(ModBlocks.JADE_DEEPSLATE_ORE.get())
+                .add(ModBlocks.JADE_OBSIDIAN_ORE.get())
         ;
 
         tag(BlockTags.MINEABLE_WITH_AXE)
 
         ;
+
         tag(BlockTags.MINEABLE_WITH_HOE)
 
         ;
+
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
 
         ;
@@ -59,6 +66,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.DAMASK_BLOCK.get())
                 .add(ModBlocks.REINFORCED_IRON_BLOCK.get())
                 .add(ModBlocks.STEEL_BLOCK.get())
+                .add(ModBlocks.JADE_STONE_ORE.get())
+                .add(ModBlocks.JADE_END_ORE.get())
+                .add(ModBlocks.JADE_NETHER_ORE.get())
         ;
 
         tag(ModTags.Blocks.NEEDS_STEEL_TOOL)

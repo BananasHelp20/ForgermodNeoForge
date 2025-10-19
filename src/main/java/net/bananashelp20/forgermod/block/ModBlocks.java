@@ -73,6 +73,11 @@ public class ModBlocks {
     public static final DeferredBlock<Block> STEEL_BLOCK = createSimpleBlock("steel_block", 45f, 50, SoundType.METAL);
     public static final DeferredBlock<Block> ELECTRIUM_BLOCK = createSimpleBlock("electrium_block", 45f, 50, SoundType.METAL);
     public static final DeferredBlock<Block> TAIFUNITE_BLOCK = createSimpleBlock("taifunite_block", 45f, 50, SoundType.METAL);
+    public static final DeferredBlock<Block> JADE_END_ORE = createSimpleBlock("jade_end_ore",30f, 10, SoundType.CALCITE);
+    public static final DeferredBlock<Block> JADE_NETHER_ORE = createSimpleBlock("jade_nether_ore",30f, 10, SoundType.CALCITE);
+    public static final DeferredBlock<Block> JADE_STONE_ORE = createSimpleBlock("jade_stone_ore",30f, 10, SoundType.CALCITE);
+    public static final DeferredBlock<Block> JADE_DEEPSLATE_ORE = createSimpleBlock("jade_deepslate_ore",30f, 10, SoundType.CALCITE);
+    public static final DeferredBlock<Block> JADE_OBSIDIAN_ORE = createSimpleBlock("jade_obsidian_ore",30f, 10, SoundType.CALCITE);
 
     public static final DeferredBlock<Block> DEVELOPIUM_BLOCK = createBlockWithDescription("developium_block", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.developium_block.tooltip");
 

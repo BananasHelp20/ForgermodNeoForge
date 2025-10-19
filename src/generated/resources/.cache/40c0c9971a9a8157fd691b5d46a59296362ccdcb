@@ -1,11 +1,11 @@
-// 1.21	2025-10-17T19:24:32.0780193	Tags for minecraft:block mod id forgermod
+// 1.21	2025-10-19T16:29:23.7134114	Tags for minecraft:block mod id forgermod
 a40a6da05bbb936e61ef617dc849c32d85b0fb96 data/forgermod/tags/block/incorrect_for_carbon_steel_tool.json
 ca8c0c073583e512b56c82069673408c8bd2eaf5 data/forgermod/tags/block/incorrect_for_steel_tool.json
 8583d2d19ef0b6b3fb0ac1f349aba146e87cffa6 data/forgermod/tags/block/needs_carbon_steel_tool.json
 22325222ce00eb54aa7cb2b32ac8c804dafd50d1 data/forgermod/tags/block/needs_steel_tool.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/block/mineable/axe.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/block/mineable/hoe.json
-030d5a55442cb56c12c9de82c70904fdefa144e4 data/minecraft/tags/block/mineable/pickaxe.json
+89bb68a69e293e877d6c7726c34dc2d3ad7e3866 data/minecraft/tags/block/mineable/pickaxe.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/block/mineable/shovel.json
-6e091d2b61d8a5ef434b8a8c59036f0970154723 data/minecraft/tags/block/needs_diamond_tool.json
+133811511801c35a738fdd88d9dac86fba407346 data/minecraft/tags/block/needs_diamond_tool.json
 18962b4b1edbeca508430c2f94e9c49e096d6e45 data/minecraft/tags/block/needs_iron_tool.json

@@ -2,6 +2,9 @@
   "values": [
     "forgermod:damask_block",
     "forgermod:reinforced_iron_block",
-    "forgermod:steel_block"
+    "forgermod:steel_block",
+    "forgermod:jade_stone_ore",
+    "forgermod:jade_end_ore",
+    "forgermod:jade_nether_ore"
   ]
 }

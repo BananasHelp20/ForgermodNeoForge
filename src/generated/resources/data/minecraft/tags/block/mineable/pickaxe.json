@@ -15,6 +15,11 @@
     "forgermod:steel_block",
     "forgermod:electrium_block",
     "forgermod:taifunite_block",
-    "forgermod:developium_block"
+    "forgermod:developium_block",
+    "forgermod:jade_stone_ore",
+    "forgermod:jade_nether_ore",
+    "forgermod:jade_stone_ore",
+    "forgermod:jade_deepslate_ore",
+    "forgermod:jade_obsidian_ore"
   ]
 }
