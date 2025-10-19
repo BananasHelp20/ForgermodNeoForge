@@ -4,6 +4,7 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -26,13 +27,13 @@ public class ModPlacedFeatures {
         var configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
         register(context, OVERWORLD_JADE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_JADE_ORE_KEY),
-                ModOrePlacement.commonOrePlacement(100, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(64), VerticalAnchor.aboveBottom(-128))));
+                ModOrePlacement.commonOrePlacement(12, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
 
         register(context, NETHER_JADE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.NETHER_JADE_ORE_KEY),
-                ModOrePlacement.commonOrePlacement(100, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(128), VerticalAnchor.aboveBottom(-256))));
+                ModOrePlacement.commonOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
 
         register(context, END_JADE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.END_JADE_ORE_KEY),
-                ModOrePlacement.commonOrePlacement(256, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(256), VerticalAnchor.aboveBottom(-128))));
+                ModOrePlacement.commonOrePlacement(12, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
     }
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {
