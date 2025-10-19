@@ -42,16 +42,6 @@ public class ModBlocks {
         );
     }
 
-    public static DeferredBlock<Block> createSpecialBlock(String name, float destroyTime, int explosionResistance, SoundType sound) {
-        return registerBlock(name,
-                () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of()
-                        .noOcclusion()
-                        .strength(destroyTime, explosionResistance)
-                        .sound(sound)
-                )
-        );
-    }
-
     public static DeferredBlock<Block> createBlockWithDescription(String name, float destroyTime, int explosionTime, SoundType sound, String descriptionName) {
         return registerBlock(name,
                 () -> new Block(BlockBehaviour.Properties.of()
