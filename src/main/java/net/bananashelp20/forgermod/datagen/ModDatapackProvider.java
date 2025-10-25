@@ -16,8 +16,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModDatapackProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::boostrap)
-            .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootsrap)
+            .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
+            .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap);
 
     public ModDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
