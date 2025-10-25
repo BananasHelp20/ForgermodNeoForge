@@ -172,7 +172,7 @@ public class RegistryClass {
     }
     public static ItemLike[] getMiscellaneousTabRegister() {
         return new ItemLike[] {
-                ModBlocks.ANCIENT_SWORD_STAND.get(),
+//                ModBlocks.ANCIENT_SWORD_STAND.get(),
                 ModBlocks.FORGE.get(),
                 ModBlocks.INFUSION_TABLE.get()
         };
