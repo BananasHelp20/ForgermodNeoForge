@@ -118,46 +118,55 @@ public class RegistryClass {
                 ModItems.INFERNAL_CLAYMORE_RUBY.get(),
                 ModItems.INFERNAL_CLAYMORE_AMBER.get(),
                 ModItems.INFERNAL_CLAYMORE_AMETHYST.get(),
-        
+                ModItems.INFERNAL_CLAYMORE_JADE.get(),
+
                 ModItems.CLAYMORE_OF_THE_VOID.get(),
                 ModItems.CLAYMORE_OF_THE_VOID_RUBY.get(),
                 ModItems.CLAYMORE_OF_THE_VOID_AMBER.get(),
                 ModItems.CLAYMORE_OF_THE_VOID_AMETHYST.get(),
-        
+                ModItems.CLAYMORE_OF_THE_VOID_JADE.get(),
+
                 ModItems.OVERGROWN_CLAYMORE.get(),
                 ModItems.OVERGROWN_CLAYMORE_RUBY.get(),
                 ModItems.OVERGROWN_CLAYMORE_AMBER.get(),
                 ModItems.OVERGROWN_CLAYMORE_AMETHYST.get(),
-        
+                ModItems.OVERGROWN_CLAYMORE_JADE.get(),
+
                 ModItems.HOLLOW_CLAYMORE.get(),
                 ModItems.HOLLOW_CLAYMORE_RUBY.get(),
                 ModItems.HOLLOW_CLAYMORE_AMBER.get(),
                 ModItems.HOLLOW_CLAYMORE_AMETHYST.get(),
-        
+                ModItems.HOLLOW_CLAYMORE_JADE.get(),
+
                 ModItems.CURSEBLOOD_CLAYMORE.get(),
                 ModItems.CURSEBLOOD_CLAYMORE_RUBY.get(),
                 ModItems.CURSEBLOOD_CLAYMORE_AMBER.get(),
                 ModItems.CURSEBLOOD_CLAYMORE_AMETHYST.get(),
-        
+                ModItems.CURSEBLOOD_CLAYMORE_JADE.get(),
+
                 ModItems.DREAMBOUND_CLAYMORE.get(),
                 ModItems.DREAMBOUND_CLAYMORE_RUBY.get(),
                 ModItems.DREAMBOUND_CLAYMORE_AMBER.get(),
                 ModItems.DREAMBOUND_CLAYMORE_AMETHYST.get(),
-        
+                ModItems.DREAMBOUND_CLAYMORE_JADE.get(),
+
                 ModItems.SHRIEKING_CLAYMORE.get(),
                 ModItems.SHRIEKING_CLAYMORE_RUBY.get(),
                 ModItems.SHRIEKING_CLAYMORE_AMBER.get(),
                 ModItems.SHRIEKING_CLAYMORE_AMETHYST.get(),
-        
+                ModItems.SHRIEKING_CLAYMORE_JADE.get(),
+
                 ModItems.CLAYMORE_OF_THUNDER.get(),
                 ModItems.CLAYMORE_OF_THUNDER_RUBY.get(),
                 ModItems.CLAYMORE_OF_THUNDER_AMBER.get(),
                 ModItems.CLAYMORE_OF_THUNDER_AMETHYST.get(),
-        
+                ModItems.CLAYMORE_OF_THUNDER_JADE.get(),
+
                 ModItems.STORMING_CLAYMORE.get(),
                 ModItems.STORMING_CLAYMORE_RUBY.get(),
                 ModItems.STORMING_CLAYMORE_AMBER.get(),
-                ModItems.STORMING_CLAYMORE_AMETHYST.get()
+                ModItems.STORMING_CLAYMORE_AMETHYST.get(),
+                ModItems.STORMING_CLAYMORE_JADE.get()
         };
     }
     public static ItemLike[] getItemTabRegister() {
