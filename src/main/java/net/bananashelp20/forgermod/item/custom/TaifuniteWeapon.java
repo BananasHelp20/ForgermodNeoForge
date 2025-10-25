@@ -39,7 +39,7 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
 
     @Override
     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod.claymore_of_thunder.tooltip"));
+        pTooltipComponents.add(Component.translatable("tooltips.forgermod.storming_claymore.tooltip"));
         pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }

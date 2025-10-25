@@ -74,7 +74,6 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ELECTRIUM_BLOCK = createSimpleBlock("electrium_block", 45f, 50, SoundType.METAL);
     public static final DeferredBlock<Block> TAIFUNITE_BLOCK = createSimpleBlock("taifunite_block", 45f, 50, SoundType.METAL);
 
-
     //ores
     public static final DeferredBlock<Block> JADE_END_ORE = createSimpleBlock("jade_end_ore",3.0f, 9, SoundType.STONE);
     public static final DeferredBlock<Block> JADE_NETHER_ORE = createSimpleBlock("jade_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
