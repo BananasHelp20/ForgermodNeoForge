@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 2.0,
+  "group": "ruby_gemstone",
+  "ingredient": {
+    "item": "forgermod:ruby_stone_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:ruby_gemstone"
+  }
+}

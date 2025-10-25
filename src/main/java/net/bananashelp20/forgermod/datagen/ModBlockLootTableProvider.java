@@ -47,6 +47,26 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.INFUSION_TABLE.get());
         dropWhenSilkTouch(ModBlocks.ANCIENT_SWORD_STAND.get());
         dropOther(ModBlocks.ANCIENT_SWORD_STAND.get(), ModItems.RUSTY_CLAYMORE.get());
+
+        //ores
+        dropOther(ModBlocks.RUBY_END_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_NETHER_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_STONE_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_DEEPSLATE_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_OBSIDIAN_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+
+        dropOther(ModBlocks.AMETHYST_END_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_NETHER_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_STONE_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_DEEPSLATE_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_OBSIDIAN_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+
+        dropOther(ModBlocks.AMBER_END_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_NETHER_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_STONE_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_DEEPSLATE_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_OBSIDIAN_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+
         dropOther(ModBlocks.JADE_END_ORE.get(), ModItems.JADE_GEMSTONE.get());
         dropOther(ModBlocks.JADE_NETHER_ORE.get(), ModItems.JADE_GEMSTONE.get());
         dropOther(ModBlocks.JADE_STONE_ORE.get(), ModItems.JADE_GEMSTONE.get());
