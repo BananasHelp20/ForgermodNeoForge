@@ -30,6 +30,9 @@ public class RegistryClass {
     public static ItemLike getDisplayItemForForgerMiscellaneousTab() {
         return ModBlocks.FORGE.get();
     }
+    public static ItemLike getDisplayItemForForgerBlocksTab() {
+        return ModBlocks.RUBY_DEEPSLATE_ORE.get();
+    }
 
     public static ItemLike[] getIngredientTabRegister() {
         return new ItemLike[] {
@@ -172,6 +175,33 @@ public class RegistryClass {
                 ModBlocks.ANCIENT_SWORD_STAND.get(),
                 ModBlocks.FORGE.get(),
                 ModBlocks.INFUSION_TABLE.get()
+        };
+    }
+    public static ItemLike[] getBlocksTabRegister() {
+        return new ItemLike[] {
+                ModBlocks.JADE_STONE_ORE.get(),
+                ModBlocks.JADE_DEEPSLATE_ORE.get(),
+                ModBlocks.JADE_NETHER_ORE.get(),
+                ModBlocks.JADE_END_ORE.get(),
+                ModBlocks.JADE_OBSIDIAN_ORE.get(),
+
+                ModBlocks.RUBY_STONE_ORE.get(),
+                ModBlocks.RUBY_DEEPSLATE_ORE.get(),
+                ModBlocks.RUBY_NETHER_ORE.get(),
+                ModBlocks.RUBY_END_ORE.get(),
+                ModBlocks.RUBY_OBSIDIAN_ORE.get(),
+
+                ModBlocks.AMETHYST_STONE_ORE.get(),
+                ModBlocks.AMETHYST_DEEPSLATE_ORE.get(),
+                ModBlocks.AMETHYST_NETHER_ORE.get(),
+                ModBlocks.AMETHYST_END_ORE.get(),
+                ModBlocks.AMETHYST_OBSIDIAN_ORE.get(),
+
+                ModBlocks.AMBER_STONE_ORE.get(),
+                ModBlocks.AMBER_DEEPSLATE_ORE.get(),
+                ModBlocks.AMBER_NETHER_ORE.get(),
+                ModBlocks.AMBER_END_ORE.get(),
+                ModBlocks.AMBER_OBSIDIAN_ORE.get()
         };
     }
 }
