@@ -23,7 +23,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
     public String gemstone;
 
     public VulnusiumWeapon(String gemstone) {
-        super(ModToolTiers.VULNUSIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? 2.4f : 2.8f))));
+        super(ModToolTiers.VULNUSIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? -2.4f : -2.8f))));
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

@@ -23,7 +23,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     public String gemstone;
 
     public MorsiumWeapon(String gemstone) {
-        super(ModToolTiers.MORSIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? 2.4f : 2.8f))));
+        super(ModToolTiers.MORSIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? -2.4f : -2.8f))));
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

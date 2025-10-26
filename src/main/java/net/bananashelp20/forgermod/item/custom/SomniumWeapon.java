@@ -17,13 +17,13 @@ import java.util.List;
 
 public class SomniumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.CONFUSION;
-    public static int durationInTicks = 80;
+    public static int durationInTicks = 200;
     public static int effectAmplifier = 4;
     public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
 
     public SomniumWeapon(String gemstone) {
-        super(ModToolTiers.SOMNIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? 2.4f : 2.8f))));
+        super(ModToolTiers.SOMNIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? -2.4f : -2.8f))));
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;
