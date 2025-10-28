@@ -1,4 +1,4 @@
-// 1.21.1	2025-10-25T22:46:02.3819873	Block States: forgermod
+// 1.21.1	2025-10-28T20:31:38.8662347	Block States: forgermod
 6a82138243e673106fac218daf92e78d19981827 assets/forgermod/blockstates/amber_deepslate_ore.json
 402877b963c4f7e4306033136ffd154bb2d56d56 assets/forgermod/blockstates/amber_end_ore.json
 5090dd6e2a92ec41cf46a2b85d8968e9dfc98ab3 assets/forgermod/blockstates/amber_nether_ore.json
@@ -15,7 +15,6 @@ d9e3cd2e5030ea1e4ae0d3198ec35f05c809b1ce assets/forgermod/blockstates/carbon_ste
 b4e75541d7921a6d4658dfce5cc8df0952f0ba59 assets/forgermod/blockstates/electrium_block.json
 14dde124cfac8075476c780b1f79d6288aa463c6 assets/forgermod/blockstates/ignisium_block.json
 c936413c4b5996abd37c0618c1add171779f7e06 assets/forgermod/blockstates/inanisium_block.json
-4ffa40623b8b4b0e4ce19142e32fde435d8e8b39 assets/forgermod/blockstates/infusion_table.json
 793ab5afbebd7210423c2185fc4e597a2e870ff9 assets/forgermod/blockstates/jade_deepslate_ore.json
 9b9dd4bb8cacf71e04141f4c0e5d00c157218bd8 assets/forgermod/blockstates/jade_end_ore.json
 c21baf6b596115cbff3bf39f429f2197c823e1c5 assets/forgermod/blockstates/jade_nether_ore.json
@@ -52,7 +51,6 @@ a06a6c7776c2f625a93e08a3275687e1dd823063 assets/forgermod/models/block/developiu
 f8542bdaa51e5833b916230c2073628f5e8afded assets/forgermod/models/block/electrium_block.json
 aa87650d4c8c799e86f136385d31eab9a5fd3aab assets/forgermod/models/block/ignisium_block.json
 8ba170d3aa7306104c1f1724ab285daed2a6aba0 assets/forgermod/models/block/inanisium_block.json
-a9fbafda0ed26457f98c15bb36326a2c009070dd assets/forgermod/models/block/infusion_table.json
 ef0830010638971a7de82164df20604d2df6ca60 assets/forgermod/models/block/jade_deepslate_ore.json
 6a918f9fbbca9ac3f1fc030c9060c8ed3a7ef9bc assets/forgermod/models/block/jade_end_ore.json
 a6ba350412adb042ef6082f04222317b1c60e64c assets/forgermod/models/block/jade_nether_ore.json
@@ -89,7 +87,6 @@ ea409e1150ac5a08d46129d62ec80fec4726850b assets/forgermod/models/item/amethyst_s
 86571097b681bd08ef03977ecc5dca917d33a52a assets/forgermod/models/item/electrium_block.json
 56b9c78fd22fd28807464c3a278f66514bd37d18 assets/forgermod/models/item/ignisium_block.json
 603dd60b0b4aa1c83a672327288f7d95df9a19ff assets/forgermod/models/item/inanisium_block.json
-23f8c56fea188a7d20f7466a1f0289912c3fc704 assets/forgermod/models/item/infusion_table.json
 91fb80e3f18abd169edb99ec83d1c9f0db5fbc06 assets/forgermod/models/item/jade_deepslate_ore.json
 1b03649351468ef4b866837a4c2ac4d9333b3c49 assets/forgermod/models/item/jade_end_ore.json
 c8de858367d3a21290ab32ee2891610e1a4c00d6 assets/forgermod/models/item/jade_nether_ore.json
