@@ -30,7 +30,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.ELECTRIUM_BLOCK);
         blockWithItem(ModBlocks.TAIFUNITE_BLOCK);
         blockWithItem(ModBlocks.DEVELOPIUM_BLOCK);
-        blockWithItem(ModBlocks.INFUSION_TABLE);
 
         //ores
         blockWithItem(ModBlocks.JADE_NETHER_ORE);

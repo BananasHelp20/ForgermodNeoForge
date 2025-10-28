@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 
 public class AncientSwordStandBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<AncientSwordStandBlock> CODEC = simpleCodec(AncientSwordStandBlock::new);
-    private static final VoxelShape SHAPE = Block.box(7 ,  0, -0.3, 8.4, 26.9, 2.3);
+    private static final VoxelShape SHAPE = Block.box(0 ,  0, 5, 15, 28, 15);
 
     public AncientSwordStandBlock(Properties pProperties) {
         super(pProperties);

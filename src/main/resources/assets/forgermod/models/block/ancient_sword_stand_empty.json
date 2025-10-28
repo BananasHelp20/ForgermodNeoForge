@@ -2,25 +2,25 @@
 	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "forgermod:block/ancient_sword_stand/rusty1",
-		"1": "forgermod:block/ancient_sword_stand/rusty2",
-		"2": "forgermod:block/ancient_sword_stand/rusty3",
-		"3": "forgermod:block/ancient_sword_stand/rusty4",
-		"4": "forgermod:block/ancient_sword_stand/rusty5",
-		"5": "forgermod:block/ancient_sword_stand/rusty6",
-		"6": "forgermod:block/ancient_sword_stand/rusty7",
-		"7": "forgermod:block/ancient_sword_stand/rusty8",
-		"8": "forgermod:block/ancient_sword_stand/rusty9",
-		"9": "forgermod:block/ancient_sword_stand/rusty10",
-		"10": "forgermod:block/ancient_sword_stand/rusty11",
-		"11": "forgermod:block/ancient_sword_stand/rusty12",
-		"12": "forgermod:block/ancient_sword_stand/rusty13",
+		"0": "forgermod:block/ancient_sword_stand_textures/rusty1",
+		"1": "forgermod:block/ancient_sword_stand_textures/rusty2",
+		"2": "forgermod:block/ancient_sword_stand_textures/rusty3",
+		"3": "forgermod:block/ancient_sword_stand_textures/rusty4",
+		"4": "forgermod:block/ancient_sword_stand_textures/rusty5",
+		"5": "forgermod:block/ancient_sword_stand_textures/rusty6",
+		"6": "forgermod:block/ancient_sword_stand_textures/rusty7",
+		"7": "forgermod:block/ancient_sword_stand_textures/rusty8",
+		"8": "forgermod:block/ancient_sword_stand_textures/rusty9",
+		"9": "forgermod:block/ancient_sword_stand_textures/rusty10",
+		"10": "forgermod:block/ancient_sword_stand_textures/rusty11",
+		"11": "forgermod:block/ancient_sword_stand_textures/rusty12",
+		"12": "forgermod:block/ancient_sword_stand_textures/rusty13",
 		"14": "forgermod:block/ancient_sword_stand/black_wool",
 		"22": "forgermod:block/ancient_sword_stand/infusion_table",
 		"23": "forgermod:block/ancient_sword_stand/iron_block",
 		"26": "forgermod:block/ancient_sword_stand/steel_block",
 		"27": "forgermod:block/ancient_sword_stand/sculk_shrieker_bottom",
-		"particle": "forgermod:block/ancient_sword_stand/rusty1"
+		"particle": "forgermod:block/ancient_sword_stand_textures/rusty1"
 	},
 	"elements": [
 		{
@@ -92,11 +92,11 @@
 			"to": [9, 29, 14],
 			"rotation": {"angle": 0, "axis": "y", "origin": [5, 22, 11]},
 			"faces": {
-				"north": {"uv": [0, 0, 2, 7], "texture": "#14"},
-				"east": {"uv": [0, 0, 1, 7], "texture": "#14"},
-				"south": {"uv": [0, 0, 2, 7], "texture": "#14"},
-				"west": {"uv": [0, 0, 1, 7], "texture": "#14"},
-				"up": {"uv": [0, 0, 2, 1], "texture": "#14"},
+				"north": {"uv": [0, 0, 2, 7], "texture": "#27"},
+				"east": {"uv": [0, 0, 1, 7], "texture": "#27"},
+				"south": {"uv": [0, 0, 2, 7], "texture": "#27"},
+				"west": {"uv": [0, 0, 1, 7], "texture": "#27"},
+				"up": {"uv": [0, 0, 2, 1], "texture": "#27"},
 				"down": {"uv": [0, 0, 2, 1], "texture": "#missing"}
 			}
 		},
@@ -106,11 +106,11 @@
 			"rotation": {"angle": 0, "axis": "y", "origin": [7, 22, 11]},
 			"faces": {
 				"north": {"uv": [0, 0, 1, 1], "texture": "#14"},
-				"east": {"uv": [0, 0, 2.5, 1], "texture": "#14"},
-				"south": {"uv": [0, 0, 1, 1], "texture": "#14"},
+				"east": {"uv": [0, 0, 2.5, 1], "texture": "#27"},
+				"south": {"uv": [0, 0, 1, 1], "texture": "#27"},
 				"west": {"uv": [0, 0, 2.5, 1], "texture": "#14"},
-				"up": {"uv": [0, 0, 1, 2.5], "texture": "#14"},
-				"down": {"uv": [0, 0, 1, 2.5], "texture": "#14"}
+				"up": {"uv": [0, 0, 1, 2.5], "texture": "#27"},
+				"down": {"uv": [0, 0, 1, 2.5], "texture": "#27"}
 			}
 		},
 		{
@@ -120,10 +120,10 @@
 			"faces": {
 				"north": {"uv": [0, 0, 1, 1], "texture": "#14"},
 				"east": {"uv": [0, 0, 2.5, 1], "texture": "#14"},
-				"south": {"uv": [0, 0, 1, 1], "texture": "#14"},
+				"south": {"uv": [0, 0, 1, 1], "texture": "#27"},
 				"west": {"uv": [0, 0, 2.5, 1], "texture": "#14"},
-				"up": {"uv": [0, 0, 1, 2.5], "texture": "#14"},
-				"down": {"uv": [0, 0, 1, 2.5], "texture": "#14"}
+				"up": {"uv": [0, 0, 1, 2.5], "texture": "#27"},
+				"down": {"uv": [0, 0, 1, 2.5], "texture": "#27"}
 			}
 		},
 		{
