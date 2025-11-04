@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 2.0,
+  "group": "amber_gemstone",
+  "ingredient": {
+    "item": "forgermod:amber_stone_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:amber_gemstone"
+  }
+}

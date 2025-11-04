@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 2.0,
+  "group": "amethyst_gemstone",
+  "ingredient": {
+    "item": "forgermod:amethyst_end_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:amethyst_gemstone"
+  }
+}

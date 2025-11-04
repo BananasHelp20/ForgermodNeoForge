@@ -20,6 +20,21 @@
     "forgermod:jade_nether_ore",
     "forgermod:jade_stone_ore",
     "forgermod:jade_deepslate_ore",
-    "forgermod:jade_obsidian_ore"
+    "forgermod:jade_obsidian_ore",
+    "forgermod:ruby_stone_ore",
+    "forgermod:ruby_nether_ore",
+    "forgermod:ruby_stone_ore",
+    "forgermod:ruby_deepslate_ore",
+    "forgermod:ruby_obsidian_ore",
+    "forgermod:amethyst_stone_ore",
+    "forgermod:amethyst_nether_ore",
+    "forgermod:amethyst_stone_ore",
+    "forgermod:amethyst_deepslate_ore",
+    "forgermod:amethyst_obsidian_ore",
+    "forgermod:amber_stone_ore",
+    "forgermod:amber_nether_ore",
+    "forgermod:amber_stone_ore",
+    "forgermod:amber_deepslate_ore",
+    "forgermod:amber_obsidian_ore"
   ]
 }

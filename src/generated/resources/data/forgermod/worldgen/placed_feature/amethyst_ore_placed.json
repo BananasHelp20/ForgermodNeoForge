@@ -1,9 +1,9 @@
 {
-  "feature": "forgermod:overworld_jade_ore",
+  "feature": "forgermod:amethyst_ore",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 12
+      "count": 2
     },
     {
       "type": "minecraft:in_square"
