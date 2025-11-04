@@ -1,21 +1,8 @@
-package net.bananashelp20.forgermod;
+package net.bananashelp20.forgermod.registries;
 
 import net.bananashelp20.forgermod.block.ModBlocks;
-import net.bananashelp20.forgermod.block.custom.AncientSwordStandBlock;
 import net.bananashelp20.forgermod.item.ModItems;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-
-import java.util.List;
-import java.util.function.Supplier;
 
 public class RegistryClass {
     public static ItemLike getDisplayItemForForgerIngredientsTab() {

@@ -1,9 +1,7 @@
 package net.bananashelp20.forgermod.CreativeModeTabs;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.RegistryClass;
-import net.bananashelp20.forgermod.block.ModBlocks;
-import net.bananashelp20.forgermod.item.ModItems;
+import net.bananashelp20.forgermod.registries.RegistryClass;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

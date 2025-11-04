@@ -4,12 +4,10 @@ import net.bananashelp20.forgermod.CreativeModeTabs.ModCreativeModeTabs;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
-import net.bananashelp20.forgermod.RegistryClass;
 import net.bananashelp20.forgermod.recipe.ModRecipes;
 import net.bananashelp20.forgermod.screen.ModMenuTypes;
 import net.bananashelp20.forgermod.screen.custom.ForgeScreen;
 import net.bananashelp20.forgermod.screen.custom.InfusionTableScreen;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
