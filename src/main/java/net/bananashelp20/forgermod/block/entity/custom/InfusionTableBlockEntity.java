@@ -237,7 +237,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         return saveWithoutMetadata(pRegistries);
     }
 
-        private boolean hasCraftingFinished() {
+    private boolean hasCraftingFinished() {
         return this.progress >= this.maxProgress;
     }
 

@@ -43,7 +43,7 @@ public class ModItems {
                         .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
                 {
                     @Override
-                    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+                    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
                         pTooltipComponents.add(Component.translatable(descriptionName));
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
@@ -57,7 +57,7 @@ public class ModItems {
                         .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
                 {
                     @Override
-                    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+                    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
                         pTooltipComponents.add(Component.translatable(descriptionName));
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }

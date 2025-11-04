@@ -43,26 +43,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.UNREFINED_STEEL.get()
     );
 
-//    protected static final List<ItemLike> RUBY_SMELTABLES = List.of(
-//            ModBlocks.RUBY_END_ORE.get(),
-//            ModBlocks.RUBY_NETHER_ORE.get(),
-//            ModBlocks.RUBY_STONE_ORE.get()
-//            ModBlocks.RUBY_DEEPSLATE_ORE.get()
-//    );
-//
-//    protected static final List<ItemLike> AMBER_SMELTABLES = List.of(
-//            ModBlocks.AMBER_END_ORE.get(),
-//            ModBlocks.AMBER_NETHER_ORE.get(),
-//            ModBlocks.AMBER_STONE_ORE.get()
-//            ModBlocks.RUBY_DEEPSLATE_ORE.get()
-//    );
-//
-//    protected static final List<ItemLike> AMETHYST_SMELTABLES = List.of(
-//            ModBlocks.AMETHYST_END_ORE.get(),
-//            ModBlocks.AMETHYST_NETHER_ORE.get(),
-//            ModBlocks.AMETHYST_STONE_ORE.get()
-//            ModBlocks.AMETHYS_DEEPSLATE_ORE.get()
-//    );
+    protected static final List<ItemLike> RUBY_SMELTABLES = List.of(
+            ModBlocks.RUBY_END_ORE.get(),
+            ModBlocks.RUBY_NETHER_ORE.get(),
+            ModBlocks.RUBY_STONE_ORE.get(),
+            ModBlocks.RUBY_DEEPSLATE_ORE.get()
+    );
+
+    protected static final List<ItemLike> AMBER_SMELTABLES = List.of(
+            ModBlocks.AMBER_END_ORE.get(),
+            ModBlocks.AMBER_NETHER_ORE.get(),
+            ModBlocks.AMBER_STONE_ORE.get(),
+            ModBlocks.RUBY_DEEPSLATE_ORE.get()
+    );
+
+    protected static final List<ItemLike> AMETHYST_SMELTABLES = List.of(
+            ModBlocks.AMETHYST_END_ORE.get(),
+            ModBlocks.AMETHYST_NETHER_ORE.get(),
+            ModBlocks.AMETHYST_STONE_ORE.get(),
+            ModBlocks.AMETHYST_DEEPSLATE_ORE.get()
+    );
 
     protected static final List<ItemLike> JADE_SMELTABLES = List.of(
             ModBlocks.JADE_END_ORE.get(),
@@ -387,7 +387,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
 
-        private static void smeltingAndBlastingRecipes(RecipeOutput output) {
+    private static void smeltingAndBlastingRecipes(RecipeOutput output) {
         oreSmelting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 0.5f, 200, "damask_ingot");
         oreBlasting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 1f, 100, "damask_ingot");
 
@@ -400,14 +400,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreSmelting(output, JADE_SMELTABLES, RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
         oreBlasting(output, JADE_SMELTABLES, RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
 
-//        oreSmelting(output, RUBY_SMELTABLES, RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
-//        oreBlasting(output, RUBY_SMELTABLES, RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
+        oreSmelting(output, RUBY_SMELTABLES, RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
+        oreBlasting(output, RUBY_SMELTABLES, RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
 
-//        oreSmelting(output, AMBER_SMELTABLES, RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
-//        oreBlasting(output, AMBER_SMELTABLES, RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
+        oreSmelting(output, AMBER_SMELTABLES, RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
+        oreBlasting(output, AMBER_SMELTABLES, RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
 
-//        oreSmelting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
-//        oreBlasting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
+        oreSmelting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
+        oreBlasting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,

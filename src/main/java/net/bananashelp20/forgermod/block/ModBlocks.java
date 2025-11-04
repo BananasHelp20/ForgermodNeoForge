@@ -73,21 +73,41 @@ public class ModBlocks {
     public static final DeferredBlock<Block> STEEL_BLOCK = createSimpleBlock("steel_block", 45f, 50, SoundType.METAL);
     public static final DeferredBlock<Block> ELECTRIUM_BLOCK = createSimpleBlock("electrium_block", 45f, 50, SoundType.METAL);
     public static final DeferredBlock<Block> TAIFUNITE_BLOCK = createSimpleBlock("taifunite_block", 45f, 50, SoundType.METAL);
-    public static final DeferredBlock<Block> JADE_END_ORE = createSimpleBlock("jade_end_ore",30f, 10, SoundType.CALCITE);
-    public static final DeferredBlock<Block> JADE_NETHER_ORE = createSimpleBlock("jade_nether_ore",30f, 10, SoundType.CALCITE);
-    public static final DeferredBlock<Block> JADE_STONE_ORE = createSimpleBlock("jade_stone_ore",30f, 10, SoundType.CALCITE);
-    public static final DeferredBlock<Block> JADE_DEEPSLATE_ORE = createSimpleBlock("jade_deepslate_ore",30f, 10, SoundType.CALCITE);
-    public static final DeferredBlock<Block> JADE_OBSIDIAN_ORE = createSimpleBlock("jade_obsidian_ore",30f, 10, SoundType.CALCITE);
 
-    public static final DeferredBlock<Block> DEVELOPIUM_BLOCK = createBlockWithDescription("developium_block", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.developium_block.tooltip");
+    //ores
+    public static final DeferredBlock<Block> JADE_END_ORE = createSimpleBlock("jade_end_ore",3.0f, 9, SoundType.STONE);
+    public static final DeferredBlock<Block> JADE_NETHER_ORE = createSimpleBlock("jade_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
+    public static final DeferredBlock<Block> JADE_STONE_ORE = createSimpleBlock("jade_stone_ore",1.5f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> JADE_DEEPSLATE_ORE = createSimpleBlock("jade_deepslate_ore",3.0f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> JADE_OBSIDIAN_ORE = createSimpleBlock("jade_obsidian_ore",50.0f, 1200, SoundType.STONE);
+
+    public static final DeferredBlock<Block> RUBY_END_ORE = createSimpleBlock("ruby_end_ore",3.0f, 9, SoundType.STONE);
+    public static final DeferredBlock<Block> RUBY_NETHER_ORE = createSimpleBlock("ruby_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
+    public static final DeferredBlock<Block> RUBY_STONE_ORE = createSimpleBlock("ruby_stone_ore",1.5f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> RUBY_DEEPSLATE_ORE = createSimpleBlock("ruby_deepslate_ore",3.0f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> RUBY_OBSIDIAN_ORE = createSimpleBlock("ruby_obsidian_ore",50.0f, 1200, SoundType.STONE);
+
+    public static final DeferredBlock<Block> AMETHYST_END_ORE = createSimpleBlock("amethyst_end_ore",3.0f, 9, SoundType.STONE);
+    public static final DeferredBlock<Block> AMETHYST_NETHER_ORE = createSimpleBlock("amethyst_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
+    public static final DeferredBlock<Block> AMETHYST_STONE_ORE = createSimpleBlock("amethyst_stone_ore",1.5f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> AMETHYST_DEEPSLATE_ORE = createSimpleBlock("amethyst_deepslate_ore",3.0f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> AMETHYST_OBSIDIAN_ORE = createSimpleBlock("amethyst_obsidian_ore",50.0f, 1200, SoundType.STONE);
+
+    public static final DeferredBlock<Block> AMBER_END_ORE = createSimpleBlock("amber_end_ore",3.0f, 9, SoundType.STONE);
+    public static final DeferredBlock<Block> AMBER_NETHER_ORE = createSimpleBlock("amber_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
+    public static final DeferredBlock<Block> AMBER_STONE_ORE = createSimpleBlock("amber_stone_ore",1.5f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> AMBER_DEEPSLATE_ORE = createSimpleBlock("amber_deepslate_ore",3.0f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> AMBER_OBSIDIAN_ORE = createSimpleBlock("amber_obsidian_ore",50.0f, 1200, SoundType.STONE);
 
     //non-block blocks and special blocks
+    public static final DeferredBlock<Block> DEVELOPIUM_BLOCK = createBlockWithDescription("developium_block", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.developium_block.tooltip");
+
     public static final DeferredBlock<Block> ANCIENT_SWORD_STAND = registerBlock("ancient_sword_stand",
-                () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of()
-                        .noOcclusion()
-                        .strength(45f, 50)
-                        .sound(SoundType.NETHERITE_BLOCK)
-                )
+            () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of()
+                    .noOcclusion()
+                    .strength(45f, 50)
+                    .sound(SoundType.NETHERITE_BLOCK)
+            )
     );
 
     public static final DeferredBlock<Block> FORGE = registerBlock("forge",

@@ -16,11 +16,11 @@ public class LushWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.HUNGER;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 3;
-    public static Properties pProperties = new Item.Properties().rarity(Rarity.EPIC);
+    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
 
     public LushWeapon(String gemstone) {
-        super(ModToolTiers.LUSH, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? 2.4f : 2.8f))));
+        super(ModToolTiers.LUSH, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? -2.4f : -2.8f))));
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;
@@ -35,7 +35,7 @@ public class LushWeapon extends SwordItemWithEffect {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
         pTooltipComponents.add(Component.translatable("tooltips.forgermod.overgrown_claymore.tooltip"));
         pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);

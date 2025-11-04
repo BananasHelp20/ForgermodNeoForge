@@ -61,6 +61,17 @@ public class ModCreativeModeTabs {
                         }
                     }).build());
 
+    public static final Supplier<CreativeModeTab> FORGER_MOD_BLOCKS_TAB = CREATIVE_MODE_TABS.register("forger_mod_blocks_tab",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerBlocksTab()))
+                    .title(Component.translatable("creativetab.forgermod.forger_blocks_tab"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        ItemLike[] blocksTabRegister = RegistryClass.getBlocksTabRegister();
+                        for (int i = 0; i < blocksTabRegister.length; i++) {
+                            output.accept(blocksTabRegister[i]);
+                        }
+                    }).build());
+
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
     }

@@ -37,11 +37,31 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.ELECTRIUM_BLOCK.get())
                 .add(ModBlocks.TAIFUNITE_BLOCK.get())
                 .add(ModBlocks.DEVELOPIUM_BLOCK.get())
+
+                //ores
                 .add(ModBlocks.JADE_STONE_ORE.get())
                 .add(ModBlocks.JADE_NETHER_ORE.get())
                 .add(ModBlocks.JADE_STONE_ORE.get())
                 .add(ModBlocks.JADE_DEEPSLATE_ORE.get())
                 .add(ModBlocks.JADE_OBSIDIAN_ORE.get())
+
+                .add(ModBlocks.RUBY_STONE_ORE.get())
+                .add(ModBlocks.RUBY_NETHER_ORE.get())
+                .add(ModBlocks.RUBY_STONE_ORE.get())
+                .add(ModBlocks.RUBY_DEEPSLATE_ORE.get())
+                .add(ModBlocks.RUBY_OBSIDIAN_ORE.get())
+
+                .add(ModBlocks.AMETHYST_STONE_ORE.get())
+                .add(ModBlocks.AMETHYST_NETHER_ORE.get())
+                .add(ModBlocks.AMETHYST_STONE_ORE.get())
+                .add(ModBlocks.AMETHYST_DEEPSLATE_ORE.get())
+                .add(ModBlocks.AMETHYST_OBSIDIAN_ORE.get())
+
+                .add(ModBlocks.AMBER_STONE_ORE.get())
+                .add(ModBlocks.AMBER_NETHER_ORE.get())
+                .add(ModBlocks.AMBER_STONE_ORE.get())
+                .add(ModBlocks.AMBER_DEEPSLATE_ORE.get())
+                .add(ModBlocks.AMBER_OBSIDIAN_ORE.get())
         ;
 
         tag(BlockTags.MINEABLE_WITH_AXE)
@@ -69,6 +89,23 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.JADE_STONE_ORE.get())
                 .add(ModBlocks.JADE_END_ORE.get())
                 .add(ModBlocks.JADE_NETHER_ORE.get())
+                .add(ModBlocks.JADE_DEEPSLATE_ORE.get())
+                .add(ModBlocks.JADE_OBSIDIAN_ORE.get())
+                .add(ModBlocks.RUBY_STONE_ORE.get())
+                .add(ModBlocks.RUBY_END_ORE.get())
+                .add(ModBlocks.RUBY_NETHER_ORE.get())
+                .add(ModBlocks.RUBY_DEEPSLATE_ORE.get())
+                .add(ModBlocks.RUBY_OBSIDIAN_ORE.get())
+                .add(ModBlocks.AMETHYST_STONE_ORE.get())
+                .add(ModBlocks.AMETHYST_END_ORE.get())
+                .add(ModBlocks.AMETHYST_NETHER_ORE.get())
+                .add(ModBlocks.AMETHYST_DEEPSLATE_ORE.get())
+                .add(ModBlocks.AMETHYST_OBSIDIAN_ORE.get())
+                .add(ModBlocks.AMBER_STONE_ORE.get())
+                .add(ModBlocks.AMBER_END_ORE.get())
+                .add(ModBlocks.AMBER_NETHER_ORE.get())
+                .add(ModBlocks.AMBER_DEEPSLATE_ORE.get())
+                .add(ModBlocks.AMBER_OBSIDIAN_ORE.get())
         ;
 
         tag(ModTags.Blocks.NEEDS_STEEL_TOOL)

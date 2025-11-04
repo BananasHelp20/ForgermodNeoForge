@@ -30,12 +30,31 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.ELECTRIUM_BLOCK);
         blockWithItem(ModBlocks.TAIFUNITE_BLOCK);
         blockWithItem(ModBlocks.DEVELOPIUM_BLOCK);
-        blockWithItem(ModBlocks.INFUSION_TABLE);
+
+        //ores
         blockWithItem(ModBlocks.JADE_NETHER_ORE);
         blockWithItem(ModBlocks.JADE_END_ORE);
         blockWithItem(ModBlocks.JADE_STONE_ORE);
         blockWithItem(ModBlocks.JADE_DEEPSLATE_ORE);
         blockWithItem(ModBlocks.JADE_OBSIDIAN_ORE);
+
+        blockWithItem(ModBlocks.RUBY_NETHER_ORE);
+        blockWithItem(ModBlocks.RUBY_END_ORE);
+        blockWithItem(ModBlocks.RUBY_STONE_ORE);
+        blockWithItem(ModBlocks.RUBY_DEEPSLATE_ORE);
+        blockWithItem(ModBlocks.RUBY_OBSIDIAN_ORE);
+
+        blockWithItem(ModBlocks.AMETHYST_NETHER_ORE);
+        blockWithItem(ModBlocks.AMETHYST_END_ORE);
+        blockWithItem(ModBlocks.AMETHYST_STONE_ORE);
+        blockWithItem(ModBlocks.AMETHYST_DEEPSLATE_ORE);
+        blockWithItem(ModBlocks.AMETHYST_OBSIDIAN_ORE);
+
+        blockWithItem(ModBlocks.AMBER_NETHER_ORE);
+        blockWithItem(ModBlocks.AMBER_END_ORE);
+        blockWithItem(ModBlocks.AMBER_STONE_ORE);
+        blockWithItem(ModBlocks.AMBER_DEEPSLATE_ORE);
+        blockWithItem(ModBlocks.AMBER_OBSIDIAN_ORE);
     }
 
     private void blockWithItem(DeferredBlock<?> deferredBlock) {

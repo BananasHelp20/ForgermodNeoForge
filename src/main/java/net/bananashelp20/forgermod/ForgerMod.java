@@ -9,9 +9,6 @@ import net.bananashelp20.forgermod.recipe.ModRecipes;
 import net.bananashelp20.forgermod.screen.ModMenuTypes;
 import net.bananashelp20.forgermod.screen.custom.ForgeScreen;
 import net.bananashelp20.forgermod.screen.custom.InfusionTableScreen;
-import net.bananashelp20.forgermod.worldgen.ModBiomeModifiers;
-import net.bananashelp20.forgermod.worldgen.ModConfiguredFeatures;
-import net.bananashelp20.forgermod.worldgen.ModPlacedFeatures;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
@@ -56,13 +53,11 @@ public class ForgerMod {
         ModBlockEntities.register(modEventBus);
         ModRecipes.register(modEventBus);
 
-
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
