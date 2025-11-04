@@ -17,6 +17,11 @@ import java.util.function.Supplier;
 public class ModCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ForgerMod.MOD_ID);
 
+    public static void register(IEventBus eventBus) {
+        CREATIVE_MODE_TABS.register(eventBus);
+    }
+
+    //STARTGENERATING
     public static final Supplier<CreativeModeTab> FORGER_MOD_INGREDIENTS_TAB = CREATIVE_MODE_TABS.register("forger_mod_ingredients_tab",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerIngredientsTab()))
@@ -71,8 +76,4 @@ public class ModCreativeModeTabs {
                             output.accept(blocksTabRegister[i]);
                         }
                     }).build());
-
-    public static void register(IEventBus eventBus) {
-        CREATIVE_MODE_TABS.register(eventBus);
-    }
 }

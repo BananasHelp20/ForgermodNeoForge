@@ -90,6 +90,7 @@ public class ModItems {
     private static final int GEMSTONE_SPECIAL_DAMAGE = 5;
     private static final float GEMSTONE_SPECIAL_SPEED = 2.4f;
 
+    //STARTGENERATING
     /**ingredients*/
     //upgrade shards
     public static final DeferredItem<Item> INANISIUM_SHARD = createItem("inanisium_shard");

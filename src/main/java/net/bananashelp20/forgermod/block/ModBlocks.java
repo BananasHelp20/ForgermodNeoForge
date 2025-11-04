@@ -57,6 +57,11 @@ public class ModBlocks {
         );
     }
 
+    public static void register(IEventBus eventBus) {
+        BLOCKS.register(eventBus);
+    }
+
+    //STARTGENERATING
     //simple blocks
     public static final DeferredBlock<Block> DAMASK_BLOCK = createSimpleBlock("damask_block", 77f, 50, SoundType.HEAVY_CORE);
     public static final DeferredBlock<Block> PULSITE_BLOCK = createSimpleBlock("pulsite_block", 77f, 50, SoundType.HEAVY_CORE);
@@ -124,9 +129,5 @@ public class ModBlocks {
                     .sound(SoundType.NETHERITE_BLOCK)
             )
     );
-
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-    }
 
 }
