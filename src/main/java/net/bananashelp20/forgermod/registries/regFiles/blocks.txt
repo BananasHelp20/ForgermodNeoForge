@@ -1,13 +1,28 @@
 simple {
     newblock
-    77f, 50, SoundType.HEAVY_CORE
+        77f, 50, SoundType.HEAVY_CORE
+        dropSelf
+        blockWithItem
+    newblockadsf
+        77f, 50, SoundType.HEAVY_CORE
+        dropOther
+        saphire_gemstone
+        blockWithItem
 }
 special {
     newSpecialBlock
         createBlockWithDescription
         50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
+        dropSelf
+        blockWithItem
 }
 complex {
     newComplexBlock
         new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
+        dropSelf
+        NOTblockWithItem
+    newComplexBlock2
+        new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
+        dropSelf
+        NOTblockWithItem
 }

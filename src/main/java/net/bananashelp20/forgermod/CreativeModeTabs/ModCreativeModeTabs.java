@@ -19,7 +19,6 @@ public class ModCreativeModeTabs {
         CREATIVE_MODE_TABS.register(eventBus);
     }
 
-    //STARTGENERATING
     public static final Supplier<CreativeModeTab> FORGER_MOD_INGREDIENTS_TAB = CREATIVE_MODE_TABS.register("forger_mod_ingredients_tab",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerIngredientsTab()))
@@ -36,9 +35,9 @@ public class ModCreativeModeTabs {
                     .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerWeaponsTab()))
                     .title(Component.translatable("creativetab.forgermod.forger_weapons_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        ItemLike[] weaponTabRegister = RegistryClass.getWeaponTabRegister();
-                        for (int i = 0; i < weaponTabRegister.length; i++) {
-                            output.accept(weaponTabRegister[i]);
+                        ItemLike[] register = RegistryClass.getWeaponTabRegister();
+                        for (int i = 0; i < register.length; i++) {
+                            output.accept(register[i]);
                         }
                     }).build());
 
@@ -47,9 +46,9 @@ public class ModCreativeModeTabs {
                     .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerItemsTab()))
                     .title(Component.translatable("creativetab.forgermod.forger_items_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        ItemLike[] itemTabRegister = RegistryClass.getItemTabRegister();
-                        for (int i = 0; i < itemTabRegister.length; i++) {
-                            output.accept(itemTabRegister[i]);
+                        ItemLike[] register = RegistryClass.getItemTabRegister();
+                        for (int i = 0; i < register.length; i++) {
+                            output.accept(register[i]);
                         }
                     }).build());
 
@@ -58,9 +57,9 @@ public class ModCreativeModeTabs {
                     .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerMiscellaneousTab()))
                     .title(Component.translatable("creativetab.forgermod.forger_miscellaneous_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        ItemLike[] miscellaneousTabRegister = RegistryClass.getMiscellaneousTabRegister();
-                        for (int i = 0; i < miscellaneousTabRegister.length; i++) {
-                            output.accept(miscellaneousTabRegister[i]);
+                        ItemLike[] register = RegistryClass.getMiscellaneousTabRegister();
+                        for (int i = 0; i < register.length; i++) {
+                            output.accept(register[i]);
                         }
                     }).build());
 
@@ -69,9 +68,11 @@ public class ModCreativeModeTabs {
                     .icon(() -> new ItemStack(RegistryClass.getDisplayItemForForgerBlocksTab()))
                     .title(Component.translatable("creativetab.forgermod.forger_blocks_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        ItemLike[] blocksTabRegister = RegistryClass.getBlocksTabRegister();
-                        for (int i = 0; i < blocksTabRegister.length; i++) {
-                            output.accept(blocksTabRegister[i]);
+                        ItemLike[] register = RegistryClass.getBlocksTabRegister();
+                        for (int i = 0; i < register.length; i++) {
+                            output.accept(register[i]);
                         }
                     }).build());
+
+    //STARTGENERATING!
 }

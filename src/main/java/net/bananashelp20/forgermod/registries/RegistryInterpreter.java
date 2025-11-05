@@ -14,13 +14,18 @@ public class RegistryInterpreter {
     static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
     static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");
     static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registries/RegistryClass.java");
-    static File TestFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestReg.java");
+    static File testFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestReg.java");
+    static File testRegClassFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
+    static File modBlockLootTableProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
+    static File modBlockStateProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
+    static File modBlockTagProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
+
 
     static String modBlocksFileContent = getWholeFileContentTillGenerate(modBlocksFile);
     static String modItemsFileContent = getWholeFileContentTillGenerate(modItemsFile);
     static String modCreativeModeTabsFileContent = getWholeFileContentTillGenerate(modCreativeModeTabsFile);
     static String modRegistryContent = getWholeFileContentTillGenerate(modRegistry);
-    static String testFileContent = getWholeFileContentTillGenerate(TestFile);
+    static String testFileContent = getWholeFileContentTillGenerate(testFile);
 
     public static void main(String[] args) throws Exception {
         if (!generateCode()) {
@@ -40,7 +45,7 @@ public class RegistryInterpreter {
             return false;
         }
         try {
-            generateAndWriteBlocks(TestFile, blockFile);
+            generateAndWriteBlocks(testFile, blockFile);
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -49,18 +54,24 @@ public class RegistryInterpreter {
 
     public static void generateAndWriteBlocks(File fileToWrite, File regFile) throws Exception {
         Scanner reader = new Scanner(regFile);
+        String generated = getWholeFileContentTillGenerate(fileToWrite); //des muss vor da writer deklaration sei, weil sonst file leer is.
         FileWriter writer = new FileWriter(fileToWrite.getPath());
         String line;
+        System.out.println(generated);
         for (int i = 0; reader.hasNextLine(); i++) {
             line = reader.nextLine().trim();
             if (line.equalsIgnoreCase("simple {")) {
-                System.out.println(generateSimpleBlocks(regFile, i+1));
+                generated += "\n    //Simple Blocks\n";
+                generated += generateSimpleBlocks(regFile, i+1);
             } else if (line.equalsIgnoreCase("special {")) {
-                System.out.println(generateSpecialBlocks(regFile, i+1));
+                generated += "\n    //Special Blocks\n";
+                generated += generateSpecialBlocks(regFile, i+1);
             } else if (line.equalsIgnoreCase("complex {")) {
-                System.out.println(generateComplexBlocks(regFile, i+1));
+                generated += "\n    //Complex Blocks\n";
+                generated += generateComplexBlocks(regFile, i+1);
             }
         }
+        writer.write(generated+ "\n}");
         reader.close();
         writer.close();
     }
@@ -68,9 +79,13 @@ public class RegistryInterpreter {
     private static String generateSpecialBlocks(File registryFile, int index) throws FileNotFoundException {
         Scanner reader2 = new Scanner(registryFile);
         String output = "";
-        String name;
-        String properties;
-        String method;
+        String name = "";
+        String properties = "";
+        String dropOtherMethod = "";
+        String dropOtherItem = "";
+        String blockTagTool = "";
+        String blockTagToolType = "";
+        String method = "";
         try {
             for (int i = 0; reader2.hasNextLine() && i < index; i++) {
                 reader2.nextLine();
@@ -82,20 +97,30 @@ public class RegistryInterpreter {
                 }
                 method = reader2.nextLine().trim();
                 properties = reader2.nextLine().trim();
+                dropOtherMethod = reader2.nextLine().trim();
+                if (!dropOtherMethod.equals("dropSelf")) {
+                    dropOtherItem = reader2.nextLine().trim();
+                }
+                blockTagTool = reader2.nextLine().trim();
+                blockTagToolType = reader2.nextLine().trim();
                 output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = " + method + "(\"" + name.toLowerCase() + "\", " + properties + ");\n";
             }
+            datagenBlockInit(dropOtherMethod, dropOtherItem, blockTagTool, blockTagToolType);
         } catch (Exception e) {
             System.err.println("hüfe");;
         }
-
-        return output;
+        return output + "}";
     }
 
     public static String generateSimpleBlocks(File registryFile, int index) throws Exception {
         Scanner reader2 = new Scanner(registryFile);
         String output = "";
-        String name;
-        String properties;
+        String name = "";
+        String properties = "";
+        String dropOtherMethod = "";
+        String dropOtherItem = "";
+        String blockTagTool = "";
+        String blockTagToolType = "";
         try {
             for (int i = 0; reader2.hasNextLine() && i < index; i++) {
                 reader2.nextLine();
@@ -107,9 +132,16 @@ public class RegistryInterpreter {
                 }
                 if (reader2.hasNextLine()) {
                     properties = reader2.nextLine().trim();
+                    dropOtherMethod = reader2.nextLine().trim();
+                    if (!dropOtherMethod.equals("dropSelf")) {
+                        dropOtherItem = reader2.nextLine().trim();
+                    }
+                    blockTagTool = reader2.nextLine().trim();
+                    blockTagToolType = reader2.nextLine().trim();
                     output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = createSimpleBlock(\"" + name.toLowerCase() + "\", " + properties + ");\n";
                 }
             }
+            datagenBlockInit(dropOtherMethod, dropOtherItem, blockTagTool, blockTagToolType);
         } catch (Exception e) {
             System.err.println("hüfe");;
         }
@@ -120,8 +152,12 @@ public class RegistryInterpreter {
     public static String generateComplexBlocks(File registryFile, int index) throws IOException {
         Scanner reader2 = new Scanner(registryFile);
         String output = "";
-        String name;
-        String properties;
+        String name = "";
+        String properties = "";
+        String dropOtherMethod = "";
+        String dropOtherItem = "";
+        String blockTagTool = "";
+        String blockTagToolType = "";
         try {
             for (int i = 0; reader2.hasNextLine() && i < index; i++) {
                 reader2.nextLine();
@@ -133,15 +169,29 @@ public class RegistryInterpreter {
                 }
                 if (reader2.hasNextLine()) {
                     properties = reader2.nextLine().trim();
+                    dropOtherMethod = reader2.nextLine().trim();
+                    if (!dropOtherMethod.equals("dropSelf")) {
+                        dropOtherItem = reader2.nextLine().trim();
+                    }
+                    blockTagTool = reader2.nextLine().trim();
+                    blockTagToolType = reader2.nextLine().trim();
                     output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = registerBlock(\"" + name.toLowerCase() + "\",\n" +
                             "            () -> " + properties +
-                            ";\n";
+                            ");\n";
                 }
             }
+            datagenBlockInit(dropOtherMethod, dropOtherItem, blockTagTool, blockTagToolType);
         } catch (Exception e) {
             System.err.println("hüfe");;
         }
         return "";
+    }
+
+    public static void datagenBlockInit(String dropOtherMethod, String dropOtherItem, String blockTagTool, String blockTagToolType) throws IOException {
+        String generatedBlockLootTables = getWholeFileContentTillGenerate(modBlockLootTableProvider);
+        String generatedBlockStateProvider = getWholeFileContentTillGenerate(modBlockStateProvider);
+        String generatedBlockTagProvider = getWholeFileContentTillGenerate(modBlockTagProvider);
+        FileWriter writer = new FileWriter(testRegClassFile.getPath());
     }
 
     public static String generateCreativeModeTabs(File fileToWrite, File registryFile) {
@@ -160,12 +210,16 @@ public class RegistryInterpreter {
         return "";
     }
 
-    static int getWritablePos(File file) throws FileNotFoundException {
+//    public static void reWriteAllAfterError() {
+//        FileWriter writer = new FileWriter();
+//    }
+
+    static int getWritablePos(File file, String commentCommand) throws FileNotFoundException {
         Scanner reader = new Scanner(file);
         String searcher;
         for (int i = 1; reader.hasNextLine(); i++) {
             searcher = reader.nextLine();
-            if (searcher.trim().equals("//STARTGENERATING")) {
+            if (searcher.trim().equals(commentCommand)) {
                 reader.close();
                 return i + 1;
             }
@@ -177,7 +231,7 @@ public class RegistryInterpreter {
         String saved = "";
         try {
             Scanner reader = new Scanner(file);
-            int startGeneratingAtLine = getWritablePos(file);
+            int startGeneratingAtLine = getWritablePos(file, "//STARTGENERATING!");
             for (int i = 1; i < startGeneratingAtLine && reader.hasNextLine(); i++) {
                 saved += reader.nextLine() + "\n";
             }

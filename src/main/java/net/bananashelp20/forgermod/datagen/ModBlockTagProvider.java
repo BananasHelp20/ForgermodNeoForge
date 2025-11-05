@@ -20,6 +20,17 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        tag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
+                .addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
+                .remove(ModTags.Blocks.NEEDS_STEEL_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+        ;
+
+        //generate TAGS!
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.DAMASK_BLOCK.get())
                 .add(ModBlocks.INANISIUM_BLOCK.get())
@@ -122,17 +133,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.ELECTRIUM_BLOCK.get())
                 .add(ModBlocks.TAIFUNITE_BLOCK.get())
                 .add(ModBlocks.DEVELOPIUM_BLOCK.get())
-        ;
-
-
-        tag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
-                .addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
-                .remove(ModTags.Blocks.NEEDS_STEEL_TOOL)
-        ;
-
-        tag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
-                .addTag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
-                .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
         ;
     }
 }

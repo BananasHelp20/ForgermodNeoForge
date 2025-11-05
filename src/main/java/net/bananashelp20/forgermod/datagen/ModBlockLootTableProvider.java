@@ -10,6 +10,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -25,8 +26,33 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), pRegistries);
     }
 
+    public static void dropSelf(ItemLike block) {
+        dropSelf(block);
+    }
+
+    public static void dropOther(ItemLike block, ItemLike itemDrop) {
+        dropOther(block, itemDrop);
+    }
+
+    protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {
+        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        return this.createSilkTouchDispatchTable(pBlock,
+                (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(pBlock,
+                        LootItem.lootTableItem(item)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops)))
+                                .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
+                )
+        );
+    }
+
+    @Override
+    protected Iterable<Block> getKnownBlocks() {
+        return ModBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
+    }
+
     @Override
     protected void generate() {
+        //generate DROPS!
         dropSelf(ModBlocks.DAMASK_BLOCK.get());
         dropSelf(ModBlocks.SCRAP_BLOCK.get());
         dropSelf(ModBlocks.INANISIUM_BLOCK.get());
@@ -73,22 +99,4 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropOther(ModBlocks.JADE_DEEPSLATE_ORE.get(), ModItems.JADE_GEMSTONE.get());
         dropOther(ModBlocks.JADE_OBSIDIAN_ORE.get(), ModItems.JADE_GEMSTONE.get());
     }
-
-    protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-        return this.createSilkTouchDispatchTable(pBlock,
-                (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(pBlock,
-                        LootItem.lootTableItem(item)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops)))
-                                .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
-                )
-        );
-    }
-
-    @Override
-    protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
-    }
-
-
 }
