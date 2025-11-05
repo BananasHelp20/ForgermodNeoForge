@@ -191,7 +191,7 @@ public class RegistryInterpreter {
         String generatedBlockLootTables = getWholeFileContentTillGenerate(modBlockLootTableProvider);
         String generatedBlockStateProvider = getWholeFileContentTillGenerate(modBlockStateProvider);
         String generatedBlockTagProvider = getWholeFileContentTillGenerate(modBlockTagProvider);
-        FileWriter writer = new FileWriter(testRegClassFile.getPath());
+//        FileWriter writer = new FileWriter(testRegClassFile.getPath());
     }
 
     public static String generateCreativeModeTabs(File fileToWrite, File registryFile) {
@@ -211,7 +211,7 @@ public class RegistryInterpreter {
     }
 
 //    public static void reWriteAllAfterError() {
-//        FileWriter writer = new FileWriter();
+//        FileWriter writer = new FileWriter()
 //    }
 
     static int getWritablePos(File file, String commentCommand) throws FileNotFoundException {

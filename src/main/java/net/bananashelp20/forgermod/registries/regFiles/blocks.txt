@@ -3,6 +3,10 @@ simple {
         77f, 50, SoundType.HEAVY_CORE
         dropSelf
         blockWithItem
+    abcblock
+        77f, 50, SoundType.HEAVY_CORE
+        dropSelf
+        blockWithItem
     newblockadsf
         77f, 50, SoundType.HEAVY_CORE
         dropOther
