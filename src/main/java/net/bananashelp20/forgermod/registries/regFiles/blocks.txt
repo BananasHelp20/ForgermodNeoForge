@@ -1,20 +1,13 @@
 simple {
     newblock
+    77f, 50, SoundType.HEAVY_CORE
 }
 special {
     newSpecialBlock
-    [
         createBlockWithDescription
         50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
-    ]
 }
 complex {
     newComplexBlock
-    [
-        new AncientSwordStandBlock(BlockBehaviour.Properties.of()
-                        .noOcclusion()
-                        .strength(45f, 50)
-                        .sound(SoundType.NETHERITE_BLOCK)
-                )
-    ]
+        new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
 }

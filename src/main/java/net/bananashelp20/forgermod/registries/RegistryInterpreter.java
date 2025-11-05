@@ -40,20 +40,107 @@ public class RegistryInterpreter {
             return false;
         }
         try {
-            generateSimpleBlocks(TestFile, blockFile);
+            generateAndWriteBlocks(TestFile, blockFile);
         } catch (Exception e) {
             System.err.println(e);
         }
         return true;
     }
 
-    public static String generateSimpleBlocks(File fileToWrite, File registryFile) throws Exception {
-        Scanner reader = new Scanner(fileToWrite);
+    public static void generateAndWriteBlocks(File fileToWrite, File regFile) throws Exception {
+        Scanner reader = new Scanner(regFile);
         FileWriter writer = new FileWriter(fileToWrite.getPath());
-        return "";
+        String line;
+        for (int i = 0; reader.hasNextLine(); i++) {
+            line = reader.nextLine().trim();
+            if (line.equalsIgnoreCase("simple {")) {
+                System.out.println(generateSimpleBlocks(regFile, i+1));
+            } else if (line.equalsIgnoreCase("special {")) {
+                System.out.println(generateSpecialBlocks(regFile, i+1));
+            } else if (line.equalsIgnoreCase("complex {")) {
+                System.out.println(generateComplexBlocks(regFile, i+1));
+            }
+        }
+        reader.close();
+        writer.close();
     }
 
-    public static String generateComplexBlocks(File fileToWrite, File registryFile) {
+    private static String generateSpecialBlocks(File registryFile, int index) throws FileNotFoundException {
+        Scanner reader2 = new Scanner(registryFile);
+        String output = "";
+        String name;
+        String properties;
+        String method;
+        try {
+            for (int i = 0; reader2.hasNextLine() && i < index; i++) {
+                reader2.nextLine();
+            }
+            for (int i = 0; reader2.hasNextLine(); i++) {
+                name = reader2.nextLine().trim();
+                if (name.equals("}")) {
+                    return output;
+                }
+                method = reader2.nextLine().trim();
+                properties = reader2.nextLine().trim();
+                output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = " + method + "(\"" + name.toLowerCase() + "\", " + properties + ");\n";
+            }
+        } catch (Exception e) {
+            System.err.println("hüfe");;
+        }
+
+        return output;
+    }
+
+    public static String generateSimpleBlocks(File registryFile, int index) throws Exception {
+        Scanner reader2 = new Scanner(registryFile);
+        String output = "";
+        String name;
+        String properties;
+        try {
+            for (int i = 0; reader2.hasNextLine() && i < index; i++) {
+                reader2.nextLine();
+            }
+            for (int i = 0; reader2.hasNextLine(); i++) {
+                name = reader2.nextLine().trim();
+                if (name.equals("}")) {
+                    return output;
+                }
+                if (reader2.hasNextLine()) {
+                    properties = reader2.nextLine().trim();
+                    output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = createSimpleBlock(\"" + name.toLowerCase() + "\", " + properties + ");\n";
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("hüfe");;
+        }
+
+        return output;
+    }
+
+    public static String generateComplexBlocks(File registryFile, int index) throws IOException {
+        Scanner reader2 = new Scanner(registryFile);
+        String output = "";
+        String name;
+        String properties;
+        try {
+            for (int i = 0; reader2.hasNextLine() && i < index; i++) {
+                reader2.nextLine();
+            }
+            for (int i = 0; reader2.hasNextLine(); i++) {
+                name = reader2.nextLine().trim();
+                if (name.equals("}")) {
+                    return output;
+                }
+                if (reader2.hasNextLine()) {
+                    properties = reader2.nextLine().trim();
+                    output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = registerBlock(\"" + name.toLowerCase() + "\",\n" +
+                            "            () -> " + properties +
+                            ";\n";
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("hüfe");;
+        }
         return "";
     }
 
