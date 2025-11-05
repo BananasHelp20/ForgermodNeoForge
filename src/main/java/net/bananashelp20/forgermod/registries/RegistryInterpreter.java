@@ -86,6 +86,7 @@ public class RegistryInterpreter {
         String blockTagTool = "";
         String blockTagToolType = "";
         String method = "";
+        String blockModel = "";
         try {
             for (int i = 0; reader2.hasNextLine() && i < index; i++) {
                 reader2.nextLine();
@@ -101,11 +102,11 @@ public class RegistryInterpreter {
                 if (!dropOtherMethod.equals("dropSelf")) {
                     dropOtherItem = reader2.nextLine().trim();
                 }
+                blockModel = reader2.nextLine().trim();
                 blockTagTool = reader2.nextLine().trim();
                 blockTagToolType = reader2.nextLine().trim();
                 output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = " + method + "(\"" + name.toLowerCase() + "\", " + properties + ");\n";
             }
-            datagenBlockInit(dropOtherMethod, dropOtherItem, blockTagTool, blockTagToolType);
         } catch (Exception e) {
             System.err.println("hüfe");;
         }
@@ -119,6 +120,7 @@ public class RegistryInterpreter {
         String properties = "";
         String dropOtherMethod = "";
         String dropOtherItem = "";
+        String blockModel = "";
         String blockTagTool = "";
         String blockTagToolType = "";
         try {
@@ -136,12 +138,12 @@ public class RegistryInterpreter {
                     if (!dropOtherMethod.equals("dropSelf")) {
                         dropOtherItem = reader2.nextLine().trim();
                     }
+                    blockModel = reader2.nextLine().trim();
                     blockTagTool = reader2.nextLine().trim();
                     blockTagToolType = reader2.nextLine().trim();
                     output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = createSimpleBlock(\"" + name.toLowerCase() + "\", " + properties + ");\n";
                 }
             }
-            datagenBlockInit(dropOtherMethod, dropOtherItem, blockTagTool, blockTagToolType);
         } catch (Exception e) {
             System.err.println("hüfe");;
         }
@@ -157,6 +159,7 @@ public class RegistryInterpreter {
         String dropOtherMethod = "";
         String dropOtherItem = "";
         String blockTagTool = "";
+        String blockModel = "";
         String blockTagToolType = "";
         try {
             for (int i = 0; reader2.hasNextLine() && i < index; i++) {
@@ -173,6 +176,7 @@ public class RegistryInterpreter {
                     if (!dropOtherMethod.equals("dropSelf")) {
                         dropOtherItem = reader2.nextLine().trim();
                     }
+                    blockModel = reader2.nextLine().trim();
                     blockTagTool = reader2.nextLine().trim();
                     blockTagToolType = reader2.nextLine().trim();
                     output += "    public static final DeferredBlock<Block> " + name.toUpperCase() + " = registerBlock(\"" + name.toLowerCase() + "\",\n" +
@@ -180,18 +184,41 @@ public class RegistryInterpreter {
                             ");\n";
                 }
             }
-            datagenBlockInit(dropOtherMethod, dropOtherItem, blockTagTool, blockTagToolType);
         } catch (Exception e) {
-            System.err.println("hüfe");;
+            System.err.println("hüfe");
         }
         return "";
     }
 
-    public static void datagenBlockInit(String dropOtherMethod, String dropOtherItem, String blockTagTool, String blockTagToolType) throws IOException {
+    public static void datagenBlockInit() throws IOException {
         String generatedBlockLootTables = getWholeFileContentTillGenerate(modBlockLootTableProvider);
         String generatedBlockStateProvider = getWholeFileContentTillGenerate(modBlockStateProvider);
         String generatedBlockTagProvider = getWholeFileContentTillGenerate(modBlockTagProvider);
-//        FileWriter writer = new FileWriter(testRegClassFile.getPath());
+        int writableLoottablePos = getWritablePos(modBlockLootTableProvider, "//generate DROPS!");
+        int writableStatePos = getWritablePos(modBlockLootTableProvider, "//generate MODELS!");
+        int writableTagPos = getWritablePos(modBlockLootTableProvider, "//generate TAGS!");
+        Scanner reader = new Scanner(blockFile);
+        FileWriter loottableWriter = new FileWriter(modBlockLootTableProvider.getPath());
+        FileWriter stateWriter = new FileWriter(modBlockStateProvider.getPath());
+        FileWriter tagWriter = new FileWriter(modBlockTagProvider.getPath());
+        String dropOtherMethod;
+        String dropOtherItem;
+        String blockTagTool;
+        String blockTagToolType;
+        String blockModel;
+        for (int i = 0; reader.hasNextLine(); i++) {
+            line = reader.nextLine().trim();
+            if (line.equalsIgnoreCase("simple {")) {
+                generated += "\n    //Simple Blocks\n";
+                generated += generateSimpleBlocks(regFile, i+1);
+            } else if (line.equalsIgnoreCase("special {")) {
+                generated += "\n    //Special Blocks\n";
+                generated += generateSpecialBlocks(regFile, i+1);
+            } else if (line.equalsIgnoreCase("complex {")) {
+                generated += "\n    //Complex Blocks\n";
+                generated += generateComplexBlocks(regFile, i+1);
+            }
+        }
     }
 
     public static String generateCreativeModeTabs(File fileToWrite, File registryFile) {
