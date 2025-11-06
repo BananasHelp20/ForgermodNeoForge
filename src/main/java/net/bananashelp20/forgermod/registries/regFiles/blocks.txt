@@ -44,7 +44,7 @@ simple {
     newblockadsf
         77f, 50, SoundType.HEAVY_CORE
         dropOther
-        saphire_gemstone
+        mod item jade_gemstone
         blockWithItem
         pickaxe
         diamond

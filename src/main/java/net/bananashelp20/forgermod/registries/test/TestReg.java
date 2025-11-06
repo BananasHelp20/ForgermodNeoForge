@@ -1,4 +1,4 @@
-package net.bananashelp20.forgermod.registries;
+package net.bananashelp20.forgermod.registries.test;
 
 import net.bananashelp20.forgermod.block.custom.AncientSwordStandBlock;
 import net.minecraft.world.level.block.Block;
@@ -6,7 +6,10 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-import static net.bananashelp20.forgermod.block.ModBlocks.*;
+import static net.bananashelp20.forgermod.block.ModBlocks.registerBlock;
+import static net.bananashelp20.forgermod.registries.test.ModBlocks.createBlockWithDescription;
+import static net.bananashelp20.forgermod.registries.test.ModBlocks.createSimpleBlock;
+
 
 public class TestReg {
     public static void main(String[] args) {
@@ -28,5 +31,9 @@ public class TestReg {
     public static final DeferredBlock<Block> NEWSPECIALBLOCK = createBlockWithDescription("newspecialblock", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip");
 
     //Complex Blocks
+    public static final DeferredBlock<Block> NEWCOMPLEXBLOCK = registerBlock("newcomplexblock",
+            () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK)));
+    public static final DeferredBlock<Block> NEWCOMPLEXBLOCK2 = registerBlock("newcomplexblock2",
+            () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK)));
 
 }
