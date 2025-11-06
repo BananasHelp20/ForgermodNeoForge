@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RegistryInterpreter {
@@ -201,22 +203,76 @@ public class RegistryInterpreter {
         FileWriter loottableWriter = new FileWriter(modBlockLootTableProvider.getPath());
         FileWriter stateWriter = new FileWriter(modBlockStateProvider.getPath());
         FileWriter tagWriter = new FileWriter(modBlockTagProvider.getPath());
+        ArrayList<ArrayList<String>> simpleData = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> specialData = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> complexData = new ArrayList<ArrayList<String>>();
         String dropOtherMethod;
-        String dropOtherItem;
+        String dropOtherItem = "";
         String blockTagTool;
         String blockTagToolType;
         String blockModel;
+        String line = "";
+        String name = "";
         for (int i = 0; reader.hasNextLine(); i++) {
             line = reader.nextLine().trim();
             if (line.equalsIgnoreCase("simple {")) {
-                generated += "\n    //Simple Blocks\n";
-                generated += generateSimpleBlocks(regFile, i+1);
+                for (int j = 0; (name = reader.nextLine().trim()).equals("}"); j++) {
+                    reader.nextLine();
+                    dropOtherItem = "";
+                    dropOtherMethod = reader.nextLine().trim();
+                    if (!dropOtherMethod.equals("dropSelf")) {
+                        dropOtherItem = reader.nextLine().trim();
+                    }
+                    blockModel = reader.nextLine().trim();
+                    blockTagTool = reader.nextLine().trim();
+                    blockTagToolType = reader.nextLine().trim();
+                    simpleData.add(new ArrayList<String>());
+                    simpleData.get(j).add(name);
+                    simpleData.get(j).add(dropOtherMethod);
+                    if (!dropOtherItem.equals("")) simpleData.get(j).add(dropOtherItem);
+                    simpleData.get(j).add(blockModel);
+                    simpleData.get(j).add(blockTagTool);
+                    simpleData.get(j).add(blockTagToolType);
+                }
             } else if (line.equalsIgnoreCase("special {")) {
-                generated += "\n    //Special Blocks\n";
-                generated += generateSpecialBlocks(regFile, i+1);
+                for (int j = 0; (name = reader.nextLine().trim()).equals("}"); j++) {
+                    reader.nextLine();
+                    reader.nextLine();
+                    dropOtherItem = "";
+                    dropOtherMethod = reader.nextLine().trim();
+                    if (!dropOtherMethod.equals("dropSelf")) {
+                        dropOtherItem = reader.nextLine().trim();
+                    }
+                    blockModel = reader.nextLine().trim();
+                    blockTagTool = reader.nextLine().trim();
+                    blockTagToolType = reader.nextLine().trim();
+                    specialData.add(new ArrayList<String>());
+                    specialData.get(j).add(name);
+                    specialData.get(j).add(dropOtherMethod);
+                    if (!dropOtherItem.equals("")) specialData.get(j).add(dropOtherItem);
+                    specialData.get(j).add(blockModel);
+                    specialData.get(j).add(blockTagTool);
+                    specialData.get(j).add(blockTagToolType);
+                }
             } else if (line.equalsIgnoreCase("complex {")) {
-                generated += "\n    //Complex Blocks\n";
-                generated += generateComplexBlocks(regFile, i+1);
+                for (int j = 0; (name = reader.nextLine().trim()).equals("}"); j++) {
+                    reader.nextLine();
+                    dropOtherItem = "";
+                    dropOtherMethod = reader.nextLine().trim();
+                    if (!dropOtherMethod.equals("dropSelf")) {
+                        dropOtherItem = reader.nextLine().trim();
+                    }
+                    blockModel = reader.nextLine().trim();
+                    blockTagTool = reader.nextLine().trim();
+                    blockTagToolType = reader.nextLine().trim();
+                    complexData.add(new ArrayList<String>());
+                    complexData.get(j).add(name);
+                    complexData.get(j).add(dropOtherMethod);
+                    if (!dropOtherItem.equals("")) complexData.get(j).add(dropOtherItem);
+                    complexData.get(j).add(blockModel);
+                    complexData.get(j).add(blockTagTool);
+                    complexData.get(j).add(blockTagToolType);
+                }
             }
         }
     }
