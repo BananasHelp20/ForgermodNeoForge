@@ -5,12 +5,42 @@ simple {
         blockWithItem
         pickaxe
         diamond
+        blocks
+    newblockadfdsf
+        77f, 50, SoundType.HEAVY_CORE
+        dropSelf
+        blockWithItem
+        pickaxe
+        diamond
+        blocks
+    newblockasdjf
+        77f, 50, SoundType.HEAVY_CORE
+        dropSelf
+        blockWithItem
+        pickaxe
+        diamond
+        blocks
+    newblockabhasd
+        77f, 50, SoundType.HEAVY_CORE
+        dropSelf
+        blockWithItem
+        pickaxe
+        diamond
+        blocks
+    newblock3
+        77f, 50, SoundType.HEAVY_CORE
+        dropSelf
+        blockWithItem
+        pickaxe
+        diamond
+        blocks
     abcblock
         77f, 50, SoundType.HEAVY_CORE
         dropSelf
         blockWithItem
         pickaxe
         diamond
+        blocks
     newblockadsf
         77f, 50, SoundType.HEAVY_CORE
         dropOther
@@ -18,6 +48,7 @@ simple {
         blockWithItem
         pickaxe
         diamond
+        blocks
 }
 special {
     newSpecialBlock
@@ -27,6 +58,7 @@ special {
         blockWithItem
         pickaxe
         diamond
+        blocks
 }
 complex {
     newComplexBlock
@@ -35,10 +67,12 @@ complex {
         NOTblockWithItem
         shovel
         iron
+        blocks
     newComplexBlock2
         new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
         dropSelf
         NOTblockWithItem
         hoe
         gold
+        blocks
 }
