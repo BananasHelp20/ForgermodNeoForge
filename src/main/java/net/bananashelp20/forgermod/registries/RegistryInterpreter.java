@@ -155,70 +155,49 @@ public class RegistryInterpreter {
         return typeTags;
     }
 
+    public static ArrayList<ArrayList<String>> getContentForTags(boolean special, ArrayList<ArrayList<String>> tagsByType, Scanner reader) {
+        String name = "";
+        String drops = "";
+        String typeTag = "";
+        for (int i = 0; reader.hasNextLine() && !name.equalsIgnoreCase("}"); i++) {
+            name = reader.nextLine().trim();
+            reader.nextLine();
+            if (special) reader.nextLine();
+            drops = reader.nextLine().trim();
+            reader.nextLine();
+            reader.nextLine();
+            if (drops.equalsIgnoreCase("dropOther")) reader.nextLine();
+            typeTag = reader.nextLine().trim();
+            try {
+                tagsByType.get(RegistryInterpreterHelper.getIndexByValue(typeTag.toLowerCase(), tagsByType));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println(e + "\nINDEX BY VALUE FAILED!");
+            }
+            reader.nextLine();
+        }
+        return tagsByType;
+    }
+
     public static ArrayList<ArrayList<String>> initTagsByType(ArrayList<ArrayList<String>> tagsByType, ArrayList<String> types) {
-        Scanner tagReader2;
+        Scanner reader;
         try {
-            tagReader2 = new Scanner(blockFile);
+            reader = new Scanner(blockFile);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         String line = "";
-        String line2 = "";
-        String name = "";
-        String drops = "";
-        String currentTag = "";
 
         for (int i = 0; i < types.size(); i++) {
             tagsByType.add(new ArrayList<>());
             tagsByType.get(i).add(0, types.get(i));
         }
-
-        for (int j = 0; tagReader2.hasNextLine() && !name.equals("}"); j++) {
-            line = tagReader2.nextLine().trim();
-            if (line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {")) {
-                while (tagReader2.hasNextLine() && !name.equalsIgnoreCase("}")) {
-                    name = tagReader2.nextLine().trim();
-                    if (!name.equalsIgnoreCase("}")) {
-                        tagReader2.nextLine();
-                        drops = tagReader2.nextLine().trim();
-                        tagReader2.nextLine();
-                        tagReader2.nextLine();
-                        if (drops.equals("dropSelf") || drops.equals("dropWhenSilkTouch")) {
-                            currentTag = tagReader2.nextLine().trim();
-                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
-                            System.out.println("gotIndex!");
-                        } else {
-                            tagReader2.nextLine();
-                            currentTag = tagReader2.nextLine().trim();
-                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
-                            System.out.println("gotIndex!");
-                        }
-                    }
-                }
-            } else if (line.equalsIgnoreCase("special {")) {
-                while (tagReader2.hasNextLine() && !name.equalsIgnoreCase("}")) {
-                    name = tagReader2.nextLine().trim();
-                    if (!name.equalsIgnoreCase("}")) {
-                        tagReader2.nextLine();
-                        tagReader2.nextLine();
-                        drops = tagReader2.nextLine().trim();
-                        tagReader2.nextLine();
-                        tagReader2.nextLine();
-                        if (drops.equals("dropSelf") || drops.equals("dropWhenSilkTouch")) {
-                            currentTag = tagReader2.nextLine().trim();
-                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
-                            System.out.println("gotIndex!");
-                        } else {
-                            tagReader2.nextLine();
-                            currentTag = tagReader2.nextLine().trim();
-                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
-                            System.out.println("gotIndex!");
-                        }
-                    }
-                }
+        while (reader.hasNextLine()) {
+            while (reader.hasNextLine() && !(line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {") || line.equalsIgnoreCase("special {"))) {
+                line = reader.nextLine().trim();
             }
-        }
+            tagsByType = getContentForTags(line.equalsIgnoreCase("special {"), tagsByType, reader);
 
+        }
         return tagsByType;
     }
 
