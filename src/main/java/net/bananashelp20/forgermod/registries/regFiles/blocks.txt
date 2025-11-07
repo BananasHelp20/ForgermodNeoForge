@@ -39,7 +39,7 @@ simple {
         dropSelf
         blockWithItem
         pickaxe
-        diamond
+        iron
         blocks
     newblockadsf
         77f, 50, SoundType.HEAVY_CORE
@@ -47,7 +47,7 @@ simple {
         mod item jade_gemstone
         blockWithItem
         pickaxe
-        diamond
+        carbon_steel
         blocks
 }
 special {

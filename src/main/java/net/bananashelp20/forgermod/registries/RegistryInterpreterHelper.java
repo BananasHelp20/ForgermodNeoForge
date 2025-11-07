@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RegistryInterpreterHelper {
@@ -24,6 +25,88 @@ public class RegistryInterpreterHelper {
     static String modCreativeModeTabsFileContent = getWholeFileContentTillGenerate(modCreativeModeTabsFile);
     static String modRegistryContent = getWholeFileContentTillGenerate(modRegistry);
     static String testFileContent = getWholeFileContentTillGenerate(testFile);
+
+    public static String generateBlockLoottables(ArrayList<ArrayList<String>> data) {
+        String generatedBlockLootTables = "";
+        String itemType = "";
+        int nameIndex = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(1).equals("dropSelf") || data.get(i).get(1).equals("dropWhenSilkTouch")) {
+                generatedBlockLootTables += "        " + data.get(i).get(1) + "(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get());\n";
+            } else if (data.get(i).get(1).equals("dropOther")) {
+                if (data.get(i).get(2).startsWith("mod")) {
+                    if (data.get(i).get(2).charAt(4) == 'i') {
+                        itemType = "ModItems.";
+                        nameIndex = "item ".length() + data.get(i).get(2).indexOf("item");
+                    } else {
+                        itemType = "ModBlocks.";
+                        nameIndex = "block ".length() + data.get(i).get(2).indexOf("block");
+                    }
+                } else if (data.get(i).get(2).startsWith("normal")) {
+                    if (data.get(i).get(2).charAt(7) == 'i') {
+                        itemType = "Items.";
+                        nameIndex = "item ".length() + data.get(i).get(2).indexOf("item");
+                    } else {
+                        itemType = "blocks.";
+                        nameIndex = "block ".length() + data.get(i).get(2).indexOf("block");
+                    }
+                }
+                generatedBlockLootTables += "        dropOther(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get(), " + itemType + data.get(i).get(2).substring(nameIndex).toUpperCase() + (data.get(i).get(2).startsWith("mod") ? ".get())" : "") + ";\n";
+            }
+        }
+        return generatedBlockLootTables + "    }\n}";
+    }
+
+    public static String[] generateToolsForBlockTags(ArrayList<ArrayList<String>> data) {
+        String pickaxeTags = "";
+        String axeTags = "";
+        String shovelTags = "";
+        String hoeTags = "";
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(3).equalsIgnoreCase("pickaxe") || data.get(i).get(4).equals("pickaxe")) {
+                pickaxeTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
+            } else if (data.get(i).get(3).equalsIgnoreCase("axe") || data.get(i).get(4).equals("axe")) {
+                axeTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
+            } else if (data.get(i).get(3).equalsIgnoreCase("shovel") || data.get(i).get(4).equals("shovel")) {
+                shovelTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
+            } else if (data.get(i).get(3).equalsIgnoreCase("hoe") || data.get(i).get(4).equals("hoe")) {
+                hoeTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
+            }
+        }
+
+        return new String[] {pickaxeTags, axeTags, shovelTags, hoeTags};
+    }
+
+    public static int getIndexByValue(String searched, ArrayList<ArrayList<String>> tags) {
+        if (tags.get(0) == null) {
+            return 0;
+        }
+        for (int i = 0; i < tags.size(); i++) {
+            if (tags.get(i).get(0).equalsIgnoreCase(searched)) {
+                return i;
+            }
+        }
+        System.err.println("DIDNT GET INDEX!!!");
+        return -1;
+    }
+
+    public static String generateToolTags(String[] tags) {
+        return "        tag(BlockTags.MINEABLE_WITH_PICKAXE)\n" +
+                tags[0] + "        ;\n        tag(BlockTags.MINEABLE_WITH_AXE)\n" +
+                tags[1] + "        ;\n        tag(BlockTags.MINEABLE_WITH_SHOVEL)\n" +
+                tags[2] + "        ;\n        tag(BlockTags.MINEABLE_WITH_HOE)\n" +
+                tags[3] + "        ;\n\n";
+    }
+
+    public static String generateBlockStates(ArrayList<ArrayList<String>> data) {
+        String generatedBlockStates = "";
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(2).equals("blockWithItem") || data.get(i).get(3).equals("blockWithItem")) {
+                generatedBlockStates += "        blockWithItem(ModBlocks." + data.get(i).get(0).toUpperCase() + ");\n";
+            }
+        }
+        return generatedBlockStates + "    }\n}";
+    }
 
     static String getWholeFileContentTillGenerate(File file) {
         String saved = "";

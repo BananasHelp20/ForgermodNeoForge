@@ -31,22 +31,31 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         //generate TAGS!
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(ModBlocks.NEWBLOCK.get())
+                .add(ModBlocks.NEWBLOCKADFDSF.get())
+                .add(ModBlocks.NEWBLOCKASDJF.get())
+                .add(ModBlocks.NEWBLOCKABHASD.get())
+                .add(ModBlocks.NEWBLOCK3.get())
+                .add(ModBlocks.ABCBLOCK.get())
                 .add(ModBlocks.NEWBLOCKADSF.get())
+                .add(ModBlocks.NEWSPECIALBLOCK.get())
         ;
         tag(BlockTags.MINEABLE_WITH_AXE)
         ;
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(ModBlocks.NEWCOMPLEXBLOCK.get())
         ;
         tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(ModBlocks.NEWCOMPLEXBLOCK2.get())
         ;
 
-        tag(BlockTags.NEEDS_IRON_TOOL)        ;
+        tag(BlockTags.NEEDS_IRON_TOOL)
         ;
-        tag(BlockTags.NEEDS_DIAMOND_TOOL)        ;
+        tag(BlockTags.NEEDS_DIAMOND_TOOL)
         ;
-        tag(ModTags.Blocks.NEEDS_STEEL_TOOL)        ;
+        tag(ModTags.Blocks.NEEDS_STEEL_TOOL)
         ;
-        tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)        ;
+        tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
         ;
 
     }

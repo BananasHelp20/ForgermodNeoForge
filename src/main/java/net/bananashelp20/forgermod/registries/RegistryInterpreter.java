@@ -114,9 +114,9 @@ public class RegistryInterpreter {
                 }
             }
         }
-        String generatedBlockLootTables = getWholeFileContentTillGenerate(modBlockLootTableProvider, "//generate DROPS!") + generateBlockLoottables(data);
+        String generatedBlockLootTables = getWholeFileContentTillGenerate(modBlockLootTableProvider, "//generate DROPS!") + RegistryInterpreterHelper.generateBlockLoottables(data);
         System.out.println("wroteLoottables!");
-        String generatedBlockStates = getWholeFileContentTillGenerate(modBlockStateProvider, "//generate MODELS!") + generateBlockStates(data);
+        String generatedBlockStates = getWholeFileContentTillGenerate(modBlockStateProvider, "//generate MODELS!") + RegistryInterpreterHelper.generateBlockStates(data);
         System.out.println("wroteModels!");
         String generatedBlockTags = getWholeFileContentTillGenerate(modBlockTagProvider, "//generate TAGS!") + generateBlockToolTags(data);
         System.out.println("wroteTags!");
@@ -136,67 +136,6 @@ public class RegistryInterpreter {
         }
     }
 
-    public static String generateBlockLoottables(ArrayList<ArrayList<String>> data) {
-        String generatedBlockLootTables = "";
-        String itemType = "";
-        int nameIndex = 0;
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(1).equals("dropSelf") || data.get(i).get(1).equals("dropWhenSilkTouch")) {
-                generatedBlockLootTables += "        " + data.get(i).get(1) + "(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get());\n";
-            } else if (data.get(i).get(1).equals("dropOther")) {
-                if (data.get(i).get(2).startsWith("mod")) {
-                    if (data.get(i).get(2).charAt(4) == 'i') {
-                        itemType = "ModItems.";
-                        nameIndex = "item ".length() + data.get(i).get(2).indexOf("item");
-                    } else {
-                        itemType = "ModBlocks.";
-                        nameIndex = "block ".length() + data.get(i).get(2).indexOf("block");
-                    }
-                } else if (data.get(i).get(2).startsWith("normal")) {
-                    if (data.get(i).get(2).charAt(7) == 'i') {
-                        itemType = "Items.";
-                        nameIndex = "item ".length() + data.get(i).get(2).indexOf("item");
-                    } else {
-                        itemType = "blocks.";
-                        nameIndex = "block ".length() + data.get(i).get(2).indexOf("block");
-                    }
-                }
-                generatedBlockLootTables += "        dropOther(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get(), " + itemType + data.get(i).get(2).substring(nameIndex).toUpperCase() + (data.get(i).get(2).startsWith("mod") ? ".get())" : "") + ";\n";
-            }
-        }
-        return generatedBlockLootTables + "    }\n}";
-    }
-
-    public static String generateBlockStates(ArrayList<ArrayList<String>> data) {
-        String generatedBlockStates = "";
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(2).equals("blockWithItem") || data.get(i).get(3).equals("blockWithItem")) {
-                generatedBlockStates += "        blockWithItem(ModBlocks." + data.get(i).get(0).toUpperCase() + ");\n";
-            }
-        }
-        return generatedBlockStates + "    }\n}";
-    }
-
-    public static String[] generateToolsForBlockTags(ArrayList<ArrayList<String>> data) {
-        String pickaxeTags = "";
-        String axeTags = "";
-        String shovelTags = "";
-        String hoeTags = "";
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(4).equals("pickaxe") || data.get(i).get(5).equals("pickaxe")) {
-                pickaxeTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
-            } else if (data.get(i).get(4).equals("axe") || data.get(i).get(5).equals("axe")) {
-                axeTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
-            } else if (data.get(i).get(4).equals("shovel") || data.get(i).get(5).equals("shovel")) {
-                shovelTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
-            } else if (data.get(i).get(4).equals("hoe") || data.get(i).get(5).equals("hoe")) {
-                hoeTags += "                .add(ModBlocks." + data.get(i).get(0).toUpperCase() + ".get())\n";
-            }
-        }
-
-        return new String[] {pickaxeTags, axeTags, shovelTags, hoeTags};
-    }
-
     public static ArrayList<String> initTypeTags() {
         ArrayList<String> typeTags = new ArrayList<>();
         Scanner tagReader;
@@ -209,7 +148,7 @@ public class RegistryInterpreter {
         while (tagReader.hasNextLine()) {
             current = tagReader.nextLine().trim();
             if (current.contains("tag(") && current.contains("NEEDS_")) {
-                typeTags.add(current);
+                typeTags.add(current.substring(0, current.length()-1).trim() + ")");
             }
         }
         tagReader.close();
@@ -224,6 +163,7 @@ public class RegistryInterpreter {
             throw new RuntimeException(e);
         }
         String line = "";
+        String line2 = "";
         String name = "";
         String drops = "";
         String currentTag = "";
@@ -236,37 +176,45 @@ public class RegistryInterpreter {
         for (int j = 0; tagReader2.hasNextLine() && !name.equals("}"); j++) {
             line = tagReader2.nextLine().trim();
             if (line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {")) {
-                name = tagReader2.nextLine().trim();
-                tagReader2.nextLine();
-                drops = tagReader2.nextLine().trim();
-                tagReader2.nextLine();
-                tagReader2.nextLine();
-                if (drops.equals("dropSelf") || drops.equals("dropWhenSilkTouch")) {
-                    currentTag = tagReader2.nextLine().trim();
-                    tagsByType.get(getIndexByValue(currentTag, tagsByType)).add(name);
-                    System.out.println("gotIndex!");
-                } else {
-                    tagReader2.nextLine();
-                    currentTag = tagReader2.nextLine().trim();
-                    tagsByType.get(getIndexByValue(currentTag, tagsByType)).add(name);
-                    System.out.println("gotIndex!");
+                while (tagReader2.hasNextLine() && !name.equalsIgnoreCase("}")) {
+                    name = tagReader2.nextLine().trim();
+                    if (!name.equalsIgnoreCase("}")) {
+                        tagReader2.nextLine();
+                        drops = tagReader2.nextLine().trim();
+                        tagReader2.nextLine();
+                        tagReader2.nextLine();
+                        if (drops.equals("dropSelf") || drops.equals("dropWhenSilkTouch")) {
+                            currentTag = tagReader2.nextLine().trim();
+                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
+                            System.out.println("gotIndex!");
+                        } else {
+                            tagReader2.nextLine();
+                            currentTag = tagReader2.nextLine().trim();
+                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
+                            System.out.println("gotIndex!");
+                        }
+                    }
                 }
             } else if (line.equalsIgnoreCase("special {")) {
-                name = tagReader2.nextLine().trim();
-                tagReader2.nextLine();
-                tagReader2.nextLine();
-                drops = tagReader2.nextLine().trim();
-                tagReader2.nextLine();
-                tagReader2.nextLine();
-                if (drops.equals("dropSelf") || drops.equals("dropWhenSilkTouch")) {
-                    currentTag = tagReader2.nextLine().trim();
-                    tagsByType.get(getIndexByValue(currentTag, tagsByType)).add(name);
-                    System.out.println("gotIndex!");
-                } else {
-                    tagReader2.nextLine();
-                    currentTag = tagReader2.nextLine().trim();
-                    tagsByType.get(getIndexByValue(currentTag, tagsByType)).add(name);
-                    System.out.println("gotIndex!");
+                while (tagReader2.hasNextLine() && !name.equalsIgnoreCase("}")) {
+                    name = tagReader2.nextLine().trim();
+                    if (!name.equalsIgnoreCase("}")) {
+                        tagReader2.nextLine();
+                        tagReader2.nextLine();
+                        drops = tagReader2.nextLine().trim();
+                        tagReader2.nextLine();
+                        tagReader2.nextLine();
+                        if (drops.equals("dropSelf") || drops.equals("dropWhenSilkTouch")) {
+                            currentTag = tagReader2.nextLine().trim();
+                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
+                            System.out.println("gotIndex!");
+                        } else {
+                            tagReader2.nextLine();
+                            currentTag = tagReader2.nextLine().trim();
+                            tagsByType.get(RegistryInterpreterHelper.getIndexByValue(currentTag, tagsByType)).add(name);
+                            System.out.println("gotIndex!");
+                        }
+                    }
                 }
             }
         }
@@ -287,19 +235,7 @@ public class RegistryInterpreter {
 
         tagsByType = initTagsByType(tagsByType, types);
 
-        return generateToolTags(generateToolsForBlockTags(data)) + generateToolTypeTags(typeTags, tagsByType) + "\n    }\n}";
-    }
-
-    public static int getIndexByValue(String searched, ArrayList<ArrayList<String>> tags) {
-        if (tags.get(0) == null) {
-            return 0;
-        }
-        for (int i = 0; i < tags.size(); i++) {
-            if (tags.get(i).get(0).equalsIgnoreCase(searched)) {
-                return i;
-            }
-        }
-        return -1;
+        return RegistryInterpreterHelper.generateToolTags(RegistryInterpreterHelper.generateToolsForBlockTags(data)) + generateToolTypeTags(typeTags, tagsByType) + "\n    }\n}";
     }
 
     public static String generateToolTypeTags(ArrayList<String> types, ArrayList<ArrayList<String>> tagsByType) {
@@ -316,14 +252,6 @@ public class RegistryInterpreter {
             generated += "\n        ;\n";
         }
         return generated;
-    }
-
-    public static String generateToolTags(String[] tags) {
-        return "        tag(BlockTags.MINEABLE_WITH_PICKAXE)\n" +
-                tags[0] + "        ;\n        tag(BlockTags.MINEABLE_WITH_AXE)\n" +
-                tags[1] + "        ;\n        tag(BlockTags.MINEABLE_WITH_SHOVEL)\n" +
-                tags[2] + "        ;\n        tag(BlockTags.MINEABLE_WITH_HOE)\n" +
-                tags[3] + "        ;\n\n";
     }
 
     public static String generateCreativeModeTabs(File fileToWrite, File registryFile) {
