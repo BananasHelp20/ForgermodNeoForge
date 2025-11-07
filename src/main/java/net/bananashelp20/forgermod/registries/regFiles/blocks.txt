@@ -73,6 +73,6 @@ complex {
         dropSelf
         NOTblockWithItem
         hoe
-        gold
+        stone
         blocks
 }

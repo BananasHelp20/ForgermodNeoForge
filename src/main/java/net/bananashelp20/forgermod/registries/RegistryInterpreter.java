@@ -20,9 +20,19 @@ public class RegistryInterpreter {
     static File modBlockStateProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockStateProvider.java");
     static File modBlockTagProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockTagProvider.java");
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
     public static void main(String[] args) throws Exception {
         if (!generateCode()) {
-            throw new FileNotFoundException("Code could not be generated, an Error occurred");
+            throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
         }
     }
 
@@ -38,199 +48,8 @@ public class RegistryInterpreter {
             return false;
         }
         RegistryInterpreterHelper.generateAndWriteBlocks(testFile, blockFile);
-        System.out.println("wroteBlocks!");
-        generateAndWriteBlockDatagen();
+        RegistryInterpreterHelper.generateAndWriteBlockDatagen();
         return true;
-    }
-
-    public static void generateAndWriteBlockDatagen() {
-        Scanner reader;
-        try {
-            reader = new Scanner(blockFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
-        String line;
-        String name;
-        for (int i = 0; reader.hasNextLine(); i+=0) {
-            line = reader.nextLine().trim();
-            if (line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {")) {
-                while (!(name = reader.nextLine().trim()).equals("}")) {
-                    String dropOtherItem;
-                    String dropOtherMethod;
-                    String blockModel;
-                    String blockTagTool;
-                    String blockTagToolType;
-                    String creativeTab;
-                    reader.nextLine();
-                    dropOtherItem = "";
-                    dropOtherMethod = reader.nextLine().trim();
-                    if (dropOtherMethod.equals("dropOther")) {
-                        dropOtherItem = reader.nextLine().trim();
-                    }
-                    blockModel = reader.nextLine().trim();
-                    blockTagTool = reader.nextLine().trim();
-                    blockTagToolType = reader.nextLine().trim();
-                    creativeTab = reader.nextLine().trim();
-                    data.add(new ArrayList<String>());
-                    data.get(i).add(name);
-                    data.get(i).add(dropOtherMethod);
-                    if (!dropOtherItem.equals("")) data.get(i).add(dropOtherItem);
-                    data.get(i).add(blockModel);
-                    data.get(i).add(blockTagTool);
-                    data.get(i).add(blockTagToolType);
-                    data.get(i).add(creativeTab);
-                    i++;
-                }
-            } else if (line.equalsIgnoreCase("special {")) {
-                while (!(name = reader.nextLine().trim()).equals("}")) {
-                    reader.nextLine();
-                    String dropOtherItem;
-                    String dropOtherMethod;
-                    String blockModel;
-                    String blockTagTool;
-                    String blockTagToolType;
-                    String creativeTab;
-                    reader.nextLine();
-                    dropOtherItem = "";
-                    dropOtherMethod = reader.nextLine().trim();
-                    if (dropOtherMethod.equals("dropOther")) {
-                        dropOtherItem = reader.nextLine().trim();
-                    }
-                    blockModel = reader.nextLine().trim();
-                    blockTagTool = reader.nextLine().trim();
-                    blockTagToolType = reader.nextLine().trim();
-                    creativeTab = reader.nextLine().trim();
-                    data.add(new ArrayList<String>());
-                    data.get(i).add(name);
-                    data.get(i).add(dropOtherMethod);
-                    if (!dropOtherItem.equals("")) data.get(i).add(dropOtherItem);
-                    data.get(i).add(blockModel);
-                    data.get(i).add(blockTagTool);
-                    data.get(i).add(blockTagToolType);
-                    data.get(i).add(creativeTab);
-                    i++;
-                }
-            }
-        }
-        String generatedBlockLootTables = getWholeFileContentTillGenerate(modBlockLootTableProvider, "//generate DROPS!") + RegistryInterpreterHelper.generateBlockLoottables(data);
-        System.out.println("wroteLoottables!");
-        String generatedBlockStates = getWholeFileContentTillGenerate(modBlockStateProvider, "//generate MODELS!") + RegistryInterpreterHelper.generateBlockStates(data);
-        System.out.println("wroteModels!");
-        String generatedBlockTags = getWholeFileContentTillGenerate(modBlockTagProvider, "//generate TAGS!") + generateBlockToolTags(data);
-        System.out.println("wroteTags!");
-        reader.close();
-        try {
-            FileWriter loottableWriter = new FileWriter(modBlockLootTableProvider.getPath());
-            loottableWriter.write(generatedBlockLootTables);
-            loottableWriter.close();
-            FileWriter stateWriter = new FileWriter(modBlockStateProvider.getPath());
-            stateWriter.write(generatedBlockStates);
-            stateWriter.close();
-            FileWriter tagWriter = new FileWriter(modBlockTagProvider.getPath());
-            tagWriter.write(generatedBlockTags);
-            tagWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static ArrayList<String> initTypeTags() {
-        ArrayList<String> typeTags = new ArrayList<>();
-        Scanner tagReader;
-        try {
-            tagReader = new Scanner(modBlockTagProvider);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String current;
-        while (tagReader.hasNextLine()) {
-            current = tagReader.nextLine().trim();
-            if (current.contains("tag(") && current.contains("NEEDS_")) {
-                typeTags.add(current.substring(0, current.length()-1).trim() + ")");
-            }
-        }
-        tagReader.close();
-        return typeTags;
-    }
-
-    public static ArrayList<ArrayList<String>> getContentForTags(boolean special, ArrayList<ArrayList<String>> tagsByType, Scanner reader) {
-        String name = "";
-        String drops = "";
-        String typeTag = "";
-        for (int i = 0; reader.hasNextLine() && !name.equalsIgnoreCase("}"); i++) {
-            name = reader.nextLine().trim();
-            reader.nextLine();
-            if (special) reader.nextLine();
-            drops = reader.nextLine().trim();
-            reader.nextLine();
-            reader.nextLine();
-            if (drops.equalsIgnoreCase("dropOther")) reader.nextLine();
-            typeTag = reader.nextLine().trim();
-            try {
-                tagsByType.get(RegistryInterpreterHelper.getIndexByValue(typeTag.toLowerCase(), tagsByType));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println(e + "\nINDEX BY VALUE FAILED!");
-            }
-            reader.nextLine();
-        }
-        return tagsByType;
-    }
-
-    public static ArrayList<ArrayList<String>> initTagsByType(ArrayList<ArrayList<String>> tagsByType, ArrayList<String> types) {
-        Scanner reader;
-        try {
-            reader = new Scanner(blockFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String line = "";
-
-        for (int i = 0; i < types.size(); i++) {
-            tagsByType.add(new ArrayList<>());
-            tagsByType.get(i).add(0, types.get(i));
-        }
-        while (reader.hasNextLine()) {
-            while (reader.hasNextLine() && !(line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {") || line.equalsIgnoreCase("special {"))) {
-                line = reader.nextLine().trim();
-            }
-            tagsByType = getContentForTags(line.equalsIgnoreCase("special {"), tagsByType, reader);
-
-        }
-        return tagsByType;
-    }
-
-    public static String generateBlockToolTags(ArrayList<ArrayList<String>> data) {
-        ArrayList<String> typeTags = initTypeTags();
-        System.out.println("initTypeTags!");
-        ArrayList<String> types = new ArrayList<>();
-        ArrayList<ArrayList<String>> tagsByType = new ArrayList<>();
-        System.out.println("initTagsbyType!");
-
-        for (int i = 0; i < typeTags.size(); i++) {
-            types.add(typeTags.get(i).substring(typeTags.get(i).indexOf("NEEDS_")+6, typeTags.get(i).indexOf("_TOOL")).toLowerCase());
-        }
-
-        tagsByType = initTagsByType(tagsByType, types);
-
-        return RegistryInterpreterHelper.generateToolTags(RegistryInterpreterHelper.generateToolsForBlockTags(data)) + generateToolTypeTags(typeTags, tagsByType) + "\n    }\n}";
-    }
-
-    public static String generateToolTypeTags(ArrayList<String> types, ArrayList<ArrayList<String>> tagsByType) {
-        String generated = "";
-        for (int i = 0; i < types.size(); i++) {
-            generated += "        " + types.get(i);
-            for (int j = 0; j < tagsByType.size(); j++) {
-                if (types.get(i).substring(types.get(i).indexOf("NEEDS_") + 6, types.get(i).indexOf("_TOOL")).equals(tagsByType.get(j).get(0))) {
-                    for (int k = 0; k < tagsByType.get(j).size(); k++) {
-                        generated += "                .add(ModBlocks." + tagsByType.get(j).get(k) + ".get())\n";
-                    }
-                }
-            }
-            generated += "\n        ;\n";
-        }
-        return generated;
     }
 
     public static String generateCreativeModeTabs(File fileToWrite, File registryFile) {

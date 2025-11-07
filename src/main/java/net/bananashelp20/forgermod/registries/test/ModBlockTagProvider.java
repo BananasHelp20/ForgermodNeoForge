@@ -29,6 +29,56 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
         ;
 
+        tag(ModTags.Blocks.INCORRECT_FOR_ELECTRIUM_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_ELECTRIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_MORSIUM_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_MORSIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_VULNUSIUM_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_VULNUSIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_INANISIUM_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_INANISIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_IGNISIUM_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_IGNISIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_PULSITE_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_PULSITE_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_LUSH_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_LUSH_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_SOMNIUM_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_SOMNIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_TAIFUNITE_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_TAIFUNITE_TOOL)
+        ;
+
+        tag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
+                .addTag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
+                .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+        ;
+
         //generate TAGS!
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.NEWBLOCK.get())
@@ -49,14 +99,56 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.NEWCOMPLEXBLOCK2.get())
         ;
 
-        tag(BlockTags.NEEDS_IRON_TOOL)
-        ;
-        tag(BlockTags.NEEDS_DIAMOND_TOOL)
-        ;
-        tag(ModTags.Blocks.NEEDS_STEEL_TOOL)
-        ;
-        tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+        tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(ModBlocks.NEWCOMPLEXBLOCK2.get())
         ;
 
+        tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(ModBlocks.ABCBLOCK.get())
+                .add(ModBlocks.NEWCOMPLEXBLOCK.get())
+        ;
+
+        tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(ModBlocks.NEWBLOCK.get())
+                .add(ModBlocks.NEWBLOCKADFDSF.get())
+                .add(ModBlocks.NEWBLOCKASDJF.get())
+                .add(ModBlocks.NEWBLOCKABHASD.get())
+                .add(ModBlocks.NEWBLOCK3.get())
+                .add(ModBlocks.NEWSPECIALBLOCK.get())
+        ;
+
+        tag(ModTags.Blocks.NEEDS_STEEL_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+                .add(ModBlocks.NEWBLOCKADSF.get())
+        ;
+
+        tag(ModTags.Blocks.NEEDS_IGNISIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_ELECTRIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_INANISIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_LUSH_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_MORSIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_PULSITE_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_SOMNIUM_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_TAIFUNITE_TOOL)
+        ;
+
+        tag(ModTags.Blocks.NEEDS_VULNUSIUM_TOOL)
+        ;
     }
 }
