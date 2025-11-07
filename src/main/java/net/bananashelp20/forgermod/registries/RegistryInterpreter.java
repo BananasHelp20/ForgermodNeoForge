@@ -1,5 +1,7 @@
 package net.bananashelp20.forgermod.registries;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,11 +16,8 @@ public class RegistryInterpreter {
     static File creativeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
     static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/item/ModItems.java");
     static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");
-    static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registries/RegistryClass.java");
-    static File testFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlocks.java");
-    static File modBlockLootTableProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockLootTableProvider.java");
-    static File modBlockStateProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockStateProvider.java");
-    static File modBlockTagProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockTagProvider.java");
+    static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
+    static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlocks.java");
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -47,9 +46,140 @@ public class RegistryInterpreter {
         )) {
             return false;
         }
-        RegistryInterpreterHelper.generateAndWriteBlocks(testFile, blockFile);
+        RegistryInterpreterHelper.generateAndWriteBlocks(modBlockFile, blockFile);
         RegistryInterpreterHelper.generateAndWriteBlockDatagen();
+        generateAndWriteBlocksToCorrectCreativeTab();
         return true;
+    }
+
+    private static void generateAndWriteBlocksToCorrectCreativeTab() {
+        ArrayList<String> registryFileContentList = getContentFromFileAsList(modRegistry);
+        Scanner reader;
+        ArrayList<ArrayList<String>> nameAndCreativeTab = new ArrayList<>();
+        String line;
+        registryFileContentList = clearFromOldEntriesOfType("ModBlocks.", registryFileContentList);
+        try {
+            reader = new Scanner(blockFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        int ctrForTabs = 0;
+        while (reader.hasNextLine()) {
+            line = reader.nextLine().trim();
+            while (reader.hasNextLine() && !(line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {") || line.equalsIgnoreCase("special {"))) {
+                line = reader.nextLine().trim();
+            }
+            ctrForTabs = getContentForCreativeTabs(line.equalsIgnoreCase("special {"), nameAndCreativeTab, reader, ctrForTabs);
+        }
+
+        for (int i = 0; i < registryFileContentList.size(); i++) {
+            if (registryFileContentList.get(i).contains("public static ItemLike[]")) {
+                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Ingredient");
+                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Weapon");
+                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Item");
+                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Miscellaneous");
+                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Block");
+            }
+        }
+
+        printFileFromList(registryFileContentList);
+
+//        try {
+//            FileWriter writer = new FileWriter(modRegistry);
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        System.out.println(ANSI_GREEN + "Successfully wrote Blocks into Creative Mode Tabs" + ANSI_RESET);
+    }
+
+//    public static ArrayList<ArrayList<String>> initNameAndCreativeTab(ArrayList<String> registry) {
+//        ArrayList<ArrayList<String>> list = new ArrayList<>();
+//        for (int i = 0; i < registry.size(); i++) {
+//            if (registry.get(i).contains("public static ItemLike[]") && registry.get(i).contains("Tab")) list.add(new ArrayList<>());
+//        }
+//        return list;
+//    }
+
+    public static int checkAndCycleTabs(ArrayList<String> registry, ArrayList<ArrayList<String>> nameAndTab, int i, String tab) {
+        if (registry.get(i).contains("get" + tab + "TabRegister")) {
+            while (!registry.get(i).contains("get" + tab + "TabRegister")) {
+                i++;
+            }
+            for (int j = 0; j < nameAndTab.size(); j++) {
+                if (nameAndTab.get(j).get(1).contains(tab.toLowerCase())) {
+                    registry.add(i, nameAndTab.get(j).getFirst());
+                }
+            }
+        }
+        return i;
+    }
+
+    public static int getContentForCreativeTabs(boolean special, ArrayList<ArrayList<String>> nameAndCreativeTab, Scanner reader, int ctr) {
+        String name;
+        String drops;
+        name = reader.nextLine().trim();
+        for (ctr += 0; reader.hasNextLine() && !name.equalsIgnoreCase("}"); ctr++) {
+            reader.nextLine();
+            if (special) reader.nextLine();
+            drops = reader.nextLine().trim();
+            reader.nextLine();
+            reader.nextLine();
+            if (drops.equalsIgnoreCase("dropOther")) reader.nextLine();
+            reader.nextLine();
+            nameAndCreativeTab.add(new ArrayList<>());
+            nameAndCreativeTab.get(ctr).add(0, name);
+            nameAndCreativeTab.get(ctr).add(1, reader.nextLine().trim());
+            name = reader.nextLine().trim();
+        }
+        return ctr;
+    }
+
+    public static ArrayList<String> clearFromOldEntriesOfType(String type, ArrayList<String> file) {
+        boolean foundGenerateCommand = false;
+        boolean currentlyInRegister = false;
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < file.size(); i++) {
+                if (file.get(i).contains("//STARTGENERATING!")) {
+                    foundGenerateCommand = true;
+                } else if (file.get(i).contains("return new ItemLike[] {") && foundGenerateCommand) {
+                    currentlyInRegister = true;
+                } else if (file.get(i).contains(type) && file.get(i).contains(".get()") && foundGenerateCommand) {
+                    file.remove(i);
+                    i--;
+                } else if (file.get(i).contains("};") && foundGenerateCommand) {
+                    currentlyInRegister = false;
+                }
+
+                if (currentlyInRegister && file.get(i).trim().equals("")) {
+                    file.remove(i);
+                    i--;
+                }
+            }
+        }
+        printFileFromList(file);
+        return file;
+    }
+
+    public static void printFileFromList(ArrayList<String> listedFile) {
+        for (int i = 0; i < listedFile.size(); i++) {
+            System.out.print(listedFile.get(i));
+        }
+    }
+
+    public static ArrayList<String> getContentFromFileAsList(File file) {
+        Scanner reader;
+        ArrayList<String> fileContent = new ArrayList<>();
+        try {
+            reader = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        while (reader.hasNextLine()) {
+            fileContent.add(reader.nextLine() + "\n");
+        }
+        return fileContent;
     }
 
     public static String generateCreativeModeTabs(File fileToWrite, File registryFile) {

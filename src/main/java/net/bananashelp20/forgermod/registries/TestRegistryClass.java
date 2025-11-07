@@ -2,101 +2,118 @@ package net.bananashelp20.forgermod.registries;
 
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.item.ModItems;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-import java.util.Set;
-
-public class TestRegistryClass extends BlockLootSubProvider {
-    protected TestRegistryClass(HolderLookup.Provider pRegistries) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), pRegistries);
+public class TestRegistryClass {
+    public static ItemLike getDisplayItemForForgerIngredientsTab() {
+        return ModItems.INANISIUM_INGOT.get();
+    }
+    public static ItemLike getDisplayItemForForgerWeaponsTab() {
+        return ModItems.CLAYMORE.get();
+    }
+    public static ItemLike getDisplayItemForForgerItemsTab() {
+        return ModItems.ADVANCED_HANDLE.get();
+    }
+    public static ItemLike getDisplayItemForForgerMiscellaneousTab() {
+        return ModBlocks.FORGE.get();
+    }
+    public static ItemLike getDisplayItemForForgerBlocksTab() {
+        return ModBlocks.RUBY_DEEPSLATE_ORE.get();
     }
 
-    public static void dropSelf(ItemLike block) {
-        dropSelf(block);
+    //STARTGENERATING!
+    public static ItemLike[] getIngredientsTabRegister() {
+        return new ItemLike[] {
+                ModBlocks.REINFORCED_IRON_BLOCK.get(),
+                ModItems.REINFORCED_IRON_INGOT.get(),
+
+                ModBlocks.SCRAP_IRON_BLOCK.get(),
+                ModItems.SCRAP_IRON_INGOT.get(),
+
+                ModBlocks.DAMASK_BLOCK.get(),
+                ModItems.DAMASK_INGOT.get(),
+
+                ModBlocks.SCRAP_BLOCK.get(),
+                ModItems.SCRAP_INGOT.get(),
+
+                ModBlocks.INANISIUM_BLOCK.get(),
+                ModItems.INANISIUM_INGOT.get(),
+                ModItems.INANISIUM_SHARD.get(),
+
+                ModBlocks.IGNISIUM_BLOCK.get(),
+                ModItems.IGNISIUM_INGOT.get(),
+                ModItems.IGNISIUM_SHARD.get(),
+
+                ModBlocks.PULSITE_BLOCK.get(),
+                ModItems.PULSITE_INGOT.get(),
+                ModItems.PULSITE_SHARD.get(),
+
+                ModBlocks.SOMNIUM_BLOCK.get(),
+                ModItems.SOMNIUM_INGOT.get(),
+                ModItems.SOMNIUM_SHARD.get(),
+
+                ModBlocks.VULNUSIUM_BLOCK.get(),
+                ModItems.VULNUSIUM_INGOT.get(),
+                ModItems.VULNUSIUM_SHARD.get(),
+
+                ModBlocks.MORSIUM_BLOCK.get(),
+                ModItems.MORSIUM_INGOT.get(),
+                ModItems.MORSIUM_SHARD.get(),
+
+                ModBlocks.OVERGROWN_BLOCK.get(),
+                ModItems.LUSH_INGOT.get(),
+                ModItems.LUSH_SHARD.get(),
+
+                ModBlocks.ELECTRIUM_BLOCK.get(),
+                ModItems.ELECTRIUM_INGOT.get(),
+                ModItems.ELECTRIUM_SHARD.get(),
+
+                ModBlocks.TAIFUNITE_BLOCK.get(),
+                ModItems.TAIFUNITE_INGOT.get(),
+                ModItems.TAIFUNITE_SHARD.get(),
+
+                ModBlocks.CARBON_STEEL_BLOCK.get(),
+                ModItems.CARBON_STEEL_INGOT.get(),
+                ModItems.UNREFINED_CARBON_STEEL.get(),
+
+                ModBlocks.STEEL_BLOCK.get(),
+                ModItems.STEEL_INGOT.get(),
+                ModItems.UNREFINED_STEEL.get(),
+
+                ModBlocks.DEVELOPIUM_BLOCK.get(),
+                ModItems.DEVELOPIUM_INGOT.get(),
+
+                ModItems.RUBY_GEMSTONE.get(),
+                ModItems.AMBER_GEMSTONE.get(),
+                ModItems.AMETHYST_GEMSTONE.get(),
+                ModItems.JADE_GEMSTONE.get()
+        };
     }
 
-    public static void dropOther(ItemLike block, ItemLike itemDrop) {
-        dropOther(block, itemDrop);
+    public static ItemLike[] getWeaponTabRegister() {
+        return new ItemLike[] {
+                ModBlocks.REINFORCED_IRON_BLOCK.get(),
+                ModBlocks.REINFORCED_IRON_BLOCK.get(),
+                ModBlocks.REINFORCED_IRON_BLOCK.get(),
+                ModBlocks.REINFORCED_IRON_BLOCK.get(),
+                ModItems.AMBER_GEMSTONE.get(),
+
+                ModItems.ADVANCED_HANDLE.get()
+        };
     }
 
-    protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-        return this.createSilkTouchDispatchTable(pBlock,
-                (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(pBlock,
-                        LootItem.lootTableItem(item)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops)))
-                                .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
-                )
-        );
+    public static ItemLike[] getItemTabRegister() {
+        return new ItemLike[] {
+        };
     }
 
-    @Override
-    protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
+    public static ItemLike[] getMiscellaneousTabRegister() {
+        return new ItemLike[] {
+        };
     }
 
-    @Override
-    protected void generate() {
-        //generate DROPS!
-        dropSelf(ModBlocks.DAMASK_BLOCK.get());
-        dropSelf(ModBlocks.SCRAP_BLOCK.get());
-        dropSelf(ModBlocks.INANISIUM_BLOCK.get());
-        dropSelf(ModBlocks.IGNISIUM_BLOCK.get());
-        dropSelf(ModBlocks.REINFORCED_IRON_BLOCK.get());
-        dropSelf(ModBlocks.SCRAP_IRON_BLOCK.get());
-        dropSelf(ModBlocks.OVERGROWN_BLOCK.get());
-        dropSelf(ModBlocks.MORSIUM_BLOCK.get());
-        dropSelf(ModBlocks.SOMNIUM_BLOCK.get());
-        dropSelf(ModBlocks.VULNUSIUM_BLOCK.get());
-        dropSelf(ModBlocks.PULSITE_BLOCK.get());
-        dropSelf(ModBlocks.CARBON_STEEL_BLOCK.get());
-        dropSelf(ModBlocks.STEEL_BLOCK.get());
-        dropSelf(ModBlocks.ELECTRIUM_BLOCK.get());
-        dropSelf(ModBlocks.TAIFUNITE_BLOCK.get());
-        dropSelf(ModBlocks.DEVELOPIUM_BLOCK.get());
-        dropSelf(ModBlocks.FORGE.get());
-        dropSelf(ModBlocks.INFUSION_TABLE.get());
-        dropWhenSilkTouch(ModBlocks.ANCIENT_SWORD_STAND.get());
-        dropOther(ModBlocks.ANCIENT_SWORD_STAND.get(), ModItems.RUSTY_CLAYMORE.get());
-
-        //ores
-        dropOther(ModBlocks.RUBY_END_ORE.get(), ModItems.RUBY_GEMSTONE.get());
-        dropOther(ModBlocks.RUBY_NETHER_ORE.get(), ModItems.RUBY_GEMSTONE.get());
-        dropOther(ModBlocks.RUBY_STONE_ORE.get(), ModItems.RUBY_GEMSTONE.get());
-        dropOther(ModBlocks.RUBY_DEEPSLATE_ORE.get(), ModItems.RUBY_GEMSTONE.get());
-        dropOther(ModBlocks.RUBY_OBSIDIAN_ORE.get(), ModItems.RUBY_GEMSTONE.get());
-
-        dropOther(ModBlocks.AMETHYST_END_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
-        dropOther(ModBlocks.AMETHYST_NETHER_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
-        dropOther(ModBlocks.AMETHYST_STONE_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
-        dropOther(ModBlocks.AMETHYST_DEEPSLATE_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
-        dropOther(ModBlocks.AMETHYST_OBSIDIAN_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
-
-        dropOther(ModBlocks.AMBER_END_ORE.get(), ModItems.AMBER_GEMSTONE.get());
-        dropOther(ModBlocks.AMBER_NETHER_ORE.get(), ModItems.AMBER_GEMSTONE.get());
-        dropOther(ModBlocks.AMBER_STONE_ORE.get(), ModItems.AMBER_GEMSTONE.get());
-        dropOther(ModBlocks.AMBER_DEEPSLATE_ORE.get(), ModItems.AMBER_GEMSTONE.get());
-        dropOther(ModBlocks.AMBER_OBSIDIAN_ORE.get(), ModItems.AMBER_GEMSTONE.get());
-
-        dropOther(ModBlocks.JADE_END_ORE.get(), ModItems.JADE_GEMSTONE.get());
-        dropOther(ModBlocks.JADE_NETHER_ORE.get(), ModItems.JADE_GEMSTONE.get());
-        dropOther(ModBlocks.JADE_STONE_ORE.get(), ModItems.JADE_GEMSTONE.get());
-        dropOther(ModBlocks.JADE_DEEPSLATE_ORE.get(), ModItems.JADE_GEMSTONE.get());
-        dropOther(ModBlocks.JADE_OBSIDIAN_ORE.get(), ModItems.JADE_GEMSTONE.get());
+    public static ItemLike[] getBlocksTabRegister() {
+        return new ItemLike[] {
+        };
     }
 }
