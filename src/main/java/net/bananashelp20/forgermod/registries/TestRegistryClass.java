@@ -77,16 +77,16 @@ public class TestRegistryClass {
 
     public static ItemLike[] getBlocksTabRegister() {
         return new ItemLike[] {
-                ModBlocks.NEWBLOCK.get(),
-                ModBlocks.NEWBLOCKADFDSF.get(),
-                ModBlocks.NEWBLOCKASDJF.get(),
-                ModBlocks.NEWBLOCKABHASD.get(),
-                ModBlocks.NEWBLOCK3.get(),
-                ModBlocks.ABCBLOCK.get(),
-                ModBlocks.NEWBLOCKADSF.get(),
-                ModBlocks.NEWSPECIALBLOCK.get(),
-                ModBlocks.NEWCOMPLEXBLOCK.get(),
                 ModBlocks.NEWCOMPLEXBLOCK2.get(),
+                ModBlocks.NEWCOMPLEXBLOCK.get(),
+                ModBlocks.NEWSPECIALBLOCK.get(),
+                ModBlocks.NEWBLOCKADSF.get(),
+                ModBlocks.ABCBLOCK.get(),
+                ModBlocks.NEWBLOCK3.get(),
+                ModBlocks.NEWBLOCKABHASD.get(),
+                ModBlocks.NEWBLOCKASDJF.get(),
+                ModBlocks.NEWBLOCKADFDSF.get(),
+                ModBlocks.NEWBLOCK.get(),
                 ModBlocks.NEWBLOCK.get(), //PRESERVE!
         };
     }

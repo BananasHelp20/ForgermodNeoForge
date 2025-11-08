@@ -83,8 +83,6 @@ public class RegistryInterpreter {
             }
         }
 
-//        printFileFromList(registryFileContentList);
-
         try {
             FileWriter writer = new FileWriter(modRegistry);
             writer.write(listToString(registryFileContentList));
@@ -108,7 +106,6 @@ public class RegistryInterpreter {
         for (int j = 0; j < nameAndTab.size(); j++) {
             if (nameAndTab.get(j).get(1).contains(tab.toLowerCase())) {
                 registry.add(i+1, "                " + type + nameAndTab.get(j).getFirst().toUpperCase() + ".get()," + "\n");
-                System.out.println(registry.get(i++));
             }
         }
         return i;
@@ -156,7 +153,6 @@ public class RegistryInterpreter {
                 }
             }
         }
-        printFileFromList(file);
         return file;
     }
 
