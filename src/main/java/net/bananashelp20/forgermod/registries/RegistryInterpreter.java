@@ -74,42 +74,41 @@ public class RegistryInterpreter {
 
         for (int i = 0; i < registryFileContentList.size(); i++) {
             if (registryFileContentList.get(i).contains("public static ItemLike[]")) {
-                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Ingredient");
-                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Weapon");
-                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Item");
-                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Miscellaneous");
-                i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Block");
+                i++;
+                if (registryFileContentList.get(i-1).contains("Ingredient")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Ingredient", "ModBlocks.");
+                if (registryFileContentList.get(i-1).contains("Weapon")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Weapon", "ModBlocks.");
+                if (registryFileContentList.get(i-1).contains("Item")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Item", "ModBlocks.");
+                if (registryFileContentList.get(i-1).contains("Miscellaneous")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Miscellaneous", "ModBlocks.");
+                if (registryFileContentList.get(i-1).contains("Block")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Block", "ModBlocks.");
             }
         }
 
-        printFileFromList(registryFileContentList);
+//        printFileFromList(registryFileContentList);
 
-//        try {
-//            FileWriter writer = new FileWriter(modRegistry);
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            FileWriter writer = new FileWriter(modRegistry);
+            writer.write(listToString(registryFileContentList));
+            writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(ANSI_GREEN + "Successfully wrote Blocks into Creative Mode Tabs" + ANSI_RESET);
     }
 
-//    public static ArrayList<ArrayList<String>> initNameAndCreativeTab(ArrayList<String> registry) {
-//        ArrayList<ArrayList<String>> list = new ArrayList<>();
-//        for (int i = 0; i < registry.size(); i++) {
-//            if (registry.get(i).contains("public static ItemLike[]") && registry.get(i).contains("Tab")) list.add(new ArrayList<>());
-//        }
-//        return list;
-//    }
+    public static String listToString(ArrayList<String> list) {
+        String s = "";
+        for (int i = 0; i < list.size(); i++) {
+            s += list.get(i);
+        }
+        return s;
+    }
 
-    public static int checkAndCycleTabs(ArrayList<String> registry, ArrayList<ArrayList<String>> nameAndTab, int i, String tab) {
-        if (registry.get(i).contains("get" + tab + "TabRegister")) {
-            while (!registry.get(i).contains("get" + tab + "TabRegister")) {
-                i++;
-            }
-            for (int j = 0; j < nameAndTab.size(); j++) {
-                if (nameAndTab.get(j).get(1).contains(tab.toLowerCase())) {
-                    registry.add(i, nameAndTab.get(j).getFirst());
-                }
+    public static int checkAndCycleTabs(ArrayList<String> registry, ArrayList<ArrayList<String>> nameAndTab, int i, String tab, String type) {
+        for (int j = 0; j < nameAndTab.size(); j++) {
+            if (nameAndTab.get(j).get(1).contains(tab.toLowerCase())) {
+                registry.add(i+1, "                " + type + nameAndTab.get(j).getFirst().toUpperCase() + ".get()," + "\n");
+                System.out.println(registry.get(i++));
             }
         }
         return i;
@@ -144,7 +143,7 @@ public class RegistryInterpreter {
                     foundGenerateCommand = true;
                 } else if (file.get(i).contains("return new ItemLike[] {") && foundGenerateCommand) {
                     currentlyInRegister = true;
-                } else if (file.get(i).contains(type) && file.get(i).contains(".get()") && foundGenerateCommand) {
+                } else if (file.get(i).contains(type) && file.get(i).contains(".get()") && foundGenerateCommand && !file.get(i).contains("//PRESERVE")) {
                     file.remove(i);
                     i--;
                 } else if (file.get(i).contains("};") && foundGenerateCommand) {
