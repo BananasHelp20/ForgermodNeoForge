@@ -88,6 +88,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.NEWBLOCK3.get())
                 .add(ModBlocks.ABCBLOCK.get())
                 .add(ModBlocks.NEWBLOCKADSF.get())
+                .add(ModBlocks.NEWBLOCKADSF.get())
                 .add(ModBlocks.SIMPLEBLOCKTEST.get())
                 .add(ModBlocks.NEWSPECIALBLOCK.get())
                 .add(ModBlocks.SPECIALBLOCKTEST.get())
@@ -126,6 +127,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         ;
 
         tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+                .add(ModBlocks.NEWBLOCKADSF.get())
                 .add(ModBlocks.NEWBLOCKADSF.get())
                 .add(ModBlocks.SIMPLEBLOCKTEST.get())
         ;

@@ -25,6 +25,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.NEWBLOCK3);
         blockWithItem(ModBlocks.ABCBLOCK);
         blockWithItem(ModBlocks.NEWBLOCKADSF);
+        blockWithItem(ModBlocks.NEWBLOCKADSF);
         blockWithItem(ModBlocks.SIMPLEBLOCKTEST);
         blockWithItem(ModBlocks.NEWSPECIALBLOCK);
         blockWithItem(ModBlocks.SPECIALBLOCKTEST);

@@ -9,22 +9,15 @@ import java.util.Scanner;
 
 public class RegistryInterpreterHelper {
     static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/blocks.txt");
-    static File modBlocksFile = new File("./src/main/java/net/bananashelp20/forgermod/block/ModBlocks.java");
     static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
-    static File creativeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
+    static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
     static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/item/ModItems.java");
     static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");
+    static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlocks.java");
     static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registries/RegistryClass.java");
-    static File testFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/TestReg.java");
     static File modBlockLootTableProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockLootTableProvider.java");
     static File modBlockStateProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockStateProvider.java");
     static File modBlockTagProvider = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlockTagProvider.java");
-
-    static String modBlocksFileContent = getWholeFileContentTillGenerate(modBlocksFile);
-    static String modItemsFileContent = getWholeFileContentTillGenerate(modItemsFile);
-    static String modCreativeModeTabsFileContent = getWholeFileContentTillGenerate(modCreativeModeTabsFile);
-    static String modRegistryContent = getWholeFileContentTillGenerate(modRegistry);
-    static String testFileContent = getWholeFileContentTillGenerate(testFile);
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -36,6 +29,7 @@ public class RegistryInterpreterHelper {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    //helpermethod for datagen generation: generates The drops for the blocks
     public static String generateBlockLoottables(ArrayList<ArrayList<String>> data) {
         String generatedBlockLootTables = "";
         String itemType = "";
@@ -67,6 +61,7 @@ public class RegistryInterpreterHelper {
         return generatedBlockLootTables + "    }\n}";
     }
 
+    //helpermethod for Blocktag generation: generates the Blocktags for the tools
     public static String[] generateToolsForBlockTags(ArrayList<ArrayList<String>> data) {
         String pickaxeTags = "";
         String axeTags = "";
@@ -87,6 +82,7 @@ public class RegistryInterpreterHelper {
         return new String[] {pickaxeTags, axeTags, shovelTags, hoeTags};
     }
 
+    //gets the index of a String in a 2-dimensional list
     public static int getIndexByValue(String searched, ArrayList<ArrayList<String>> tags) {
         if (tags.get(0) == null) {
             return 0;
@@ -100,6 +96,7 @@ public class RegistryInterpreterHelper {
         return -1;
     }
 
+    //helpermethod for Blocktag generation: generates the tools-blocktags
     public static String generateToolTags(String[] tags) {
         return "        tag(BlockTags.MINEABLE_WITH_PICKAXE)\n" +
                 tags[0] + "        ;\n        tag(BlockTags.MINEABLE_WITH_AXE)\n" +
@@ -108,6 +105,7 @@ public class RegistryInterpreterHelper {
                 tags[3] + "        ;\n\n";
     }
 
+    //helpermethod for datagen generation: generates the blockstates
     public static String generateBlockStates(ArrayList<ArrayList<String>> data) {
         String generatedBlockStates = "";
         for (int i = 0; i < data.size(); i++) {
@@ -118,6 +116,7 @@ public class RegistryInterpreterHelper {
         return generatedBlockStates + "    }\n}";
     }
 
+    //generates the blocks themselfs from the blocks.txt
     public static void generateAndWriteBlocks(File fileToWrite, File regFile) {
         Scanner reader;
         try {
@@ -151,6 +150,7 @@ public class RegistryInterpreterHelper {
         }
     }
 
+    //helpermethod for the block generation: generates the special blocks
     private static String generateSpecialBlocks(File registryFile, int index) {
         Scanner reader2 = null;
         try {
@@ -191,6 +191,7 @@ public class RegistryInterpreterHelper {
         return output + "}";
     }
 
+    //helpermethod for the blockgeneration: generates the simple blocks
     public static String generateSimpleBlocks(File registryFile, int index) {
         Scanner reader2;
         try {
@@ -231,6 +232,7 @@ public class RegistryInterpreterHelper {
         return output;
     }
 
+    //helpermethod for the blockgeneration: generates the complex blocks
     public static String generateComplexBlocks(File registryFile, int index) {
         Scanner reader2;
         try {
@@ -273,6 +275,7 @@ public class RegistryInterpreterHelper {
         return output;
     }
 
+    //generates the Datagen for the blocks
     public static void generateAndWriteBlockDatagen() {
         Scanner reader;
         try {
@@ -366,6 +369,7 @@ public class RegistryInterpreterHelper {
         }
     }
 
+    //helperemthod for generating the blocktags: initialises the typetags
     public static ArrayList<String> initTypeTags() {
         ArrayList<String> typeTags = new ArrayList<>();
         Scanner tagReader;
@@ -385,6 +389,7 @@ public class RegistryInterpreterHelper {
         return typeTags;
     }
 
+    //helpermethod for tagsByType initialisation
     public static ArrayList<ArrayList<String>> getContentForTags(boolean special, ArrayList<ArrayList<String>> tagsByType, Scanner reader) {
         String name = "";
         String drops = "";
@@ -410,6 +415,7 @@ public class RegistryInterpreterHelper {
         return tagsByType;
     }
 
+    //helpermethod for blocktag generation: initialises tagsByType
     public static ArrayList<ArrayList<String>> initTagsByType(ArrayList<ArrayList<String>> tagsByType, ArrayList<String> types) {
         Scanner reader;
         try {
@@ -434,6 +440,7 @@ public class RegistryInterpreterHelper {
         return tagsByType;
     }
 
+    //helpermethod for datagen generation: generates the blocktags
     public static String generateBlockToolTags(ArrayList<ArrayList<String>> data) {
         ArrayList<String> typeTags = initTypeTags();
         ArrayList<String> types = new ArrayList<>();
@@ -513,5 +520,114 @@ public class RegistryInterpreterHelper {
             content += reader.nextLine() + "\n";
         }
         return content;
+    }
+
+    public static void generateAndWriteBlocksToCorrectCreativeTab() {
+        ArrayList<String> registryFileContentList = RegistryInterpreter.getContentFromFileAsList(modRegistry);
+        Scanner reader;
+        ArrayList<ArrayList<String>> nameAndCreativeTab = new ArrayList<>();
+        String line;
+        registryFileContentList = clearFromOldEntriesOfType("ModBlocks.", registryFileContentList);
+        try {
+            reader = new Scanner(blockFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        int ctrForTabs = 0;
+        while (reader.hasNextLine()) {
+            line = reader.nextLine().trim();
+            while (reader.hasNextLine() && !(line.equalsIgnoreCase("simple {") || line.equalsIgnoreCase("complex {") || line.equalsIgnoreCase("special {"))) {
+                line = reader.nextLine().trim();
+            }
+            ctrForTabs = getContentForCreativeTabs(line.equalsIgnoreCase("special {"), nameAndCreativeTab, reader, ctrForTabs);
+        }
+
+        for (int i = 0; i < registryFileContentList.size(); i++) {
+            if (registryFileContentList.get(i).contains("public static ItemLike[]")) {
+                i++;
+                if (registryFileContentList.get(i-1).contains("IngredientTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Ingredient", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("WeaponTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Weapon", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("ItemTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Item", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("MiscellaneousTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Miscellaneous", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("BlockTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Block", "ModBlocks.");
+                }
+            }
+        }
+
+        try {
+            FileWriter writer = new FileWriter(modRegistry);
+            writer.write(listToString(registryFileContentList));
+            writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(ANSI_GREEN + "Successfully wrote Blocks into Creative Mode Tabs" + ANSI_RESET);
+    }
+
+    public static String listToString(ArrayList<String> list) {
+        String s = "";
+        for (int i = 0; i < list.size(); i++) {
+            s += list.get(i);
+        }
+        return s;
+    }
+
+    public static void checkAndCycleTabs(ArrayList<String> registry, ArrayList<ArrayList<String>> nameAndTab, int i, String tab, String type) {
+        for (int j = 0; j < nameAndTab.size(); j++) {
+            if (nameAndTab.get(j).get(1).contains(tab.toLowerCase())) {
+                registry.add(i+1, "                " + type + nameAndTab.get(j).get(0).toUpperCase() + ".get(),\n");
+            }
+        }
+    }
+
+    public static int getContentForCreativeTabs(boolean special, ArrayList<ArrayList<String>> nameAndCreativeTab, Scanner reader, int ctr) {
+        String name;
+        String drops;
+        name = reader.nextLine().trim();
+        for (ctr += 0; reader.hasNextLine() && !name.equalsIgnoreCase("}"); ctr++) {
+            reader.nextLine();
+            if (special) reader.nextLine();
+            drops = reader.nextLine().trim();
+            reader.nextLine();
+            reader.nextLine();
+            if (drops.equalsIgnoreCase("dropOther")) reader.nextLine();
+            reader.nextLine();
+            nameAndCreativeTab.add(new ArrayList<>());
+            nameAndCreativeTab.get(ctr).add(0, name);
+            nameAndCreativeTab.get(ctr).add(1, reader.nextLine().trim());
+            name = reader.nextLine().trim();
+        }
+        return ctr;
+    }
+
+    public static ArrayList<String> clearFromOldEntriesOfType(String type, ArrayList<String> file) {
+        boolean foundGenerateCommand = false;
+        boolean currentlyInRegister = false;
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < file.size(); i++) {
+                if (file.get(i).contains("//STARTGENERATING!")) {
+                    foundGenerateCommand = true;
+                } else if (file.get(i).contains("return new ItemLike[] {") && foundGenerateCommand) {
+                    currentlyInRegister = true;
+                } else if (file.get(i).contains(type) && file.get(i).contains(".get()") && foundGenerateCommand && !file.get(i).contains("//PRESERVE")) {
+                    file.remove(i);
+                    i--;
+                } else if (file.get(i).contains("};") && foundGenerateCommand) {
+                    currentlyInRegister = false;
+                }
+
+                if (currentlyInRegister && file.get(i).trim().equals("")) {
+                    file.remove(i);
+                    i--;
+                }
+            }
+        }
+        return file;
     }
 }

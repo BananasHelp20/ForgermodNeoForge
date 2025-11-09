@@ -49,6 +49,14 @@ simple {
         pickaxe
         carbon_steel
         items
+    newblockadsj
+         77f, 50, SoundType.HEAVY_CORE
+         dropOther
+         mod item jade_gemstone
+         blockWithItem
+         pickaxe
+         carbon_steel
+         items
     simpleBlockTest
         77f, 50, SoundType.HEAVY_CORE
         dropOther

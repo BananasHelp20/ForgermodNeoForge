@@ -69,6 +69,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> NEWBLOCK3 = createSimpleBlock("newblock3", 77f, 50, SoundType.HEAVY_CORE);
     public static final DeferredBlock<Block> ABCBLOCK = createSimpleBlock("abcblock", 77f, 50, SoundType.HEAVY_CORE);
     public static final DeferredBlock<Block> NEWBLOCKADSF = createSimpleBlock("newblockadsf", 77f, 50, SoundType.HEAVY_CORE);
+    public static final DeferredBlock<Block> NEWBLOCKADSFd = createSimpleBlock("newblockadsf", 77f, 50, SoundType.HEAVY_CORE);
     public static final DeferredBlock<Block> SIMPLEBLOCKTEST = createSimpleBlock("simpleblocktest", 77f, 50, SoundType.HEAVY_CORE);
 
     //Special Blocks

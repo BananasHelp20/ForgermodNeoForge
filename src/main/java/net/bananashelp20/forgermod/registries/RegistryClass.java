@@ -91,6 +91,7 @@ public class RegistryClass {
     }
     public static ItemLike[] getWeaponTabRegister() {
         return new ItemLike[] {
+                ModBlocks.SIMPLEBLOCKTEST.get(),
                 ModItems.SCRAP_IRON_SWORD.get(),
                 ModItems.REINFORCED_IRON_SWORD.get(),
                 ModItems.SCRAP_SWORD.get(),
@@ -158,6 +159,8 @@ public class RegistryClass {
     }
     public static ItemLike[] getItemTabRegister() {
         return new ItemLike[] {
+                ModBlocks.NEWBLOCKADSF.get(),
+                ModBlocks.NEWBLOCKADSF.get(),
                 ModItems.CARBON_STEEL_CROSS_GUARD.get(),
                 ModItems.SHARPENED_BLADE.get(),
                 ModItems.HANDLE.get(),

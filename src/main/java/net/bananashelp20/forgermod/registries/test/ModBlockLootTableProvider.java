@@ -59,6 +59,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.NEWBLOCK3.get());
         dropSelf(ModBlocks.ABCBLOCK.get());
         dropOther(ModBlocks.NEWBLOCKADSF.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.NEWBLOCKADSF.get(), ModItems.JADE_GEMSTONE.get());
         dropOther(ModBlocks.SIMPLEBLOCKTEST.get(), ModItems.JADE_GEMSTONE.get());
         dropSelf(ModBlocks.NEWSPECIALBLOCK.get());
         dropSelf(ModBlocks.SPECIALBLOCKTEST.get());
