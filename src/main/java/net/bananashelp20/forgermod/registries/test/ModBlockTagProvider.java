@@ -88,7 +88,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.NEWBLOCK3.get())
                 .add(ModBlocks.ABCBLOCK.get())
                 .add(ModBlocks.NEWBLOCKADSF.get())
+                .add(ModBlocks.SIMPLEBLOCKTEST.get())
                 .add(ModBlocks.NEWSPECIALBLOCK.get())
+                .add(ModBlocks.SPECIALBLOCKTEST.get())
         ;
         tag(BlockTags.MINEABLE_WITH_AXE)
         ;
@@ -97,10 +99,12 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         ;
         tag(BlockTags.MINEABLE_WITH_HOE)
                 .add(ModBlocks.NEWCOMPLEXBLOCK2.get())
+                .add(ModBlocks.COMPLEXTEST.get())
         ;
 
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(ModBlocks.NEWCOMPLEXBLOCK2.get())
+                .add(ModBlocks.COMPLEXTEST.get())
         ;
 
         tag(BlockTags.NEEDS_IRON_TOOL)
@@ -115,6 +119,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.NEWBLOCKABHASD.get())
                 .add(ModBlocks.NEWBLOCK3.get())
                 .add(ModBlocks.NEWSPECIALBLOCK.get())
+                .add(ModBlocks.SPECIALBLOCKTEST.get())
         ;
 
         tag(ModTags.Blocks.NEEDS_STEEL_TOOL)
@@ -122,6 +127,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
                 .add(ModBlocks.NEWBLOCKADSF.get())
+                .add(ModBlocks.SIMPLEBLOCKTEST.get())
         ;
 
         tag(ModTags.Blocks.NEEDS_IGNISIUM_TOOL)

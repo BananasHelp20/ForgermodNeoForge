@@ -60,6 +60,7 @@ public class TestRegistryClass {
 
     public static ItemLike[] getWeaponTabRegister() {
         return new ItemLike[] {
+                ModBlocks.SIMPLEBLOCKTEST.get(),
                 ModItems.AMBER_GEMSTONE.get(),
                 ModItems.ADVANCED_HANDLE.get()
         };
@@ -67,6 +68,7 @@ public class TestRegistryClass {
 
     public static ItemLike[] getItemTabRegister() {
         return new ItemLike[] {
+                ModBlocks.NEWBLOCKADSF.get(),
         };
     }
 
@@ -77,16 +79,6 @@ public class TestRegistryClass {
 
     public static ItemLike[] getBlocksTabRegister() {
         return new ItemLike[] {
-                ModBlocks.NEWCOMPLEXBLOCK2.get(),
-                ModBlocks.NEWCOMPLEXBLOCK.get(),
-                ModBlocks.NEWSPECIALBLOCK.get(),
-                ModBlocks.NEWBLOCKADSF.get(),
-                ModBlocks.ABCBLOCK.get(),
-                ModBlocks.NEWBLOCK3.get(),
-                ModBlocks.NEWBLOCKABHASD.get(),
-                ModBlocks.NEWBLOCKASDJF.get(),
-                ModBlocks.NEWBLOCKADFDSF.get(),
-                ModBlocks.NEWBLOCK.get(),
                 ModBlocks.NEWBLOCK.get(), //PRESERVE!
         };
     }

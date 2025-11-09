@@ -69,14 +69,18 @@ public class ModBlocks {
     public static final DeferredBlock<Block> NEWBLOCK3 = createSimpleBlock("newblock3", 77f, 50, SoundType.HEAVY_CORE);
     public static final DeferredBlock<Block> ABCBLOCK = createSimpleBlock("abcblock", 77f, 50, SoundType.HEAVY_CORE);
     public static final DeferredBlock<Block> NEWBLOCKADSF = createSimpleBlock("newblockadsf", 77f, 50, SoundType.HEAVY_CORE);
+    public static final DeferredBlock<Block> SIMPLEBLOCKTEST = createSimpleBlock("simpleblocktest", 77f, 50, SoundType.HEAVY_CORE);
 
     //Special Blocks
     public static final DeferredBlock<Block> NEWSPECIALBLOCK = createBlockWithDescription("newspecialblock", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip");
+    public static final DeferredBlock<Block> SPECIALBLOCKTEST = createBlockWithDescription("specialblocktest", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip");
 
     //Complex Blocks
     public static final DeferredBlock<Block> NEWCOMPLEXBLOCK = registerBlock("newcomplexblock",
             () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK)));
     public static final DeferredBlock<Block> NEWCOMPLEXBLOCK2 = registerBlock("newcomplexblock2",
+            () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK)));
+    public static final DeferredBlock<Block> COMPLEXTEST = registerBlock("complextest",
             () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK)));
 
 }

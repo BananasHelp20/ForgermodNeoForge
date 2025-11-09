@@ -48,10 +48,26 @@ simple {
         blockWithItem
         pickaxe
         carbon_steel
-        blocks
+        items
+    simpleBlockTest
+        77f, 50, SoundType.HEAVY_CORE
+        dropOther
+        mod item jade_gemstone
+        blockWithItem
+        pickaxe
+        carbon_steel
+        weapons
 }
 special {
     newSpecialBlock
+        createBlockWithDescription
+        50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
+        dropSelf
+        blockWithItem
+        pickaxe
+        diamond
+        blocks
+    specialBlockTest
         createBlockWithDescription
         50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
         dropSelf
@@ -69,6 +85,13 @@ complex {
         iron
         blocks
     newComplexBlock2
+        new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
+        dropSelf
+        NOTblockWithItem
+        hoe
+        stone
+        blocks
+    complexTest
         new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
         dropSelf
         NOTblockWithItem

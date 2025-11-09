@@ -75,11 +75,17 @@ public class RegistryInterpreter {
         for (int i = 0; i < registryFileContentList.size(); i++) {
             if (registryFileContentList.get(i).contains("public static ItemLike[]")) {
                 i++;
-                if (registryFileContentList.get(i-1).contains("Ingredient")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Ingredient", "ModBlocks.");
-                if (registryFileContentList.get(i-1).contains("Weapon")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Weapon", "ModBlocks.");
-                if (registryFileContentList.get(i-1).contains("Item")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Item", "ModBlocks.");
-                if (registryFileContentList.get(i-1).contains("Miscellaneous")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Miscellaneous", "ModBlocks.");
-                if (registryFileContentList.get(i-1).contains("Block")) i = checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Block", "ModBlocks.");
+                if (registryFileContentList.get(i-1).contains("IngredientTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Ingredient", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("WeaponTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Weapon", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("ItemTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Item", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("MiscellaneousTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Miscellaneous", "ModBlocks.");
+                } else if (registryFileContentList.get(i-1).contains("BlockTab")) {
+                    checkAndCycleTabs(registryFileContentList, nameAndCreativeTab, i, "Block", "ModBlocks.");
+                }
             }
         }
 
@@ -102,13 +108,12 @@ public class RegistryInterpreter {
         return s;
     }
 
-    public static int checkAndCycleTabs(ArrayList<String> registry, ArrayList<ArrayList<String>> nameAndTab, int i, String tab, String type) {
+    public static void checkAndCycleTabs(ArrayList<String> registry, ArrayList<ArrayList<String>> nameAndTab, int i, String tab, String type) {
         for (int j = 0; j < nameAndTab.size(); j++) {
             if (nameAndTab.get(j).get(1).contains(tab.toLowerCase())) {
-                registry.add(i+1, "                " + type + nameAndTab.get(j).getFirst().toUpperCase() + ".get()," + "\n");
+                registry.add(i+1, "                " + type + nameAndTab.get(j).get(0).toUpperCase() + ".get(),\n");
             }
         }
-        return i;
     }
 
     public static int getContentForCreativeTabs(boolean special, ArrayList<ArrayList<String>> nameAndCreativeTab, Scanner reader, int ctr) {
