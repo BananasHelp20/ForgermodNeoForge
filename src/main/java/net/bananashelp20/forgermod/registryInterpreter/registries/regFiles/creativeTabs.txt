@@ -1,0 +1,3 @@
+forger_mod_test_tab
+    getDisplayItemForForgerWeaponsTab
+    getWeaponTabRegister
