@@ -1,8 +1,7 @@
-package net.bananashelp20.forgermod.registryInterpreter.testRegistries.test;
+package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.*;
-import net.bananashelp20.forgermod.registries.test.ModToolTiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;

@@ -1,4 +1,4 @@
-package net.bananashelp20.forgermod.registryInterpreter.testRegistries.test;
+package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
 
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.item.ModItems;

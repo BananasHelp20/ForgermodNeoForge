@@ -1,7 +1,5 @@
-package net.bananashelp20.forgermod.registryInterpreter.testRegistries.test;
+package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
 
-import net.bananashelp20.forgermod.block.ModBlocks;
-import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -21,8 +19,8 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.Set;
 
-public class TestRegistryClass extends BlockLootSubProvider {
-    protected TestRegistryClass(HolderLookup.Provider pRegistries) {
+public class ModBlockLootTableProvider extends BlockLootSubProvider {
+    protected ModBlockLootTableProvider(HolderLookup.Provider pRegistries) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), pRegistries);
     }
 

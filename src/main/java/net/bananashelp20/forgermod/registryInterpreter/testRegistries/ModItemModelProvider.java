@@ -1,7 +1,6 @@
-package net.bananashelp20.forgermod.registryInterpreter.testRegistries.test;
+package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
