@@ -1,3 +1,4 @@
 forger_mod_test_tab
-    getDisplayItemForForgerWeaponsTab
-    getWeaponTabRegister
+    ForgerModWeaponsTab
+    jade_gemstone
+    ModItems.

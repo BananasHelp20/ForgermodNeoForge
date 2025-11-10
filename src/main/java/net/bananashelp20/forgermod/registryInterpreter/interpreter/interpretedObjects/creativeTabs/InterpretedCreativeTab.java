@@ -10,6 +10,7 @@ public class InterpretedCreativeTab {
         this.camelCaseName = camelCaseName; //BeginsBig
         this.name = name;
         this.displayItemName = displayItemName;
+        this.displayItemType = displayItemType;
     }
 
     @Override
