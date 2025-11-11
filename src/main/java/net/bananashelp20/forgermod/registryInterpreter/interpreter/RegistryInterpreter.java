@@ -54,6 +54,7 @@ public class RegistryInterpreter {
         )) {
             return false;
         }
+        return true;
     }
 
     public static void printFileFromList(ArrayList<String> listedFile) {
