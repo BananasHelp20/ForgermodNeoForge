@@ -21,6 +21,7 @@ public class InterpretedShapedRecipe extends InterpretedRecipe {
         this.pattern = pattern;
         this.meanings = meanings;
         this.unlockedBy = unlockedBy;
+        this.category = category;
     }
 
     @Override

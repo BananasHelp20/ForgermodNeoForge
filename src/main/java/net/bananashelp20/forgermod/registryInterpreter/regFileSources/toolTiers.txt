@@ -1,0 +1,5 @@
+normal Tiers {
+    steel #material
+    steel_ingot #ingredient
+    350, 6.5f, 3, 12 #properties
+}

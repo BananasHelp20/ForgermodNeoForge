@@ -1,5 +1,11 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -38,6 +44,12 @@ public class RegistryInterpreter {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    ArrayList<InterpretedItem> items = getAllItems();
+//    ArrayList<InterpretedBlock> blocks = getAllBlocks();
+//    ArrayList<InterpretedRecipe> recipes = getAllRecipes();
+//    ArrayList<InterpretedCreativeTab> tabs = getAllCreativeTabs();
+//    ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
+
     static String unchangedModBlockFileContent = getContentFromFile(modBlockFile);
     static String unchangedModRegistryContent = getContentFromFile(modRegistry);
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
@@ -54,7 +66,32 @@ public class RegistryInterpreter {
         )) {
             return false;
         }
+
+//        generateToolTiers();
+//        generateAndWriteItemCode();
+//        generateAndWriteBlockCode();
+//        generateAndWriteCreativeTabs();
+//        generateAndWriteRecipes();
+
         return true;
+    }
+
+    private ArrayList<InterpretedItem> getAllItems() {
+        ArrayList<InterpretedItem> items = new ArrayList<>();
+        ArrayList<String> itemText = getContentFromFileAsList(itemFile);
+        Scanner reader;
+        try {
+            reader = new Scanner(itemFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < ; i++) {
+            
+        } (reader.hasNextLine()) {
+            
+        }
+        
+        return items;
     }
 
     public static void printFileFromList(ArrayList<String> listedFile) {

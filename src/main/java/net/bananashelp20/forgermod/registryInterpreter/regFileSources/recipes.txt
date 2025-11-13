@@ -1,0 +1,58 @@
+smelting {
+    misc
+    [
+        moditem steel_ingot, moditem damask_ingot
+    ]
+    moditem saphire_gemstone
+    0.5f, 200
+}
+
+blasting {
+    misc
+    [
+        moditem steel_ingot, moditem damask_ingot
+    ]
+    moditem saphire_gemstone
+    0.5f, 200
+}
+
+both {
+    misc
+    [
+        moditem steel_ingot, modblock damask_block
+    ]
+    moditem amethyst_gemstone
+    0.5f, 200
+    0.5f, 200
+}
+
+shaped {
+    misc
+    AAA
+    BXX
+    CCC
+    A -> amethyst_gemstone
+    B -> jade_gemstone
+    C -> claymore
+    steel_sword
+    steel_sword
+}
+
+shapeless {
+    misc
+    [
+        moditem ruby_gemstone, moditem amber_gemstone,
+    ]
+    moditem jade_gemstone
+    item stick
+    9
+}
+
+custom {
+    ForgeBlockEntity
+    [
+        moditem steel_ingot, moditem damask_ingot, moditem ruby_gemstone
+    ]
+    !SINGLE_OUTPUT
+    saphire_gemstone
+}

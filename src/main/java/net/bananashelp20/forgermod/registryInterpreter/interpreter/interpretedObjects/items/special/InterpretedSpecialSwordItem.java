@@ -12,9 +12,14 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
         itemProperties = new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material));
     }
 
+    public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material, String rarity) {
+        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
+        itemProperties = new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, rarity));
+    }
+
     @Override
     public String toString() {
-        return "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + " = " + itemProperties.get(2) + "(\"" + itemProperties.get(0).toLowerCase() + "\", ModToolTiers." + itemProperties.get(4).toUpperCase() + ", " + itemProperties.get(1) + ");";
+        return "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + " = " + itemProperties.get(2) + "(\"" + itemProperties.get(0).toLowerCase() + "\", ModToolTiers." + itemProperties.get(4).toUpperCase() + ", " + (itemProperties.size() == 6 ? "Rarity." + itemProperties.get(5).toUpperCase() + ", " : "") + itemProperties.get(1) + ");";
     }
 
     public String getItemModel() {

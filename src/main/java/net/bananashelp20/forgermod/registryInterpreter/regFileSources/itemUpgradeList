@@ -1,4 +1,6 @@
-ruby gemstoneUpgrade
-amber gemstoneUpgrade
-jade gemstoneUpgrade
-amethyst gemstoneUpgrade
+gemstones {
+    ruby gemstoneUpgrade
+    amber gemstoneUpgrade
+    jade gemstoneUpgrade
+    amethyst gemstoneUpgrade
+}

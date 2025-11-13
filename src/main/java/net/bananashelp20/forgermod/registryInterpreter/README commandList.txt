@@ -1,0 +1,25 @@
+*********************
+General
+*********************
+# declares a comment
+! declares a command
+
+*********************
+Item Commands
+*********************
+!ALL --> makes all variations including the item without any upgrade #has to be declared instead of the item variation List
+!NO_MODEL --> model isn't created, to make room for custom models #has to be declared instead of the item model method
+!ULTRA --> makes item extremely strong #has to be decalred instead of the item properties
+!CREATE_TOOLSET |[material]|[properties]| --> makes all tools and the ingot for specific material
+
+*********************
+Block Commands
+*********************
+!NO_MODEL --> model isn't created, to make room for custom models #has to be declared instead of the block model method
+!INDESTRUCTIBLE --> makes block basically indestructible #has to be declared instead of the block properties
+
+
+*********************
+Recipe Commands
+*********************
+!SINGLE_OUTPUT --> declares that block only has a single output

@@ -30,6 +30,7 @@ public class InterpretedBlastingOrSmeltingRecipe extends InterpretedRecipe {
         this.recipeID = id;
         this.inputItems = inputItems;
         this.smelting = smelting;
+        this.category = category;
         this.smeltingProperties[0] = smeltingProperties;
     }
 
