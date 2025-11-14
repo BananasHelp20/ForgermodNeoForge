@@ -24,9 +24,9 @@ Special Sword {
     specialSword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
-    [ #//Specify brackets
-        uncommon
-    ]
+    handheldItem
+    steel
+    ?rare
 }
 
 Upgradeable Sword {
