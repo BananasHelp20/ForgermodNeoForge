@@ -8,7 +8,7 @@ Special {
     basicItem
 }
 
-Sword {
+Simple Sword {
     sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItem
@@ -32,13 +32,13 @@ Upgradeable Sword {
     handheldItem
     electrium
     [
-        !ALL #! declares a command, and ALL means all variations
-    ]        #instead of !ALL, there could be the following:
-    #[
-    #   none, amber_gemstone, ruby_gemstone
-    #]
+        !ALL #//! declares a command, and ALL means all variations
+    ]        #//instead of !ALL, there could be the following:
+    #//[
+    #//   none, amber_gemstone, ruby_gemstone
+    #//]
 }
 
 sets {
-    #!CREATE_TOOLSET |steel|STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED|
+    #//!CREATE_TOOLSET |steel|STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED|
 }

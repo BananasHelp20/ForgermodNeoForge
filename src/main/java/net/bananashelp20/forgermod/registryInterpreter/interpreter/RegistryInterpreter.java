@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSimpleItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 
@@ -85,13 +86,33 @@ public class RegistryInterpreter {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0; i < ; i++) {
-            
-        } (reader.hasNextLine()) {
-            
+        for (int i = 0; i < itemText.size(); i++) {
+            if (itemText.get(i).contains("Simple {")) {
+                for (int j = i+1; j < itemText.size() && !itemText.get(j).contains("}"); j+=2) {
+                    items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(i)), getPartWithoutComment(itemText.get(i+1))));
+                }
+            } else if (itemText.get(i).contains("Special {")) {
+
+            } else if (itemText.get(i).contains("Simple Sword {")) {
+
+            } else if (itemText.get(i).contains("Special Sword {")) {
+
+            } else if (itemText.get(i).contains("Upgradeable Sword {")) {
+
+            }
         }
         
         return items;
+    }
+
+    private String getPartWithoutComment(String s) {
+        String[] splitText = s.split("#");
+        for (int i = 0; i < splitText.length; i++) {
+            if (!splitText[i].contains("//")) {
+                return splitText[i];
+            }
+        }
+        return "NULL";
     }
 
     public static void printFileFromList(ArrayList<String> listedFile) {
