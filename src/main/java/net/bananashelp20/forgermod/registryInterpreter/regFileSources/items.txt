@@ -1,11 +1,15 @@
 Simple { #//comment
-    item_name #comment
+    item_name
     basicItem
 }
 
 Special {
     special_item_name
     basicItem
+
+    special_item_with_rarity
+    basicItem
+    ?uncommon #//Questionmark declares an optional parameter
 }
 
 Simple Sword {
@@ -20,7 +24,7 @@ Special Sword {
     specialSword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
-    [ #//creationMethodSpecific brackets
+    [ #//Specify brackets
         uncommon
     ]
 }

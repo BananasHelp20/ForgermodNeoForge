@@ -30,6 +30,17 @@ public class ModItems {
                 });
     }
 
+    public static DeferredItem<Item> createItemWithRarityAndDescription(String name, String descriptionName, Rarity rarity) {
+        return ITEMS.register(name,
+                () -> new Item(new Item.Properties().rarity(rarity)) {
+                    @Override
+                    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+                        pTooltipComponents.add(Component.translatable(descriptionName));
+                        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
+                    }
+                });
+    }
+
     public static DeferredItem<SwordItem> createSwordItem(String name, Tier tier, int damage, float speed) {
         return ITEMS.register(
                 name, () -> new SwordItem(

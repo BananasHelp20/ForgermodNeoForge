@@ -92,7 +92,15 @@ public class RegistryInterpreter {
                     items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(i)), getPartWithoutComment(itemText.get(i+1))));
                 }
             } else if (itemText.get(i).contains("Special {")) {
-
+                int j = i+1;
+                while (j < itemText.size() && !itemText.get(j).contains("}")) {
+                    items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(i)), getPartWithoutComment(itemText.get(i+1))));
+                    if (getPartWithoutComment(itemText.get(i)).contains("?")) {
+                        i+=3;
+                    } else {
+                        i+=2;
+                    }
+                }
             } else if (itemText.get(i).contains("Simple Sword {")) {
 
             } else if (itemText.get(i).contains("Special Sword {")) {
