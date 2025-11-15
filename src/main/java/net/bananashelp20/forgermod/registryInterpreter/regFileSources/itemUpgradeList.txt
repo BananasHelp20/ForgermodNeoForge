@@ -1,0 +1,6 @@
+gemstones {
+    ruby
+    amber
+    jade
+    amethyst
+}

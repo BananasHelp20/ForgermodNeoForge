@@ -1,18 +1,12 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -29,14 +23,14 @@ public class RegistryInterpreter {
         }
     }
 
-    static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/blocks.txt");
-    static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
-    static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
-    static File variationFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/itemUpgradeList.txt");
-    static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/item/ModItems.java");
-    static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");
-    static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
-    static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlocks.java");
+    static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/blocks.txt");
+    static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/items.txt");
+    static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/creativeTabs.txt");
+    static File variationFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/itemUpgradeList.txt");
+    static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
+    static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
+    static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/TestRegistryClass.java");
+    static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -91,11 +85,13 @@ public class RegistryInterpreter {
         cleanText(itemText);
         ArrayList<String> variations = getContentFromFileAsList(variationFile);
         cleanText(variations);
+        summarizeText(variations);
 
         for (int i = 0; i < itemText.size(); i++) {
+            System.out.print(itemText.get(i));
             if (itemText.get(i).contains("Simple {")) {
                 for (int j = i + 1; j < itemText.size() && !itemText.get(j).contains("}"); j += 2) {
-                    items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(j)), getPartWithoutComment(itemText.get(j+1))));
+                    items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(j)).trim(), getPartWithoutComment(itemText.get(j+1)).trim()));
                 }
             } else if (itemText.get(i).contains("Special {")) {
                 int j = i + 1;
@@ -109,18 +105,19 @@ public class RegistryInterpreter {
                     }
                 }
             } else if (itemText.get(i).contains("Simple Sword {")) {
-                for (int j = i + 1; j < itemText.size() && !itemText.contains("}"); j += 0) {
+                for (int j = i + 1; j < itemText.size() && !getPartWithoutComment(itemText.get(j)).contains("}"); j += 0) {
                     items.add(new InterpretedSwordItem(getPartWithoutComment(itemText.get(j).trim()), getPartWithoutComment(itemText.get(j).trim()), getPartWithoutComment(itemText.get(j).trim()), getPartWithoutComment(itemText.get(j).trim()), getPartWithoutComment(itemText.get(j).trim())));
                     j += 5;
                 }
 
             } else if (itemText.get(i).contains("Special Sword {")) {
-                for (int j = i + 1; j < itemText.size() && !itemText.contains("}"); j += 0) {
-                    if (getPartWithoutComment(itemText.get(i)).contains("?")) {
-                        items.add(new InterpretedSpecialSwordItem(getPartWithoutComment(itemText.get(j).trim()), getPartWithoutComment(itemText.get(j+1).trim()), getPartWithoutComment(itemText.get(j+2).trim()), getPartWithoutComment(itemText.get(j+3).trim()), getPartWithoutComment(itemText.get(j+4).trim()).split(" ? ".trim())[1]));
+                for (int j = i + 1; j < itemText.size() && !getPartWithoutComment(itemText.get(j+1)).contains("}"); j += 0) {
+                    System.out.print(itemText.get(j));
+                    if (getPartWithoutComment(itemText.get(j+5)).contains("?")) {
+                        items.add(new InterpretedSpecialSwordItem(getPartWithoutComment(itemText.get(j)).trim(), getPartWithoutComment(itemText.get(j+1)).trim(), getPartWithoutComment(itemText.get(j+2)).trim(), getPartWithoutComment(itemText.get(j+3)).trim(), getPartWithoutComment(itemText.get(j+4)).trim(), getPartWithoutComment(itemText.get(j+5)).trim()));
                         j += 6;
                     } else {
-                        items.add(new InterpretedSpecialSwordItem(getPartWithoutComment(itemText.get(j)), getPartWithoutComment(itemText.get(j+1)), getPartWithoutComment(itemText.get(j+2).trim()), getPartWithoutComment(itemText.get(j+3).trim()), getPartWithoutComment(itemText.get(j+4).trim())));
+                        items.add(new InterpretedSpecialSwordItem(getPartWithoutComment(itemText.get(j)).trim(), getPartWithoutComment(itemText.get(j+1)).trim(), getPartWithoutComment(itemText.get(j+2)).trim(), getPartWithoutComment(itemText.get(j+3)).trim(), getPartWithoutComment(itemText.get(j+4)).trim()));
                         j += 5;
                     }
                 }
@@ -142,12 +139,24 @@ public class RegistryInterpreter {
                 }
             }
         }
-        System.out.println(items);
+        printFileFromList(items);
         return items;
+    }
+
+    private static void summarizeText(ArrayList<String> variations) {
+        for (int i = 0; i < variations.size(); i++) {
+            if (variations.get(i).contains("{") || variations.get(i).contains("}")) {
+                variations.remove(i);
+                i--;
+            } else {
+                variations.set(i, variations.get(i).trim());
+            }
+        }
     }
 
     private static void cleanText(ArrayList<String> text) {
         for (int i = 0; i < text.size(); i++) {
+            text.set(i, text.get(i).substring(0,text.get(i).length()-1));
             if (getPartWithoutComment(text.get(i)).trim().isEmpty()) {
                 text.remove(i);
                 i--;
@@ -165,9 +174,9 @@ public class RegistryInterpreter {
         return "NULL";
     }
 
-    public static void printFileFromList(ArrayList<String> listedFile) {
+    public static void printFileFromList(ArrayList<InterpretedItem> listedFile) {
         for (int i = 0; i < listedFile.size(); i++) {
-            System.out.print(listedFile.get(i));
+            System.out.println(listedFile.get(i).toString());
         }
     }
 

@@ -9,7 +9,7 @@ public class InterpretedSimpleItem extends InterpretedItem {
     String name;
     String modelMethod;
     public InterpretedSimpleItem(String name, String modelMethod) {
-        super(new ArrayList<>(Arrays.asList(name, modelMethod)));
+        super(new ArrayList<>(Arrays.asList(name.trim(), modelMethod.trim())));
         this.name = name;
         this.modelMethod = modelMethod;
     }

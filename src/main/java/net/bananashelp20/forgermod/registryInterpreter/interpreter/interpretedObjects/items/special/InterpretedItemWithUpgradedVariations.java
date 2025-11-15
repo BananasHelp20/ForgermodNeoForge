@@ -10,7 +10,7 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     ArrayList<String> variants;
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants) {
         super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material));
+        itemProperties = new ArrayList<>(Arrays.asList(name.trim(), itemClass.trim(), itemCreationMethod.trim(), modelMethod.trim(), material.trim()));
         this.variants = variants;
     }
 
@@ -18,7 +18,7 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     public String toString() {
         String s  = "";
         for (int i = 0; i < variants.size(); i++) {
-            s += "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + "_" + variants.get(i).toUpperCase() + " = createSpecialSwordItem(\"" + itemProperties.get(0).toLowerCase() + "_" + variants.get(i).toLowerCase() + "\", () -> new " + itemProperties.get(1) + "(\"" + variants.get(i) + "\"));\n";
+            s += "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + "_" + variants.get(i).toUpperCase() + " = createSpecialSwordItem(\"" + itemProperties.get(0).toLowerCase() + "_" + variants.get(i).toLowerCase() + "\", () -> new " + itemProperties.get(1) + "(\"" + variants.get(i).toLowerCase() + "\"));\n";
         }
         return s;
     }

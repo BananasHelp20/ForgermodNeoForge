@@ -9,7 +9,7 @@ public class InterpretedSwordItem extends InterpretedItem {
     ArrayList<String> itemProperties;
     public InterpretedSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material) {
         super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material));
+        itemProperties = new ArrayList<>(Arrays.asList(name.trim(), properties.trim(), itemCreationMethod.trim(), modelMethod.trim(), material.trim()));
     }
 
     @Override

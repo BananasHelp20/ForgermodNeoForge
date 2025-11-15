@@ -14,7 +14,7 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
 
     public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material, String rarity) {
         super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, rarity));
+        itemProperties = new ArrayList<>(Arrays.asList(name.trim(), properties.trim(), itemCreationMethod.trim(), modelMethod.trim(), material.trim(), (rarity.trim().charAt(0) == '?' ? rarity.trim().substring(1) : rarity.trim())));
     }
 
     @Override

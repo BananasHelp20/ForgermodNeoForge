@@ -9,6 +9,7 @@ public class InterpretedSpecialItem extends InterpretedItem {
     String name;
     String modelMethod;
     String rarity = "";
+    boolean hasRarity = false;
     public InterpretedSpecialItem(String name, String modelMethod) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
         this.name = name;
@@ -17,16 +18,17 @@ public class InterpretedSpecialItem extends InterpretedItem {
 
     public InterpretedSpecialItem(String name, String modelMethod, String rarity) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
-        this.name = name;
-        this.modelMethod = modelMethod;
-        this.rarity = rarity;
+        this.name = name.trim();
+        this.modelMethod = modelMethod.trim();
+        hasRarity = true;
+        this.rarity = (rarity.trim().charAt(0) == '?' ? rarity.trim().substring(1) : rarity.trim());
     }
 
     @Override
     public String toString() {
-        if (rarity.equals(""))
-            return "    public static final DeferredItem<Item> " + name.toUpperCase() + " = createItemWithDescription(\"" + name.toLowerCase() + "\", \"tooltips.forgermod." + name.toLowerCase() + ".tooltip\");";
-        return "    public static final DeferredItem<Item> " + name.toUpperCase() + " = createItemWithRarityAndDescription(\"" + name.toLowerCase() + "\", \"tooltips.forgermod." + name.toLowerCase() + ".tooltip\", Rarity." + rarity.toUpperCase() + ");";
+        if (!hasRarity)
+            return "    public static final DeferredItem<Item> " + name.trim().toUpperCase() + " = createItemWithDescription(\"" + name.trim().toLowerCase() + "\", \"tooltips.forgermod." + name.trim().toLowerCase() + ".tooltip\");";
+        return "    public static final DeferredItem<Item> " + name.trim().toUpperCase() + " = createItemWithRarityAndDescription(\"" + name.trim().toLowerCase() + "\", \"tooltips.forgermod." + name.trim().toLowerCase() + ".tooltip\", Rarity." + rarity.trim().toUpperCase() + ");";
     }
 
     public String getItemModel() {
