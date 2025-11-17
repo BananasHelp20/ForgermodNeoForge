@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class RegistryInterpreter {
     static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/blocks.txt");
-    static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
+    public File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
     static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
     static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/item/ModItems.java");
     static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");

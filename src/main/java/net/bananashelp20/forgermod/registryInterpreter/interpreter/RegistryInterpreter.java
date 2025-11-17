@@ -28,7 +28,7 @@ public class RegistryInterpreter {
     }
 
     static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/blocks.txt");
-    static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
+    public static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
     static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
     static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/item/ModItems.java");
     static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");
@@ -208,5 +208,23 @@ public class RegistryInterpreter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static ArrayList<ArrayList<String>> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent) {
+        ArrayList<ArrayList<String>> enchantingTagsForEachItem = new ArrayList<>();
+        ArrayList<String> currItem;
+        for (int i = 0; i < filecontent.size(); i++) {
+            if (filecontent.get(i).contains("?[E")) {
+                i++;
+                currItem = new ArrayList<>();
+                while (i < filecontent.size() && !filecontent.get(i).contains("?]")) {
+                    currItem.add(filecontent.get(i).trim().split("Enchantable:")[0].toUpperCase());
+                    i++;
+                }
+                enchantingTagsForEachItem.add(currItem);
+            }
+        }
+
+        return enchantingTagsForEachItem;
     }
 }

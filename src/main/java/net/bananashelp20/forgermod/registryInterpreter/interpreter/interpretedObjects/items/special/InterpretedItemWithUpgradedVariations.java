@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special;
 
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 
 import java.util.ArrayList;
@@ -8,9 +9,11 @@ import java.util.Arrays;
 public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> variants;
+    ArrayList<ArrayList<String>> enchantmentExtras;
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants) {
         super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material)));
         itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material));
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile));
         this.variants = variants;
     }
 

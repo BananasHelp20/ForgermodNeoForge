@@ -1,15 +1,30 @@
 Simple { #//comment
     item_name
     basicItem
+    ?[E
+        Enchantable:Sword
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
 }
 
 Special {
     special_item_name
     basicItem
+    ?[E
+        Enchantable:Sword
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
 
     special_item_with_rarity
     basicItem
     ?uncommon #//Questionmark declares an optional parameter
+    ?[E
+        Enchantable:Sword
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
 }
 
 Simple Sword {
@@ -18,6 +33,9 @@ Simple Sword {
     createSwordItem
     handheldItem
     steel
+    ?[E
+        Enchantable:Axe
+    ?]
 }
 
 Special Sword {
