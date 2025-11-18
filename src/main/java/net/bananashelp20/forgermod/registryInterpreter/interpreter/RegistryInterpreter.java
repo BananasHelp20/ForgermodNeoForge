@@ -62,7 +62,7 @@ public class RegistryInterpreter {
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
     static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeModeTabsFile);
 
-    public static  boolean generateCode() {
+    public static boolean generateCode() {
         if (!(modBlockFile.exists() && modBlockFile.canWrite() && modBlockFile.canRead()
                 && modItemsFile.exists() && modItemsFile.canWrite() && modItemsFile.canRead()
                 && modCreativeModeTabsFile.exists() && modCreativeModeTabsFile.canWrite() && modCreativeModeTabsFile.canRead()
@@ -73,12 +73,31 @@ public class RegistryInterpreter {
         )) {
             return false;
         }
+        Scanner userHelper = new Scanner(System.in);
+        warning("*************************************************************************************************************************************************************************\n" +
+                "Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, ModToolTiers and ModCreativeModeTabs.\n" +
+                "Other Files might also be affected, and there is no guarantee the code works as it should.\n" +
+                "If you wish to continue anyways, press " + ANSI_RESET + ANSI_GREEN + "Enter.\n" + ANSI_RESET + ANSI_YELLOW +
+                "If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"" + ANSI_RESET + ANSI_YELLOW + "\n" +
+                "*************************************************************************************************************************************************************************");
+        if (userInput(userHelper).contains("!STOP"))
+            return true;
 
+//        success("Successfully generated tool tier objects");
 //        generateToolTiers();
+//        success("Successfully wrote tool tier objects to files");
+        success("Successfully generated item objects");
 //        generateAndWriteItemCode();
+//        success("Successfully wrote item objects to files");
+//        success("Successfully generated block objects");
 //        generateAndWriteBlockCode();
+//        success("Successfully wrote block tab objects to files");
+//        success("Successfully generated creative tab objects");
 //        generateAndWriteCreativeTabs();
+//        success("Successfully wrote cretive tab objects to files");
+//        success("Successfully generated recipe objects");
 //        generateAndWriteRecipes();
+//        success("Successfully wrote recipe objects to files");
 
         return true;
     }
@@ -142,8 +161,15 @@ public class RegistryInterpreter {
                 items.add(new InterpretedItemWithUpgradedVariations(properties.getFirst(), properties.get(1), properties.get(2), properties.get(3), properties.get(4), variants));
             }
         }
-        success("Successfully generated item objects");
         return items;
+    }
+
+    public static String userInput(Scanner s) {
+        System.out.println();
+        System.out.print(ANSI_CYAN + "#USER>" + ANSI_RESET);
+        String line = s.nextLine();
+        System.out.println();
+        return line;
     }
 
     public static void success(String msg) {

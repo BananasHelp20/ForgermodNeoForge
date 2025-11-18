@@ -47,10 +47,7 @@ public class WilliCodeGenerator {
         boolean running = true;
         while (running) {
             System.out.println(ANSI_YELLOW + "What do you want to add?\nOptions are:\n - Blocks\n - Items\n - Creative Tabs\n - Upgrades\n - Recipes\n - Tool Tiers" + ANSI_RESET);
-            System.out.println();
-            System.out.print(ANSI_CYAN + "#USER>" + ANSI_RESET);
-            line = s.nextLine();
-            System.out.println();
+            line = userInput(s);
             if (line.charAt(0) == 'B' || line.charAt(0) == 'b') {
                 //blocks
             } else if (line.trim().charAt(0) == 'I' || line.trim().charAt(0) == 'i') {
@@ -76,5 +73,13 @@ public class WilliCodeGenerator {
 //        generateAndWriteRecipes();
 
         return true;
+    }
+
+    public static String userInput(Scanner s) {
+        System.out.println();
+        System.out.print(ANSI_CYAN + "#USER>" + ANSI_RESET);
+        String line = s.nextLine();
+        System.out.println();
+        return line;
     }
 }
