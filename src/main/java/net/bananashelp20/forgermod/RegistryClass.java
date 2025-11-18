@@ -1,4 +1,4 @@
-package net.bananashelp20.forgermod.registries;
+package net.bananashelp20.forgermod;
 
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.item.ModItems;

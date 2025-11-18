@@ -3,10 +3,7 @@ package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSimpleItem;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSpecialItem;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSpecialSwordItem;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSwordItem;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 
@@ -20,6 +17,9 @@ import java.util.Scanner;
 public class RegistryInterpreter {
     public static void main(String[] args) throws FileNotFoundException {
         try {
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println(items.get(i));
+            }
             if (!generateCode()) {
                 rewriteAllAfterError();
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
@@ -30,13 +30,16 @@ public class RegistryInterpreter {
         }
     }
 
-    static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/blocks.txt");
-    public static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/items.txt");
-    static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/regFiles/creativeTabs.txt");
-    static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/item/ModItems.java");
-    static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/CreativeModeTabs/ModCreativeModeTabs.java");
-    static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registries/TestRegistryClass.java");
-    static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registries/test/ModBlocks.java");
+    public static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/blocks.willi");
+    public static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/items.willi");
+    public static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/creativeTabs.willi");
+    public static File upgradeList = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/itemUpgradeList.txt");
+    public static File recipeFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/recipes.willi");
+    public static File toolTiersFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/toolTiers.willi");
+    public static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
+    public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
+    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/TestRegistryClass.java");
+    public static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -48,7 +51,7 @@ public class RegistryInterpreter {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    ArrayList<InterpretedItem> items = getAllItems();
+    static ArrayList<InterpretedItem> items = getAllItems();
 //    ArrayList<InterpretedBlock> blocks = getAllBlocks();
 //    ArrayList<InterpretedRecipe> recipes = getAllRecipes();
 //    ArrayList<InterpretedCreativeTab> tabs = getAllCreativeTabs();
@@ -80,44 +83,79 @@ public class RegistryInterpreter {
         return true;
     }
 
-    private ArrayList<InterpretedItem> getAllItems() {
+    public static ArrayList<InterpretedItem> getAllItems() {
         ArrayList<InterpretedItem> items = new ArrayList<>();
         ArrayList<String> itemText = getContentFromFileAsList(itemFile);
         Scanner reader;
         ArrayList<ArrayList<String>> itemStringObjects = new ArrayList<>();
+        ArrayList<String> variants;
         try {
             reader = new Scanner(itemFile);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         ArrayList<String> properties = new ArrayList<>();
+        int ctr = -1;
         for (int i = 0; i < itemText.size(); i++) {
             if (itemText.get(i).contains("(")) {
                 itemStringObjects.add(new ArrayList<>());
-                for (int j = i; !itemText.get(i).contains(")"); j++) {
-                    itemStringObjects.get(i).add(itemText.get(j));
-                }
-                for (int j = 0; j < itemStringObjects.size(); j++) {
-                    if (itemStringObjects.get(j).getFirst().contains("simpleItem")) {
-                        items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
-                    } else if (itemStringObjects.get(j).getFirst().contains("specialItem")) {
-                        if (!itemStringObjects.get(j).get(3).equals("?[E") && !itemStringObjects.get(j).get(3).equals(")")) {
-                            items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
-                        } else {
-                            items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
-                        }
-                    } else if (itemStringObjects.get(j).getFirst().contains("simpleSword")) {
-                        items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5)));
-                    } else if (itemStringObjects.get(j).getFirst().contains("specialSword")) {
-                        properties = new ArrayList<>();
-                        items.add(new InterpretedSpecialSwordItem());
-                    } else if (itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
-
-                    }
+                ctr++;
+                for (int j = i; j < itemText.size() && !itemText.get(j).contains(")"); j++) {
+                    itemStringObjects.get(ctr).add(itemText.get(j));
+                    i = j;
                 }
             }
         }
+
+        for (int j = 0; j < itemStringObjects.size(); j++) {
+            if (itemStringObjects.get(j).getFirst().contains("simpleItem")) {
+                items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
+            } else if (itemStringObjects.get(j).getFirst().contains("specialItem")) {
+                if (!itemStringObjects.get(j).get(3).contains("?[E") && itemStringObjects.get(j).get(3).contains("?")) {
+                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3).substring(1).trim()));
+                } else {
+                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
+                }
+            } else if (itemStringObjects.get(j).getFirst().contains("simpleSword")) {
+                items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5)));
+            } else if (itemStringObjects.get(j).getFirst().contains("specialSword")) {
+                properties = new ArrayList<>();
+                for (int k = 0; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains(")"); k++) {
+                    if (itemStringObjects.get(j).get(k).contains("[") && !itemStringObjects.get(j).get(k).contains("?[E")) {
+                        for (int l = k+1; l < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(l).contains("]"); l++) {
+                            properties.add(itemStringObjects.get(j).get(l));
+                        }
+                    }
+                }
+                items.add(new InterpretedSpecialSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), properties, itemStringObjects.get(j).get(5)));
+            } else if (itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
+                variants = new ArrayList<>();
+                properties = new ArrayList<>();
+                properties.add(itemStringObjects.get(j).getFirst());
+                properties.add(itemStringObjects.get(j).get(1));
+                properties.add(itemStringObjects.get(j).get(2));
+                properties.add(itemStringObjects.get(j).get(3));
+                properties.add(itemStringObjects.get(j).get(4));
+                for (int k = 7; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains("]"); k++) {
+                    variants.add(itemStringObjects.get(j).get(k));
+                }
+                items.add(new InterpretedItemWithUpgradedVariations(properties.getFirst(), properties.get(1), properties.get(2), properties.get(3), properties.get(4), variants));
+            }
+        }
+        success("Successfully generated item objects");
         return items;
+    }
+
+    public static void success(String msg) {
+        System.out.println(ANSI_GREEN + msg + ANSI_RESET);
+    }
+
+    public static void error(String msg) {
+        System.out.println(ANSI_RED + msg + ANSI_RESET);
+    }
+
+    public static void warning(String msg) {
+        System.out.println(ANSI_YELLOW + msg + ANSI_RESET);
     }
 
     public static String getPartWithoutComment(String s) {
@@ -155,6 +193,7 @@ public class RegistryInterpreter {
 
     public static void clearContentFromUnneccesary(ArrayList<String> content) {
         for (int i = 0; i < content.size(); i++) {
+            content.set(i, content.get(i).trim());
             if (content.get(i).contains("#")) {
                 content.set(i, getPartWithoutComment(content.get(i)));
             }

@@ -1,4 +1,6 @@
 #//comment//#
+#//comment
+comment//#
 (simpleItem
     item_name
     basicItem
@@ -8,6 +10,7 @@
         Enchantable:Pickaxe
     ?]
 )
+
 (specialItem
     special_item_name
     basicItem
@@ -17,6 +20,7 @@
         Enchantable:Pickaxe
     ?]
 )
+
 (specialItem
     special_item_with_rarity
     basicItem
@@ -27,6 +31,7 @@
         Enchantable:Pickaxe
     ?]
 )
+
 (simpleSword
     sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
@@ -37,15 +42,35 @@
         Enchantable:Axe
     ?]
 )
+
 (specialSword
     specialSword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
+    handheldItem
+    steel
     [ #//Specify brackets
         uncommon
     ]
     !NO_ENCHANTS
 )
+
+(specialSword
+    specialSword2
+    STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
+    createSwordItemWithRarityAndDescription
+    handheldItem
+    steel
+    ?rare
+    [ #//Specify brackets
+        uncommon
+    ]
+    ?[E
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
+)
+
 (upgradableSword
     complexSword
     ElectriumWeapon

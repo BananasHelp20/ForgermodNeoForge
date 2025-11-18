@@ -1,6 +1,5 @@
-gemstones {
-    ruby
-    amber
-    jade
-    amethyst
-}
+none
+ruby
+amber
+jade
+amethyst

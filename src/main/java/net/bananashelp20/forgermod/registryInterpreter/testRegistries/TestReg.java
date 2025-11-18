@@ -6,9 +6,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-import static net.bananashelp20.forgermod.block.ModBlocks.registerBlock;
-import static net.bananashelp20.forgermod.registries.test.ModBlocks.createBlockWithDescription;
-import static net.bananashelp20.forgermod.registries.test.ModBlocks.createSimpleBlock;
+import static net.bananashelp20.forgermod.block.ModBlocks.*;
 
 
 public class TestReg {

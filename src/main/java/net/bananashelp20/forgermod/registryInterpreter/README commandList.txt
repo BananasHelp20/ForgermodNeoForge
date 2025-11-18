@@ -1,8 +1,17 @@
+:::::::::::::::::::::
+.willi Manual
+:::::::::::::::::::::
+
 *********************
 General
 *********************
-# declares a comment
-! declares a command
+#// declares a comment:
+    #//comment//#
+    #//comment
+    comment//#
+
+! declares a command:
+    !COMMAND
 
 *********************
 Item Commands
