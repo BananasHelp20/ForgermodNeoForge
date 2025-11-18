@@ -1,35 +1,52 @@
-Simple { #//comment
+#//comment//#
+(simpleItem
     item_name
     basicItem
-}
-
-Special {
+    ?[E
+        Enchantable:Sword
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
+)
+(specialItem
     special_item_name
     basicItem
-
+    ?[E
+        Enchantable:Sword
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
+)
+(specialItem
     special_item_with_rarity
     basicItem
     ?uncommon #//Questionmark declares an optional parameter
-}
-
-Simple Sword {
+    ?[E
+        Enchantable:Sword
+        Enchantable:Axe
+        Enchantable:Pickaxe
+    ?]
+)
+(simpleSword
     sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItem
     handheldItem
     steel
-}
-
-Special Sword {
+    ?[E
+        Enchantable:Axe
+    ?]
+)
+(specialSword
     specialSword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
-    handheldItem
-    steel
-    ?rare
-}
-
-Upgradeable Sword {
+    [ #//Specify brackets
+        uncommon
+    ]
+    !NO_ENCHANTS
+)
+(upgradableSword
     complexSword
     ElectriumWeapon
     createSpecialSwordItem
@@ -41,8 +58,9 @@ Upgradeable Sword {
     #//[
     #//   none, amber_gemstone, ruby_gemstone
     #//]
-}
+    !NO_ENCHANTS
+)
 
-sets {
+#//sets {
     #//!CREATE_TOOLSET |steel|STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED|
-}
+#//}

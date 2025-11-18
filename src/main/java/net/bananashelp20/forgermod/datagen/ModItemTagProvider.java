@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.datagen;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.util.ModTags;
+import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -23,5 +23,9 @@ public class ModItemTagProvider extends ItemTagsProvider {
 //        tag(ModTags.Items.TRANSFORMABLE_ITEMS)
 //
 //        ;
+        tag(ItemTags.SWORDS)
+                .add(ModItems.CLAYMORE.get())
+                .add(ModItems.CLAYMORE_OF_THE_VOID.get())
+        ;
     }
 }
