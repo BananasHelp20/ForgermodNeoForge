@@ -76,7 +76,7 @@ public class RegistryInterpreter {
         Scanner userHelper = new Scanner(System.in);
         warning("*************************************************************************************************************************************************************************\n" +
                 "Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, ModToolTiers and ModCreativeModeTabs.\n" +
-                "Other Files might also be affected, and there is no guarantee the code works as it should.\n" +
+                "Other Files might also be affected, and there is no guarantee the code works as it should.\nPlease make sure to " + ANSI_RESET + ANSI_PURPLE + "//!PRESERVE " + ANSI_RESET + ANSI_YELLOW + "every important code that should not be overridden\n" +
                 "If you wish to continue anyways, press " + ANSI_RESET + ANSI_GREEN + "Enter.\n" + ANSI_RESET + ANSI_YELLOW +
                 "If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"" + ANSI_RESET + ANSI_YELLOW + "\n" +
                 "*************************************************************************************************************************************************************************");
