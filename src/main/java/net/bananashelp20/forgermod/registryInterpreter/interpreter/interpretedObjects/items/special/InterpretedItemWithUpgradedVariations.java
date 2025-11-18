@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     ArrayList<String> itemProperties;
@@ -13,7 +14,7 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants) {
         super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material)));
         itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile));
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
         this.variants = variants;
     }
 
@@ -32,5 +33,13 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
             s += "        " + itemProperties.get(3) + "(ModItems." + itemProperties.get(0).toUpperCase() + "_" + variants.get(i).toUpperCase() + ");\n";
         }
         return s;
+    }
+
+    public ArrayList<String> getItemEnchantmentTagsList() {
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < enchantmentExtras.size(); i++) {
+            list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + itemProperties.get(0).toUpperCase() + ".get())");
+        }
+        return list;
     }
 }

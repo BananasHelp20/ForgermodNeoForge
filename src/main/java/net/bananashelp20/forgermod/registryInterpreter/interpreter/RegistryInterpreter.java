@@ -210,7 +210,7 @@ public class RegistryInterpreter {
         }
     }
 
-    public static ArrayList<ArrayList<String>> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent) {
+    public static ArrayList<ArrayList<String>> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent, String name) {//specifisch für name ausgeben
         ArrayList<ArrayList<String>> enchantingTagsForEachItem = new ArrayList<>();
         ArrayList<String> currItem;
         for (int i = 0; i < filecontent.size(); i++) {
