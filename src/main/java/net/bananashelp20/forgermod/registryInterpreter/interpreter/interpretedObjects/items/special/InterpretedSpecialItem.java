@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class InterpretedSpecialItem extends InterpretedItem {
     String name;
     String modelMethod;
-    ArrayList<ArrayList<String>> enchantmentExtras;
+    ArrayList<String> enchantmentExtras;
     String rarity = "";
     public InterpretedSpecialItem(String name, String modelMethod) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
@@ -35,7 +35,7 @@ public class InterpretedSpecialItem extends InterpretedItem {
 
     public ArrayList<String> getItemEnchantmentTagsList() {
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < enchantmentExtras.size(); i++) {
+        for (int i = 1; i < enchantmentExtras.size(); i++) {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + name.toUpperCase() + ".get())");
         }
         return list;

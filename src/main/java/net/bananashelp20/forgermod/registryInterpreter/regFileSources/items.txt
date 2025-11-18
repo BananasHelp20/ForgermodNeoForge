@@ -1,4 +1,5 @@
-Simple { #//comment
+#//comment//#
+(simpleItem
     item_name
     basicItem
     ?[E
@@ -6,9 +7,8 @@ Simple { #//comment
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-}
-
-Special {
+)
+(specialItem
     special_item_name
     basicItem
     ?[E
@@ -16,7 +16,8 @@ Special {
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-
+)
+(specialItem
     special_item_with_rarity
     basicItem
     ?uncommon #//Questionmark declares an optional parameter
@@ -25,9 +26,8 @@ Special {
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-}
-
-Simple Sword {
+)
+(simpleSword
     sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItem
@@ -36,18 +36,17 @@ Simple Sword {
     ?[E
         Enchantable:Axe
     ?]
-}
-
-Special Sword {
+)
+(specialSword
     specialSword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
     [ #//Specify brackets
         uncommon
     ]
-}
-
-Upgradeable Sword {
+    !NO_ENCHANTS
+)
+(upgradableSword
     complexSword
     ElectriumWeapon
     createSpecialSwordItem
@@ -59,8 +58,9 @@ Upgradeable Sword {
     #//[
     #//   none, amber_gemstone, ruby_gemstone
     #//]
-}
+    !NO_ENCHANTS
+)
 
-sets {
+#//sets {
     #//!CREATE_TOOLSET |steel|STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED|
-}
+#//}

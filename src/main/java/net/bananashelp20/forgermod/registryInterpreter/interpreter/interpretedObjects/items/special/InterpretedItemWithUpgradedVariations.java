@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> variants;
-    ArrayList<ArrayList<String>> enchantmentExtras;
+    ArrayList<String> enchantmentExtras;
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants) {
         super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material)));
         itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material));
@@ -21,7 +21,7 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     @Override
     public String toString() {
         String s  = "";
-        for (int i = 0; i < variants.size(); i++) {
+        for (int i = 1; i < variants.size(); i++) {
             s += "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + "_" + variants.get(i).toUpperCase() + " = createSpecialSwordItem(\"" + itemProperties.get(0).toLowerCase() + "_" + variants.get(i).toLowerCase() + "\", () -> new " + itemProperties.get(1) + "(\"" + variants.get(i) + "\"));\n";
         }
         return s;

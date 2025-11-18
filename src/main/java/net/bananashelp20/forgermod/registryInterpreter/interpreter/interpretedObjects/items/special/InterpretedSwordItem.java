@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class InterpretedSwordItem extends InterpretedItem {
-    ArrayList<ArrayList<String>> enchantmentExtras;
+    ArrayList<String> enchantmentExtras;
     ArrayList<String> itemProperties;
     public InterpretedSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material) {
         super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
@@ -22,7 +22,7 @@ public class InterpretedSwordItem extends InterpretedItem {
 
     public ArrayList<String> getItemEnchantmentTagsList() {
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < enchantmentExtras.size(); i++) {
+        for (int i = 1; i < enchantmentExtras.size(); i++) {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + itemProperties.get(0).toUpperCase() + ".get())");
         }
         return list;

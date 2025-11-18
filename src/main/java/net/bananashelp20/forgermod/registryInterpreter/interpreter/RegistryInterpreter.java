@@ -4,6 +4,9 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSimpleItem;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSpecialItem;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSpecialSwordItem;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.InterpretedSwordItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 
@@ -81,46 +84,50 @@ public class RegistryInterpreter {
         ArrayList<InterpretedItem> items = new ArrayList<>();
         ArrayList<String> itemText = getContentFromFileAsList(itemFile);
         Scanner reader;
+        ArrayList<ArrayList<String>> itemStringObjects = new ArrayList<>();
         try {
             reader = new Scanner(itemFile);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        ArrayList<String> properties = new ArrayList<>();
         for (int i = 0; i < itemText.size(); i++) {
-            if (itemText.get(i).contains("Simple {")) {
-                for (int j = i+1; j < itemText.size() && !itemText.get(j).contains("}"); j+=2) {
-                    items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(i)), getPartWithoutComment(itemText.get(i+1))));
+            if (itemText.get(i).contains("(")) {
+                itemStringObjects.add(new ArrayList<>());
+                for (int j = i; !itemText.get(i).contains(")"); j++) {
+                    itemStringObjects.get(i).add(itemText.get(j));
                 }
-            } else if (itemText.get(i).contains("Special {")) {
-                int j = i+1;
-                while (j < itemText.size() && !itemText.get(j).contains("}")) {
-                    items.add(new InterpretedSimpleItem(getPartWithoutComment(itemText.get(i)), getPartWithoutComment(itemText.get(i+1))));
-                    if (getPartWithoutComment(itemText.get(i)).contains("?")) {
-                        i+=3;
-                    } else {
-                        i+=2;
+                for (int j = 0; j < itemStringObjects.size(); j++) {
+                    if (itemStringObjects.get(j).getFirst().contains("simpleItem")) {
+                        items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
+                    } else if (itemStringObjects.get(j).getFirst().contains("specialItem")) {
+                        if (!itemStringObjects.get(j).get(3).equals("?[E") && !itemStringObjects.get(j).get(3).equals(")")) {
+                            items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
+                        } else {
+                            items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
+                        }
+                    } else if (itemStringObjects.get(j).getFirst().contains("simpleSword")) {
+                        items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5)));
+                    } else if (itemStringObjects.get(j).getFirst().contains("specialSword")) {
+                        properties = new ArrayList<>();
+                        items.add(new InterpretedSpecialSwordItem());
+                    } else if (itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
+
                     }
                 }
-            } else if (itemText.get(i).contains("Simple Sword {")) {
-
-            } else if (itemText.get(i).contains("Special Sword {")) {
-
-            } else if (itemText.get(i).contains("Upgradeable Sword {")) {
-
             }
         }
-        
         return items;
     }
 
-    private String getPartWithoutComment(String s) {
+    public static String getPartWithoutComment(String s) {
         String[] splitText = s.split("#");
         for (int i = 0; i < splitText.length; i++) {
             if (!splitText[i].contains("//")) {
                 return splitText[i];
             }
         }
-        return "NULL";
+        return "";
     }
 
     public static void printFileFromList(ArrayList<String> listedFile) {
@@ -141,7 +148,21 @@ public class RegistryInterpreter {
         while (reader.hasNextLine()) {
             fileContent.add(reader.nextLine() + "\n");
         }
+
+        clearContentFromUnneccesary(fileContent);
         return fileContent;
+    }
+
+    public static void clearContentFromUnneccesary(ArrayList<String> content) {
+        for (int i = 0; i < content.size(); i++) {
+            if (content.get(i).contains("#")) {
+                content.set(i, getPartWithoutComment(content.get(i)));
+            }
+            if (getPartWithoutComment(content.get(i)).trim().equals("")) {
+                content.remove(i);
+                i--;
+            }
+        }
     }
 
     static int getWritablePos(File file, String commentCommand) {
@@ -210,13 +231,18 @@ public class RegistryInterpreter {
         }
     }
 
-    public static ArrayList<ArrayList<String>> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent, String name) {//specifisch für name ausgeben
+    public static ArrayList<String> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent, String name) {
         ArrayList<ArrayList<String>> enchantingTagsForEachItem = new ArrayList<>();
         ArrayList<String> currItem;
+        String currName = "";
         for (int i = 0; i < filecontent.size(); i++) {
+            if (filecontent.get(i).contains("{")) {
+                currName = filecontent.get(i+1).trim();
+            }
             if (filecontent.get(i).contains("?[E")) {
                 i++;
                 currItem = new ArrayList<>();
+                currItem.add(currName);
                 while (i < filecontent.size() && !filecontent.get(i).contains("?]")) {
                     currItem.add(filecontent.get(i).trim().split("Enchantable:")[0].toUpperCase());
                     i++;
@@ -224,7 +250,11 @@ public class RegistryInterpreter {
                 enchantingTagsForEachItem.add(currItem);
             }
         }
-
-        return enchantingTagsForEachItem;
+        for (int i = 0; i < enchantingTagsForEachItem.size(); i++) {
+            if (enchantingTagsForEachItem.get(i).getFirst().equalsIgnoreCase(name)) {
+                return enchantingTagsForEachItem.get(i);
+            }
+        }
+        return new ArrayList<>();
     }
 }
