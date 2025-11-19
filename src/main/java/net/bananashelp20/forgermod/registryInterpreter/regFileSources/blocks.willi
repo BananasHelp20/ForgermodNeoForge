@@ -1,4 +1,4 @@
-(simple
+{simple
     newblock
     77f, 50, SoundType.HEAVY_CORE
     dropSelf
@@ -6,8 +6,8 @@
     pickaxe
     diamond
     blocks
-)
-(simple
+}
+{simple
     newblockadfdsf
     77f, 50, SoundType.HEAVY_CORE
     dropSelf
@@ -15,8 +15,8 @@
     pickaxe
     diamond
     blocks
-)
-(simple
+}
+{simple
     newblockasdjf
     77f, 50, SoundType.HEAVY_CORE
     dropSelf
@@ -24,8 +24,8 @@
     pickaxe
     diamond
     blocks
-)
-(simple
+}
+{simple
     newblockabhasd
     77f, 50, SoundType.HEAVY_CORE
     dropSelf
@@ -33,8 +33,8 @@
     pickaxe
     diamond
     blocks
-)
-(simple
+}
+{simple
     newblock3
     77f, 50, SoundType.HEAVY_CORE
     dropSelf
@@ -42,8 +42,8 @@
     pickaxe
     diamond
     blocks
-)
-(simple
+}
+{simple
     abcblock
     77f, 50, SoundType.HEAVY_CORE
     dropSelf
@@ -51,20 +51,18 @@
     pickaxe
     iron
     blocks
-)
-(simple
-    newblockadsf
+}
+{simple
+    newblockadsfs
     77f, 50, SoundType.HEAVY_CORE
     dropOther
-    [
-       mod item jade_gemstone
-    ]
+    ?mod item jade_gemstone
     blockWithItem
     pickaxe
     carbon_steel
     blocks
-)
-(special
+}
+{special
     newSpecialBlock
     createBlockWithDescription
     50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
@@ -73,8 +71,8 @@
     pickaxe
     diamond
     blocks
-)
-(complex
+}
+{complex
     newComplexBlock
     new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
     dropSelf
@@ -82,8 +80,8 @@
     shovel
     iron
     blocks
-)
-(complex
+}
+{complex
     newComplexBlock2
     new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
     dropSelf
@@ -91,4 +89,4 @@
     hoe
     gold
     blocks
-)
+}

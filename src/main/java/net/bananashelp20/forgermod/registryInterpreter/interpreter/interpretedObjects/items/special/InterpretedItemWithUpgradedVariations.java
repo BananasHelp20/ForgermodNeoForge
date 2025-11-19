@@ -41,8 +41,10 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
 
     public String getItemModel() {
         String s = "";
-        for (int i = 0; i < variants.size(); i++) {
-            s += "        " + itemProperties.get(3) + "(ModItems." + itemProperties.get(0).toUpperCase() + (variants.get(i).equals("none") ? "" : "_" + variants.get(i).toUpperCase()) + ".get());\n";
+        if (!this.itemProperties.get(3).contains("!NO_MODEL")) {
+            for (int i = 0; i < variants.size(); i++) {
+                s += "        " + itemProperties.get(3) + "(ModItems." + itemProperties.get(0).toUpperCase() + (variants.get(i).equals("none") ? "" : "_" + variants.get(i).toUpperCase()) + ".get());\n";
+            }
         }
         return s;
     }

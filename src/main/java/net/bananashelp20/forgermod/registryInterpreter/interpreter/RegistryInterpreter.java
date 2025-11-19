@@ -1,6 +1,9 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedComplexBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSimpleBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSpecialBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 
@@ -46,7 +49,7 @@ public class RegistryInterpreter {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     static ArrayList<InterpretedItem> items = getAllItems();
-    ArrayList<InterpretedBlock> blocks = getAllBlocks();
+    static ArrayList<InterpretedBlock> blocks = getAllBlocks();
 //    ArrayList<InterpretedRecipe> recipes = getAllRecipes();
 //    ArrayList<InterpretedCreativeTab> tabs = getAllCreativeTabs();
 //    ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
@@ -80,13 +83,14 @@ public class RegistryInterpreter {
 //        success("Successfully generated tool tier objects");
 //        generateToolTiers();
 //        success("Successfully wrote tool tier objects to files");
-        for (int i = 0; i < items.size(); i++) {
-            System.out.println(items.get(i));
-        }
+        printRegistryFromList(items);
         success("Successfully generated item objects");
+        System.out.println();
 //        generateAndWriteItemCode();
 //        success("Successfully wrote item objects to files");
-//        success("Successfully generated block objects");
+        printRegistryFromList(blocks);
+        success("Successfully generated block objects");
+        System.out.println();
 //        generateAndWriteBlockCode();
 //        success("Successfully wrote block tab objects to files");
 //        success("Successfully generated creative tab objects");
@@ -99,9 +103,58 @@ public class RegistryInterpreter {
         return true;
     }
 
+    public static void printRegistryFromList(ArrayList<?> o) {
+        for (Object object : o) {
+            System.out.println(object.toString());
+        }
+    }
+
     public static ArrayList<InterpretedBlock> getAllBlocks() {
         ArrayList<InterpretedBlock> blocks = new ArrayList<>();
         ArrayList<String> blockText = getContentFromFileAsList(blockFile);
+        ArrayList<String> properties;
+        ArrayList<ArrayList<String>> blockStringObjects = new ArrayList<>();
+        boolean dropOther;
+        int ctr = -1;
+        for (int i = 0; i < blockText.size(); i++) {
+            if (blockText.get(i).contains("{")) {
+                blockStringObjects.add(new ArrayList<>());
+                ctr++;
+                for (int j = i; j < blockText.size() && !blockText.get(j).contains("}"); j++) {
+                    blockStringObjects.get(ctr).add(blockText.get(j));
+                    i = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < blockStringObjects.size(); i++) {
+            dropOther = false;
+            if (blockStringObjects.get(i).getFirst().contains("simple")) {
+                if (blockStringObjects.get(i).get(4).contains("?"))
+                    dropOther = true;
+                blocks.add(new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                        blockStringObjects.get(i).get(3),
+                        (dropOther ? blockStringObjects.get(i).get(4).substring(1) : ""), blockStringObjects.get(i).get((dropOther ? 5 : 4)),
+                        blockStringObjects.get(i).get((dropOther ? 6 : 5)), blockStringObjects.get(i).get((dropOther ? 7 : 6)), blockStringObjects.get(i).get((dropOther ? 8 : 7))));
+
+            } else if (blockStringObjects.get(i).getFirst().contains("special")) {
+                if (blockStringObjects.get(i).get(5).contains("?"))
+                    dropOther = true;
+                blocks.add(new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                        blockStringObjects.get(i).get(3), blockStringObjects.get(i).get(4),
+                        (dropOther ? blockStringObjects.get(i).get(5).substring(1) : ""), blockStringObjects.get(i).get((dropOther ? 6 : 5)),
+                        blockStringObjects.get(i).get((dropOther ? 7 : 6)), blockStringObjects.get(i).get((dropOther ? 8 : 7)),
+                        blockStringObjects.get(i).get((dropOther ? 9 : 8))));
+
+            } else if (blockStringObjects.get(i).getFirst().contains("complex")) {
+                if (blockStringObjects.get(i).get(4).contains("?"))
+                    dropOther = true;
+                blocks.add(new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                        blockStringObjects.get(i).get(3),
+                        (dropOther ? blockStringObjects.get(i).get(4).substring(1) : ""), blockStringObjects.get(i).get((dropOther ? 5 : 4)),
+                        blockStringObjects.get(i).get((dropOther ? 6 : 5)), blockStringObjects.get(i).get((dropOther ? 7 : 6)), blockStringObjects.get(i).get((dropOther ? 8 : 7))));
+            }
+        }
         return blocks;
     }
 

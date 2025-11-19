@@ -31,6 +31,10 @@ public class InterpretedSimpleItem extends InterpretedItem {
     }
 
     public String getItemModel() {
-        return "        " + modelMethod + "(ModItems." + name.toUpperCase() + ");";
+        if (!this.modelMethod.contains("!NO_MODEL")) {
+            return "        " + modelMethod + "(ModItems." + name.toUpperCase() + ");";
+        } else {
+            return "";
+        }
     }
 }

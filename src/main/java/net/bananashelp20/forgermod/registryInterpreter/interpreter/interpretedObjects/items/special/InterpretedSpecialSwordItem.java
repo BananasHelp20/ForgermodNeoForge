@@ -13,7 +13,7 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
     String rarity = "";
     public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, ArrayList<String> inSpecifyBrackets, String material) {
         super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material));
+        itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
         specified = inSpecifyBrackets;
         if (itemProperties.get(2).contains("WithRarity"))
@@ -35,6 +35,10 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
     }
 
     public String getItemModel() {
-        return "        " + itemProperties.get(3) + "(ModItems." + itemProperties.get(0).toUpperCase() + ");";
+        if (!this.itemProperties.get(3).contains("!NO_MODEL")) {
+            return "        " + itemProperties.get(3) + "(ModItems." + itemProperties.get(0).toUpperCase() + ");";
+        } else {
+            return "";
+        }
     }
 }
