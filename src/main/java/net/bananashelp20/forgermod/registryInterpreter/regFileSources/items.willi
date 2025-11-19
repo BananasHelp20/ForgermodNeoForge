@@ -81,7 +81,9 @@ comment//#
         !ALL #//! declares a command, and ALL means all variations
     ]        #//instead of !ALL, there could be the following:
     #//[
-    #//   none, amber_gemstone, ruby_gemstone
+    #//   none,
+    #//   amber_gemstone,
+    #//   ruby_gemstone
     #//]
     !NO_ENCHANTS
 )

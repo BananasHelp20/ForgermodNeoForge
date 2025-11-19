@@ -19,7 +19,7 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
         boolean hasValue = false;
         for (int i = 0; i < variants.size(); i++) {
-            if (variants.get(i).equals("!ALL")) {
+            if (variants.get(i).trim().contains("!ALL")) {
                 this.variants = RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.upgradeList);
                 RegistryInterpreter.clearContentFromUnneccesary(this.variants);
                 hasValue = true;
@@ -33,7 +33,7 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     @Override
     public String toString() {
         String s  = "";
-        for (int i = 1; i < variants.size(); i++) {
+        for (int i = 0; i < variants.size(); i++) {
             s += "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + (variants.get(i).equals("none") ? "" : "_" + variants.get(i).toUpperCase()) + " = createSpecialSwordItem(\"" + itemProperties.get(0).toLowerCase() + (variants.get(i).equals("none") ? "" : "_" + variants.get(i).toLowerCase()) + "\", () -> new " + itemProperties.get(1) + "(\"" + (variants.get(i).equals("none") ? "no_gemstone" : variants.get(i)) + "\"));\n";
         }
         return s;

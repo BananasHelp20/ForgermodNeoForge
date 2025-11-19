@@ -1,80 +1,94 @@
-simple {
+(simple
     newblock
-        77f, 50, SoundType.HEAVY_CORE
-        dropSelf
-        blockWithItem
-        pickaxe
-        diamond
-        blocks
+    77f, 50, SoundType.HEAVY_CORE
+    dropSelf
+    blockWithItem
+    pickaxe
+    diamond
+    blocks
+)
+(simple
     newblockadfdsf
-        77f, 50, SoundType.HEAVY_CORE
-        dropSelf
-        blockWithItem
-        pickaxe
-        diamond
-        blocks
+    77f, 50, SoundType.HEAVY_CORE
+    dropSelf
+    blockWithItem
+    pickaxe
+    diamond
+    blocks
+)
+(simple
     newblockasdjf
-        77f, 50, SoundType.HEAVY_CORE
-        dropSelf
-        blockWithItem
-        pickaxe
-        diamond
-        blocks
+    77f, 50, SoundType.HEAVY_CORE
+    dropSelf
+    blockWithItem
+    pickaxe
+    diamond
+    blocks
+)
+(simple
     newblockabhasd
-        77f, 50, SoundType.HEAVY_CORE
-        dropSelf
-        blockWithItem
-        pickaxe
-        diamond
-        blocks
+    77f, 50, SoundType.HEAVY_CORE
+    dropSelf
+    blockWithItem
+    pickaxe
+    diamond
+    blocks
+)
+(simple
     newblock3
-        77f, 50, SoundType.HEAVY_CORE
-        dropSelf
-        blockWithItem
-        pickaxe
-        diamond
-        blocks
+    77f, 50, SoundType.HEAVY_CORE
+    dropSelf
+    blockWithItem
+    pickaxe
+    diamond
+    blocks
+)
+(simple
     abcblock
-        77f, 50, SoundType.HEAVY_CORE
-        dropSelf
-        blockWithItem
-        pickaxe
-        iron
-        blocks
+    77f, 50, SoundType.HEAVY_CORE
+    dropSelf
+    blockWithItem
+    pickaxe
+    iron
+    blocks
+)
+(simple
     newblockadsf
-        77f, 50, SoundType.HEAVY_CORE
-        dropOther
-        [
-            mod item jade_gemstone
-        ]
-        blockWithItem
-        pickaxe
-        carbon_steel
-        blocks
-}
-special {
+    77f, 50, SoundType.HEAVY_CORE
+    dropOther
+    [
+       mod item jade_gemstone
+    ]
+    blockWithItem
+    pickaxe
+    carbon_steel
+    blocks
+)
+(special
     newSpecialBlock
-        createBlockWithDescription
-        50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
-        dropSelf
-        blockWithItem
-        pickaxe
-        diamond
-        blocks
-}
-complex {
+    createBlockWithDescription
+    50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.newSpecialBlock.tooltip"
+    dropSelf
+    blockWithItem
+    pickaxe
+    diamond
+    blocks
+)
+(complex
     newComplexBlock
-        new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
-        dropSelf
-        !NO_MODEL
-        shovel
-        iron
-        blocks
+    new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
+    dropSelf
+    !NO_MODEL
+    shovel
+    iron
+    blocks
+)
+(complex
     newComplexBlock2
-        new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
-        dropSelf
-        !NO_MODEL
-        hoe
-        gold
-        blocks
-}
+    new AncientSwordStandBlock(BlockBehaviour.Properties.of().noOcclusion().strength(45f, 50).sound(SoundType.NETHERITE_BLOCK))
+    dropSelf
+    !NO_MODEL
+    hoe
+    gold
+    blocks
+)

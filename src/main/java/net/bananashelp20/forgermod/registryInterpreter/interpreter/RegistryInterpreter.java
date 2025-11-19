@@ -1,11 +1,8 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,9 +14,6 @@ import java.util.Scanner;
 public class RegistryInterpreter {
     public static void main(String[] args) throws FileNotFoundException {
         try {
-            for (int i = 0; i < items.size(); i++) {
-                System.out.println(items.get(i));
-            }
             if (!generateCode()) {
                 rewriteAllAfterError();
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
@@ -52,7 +46,7 @@ public class RegistryInterpreter {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     static ArrayList<InterpretedItem> items = getAllItems();
-//    ArrayList<InterpretedBlock> blocks = getAllBlocks();
+    ArrayList<InterpretedBlock> blocks = getAllBlocks();
 //    ArrayList<InterpretedRecipe> recipes = getAllRecipes();
 //    ArrayList<InterpretedCreativeTab> tabs = getAllCreativeTabs();
 //    ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
@@ -86,6 +80,9 @@ public class RegistryInterpreter {
 //        success("Successfully generated tool tier objects");
 //        generateToolTiers();
 //        success("Successfully wrote tool tier objects to files");
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println(items.get(i));
+        }
         success("Successfully generated item objects");
 //        generateAndWriteItemCode();
 //        success("Successfully wrote item objects to files");
@@ -102,18 +99,18 @@ public class RegistryInterpreter {
         return true;
     }
 
+    public static ArrayList<InterpretedBlock> getAllBlocks() {
+        ArrayList<InterpretedBlock> blocks = new ArrayList<>();
+        ArrayList<String> blockText = getContentFromFileAsList(blockFile);
+        return blocks;
+    }
+
     public static ArrayList<InterpretedItem> getAllItems() {
         ArrayList<InterpretedItem> items = new ArrayList<>();
         ArrayList<String> itemText = getContentFromFileAsList(itemFile);
-        Scanner reader;
         ArrayList<ArrayList<String>> itemStringObjects = new ArrayList<>();
         ArrayList<String> variants;
-        try {
-            reader = new Scanner(itemFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<String> properties = new ArrayList<>();
+        ArrayList<String> properties;
         int ctr = -1;
         for (int i = 0; i < itemText.size(); i++) {
             if (itemText.get(i).contains("(")) {
@@ -147,14 +144,14 @@ public class RegistryInterpreter {
                     }
                 }
                 items.add(new InterpretedSpecialSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), properties, itemStringObjects.get(j).get(5)));
-            } else if (itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
+            } else if (itemStringObjects.get(j).getFirst().contains("upgradableSword") || itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
                 variants = new ArrayList<>();
                 properties = new ArrayList<>();
-                properties.add(itemStringObjects.get(j).getFirst());
                 properties.add(itemStringObjects.get(j).get(1));
                 properties.add(itemStringObjects.get(j).get(2));
                 properties.add(itemStringObjects.get(j).get(3));
                 properties.add(itemStringObjects.get(j).get(4));
+                properties.add(itemStringObjects.get(j).get(5));
                 for (int k = 7; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains("]"); k++) {
                     variants.add(itemStringObjects.get(j).get(k));
                 }
