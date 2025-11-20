@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers;
 
 public class InterpretedToolTier {
-    public String tierCode;
+    String tierCode;
 
     public InterpretedToolTier(String ingredientName, String material, String tierProperties) {
         this.tierCode = "public static final Tier " + material.toUpperCase() + " = new SimpleTier(\n" +

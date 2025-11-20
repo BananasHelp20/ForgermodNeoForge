@@ -11,19 +11,22 @@ public class InterpretedSpecialItem extends InterpretedItem {
     String modelMethod;
     ArrayList<String> enchantmentExtras;
     String rarity = "";
-    public InterpretedSpecialItem(String name, String modelMethod) {
+    String creativeTab;
+    public InterpretedSpecialItem(String name, String modelMethod, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
         this.name = name;
         this.modelMethod = modelMethod;
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), name);
+        this.creativeTab = creativeTab;
     }
 
-    public InterpretedSpecialItem(String name, String modelMethod, String rarity) {
+    public InterpretedSpecialItem(String name, String modelMethod, String rarity, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), name);
         this.name = name;
         this.modelMethod = modelMethod;
         this.rarity = rarity;
+        this.creativeTab = creativeTab;
     }
 
     @Override
@@ -39,6 +42,10 @@ public class InterpretedSpecialItem extends InterpretedItem {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + name.toUpperCase() + ".get())");
         }
         return list;
+    }
+
+    public String getCreativeTab() {
+        return "                ModItems." + name.toUpperCase() + ".get(),";
     }
 
     public String getItemModel() {

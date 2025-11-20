@@ -1,16 +1,25 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs;
 
 public class InterpretedCreativeTab {
-    public String name; //forger_ingredients_tab
-    public String camelCaseName; //ForgerIngredientsTab
-    public String displayItemName; //jade_gemstone
-    public String displayItemType; //Items., Blocks., ModBlocks., ModItems.
+    String name; //forger_ingredients_tab
+    String camelCaseName; //ForgerIngredientsTab
+    String displayItemName; //jade_gemstone
+    String displayItemType; //Items., Blocks., ModBlocks., ModItems.
 
-    public InterpretedCreativeTab(String name, String camelCaseName, String displayItemName, String displayItemType) {
+    public InterpretedCreativeTab(String name, String camelCaseName, String displayItemName) {
         this.camelCaseName = camelCaseName; //BeginsBig
         this.name = name;
-        this.displayItemName = displayItemName;
-        this.displayItemType = displayItemType;
+        String[] temp = displayItemName.split(" ");
+        this.displayItemName = temp[0];
+        if (temp[1].toUpperCase().contains("MODITEM")) {
+            this.displayItemType = "ModItems.";
+        } else if (temp[1].toUpperCase().contains("MODBLOCK")) {
+            this.displayItemType = "ModBlocks.";
+        } else if (temp[1].toUpperCase().contains("ITEM")) {
+            this.displayItemType = "Items.";
+        } else {
+            this.displayItemType = "Blocks.";
+        }
     }
 
     @Override

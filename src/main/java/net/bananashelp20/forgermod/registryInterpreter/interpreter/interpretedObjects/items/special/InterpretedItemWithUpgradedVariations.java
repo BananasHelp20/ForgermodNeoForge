@@ -13,9 +13,9 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> variants;
     ArrayList<String> enchantmentExtras;
-    public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants) {
-        super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material));
+    public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants, String creativeTab) {
+        super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab)));
+        itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
         boolean hasValue = false;
         for (int i = 0; i < variants.size(); i++) {
@@ -37,6 +37,10 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
             s += "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + (variants.get(i).equals("none") ? "" : "_" + variants.get(i).toUpperCase()) + " = createSpecialSwordItem(\"" + itemProperties.get(0).toLowerCase() + (variants.get(i).equals("none") ? "" : "_" + variants.get(i).toLowerCase()) + "\", () -> new " + itemProperties.get(1) + "(\"" + (variants.get(i).equals("none") ? "no_gemstone" : variants.get(i)) + "\"));\n";
         }
         return s;
+    }
+
+    public String getCreativeTab() {
+        return "                ModItems." + itemProperties.get(0).toUpperCase() + ".get(),";
     }
 
     public String getItemModel() {

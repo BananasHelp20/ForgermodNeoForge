@@ -7,6 +7,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedBlastingOrSmeltingRecipe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -125,7 +126,7 @@ public class RegistryInterpreter {
         ArrayList<String> recipeText = getContentFromFileAsList(recipeFile);
         ArrayList<String> inputItems;
         ArrayList<ArrayList<String>> recipeStringObjects = new ArrayList<>();
-        InterpretedBlock recipeToAdd = new InterpretedBlock(new ArrayList<>());
+        InterpretedRecipe recipeToAdd = new InterpretedRecipe(new ArrayList<>());
         int ctr = -1;
 
         for (int i = 0; i < recipeText.size(); i++) {
@@ -141,16 +142,22 @@ public class RegistryInterpreter {
 
         for (int i = 0; i < recipeStringObjects.size(); i++) {
             inputItems = new ArrayList<>();
+            recipeToAdd = new InterpretedRecipe(new ArrayList<>());
             if (recipeStringObjects.get(i).getFirst().contains("(smelting")) {
-                inputItems.addAll(getContentInBrackets(i, 1, recipeStringObjects));
-
+                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
+                recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), true, i, recipeStringObjects.get(i).get(3));
             } else if (recipeStringObjects.get(i).contains("(blasting")) {
+                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
+                recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), false, i, recipeStringObjects.get(i).get(3));
             } else if (recipeStringObjects.get(i).contains("(both")) {
+                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
+                recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(true, recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), i, recipeStringObjects.get(i).get(3), recipeStringObjects.get(i).get(4));
             } else if (recipeStringObjects.get(i).contains("(shapeless")) {
             } else if (recipeStringObjects.get(i).contains("(shaped")) {
             } else if (recipeStringObjects.get(i).contains("(custom")) {
 
             }
+            interpretedRecipes.add(recipeToAdd);
         }
 
         return interpretedRecipes;
@@ -161,7 +168,6 @@ public class RegistryInterpreter {
         for (int i = elementIndex+1; i < stringObjects.get(listIndex).size() && !stringObjects.get(listIndex).get(i).contains("]"); i++) {
             objects.add(stringObjects.get(listIndex).get(i));
         }
-
         return objects;
     }
 
@@ -246,15 +252,15 @@ public class RegistryInterpreter {
 
         for (int j = 0; j < itemStringObjects.size(); j++) {
             if (itemStringObjects.get(j).getFirst().contains("simpleItem")) {
-                items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
+                items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
             } else if (itemStringObjects.get(j).getFirst().contains("specialItem")) {
                 if (!itemStringObjects.get(j).get(3).contains("?[E") && itemStringObjects.get(j).get(3).contains("?")) {
-                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3).substring(1).trim()));
+                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3).substring(1).trim(), itemStringObjects.get(j).get(4)));
                 } else {
-                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2)));
+                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
                 }
             } else if (itemStringObjects.get(j).getFirst().contains("simpleSword")) {
-                items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5)));
+                items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5), itemStringObjects.get(j).get(6)));
             } else if (itemStringObjects.get(j).getFirst().contains("specialSword")) {
                 properties = new ArrayList<>();
                 for (int k = 0; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains(")"); k++) {
@@ -264,7 +270,7 @@ public class RegistryInterpreter {
                         }
                     }
                 }
-                items.add(new InterpretedSpecialSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), properties, itemStringObjects.get(j).get(5)));
+                items.add(new InterpretedSpecialSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), properties, itemStringObjects.get(j).get(5), itemStringObjects.get(j).get(6)));
             } else if (itemStringObjects.get(j).getFirst().contains("upgradableSword") || itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
                 variants = new ArrayList<>();
                 properties = new ArrayList<>();
@@ -273,10 +279,13 @@ public class RegistryInterpreter {
                 properties.add(itemStringObjects.get(j).get(3));
                 properties.add(itemStringObjects.get(j).get(4));
                 properties.add(itemStringObjects.get(j).get(5));
+                ctr = 7;
                 for (int k = 7; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains("]"); k++) {
                     variants.add(itemStringObjects.get(j).get(k));
+                    ctr++;
                 }
-                items.add(new InterpretedItemWithUpgradedVariations(properties.getFirst(), properties.get(1), properties.get(2), properties.get(3), properties.get(4), variants));
+                properties.add(itemStringObjects.get(j).get(ctr));
+                items.add(new InterpretedItemWithUpgradedVariations(properties.getFirst(), properties.get(1), properties.get(2), properties.get(3), properties.get(4), variants, properties.get(5)));
             }
         }
         return items;

@@ -9,12 +9,14 @@ import java.util.Arrays;
 public class InterpretedSimpleItem extends InterpretedItem {
     String name;
     String modelMethod;
+    String creativeTab;
     ArrayList<String> enchantmentExtras;
-    public InterpretedSimpleItem(String name, String modelMethod) {
-        super(new ArrayList<>(Arrays.asList(name, modelMethod)));
+    public InterpretedSimpleItem(String name, String modelMethod, String creativeTab) {
+        super(new ArrayList<>(Arrays.asList(name, modelMethod, creativeTab)));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), name);
         this.name = name;
         this.modelMethod = modelMethod;
+        this.creativeTab = creativeTab;
     }
 
     @Override
@@ -28,6 +30,10 @@ public class InterpretedSimpleItem extends InterpretedItem {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + name.toUpperCase() + ".get())");
         }
         return list;
+    }
+
+    public String getCreativeTab() {
+        return "                ModItems." + name.toUpperCase() + ".get(),";
     }
 
     public String getItemModel() {

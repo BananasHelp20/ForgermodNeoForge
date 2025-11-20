@@ -1,41 +1,41 @@
 (smelting
     misc
+    moditem saphire_gemstone
+    0.5f, 200
     [
         moditem steel_ingot
         moditem damask_ingot
     ]
-    moditem saphire_gemstone
-    0.5f, 200
 )
 (smelting
     misc
+    moditem saphire_gemstone
+    0.5f, 200
     [
         moditem steel_ingot
         moditem damask_ingot
     ]
-    moditem saphire_gemstone
-    0.5f, 200
 )
 
 (blasting
     misc
+    moditem saphire_gemstone
+    0.5f, 200
     [
         moditem steel_ingot
         moditem damask_ingot
     ]
-    moditem saphire_gemstone
-    0.5f, 200
 )
 
 (both
     misc
+    moditem amethyst_gemstone
+    0.5f, 200 #//smelting properties
+    0.5f, 200 #//blasting properties
     [
         moditem steel_ingot
         modblock damask_block
     ]
-    moditem amethyst_gemstone
-    0.5f, 200 #//smelting properties
-    0.5f, 200 #//blasting properties
 )
 
 (shaped
@@ -52,12 +52,12 @@
 
 (shapeless
     misc
-    [
-        moditem ruby_gemstone, moditem amber_gemstone,
-    ]
     moditem jade_gemstone
     item stick
     9
+    [
+        moditem ruby_gemstone, moditem amber_gemstone,
+    ]
 )
 
 (custom

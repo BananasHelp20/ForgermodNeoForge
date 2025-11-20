@@ -11,9 +11,9 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
     ArrayList<String> enchantmentExtras;
     ArrayList<String> specified;
     String rarity = "";
-    public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, ArrayList<String> inSpecifyBrackets, String material) {
-        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material));
+    public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, ArrayList<String> inSpecifyBrackets, String material, String creativeTab) {
+        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, creativeTab)));
+        itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material, creativeTab));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
         specified = inSpecifyBrackets;
         if (itemProperties.get(2).contains("WithRarity"))
@@ -32,6 +32,10 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + itemProperties.get(0).toUpperCase() + ".get())");
         }
         return list;
+    }
+
+    public String getCreativeTab() {
+        return "                ModItems." + itemProperties.get(0).toUpperCase() + ".get(),";
     }
 
     public String getItemModel() {

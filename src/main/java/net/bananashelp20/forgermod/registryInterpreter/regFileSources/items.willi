@@ -4,6 +4,7 @@ comment//#
 (simpleItem
     item_name
     basicItem
+    items
     ?[E
         Enchantable:Sword
         Enchantable:Axe
@@ -14,6 +15,7 @@ comment//#
 (specialItem
     special_item_name
     basicItem
+    items
     ?[E
         Enchantable:Sword
         Enchantable:Axe
@@ -25,6 +27,7 @@ comment//#
     special_item_with_rarity
     basicItem
     ?uncommon #//Questionmark declares an optional parameter
+    items
     ?[E
         Enchantable:Sword
         Enchantable:Axe
@@ -38,6 +41,7 @@ comment//#
     createSwordItem
     handheldItem
     steel
+    items
     ?[E
         Enchantable:Axe
     ?]
@@ -49,6 +53,7 @@ comment//#
     createSwordItemWithRarityAndDescription
     handheldItem
     steel
+    items
     [ #//Specify brackets
         uncommon
     ]
@@ -62,6 +67,7 @@ comment//#
     handheldItem
     steel
     ?rare
+    items
     [ #//Specify brackets
         uncommon
     ]
@@ -85,6 +91,7 @@ comment//#
     #//   amber_gemstone,
     #//   ruby_gemstone
     #//]
+    items
     !NO_ENCHANTS
 )
 

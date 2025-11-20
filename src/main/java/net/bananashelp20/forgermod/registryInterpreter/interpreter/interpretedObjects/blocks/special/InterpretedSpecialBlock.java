@@ -9,7 +9,7 @@ public class InterpretedSpecialBlock extends InterpretedBlock {
     ArrayList<String> blockProperties;
     public InterpretedSpecialBlock(String name, String creationMethod, String properties, String dropMethod, String dropsItem, String modelMethod, String toolTag, String typeTag, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, creationMethod, properties, dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab)));
-        blockProperties = new ArrayList<>(Arrays.asList(name, creationMethod, properties, dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab));
+        blockProperties = new ArrayList<>(Arrays.asList(name, creationMethod, (properties.contains("!INDESTRUCTABLE") ? "-1.0f, 3600000.0f" : properties), dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class InterpretedSpecialBlock extends InterpretedBlock {
     }
 
     public String getBlockState() {
-        return "        " + blockProperties.get(5) + "(ModBlocks." + blockProperties.get(0).toUpperCase() + ");";
+        return (blockProperties.get(5).contains("!NO_MODEL")) ? "" : "        " + blockProperties.get(5) + "(ModBlocks." + blockProperties.get(0).toUpperCase() + ");";
     }
 
     public String getLoottable() {
@@ -48,6 +48,6 @@ public class InterpretedSpecialBlock extends InterpretedBlock {
     }
 
     public String getCreativeTab() {
-        return "                ModItems." + blockProperties.get(0).toUpperCase() + ".get(),";
+        return "                ModBlocks." + blockProperties.get(0).toUpperCase() + ".get(),";
     }
 }

@@ -9,9 +9,9 @@ import java.util.Arrays;
 public class InterpretedSwordItem extends InterpretedItem {
     ArrayList<String> enchantmentExtras;
     ArrayList<String> itemProperties;
-    public InterpretedSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material) {
-        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material)));
-        itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material));
+    public InterpretedSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material, String creativeTab) {
+        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, creativeTab)));
+        itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material, creativeTab));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
     }
 
@@ -26,6 +26,10 @@ public class InterpretedSwordItem extends InterpretedItem {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + itemProperties.get(0).toUpperCase() + ".get())");
         }
         return list;
+    }
+
+    public String getCreativeTab() {
+        return "                ModItems." + itemProperties.get(0).toUpperCase() + ".get(),";
     }
 
     public String getItemModel() {
