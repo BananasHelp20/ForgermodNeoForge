@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -21,6 +22,17 @@ public class ModItems {
     public static DeferredItem<Item> createItemWithDescription(String name, String descriptionName) {
         return ITEMS.register(name,
                 () -> new Item(new Item.Properties()) {
+                    @Override
+                    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+                        pTooltipComponents.add(Component.translatable(descriptionName));
+                        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
+                    }
+                });
+    }
+
+    public static DeferredItem<Item> createItemWithRarityAndDescription(String name, String descriptionName, Rarity rarity) {
+        return ITEMS.register(name,
+                () -> new Item(new Item.Properties().rarity(rarity)) {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
                         pTooltipComponents.add(Component.translatable(descriptionName));
@@ -146,14 +158,14 @@ public class ModItems {
     /**Tools (incl. Swords)*/
 
     //swords and claymores
-    public static final DeferredItem<SwordItem> STEEL_SWORD = createSwordItem("steel_sword", ModToolTiers.STEEL, STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED);
-    public static final DeferredItem<SwordItem> STUMPFL_BAT = createSwordItemWithDescription("stumpfl_bat", ModToolTiers.DEVELOPIUM, 7770, 1f, "tooltips.forgermod.stumpfl_bat.tooltip");
-    public static final DeferredItem<SwordItem> DAMASK_SWORD = createSwordItem("damask_sword", ModToolTiers.DAMASK, DAMASK_SWORD_DAMAGE, DAMASK_SWORD_SPEED);
-    public static final DeferredItem<SwordItem> REINFORCED_IRON_SWORD = createSwordItem("reinforced_iron_sword", ModToolTiers.REINFORCED_IRON, REINFORCED_IRON_SWORD_DAMAGE, REINFOCED_IRON_SWORD_SPEED);
-    public static final DeferredItem<SwordItem> SCRAP_IRON_SWORD = createSwordItem("scrap_iron_sword", ModToolTiers.SCRAP_IRON, SCRAP_IRON_SWORD_DAMAGE, SCRAP_IRON_SWORD_SPEED);
-    public static final DeferredItem<SwordItem> SCRAP_SWORD = createSwordItem("scrap_sword", ModToolTiers.SCRAP, SCRAP_SWORD_DAMAGE, SCRAP_SWORD_SPEED);
-    public static final DeferredItem<SwordItem> RUSTY_CLAYMORE = createSwordItemWithRarityAndDescription("rusty_claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_DAMAGE, DEFAULT_RUSTY_SPEED, "tooltips.forgermod.rusty_claymore.tooltip");
-    public static final DeferredItem<SwordItem> CLAYMORE = createSwordItemWithRarityAndDescription("claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_CLAYMORE_DAMAGE, DEFAULT_CLAYMORE_SPEED, "tooltips.forgermod.claymore.tooltip");
+    public static final DeferredItem<SwordItem> STEEL_SWORD = createSwordItem("steel_sword", net.bananashelp20.forgermod.item.ModToolTiers.STEEL, STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> STUMPFL_BAT = createSwordItemWithDescription("stumpfl_bat", net.bananashelp20.forgermod.item.ModToolTiers.DEVELOPIUM, 7770, 1f, "tooltips.forgermod.stumpfl_bat.tooltip");
+    public static final DeferredItem<SwordItem> DAMASK_SWORD = createSwordItem("damask_sword", net.bananashelp20.forgermod.item.ModToolTiers.DAMASK, DAMASK_SWORD_DAMAGE, DAMASK_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> REINFORCED_IRON_SWORD = createSwordItem("reinforced_iron_sword", net.bananashelp20.forgermod.item.ModToolTiers.REINFORCED_IRON, REINFORCED_IRON_SWORD_DAMAGE, REINFOCED_IRON_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> SCRAP_IRON_SWORD = createSwordItem("scrap_iron_sword", net.bananashelp20.forgermod.item.ModToolTiers.SCRAP_IRON, SCRAP_IRON_SWORD_DAMAGE, SCRAP_IRON_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> SCRAP_SWORD = createSwordItem("scrap_sword", net.bananashelp20.forgermod.item.ModToolTiers.SCRAP, SCRAP_SWORD_DAMAGE, SCRAP_SWORD_SPEED);
+    public static final DeferredItem<SwordItem> RUSTY_CLAYMORE = createSwordItemWithRarityAndDescription("rusty_claymore", net.bananashelp20.forgermod.item.ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_DAMAGE, DEFAULT_RUSTY_SPEED, "tooltips.forgermod.rusty_claymore.tooltip");
+    public static final DeferredItem<SwordItem> CLAYMORE = createSwordItemWithRarityAndDescription("claymore", net.bananashelp20.forgermod.item.ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_CLAYMORE_DAMAGE, DEFAULT_CLAYMORE_SPEED, "tooltips.forgermod.claymore.tooltip");
     public static final DeferredItem<SwordItem> DAMASK_KNIFE = createSwordItem("damask_knife", ModToolTiers.DAMASK, KNIFE_DAMASK_DAMAGE, KNIFE_DAMASK_SPEED);
 
     //special claymores

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class InterpretedComplexBlock extends InterpretedBlock {
-    public static ArrayList<String> blockProperties;
+    ArrayList<String> blockProperties;
     public InterpretedComplexBlock(String name, String properties, String dropMethod, String dropsItem, String modelMethod, String toolTag, String typeTag, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, properties, dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab)));
         blockProperties = new ArrayList<>(Arrays.asList(name, properties, dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab));

@@ -6,6 +6,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSpecialBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +36,7 @@ public class RegistryInterpreter {
     public static File toolTiersFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/toolTiers.willi");
     public static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
     public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
-    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/TestRegistryClass.java");
+//    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/TestRegistryClass.java");
     public static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -50,12 +51,12 @@ public class RegistryInterpreter {
 
     static ArrayList<InterpretedItem> items = getAllItems();
     static ArrayList<InterpretedBlock> blocks = getAllBlocks();
-//    ArrayList<InterpretedRecipe> recipes = getAllRecipes();
+    static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
 //    ArrayList<InterpretedCreativeTab> tabs = getAllCreativeTabs();
 //    ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlockFile);
-    static String unchangedModRegistryContent = getContentFromFile(modRegistry);
+//    static String unchangedModRegistryContent = getContentFromFile(modRegistry);
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
     static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeModeTabsFile);
 
@@ -63,7 +64,7 @@ public class RegistryInterpreter {
         if (!(modBlockFile.exists() && modBlockFile.canWrite() && modBlockFile.canRead()
                 && modItemsFile.exists() && modItemsFile.canWrite() && modItemsFile.canRead()
                 && modCreativeModeTabsFile.exists() && modCreativeModeTabsFile.canWrite() && modCreativeModeTabsFile.canRead()
-                && modRegistry.exists() && modRegistry.canWrite() && modRegistry.canRead()
+//                && modRegistry.exists() && modRegistry.canWrite() && modRegistry.canRead()
                 && blockFile.exists() && blockFile.canRead()
                 && itemFile.exists() && itemFile.canRead()
                 && creativeTabFile.exists() && creativeTabFile.canRead()
@@ -96,7 +97,9 @@ public class RegistryInterpreter {
 //        success("Successfully generated creative tab objects");
 //        generateAndWriteCreativeTabs();
 //        success("Successfully wrote cretive tab objects to files");
-//        success("Successfully generated recipe objects");
+        printRegistryFromList(recipes);
+        success("Successfully generated recipe objects");
+        System.out.println();
 //        generateAndWriteRecipes();
 //        success("Successfully wrote recipe objects to files");
 
@@ -109,12 +112,67 @@ public class RegistryInterpreter {
         }
     }
 
+    public static ArrayList<String> subCollection(int index1, int index2, ArrayList<String> arrayList) {
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (int i = index1; i < arrayList.size() && i < index2; i++) {
+            toReturn.add(arrayList.get(i));
+        }
+        return toReturn;
+    }
+
+    public static ArrayList<InterpretedRecipe> getAllRecipes() {
+        ArrayList<InterpretedRecipe> interpretedRecipes = new ArrayList<>();
+        ArrayList<String> recipeText = getContentFromFileAsList(recipeFile);
+        ArrayList<String> inputItems;
+        ArrayList<ArrayList<String>> recipeStringObjects = new ArrayList<>();
+        InterpretedBlock recipeToAdd = new InterpretedBlock(new ArrayList<>());
+        int ctr = -1;
+
+        for (int i = 0; i < recipeText.size(); i++) {
+            if (recipeText.get(i).contains("{")) {
+                recipeStringObjects.add(new ArrayList<>());
+                ctr++;
+                for (int j = i; j < recipeText.size() && !recipeText.get(j).contains("}"); j++) {
+                    recipeStringObjects.get(ctr).add(recipeText.get(j));
+                    i = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < recipeStringObjects.size(); i++) {
+            inputItems = new ArrayList<>();
+            if (recipeStringObjects.get(i).getFirst().contains("(smelting")) {
+                inputItems.addAll(getContentInBrackets(i, 1, recipeStringObjects));
+
+            } else if (recipeStringObjects.get(i).contains("(blasting")) {
+            } else if (recipeStringObjects.get(i).contains("(both")) {
+            } else if (recipeStringObjects.get(i).contains("(shapeless")) {
+            } else if (recipeStringObjects.get(i).contains("(shaped")) {
+            } else if (recipeStringObjects.get(i).contains("(custom")) {
+
+            }
+        }
+
+        return interpretedRecipes;
+    }
+
+    private static ArrayList<String> getContentInBrackets(int listIndex, int elementIndex, ArrayList<ArrayList<String>> stringObjects) {
+        ArrayList<String> objects = new ArrayList<>();
+        for (int i = elementIndex+1; i < stringObjects.get(listIndex).size() && !stringObjects.get(listIndex).get(i).contains("]"); i++) {
+            objects.add(stringObjects.get(listIndex).get(i));
+        }
+
+        return objects;
+    }
+
     public static ArrayList<InterpretedBlock> getAllBlocks() {
-        ArrayList<InterpretedBlock> blocks = new ArrayList<>();
+        ArrayList<InterpretedBlock> interpretedBlocks = new ArrayList<>();
         ArrayList<String> blockText = getContentFromFileAsList(blockFile);
-        ArrayList<String> properties;
         ArrayList<ArrayList<String>> blockStringObjects = new ArrayList<>();
+        String dropOtherItem;
         boolean dropOther;
+        int indexExpander;
+        InterpretedBlock blockToAdd = new InterpretedBlock(new ArrayList<>());
         int ctr = -1;
         for (int i = 0; i < blockText.size(); i++) {
             if (blockText.get(i).contains("{")) {
@@ -126,36 +184,46 @@ public class RegistryInterpreter {
                 }
             }
         }
+//        interpretedBlocks.add(new InterpretedSimpleBlock("name", "p", "drop", "", "b", "type", "tab", "tab"));
+//        interpretedBlocks.add(new InterpretedSimpleBlock("name2", "p", "drop", "", "b", "type", "tab", "tab"));
 
         for (int i = 0; i < blockStringObjects.size(); i++) {
             dropOther = false;
+            indexExpander = 0;
+            dropOtherItem = "";
+            blockToAdd = null;
             if (blockStringObjects.get(i).getFirst().contains("simple")) {
-                if (blockStringObjects.get(i).get(4).contains("?"))
+                if (blockStringObjects.get(i).get(4).contains("?")) {
                     dropOther = true;
-                blocks.add(new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
-                        blockStringObjects.get(i).get(3),
-                        (dropOther ? blockStringObjects.get(i).get(4).substring(1) : ""), blockStringObjects.get(i).get((dropOther ? 5 : 4)),
-                        blockStringObjects.get(i).get((dropOther ? 6 : 5)), blockStringObjects.get(i).get((dropOther ? 7 : 6)), blockStringObjects.get(i).get((dropOther ? 8 : 7))));
+                    indexExpander++;
+                    dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
+                }
+                blockToAdd = new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2), blockStringObjects.get(i).get(3), dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander), blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
 
             } else if (blockStringObjects.get(i).getFirst().contains("special")) {
-                if (blockStringObjects.get(i).get(5).contains("?"))
+                if (blockStringObjects.get(i).get(5).contains("?")) {
                     dropOther = true;
-                blocks.add(new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                    indexExpander++;
+                }
+                blockToAdd = new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
                         blockStringObjects.get(i).get(3), blockStringObjects.get(i).get(4),
-                        (dropOther ? blockStringObjects.get(i).get(5).substring(1) : ""), blockStringObjects.get(i).get((dropOther ? 6 : 5)),
-                        blockStringObjects.get(i).get((dropOther ? 7 : 6)), blockStringObjects.get(i).get((dropOther ? 8 : 7)),
-                        blockStringObjects.get(i).get((dropOther ? 9 : 8))));
+                        dropOtherItem, blockStringObjects.get(i).get(5 + indexExpander),
+                        blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander),
+                        blockStringObjects.get(i).get(8 + indexExpander));
 
             } else if (blockStringObjects.get(i).getFirst().contains("complex")) {
-                if (blockStringObjects.get(i).get(4).contains("?"))
+                if (blockStringObjects.get(i).get(4).contains("?")) {
                     dropOther = true;
-                blocks.add(new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                    indexExpander++;
+                }
+                blockToAdd = new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
                         blockStringObjects.get(i).get(3),
-                        (dropOther ? blockStringObjects.get(i).get(4).substring(1) : ""), blockStringObjects.get(i).get((dropOther ? 5 : 4)),
-                        blockStringObjects.get(i).get((dropOther ? 6 : 5)), blockStringObjects.get(i).get((dropOther ? 7 : 6)), blockStringObjects.get(i).get((dropOther ? 8 : 7))));
+                        dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander),
+                        blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
             }
+            interpretedBlocks.add(blockToAdd);
         }
-        return blocks;
+        return interpretedBlocks;
     }
 
     public static ArrayList<InterpretedItem> getAllItems() {
@@ -330,15 +398,15 @@ public class RegistryInterpreter {
     public static void rewriteAllAfterError() {
         try {
             FileWriter writer = new FileWriter(modBlockFile);
-            FileWriter writer1 = new FileWriter(modRegistry);
+//            FileWriter writer1 = new FileWriter(modRegistry);
             FileWriter writer2 = new FileWriter(modItemsFile);
             FileWriter writer3 = new FileWriter(modCreativeModeTabsFile);
             writer.write(unchangedModBlockFileContent);
-            writer1.write(unchangedModRegistryContent);
+//            writer1.write(unchangedModRegistryContent);
             writer2.write(unchangedModItemsFileContent);
             writer3.write(unchangedModCreativeModeTabsFileContent);
             writer.close();
-            writer1.close();
+//            writer1.close();
             writer2.close();
             writer3.close();
         } catch (IOException e) {

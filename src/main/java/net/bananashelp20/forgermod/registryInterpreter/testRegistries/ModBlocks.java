@@ -4,6 +4,7 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.block.custom.AncientSwordStandBlock;
 import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.custom.InfusionTableBlock;
+import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
