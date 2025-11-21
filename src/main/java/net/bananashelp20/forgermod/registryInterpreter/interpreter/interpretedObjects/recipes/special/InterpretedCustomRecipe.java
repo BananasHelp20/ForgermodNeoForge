@@ -12,7 +12,7 @@ public class InterpretedCustomRecipe extends InterpretedRecipe {
     File recipeClass;
     boolean multipleOutputs;
 
-    public InterpretedCustomRecipe(File recipeClass, ArrayList<String> itemsNeeded, ArrayList<String> resultItems, boolean multipleOutputs, int id) {
+    public InterpretedCustomRecipe(String recipeClass, ArrayList<String> itemsNeeded, ArrayList<String> resultItems, boolean multipleOutputs, int id) {
         super(itemsNeeded);
         this.itemsNeeded = itemsNeeded;
         this.resultItems = resultItems;

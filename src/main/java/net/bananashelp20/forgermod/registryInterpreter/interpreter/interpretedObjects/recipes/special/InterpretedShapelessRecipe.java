@@ -5,15 +5,15 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 
 public class InterpretedShapelessRecipe extends InterpretedRecipe {
-    ArrayList<ArrayList<String>> itemsNeeded;
+    ArrayList<String> itemsNeeded;
     String reslutItem;
     int recipeID; //only important for duplicates
     String unlockedBy;
     String category;
     int resltCount;
 
-    public InterpretedShapelessRecipe(ArrayList<ArrayList<String>> itemsNeeded, String category,  String unlockedBy, String resultItem, int resultCount, int id) {
-        super(itemsNeeded.getFirst());
+    public InterpretedShapelessRecipe(ArrayList<String> itemsNeeded, String category,  String unlockedBy, String resultItem, int resultCount, int id) {
+        super(itemsNeeded);
         this.itemsNeeded = itemsNeeded;
         this.reslutItem = resultItem;
         this.recipeID = id;
@@ -27,7 +27,7 @@ public class InterpretedShapelessRecipe extends InterpretedRecipe {
         String[] result = reslutItem.split(" ");
         String ret = "ShapelessRecipeBuilder.shapeless(RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + resltCount + ")\n";
         for (int i = 0; i < itemsNeeded.size(); i++) {
-            ret += "                .requires(" + itemsNeeded.get(i).get(0) + "s." + itemsNeeded.get(i).get(1).toUpperCase() + (itemsNeeded.get(i).get(0).toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
+            ret += "                .requires(" + itemsNeeded.get(i).split(" ")[0] + "s." + itemsNeeded.get(i).split(" ")[1].toUpperCase() + (itemsNeeded.get(i).split(" ")[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
         }
         return ret + "                .unlockedBy(getHasName(ModBlocks." + unlockedBy.toUpperCase() + ".get()), has(ModBlocks." + unlockedBy.toUpperCase() + ".get())).save(output, ForgerMod.MOD_ID + \":" + result[1].toLowerCase() + "_from_shapeless_crafting" + recipeID + "\");\n";
     }

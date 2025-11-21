@@ -8,12 +8,16 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedBlastingOrSmeltingRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedCustomRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapedRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapelessRecipe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class RegistryInterpreter {
@@ -128,6 +132,9 @@ public class RegistryInterpreter {
         ArrayList<ArrayList<String>> recipeStringObjects = new ArrayList<>();
         InterpretedRecipe recipeToAdd = new InterpretedRecipe(new ArrayList<>());
         int ctr = -1;
+        String[] pattern;
+        String[] temp;
+        HashMap<Character, String> patternMeaning;
 
         for (int i = 0; i < recipeText.size(); i++) {
             if (recipeText.get(i).contains("{")) {
@@ -143,6 +150,8 @@ public class RegistryInterpreter {
         for (int i = 0; i < recipeStringObjects.size(); i++) {
             inputItems = new ArrayList<>();
             recipeToAdd = new InterpretedRecipe(new ArrayList<>());
+            patternMeaning = new HashMap<>();
+            pattern = new String[3];
             if (recipeStringObjects.get(i).getFirst().contains("(smelting")) {
                 inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
                 recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), true, i, recipeStringObjects.get(i).get(3));
@@ -153,9 +162,28 @@ public class RegistryInterpreter {
                 inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
                 recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(true, recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), i, recipeStringObjects.get(i).get(3), recipeStringObjects.get(i).get(4));
             } else if (recipeStringObjects.get(i).contains("(shapeless")) {
+                inputItems.addAll(getContentInBrackets(i, 5, recipeStringObjects));
+                recipeToAdd = new InterpretedShapelessRecipe(inputItems, recipeStringObjects.get(i).get(1), recipeStringObjects.get(i).get(2), recipeStringObjects.get(i).get(3), Integer.parseInt(recipeStringObjects.get(i).get(4)), i);
             } else if (recipeStringObjects.get(i).contains("(shaped")) {
+                pattern[0] = recipeStringObjects.get(i).get(2);
+                pattern[1] = recipeStringObjects.get(i).get(3);
+                pattern[2] = recipeStringObjects.get(i).get(4);
+                temp = recipeStringObjects.get(i).get(5).split("-->");
+                patternMeaning.put(temp[0].charAt(0), temp[1].trim());
+                temp = recipeStringObjects.get(i).get(6).split("-->");
+                patternMeaning.put(temp[0].charAt(0), temp[1].trim());
+                temp = recipeStringObjects.get(i).get(7).split("-->");
+                patternMeaning.put(temp[0].charAt(0), temp[1].trim());
+                recipeToAdd = new InterpretedShapedRecipe(recipeStringObjects.get(i).get(1), pattern, patternMeaning,recipeStringObjects.get(i).get(8), recipeStringObjects.get(i).get(9), i);
             } else if (recipeStringObjects.get(i).contains("(custom")) {
-
+                ArrayList<String> outputItems = new ArrayList<>();
+                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
+                int x = 4;
+                while (!recipeStringObjects.get(i).get(x).contains("]")) {
+                    x++;
+                }
+                outputItems.addAll(getContentInBrackets(i, x+1, recipeStringObjects))
+                recipeToAd = new InterpretedCustomRecipe(recipeStringObjects.get(i).get(1), inputItems, outputItems, recipeStringObjects.get(i).get(2).contains("!SINGLEOUTPUT"), );
             }
             interpretedRecipes.add(recipeToAdd);
         }

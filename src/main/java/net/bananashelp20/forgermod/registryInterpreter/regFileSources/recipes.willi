@@ -56,19 +56,25 @@
     item stick
     9
     [
-        moditem ruby_gemstone, moditem amber_gemstone,
+        moditem ruby_gemstone
+        moditem amber_gemstone,
     ]
 )
 
 (custom
     ForgeBlockEntity
-    moditem steel_ingot, moditem damask_ingot, moditem ruby_gemstone
     !SINGLE_OUTPUT
     saphire_gemstone
+    ]
+        moditem steel_ingot, moditem damask_ingot, moditem ruby_gemstone
+    ]
+
 )
 (custom
     InfusionBlockEntity
-    moditem steel_ingot, moditem damask_ingot, moditem ruby_gemstone
     !SINGLE_OUTPUT
     saphire_gemstone
+    [
+        moditem steel_ingot, moditem damask_ingot, moditem ruby_gemstone
+    ]
 )
