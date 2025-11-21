@@ -1,7 +1,7 @@
 #//comment//#
 #//comment
 comment//#
-(simpleItem
+{simpleItem
     item_name
     basicItem
     items
@@ -10,9 +10,9 @@ comment//#
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-)
+}
 
-(specialItem
+{specialItem
     special_item_name
     basicItem
     items
@@ -21,9 +21,9 @@ comment//#
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-)
+}
 
-(specialItem
+{specialItem
     special_item_with_rarity
     basicItem
     ?uncommon #//Questionmark declares an optional parameter
@@ -33,9 +33,9 @@ comment//#
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-)
+}
 
-(simpleSword
+{simpleSword
     sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItem
@@ -45,9 +45,9 @@ comment//#
     ?[E
         Enchantable:Axe
     ?]
-)
+}
 
-(specialSword
+{specialSword
     specialSword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
@@ -58,9 +58,9 @@ comment//#
         uncommon
     ]
     !NO_ENCHANTS
-)
+}
 
-(specialSword
+{specialSword
     specialSword2
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
@@ -75,9 +75,9 @@ comment//#
         Enchantable:Axe
         Enchantable:Pickaxe
     ?]
-)
+}
 
-(upgradableSword
+{upgradableSword
     complexSword
     ElectriumWeapon
     createSpecialSwordItem
@@ -93,7 +93,7 @@ comment//#
     #//]
     items
     !NO_ENCHANTS
-)
+}
 
 #//sets {
     #//!CREATE_TOOLSET |steel|STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED|

@@ -33,7 +33,8 @@ public class InterpretedCreativeTab {
                 "                        for (int i = 0; i < register.length; i++) {\n" +
                 "                            output.accept(register[i]);\n" +
                 "                        }\n" +
-                "                    }).build());";
+                "                    }).build()\n" +
+                "    );\n";
     }
 
     public String getRegistryMethods() {

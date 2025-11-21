@@ -9,43 +9,43 @@ public class InterpretedCustomRecipe extends InterpretedRecipe {
     ArrayList<String> itemsNeeded;
     ArrayList<String> resultItems;
     int recipeID; //only important for duplicates
-    File recipeClass;
+    String recipeClass;
     boolean multipleOutputs;
 
-    public InterpretedCustomRecipe(String recipeClass, ArrayList<String> itemsNeeded, ArrayList<String> resultItems, boolean multipleOutputs, int id) {
+    public InterpretedCustomRecipe(String recipeClass, ArrayList<String> itemsNeeded, ArrayList<String> resultItems, int id) {
         super(itemsNeeded);
         this.itemsNeeded = itemsNeeded;
         this.resultItems = resultItems;
         this.recipeID = id;
         this.recipeClass = recipeClass;
-        this.multipleOutputs = multipleOutputs;
+        this.multipleOutputs = (resultItems.size() > 1);
     }
 
     public String getOutputItems() {
-        String[] result = itemsNeeded.get(0).split(" ");
+        String[] result = resultItems.get(0).split(" ");
         if (!multipleOutputs) {
-            return "new ItemStack(" + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + "),\n";
+            return "            new ItemStack(" + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + "), \n";
         }
-        String ret = "{";
+        String ret = "            {";
         for (int i = 0; i < resultItems.size(); i++) {
-            result = itemsNeeded.get(i).split(" ");
+            result = getCorrectItemWithType(resultItems.get(i).split(" "));
             ret += "new ItemStack(" + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + "), ";
         }
-        return ret + "},\n";
+        return ret.substring(0, ret.length()-2) + "},\n";
     }
 
     public String getInputItems() {
-        String ret = "{";
+        String ret = "            {";
         String[] result;
-        for (int i = 0; i < resultItems.size(); i++) {
-            result = itemsNeeded.get(i).split(" ");
+        for (int i = 0; i < itemsNeeded.size(); i++) {
+            result = getCorrectItemWithType(itemsNeeded.get(i).split(" "));
             ret += result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", ";
         }
-        return ret + "},\n";
+        return ret.substring(0, ret.length()-2) + "},\n";
     }
 
     @Override
     public String toString() {
-        return getInputItems() + "\n\n" + getOutputItems();
+        return getInputItems() + getOutputItems();
     }
 }

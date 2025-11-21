@@ -26,19 +26,19 @@ public class InterpretedShapedRecipe extends InterpretedRecipe {
 
     @Override
     public String toString() {
-        String[] result = reslutItem.split(" ");
+        String[] result = getCorrectItemWithType(reslutItem.split(" "));
         String[] currentItem;
         String ret = "        ShapedRecipeBuilder.shaped(RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n" +
-                "                .pattern(\"" + pattern[0] +"\")\n" +
-                "                .pattern(\"" + pattern[1] + "\")\n" +
-                "                .pattern(\"" + pattern[2] + "\")\n";
-        for (char i = 'A'; i < meanings.size(); i++) {
+                "                .pattern(\"" + pattern[0].replace('X', ' ') +"\")\n" +
+                "                .pattern(\"" + pattern[1].replace('X', ' ') + "\")\n" +
+                "                .pattern(\"" + pattern[2].replace('X', ' ') + "\")\n";
+        for (char i = 'A'; i <= 'Z'; i++) {
             if (meanings.get(i) != null) {
-                currentItem = meanings.get(i).split(" ");
+                currentItem = getCorrectItemWithType(meanings.get(i).split(" "));
                 ret += "                .define(" + i + ", " + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
             }
         }
-        currentItem = unlockedBy.split(" ");
+        currentItem = getCorrectItemWithType(unlockedBy.split(" "));
         return ret + "                .unlockedBy(getHasName(" + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")," +
                 " has(" + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")).save(output);\n";
     }

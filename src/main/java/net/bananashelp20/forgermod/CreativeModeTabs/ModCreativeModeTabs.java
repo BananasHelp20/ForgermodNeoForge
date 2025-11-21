@@ -39,7 +39,8 @@ public class ModCreativeModeTabs {
                         for (int i = 0; i < register.length; i++) {
                             output.accept(register[i]);
                         }
-                    }).build());
+                    }).build()
+    );
 
     public static final Supplier<CreativeModeTab> FORGER_MOD_ITEMS_TAB = CREATIVE_MODE_TABS.register("forger_mod_items_tab",
             () -> CreativeModeTab.builder()
@@ -50,7 +51,8 @@ public class ModCreativeModeTabs {
                         for (int i = 0; i < register.length; i++) {
                             output.accept(register[i]);
                         }
-                    }).build());
+                    }).build()
+    );
 
     public static final Supplier<CreativeModeTab> FORGER_MOD_MISCELLANEOUS_TAB = CREATIVE_MODE_TABS.register("forger_mod_miscellaneous_tab",
             () -> CreativeModeTab.builder()
@@ -61,7 +63,8 @@ public class ModCreativeModeTabs {
                         for (int i = 0; i < register.length; i++) {
                             output.accept(register[i]);
                         }
-                    }).build());
+                    }).build()
+    );
 
     public static final Supplier<CreativeModeTab> FORGER_MOD_BLOCKS_TAB = CREATIVE_MODE_TABS.register("forger_mod_blocks_tab",
             () -> CreativeModeTab.builder()
@@ -72,7 +75,8 @@ public class ModCreativeModeTabs {
                         for (int i = 0; i < register.length; i++) {
                             output.accept(register[i]);
                         }
-                    }).build());
+                    }).build()
+    );
 
     //STARTGENERATING!
 }

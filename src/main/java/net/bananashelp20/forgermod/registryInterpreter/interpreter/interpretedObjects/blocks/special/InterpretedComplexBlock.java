@@ -19,7 +19,7 @@ public class InterpretedComplexBlock extends InterpretedBlock {
                 + " = registerBlock(\"" + blockProperties.get(0).toLowerCase()
                 + "\",\n"
                 + "            " + blockProperties.get(1)
-                + "\n    );";
+                + "\n    );\n";
     }
 
     public String getTag() {

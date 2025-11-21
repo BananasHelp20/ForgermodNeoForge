@@ -4,6 +4,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedComplexBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSimpleBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSpecialBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
@@ -11,6 +12,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedCustomRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapelessRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,21 +26,27 @@ public class RegistryInterpreter {
     public static void main(String[] args) throws FileNotFoundException {
         try {
             if (!generateCode()) {
+                System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase, because an " + ANSI_RESET + ANSI_BLACK + " ERROR " + ANSI_RESET + ANSI_RED + " occured" + ANSI_RESET);
+                System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
                 rewriteAllAfterError();
+                System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code!" + ANSI_RESET);
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
             }
         } catch (Exception e) {
+            System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase!" + ANSI_RESET);
+            System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
             rewriteAllAfterError();
+            System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code" + ANSI_RESET);
             throw e;
         }
     }
-
+    private static boolean stillGenerating = true;
     public static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/blocks.willi");
     public static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/items.willi");
     public static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/creativeTabs.willi");
     public static File upgradeList = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/itemUpgradeList.txt");
     public static File recipeFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/recipes.willi");
-    public static File toolTiersFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/toolTiers.willi");
+    public static File toolTierFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/toolTiers.willi");
     public static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
     public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
 //    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/TestRegistryClass.java");
@@ -57,8 +65,8 @@ public class RegistryInterpreter {
     static ArrayList<InterpretedItem> items = getAllItems();
     static ArrayList<InterpretedBlock> blocks = getAllBlocks();
     static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
-//    ArrayList<InterpretedCreativeTab> tabs = getAllCreativeTabs();
-//    ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
+    static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
+    static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlockFile);
 //    static String unchangedModRegistryContent = getContentFromFile(modRegistry);
@@ -77,37 +85,54 @@ public class RegistryInterpreter {
             return false;
         }
         Scanner userHelper = new Scanner(System.in);
-        warning("*************************************************************************************************************************************************************************\n" +
-                "Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, ModToolTiers and ModCreativeModeTabs.\n" +
-                "Other Files might also be affected, and there is no guarantee the code works as it should.\nPlease make sure to " + ANSI_RESET + ANSI_PURPLE + "//!PRESERVE " + ANSI_RESET + ANSI_YELLOW + "every important code that should not be overridden\n" +
-                "If you wish to continue anyways, press " + ANSI_RESET + ANSI_GREEN + "Enter.\n" + ANSI_RESET + ANSI_YELLOW +
-                "If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"" + ANSI_RESET + ANSI_YELLOW + "\n" +
-                "*************************************************************************************************************************************************************************");
-        if (userInput(userHelper).contains("!STOP"))
+        String input;
+        warning("****************************************************************************************************************************************\n" +
+                "* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *\n* ModToolTiers and ModCreativeModeTabs." +
+                "Other Files might also be affected, and there is no guarantee the code works as it should.      *\n* Please make sure to " + ANSI_RESET + ANSI_PURPLE + "//!PRESERVE " + ANSI_RESET +
+                ANSI_YELLOW + "every important code line that shall not be overridden                                               *\n" +
+                "* If you wish to continue anyways, type in " + ANSI_RESET + ANSI_GREEN + "\"!START\"" + ANSI_RESET + ANSI_YELLOW + ".                                            " +
+                "                                       *\n" +
+                "* If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"" + ANSI_RESET + ANSI_YELLOW +
+                "                                                    *\n" +
+                "****************************************************************************************************************************************");
+//        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!START")) {
+//            if (input.contains("!STOP")) {
+//                return true;
+//            }
+//        }
+        if (userInput(userHelper).contains("!STOP")) {
             return true;
+        }
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase" + ANSI_RESET);
 
-//        success("Successfully generated tool tier objects");
-//        generateToolTiers();
+
+//        printRegistryFromList(toolTiers);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
+        success("Successfully generated tool tier objects");
+//        writeToolTierCode();
 //        success("Successfully wrote tool tier objects to files");
-        printRegistryFromList(items);
+//        printRegistryFromList(items);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated item objects");
-        System.out.println();
-//        generateAndWriteItemCode();
+//        writeItemCode();
 //        success("Successfully wrote item objects to files");
-        printRegistryFromList(blocks);
+//        printRegistryFromList(blocks);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated block objects");
-        System.out.println();
-//        generateAndWriteBlockCode();
+//        writeBlockCode();
 //        success("Successfully wrote block tab objects to files");
-//        success("Successfully generated creative tab objects");
-//        generateAndWriteCreativeTabs();
-//        success("Successfully wrote cretive tab objects to files");
-        printRegistryFromList(recipes);
+//        printRegistryFromList(creativeTabs);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
+        success("Successfully generated creative tab objects");
+//        writeCreativeTabCode();
+//        success("Successfully wrote creative tab objects to files");
+//        printRegistryFromList(recipes);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated recipe objects");
-        System.out.println();
-//        generateAndWriteRecipes();
+//        writeRecipeCode();
 //        success("Successfully wrote recipe objects to files");
-
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> Successfully completed generating phase" + ANSI_RESET);
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
         return true;
     }
 
@@ -125,12 +150,68 @@ public class RegistryInterpreter {
         return toReturn;
     }
 
+    public static ArrayList<InterpretedCreativeTab> getAllCreativeTabs() {
+        ArrayList<InterpretedCreativeTab> interpretedToolTiers = new ArrayList<>();
+        ArrayList<String> toolTierText = getContentFromFileAsList(creativeTabFile);
+        ArrayList<ArrayList<String>> toolTierStringObjects = new ArrayList<>();
+        InterpretedCreativeTab toolTierToAdd = null;
+        int ctr = -1;
+
+        for (int i = 0; i < toolTierText.size(); i++) {
+            if (toolTierText.get(i).contains("{")) {
+                toolTierStringObjects.add(new ArrayList<>());
+                ctr++;
+                for (int j = i; j < toolTierText.size() && !toolTierText.get(j).contains("}"); j++) {
+                    toolTierStringObjects.get(ctr).add(toolTierText.get(j));
+                    i = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < toolTierStringObjects.size(); i++) {
+            if (toolTierStringObjects.get(i).getFirst().contains("{simpleTab")) {
+                toolTierToAdd = new InterpretedCreativeTab(toolTierStringObjects.get(i).get(1), toolTierStringObjects.get(i).get(2), toolTierStringObjects.get(i).get(3));
+            }
+            interpretedToolTiers.add(toolTierToAdd);
+        }
+
+        return interpretedToolTiers;
+    }
+
+    public static ArrayList<InterpretedToolTier> getAllToolTiers() {
+        ArrayList<InterpretedToolTier> interpretedToolTiers = new ArrayList<>();
+        ArrayList<String> toolTierText = getContentFromFileAsList(toolTierFile);
+        ArrayList<ArrayList<String>> toolTierStringObjects = new ArrayList<>();
+        InterpretedToolTier toolTierToAdd = null;
+        int ctr = -1;
+
+        for (int i = 0; i < toolTierText.size(); i++) {
+            if (toolTierText.get(i).contains("{")) {
+                toolTierStringObjects.add(new ArrayList<>());
+                ctr++;
+                for (int j = i; j < toolTierText.size() && !toolTierText.get(j).contains("}"); j++) {
+                    toolTierStringObjects.get(ctr).add(toolTierText.get(j));
+                    i = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < toolTierStringObjects.size(); i++) {
+            if (toolTierStringObjects.get(i).getFirst().contains("{normal")) {
+                toolTierToAdd = new InterpretedToolTier(toolTierStringObjects.get(i).get(1), toolTierStringObjects.get(i).get(2), toolTierStringObjects.get(i).get(3));
+            }
+            interpretedToolTiers.add(toolTierToAdd);
+        }
+
+        return interpretedToolTiers;
+    }
+
     public static ArrayList<InterpretedRecipe> getAllRecipes() {
         ArrayList<InterpretedRecipe> interpretedRecipes = new ArrayList<>();
         ArrayList<String> recipeText = getContentFromFileAsList(recipeFile);
         ArrayList<String> inputItems;
         ArrayList<ArrayList<String>> recipeStringObjects = new ArrayList<>();
-        InterpretedRecipe recipeToAdd = new InterpretedRecipe(new ArrayList<>());
+        InterpretedRecipe recipeToAdd;
         int ctr = -1;
         String[] pattern;
         String[] temp;
@@ -152,38 +233,37 @@ public class RegistryInterpreter {
             recipeToAdd = new InterpretedRecipe(new ArrayList<>());
             patternMeaning = new HashMap<>();
             pattern = new String[3];
-            if (recipeStringObjects.get(i).getFirst().contains("(smelting")) {
+            if (recipeStringObjects.get(i).getFirst().contains("{smelting")) {
                 inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
                 recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), true, i, recipeStringObjects.get(i).get(3));
-            } else if (recipeStringObjects.get(i).contains("(blasting")) {
+            } else if (recipeStringObjects.get(i).contains("{blasting")) {
                 inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
                 recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), false, i, recipeStringObjects.get(i).get(3));
-            } else if (recipeStringObjects.get(i).contains("(both")) {
+            } else if (recipeStringObjects.get(i).contains("{both")) {
                 inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
                 recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(true, recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), i, recipeStringObjects.get(i).get(3), recipeStringObjects.get(i).get(4));
-            } else if (recipeStringObjects.get(i).contains("(shapeless")) {
+            } else if (recipeStringObjects.get(i).contains("{shapeless")) {
                 inputItems.addAll(getContentInBrackets(i, 5, recipeStringObjects));
                 recipeToAdd = new InterpretedShapelessRecipe(inputItems, recipeStringObjects.get(i).get(1), recipeStringObjects.get(i).get(2), recipeStringObjects.get(i).get(3), Integer.parseInt(recipeStringObjects.get(i).get(4)), i);
-            } else if (recipeStringObjects.get(i).contains("(shaped")) {
+            } else if (recipeStringObjects.get(i).contains("{shaped")) {
                 pattern[0] = recipeStringObjects.get(i).get(2);
                 pattern[1] = recipeStringObjects.get(i).get(3);
                 pattern[2] = recipeStringObjects.get(i).get(4);
-                temp = recipeStringObjects.get(i).get(5).split("-->");
+                temp = recipeStringObjects.get(i).get(5).split("->");
                 patternMeaning.put(temp[0].charAt(0), temp[1].trim());
-                temp = recipeStringObjects.get(i).get(6).split("-->");
+                temp = recipeStringObjects.get(i).get(6).split("->");
                 patternMeaning.put(temp[0].charAt(0), temp[1].trim());
-                temp = recipeStringObjects.get(i).get(7).split("-->");
+                temp = recipeStringObjects.get(i).get(7).split("->");
                 patternMeaning.put(temp[0].charAt(0), temp[1].trim());
                 recipeToAdd = new InterpretedShapedRecipe(recipeStringObjects.get(i).get(1), pattern, patternMeaning,recipeStringObjects.get(i).get(8), recipeStringObjects.get(i).get(9), i);
-            } else if (recipeStringObjects.get(i).contains("(custom")) {
-                ArrayList<String> outputItems = new ArrayList<>();
-                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
-                int x = 4;
+            } else if (recipeStringObjects.get(i).contains("{custom")) {
+                inputItems.addAll(getContentInBrackets(i, 2, recipeStringObjects));
+                int x = 2;
                 while (!recipeStringObjects.get(i).get(x).contains("]")) {
                     x++;
                 }
-                outputItems.addAll(getContentInBrackets(i, x+1, recipeStringObjects))
-                recipeToAd = new InterpretedCustomRecipe(recipeStringObjects.get(i).get(1), inputItems, outputItems, recipeStringObjects.get(i).get(2).contains("!SINGLEOUTPUT"), );
+                ArrayList<String> output = new ArrayList<>(getContentInBrackets(i, x + 1, recipeStringObjects));
+                recipeToAdd = new InterpretedCustomRecipe(recipeStringObjects.get(i).get(1), inputItems, output, i);
             }
             interpretedRecipes.add(recipeToAdd);
         }
@@ -226,7 +306,7 @@ public class RegistryInterpreter {
             indexExpander = 0;
             dropOtherItem = "";
             blockToAdd = null;
-            if (blockStringObjects.get(i).getFirst().contains("simple")) {
+            if (blockStringObjects.get(i).getFirst().contains("{simple")) {
                 if (blockStringObjects.get(i).get(4).contains("?")) {
                     dropOther = true;
                     indexExpander++;
@@ -234,7 +314,7 @@ public class RegistryInterpreter {
                 }
                 blockToAdd = new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2), blockStringObjects.get(i).get(3), dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander), blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
 
-            } else if (blockStringObjects.get(i).getFirst().contains("special")) {
+            } else if (blockStringObjects.get(i).getFirst().contains("{special")) {
                 if (blockStringObjects.get(i).get(5).contains("?")) {
                     dropOther = true;
                     indexExpander++;
@@ -245,7 +325,7 @@ public class RegistryInterpreter {
                         blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander),
                         blockStringObjects.get(i).get(8 + indexExpander));
 
-            } else if (blockStringObjects.get(i).getFirst().contains("complex")) {
+            } else if (blockStringObjects.get(i).getFirst().contains("{complex")) {
                 if (blockStringObjects.get(i).get(4).contains("?")) {
                     dropOther = true;
                     indexExpander++;
@@ -268,10 +348,10 @@ public class RegistryInterpreter {
         ArrayList<String> properties;
         int ctr = -1;
         for (int i = 0; i < itemText.size(); i++) {
-            if (itemText.get(i).contains("(")) {
+            if (itemText.get(i).contains("{")) {
                 itemStringObjects.add(new ArrayList<>());
                 ctr++;
-                for (int j = i; j < itemText.size() && !itemText.get(j).contains(")"); j++) {
+                for (int j = i; j < itemText.size() && !itemText.get(j).contains("}"); j++) {
                     itemStringObjects.get(ctr).add(itemText.get(j));
                     i = j;
                 }
@@ -279,17 +359,17 @@ public class RegistryInterpreter {
         }
 
         for (int j = 0; j < itemStringObjects.size(); j++) {
-            if (itemStringObjects.get(j).getFirst().contains("simpleItem")) {
+            if (itemStringObjects.get(j).getFirst().contains("{simpleItem")) {
                 items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
-            } else if (itemStringObjects.get(j).getFirst().contains("specialItem")) {
+            } else if (itemStringObjects.get(j).getFirst().contains("{specialItem")) {
                 if (!itemStringObjects.get(j).get(3).contains("?[E") && itemStringObjects.get(j).get(3).contains("?")) {
                     items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3).substring(1).trim(), itemStringObjects.get(j).get(4)));
                 } else {
                     items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
                 }
-            } else if (itemStringObjects.get(j).getFirst().contains("simpleSword")) {
+            } else if (itemStringObjects.get(j).getFirst().contains("{simpleSword")) {
                 items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5), itemStringObjects.get(j).get(6)));
-            } else if (itemStringObjects.get(j).getFirst().contains("specialSword")) {
+            } else if (itemStringObjects.get(j).getFirst().contains("{specialSword")) {
                 properties = new ArrayList<>();
                 for (int k = 0; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains(")"); k++) {
                     if (itemStringObjects.get(j).get(k).contains("[") && !itemStringObjects.get(j).get(k).contains("?[E")) {
@@ -299,7 +379,7 @@ public class RegistryInterpreter {
                     }
                 }
                 items.add(new InterpretedSpecialSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), properties, itemStringObjects.get(j).get(5), itemStringObjects.get(j).get(6)));
-            } else if (itemStringObjects.get(j).getFirst().contains("upgradableSword") || itemStringObjects.get(j).getFirst().contains("upgradeableSword")) {
+            } else if (itemStringObjects.get(j).getFirst().contains("{upgradableSword") || itemStringObjects.get(j).getFirst().contains("{upgradeableSword")) {
                 variants = new ArrayList<>();
                 properties = new ArrayList<>();
                 properties.add(itemStringObjects.get(j).get(1));
@@ -321,9 +401,15 @@ public class RegistryInterpreter {
 
     public static String userInput(Scanner s) {
         System.out.println();
-        System.out.print(ANSI_CYAN + "#USER>" + ANSI_RESET);
+        System.out.print(ANSI_CYAN + "#USER> " + ANSI_RESET);
         String line = s.nextLine();
         System.out.println();
+        return line;
+    }
+
+    public static String userInputWithoutLineBreak(Scanner s) {
+        System.out.print(ANSI_CYAN + "#USER> " + ANSI_RESET);
+        String line = s.nextLine();
         return line;
     }
 

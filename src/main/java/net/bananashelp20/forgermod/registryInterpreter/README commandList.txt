@@ -34,4 +34,5 @@ Block Commands
 *********************
 Recipe Commands
 *********************
-!SINGLE_OUTPUT --> declares that block only has a single output if necessary
+!SINGLE_OUTPUT --> declares that recipe only has a single output if necessary
+!MULTIPLE_OUTPUTS --> declares that recipe has multiple outputs
