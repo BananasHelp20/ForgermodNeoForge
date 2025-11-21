@@ -36,3 +36,11 @@ Recipe Commands
 *********************
 !SINGLE_OUTPUT --> declares that recipe only has a single output if necessary
 !MULTIPLE_OUTPUTS --> declares that recipe has multiple outputs
+
+*********************
+Willi Code Generator
+*********************
+!LS --> lists files available when making a custom recipe
+!STOP --> stops adding process (exits to one stage higher in hierarchy)
+!STOP -a/-A/-absolute --> stops adding process, even while adding specific type
+!RETURN --> deletes the latest input item/block/tab... you commited.

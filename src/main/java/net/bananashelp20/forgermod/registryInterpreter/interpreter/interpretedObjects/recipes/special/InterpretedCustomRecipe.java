@@ -9,15 +9,15 @@ public class InterpretedCustomRecipe extends InterpretedRecipe {
     ArrayList<String> itemsNeeded;
     ArrayList<String> resultItems;
     int recipeID; //only important for duplicates
-    String recipeClass;
+    File recipeClass;
     boolean multipleOutputs;
 
-    public InterpretedCustomRecipe(String recipeClass, ArrayList<String> itemsNeeded, ArrayList<String> resultItems, int id) {
+    public InterpretedCustomRecipe(String recipeClassPath, ArrayList<String> itemsNeeded, ArrayList<String> resultItems, int id) {
         super(itemsNeeded);
         this.itemsNeeded = itemsNeeded;
         this.resultItems = resultItems;
         this.recipeID = id;
-        this.recipeClass = recipeClass;
+        this.recipeClass = new File(recipeClassPath);
         this.multipleOutputs = (resultItems.size() > 1);
     }
 

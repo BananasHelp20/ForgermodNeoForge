@@ -53,7 +53,7 @@
     blocks
 }
 {simple
-    newblockadsfs6
+    newblockadsfs
     77f, 50, SoundType.HEAVY_CORE
     dropOther
     ?mod item jade_gemstone
