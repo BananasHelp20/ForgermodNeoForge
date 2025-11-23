@@ -1,6 +1,8 @@
-#//comment//#
 #//comment
-comment//#
+#//IMPORTANT: DO NOT USE MULTILINE COMMENTS!!!
+#//but this
+#//is
+#//allowed
 {simpleItem
     item_name
     basicItem

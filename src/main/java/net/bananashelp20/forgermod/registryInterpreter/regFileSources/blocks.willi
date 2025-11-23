@@ -7,6 +7,7 @@
     diamond
     blocks
 }
+
 {simple
     newblockadfdsf
     77f, 50, SoundType.HEAVY_CORE
@@ -56,7 +57,7 @@
     newblockadsfs
     77f, 50, SoundType.HEAVY_CORE
     dropOther
-    ?mod item jade_gemstone
+    ?moditem jade_gemstone
     blockWithItem
     pickaxe
     carbon_steel

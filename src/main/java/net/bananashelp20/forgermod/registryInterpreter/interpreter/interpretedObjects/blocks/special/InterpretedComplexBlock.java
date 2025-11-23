@@ -39,12 +39,12 @@ public class InterpretedComplexBlock extends InterpretedBlock {
         if (dropsItem[0].contains("mod")) {
             drops += "Mod";
         }
-        if (dropsItem[1].contains("block")) {
+        if (dropsItem[0].contains("block")) {
             drops += "Blocks.";
         } else {
             drops += "Items.";
         }
-        drops += dropsItem[2].toUpperCase().trim() + (dropsItem[0].contains("mod") ? ".get());" : ");");
+        drops += dropsItem[1].toUpperCase().trim() + (dropsItem[0].contains("mod") ? ".get());" : ");");
         return drops;
     }
 

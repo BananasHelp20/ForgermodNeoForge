@@ -35,6 +35,8 @@ public class WilliCodeGenerator {
         }
     }
 
+    static boolean running;
+    static boolean subRunning;
     public static boolean generateCode() {
         if (!(recipeFile.exists() && recipeFile.canWrite() && recipeFile.canRead()
                 && toolTiersFile.exists() && toolTiersFile.canWrite() && toolTiersFile.canRead()
@@ -50,229 +52,221 @@ public class WilliCodeGenerator {
         ArrayList<ArrayList<String>> stringObjects = new ArrayList<>();
         ArrayList<String> stringObject;
         ArrayList<String> upgrades = new ArrayList<>();
-        boolean running = true;
-        boolean subRunning;
-        System.out.println(ANSI_YELLOW + "What do you want to add?\nOptions are:\n - Blocks\n - Items\n - Creative Tabs\n - Upgrades\n - Recipes\n - Tool Tiers\n" + ANSI_RESET);
+        running = true;
         while (running) {
+            System.out.println(ANSI_YELLOW + "What do you want to add?\nOptions are:\n - Blocks\n - Items\n - Creative Tabs\n - Upgrades\n - Recipes\n - Tool Tiers\n" + ANSI_RESET);
             line = userInputWithoutLineBreak(s);
             subRunning = true;
             if (line.contains("!STOP")) running = false;
             if (!line.isEmpty()) {
                 if (line.charAt(0) == 'B' || line.charAt(0) == 'b') {
-                    stringObject = new ArrayList<>();
-                    System.out.println(ANSI_YELLOW + "Enter a Block Type (simple, special, complex)" + ANSI_RESET);
                     while (subRunning) {
+                        stringObject = new ArrayList<>();
+                        System.out.println(ANSI_YELLOW + "Enter a Block Type (simple, special, complex)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s, "block").trim();
                         if (line.equalsIgnoreCase("simple")) {
                             stringObject.add("{simple");
-                            warning("Enter a block Name");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the block Properties (all in one line)");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the block drop method (dropSelf, dropOther)");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            if (line.equals("dropOther")) {
-                                warning("Enter the block drop (e.g. 'mod item jade_gemstone')");
-                                line = userInputWithoutLineBreak(s, "block[simple]");
-                                if (!line.equals("!RETURN")) {
-                                    stringObject.add("?" + line);
-                                } else {
-                                    break;
-                                }
-                            }
-                            warning("Enter the block model method (blockWithItem)");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the tool to break the block (e.g. 'pickaxe', or 'axe')");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the minimum material of the tool needed (e.g. 'steel')");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the creative tab the block belongs to (blocks, items, materials)");
-                            line = userInputWithoutLineBreak(s, "block[simple]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
+                            checkReturnAndInput("Enter a block Name", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block Properties (all in one line)", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block drop method (dropSelf, dropOther)", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block drop (e.g. 'mod item jade_gemstone')", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block model method (blockWithItem)", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the tool to break the block (e.g. 'pickaxe', or 'axe')", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the minimum material of the tool needed (e.g. 'steel')", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the creative tab the block belongs to (blocks, items, materials)", s, "block[simple]", stringObject);
+                            if (!subRunning) break;
                             stringObject.add("}");
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("special")) {
                             stringObject.add("{special");
-                            warning("Enter a block Name");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
+                            checkReturnAndInput("Enter a block Name", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a block Name", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block Properties (all in one line, as code segment)", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block drop method (dropSelf, dropOther)", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            if (stringObject.getLast().equals("dropOther")) {
+                                checkReturnAndInput("Enter the block drop (e.g. 'mod item jade_gemstone')", s, "block[special]", stringObject, true);
+                                if (!subRunning) break;
                             }
-                            warning("Enter the block Properties (all in one line, as code segment)");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the block drop method (dropSelf, dropOther)");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            if (line.equals("dropOther")) {
-                                warning("Enter the block drop (e.g. 'mod item jade_gemstone')");
-                                line = userInputWithoutLineBreak(s, "block[special]");
-                                if (!line.equals("!RETURN")) {
-                                    stringObject.add("?" + line);
-                                } else {
-                                    break;
-                                }
-                            }
-                            warning("Enter the block model method (blockWithItem)");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the tool to break the block (e.g. 'pickaxe', or 'axe')");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the minimum material of the tool needed (e.g. 'steel')");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the creative tab the block belongs to (blocks, items, materials)");
-                            line = userInputWithoutLineBreak(s, "block[special]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
+                            checkReturnAndInput("Enter the block model method (blockWithItem)", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the tool to break the block (e.g. 'pickaxe', or 'axe')", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the minimum material of the tool needed (e.g. 'steel')", s, "block[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the creative tab the block belongs to (blocks, items, materials)", s, "block[special]", stringObject);
+                            if (!subRunning) break;
                             stringObject.add("}");
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("complex")) {
                             stringObject.add("{complex");
-                            warning("Enter a block Name");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
+                            checkReturnAndInput("Enter a block Name", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block create method (e.g. createBlockWithDescription)", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block Properties (all in one line)", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the block drop method (dropSelf, dropOther)", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            if (stringObject.getLast().equals("dropOther")) {
+                                checkReturnAndInput("Enter the block drop (e.g. 'mod item jade_gemstone')", s, "block[special]", stringObject, true);
+                                if (!subRunning) break;
                             }
-                            warning("Enter the block create method (e.g. createBlockWithDescription)");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the block Properties (all in one line)");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the block drop method (dropSelf, dropOther)");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            if (line.equals("dropOther")) {
-                                warning("Enter the block drop (e.g. 'mod item jade_gemstone')");
-                                line = userInputWithoutLineBreak(s, "block[complex]");
-                                if (!line.equals("!RETURN")) {
-                                    stringObject.add("?" + line);
-                                } else {
-                                    break;
-                                }
-                            }
-                            warning("Enter the block model method (blockWithItem)");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the tool to break the block (e.g. 'pickaxe', or 'axe')");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the minimum material of the tool needed (e.g. 'steel')");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
-                            warning("Enter the creative tab the block belongs to (blocks, items, materials)");
-                            line = userInputWithoutLineBreak(s, "block[complex]");
-                            if (!line.equals("!RETURN")) {
-                                stringObject.add(line);
-                            } else {
-                                break;
-                            }
+                            checkReturnAndInput("Enter the block model method (blockWithItem)", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the tool to break the block (e.g. 'pickaxe', or 'axe')", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the minimum material of the tool needed (e.g. 'steel')", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the creative tab the block belongs to (blocks, items, materials)", s, "block[complex]", stringObject);
+                            if (!subRunning) break;
                             stringObject.add("}");
+                            stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;
                         if (line.contains("!STOP -")) {
                             subRunning = false;
                             running = false;
                         }
-
+                        stringObjects.add(stringObject);
                     }
                 } else if (line.trim().charAt(0) == 'I' || line.trim().charAt(0) == 'i') {
-                    stringObject = new ArrayList<>();
-                    System.out.println(ANSI_YELLOW + "Enter an ItemType (simple, special, simple sword, special sword, upgradeable sword, set)" + ANSI_RESET);
-                    line = userInputWithoutLineBreak(s, "item").trim();
                     while (subRunning) {
+                        stringObject = new ArrayList<>();
+                        System.out.println(ANSI_YELLOW + "Enter an ItemType (simple, special, simple sword, special sword, upgradeable sword, set)" + ANSI_RESET);
+                        line = userInputWithoutLineBreak(s, "item").trim();
                         if (line.equalsIgnoreCase("simple")) {
-                        } else if (line.equalsIgnoreCase("special")) {
-                        } else if (line.replace(" ", "").equalsIgnoreCase("simpleSword")) {
-                        } else if (line.replace(" ", "").equalsIgnoreCase("specialSword")) {
-                        } else if (line.equalsIgnoreCase("upgradeable") || line.equalsIgnoreCase("upgradable") || line.replace(" ", "").equalsIgnoreCase("upgradeableSword") || line.replace(" ", "").equalsIgnoreCase("upgradableSword")) {
-                        } else if (line.equalsIgnoreCase("set")) {
+                            checkReturnAndInput("Enter an Item name", s, "item[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a modelingType (basic or handheld)", s, "item[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a Creative Tab (items, blocks...)", s, "item[simple]", stringObject);
+                            if (!subRunning) break;
+                            warning("Does the item have Enchants?");
+                            if ((line = userInputWithoutLineBreak(s, "Item[simple]")).toLowerCase().contains("y")) {
+                                warning("Enter what Enchanting templates you want to use (Axe, Pickaxe, Sword, Hoe, Shovel, head_armor, leg_armor, foot_armor, chest_armor)\nType in \"!STOP\" when your ready");
+                                while (!line.contains("!STOP") && !line.trim().contains("!RETURN")) {
+                                    line = "Enchantable:" + userInputWithoutLineBreak(s, "Item[simple]");
+                                    stringObject.add(line);
+                                }
+                                stringObject.removeLast();
+                            }
+                            if (!subRunning) break;
+                            if (line.trim().equals("!RETURN")) break;
+                            stringObjects.add(stringObject);
+                            success("Successfully registered Object");
                         }
+                        else if (line.equalsIgnoreCase("special")) {
+                            checkReturnAndInput("Enter an Item name", s, "item[special]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a modelingType (basicItem or handheldItem)", s, "item[special]", stringObject);
+                            if (!subRunning) break;
+                            warning("Does the item have a Rarity?");
+                            line = userInputWithoutLineBreak(s, "item[special]");
+                            if (line.toUpperCase().contains("y")) {
+                                warning("Enter a Rarity for the item");
+                                line = "?" + userInputWithoutLineBreak(s, "item[special]");
+                                if (!line.contains("!RETURN")) stringObject.add(line);
+                            }
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a Creative Tab (items, blocks...)", s, "item[special]", stringObject);
+                            if (!subRunning) break;
+                            warning("Does the item have Enchants?");
+                            if ((line = userInputWithoutLineBreak(s, "Item[special]")).toLowerCase().contains("y")) {
+                                stringObject.add("?[E");
+                                warning("Enter what Enchanting templates you want to use (Axe, Pickaxe, Sword, Hoe, Shovel, head_armor, leg_armor, foot_armor, chest_armor)\nType in \"!STOP\" when your ready");
+                                while (!line.equals("!STOP") && !line.trim().equals("!RETURN")) {
+                                    line = "Enchantable:" + userInputWithoutLineBreak(s, "Item[special]");
+                                    stringObject.add(line);
+                                }
+                                stringObject.removeLast();
+                                stringObject.add("?]");
+                            }
+                            if (!subRunning) break;
+                            stringObjects.add(stringObject);
+                            success("Successfully registered Object");
+                        }
+                        else if (line.replace(" ", "").equalsIgnoreCase("simpleSword")) {
+                            checkReturnAndInput("Enter an Item Sword Name", s, "item[simpleSword]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the Sword Properties (Format: [damage], [speed]f) [note: the lower the speed the faster for attack speed]", s, "item[simpleSword]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter an item creation method", s, "item[simpleSword]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a modelingType (basicItem, handheldItem)", s, "item[simpleSword]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter an item material", s, "item[simpleSword]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter a creative tab", s, "item[simpleSword]", stringObject);
+                            if (!subRunning) break;
+                            warning("Does the item have Enchants?");
+                            if ((line = userInputWithoutLineBreak(s, "Item[simpleSword]")).toLowerCase().contains("y")) {
+                                stringObject.add("?[E");
+                                warning("Enter what Enchanting templates you want to use (Axe, Pickaxe, Sword, Hoe, Shovel, head_armor, leg_armor, foot_armor, chest_armor)\nType in \"!STOP\" when your ready");
+                                while (!line.equals("!STOP") && !line.trim().equals("!RETURN")) {
+                                    line = "Enchantable:" + userInputWithoutLineBreak(s, "Item[simpleSword]");
+                                    stringObject.add(line);
+                                }
+                                stringObject.removeLast();
+                                stringObject.add("?]");
+                            }
+                            if (!subRunning) break;
+                            stringObjects.add(stringObject);
+                            success("Successfully registered Object");
+                        }
+                        else if (line.replace(" ", "").equalsIgnoreCase("specialSword")) {
+                            stringObject.add("?[E");
+                            warning("Does the item have Enchants?");
+                            if ((line = userInputWithoutLineBreak(s, "Item[specialSword]")).toLowerCase().contains("y")) {
+                                warning("Enter what Enchanting templates you want to use (Axe, Pickaxe, Sword, Hoe, Shovel, head_armor, leg_armor, foot_armor, chest_armor)\nType in \"!STOP\" when your ready");
+                                while (!line.equals("!STOP") && !line.trim().equals("!RETURN")) {
+                                    line = "Enchantable:" + userInputWithoutLineBreak(s, "Item[specialSword]");
+                                    stringObject.add(line);
+                                }
+                                stringObject.removeLast();
+                                stringObject.add("?]");
+                            }
+                            if (!subRunning) break;
+                            stringObjects.add(stringObject);
+                            success("Successfully registered Object");
+                        } else if (line.equalsIgnoreCase("upgradeable") || line.equalsIgnoreCase("upgradable") || line.replace(" ", "").equalsIgnoreCase("upgradeableSword") || line.replace(" ", "").equalsIgnoreCase("upgradableSword")) {
+                            stringObject.add("?[E");
+                            warning("Do the items have Enchants?");
+                            if ((line = userInputWithoutLineBreak(s, "Item[upgradeableItem]")).toLowerCase().contains("y")) {
+                                warning("Enter what Enchanting templates you want to use (Axe, Pickaxe, Sword, Hoe, Shovel, head_armor, leg_armor, foot_armor, chest_armor)\nType in \"!STOP\" when your ready");
+                                while (!line.equals("!STOP") && !line.trim().equals("!RETURN")) {
+                                    line = "Enchantable:" + userInputWithoutLineBreak(s, "Item[upgradeableItem]");
+                                    stringObject.add(line);
+                                }
+                                stringObject.removeLast();
+                                stringObject.add("?]");
+                            }
+                            if (!subRunning) break;
+                            stringObjects.add(stringObject);
+                            success("Successfully registered Object");
+                        } /*else if (line.equalsIgnoreCase("set")) {
+                            warning("Do the items have Enchants?");
+                            if ((line = userInputWithoutLineBreak(s, "Item[set]")).toLowerCase().contains("y")) {
+                                warning("Enter what Enchanting templates you want to use (Axe, Pickaxe, Sword, Hoe, Shovel, head_armor, leg_armor, foot_armor, chest_armor)\nType in \"!STOP\" when your ready");
+                                while (!line.equals("!STOP") && !line.trim().equals("!RETURN")) {
+                                    line = "Enchantable:" + userInputWithoutLineBreak(s, "Item[set]");
+                                    stringObject.add(line);
+                                }
+                                stringObject.removeLast();
+                            }
+                            if (!subRunning) break;
+                            stringObjects.add(stringObject);
+                        }*/
 
                         if (line.equals("!STOP")) subRunning = false;
                         if (line.contains("!STOP -")) {
@@ -281,12 +275,18 @@ public class WilliCodeGenerator {
                         }
                     }
                 } else if (line.charAt(0) == 'C' || line.charAt(0) == 'c') {
-                    stringObject = new ArrayList<>();
-                    System.out.println(ANSI_YELLOW + "Enter a Creative Tab Type (currently only 'simple' exists)" + ANSI_RESET);
                     while (subRunning) {
+                        stringObject = new ArrayList<>();
+                        System.out.println(ANSI_YELLOW + "Enter a Creative Tab Type (currently only 'simple' exists)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s, "creative_tab").trim();
                         if (line.equalsIgnoreCase("simple")) {
-                            subRunning = false;
+                            checkReturnAndInput("Enter a creative Tab Name like this: 'forger_test_tab'", s, "creative_tab[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Reenter Name in camelCase ('forgerTestTab')", s, "creative_tab[simple]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter display item and specify type(format: 'moditem jade_gemstone')", s, "creative_tab[simple]", stringObject);
+                            if (!subRunning) break;
+                            stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;
                         if (line.contains("!STOP -")) {
@@ -298,22 +298,23 @@ public class WilliCodeGenerator {
                     System.out.println(ANSI_YELLOW + "Enter an Item Upgrade" + ANSI_RESET);
                     upgrades.add(userInputWithoutLineBreak(s, "upgrade").trim().replace(" ", "_").toLowerCase());
                 } else if (line.charAt(0) == 'R' || line.charAt(0) == 'r') {
-                    stringObject = new ArrayList<>();
-                    System.out.println(ANSI_YELLOW + "Enter an Recipe Type (smelting, blasting, both (smelting and blasting), shaped, shapeless, custom)" + ANSI_RESET);
                     while (subRunning) {
+                        stringObject = new ArrayList<>();
+                        System.out.println(ANSI_YELLOW + "Enter an Recipe Type (smelting, blasting, both (smelting and blasting), shaped, shapeless, custom)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s, "recipe").trim().replace(" ", "");
                         if (line.equalsIgnoreCase("smelting")) {
-                            subRunning = false;
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("blasting")) {
-                            subRunning = false;
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("both") || line.equalsIgnoreCase("smeltingandblasting") || line.equalsIgnoreCase("smelting&blasting") || line.equalsIgnoreCase("smelting+blasting")) {
-                            subRunning = false;
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("shaped")) {
-                            subRunning = false;
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("shapeless")) {
-                            subRunning = false;
+                            stringObjects.add(stringObject);
                         } else if (line.equalsIgnoreCase("custom")) {
 
+                            stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;
                         if (line.contains("!STOP -")) {
@@ -322,12 +323,12 @@ public class WilliCodeGenerator {
                         }
                     }
                 } else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
-                    stringObject = new ArrayList<>();
-                    System.out.println(ANSI_YELLOW + "Enter an Tool Tier Type (currently only 'normal' exists)" + ANSI_RESET);
                     while (subRunning) {
+                        stringObject = new ArrayList<>();
+                        System.out.println(ANSI_YELLOW + "Enter an Tool Tier Type (currently only 'normal' exists)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s).trim();
                         if (line.equalsIgnoreCase("normal")) {
-                            subRunning = false;
+                            stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;
                         if (line.contains("!STOP -")) {
@@ -346,6 +347,32 @@ public class WilliCodeGenerator {
 //        generateRecipe();
 
         return true;
+    }
+
+    public static void checkReturnAndInput(String msg, Scanner s, String addOn, ArrayList<String> stringObject) {
+        warning(msg);
+        String line = userInputWithoutLineBreak(s, addOn).trim();
+        if (!line.equals("!RETURN") && !line.equals("!STOP")) {
+            stringObject.add("    " + line);
+        } else {
+            subRunning = false;
+        }
+        if (line.contains("!STOP -")) {
+            running = false;
+        }
+    }
+
+    public static void checkReturnAndInput(String msg, Scanner s, String addOn, ArrayList<String> stringObject, boolean optionalParameter) {
+        warning(msg);
+        String line = userInputWithoutLineBreak(s, addOn).trim();
+        if (!line.equals("!RETURN") && !line.equals("!STOP")) {
+            stringObject.add("    " + (optionalParameter ? "?" : "") + line);
+        } else {
+            subRunning = false;
+        }
+        if (line.contains("!STOP -")) {
+            running = false;
+        }
     }
 
     public static String userInput(Scanner s) {

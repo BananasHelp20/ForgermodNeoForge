@@ -95,11 +95,11 @@ public class RegistryInterpreter {
                 "* If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"" + ANSI_RESET + ANSI_YELLOW +
                 "                                                    *\n" +
                 "****************************************************************************************************************************************");
-//        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!START")) {
-//            if (input.contains("!STOP")) {
-//                return true;
-//            }
-//        }
+        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!START")) {
+            if (input.contains("!STOP")) {
+                return true;
+            }
+        }
         if (userInput(userHelper).contains("!STOP")) {
             return true;
         }
@@ -318,6 +318,7 @@ public class RegistryInterpreter {
                 if (blockStringObjects.get(i).get(5).contains("?")) {
                     dropOther = true;
                     indexExpander++;
+                    dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
                 }
                 blockToAdd = new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
                         blockStringObjects.get(i).get(3), blockStringObjects.get(i).get(4),
@@ -329,6 +330,7 @@ public class RegistryInterpreter {
                 if (blockStringObjects.get(i).get(4).contains("?")) {
                     dropOther = true;
                     indexExpander++;
+                    dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
                 }
                 blockToAdd = new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
                         blockStringObjects.get(i).get(3),
