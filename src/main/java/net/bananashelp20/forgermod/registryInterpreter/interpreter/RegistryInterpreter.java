@@ -100,33 +100,30 @@ public class RegistryInterpreter {
                 return true;
             }
         }
-        if (userInput(userHelper).contains("!STOP")) {
-            return true;
-        }
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase" + ANSI_RESET);
 
 
-//        printRegistryFromList(toolTiers);
+        printRegistryFromList(toolTiers);
         System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated tool tier objects");
 //        writeToolTierCode();
 //        success("Successfully wrote tool tier objects to files");
-//        printRegistryFromList(items);
+        printRegistryFromList(items);
         System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated item objects");
 //        writeItemCode();
 //        success("Successfully wrote item objects to files");
-//        printRegistryFromList(blocks);
+        printRegistryFromList(blocks);
         System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated block objects");
 //        writeBlockCode();
 //        success("Successfully wrote block tab objects to files");
-//        printRegistryFromList(creativeTabs);
+        printRegistryFromList(creativeTabs);
         System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated creative tab objects");
 //        writeCreativeTabCode();
 //        success("Successfully wrote creative tab objects to files");
-//        printRegistryFromList(recipes);
+        printRegistryFromList(recipes);
         System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
         success("Successfully generated recipe objects");
 //        writeRecipeCode();
@@ -298,6 +295,7 @@ public class RegistryInterpreter {
                 }
             }
         }
+
 //        interpretedBlocks.add(new InterpretedSimpleBlock("name", "p", "drop", "", "b", "type", "tab", "tab"));
 //        interpretedBlocks.add(new InterpretedSimpleBlock("name2", "p", "drop", "", "b", "type", "tab", "tab"));
 
