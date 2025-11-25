@@ -33,7 +33,7 @@ public class FileSystem {
         String fs = "";
 
         for (int i = 0; i < list.length; i++) {
-            if (justThis.equals("all") || justThis.equals("") || justThis.equals("none") || list[i].isDirectory() || (justThis.equalsIgnoreCase(list[i].getName().substring(list[i].getName().length()-justThis.length())))) {
+            if (justThis.equals("all") || justThis.isEmpty() || justThis.equals("none") || list[i].isDirectory() || (justThis.equalsIgnoreCase(list[i].getName().substring(list[i].getName().length()-justThis.length())))) {
                 for (int j = 1; j < level; j++) {
                     fs += "┃  ";
                 }
