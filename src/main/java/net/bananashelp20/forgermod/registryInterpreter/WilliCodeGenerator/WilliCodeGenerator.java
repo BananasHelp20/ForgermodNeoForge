@@ -1,7 +1,5 @@
 package net.bananashelp20.forgermod.registryInterpreter.WilliCodeGenerator;
 
-import net.minecraft.world.level.block.FenceGateBlock;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -147,6 +145,7 @@ public class WilliCodeGenerator {
                         System.out.println(ANSI_YELLOW + "Enter an ItemType (simple, special, simple sword, special sword, upgradeable sword, set)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s, "item").trim();
                         if (line.equalsIgnoreCase("simple")) {
+                            stringObject.add("{simpleItem");
                             checkReturnAndInput("Enter an Item name", s, "item[simple]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter a modelingType (basic or handheld)", s, "item[simple]", stringObject);
@@ -166,10 +165,12 @@ public class WilliCodeGenerator {
                             }
                             if (!subRunning) break;
                             if (line.trim().equals("!RETURN")) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                             success("Successfully registered Object");
                         }
                         else if (line.equalsIgnoreCase("special")) {
+                            stringObject.add("{specialItem");
                             checkReturnAndInput("Enter an Item name", s, "item[special]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter a modelingType (basicItem or handheldItem)", s, "item[special]", stringObject);
@@ -198,10 +199,12 @@ public class WilliCodeGenerator {
                                 stringObject.add("!NO_ENCHANTS");
                             }
                             if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                             success("Successfully registered Object");
                         }
                         else if (line.replace(" ", "").equalsIgnoreCase("simpleSword")) {
+                            stringObject.add("{simpleSword");
                             checkReturnAndInput("Enter an Item Sword Name", s, "item[simpleSword]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter the Sword Properties (Format: [damage], [speed]f) [note: the lower the speed the faster for attack speed]", s, "item[simpleSword]", stringObject);
@@ -228,10 +231,12 @@ public class WilliCodeGenerator {
                                 stringObject.add("!NO_ENCHANTS");
                             }
                             if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                             success("Successfully registered Object");
                         }
                         else if (line.replace(" ", "").equalsIgnoreCase("specialSword")) {
+                            stringObject.add("{specialSword");
                             checkReturnAndInput("Enter an Item name", s, "item[specialSword]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter the Item Properties (format: [damage, speed])", s, "item[specialSword]", stringObject);
@@ -260,10 +265,12 @@ public class WilliCodeGenerator {
                                 stringObject.add("!NO_ENCHANTS");
                             }
                             if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                             success("Successfully registered Object");
                         }
                         else if (line.equalsIgnoreCase("upgradeable") || line.equalsIgnoreCase("upgradable") || line.replace(" ", "").equalsIgnoreCase("upgradeableSword") || line.replace(" ", "").equalsIgnoreCase("upgradableSword")) {
+                            stringObject.add("{upgradableSword");
                             checkReturnAndInput("Enter an Item name", s, "item[specialSword]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter the Weaponclass", s, "item[specialSword]", stringObject);
@@ -299,6 +306,7 @@ public class WilliCodeGenerator {
                                 stringObject.add("?]");
                             }
                             if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                             success("Successfully registered Object");
                         } /*else if (line.equalsIgnoreCase("set")) {
@@ -312,6 +320,7 @@ public class WilliCodeGenerator {
                                 stringObject.removeLast();
                             }
                             if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }*/
 
@@ -328,12 +337,14 @@ public class WilliCodeGenerator {
                         System.out.println(ANSI_YELLOW + "Enter a Creative Tab Type (currently only 'simple' exists)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s, "creative_tab").trim();
                         if (line.equalsIgnoreCase("simple")) {
+                            stringObject.add("{simpleTab");
                             checkReturnAndInput("Enter a creative Tab Name like this: 'forger_test_tab'", s, "creative_tab[simple]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Reenter Name in camelCase ('forgerTestTab')", s, "creative_tab[simple]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter display item and specify type(format: 'moditem jade_gemstone')", s, "creative_tab[simple]", stringObject);
                             if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;
@@ -353,6 +364,7 @@ public class WilliCodeGenerator {
                         System.out.println(ANSI_YELLOW + "Enter an Recipe Type (smelting, blasting, both (smelting and blasting), shaped, shapeless, custom)" + ANSI_RESET);
                         line = userInputWithoutLineBreak(s, "recipe").trim().replace(" ", "");
                         if (line.equalsIgnoreCase("smelting")) {
+                            stringObject.add("{smelting");
                             checkReturnAndInput("Enter a recipe Category", s, "recipe[smelting]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter an output item (format: e.g. modItem sapphire_gemstone)", s, "recipe[smelting]", stringObject);
@@ -366,9 +378,11 @@ public class WilliCodeGenerator {
                             subRunning = true;
                             stringObject.add("]");
                             running = true;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         else if (line.equalsIgnoreCase("blasting")) {
+                            stringObject.add("{blasting");
                             checkReturnAndInput("Enter a recipe Category", s, "recipe[blasting]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter an output item (format: e.g. modItem sapphire_gemstone)", s, "recipe[blasting]", stringObject);
@@ -383,9 +397,11 @@ public class WilliCodeGenerator {
                             subRunning = true;
                             stringObject.add("]");
                             running = true;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         else if (line.equalsIgnoreCase("both") || line.equalsIgnoreCase("smeltingandblasting") || line.equalsIgnoreCase("smelting&blasting") || line.equalsIgnoreCase("smelting+blasting")) {
+                            stringObject.add("{both");
                             checkReturnAndInput("Enter a recipe Category", s, "recipe[smeltingandblasting]", stringObject);
                             if (!subRunning) break;
                             checkReturnAndInput("Enter an output item (format: e.g. modItem sapphire_gemstone)", s, "recipe[smeltingandblasting]", stringObject);
@@ -402,32 +418,75 @@ public class WilliCodeGenerator {
                             subRunning = true;
                             stringObject.add("]");
                             running = true;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         else if (line.equalsIgnoreCase("shaped")) {
-                            checkReturnAndInput("Enter the first row of the shape (format: AAA) X=NoItem", s, "recipe[smeltingandblasting]", stringObject);
+                            stringObject.add("{shaped");
+                            checkReturnAndInput("Enter a recipe Category", s, "recipe[shaped]", stringObject);
                             if (!subRunning) break;
-                            checkReturnAndInput("Enter the second row of the shape (format: AAA) X=NoItem", s, "recipe[smeltingandblasting]", stringObject);
+                            checkReturnAndInput("Enter the first row of the shape (format: AAA) X=NoItem", s, "recipe[shaped]", stringObject);
                             if (!subRunning) break;
-                            checkReturnAndInput("Enter the third row of the shape (format: AAA) X=NoItem", s, "recipe[smeltingandblasting]", stringObject);
+                            checkReturnAndInput("Enter the second row of the shape (format: AAA) X=NoItem", s, "recipe[shaped]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the third row of the shape (format: AAA) X=NoItem", s, "recipe[shaped]", stringObject);
                             if (!subRunning) break;
                             String differentChars = getDifferentChars(stringObject.get(stringObject.size()-1), stringObject.get(stringObject.size()-2), stringObject.get(stringObject.size()-3));
                             for (int i = 0; i < differentChars.length(); i++) {
-                                checkReturnAndInput("what does " + differentChars.charAt(i) + "mean? (format: A -> moditem sapphire_gemstone)", s, "recipe[smeltingandblasting]$meanings", stringObject);
+                                checkReturnAndInput("what does " + differentChars.charAt(i) + " mean? (format: A -> moditem sapphire_gemstone)", s, "recipe[shaped]$meanings", stringObject);
                                 if (!subRunning) break;
                             }
                             if (!subRunning) break;
-                            checkReturnAndInput("Enter the smelting properties", s, "recipe[smeltingandblasting]", stringObject);
-                            if (!subRunning) break;
-                            checkReturnAndInput("Enter the blasting properties", s, "recipe[smeltingandblasting]", stringObject);
-                            if (!subRunning) break;
+                            warning("Enter the Item/Block which unlocks the recipe (format: moditem sapphire_gemstone)");
+                            line = userInputWithoutLineBreak(s, "recipe[shaped]");
+                            if (line.trim().equals("!RETURN")) break;
+                            stringObject.add(line);
+                            stringObject.add(line); //jo 2 moi passt so, is für des unlockedBy
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         else if (line.equalsIgnoreCase("shapeless")) {
+                            stringObject.add("{shapeless");
+                            checkReturnAndInput("Enter a recipe Category", s, "recipe[shapeless]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter an output item (format: modItem sapphire_gemstone)", s, "recipe[shapeless]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the Item/Block which unlocks the recipe (format: moditem sapphire_gemstone)", s, "recipe[shapeless]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter an output count", s, "recipe[shapeless]", stringObject);
+                            if (!subRunning) break;
+                            stringObject.add("[");
+                            while (running && subRunning) {
+                                checkReturnAndInput("Enter an item you could use as input here", s, "recipe[shapeless]$input", stringObject);
+                                if (!subRunning) break;
+                            }
+                            subRunning = true;
+                            stringObject.add("]");
+                            running = true;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         else if (line.equalsIgnoreCase("custom")) {
-
+                            stringObject.add("{custom");
+                            checkReturnAndInput("Enter target BlockEntity class (the BlockEntity class of the workstation, e.g. ForgeBlockEntity) in CAMELCASE!", s, "recipe[custom]", stringObject);
+                            if (!subRunning) break;
+                            stringObject.add("[");
+                            while (running && subRunning) {
+                                checkReturnAndInput("Enter all items needed as input here", s, "recipe[custom]$input", stringObject);
+                                if (!subRunning) break;
+                            }
+                            subRunning = true;
+                            stringObject.add("]");
+                            running = true;
+                            stringObject.add("[");
+                            while (running && subRunning) {
+                                checkReturnAndInput("Enter all items you get as output here", s, "recipe[custom]$output", stringObject);
+                                if (!subRunning) break;
+                            }
+                            subRunning = true;
+                            stringObject.add("]");
+                            running = true;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;
@@ -436,12 +495,21 @@ public class WilliCodeGenerator {
                             running = false;
                         }
                     }
-                } else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
+                }
+                else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
                     while (subRunning) {
                         stringObject = new ArrayList<>();
-                        System.out.println(ANSI_YELLOW + "Enter an Tool Tier Type (currently only 'normal' exists)" + ANSI_RESET);
+                        warning("Enter an Tool Tier Type (currently only 'normal' exists)");
                         line = userInputWithoutLineBreak(s).trim();
                         if (line.equalsIgnoreCase("normal")) {
+                            stringObject.add("{normal");
+                            checkReturnAndInput("Enter tool Material", s, "toolTier[normal]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter ingredient fitting the material", s, "toolTier[normal]", stringObject);
+                            if (!subRunning) break;
+                            checkReturnAndInput("Enter the tier Properties (as single String seperated with ',')", s, "toolTier[normal]", stringObject);
+                            if (!subRunning) break;
+                            stringObject.add("}");
                             stringObjects.add(stringObject);
                         }
                         if (line.equals("!STOP")) subRunning = false;

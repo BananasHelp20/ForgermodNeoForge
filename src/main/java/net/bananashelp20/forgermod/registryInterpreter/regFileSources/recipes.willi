@@ -1,6 +1,6 @@
 {smelting
     misc
-    moditem saphire_gemstone
+    moditem sapphire_gemstone
     0.5f, 200
     [
         moditem steel_ingot
@@ -9,7 +9,7 @@
 }
 {smelting
     misc
-    moditem saphire_gemstone
+    moditem sapphire_gemstone
     0.5f, 200
     [
         moditem steel_ingot
@@ -19,7 +19,7 @@
 
 {blasting
     misc
-    moditem saphire_gemstone
+    moditem sapphire_gemstone
     0.5f, 200
     [
         moditem steel_ingot
@@ -45,7 +45,7 @@
     CCC
     A -> moditem amethyst_gemstone
     B -> moditem jade_gemstone
-    C -> moditem claymore
+    C -> block claymore
     moditem steel_sword
     moditem steel_sword
 }
@@ -69,7 +69,7 @@
         moditem ruby_gemstone
     ]
     [
-        moditem saphire_gemstone
+        moditem sapphire_gemstone
         item diamond_sword
     ]
 
@@ -82,6 +82,6 @@
         moditem ruby_gemstone
     ]
     [
-        moditem saphire_gemstone
+        moditem sapphire_gemstone
     ]
 }

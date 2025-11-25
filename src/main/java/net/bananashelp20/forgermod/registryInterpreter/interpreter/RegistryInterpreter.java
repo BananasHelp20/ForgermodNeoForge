@@ -13,6 +13,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapelessRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
+import org.apache.http.impl.conn.Wire;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,19 +29,20 @@ public class RegistryInterpreter {
             if (!generateCode()) {
                 System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase, because an " + ANSI_RESET + ANSI_BLACK + " ERROR " + ANSI_RESET + ANSI_RED + " occured" + ANSI_RESET);
                 System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
-                rewriteAllAfterError();
+                rewriteAllAfterError(false);
                 System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code!" + ANSI_RESET);
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
             }
+            System.out.println(ANSI_RED + "#SYSTEM@INFO> successfully finished program without any problems!" + ANSI_RESET);
         } catch (Exception e) {
             System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase!" + ANSI_RESET);
             System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
-            rewriteAllAfterError();
+            rewriteAllAfterError(false);
             System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code" + ANSI_RESET);
             throw e;
         }
     }
-    private static boolean stillGenerating = true;
+
     public static File blockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/blocks.willi");
     public static File itemFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/items.willi");
     public static File creativeTabFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/creativeTabs.willi");
@@ -48,10 +50,18 @@ public class RegistryInterpreter {
     public static File recipeFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/recipes.willi");
     public static File toolTierFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/toolTiers.willi");
     public static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
-    public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
-//    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/TestRegistryClass.java");
     public static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
+    public static File modToolTiersFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModToolTiers.java");
+    public static File modBlockLootTableProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockLootTableProvider.java");
+    public static File modBlockStateProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockStateProvider.java");
+    public static File modBlockTagProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockTagProvider.java");
+    public static File modItemTagProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItemTagProvider.java");
+    public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
+    public static File modItemModelProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItemModelProvider.java");
+    public static File modRecipeProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModRecipeProvider.java");
+    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
 
+    private static boolean stillGenerating = true;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -69,7 +79,14 @@ public class RegistryInterpreter {
     static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlockFile);
-//    static String unchangedModRegistryContent = getContentFromFile(modRegistry);
+    static String unchangedModRegistryContent = getContentFromFile(modRegistry);
+    static String unchangedModItemTagProviderContent = getContentFromFile(modItemTagProviderFile);
+    static String unchangedModToolTiersFile = getContentFromFile(modToolTiersFile);
+    static String unchangedModBlockStateProviderFile = getContentFromFile(modBlockStateProviderFile);
+    static String unchangedModBlockLootTableProviderFile = getContentFromFile(modBlockLootTableProviderFile);
+    static String unchangedModBlockTagProviderFile = getContentFromFile(modBlockTagProviderFile);
+    static String unchangedModItemModelProviderFile = getContentFromFile(modItemModelProviderFile);
+    static String unchangedModRecipeProviderFile = getContentFromFile(modRecipeProviderFile);
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
     static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeModeTabsFile);
 
@@ -77,7 +94,7 @@ public class RegistryInterpreter {
         if (!(modBlockFile.exists() && modBlockFile.canWrite() && modBlockFile.canRead()
                 && modItemsFile.exists() && modItemsFile.canWrite() && modItemsFile.canRead()
                 && modCreativeModeTabsFile.exists() && modCreativeModeTabsFile.canWrite() && modCreativeModeTabsFile.canRead()
-//                && modRegistry.exists() && modRegistry.canWrite() && modRegistry.canRead()
+                && modRegistry.exists() && modRegistry.canWrite() && modRegistry.canRead()
                 && blockFile.exists() && blockFile.canRead()
                 && itemFile.exists() && itemFile.canRead()
                 && creativeTabFile.exists() && creativeTabFile.canRead()
@@ -92,44 +109,59 @@ public class RegistryInterpreter {
                 ANSI_YELLOW + "every important code line that shall not be overridden                                               *\n" +
                 "* If you wish to continue anyways, type in " + ANSI_RESET + ANSI_GREEN + "\"!START\"" + ANSI_RESET + ANSI_YELLOW + ".                                            " +
                 "                                       *\n" +
-                "* If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"" + ANSI_RESET + ANSI_YELLOW +
-                "                                                    *\n" +
+                "* If you want to stop without any code being generated, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"." + ANSI_RESET + ANSI_YELLOW +
+                "                                                   *\n" +
                 "****************************************************************************************************************************************");
         while (!(input = userInputWithoutLineBreak(userHelper)).contains("!START")) {
             if (input.contains("!STOP")) {
                 return true;
             }
         }
-        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase" + ANSI_RESET);
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase\n" + ANSI_RESET);
 
 
         printRegistryFromList(toolTiers);
-        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
-        success("Successfully generated tool tier objects");
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
+        success("Successfully generated tool tier objects\n");
+        printRegistryFromList(items);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
+        success("Successfully generated item objects\n");
+        printRegistryFromList(blocks);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
+        success("Successfully generated block objects\n");
+        printRegistryFromList(creativeTabs);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
+        success("Successfully generated creative tab objects\n");
+        printRegistryFromList(recipes);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
+        success("Successfully generated recipe objects");
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> Successfully completed generating phase" + ANSI_RESET);
+        warning("****************************************************************************************************************************************\n" +
+                "* Do really want to proceed with writing the code to the files? Be aware that bugs are still very possible, and code is never perfect  *\n" +
+                "* If you wish to continue, type in " + ANSI_RESET + ANSI_GREEN + "\"!RESUME\"" + ANSI_RESET + ANSI_YELLOW + ".                                            " +
+                "                                              *\n" +
+                "* If you want to stop without any code being written, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"." + ANSI_RESET + ANSI_YELLOW +
+                "                                                     *\n" +
+                "****************************************************************************************************************************************");
+        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!RESUME")) {
+            if (input.contains("!STOP")) {
+                System.out.println(ANSI_RED + "#SYSTEM@INFO> stopping program..." + ANSI_RESET);
+                return true;
+            }
+        }
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
+
 //        writeToolTierCode();
 //        success("Successfully wrote tool tier objects to files");
-        printRegistryFromList(items);
-        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
-        success("Successfully generated item objects");
 //        writeItemCode();
 //        success("Successfully wrote item objects to files");
-        printRegistryFromList(blocks);
-        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
-        success("Successfully generated block objects");
 //        writeBlockCode();
 //        success("Successfully wrote block tab objects to files");
-        printRegistryFromList(creativeTabs);
-        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
-        success("Successfully generated creative tab objects");
 //        writeCreativeTabCode();
 //        success("Successfully wrote creative tab objects to files");
-        printRegistryFromList(recipes);
-        System.out.print(ANSI_RED + "#SYSTEM@INFO> " + ANSI_RESET);
-        success("Successfully generated recipe objects");
 //        writeRecipeCode();
 //        success("Successfully wrote recipe objects to files");
-        System.out.println(ANSI_RED + "#SYSTEM@INFO> Successfully completed generating phase" + ANSI_RESET);
-        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
         return true;
     }
 
@@ -399,6 +431,29 @@ public class RegistryInterpreter {
         return items;
     }
 
+    public static void rewriteAllAfterError(boolean allowed) {
+        try {
+            if (!allowed) return; //only for safety reasons
+            FileWriter[] writers = new FileWriter[11];
+            (writers[0] = new FileWriter(modBlockFile)).write(unchangedModBlockFileContent);
+            (writers[1] = new FileWriter(modRegistry)).write(unchangedModRegistryContent);
+            (writers[2] = new FileWriter(modItemTagProviderFile)).write(unchangedModItemTagProviderContent);
+            (writers[3] = new FileWriter(modToolTiersFile)).write(unchangedModToolTiersFile);
+            (writers[4] = new FileWriter(modBlockStateProviderFile)).write(unchangedModBlockStateProviderFile);
+            (writers[5] = new FileWriter(modBlockLootTableProviderFile)).write(unchangedModBlockLootTableProviderFile);
+            (writers[6] = new FileWriter(modBlockTagProviderFile)).write(unchangedModBlockTagProviderFile);
+            (writers[7] = new FileWriter(modItemModelProviderFile)).write(unchangedModItemModelProviderFile);
+            (writers[8] = new FileWriter(modRecipeProviderFile)).write(unchangedModRecipeProviderFile);
+            (writers[9] = new FileWriter(modItemsFile)).write(unchangedModItemsFileContent);
+            (writers[10] = new FileWriter(modCreativeModeTabsFile)).write(unchangedModCreativeModeTabsFileContent);
+            for (int i = 0; i < writers.length; i++) {
+                writers[i].close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String userInput(Scanner s) {
         System.out.println();
         System.out.print(ANSI_CYAN + "#USER> " + ANSI_RESET);
@@ -516,25 +571,6 @@ public class RegistryInterpreter {
             content += reader.nextLine() + "\n";
         }
         return content;
-    }
-
-    public static void rewriteAllAfterError() {
-        try {
-            FileWriter writer = new FileWriter(modBlockFile);
-//            FileWriter writer1 = new FileWriter(modRegistry);
-            FileWriter writer2 = new FileWriter(modItemsFile);
-            FileWriter writer3 = new FileWriter(modCreativeModeTabsFile);
-            writer.write(unchangedModBlockFileContent);
-//            writer1.write(unchangedModRegistryContent);
-            writer2.write(unchangedModItemsFileContent);
-            writer3.write(unchangedModCreativeModeTabsFileContent);
-            writer.close();
-//            writer1.close();
-            writer2.close();
-            writer3.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static ArrayList<String> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent, String name) {
