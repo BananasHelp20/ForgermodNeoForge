@@ -1,4 +1,4 @@
-package net.bananashelp20.forgermod;
+package net.bananashelp20.forgermod.CreativeModeTabs;
 
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.item.ModItems;

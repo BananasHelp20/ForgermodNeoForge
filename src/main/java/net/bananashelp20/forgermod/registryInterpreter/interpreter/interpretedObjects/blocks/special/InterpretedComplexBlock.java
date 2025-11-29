@@ -14,12 +14,12 @@ public class InterpretedComplexBlock extends InterpretedBlock {
 
     @Override
     public String toString() {
-        return "    public static final DeferredBlock<Block> "
+        return "\n    public static final DeferredBlock<Block> "
                 + blockProperties.get(0).toUpperCase()
                 + " = registerBlock(\"" + blockProperties.get(0).toLowerCase()
                 + "\",\n"
-                + "            " + blockProperties.get(1)
-                + "\n    );\n";
+                + "            " + "() -> " + blockProperties.get(1)
+                + "\n    );";
     }
 
     public String getTag() {

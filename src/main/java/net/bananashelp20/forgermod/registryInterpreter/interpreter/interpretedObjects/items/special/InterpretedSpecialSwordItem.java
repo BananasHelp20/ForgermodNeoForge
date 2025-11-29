@@ -14,7 +14,7 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
     public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, ArrayList<String> inSpecifyBrackets, String material, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, creativeTab)));
         itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material, creativeTab));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
         specified = inSpecifyBrackets;
         if (itemProperties.get(2).contains("WithRarity"))
             this.rarity = specified.getFirst();
@@ -23,7 +23,7 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
     @Override
     public String toString() {
         return "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + " = " + itemProperties.get(2) + "(\"" + itemProperties.get(0).toLowerCase() + "\", ModToolTiers." + itemProperties.get(4).toUpperCase() + ", "
-                + (rarity.isEmpty() ? "" : "Rarity." + rarity.toUpperCase() + ", ") + itemProperties.get(1) + ");";
+                + (rarity.isEmpty() ? "" : "Rarity." + rarity.toUpperCase() + ", ") + itemProperties.get(1) + (itemProperties.get(2).toUpperCase().contains("DESCRIPTION") ? ", \"tooltips.forgermod." + itemProperties.getFirst() + ".tooltip\"" : "") + ");";
     }
 
     public ArrayList<String> getItemEnchantmentTagsList() {

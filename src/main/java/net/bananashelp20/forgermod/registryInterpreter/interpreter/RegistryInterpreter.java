@@ -3,7 +3,6 @@ package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedCustomRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
@@ -44,13 +43,13 @@ public class RegistryInterpreter {
     public static File recipeFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/recipes.willi");
     public static File toolTierFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/regFileSources/toolTiers.willi");
     public static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
-    public static File modBlockFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
+    public static File modBlocksFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
     public static File modToolTiersFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModToolTiers.java");
     public static File modBlockLootTableProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockLootTableProvider.java");
     public static File modBlockStateProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockStateProvider.java");
     public static File modBlockTagProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockTagProvider.java");
     public static File modItemTagProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItemTagProvider.java");
-    public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
+    public static File modCreativeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
     public static File modItemModelProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItemModelProvider.java");
     public static File modRecipeProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModRecipeProvider.java");
     public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
@@ -72,7 +71,7 @@ public class RegistryInterpreter {
     static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
     static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
 
-    static String unchangedModBlockFileContent = getContentFromFile(modBlockFile);
+    static String unchangedModBlockFileContent = getContentFromFile(modBlocksFile);
     static String unchangedModRegistryContent = getContentFromFile(modRegistry);
     static String unchangedModItemTagProviderContent = getContentFromFile(modItemTagProviderFile);
     static String unchangedModToolTiersFile = getContentFromFile(modToolTiersFile);
@@ -82,12 +81,12 @@ public class RegistryInterpreter {
     static String unchangedModItemModelProviderFile = getContentFromFile(modItemModelProviderFile);
     static String unchangedModRecipeProviderFile = getContentFromFile(modRecipeProviderFile);
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
-    static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeModeTabsFile);
+    static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeTabsFile);
 
     public static boolean generateCode() {
-        if (!(modBlockFile.exists() && modBlockFile.canWrite() && modBlockFile.canRead()
+        if (!(modBlocksFile.exists() && modBlocksFile.canWrite() && modBlocksFile.canRead()
                 && modItemsFile.exists() && modItemsFile.canWrite() && modItemsFile.canRead()
-                && modCreativeModeTabsFile.exists() && modCreativeModeTabsFile.canWrite() && modCreativeModeTabsFile.canRead()
+                && modCreativeTabsFile.exists() && modCreativeTabsFile.canWrite() && modCreativeTabsFile.canRead()
                 && modRegistry.exists() && modRegistry.canWrite() && modRegistry.canRead()
                 && blockFile.exists() && blockFile.canRead()
                 && itemFile.exists() && itemFile.canRead()
@@ -97,6 +96,7 @@ public class RegistryInterpreter {
         }
         Scanner userHelper = new Scanner(System.in);
         String input;
+        boolean confirmed = false;
         warning("****************************************************************************************************************************************\n" +
                 "* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *\n* ModToolTiers and ModCreativeModeTabs." +
                 "Other Files might also be affected, and there is no guarantee the code works as it should.      *\n* Please make sure to " + ANSI_RESET + ANSI_PURPLE + "//!PRESERVE " + ANSI_RESET +
@@ -111,6 +111,7 @@ public class RegistryInterpreter {
                 return true;
             }
         }
+        if (input.toUpperCase().contains("-Y")) confirmed = true;
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase\n" + ANSI_RESET);
 
 
@@ -137,7 +138,8 @@ public class RegistryInterpreter {
                 "* If you want to stop without any code being written, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"." + ANSI_RESET + ANSI_YELLOW +
                 "                                                     *\n" +
                 "****************************************************************************************************************************************");
-        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!RESUME")) {
+        while (!confirmed) {
+            confirmed = (input = userInputWithoutLineBreak(userHelper)).contains("!RESUME");
             if (input.contains("!STOP")) {
                 System.out.println(ANSI_RED + "#SYSTEM@INFO> stopping program..." + ANSI_RESET);
                 return true;
@@ -146,18 +148,65 @@ public class RegistryInterpreter {
         System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
 
-        //TODO !PRESERVE geht nu ned, ds musst nu mochn
+        //!PRESERVE geht nu ned, ds musst nu mochn [DONE]
         writeToolTierCode(false); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
         success("Successfully wrote tool tier objects to files");
-        writeItemCode(false);
+        writeCreativeTabCode(true);
+        success("Successfully wrote creative tab objects to files");
+        writeItemCode(false); //WORKS!
         success("Successfully wrote item objects to files");
-//        writeBlockCode();
-//        success("Successfully wrote block tab objects to files");
-//        writeCreativeTabCode();
-//        success("Successfully wrote creative tab objects to files");
-        writeRecipeCode(false); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
+        writeBlockCode(false); //WORKS!
+        success("Successfully wrote block tab objects to files");
+        writeRecipeCode(false); //WORKS!
         success("Successfully wrote recipe objects to files");
         return true;
+    }
+
+    private static void writeCreativeTabCode(boolean allowed) {
+        String prevContent = getWholeFileContentTillGenerate(modCreativeTabsFile, "//!GENERATE");
+        String newStuff = "";
+
+        for (int i = 0; i < creativeTabs.size(); i++) {
+            newStuff += creativeTabs.get(i).toString() + "\n";
+        }
+
+        prevContent += "\n" + newStuff + "}";
+        System.out.println(prevContent);
+
+        if (!allowed) return;
+
+        try {
+            FileWriter modItemWriter = new FileWriter(modCreativeTabsFile);
+            modItemWriter.write(prevContent);
+            modItemWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //do nu de anderen klasse... (registry Klasse)
+    }
+
+    private static void writeBlockCode(boolean allowed) {
+        String prevContent = getWholeFileContentTillGenerate(modBlocksFile, "//!GENERATE");
+        String newStuff = "";
+
+        for (int i = 0; i < blocks.size(); i++) {
+            newStuff += blocks.get(i).toString() + "\n";
+        }
+
+        prevContent += "\n" + newStuff + "}";
+
+        if (!allowed) return;
+
+        try {
+            FileWriter modItemWriter = new FileWriter(modBlocksFile);
+            modItemWriter.write(prevContent);
+            modItemWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //do a nu de anderen Klassen...
     }
 
     private static void writeItemCode(boolean allowed) {
@@ -168,9 +217,11 @@ public class RegistryInterpreter {
             newStuff += items.get(i).toString() + "\n";
         }
 
-        prevContent += "\n" + newStuff + "    }\n}";
+        prevContent += "\n" + newStuff + "}";
         System.out.println(prevContent);
+
         if (!allowed) return;
+
         try {
             FileWriter modItemWriter = new FileWriter(modItemsFile);
             modItemWriter.write(prevContent);
@@ -178,6 +229,8 @@ public class RegistryInterpreter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        //nu de anderen Klassen...
     }
 
     private static void writeRecipeCode(boolean allowed) {
@@ -195,7 +248,6 @@ public class RegistryInterpreter {
         }
 
         prevContent += "\n" + newStuff + "    }\n}";
-        System.out.println(prevContent);
         if (!allowed) return;
         try {
             FileWriter recipeWriter = new FileWriter(modRecipeProviderFile);
@@ -251,7 +303,7 @@ public class RegistryInterpreter {
         try {
             if (!allowed) return; //only for safety reasons
             FileWriter[] writers = new FileWriter[11];
-            (writers[0] = new FileWriter(modBlockFile)).write(unchangedModBlockFileContent);
+            (writers[0] = new FileWriter(modBlocksFile)).write(unchangedModBlockFileContent);
             (writers[1] = new FileWriter(modRegistry)).write(unchangedModRegistryContent);
             (writers[2] = new FileWriter(modItemTagProviderFile)).write(unchangedModItemTagProviderContent);
             (writers[3] = new FileWriter(modToolTiersFile)).write(unchangedModToolTiersFile);
@@ -261,7 +313,7 @@ public class RegistryInterpreter {
             (writers[7] = new FileWriter(modItemModelProviderFile)).write(unchangedModItemModelProviderFile);
             (writers[8] = new FileWriter(modRecipeProviderFile)).write(unchangedModRecipeProviderFile);
             (writers[9] = new FileWriter(modItemsFile)).write(unchangedModItemsFileContent);
-            (writers[10] = new FileWriter(modCreativeModeTabsFile)).write(unchangedModCreativeModeTabsFileContent);
+            (writers[10] = new FileWriter(modCreativeTabsFile)).write(unchangedModCreativeModeTabsFileContent);
             for (int i = 0; i < writers.length; i++) {
                 writers[i].close();
             }
@@ -312,7 +364,7 @@ public class RegistryInterpreter {
         }
     }
 
-    public static ArrayList<String> getContentFromFileAsList(File file) {
+    public static ArrayList<String> getContentFromFileAsList(File file, String comment) {
         Scanner reader;
         ArrayList<String> fileContent = new ArrayList<>();
         try {
@@ -325,17 +377,19 @@ public class RegistryInterpreter {
             fileContent.add(reader.nextLine() + "\n");
         }
 
-        clearContentFromUnneccesary(fileContent);
+        clearContentFromUnneccesary(fileContent, comment);
         return fileContent;
     }
 
-    public static void clearContentFromUnneccesary(ArrayList<String> content) {
+    public static void clearContentFromUnneccesary(ArrayList<String> content, String comment) {
         for (int i = 0; i < content.size(); i++) {
             content.set(i, content.get(i).trim());
-            if (content.get(i).contains("#")) {
-                content.set(i, getPartWithoutComment(content.get(i)));
+            if (!comment.isEmpty()) {
+                if (content.get(i).contains(comment)) {
+                    content.set(i, getPartWithoutComment(content.get(i)));
+                }
             }
-            if (getPartWithoutComment(content.get(i)).trim().equals("")) {
+            if (content.get(i).trim().equals("")) {
                 content.remove(i);
                 i--;
             }
@@ -367,6 +421,13 @@ public class RegistryInterpreter {
             int startGeneratingAtLine = getWritablePos(file, command);
             for (int i = 1; i < startGeneratingAtLine && reader.hasNextLine(); i++) {
                 saved += reader.nextLine() + "\n";
+            }
+            String line;
+            while (reader.hasNextLine()) {
+                line = reader.nextLine();
+                if (line.contains("//!PRESERVE")) {
+                    saved += line + "\n";
+                }
             }
             reader.close();
         } catch (Exception e) {

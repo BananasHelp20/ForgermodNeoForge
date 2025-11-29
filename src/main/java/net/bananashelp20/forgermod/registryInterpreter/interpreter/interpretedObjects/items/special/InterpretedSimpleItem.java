@@ -13,7 +13,7 @@ public class InterpretedSimpleItem extends InterpretedItem {
     ArrayList<String> enchantmentExtras;
     public InterpretedSimpleItem(String name, String modelMethod, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod, creativeTab)));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), name);
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), name);
         this.name = name;
         this.modelMethod = modelMethod;
         this.creativeTab = creativeTab;

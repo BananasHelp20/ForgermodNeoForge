@@ -1,7 +1,6 @@
 package net.bananashelp20.forgermod.CreativeModeTabs;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.RegistryClass;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,6 +17,7 @@ public class ModCreativeModeTabs {
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
     }
+    //!GENERATE
 
     public static final Supplier<CreativeModeTab> FORGER_MOD_INGREDIENTS_TAB = CREATIVE_MODE_TABS.register("forger_mod_ingredients_tab",
             () -> CreativeModeTab.builder()
@@ -77,6 +77,4 @@ public class ModCreativeModeTabs {
                         }
                     }).build()
     );
-
-    //STARTGENERATING!
 }

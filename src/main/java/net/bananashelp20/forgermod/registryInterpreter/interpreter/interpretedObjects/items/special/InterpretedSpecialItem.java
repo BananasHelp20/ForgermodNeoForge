@@ -16,13 +16,13 @@ public class InterpretedSpecialItem extends InterpretedItem {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
         this.name = name;
         this.modelMethod = modelMethod;
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), name);
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), name);
         this.creativeTab = creativeTab;
     }
 
     public InterpretedSpecialItem(String name, String modelMethod, String rarity, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, modelMethod)));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), name);
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), name);
         this.name = name;
         this.modelMethod = modelMethod;
         this.rarity = rarity;

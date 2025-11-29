@@ -101,10 +101,10 @@ public class ModItems {
     private static final int GEMSTONE_SPECIAL_DAMAGE = 5;
     private static final float GEMSTONE_SPECIAL_SPEED = 2.4f;
 
-    //STARTGENERATING
+    //!GENERATE
     /**ingredients*/
     //upgrade shards
-    public static final DeferredItem<Item> INANISIUM_SHARD = createItem("inanisium_shard");
+    public static final DeferredItem<Item> INANISIUM_SHARD = createItem("inanisium_shard"); //!PRESERVE
     public static final DeferredItem<Item> IGNISIUM_SHARD = createItem("ignisium_shard");
     public static final DeferredItem<Item> MORSIUM_SHARD = createItem("morsium_shard");
     public static final DeferredItem<Item> SOMNIUM_SHARD = createItem("somnium_shard");
@@ -114,7 +114,7 @@ public class ModItems {
     public static final DeferredItem<Item> ELECTRIUM_SHARD = createItem("electrium_shard");
     public static final DeferredItem<Item> TAIFUNITE_SHARD = createItem("taifunite_shard");
     public static final DeferredItem<Item> DEVELOPIUM_SHARD = createItem("developium_shard");
-    
+
     //templates
     public static final DeferredItem<Item> ANCIENT_UPGRADE_TEMPLATE = createItemWithDescription("ancient_upgrade_template", "tooltips.forgermod.ancient_upgrade_template.tooltip");
     public static final DeferredItem<Item> GEMSTONE_UPGRADE_TEMPLATE = createItemWithDescription("gemstone_upgrade_template", "tooltips.forgermod.gemstone_upgrade_template.tooltip");

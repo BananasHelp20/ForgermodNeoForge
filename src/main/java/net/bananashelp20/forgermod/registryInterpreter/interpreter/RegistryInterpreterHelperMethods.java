@@ -67,7 +67,7 @@ public class RegistryInterpreterHelperMethods {
 
     public static ArrayList<InterpretedBlock> getAllBlocks() {
         ArrayList<InterpretedBlock> interpretedBlocks = new ArrayList<>();
-        ArrayList<String> blockText = getContentFromFileAsList(blockFile);
+        ArrayList<String> blockText = getContentFromFileAsList(blockFile, "#");
         ArrayList<ArrayList<String>> blockStringObjects = new ArrayList<>();
         String dropOtherItem;
         boolean dropOther;
@@ -131,7 +131,7 @@ public class RegistryInterpreterHelperMethods {
 
     public static ArrayList<InterpretedItem> getAllItems() {
         ArrayList<InterpretedItem> items = new ArrayList<>();
-        ArrayList<String> itemText = getContentFromFileAsList(itemFile);
+        ArrayList<String> itemText = getContentFromFileAsList(itemFile, "#");
         ArrayList<ArrayList<String>> itemStringObjects = new ArrayList<>();
         ArrayList<String> variants;
         ArrayList<String> properties;
@@ -191,7 +191,7 @@ public class RegistryInterpreterHelperMethods {
 
     public static ArrayList<InterpretedCreativeTab> getAllCreativeTabs() {
         ArrayList<InterpretedCreativeTab> interpretedToolTiers = new ArrayList<>();
-        ArrayList<String> toolTierText = getContentFromFileAsList(creativeTabFile);
+        ArrayList<String> toolTierText = getContentFromFileAsList(creativeTabFile, "#");
         ArrayList<ArrayList<String>> toolTierStringObjects = new ArrayList<>();
         InterpretedCreativeTab toolTierToAdd = null;
         int ctr = -1;
@@ -219,7 +219,7 @@ public class RegistryInterpreterHelperMethods {
 
     public static ArrayList<InterpretedToolTier> getAllToolTiers() {
         ArrayList<InterpretedToolTier> interpretedToolTiers = new ArrayList<>();
-        ArrayList<String> toolTierText = getContentFromFileAsList(toolTierFile);
+        ArrayList<String> toolTierText = getContentFromFileAsList(toolTierFile, "#");
         ArrayList<ArrayList<String>> toolTierStringObjects = new ArrayList<>();
         InterpretedToolTier toolTierToAdd = null;
         int ctr = -1;
@@ -247,7 +247,7 @@ public class RegistryInterpreterHelperMethods {
 
     public static ArrayList<InterpretedRecipe> getAllRecipes() {
         ArrayList<InterpretedRecipe> interpretedRecipes = new ArrayList<>();
-        ArrayList<String> recipeText = getContentFromFileAsList(recipeFile);
+        ArrayList<String> recipeText = getContentFromFileAsList(recipeFile, "#");
         ArrayList<String> inputItems;
         ArrayList<ArrayList<String>> recipeStringObjects = new ArrayList<>();
         InterpretedRecipe recipeToAdd;
@@ -382,7 +382,7 @@ public class RegistryInterpreterHelperMethods {
         }
     }
 
-    public static ArrayList<String> getContentFromFileAsList(File file) {
+    public static ArrayList<String> getContentFromFileAsList(File file, String comment) {
         Scanner reader;
         ArrayList<String> fileContent = new ArrayList<>();
         try {
@@ -395,17 +395,19 @@ public class RegistryInterpreterHelperMethods {
             fileContent.add(reader.nextLine() + "\n");
         }
 
-        clearContentFromUnneccesary(fileContent);
+        clearContentFromUnneccesary(fileContent, comment);
         return fileContent;
     }
 
-    public static void clearContentFromUnneccesary(ArrayList<String> content) {
+    public static void clearContentFromUnneccesary(ArrayList<String> content, String comment) {
         for (int i = 0; i < content.size(); i++) {
             content.set(i, content.get(i).trim());
-            if (content.get(i).contains("#")) {
-                content.set(i, getPartWithoutComment(content.get(i)));
+            if (!comment.isEmpty()) {
+                if (content.get(i).contains(comment)) {
+                    content.set(i, getPartWithoutComment(content.get(i)));
+                }
             }
-            if (getPartWithoutComment(content.get(i)).trim().equals("")) {
+            if (content.get(i).trim().equals("")) {
                 content.remove(i);
                 i--;
             }

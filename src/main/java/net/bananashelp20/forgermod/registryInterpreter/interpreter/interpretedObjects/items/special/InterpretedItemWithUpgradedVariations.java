@@ -16,12 +16,12 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants, String creativeTab) {
         super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab)));
         itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile), itemProperties.get(0));
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
         boolean hasValue = false;
         for (int i = 0; i < variants.size(); i++) {
             if (variants.get(i).trim().contains("!ALL")) {
-                this.variants = RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.upgradeList);
-                RegistryInterpreter.clearContentFromUnneccesary(this.variants);
+                this.variants = RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.upgradeList, "#");
+                RegistryInterpreter.clearContentFromUnneccesary(this.variants, "#");
                 hasValue = true;
             }
         }
