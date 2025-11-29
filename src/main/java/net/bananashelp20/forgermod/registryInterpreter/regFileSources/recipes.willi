@@ -50,6 +50,24 @@
     moditem steel_sword
 }
 
+{shaped
+    misc
+    AHI
+    BDE
+    CFG
+    A -> moditem amethyst_gemstone
+    B -> moditem jade_gemstone
+    C -> item claymore
+    D -> block claymore
+    E -> modblock claymore
+    F -> block claymore
+    G -> block claymore
+    H -> block claymore
+    I -> block claymore
+    moditem steel_sword
+    moditem steel_sword
+}
+
 {shapeless
     misc
     moditem jade_gemstone

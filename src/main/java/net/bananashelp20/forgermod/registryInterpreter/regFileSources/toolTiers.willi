@@ -1,10 +1,10 @@
 {normal
-    steel #//material
     steel_ingot #//ingredient
+    steel #//material
     350, 6.5f, 3, 12 #//properties
 }
 {normal
-    mat
     mat_ingot
+    mat
     350, 6.5f, 3, 12
 }

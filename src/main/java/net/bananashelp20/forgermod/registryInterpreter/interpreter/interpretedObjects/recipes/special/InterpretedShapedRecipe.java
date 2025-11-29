@@ -35,7 +35,7 @@ public class InterpretedShapedRecipe extends InterpretedRecipe {
         for (char i = 'A'; i <= 'Z'; i++) {
             if (meanings.get(i) != null) {
                 currentItem = getCorrectItemWithType(meanings.get(i).split(" "));
-                ret += "                .define(" + i + ", " + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
+                ret += "                .define('" + i + "', " + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
             }
         }
         currentItem = getCorrectItemWithType(unlockedBy.split(" "));

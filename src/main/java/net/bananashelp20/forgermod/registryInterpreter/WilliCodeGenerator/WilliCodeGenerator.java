@@ -468,7 +468,7 @@ public class WilliCodeGenerator {
                         }
                         else if (line.equalsIgnoreCase("custom")) {
                             stringObject.add("{custom");
-                            checkReturnAndInput("Enter target BlockEntity class (the BlockEntity class of the workstation, e.g. ForgeBlockEntity) in CAMELCASE!", s, "recipe[custom]", stringObject, "ls");
+                            checkReturnAndInput("Enter target BlockEntity class (the BlockEntity class of the workstation, e.g. ForgeBlockEntity) in CAMELCASE!\ntipp: to inspect your options: type in '!LS'", s, "recipe[custom]", stringObject, "ls");
                             if (!subRunning) break;
                             stringObject.add("[");
                             while (running && subRunning) {
@@ -558,14 +558,15 @@ public class WilliCodeGenerator {
     public static void checkReturnAndInput(String msg, Scanner s, String addOn, ArrayList<String> stringObject, String ls) {
         warning(msg);
         String line = userInputWithoutLineBreak(s, addOn).trim();
-        if (!line.equals("!RETURN") && !line.equals("!STOP") && !line.equals("!LS")) {
+        if (!line.equals("!RETURN") && !line.equals("!STOP")) {
+            while (line.equals("!LS")) {
+                FileSystem fs = new FileSystem("./src/main/java/net/bananashelp20/forgermod/block/entity/custom", ".java");
+                warning(fs.toString());
+                line = userInputWithoutLineBreak(s, addOn).trim();
+            }
             stringObject.add("    " + line);
-        } else if (!line.equals("!LS")) {
-            subRunning = false;
         } else {
-            //TODO: list files in block/entity/custom
-            FileSystem fs = new FileSystem("./src/main/java/net/bananashelp20/forgermod/block/entity/custom", ".java");
-            warning(fs.toString());
+            subRunning = false;
         }
         if (line.contains("!STOP -")) {
             running = false;

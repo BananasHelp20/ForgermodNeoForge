@@ -24,7 +24,7 @@ public class InterpretedCustomRecipe extends InterpretedRecipe {
     public String getOutputItems() {
         String[] result = resultItems.get(0).split(" ");
         if (!multipleOutputs) {
-            return "            new ItemStack(" + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + "), \n";
+            return " new ItemStack(" + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")";
         }
         String ret = "            {";
         for (int i = 0; i < resultItems.size(); i++) {
@@ -32,6 +32,10 @@ public class InterpretedCustomRecipe extends InterpretedRecipe {
             ret += "new ItemStack(" + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + "), ";
         }
         return ret.substring(0, ret.length()-2) + "},\n";
+    }
+
+    public File getRecipeClass() {
+        return recipeClass;
     }
 
     public String getInputItems() {

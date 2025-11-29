@@ -36,22 +36,22 @@ public class InterpretedBlastingOrSmeltingRecipe extends InterpretedRecipe {
 
     public String getSmeltingRecipe() {
         String[] result = getCorrectItemWithType(reslutItem.split(" "));
-        return "        oreSmelting(output, " + result[1].toUpperCase() + "_SMELTABLES, RecipeCategory." + category + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[0] + ", \"" + result[0].toLowerCase() + "\");\n";
+        return "        oreSmelting(output, " + getIngredientList() + ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[0] + ", \"" + result[1].toLowerCase() + "\");\n";
     }
 
     public String getBlastingRecipe() {
         String[] result = getCorrectItemWithType(reslutItem.split(" "));
-        return "        oreBlasting(output, " + result[1].toUpperCase() + "_SMELTABLES, RecipeCategory." + category + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[1] + ", \"" + result[0].toLowerCase() + "\");\n";
+        return "        oreBlasting(output, " + getIngredientList() +  ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[1] + ", \"" + result[1].toLowerCase() + "\");\n";
     }
 
     public String getIngredientList() {
         String currentItem[];
-        String ret = "protected static final List<ItemLike> DAMASK_SMELTABLES = List.of(\n";
+        String ret = "List.of(";
         for (int i = 0; i < inputItems.size(); i++) {
             currentItem = getCorrectItemWithType(inputItems.get(i).split(" "));
-            ret += "            " + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ",\n";
+            ret += currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ",";
         }
-        return ret + "    );";
+        return ret + ")";
     }
 
     @Override

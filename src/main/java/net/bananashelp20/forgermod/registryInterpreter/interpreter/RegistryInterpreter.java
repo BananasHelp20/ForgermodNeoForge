@@ -1,36 +1,30 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedComplexBlock;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSimpleBlock;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSpecialBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedBlastingOrSmeltingRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedCustomRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapedRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapelessRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
-import org.apache.http.impl.conn.Wire;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
+
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreterHelperMethods.*;
 
 public class RegistryInterpreter {
     public static void main(String[] args) throws FileNotFoundException {
         try {
             if (!generateCode()) {
-                System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase, because an " + ANSI_RESET + ANSI_BLACK + " ERROR " + ANSI_RESET + ANSI_RED + " occured" + ANSI_RESET);
-                System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
+                System.out.println(ANSI_RED + "\n#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase, because an " + ANSI_RESET + ANSI_BLACK + " ERROR " + ANSI_RESET + ANSI_RED + " occured" + ANSI_RESET);
+                System.out.println(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
                 rewriteAllAfterError(false);
-                System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code!" + ANSI_RESET);
+                System.out.println(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code!" + ANSI_RESET);
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
             }
             System.out.println(ANSI_RED + "#SYSTEM@INFO> successfully finished program without any problems!" + ANSI_RESET);
@@ -152,17 +146,83 @@ public class RegistryInterpreter {
         System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
 
-//        writeToolTierCode();
-//        success("Successfully wrote tool tier objects to files");
-//        writeItemCode();
-//        success("Successfully wrote item objects to files");
+        //TODO !PRESERVE geht nu ned, ds musst nu mochn
+        writeToolTierCode(false); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
+        success("Successfully wrote tool tier objects to files");
+        writeItemCode(false);
+        success("Successfully wrote item objects to files");
 //        writeBlockCode();
 //        success("Successfully wrote block tab objects to files");
 //        writeCreativeTabCode();
 //        success("Successfully wrote creative tab objects to files");
-//        writeRecipeCode();
-//        success("Successfully wrote recipe objects to files");
+        writeRecipeCode(false); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
+        success("Successfully wrote recipe objects to files");
         return true;
+    }
+
+    private static void writeItemCode(boolean allowed) {
+        String prevContent = getWholeFileContentTillGenerate(modItemsFile, "//!GENERATE");
+        String newStuff = "";
+
+        for (int i = 0; i < items.size(); i++) {
+            newStuff += items.get(i).toString() + "\n";
+        }
+
+        prevContent += "\n" + newStuff + "    }\n}";
+        System.out.println(prevContent);
+        if (!allowed) return;
+        try {
+            FileWriter modItemWriter = new FileWriter(modItemsFile);
+            modItemWriter.write(prevContent);
+            modItemWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void writeRecipeCode(boolean allowed) {
+        String prevContent = getWholeFileContentTillGenerate(modRecipeProviderFile, "//!GENERATE");
+        String newStuff = "";
+        ArrayList<Integer> relevantObjects = new ArrayList<>();
+        ArrayList<File> relevantClasses = new ArrayList<>();
+        for (int i = 0; i < recipes.size(); i++) {
+            if (!(recipes.get(i) instanceof InterpretedCustomRecipe)) {
+                newStuff += recipes.get(i).toString() + "\n";
+            } else {
+                relevantObjects.add(i);
+                relevantClasses.add(((InterpretedCustomRecipe) recipes.get(i)).getRecipeClass());
+            }
+        }
+
+        prevContent += "\n" + newStuff + "    }\n}";
+        System.out.println(prevContent);
+        if (!allowed) return;
+        try {
+            FileWriter recipeWriter = new FileWriter(modRecipeProviderFile);
+            recipeWriter.write(prevContent);
+            recipeWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void writeToolTierCode(boolean allowed) {
+        String prevContent = getWholeFileContentTillGenerate(modToolTiersFile, "//!GENERATE");
+        String newStuff = "";
+        for (int i = 0; i < toolTiers.size(); i++) {
+            newStuff += toolTiers.get(i).getTierCode();
+        }
+
+        prevContent += "\n" + newStuff + "}";
+
+        if (!allowed) return;
+        try {
+            FileWriter toolTierWriter = new FileWriter(modToolTiersFile);
+            toolTierWriter.write(prevContent);
+            toolTierWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void printRegistryFromList(ArrayList<?> o) {
@@ -179,256 +239,12 @@ public class RegistryInterpreter {
         return toReturn;
     }
 
-    public static ArrayList<InterpretedCreativeTab> getAllCreativeTabs() {
-        ArrayList<InterpretedCreativeTab> interpretedToolTiers = new ArrayList<>();
-        ArrayList<String> toolTierText = getContentFromFileAsList(creativeTabFile);
-        ArrayList<ArrayList<String>> toolTierStringObjects = new ArrayList<>();
-        InterpretedCreativeTab toolTierToAdd = null;
-        int ctr = -1;
-
-        for (int i = 0; i < toolTierText.size(); i++) {
-            if (toolTierText.get(i).contains("{")) {
-                toolTierStringObjects.add(new ArrayList<>());
-                ctr++;
-                for (int j = i; j < toolTierText.size() && !toolTierText.get(j).contains("}"); j++) {
-                    toolTierStringObjects.get(ctr).add(toolTierText.get(j));
-                    i = j;
-                }
-            }
-        }
-
-        for (int i = 0; i < toolTierStringObjects.size(); i++) {
-            if (toolTierStringObjects.get(i).getFirst().contains("{simpleTab")) {
-                toolTierToAdd = new InterpretedCreativeTab(toolTierStringObjects.get(i).get(1), toolTierStringObjects.get(i).get(2), toolTierStringObjects.get(i).get(3));
-            }
-            interpretedToolTiers.add(toolTierToAdd);
-        }
-
-        return interpretedToolTiers;
-    }
-
-    public static ArrayList<InterpretedToolTier> getAllToolTiers() {
-        ArrayList<InterpretedToolTier> interpretedToolTiers = new ArrayList<>();
-        ArrayList<String> toolTierText = getContentFromFileAsList(toolTierFile);
-        ArrayList<ArrayList<String>> toolTierStringObjects = new ArrayList<>();
-        InterpretedToolTier toolTierToAdd = null;
-        int ctr = -1;
-
-        for (int i = 0; i < toolTierText.size(); i++) {
-            if (toolTierText.get(i).contains("{")) {
-                toolTierStringObjects.add(new ArrayList<>());
-                ctr++;
-                for (int j = i; j < toolTierText.size() && !toolTierText.get(j).contains("}"); j++) {
-                    toolTierStringObjects.get(ctr).add(toolTierText.get(j));
-                    i = j;
-                }
-            }
-        }
-
-        for (int i = 0; i < toolTierStringObjects.size(); i++) {
-            if (toolTierStringObjects.get(i).getFirst().contains("{normal")) {
-                toolTierToAdd = new InterpretedToolTier(toolTierStringObjects.get(i).get(1), toolTierStringObjects.get(i).get(2), toolTierStringObjects.get(i).get(3));
-            }
-            interpretedToolTiers.add(toolTierToAdd);
-        }
-
-        return interpretedToolTiers;
-    }
-
-    public static ArrayList<InterpretedRecipe> getAllRecipes() {
-        ArrayList<InterpretedRecipe> interpretedRecipes = new ArrayList<>();
-        ArrayList<String> recipeText = getContentFromFileAsList(recipeFile);
-        ArrayList<String> inputItems;
-        ArrayList<ArrayList<String>> recipeStringObjects = new ArrayList<>();
-        InterpretedRecipe recipeToAdd;
-        int ctr = -1;
-        String[] pattern;
-        String[] temp;
-        HashMap<Character, String> patternMeaning;
-
-        for (int i = 0; i < recipeText.size(); i++) {
-            if (recipeText.get(i).contains("{")) {
-                recipeStringObjects.add(new ArrayList<>());
-                ctr++;
-                for (int j = i; j < recipeText.size() && !recipeText.get(j).contains("}"); j++) {
-                    recipeStringObjects.get(ctr).add(recipeText.get(j));
-                    i = j;
-                }
-            }
-        }
-
-        for (int i = 0; i < recipeStringObjects.size(); i++) {
-            inputItems = new ArrayList<>();
-            recipeToAdd = new InterpretedRecipe(new ArrayList<>());
-            patternMeaning = new HashMap<>();
-            pattern = new String[3];
-            if (recipeStringObjects.get(i).getFirst().contains("{smelting")) {
-                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
-                recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), true, i, recipeStringObjects.get(i).get(3));
-            } else if (recipeStringObjects.get(i).contains("{blasting")) {
-                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
-                recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), false, i, recipeStringObjects.get(i).get(3));
-            } else if (recipeStringObjects.get(i).contains("{both")) {
-                inputItems.addAll(getContentInBrackets(i, 4, recipeStringObjects));
-                recipeToAdd = new InterpretedBlastingOrSmeltingRecipe(true, recipeStringObjects.get(i).get(1), inputItems, recipeStringObjects.get(i).get(2), i, recipeStringObjects.get(i).get(3), recipeStringObjects.get(i).get(4));
-            } else if (recipeStringObjects.get(i).contains("{shapeless")) {
-                inputItems.addAll(getContentInBrackets(i, 5, recipeStringObjects));
-                recipeToAdd = new InterpretedShapelessRecipe(inputItems, recipeStringObjects.get(i).get(1), recipeStringObjects.get(i).get(2), recipeStringObjects.get(i).get(3), Integer.parseInt(recipeStringObjects.get(i).get(4)), i);
-            } else if (recipeStringObjects.get(i).contains("{shaped")) {
-                pattern[0] = recipeStringObjects.get(i).get(2);
-                pattern[1] = recipeStringObjects.get(i).get(3);
-                pattern[2] = recipeStringObjects.get(i).get(4);
-                temp = recipeStringObjects.get(i).get(5).split("->");
-                patternMeaning.put(temp[0].charAt(0), temp[1].trim());
-                temp = recipeStringObjects.get(i).get(6).split("->");
-                patternMeaning.put(temp[0].charAt(0), temp[1].trim());
-                temp = recipeStringObjects.get(i).get(7).split("->");
-                patternMeaning.put(temp[0].charAt(0), temp[1].trim());
-                recipeToAdd = new InterpretedShapedRecipe(recipeStringObjects.get(i).get(1), pattern, patternMeaning,recipeStringObjects.get(i).get(8), recipeStringObjects.get(i).get(9), i);
-            } else if (recipeStringObjects.get(i).contains("{custom")) {
-                inputItems.addAll(getContentInBrackets(i, 2, recipeStringObjects));
-                int x = 2;
-                while (!recipeStringObjects.get(i).get(x).contains("]")) {
-                    x++;
-                }
-                ArrayList<String> output = new ArrayList<>(getContentInBrackets(i, x + 1, recipeStringObjects));
-                recipeToAdd = new InterpretedCustomRecipe(recipeStringObjects.get(i).get(1), inputItems, output, i);
-            }
-            interpretedRecipes.add(recipeToAdd);
-        }
-
-        return interpretedRecipes;
-    }
-
     private static ArrayList<String> getContentInBrackets(int listIndex, int elementIndex, ArrayList<ArrayList<String>> stringObjects) {
         ArrayList<String> objects = new ArrayList<>();
         for (int i = elementIndex+1; i < stringObjects.get(listIndex).size() && !stringObjects.get(listIndex).get(i).contains("]"); i++) {
             objects.add(stringObjects.get(listIndex).get(i));
         }
         return objects;
-    }
-
-    public static ArrayList<InterpretedBlock> getAllBlocks() {
-        ArrayList<InterpretedBlock> interpretedBlocks = new ArrayList<>();
-        ArrayList<String> blockText = getContentFromFileAsList(blockFile);
-        ArrayList<ArrayList<String>> blockStringObjects = new ArrayList<>();
-        String dropOtherItem;
-        boolean dropOther;
-        int indexExpander;
-        InterpretedBlock blockToAdd = new InterpretedBlock(new ArrayList<>());
-        int ctr = -1;
-        for (int i = 0; i < blockText.size(); i++) {
-            if (blockText.get(i).contains("{")) {
-                blockStringObjects.add(new ArrayList<>());
-                ctr++;
-                for (int j = i; j < blockText.size() && !blockText.get(j).contains("}"); j++) {
-                    blockStringObjects.get(ctr).add(blockText.get(j));
-                    i = j;
-                }
-            }
-        }
-
-//        interpretedBlocks.add(new InterpretedSimpleBlock("name", "p", "drop", "", "b", "type", "tab", "tab"));
-//        interpretedBlocks.add(new InterpretedSimpleBlock("name2", "p", "drop", "", "b", "type", "tab", "tab"));
-
-        for (int i = 0; i < blockStringObjects.size(); i++) {
-            dropOther = false;
-            indexExpander = 0;
-            dropOtherItem = "";
-            blockToAdd = null;
-            if (blockStringObjects.get(i).getFirst().contains("{simple")) {
-                if (blockStringObjects.get(i).get(4).contains("?")) {
-                    dropOther = true;
-                    indexExpander++;
-                    dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
-                }
-                blockToAdd = new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2), blockStringObjects.get(i).get(3), dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander), blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
-
-            } else if (blockStringObjects.get(i).getFirst().contains("{special")) {
-                if (blockStringObjects.get(i).get(5).contains("?")) {
-                    dropOther = true;
-                    indexExpander++;
-                    dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
-                }
-                blockToAdd = new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
-                        blockStringObjects.get(i).get(3), blockStringObjects.get(i).get(4),
-                        dropOtherItem, blockStringObjects.get(i).get(5 + indexExpander),
-                        blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander),
-                        blockStringObjects.get(i).get(8 + indexExpander));
-
-            } else if (blockStringObjects.get(i).getFirst().contains("{complex")) {
-                if (blockStringObjects.get(i).get(4).contains("?")) {
-                    dropOther = true;
-                    indexExpander++;
-                    dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
-                }
-                blockToAdd = new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
-                        blockStringObjects.get(i).get(3),
-                        dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander),
-                        blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
-            }
-            interpretedBlocks.add(blockToAdd);
-        }
-        return interpretedBlocks;
-    }
-
-    public static ArrayList<InterpretedItem> getAllItems() {
-        ArrayList<InterpretedItem> items = new ArrayList<>();
-        ArrayList<String> itemText = getContentFromFileAsList(itemFile);
-        ArrayList<ArrayList<String>> itemStringObjects = new ArrayList<>();
-        ArrayList<String> variants;
-        ArrayList<String> properties;
-        int ctr = -1;
-        for (int i = 0; i < itemText.size(); i++) {
-            if (itemText.get(i).contains("{")) {
-                itemStringObjects.add(new ArrayList<>());
-                ctr++;
-                for (int j = i; j < itemText.size() && !itemText.get(j).contains("}"); j++) {
-                    itemStringObjects.get(ctr).add(itemText.get(j));
-                    i = j;
-                }
-            }
-        }
-
-        for (int j = 0; j < itemStringObjects.size(); j++) {
-            if (itemStringObjects.get(j).getFirst().contains("{simpleItem")) {
-                items.add(new InterpretedSimpleItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
-            } else if (itemStringObjects.get(j).getFirst().contains("{specialItem")) {
-                if (!itemStringObjects.get(j).get(3).contains("?[E") && itemStringObjects.get(j).get(3).contains("?")) {
-                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3).substring(1).trim(), itemStringObjects.get(j).get(4)));
-                } else {
-                    items.add(new InterpretedSpecialItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3)));
-                }
-            } else if (itemStringObjects.get(j).getFirst().contains("{simpleSword")) {
-                items.add(new InterpretedSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), itemStringObjects.get(j).get(5), itemStringObjects.get(j).get(6)));
-            } else if (itemStringObjects.get(j).getFirst().contains("{specialSword")) {
-                properties = new ArrayList<>();
-                for (int k = 0; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains(")"); k++) {
-                    if (itemStringObjects.get(j).get(k).contains("[") && !itemStringObjects.get(j).get(k).contains("?[E")) {
-                        for (int l = k+1; l < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(l).contains("]"); l++) {
-                            properties.add(itemStringObjects.get(j).get(l));
-                        }
-                    }
-                }
-                items.add(new InterpretedSpecialSwordItem(itemStringObjects.get(j).get(1), itemStringObjects.get(j).get(2), itemStringObjects.get(j).get(3), itemStringObjects.get(j).get(4), properties, itemStringObjects.get(j).get(5), itemStringObjects.get(j).get(6)));
-            } else if (itemStringObjects.get(j).getFirst().contains("{upgradableSword") || itemStringObjects.get(j).getFirst().contains("{upgradeableSword")) {
-                variants = new ArrayList<>();
-                properties = new ArrayList<>();
-                properties.add(itemStringObjects.get(j).get(1));
-                properties.add(itemStringObjects.get(j).get(2));
-                properties.add(itemStringObjects.get(j).get(3));
-                properties.add(itemStringObjects.get(j).get(4));
-                properties.add(itemStringObjects.get(j).get(5));
-                ctr = 7;
-                for (int k = 7; k < itemStringObjects.get(j).size() && !itemStringObjects.get(j).get(k).contains("]"); k++) {
-                    variants.add(itemStringObjects.get(j).get(k));
-                    ctr++;
-                }
-                properties.add(itemStringObjects.get(j).get(ctr));
-                items.add(new InterpretedItemWithUpgradedVariations(properties.getFirst(), properties.get(1), properties.get(2), properties.get(3), properties.get(4), variants, properties.get(5)));
-            }
-        }
-        return items;
     }
 
     public static void rewriteAllAfterError(boolean allowed) {
