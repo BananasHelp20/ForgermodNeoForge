@@ -131,7 +131,7 @@ public class RegistryInterpreter {
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
         success("Successfully generated recipe objects");
         System.out.println(ANSI_RED + "#SYSTEM@INFO> Successfully completed generating phase" + ANSI_RESET);
-        warning("****************************************************************************************************************************************\n" +
+        if (!confirmed) warning("****************************************************************************************************************************************\n" +
                 "* Do really want to proceed with writing the code to the files? Be aware that bugs are still very possible, and code is never perfect  *\n" +
                 "* If you wish to continue, type in " + ANSI_RESET + ANSI_GREEN + "\"!RESUME\"" + ANSI_RESET + ANSI_YELLOW + ".                                            " +
                 "                                              *\n" +
@@ -150,14 +150,19 @@ public class RegistryInterpreter {
 
         //!PRESERVE geht nu ned, ds musst nu mochn [DONE]
         writeToolTierCode(false); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
-        success("Successfully wrote tool tier objects to files");
-        writeCreativeTabCode(true);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
+        success("Successfully wrote tool tier objects to file");
+        writeCreativeTabCode(false);
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote creative tab objects to files");
         writeItemCode(false); //WORKS!
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote item objects to files");
         writeBlockCode(false); //WORKS!
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote block tab objects to files");
         writeRecipeCode(false); //WORKS!
+        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote recipe objects to files");
         return true;
     }
@@ -171,7 +176,6 @@ public class RegistryInterpreter {
         }
 
         prevContent += "\n" + newStuff + "}";
-        System.out.println(prevContent);
 
         if (!allowed) return;
 
@@ -218,7 +222,6 @@ public class RegistryInterpreter {
         }
 
         prevContent += "\n" + newStuff + "}";
-        System.out.println(prevContent);
 
         if (!allowed) return;
 

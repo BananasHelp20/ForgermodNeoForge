@@ -10,6 +10,11 @@ public class InterpretedToolTier {
                 "    );";
     }
 
+    @Override
+    public String toString() {
+        return tierCode + "\n";
+    }
+
     public String getTierCode() {
         return tierCode + "\n";
     }
