@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter.*;
@@ -415,6 +416,7 @@ public class RegistryInterpreterHelperMethods {
         }
     }
 
+
     static int getWritablePos(File file, String commentCommand) {
         Scanner reader;
         try {
@@ -462,6 +464,46 @@ public class RegistryInterpreterHelperMethods {
         return content;
     }
 
+    public static void writeItemModels() {
+        String prevContent = getWholeFileContentTillGenerate(modItemModelProviderFile, "//!GENERATE MODELS");
+        String newStuff = "";
+
+        for (int i = 0; i < items.size(); i++) {
+            newStuff += items.get(i).getItemModel() + "\n";
+        }
+
+        write(prevContent + "\n" + newStuff + "    }\n}", modItemModelProviderFile);
+    }
+
+    public static void writeItemTags() {
+        String prevContent = getWholeFileContentTillGenerate(modItemTagProviderFile, "//!GENERATE BLOCK_TAGS");
+        String newStuff = "";
+        ArrayList<ArrayList<String>> differentTags = getDifferentItemTags();
+        ArrayList<String> tagContent;
+
+        for (int i = 0; i < differentTags.size(); i++) {
+            for (int j = 0; j < differentTags.get(i).size(); j++) {
+                for (int k = 0; k < ; k++) {
+                    
+                }
+            }
+        }
+
+        write(prevContent + "\n" + newStuff + "    }\n}", modItemTagProviderFile);
+        tagContent = getContentFromFileAsList(modItemTagProviderFile, "");
+        for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < items.size() && k < items.size(); i++) {
+            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(items.get(j).getTagTool().toUpperCase())) {
+                tagContent.add(i+1, items.get(j).getTag());
+                j++;
+            }
+            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(items.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT")) {
+                tagContent.add(i+1, items.get(k).getTag());
+                k++;
+            }
+        }
+        write(getListAsString(tagContent), modItemTagProviderFile);
+    }
+
     public static void writeModTags() {
         String prevContent = getWholeFileContentTillGenerate(modTagsFile, "//!GENERATE MOD_TAGS");
         String newStuff = "";
@@ -505,14 +547,15 @@ public class RegistryInterpreterHelperMethods {
     public static void writeBlockTags() {
         String prevContent = getWholeFileContentTillGenerate(modBlockTagProviderFile, "//!GENERATE BLOCK_TAGS");
         String newStuff = "";
-        ArrayList<String> tagContent = getContentFromFileAsList(modBlockTagProviderFile, "");
         ArrayList<ArrayList<String>> differentTags = getDifferentBlockTags();
+        ArrayList<String> tagContent;
 
         for (int i = 0; i < differentTags.size(); i++) {
             newStuff += "        tag(" + differentTags.get(i).getFirst() + (differentTags.get(i).get(2).equals("type") ? "NEEDS_" + differentTags.get(i).get(1).toUpperCase() + "_TOOL" : "MINEABLE_WITH_" + differentTags.get(i).get(1).toUpperCase()) + ")\n        ;";
         }
 
         write(prevContent + "\n" + newStuff + "    }\n}", modBlockTagProviderFile);
+        tagContent = getContentFromFileAsList(modBlockTagProviderFile, "");
         for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < blocks.size() && k < blocks.size(); i++) {
             if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase())) {
                 tagContent.add(i+1, blocks.get(j).getTag());
@@ -524,6 +567,157 @@ public class RegistryInterpreterHelperMethods {
             }
         }
         write(getListAsString(tagContent), modBlockTagProviderFile);
+    }
+
+    public static void writeBlockStates() {
+        String prevContent = getWholeFileContentTillGenerate(modBlockStateProviderFile, "//!GENERATE MODELS");
+        String newStuff = "";
+        ArrayList<String> tagContent = getContentFromFileAsList(modBlockStateProviderFile, "");
+        ArrayList<ArrayList<String>> differentTags = getDifferentBlockTags();
+
+        for (int i = 0; i < differentTags.size(); i++) {
+            newStuff += blocks.get(i).getBlockState() + (blocks.get(i).getBlockState().isEmpty() ? "" : "\n");
+        }
+
+        write(prevContent + "\n" + newStuff + "    }\n}", modBlockStateProviderFile);
+    }
+
+    public static boolean isPartOfItemTags(String searched, boolean ignoreCase) {
+        ArrayList<String> itemTags = new ArrayList<>(Arrays.asList(
+            "wool",
+            "planks",
+            "stone_bricks",
+            "wooden_buttons",
+            "stone_buttons",
+            "buttons",
+            "wool_carpets",
+            "wooden_doors",
+            "wooden_stairs",
+            "wooden_slabs",
+            "wooden_fences",
+            "fence_gates",
+            "wooden_pressure_plates",
+            "wooden_trapdoors",
+            "doors",
+            "saplings",
+            "logs_that_burn",
+            "logs",
+            "dark_oak_logs",
+            "oak_logs",
+            "birch_logs",
+            "acacia_logs",
+            "cherry_logs",
+            "jungle_logs",
+            "spruce_logs",
+            "mangrove_logs",
+            "crimson_stems",
+            "warped_stems",
+            "bamboo_blocks",
+            "wart_blocks",
+            "banners",
+            "sand",
+            "smelts_to_glass",
+            "stairs",
+            "slabs",
+            "walls",
+            "anvil",
+            "rails",
+            "leaves",
+            "trapdoors",
+            "small_flowers",
+            "beds",
+            "fences",
+            "tall_flowers",
+            "flowers",
+            "piglin_repellents",
+            "piglin_loved",
+            "ignored_by_piglin_babies",
+            "meat",
+            "sniffer_food",
+            "piglin_food",
+            "fox_food",
+            "cow_food",
+            "goat_food",
+            "sheep_food",
+            "wolf_food",
+            "cat_food",
+            "horse_food",
+            "horse_tempt_items",
+            "camel_food",
+            "armadillo_food",
+            "bee_food",
+            "chicken_food",
+            "frog_food",
+            "hoglin_food",
+            "llama_food",
+            "llama_tempt_items",
+            "ocelot_food",
+            "panda_food",
+            "pig_food",
+            "rabbit_food",
+            "strider_food",
+            "strider_tempt_items",
+            "turtle_food",
+            "parrot_food",
+            "parrot_poisonous_food",
+            "axolotl_food",
+            "gold_ores",
+            "iron_ores",
+            "diamond_ores",
+            "redstone_ores",
+            "lapis_ores",
+            "coal_ores",
+            "emerald_ores",
+            "copper_ores",
+            "non_flammable_wood",
+            "soul_fire_base_blocks",
+            "candles",
+            "dirt",
+            "terracotta",
+            "completes_find_tree_tutorial",
+            "boats",
+            "chest_boats",
+            "fishes",
+            "signs",
+            "creeper_drop_music_discs",
+            "coals",
+            "arrows",
+            "lectern_books",
+            "bookshelf_books",
+            "beacon_payment_items",
+            "stone_tool_materials",
+            "stone_crafting_materials",
+            "freeze_immune_wearables",
+            "dampens_vibrations",
+            "cluster_max_harvestables",
+            "compasses",
+            "hanging_signs",
+            "creeper_igniters",
+            "noteblock_top_instruments",
+            "foot_armor",
+            "leg_armor",
+            "chest_armor",
+            "head_armor",
+            "skulls",
+            "trimmable_armor",
+            "trim_materials",
+            "trim_templates",
+            "decorated_pot_sherds",
+            "decorated_pot_ingredients",
+            "swords",
+            "axes",
+            "hoes",
+            "pickaxes",
+            "shovels",
+            "breaks_decorated_pots",
+            "villager_plantable_seeds",
+            "dyeable"
+        ));
+
+        for (int i = 0; i < itemTags.size(); i++) {
+            if ((ignoreCase ? itemTags.get(i).equalsIgnoreCase(searched) : itemTags.get(i).equals(searched))) return true;
+        }
+        return false;
     }
 
     public static ArrayList<ArrayList<String>> getDifferentBlockTags() {
@@ -558,7 +752,43 @@ public class RegistryInterpreterHelperMethods {
             tag.add("type");
             differentTags.add(tag);
         }
+        removeDuplicatesFromTagList(differentTags);
         return differentTags;
+    }
+
+    public static ArrayList<ArrayList<String>> getDifferentItemTags() {
+        ArrayList<ArrayList<String>> differentTags = new ArrayList<>(); //alles tags
+        ArrayList<String> tag = new ArrayList<>(); //ein tag objekt (tag prefix, und tag selbst)
+
+        for (int i = 0; i < items.size(); i++) {
+            for (int j = 0; j < items.get(i).getTagsOfItem().size(); j++) {
+                tag = new ArrayList<>();
+                if (isPartOfItemTags(items.get(i).getTagsOfItem().get(j), true)) {
+                    tag.add("ItemTags.");
+                } else {
+                    tag.add("ModTags.Items.");
+                }
+                tag.add(items.get(i).getTagsOfItem().get(j));
+                differentTags.add(tag);
+            }
+        }
+        removeDuplicatesFromTagList(differentTags);
+        return differentTags;
+    }
+
+    public static void removeDuplicatesFromTagList(ArrayList<ArrayList<String>> tags) {
+        for (int i = 0; i < tags.size(); i++) {
+            removeDuplicatesOf(tags.get(i).get(1), tags, i);
+        }
+    }
+
+    private static void removeDuplicatesOf(String s, ArrayList<ArrayList<String>> elements, int fromPoint) {
+        for (int i = fromPoint+1; i < elements.size(); i++) {
+            if (s.equalsIgnoreCase(elements.get(i).get(1))) {
+                elements.remove(i);
+                i--;
+            }
+        }
     }
 
     public static String getListAsString(ArrayList<String> list) {

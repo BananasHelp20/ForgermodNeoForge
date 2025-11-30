@@ -22,6 +22,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
 //        tag(ModTags.Items.TRANSFORMABLE_ITEMS)
 //
 //        ;
+        //!GENERATE ITEM TAGS
         tag(ItemTags.SWORDS)
                 .add(ModItems.CLAYMORE.get())
                 .add(ModItems.CLAYMORE_OF_THE_VOID.get())

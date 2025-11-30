@@ -2,10 +2,10 @@ package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedO
 
 import java.util.ArrayList;
 
-public class InterpretedItem {
-    ArrayList<String> itemProperties;
-
-    public InterpretedItem(ArrayList<String> itemProperties) {
-        this.itemProperties = itemProperties;
-    }
+public interface InterpretedItem {
+    String toString();
+    String getCreativeTab();
+    String getItemModel();
+    ArrayList<String> getItemEnchantmentTagsList();
+    ArrayList<String> getTagsOfItem();
 }

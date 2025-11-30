@@ -198,7 +198,7 @@ public class RegistryInterpreter {
         write(prevContent, modBlocksFile);
         writeBlockLoottables();
         writeBlockTags();
-        writeBlockStates();
+        writeBlockStates(); 
     }
 
     private static void writeItemCode(boolean allowed) {
@@ -213,9 +213,9 @@ public class RegistryInterpreter {
 
         if (!allowed) return;
         write(prevContent, modItemsFile);
-//        writeItemModels();
-//        writeItemsToTabRegistry();
-//        writeItemTags();
+        writeItemModels();
+        writeItemsToTabRegistry();
+        writeItemTags();
     }
 
     private static void writeRecipeCode(boolean allowed) {

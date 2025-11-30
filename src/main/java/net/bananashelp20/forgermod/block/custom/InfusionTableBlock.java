@@ -1,9 +1,7 @@
 package net.bananashelp20.forgermod.block.custom;
 
 import com.mojang.serialization.MapCodec;
-import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
-import net.bananashelp20.forgermod.block.entity.custom.ForgeBlockEntity;
 import net.bananashelp20.forgermod.block.entity.custom.InfusionTableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

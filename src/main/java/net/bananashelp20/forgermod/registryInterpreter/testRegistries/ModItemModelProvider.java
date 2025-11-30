@@ -13,8 +13,20 @@ public class ModItemModelProvider extends ItemModelProvider {
         super(output, ForgerMod.MOD_ID, existingFileHelper);
     }
 
+    private ItemModelBuilder handheldItem(DeferredItem<?> item) {
+        return withExistingParent(item.getId().getPath(), ResourceLocation.parse("item/handheld"))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/" + item.getId().getPath()));
+    }
+
+    private ItemModelBuilder simpleBlockItem(DeferredItem<?> item) {
+        return withExistingParent(item.getId().getPath(),
+                ResourceLocation.parse("item/generated")).texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"item/" + item.getId().getPath()));
+    }
+
     @Override
     protected void registerModels() {
+        //!GENERATE MODELS
         //ingredients
         basicItem(ModItems.MORSIUM_SHARD.get());
         basicItem(ModItems.IGNISIUM_SHARD.get());
@@ -112,16 +124,5 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.ADVANCED_HANDLE.get());
         basicItem(ModItems.HANDLE.get());
         basicItem(ModItems.ANCIENT_UPGRADE_TEMPLATE.get());
-    }
-
-    private ItemModelBuilder handheldItem(DeferredItem<?> item) {
-        return withExistingParent(item.getId().getPath(), ResourceLocation.parse("item/handheld"))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/" + item.getId().getPath()));
-    }
-
-    private ItemModelBuilder simpleBlockItem(DeferredItem<?> item) {
-        return withExistingParent(item.getId().getPath(),
-                ResourceLocation.parse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"item/" + item.getId().getPath()));
     }
 }

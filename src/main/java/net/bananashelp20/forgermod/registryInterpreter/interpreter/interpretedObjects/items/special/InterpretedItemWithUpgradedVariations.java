@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
+public class InterpretedItemWithUpgradedVariations implements InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> variants;
     ArrayList<String> enchantmentExtras;
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants, String creativeTab) {
-        super(new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab)));
         itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
         boolean hasValue = false;
@@ -28,6 +27,11 @@ public class InterpretedItemWithUpgradedVariations extends InterpretedItem {
         if (!hasValue) {
             this.variants = variants;
         }
+    }
+
+    @Override
+    public ArrayList<String> getTagsOfItem() {
+        return enchantmentExtras;
     }
 
     @Override

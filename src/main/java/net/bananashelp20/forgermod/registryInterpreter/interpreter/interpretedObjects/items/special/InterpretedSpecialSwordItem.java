@@ -6,13 +6,12 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InterpretedSpecialSwordItem extends InterpretedItem {
+public class InterpretedSpecialSwordItem implements InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> enchantmentExtras;
     ArrayList<String> specified;
     String rarity = "";
     public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, ArrayList<String> inSpecifyBrackets, String material, String creativeTab) {
-        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, creativeTab)));
         itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material, creativeTab));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
         specified = inSpecifyBrackets;
@@ -24,6 +23,11 @@ public class InterpretedSpecialSwordItem extends InterpretedItem {
     public String toString() {
         return "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + " = " + itemProperties.get(2) + "(\"" + itemProperties.get(0).toLowerCase() + "\", ModToolTiers." + itemProperties.get(4).toUpperCase() + ", "
                 + (rarity.isEmpty() ? "" : "Rarity." + rarity.toUpperCase() + ", ") + itemProperties.get(1) + (itemProperties.get(2).toUpperCase().contains("DESCRIPTION") ? ", \"tooltips.forgermod." + itemProperties.getFirst() + ".tooltip\"" : "") + ");";
+    }
+
+    @Override
+    public ArrayList<String> getTagsOfItem() {
+        return enchantmentExtras;
     }
 
     public ArrayList<String> getItemEnchantmentTagsList() {

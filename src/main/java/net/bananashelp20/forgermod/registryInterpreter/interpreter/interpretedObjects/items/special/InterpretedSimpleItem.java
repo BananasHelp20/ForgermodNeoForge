@@ -6,13 +6,12 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InterpretedSimpleItem extends InterpretedItem {
+public class InterpretedSimpleItem implements InterpretedItem {
     String name;
     String modelMethod;
     String creativeTab;
     ArrayList<String> enchantmentExtras;
     public InterpretedSimpleItem(String name, String modelMethod, String creativeTab) {
-        super(new ArrayList<>(Arrays.asList(name, modelMethod, creativeTab)));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), name);
         this.name = name;
         this.modelMethod = modelMethod;
@@ -30,6 +29,11 @@ public class InterpretedSimpleItem extends InterpretedItem {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + name.toUpperCase() + ".get())");
         }
         return list;
+    }
+
+    @Override
+    public ArrayList<String> getTagsOfItem() {
+        return enchantmentExtras;
     }
 
     public String getCreativeTab() {

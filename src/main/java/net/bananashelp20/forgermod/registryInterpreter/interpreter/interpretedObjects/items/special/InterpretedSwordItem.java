@@ -6,11 +6,10 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InterpretedSwordItem extends InterpretedItem {
+public class InterpretedSwordItem implements InterpretedItem {
     ArrayList<String> enchantmentExtras;
     ArrayList<String> itemProperties;
     public InterpretedSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, String material, String creativeTab) {
-        super(new ArrayList<>(Arrays.asList(name, properties, itemCreationMethod, modelMethod, material, creativeTab)));
         itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material, creativeTab));
         this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
     }
@@ -26,6 +25,11 @@ public class InterpretedSwordItem extends InterpretedItem {
             list.add(enchantmentExtras.get(i) + ":                .add(ModItems." + itemProperties.get(0).toUpperCase() + ".get())");
         }
         return list;
+    }
+
+    @Override
+    public ArrayList<String> getTagsOfItem() {
+        return enchantmentExtras;
     }
 
     public String getCreativeTab() {

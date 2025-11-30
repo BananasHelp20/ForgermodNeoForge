@@ -17,7 +17,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        //generate MODELS!
+        //!GENERATE MODELS
         blockWithItem(ModBlocks.DAMASK_BLOCK);
         blockWithItem(ModBlocks.INANISIUM_BLOCK);
         blockWithItem(ModBlocks.SCRAP_BLOCK);
