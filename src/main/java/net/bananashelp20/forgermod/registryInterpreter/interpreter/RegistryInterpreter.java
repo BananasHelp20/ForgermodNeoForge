@@ -45,6 +45,7 @@ public class RegistryInterpreter {
     public static File modItemsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItems.java");
     public static File modBlocksFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlocks.java");
     public static File modToolTiersFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModToolTiers.java");
+    public static File modTagsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModTags.java");
     public static File modBlockLootTableProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockLootTableProvider.java");
     public static File modBlockStateProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockStateProvider.java");
     public static File modBlockTagProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModBlockTagProvider.java");
@@ -82,6 +83,7 @@ public class RegistryInterpreter {
     static String unchangedModRecipeProviderFile = getContentFromFile(modRecipeProviderFile);
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
     static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeTabsFile);
+    static String unchangedModTagsFileContent = getContentFromFile(modTagsFile);
 
     public static boolean generateCode() {
         if (!(modBlocksFile.exists() && modBlocksFile.canWrite() && modBlocksFile.canRead()
@@ -178,16 +180,8 @@ public class RegistryInterpreter {
         prevContent += "\n" + newStuff + "}";
 
         if (!allowed) return;
-
-        try {
-            FileWriter modItemWriter = new FileWriter(modCreativeTabsFile);
-            modItemWriter.write(prevContent);
-            modItemWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //do nu de anderen klasse... (registry Klasse)
+        write(prevContent, modCreativeTabsFile);
+        writeRegistryMethods();
     }
 
     private static void writeBlockCode(boolean allowed) {
@@ -201,16 +195,10 @@ public class RegistryInterpreter {
         prevContent += "\n" + newStuff + "}";
 
         if (!allowed) return;
-
-        try {
-            FileWriter modItemWriter = new FileWriter(modBlocksFile);
-            modItemWriter.write(prevContent);
-            modItemWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //do a nu de anderen Klassen...
+        write(prevContent, modBlocksFile);
+        writeBlockLoottables();
+        writeBlockTags();
+        writeBlockStates();
     }
 
     private static void writeItemCode(boolean allowed) {
@@ -224,16 +212,10 @@ public class RegistryInterpreter {
         prevContent += "\n" + newStuff + "}";
 
         if (!allowed) return;
-
-        try {
-            FileWriter modItemWriter = new FileWriter(modItemsFile);
-            modItemWriter.write(prevContent);
-            modItemWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //nu de anderen Klassen...
+        write(prevContent, modItemsFile);
+//        writeItemModels();
+//        writeItemsToTabRegistry();
+//        writeItemTags();
     }
 
     private static void writeRecipeCode(boolean allowed) {
@@ -252,13 +234,7 @@ public class RegistryInterpreter {
 
         prevContent += "\n" + newStuff + "    }\n}";
         if (!allowed) return;
-        try {
-            FileWriter recipeWriter = new FileWriter(modRecipeProviderFile);
-            recipeWriter.write(prevContent);
-            recipeWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        write(prevContent, modRecipeProviderFile);
     }
 
     private static void writeToolTierCode(boolean allowed) {
@@ -271,13 +247,8 @@ public class RegistryInterpreter {
         prevContent += "\n" + newStuff + "}";
 
         if (!allowed) return;
-        try {
-            FileWriter toolTierWriter = new FileWriter(modToolTiersFile);
-            toolTierWriter.write(prevContent);
-            toolTierWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        write(prevContent, modToolTiersFile);
+        writeModTags();
     }
 
     public static void printRegistryFromList(ArrayList<?> o) {
@@ -305,7 +276,7 @@ public class RegistryInterpreter {
     public static void rewriteAllAfterError(boolean allowed) {
         try {
             if (!allowed) return; //only for safety reasons
-            FileWriter[] writers = new FileWriter[11];
+            FileWriter[] writers = new FileWriter[12];
             (writers[0] = new FileWriter(modBlocksFile)).write(unchangedModBlockFileContent);
             (writers[1] = new FileWriter(modRegistry)).write(unchangedModRegistryContent);
             (writers[2] = new FileWriter(modItemTagProviderFile)).write(unchangedModItemTagProviderContent);
@@ -317,6 +288,7 @@ public class RegistryInterpreter {
             (writers[8] = new FileWriter(modRecipeProviderFile)).write(unchangedModRecipeProviderFile);
             (writers[9] = new FileWriter(modItemsFile)).write(unchangedModItemsFileContent);
             (writers[10] = new FileWriter(modCreativeTabsFile)).write(unchangedModCreativeModeTabsFileContent);
+            (writers[11] = new FileWriter(modTagsFile)).write(unchangedModTagsFileContent);
             for (int i = 0; i < writers.length; i++) {
                 writers[i].close();
             }

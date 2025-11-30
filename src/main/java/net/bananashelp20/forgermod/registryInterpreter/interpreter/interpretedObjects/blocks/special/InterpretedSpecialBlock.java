@@ -5,10 +5,9 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InterpretedSpecialBlock extends InterpretedBlock {
+public class InterpretedSpecialBlock implements InterpretedBlock {
     ArrayList<String> blockProperties;
     public InterpretedSpecialBlock(String name, String creationMethod, String properties, String dropMethod, String dropsItem, String modelMethod, String toolTag, String typeTag, String creativeTab) {
-        super(new ArrayList<>(Arrays.asList(name, creationMethod, properties, dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab)));
         blockProperties = new ArrayList<>(Arrays.asList(name, creationMethod, (properties.contains("!INDESTRUCTABLE") ? "-1.0f, 3600000.0f" : properties), dropMethod, dropsItem, modelMethod, toolTag, typeTag, creativeTab));
     }
 
@@ -23,6 +22,14 @@ public class InterpretedSpecialBlock extends InterpretedBlock {
 
     public String getTag() {
         return "                .add(ModBlocks." + blockProperties.get(0).toUpperCase() + ".get())";
+    }
+
+    public String getTagTool() {
+        return blockProperties.get(6);
+    }
+
+    public String getTagType() {
+        return blockProperties.get(7);
     }
 
     public String getBlockState() {

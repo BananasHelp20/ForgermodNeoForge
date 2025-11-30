@@ -29,7 +29,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
         ;
 
-        //generate TAGS!
+        //!GENERATE BLOCK_TAGS
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.DAMASK_BLOCK.get())
                 .add(ModBlocks.INANISIUM_BLOCK.get())

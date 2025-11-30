@@ -38,14 +38,14 @@ public class InterpretedCreativeTab {
     }
 
     public String getRegistryMethods() {
-        return "public static ItemLike getDisplayItemFor" + camelCaseName + "() {\n" +
-                "    return " + displayItemType + displayItemName.toUpperCase() + (displayItemType.equalsIgnoreCase("Items.") || displayItemType.equalsIgnoreCase("Blocks.") ? "" : ".get()") + ";\n" +
-                "}\n" +
+        return "    public static ItemLike getDisplayItemFor" + camelCaseName + "() {\n" +
+                "        return " + displayItemType + displayItemName.toUpperCase() + (displayItemType.equalsIgnoreCase("Items.") || displayItemType.equalsIgnoreCase("Blocks.") ? "" : ".get()") + ";\n" +
+                "    }\n" +
                 "\n" +
-                "public static ItemLike[] get" + camelCaseName + "Register() {\n" +
-                "    return new ItemLike[] {\n" +
+                "    public static ItemLike[] get" + camelCaseName + "Register() {\n" +
+                "        return new ItemLike[] {\n" +
                 "\n" +
-                "    };\n" +
-                "}\n";
+                "        };\n" +
+                "    }\n";
     }
 }

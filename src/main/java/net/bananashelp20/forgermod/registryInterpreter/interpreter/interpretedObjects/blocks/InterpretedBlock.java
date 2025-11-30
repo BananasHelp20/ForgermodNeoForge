@@ -2,9 +2,11 @@ package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedO
 
 import java.util.ArrayList;
 
-public class InterpretedBlock {
-    ArrayList<String> blockProperties;
-    public InterpretedBlock(ArrayList<String> blockProperties) {
-        this.blockProperties = blockProperties;
-    }
+public interface InterpretedBlock {
+    String getTag();
+    String getLoottable();
+    String getBlockState();
+    String getCreativeTab();
+    String getTagTool();
+    String getTagType();
 }

@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.world.level.ItemLike;
 
 public class RegistryClass {
+    //!GENERATE METHODS
     public static ItemLike getDisplayItemForForgerIngredientsTab() {
         return ModItems.INANISIUM_INGOT.get();
     }

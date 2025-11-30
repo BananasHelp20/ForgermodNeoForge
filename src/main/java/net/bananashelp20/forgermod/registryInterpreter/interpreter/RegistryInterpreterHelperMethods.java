@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter.*;
 
 public class RegistryInterpreterHelperMethods {
 
@@ -40,7 +41,7 @@ public class RegistryInterpreterHelperMethods {
     public static File modCreativeModeTabsFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModCreativeModeTabs.java");
     public static File modItemModelProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModItemModelProvider.java");
     public static File modRecipeProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModRecipeProvider.java");
-    public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
+    public static File modTabRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
 
     private static boolean stillGenerating = true;
     public static final String ANSI_RESET = "\u001B[0m";
@@ -54,7 +55,7 @@ public class RegistryInterpreterHelperMethods {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlockFile);
-    static String unchangedModRegistryContent = getContentFromFile(modRegistry);
+    static String unchangedModRegistryContent = getContentFromFile(modTabRegistry);
     static String unchangedModItemTagProviderContent = getContentFromFile(modItemTagProviderFile);
     static String unchangedModToolTiersFile = getContentFromFile(modToolTiersFile);
     static String unchangedModBlockStateProviderFile = getContentFromFile(modBlockStateProviderFile);
@@ -72,7 +73,7 @@ public class RegistryInterpreterHelperMethods {
         String dropOtherItem;
         boolean dropOther;
         int indexExpander;
-        InterpretedBlock blockToAdd = new InterpretedBlock(new ArrayList<>());
+        InterpretedBlock blockToAdd;
         int ctr = -1;
         for (int i = 0; i < blockText.size(); i++) {
             if (blockText.get(i).contains("{")) {
@@ -322,7 +323,7 @@ public class RegistryInterpreterHelperMethods {
             if (!allowed) return; //only for safety reasons
             FileWriter[] writers = new FileWriter[11];
             (writers[0] = new FileWriter(modBlockFile)).write(unchangedModBlockFileContent);
-            (writers[1] = new FileWriter(modRegistry)).write(unchangedModRegistryContent);
+            (writers[1] = new FileWriter(modTabRegistry)).write(unchangedModRegistryContent);
             (writers[2] = new FileWriter(modItemTagProviderFile)).write(unchangedModItemTagProviderContent);
             (writers[3] = new FileWriter(modToolTiersFile)).write(unchangedModToolTiersFile);
             (writers[4] = new FileWriter(modBlockStateProviderFile)).write(unchangedModBlockStateProviderFile);
@@ -461,30 +462,120 @@ public class RegistryInterpreterHelperMethods {
         return content;
     }
 
-    public static ArrayList<String> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent, String name) {
-        ArrayList<ArrayList<String>> enchantingTagsForEachItem = new ArrayList<>();
-        ArrayList<String> currItem;
-        String currName = "";
-        for (int i = 0; i < filecontent.size(); i++) {
-            if (filecontent.get(i).contains("{")) {
-                currName = filecontent.get(i+1).trim();
+    public static void writeModTags() {
+        String prevContent = getWholeFileContentTillGenerate(modTagsFile, "//!GENERATE MOD_TAGS");
+        String newStuff = "";
+
+        for (int i = 0; i < toolTiers.size(); i++) {
+            newStuff += toolTiers.get(i).getTags() + "\n";
+        }
+
+        prevContent += "\n" + newStuff + "    public static class Items {\n" +
+                "        private static TagKey<Item> createTag(String name) {\n" +
+                "            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, name));\n" +
+                "        }\n" +
+                "        //!GENERATE MOD_ITEM_TAGS\n" +
+                "    }";
+        write(prevContent, modTagsFile);
+        //writeModTagsForItems(); //moch i erst wenns soweit is
+    }
+
+    public static void writeRegistryMethods() {
+        String prevContent = getWholeFileContentTillGenerate(modTabRegistry, "//!GENERATE METHODS");
+        String newStuff = "";
+
+        for (int i = 0; i < creativeTabs.size(); i++) {
+            newStuff += creativeTabs.get(i).getRegistryMethods() + "\n";
+        }
+
+        write(prevContent + "\n" + newStuff + "}", modTabRegistry);
+    }
+
+    public static void writeBlockLoottables() {
+        String prevContent = getWholeFileContentTillGenerate(modBlockLootTableProviderFile, "//!GENERATE DROPS");
+        String newStuff = "";
+
+        for (int i = 0; i < blocks.size(); i++) {
+            newStuff += blocks.get(i).getLoottable() + "\n";
+        }
+
+        write(prevContent + "\n" + newStuff + "}", modBlockLootTableProviderFile);
+    }
+
+    public static void writeBlockTags() {
+        String prevContent = getWholeFileContentTillGenerate(modBlockTagProviderFile, "//!GENERATE BLOCK_TAGS");
+        String newStuff = "";
+        ArrayList<String> tagContent = getContentFromFileAsList(modBlockTagProviderFile, "");
+        ArrayList<ArrayList<String>> differentTags = getDifferentBlockTags();
+
+        for (int i = 0; i < differentTags.size(); i++) {
+            newStuff += "        tag(" + differentTags.get(i).getFirst() + (differentTags.get(i).get(2).equals("type") ? "NEEDS_" + differentTags.get(i).get(1).toUpperCase() + "_TOOL" : "MINEABLE_WITH_" + differentTags.get(i).get(1).toUpperCase()) + ")\n        ;";
+        }
+
+        write(prevContent + "\n" + newStuff + "    }\n}", modBlockTagProviderFile);
+        for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < blocks.size() && k < blocks.size(); i++) {
+            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase())) {
+                tagContent.add(i+1, blocks.get(j).getTag());
+                j++;
             }
-            if (filecontent.get(i).contains("?[E")) {
-                i++;
-                currItem = new ArrayList<>();
-                currItem.add(currName);
-                while (i < filecontent.size() && !filecontent.get(i).contains("?]")) {
-                    currItem.add(filecontent.get(i).trim().split("Enchantable:")[0].toUpperCase());
-                    i++;
-                }
-                enchantingTagsForEachItem.add(currItem);
+            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT")) {
+                tagContent.add(i+1, blocks.get(k).getTag());
+                k++;
             }
         }
-        for (int i = 0; i < enchantingTagsForEachItem.size(); i++) {
-            if (enchantingTagsForEachItem.get(i).getFirst().equalsIgnoreCase(name)) {
-                return enchantingTagsForEachItem.get(i);
+        write(getListAsString(tagContent), modBlockTagProviderFile);
+    }
+
+    public static ArrayList<ArrayList<String>> getDifferentBlockTags() {
+        ArrayList<ArrayList<String>> differentTags = new ArrayList<>();
+        ArrayList<String> tag;
+
+        for (int i = 0; i < blocks.size(); i++) {
+            tag = new ArrayList<>();
+            if (blocks.get(i).getTagTool().equalsIgnoreCase("shovel")
+                    && blocks.get(i).getTagTool().equalsIgnoreCase("axe")
+                    && blocks.get(i).getTagTool().equalsIgnoreCase("pickaxe")
+                    && blocks.get(i).getTagTool().equalsIgnoreCase("hoe")) {
+                tag.add("BlockTags.");
+            } else {
+                tag.add("ModTags.Blocks.");
             }
+            tag.add(blocks.get(i).getTagTool());
+            tag.add("tool");
+            differentTags.add(tag);
         }
-        return new ArrayList<>();
+
+        for (int i = 0; i < blocks.size(); i++) {
+            tag = new ArrayList<>();
+            if (blocks.get(i).getTagType().equalsIgnoreCase("stone")
+                    && blocks.get(i).getTagType().equalsIgnoreCase("diamond")
+                    && blocks.get(i).getTagType().equalsIgnoreCase("iron")) {
+                tag.add("BlockTags.");
+            } else {
+                tag.add("ModTags.Blocks.");
+            }
+            tag.add(blocks.get(i).getTagType());
+            tag.add("type");
+            differentTags.add(tag);
+        }
+        return differentTags;
+    }
+
+    public static String getListAsString(ArrayList<String> list) {
+        String content = "";
+        for (int i = 0; i < list.size(); i++) {
+            content += list.get(i);
+        }
+        return content;
+    }
+
+    public static void write(String content, File writeTo) {
+        try {
+            FileWriter modFileWriter = new FileWriter(writeTo);
+            modFileWriter.write(content);
+            modFileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
