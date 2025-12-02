@@ -23,6 +23,16 @@ public class InterpretedSimpleItem implements InterpretedItem {
         return "    public static final DeferredItem<Item> " + name.toUpperCase() + " = createItem(\"" + name.toLowerCase() + "\");";
     }
 
+    @Override
+    public String getCreativeTab() {
+        return this.creativeTab;
+    }
+
+    @Override
+    public String getItemTagCode() {
+        return "                .add(ModItems." + name.toUpperCase() + ".get())";
+    }
+
     public ArrayList<String> getItemEnchantmentTagsList() {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 1; i < enchantmentExtras.size(); i++) {
@@ -36,7 +46,7 @@ public class InterpretedSimpleItem implements InterpretedItem {
         return enchantmentExtras;
     }
 
-    public String getCreativeTab() {
+    public String getCreativeTabCode() {
         return "                ModItems." + name.toUpperCase() + ".get(),";
     }
 

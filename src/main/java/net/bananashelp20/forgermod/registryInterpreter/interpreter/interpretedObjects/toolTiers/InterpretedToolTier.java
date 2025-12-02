@@ -4,13 +4,13 @@ public class InterpretedToolTier {
     String tierCode;
     String tagCode;
     public InterpretedToolTier(String ingredientName, String material, String tierProperties) {
-        this.tierCode = "    public static final Tier " + material.toUpperCase() + " = new SimpleTier(\n" +
-                "            ModTags.Blocks.INCORRECT_FOR_" + material.toUpperCase() + "_TOOL,\n" +
-                "            " + tierProperties + ",\n" +
-                "            () -> Ingredient.of(ModItems." + ingredientName.toUpperCase() + ".get())\n" +
+        this.tierCode = "    public static final Tier " + material.toUpperCase().trim() + " = new SimpleTier(\n" +
+                "            ModTags.Blocks.INCORRECT_FOR_" + material.toUpperCase().trim() + "_TOOL,\n" +
+                "            " + tierProperties.trim() + ",\n" +
+                "            () -> Ingredient.of(ModItems." + ingredientName.toUpperCase().trim() + ".get())\n" +
                 "    );";
-        this.tagCode = "        public static final TagKey<Block> NEEDS_" + material.toUpperCase() + "_TOOL = createTag(\"needs_" + material.toLowerCase() + "_tool\");\n" +
-                "        public static final TagKey<Block> INCORRECT_FOR_" + material.toUpperCase() + "_TOOL = createTag(\"incorrect_for_" + material.toLowerCase() + "_tool\");";
+        this.tagCode = "        public static final TagKey<Block> NEEDS_" + material.toUpperCase().trim() + "_TOOL = createTag(\"needs_" + material.toLowerCase().trim() + "_tool\");\n" +
+                "        public static final TagKey<Block> INCORRECT_FOR_" + material.toUpperCase().trim() + "_TOOL = createTag(\"incorrect_for_" + material.toLowerCase().trim() + "_tool\");";
     }
 
     @Override

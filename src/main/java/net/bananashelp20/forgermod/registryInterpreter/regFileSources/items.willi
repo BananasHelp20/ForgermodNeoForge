@@ -4,7 +4,7 @@
 #//is
 #//allowed
 {simpleItem
-    item_name
+    item1
     basicItem
     items
     ?[E
@@ -15,7 +15,7 @@
 }
 
 {specialItem
-    sapphire_gemstone
+    item2
     basicItem
     items
     ?[E
@@ -26,7 +26,7 @@
 }
 
 {specialItem
-    special_item_with_rarity
+    item3
     basicItem
     ?uncommon #//Questionmark declares an optional parameter
     items
@@ -38,7 +38,7 @@
 }
 
 {simpleSword
-    sword
+    sword1
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItem
     handheldItem
@@ -50,7 +50,7 @@
 }
 
 {specialSword
-    specialSword
+    sword2
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
     handheldItem
@@ -63,7 +63,7 @@
 }
 
 {specialSword
-    specialSword2
+    sword3
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItemWithRarityAndDescription
     handheldItem
@@ -80,11 +80,11 @@
 }
 
 {upgradableSword
-    complexSword
+    sword4
     ElectriumWeapon
     createSpecialSwordItem
     handheldItem
-    electrium
+    mat
     [
         !ALL #//! declares a command, and ALL means all variations
     ]        #//instead of !ALL, there could be the following:

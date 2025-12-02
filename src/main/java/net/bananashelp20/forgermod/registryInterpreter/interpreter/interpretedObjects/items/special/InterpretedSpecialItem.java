@@ -33,6 +33,16 @@ public class InterpretedSpecialItem implements InterpretedItem {
     }
 
     @Override
+    public String getItemTagCode() {
+        return "                .add(ModItems." + name.toUpperCase() + ".get())";
+    }
+
+    @Override
+    public String getCreativeTab() {
+        return this.creativeTab;
+    }
+
+    @Override
     public String toString() {
         if (rarity.equals(""))
             return "    public static final DeferredItem<Item> " + name.toUpperCase() + " = createItemWithDescription(\"" + name.toLowerCase() + "\", \"tooltips.forgermod." + name.toLowerCase() + ".tooltip\");";
@@ -47,7 +57,7 @@ public class InterpretedSpecialItem implements InterpretedItem {
         return list;
     }
 
-    public String getCreativeTab() {
+    public String getCreativeTabCode() {
         return "                ModItems." + name.toUpperCase() + ".get(),";
     }
 

@@ -1,40 +1,40 @@
 {smelting
     misc
-    moditem sapphire_gemstone
+    moditem item1
     0.5f, 200
     [
-        moditem steel_ingot
-        moditem damask_ingot
+        moditem item2
+        moditem sword1
     ]
 }
 {smelting
     misc
-    moditem sapphire_gemstone
+    moditem item2
     0.5f, 200
     [
-        moditem steel_ingot
-        moditem damask_ingot
+        moditem sword1
+        moditem sword2
     ]
 }
 
 {blasting
     misc
-    moditem sapphire_gemstone
+    moditem sword1
     0.5f, 200
     [
-        moditem steel_ingot
-        moditem damask_ingot
+        moditem item1
+        moditem item2
     ]
 }
 
 {both
     misc
-    moditem amethyst_gemstone
+    moditem item1
     0.5f, 200 #//smelting properties
     0.5f, 200 #//blasting properties
     [
-        moditem steel_ingot
-        modblock damask_block
+        moditem sword2
+        modblock sword4
     ]
 }
 
@@ -43,11 +43,11 @@
     AAA
     BXX
     CCC
-    A -> moditem amethyst_gemstone
-    B -> moditem jade_gemstone
-    C -> block claymore
-    moditem steel_sword
-    moditem steel_sword
+    A -> moditem sword1
+    B -> moditem sword2
+    C -> item stick
+    moditem sword2
+    moditem sword2
 }
 
 {shaped
@@ -55,51 +55,51 @@
     AHI
     BDE
     CFG
-    A -> moditem amethyst_gemstone
-    B -> moditem jade_gemstone
-    C -> item claymore
-    D -> block claymore
-    E -> modblock claymore
-    F -> block claymore
-    G -> block claymore
-    H -> block claymore
-    I -> block claymore
-    moditem steel_sword
-    moditem steel_sword
+    A -> moditem item2
+    B -> moditem item1
+    C -> item stick
+    D -> block iron_block
+    E -> item iron_sword
+    F -> item iron_ingot
+    G -> block grass_block
+    H -> block diamond_block
+    I -> block oak_planks
+    moditem sword1
+    moditem sword1
 }
 
 {shapeless
     misc
-    moditem jade_gemstone
+    moditem sword1
     item stick
     9
     [
-        moditem ruby_gemstone
-        moditem amber_gemstone
+        moditem sword2
+        moditem sword3
     ]
 }
 
-{custom
-    ForgeBlockEntity
-    [
-        moditem steel_ingot
-        moditem steel_sword
-        moditem ruby_gemstone
-    ]
-    [
-        moditem sapphire_gemstone
-        item diamond_sword
-    ]
-
-}
-{custom
-    InfusionBlockEntity
-    [
-        moditem steel_ingot
-        moditem damask_ingot
-        moditem ruby_gemstone
-    ]
-    [
-        moditem sapphire_gemstone
-    ]
-}
+#//{custom
+#//    ForgeBlockEntity
+#//    [
+#//        moditem steel_ingot
+#//        moditem steel_sword
+#//        moditem ruby_gemstone
+#//    ]
+#//    [
+#//        moditem sapphire_gemstone
+#//        item diamond_sword
+#//    ]
+#//
+#//}
+#//{custom
+#//    InfusionBlockEntity
+#//    [
+#//        moditem steel_ingot
+#//        moditem damask_ingot
+#//        moditem ruby_gemstone
+#//    ]
+#//    [
+#//        moditem sapphire_gemstone
+#//    ]
+#//}

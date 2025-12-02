@@ -10,16 +10,20 @@ public class InterpretedCreativeTab {
         this.camelCaseName = camelCaseName; //BeginsBig
         this.name = name;
         String[] temp = displayItemName.split(" ");
-        this.displayItemName = temp[0];
-        if (temp[1].toUpperCase().contains("MODITEM")) {
+        this.displayItemName = temp[1];
+        if (temp[0].toUpperCase().contains("MODITEM")) {
             this.displayItemType = "ModItems.";
-        } else if (temp[1].toUpperCase().contains("MODBLOCK")) {
+        } else if (temp[0].toUpperCase().contains("MODBLOCK")) {
             this.displayItemType = "ModBlocks.";
-        } else if (temp[1].toUpperCase().contains("ITEM")) {
+        } else if (temp[0].toUpperCase().contains("ITEM")) {
             this.displayItemType = "Items.";
         } else {
             this.displayItemType = "Blocks.";
         }
+    }
+
+    public String getName() {
+        return this.camelCaseName;
     }
 
     @Override

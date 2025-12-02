@@ -26,6 +26,11 @@ public class InterpretedSpecialSwordItem implements InterpretedItem {
     }
 
     @Override
+    public String getItemTagCode() {
+        return "                .add(ModItems." + itemProperties.getFirst().toUpperCase() + ".get())";
+    }
+
+    @Override
     public ArrayList<String> getTagsOfItem() {
         return enchantmentExtras;
     }
@@ -38,8 +43,13 @@ public class InterpretedSpecialSwordItem implements InterpretedItem {
         return list;
     }
 
-    public String getCreativeTab() {
+    public String getCreativeTabCode() {
         return "                ModItems." + itemProperties.get(0).toUpperCase() + ".get(),";
+    }
+
+    @Override
+    public String getCreativeTab() {
+        return this.itemProperties.get(5);
     }
 
     public String getItemModel() {

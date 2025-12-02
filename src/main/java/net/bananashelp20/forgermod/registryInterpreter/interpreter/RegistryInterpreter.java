@@ -7,10 +7,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedCustomRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,7 +19,7 @@ public class RegistryInterpreter {
             if (!generateCode()) {
                 System.out.println(ANSI_RED + "\n#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase, because an " + ANSI_RESET + ANSI_BLACK + " ERROR " + ANSI_RESET + ANSI_RED + " occured" + ANSI_RESET);
                 System.out.println(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
-                rewriteAllAfterError(false);
+                rewriteAllAfterError(true);
                 System.out.println(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code!" + ANSI_RESET);
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
             }
@@ -30,7 +27,7 @@ public class RegistryInterpreter {
         } catch (Exception e) {
             System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase!" + ANSI_RESET);
             System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
-            rewriteAllAfterError(false);
+            rewriteAllAfterError(true);
             System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code" + ANSI_RESET);
             throw e;
         }
@@ -85,6 +82,7 @@ public class RegistryInterpreter {
     static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeTabsFile);
     static String unchangedModTagsFileContent = getContentFromFile(modTagsFile);
 
+
     public static boolean generateCode() {
         if (!(modBlocksFile.exists() && modBlocksFile.canWrite() && modBlocksFile.canRead()
                 && modItemsFile.exists() && modItemsFile.canWrite() && modItemsFile.canRead()
@@ -93,7 +91,19 @@ public class RegistryInterpreter {
                 && blockFile.exists() && blockFile.canRead()
                 && itemFile.exists() && itemFile.canRead()
                 && creativeTabFile.exists() && creativeTabFile.canRead()
+                && upgradeList.exists() && upgradeList.canRead()
+                && recipeFile.exists() && recipeFile.canRead()
+                && toolTierFile.exists() && toolTierFile.canRead()
+                && modToolTiersFile.exists() && modToolTiersFile.canWrite() && modToolTiersFile.canRead()
+                && modTagsFile.exists() && modTagsFile.canWrite() && modTagsFile.canRead()
+                && modBlockLootTableProviderFile.exists() && modBlockLootTableProviderFile.canRead()
+                && modBlockStateProviderFile.exists() &&modBlockStateProviderFile.canWrite() && modBlockStateProviderFile.canRead()
+                && modBlockTagProviderFile.exists() && modBlockTagProviderFile.canWrite() && modBlockTagProviderFile.canRead()
+                && modItemTagProviderFile.exists() && modItemTagProviderFile.canWrite() && modItemTagProviderFile.canRead()
+                && modItemModelProviderFile.exists() && modItemModelProviderFile.canWrite() && modItemModelProviderFile.canRead()
+                && modRecipeProviderFile.exists() &&modRecipeProviderFile.canWrite() && modRecipeProviderFile.canRead()
         )) {
+            error("ERROR: Some Files dont exist or cannot be read or written!\n");
             return false;
         }
         Scanner userHelper = new Scanner(System.in);
@@ -151,13 +161,13 @@ public class RegistryInterpreter {
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
 
         //!PRESERVE geht nu ned, ds musst nu mochn [DONE]
-        writeToolTierCode(false); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
+        writeToolTierCode(true); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote tool tier objects to file");
-        writeCreativeTabCode(false);
+        writeCreativeTabCode(true);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote creative tab objects to files");
-        writeItemCode(false); //WORKS!
+        writeItemCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote item objects to files");
         writeBlockCode(false); //WORKS!
@@ -215,7 +225,7 @@ public class RegistryInterpreter {
         write(prevContent, modItemsFile);
         writeItemModels();
         writeItemsToTabRegistry();
-        writeItemTags();
+        writeItemTags(); //do ligts problem
     }
 
     private static void writeRecipeCode(boolean allowed) {

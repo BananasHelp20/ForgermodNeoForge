@@ -13,6 +13,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapelessRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,7 +45,6 @@ public class RegistryInterpreterHelperMethods {
     public static File modRecipeProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModRecipeProvider.java");
     public static File modTabRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
 
-    private static boolean stillGenerating = true;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -482,26 +482,34 @@ public class RegistryInterpreterHelperMethods {
         ArrayList<String> tagContent;
 
         for (int i = 0; i < differentTags.size(); i++) {
-            for (int j = 0; j < differentTags.get(i).size(); j++) {
-                for (int k = 0; k < ; k++) {
-                    
-                }
-            }
+            newStuff += "        tag(" + differentTags.get(i).getFirst() + differentTags.get(i).get(1) + ")\n        ;";
         }
 
         write(prevContent + "\n" + newStuff + "    }\n}", modItemTagProviderFile);
         tagContent = getContentFromFileAsList(modItemTagProviderFile, "");
-        for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < items.size() && k < items.size(); i++) {
-            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(items.get(j).getTagTool().toUpperCase())) {
-                tagContent.add(i+1, items.get(j).getTag());
-                j++;
-            }
-            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(items.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT")) {
-                tagContent.add(i+1, items.get(k).getTag());
-                k++;
+        for (int i = 0; i < items.size(); i++) {
+            for (int k = 0; k < items.get(i).getTagsOfItem().size(); k++) {
+                for (int j = 0; j < tagContent.size(); j++) {
+                    if (tagContent.get(j).toUpperCase().contains(items.get(i).getTagsOfItem().get(k).toUpperCase())) {
+                        tagContent.add(j+1, items.get(i).getItemTagCode());
+                    }
+                }
             }
         }
         write(getListAsString(tagContent), modItemTagProviderFile);
+    }
+
+    public static void writeItemsToTabRegistry() {
+        ArrayList<String> prevContent = getContentFromFileAsList(modRegistry, "");
+
+        for (int j = 0; j < items.size(); j++) {
+            for (int k = 0; k < prevContent.size(); k++) {
+                if (prevContent.get(k).toUpperCase().contains(items.get(j).getCreativeTab().toUpperCase()) && !prevContent.get(k).toUpperCase().contains("DisplayItem".toUpperCase()) && prevContent.get(k).toUpperCase().contains("ItemLike[]".toUpperCase())) {
+                    prevContent.add(k+2, items.get(j).getCreativeTabCode());
+                }
+            }
+        }
+        write(getListAsString(prevContent), modRegistry);
     }
 
     public static void writeModTags() {
@@ -518,7 +526,7 @@ public class RegistryInterpreterHelperMethods {
                 "        }\n" +
                 "        //!GENERATE MOD_ITEM_TAGS\n" +
                 "    }";
-        write(prevContent, modTagsFile);
+        write(prevContent + "    }\n}", modTagsFile);
         //writeModTagsForItems(); //moch i erst wenns soweit is
     }
 
@@ -794,7 +802,7 @@ public class RegistryInterpreterHelperMethods {
     public static String getListAsString(ArrayList<String> list) {
         String content = "";
         for (int i = 0; i < list.size(); i++) {
-            content += list.get(i);
+            content += list.get(i) + "\n";
         }
         return content;
     }

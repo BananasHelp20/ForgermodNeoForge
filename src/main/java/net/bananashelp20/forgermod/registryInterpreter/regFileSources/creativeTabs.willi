@@ -1,5 +1,5 @@
 {simpleTab
-    forger_mod_test_tab
-    ForgerModTestTab
-    moditem jade_gemstone
+    forger_mod_items_tab
+    ForgerModItemsTab
+    moditem item1
 }

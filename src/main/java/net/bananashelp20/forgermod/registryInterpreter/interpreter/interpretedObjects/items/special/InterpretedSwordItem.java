@@ -19,6 +19,16 @@ public class InterpretedSwordItem implements InterpretedItem {
         return "    public static final DeferredItem<SwordItem> " + itemProperties.get(0).toUpperCase() + " = createSwordItem(\"" + itemProperties.get(0).toLowerCase() + "\", ModToolTiers." + itemProperties.get(4).toUpperCase() + ", " + itemProperties.get(1) + ");";
     }
 
+    @Override
+    public String getItemTagCode() {
+        return "                .add(ModItems." + itemProperties.getFirst().toUpperCase() + ".get())";
+    }
+
+    @Override
+    public String getCreativeTab() {
+        return this.itemProperties.get(5);
+    }
+
     public ArrayList<String> getItemEnchantmentTagsList() {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 1; i < enchantmentExtras.size(); i++) {
@@ -32,7 +42,7 @@ public class InterpretedSwordItem implements InterpretedItem {
         return enchantmentExtras;
     }
 
-    public String getCreativeTab() {
+    public String getCreativeTabCode() {
         return "                ModItems." + itemProperties.get(0).toUpperCase() + ".get(),";
     }
 

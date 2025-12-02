@@ -30,6 +30,11 @@ public class InterpretedItemWithUpgradedVariations implements InterpretedItem {
     }
 
     @Override
+    public String getItemTagCode() {
+        return "                .add(ModItems." + itemProperties.getFirst().toUpperCase() + ".get())";
+    }
+
+    @Override
     public ArrayList<String> getTagsOfItem() {
         return enchantmentExtras;
     }
@@ -43,7 +48,12 @@ public class InterpretedItemWithUpgradedVariations implements InterpretedItem {
         return s;
     }
 
+    @Override
     public String getCreativeTab() {
+        return this.itemProperties.get(5);
+    }
+
+    public String getCreativeTabCode() {
         return "                ModItems." + itemProperties.get(0).toUpperCase() + ".get(),";
     }
 
