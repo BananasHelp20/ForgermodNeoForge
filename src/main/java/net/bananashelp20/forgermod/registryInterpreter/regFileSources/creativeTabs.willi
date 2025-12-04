@@ -1,5 +1,25 @@
 {simpleTab
+    forger_mod_ingredients_tab
+    ForgerModIngredientsTab
+    moditem inanisium_ingot
+}
+{simpleTab
+    forger_mod_weapon_tab
+    ForgerModWeaponsTab
+    moditem claymore
+}
+{simpleTab
+    forger_mod_miscellaneous_tab
+    ForgerModMiscellaneousTab
+    moditem forge
+}
+{simpleTab
     forger_mod_items_tab
     ForgerModItemsTab
-    moditem item1
+    moditem advanced_handle
+}
+{simpleTab
+    forger_mod_blocks_tab
+    ForgerModBlocksTab
+    moditem ruby_deepslate_ore
 }

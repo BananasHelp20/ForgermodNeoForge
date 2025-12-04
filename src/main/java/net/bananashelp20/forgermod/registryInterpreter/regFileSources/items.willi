@@ -4,99 +4,463 @@
 #//is
 #//allowed
 {simpleItem
-    item1
+    inanisium_shard
     basicItem
-    items
+    ingredients
     ?[E
         Swords
-        Axes
-        Pickaxes
+    ?]
+}
+{simpleItem
+    ignisium_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    morsium_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    somnium_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    vulnusium_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    lush_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    pulsite_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    electrium_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    taifunite_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    developium_shard
+    basicItem
+    ingredients
+    ?[E
+        Swords
     ?]
 }
 
 {specialItem
-    item2
+    ancient_upgrade_template
     basicItem
     items
     ?[E
         Swords
-        Axes
-        Pickaxes
+    ?]
+}
+{specialItem
+    gemstone_upgrade_template
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+
+{simpleItem
+    scrap_ingot
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    scrap_iron_ingot
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    unrefined_steel
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    unrefined_carbon_steel
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{specialItem
+    sharpened_blade
+    handheldItem
+    items
+    ?[E
+        Swords
+    ?]
+}
+{specialItem
+    carbon_steel_cross_guard
+    basicItem
+    items
+    ?[E
+        Swords
+    ?]
+}
+{specialItem
+    handle
+    handheldItem
+    items
+    ?[E
+        Swords
+    ?]
+}
+{specialItem
+    advanced_handle
+    handheldItem
+    items
+    ?[E
+        Swords
+    ?]
+}
+
+{simpleItem
+    damask_ingot
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    reinforced_iron_ingot
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    carbon_steel_ingot
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{simpleItem
+    steel_ingot
+    basicItem
+    ingredients
+    ?[E
+        Swords
     ?]
 }
 
 {specialItem
-    item3
+    ruby_gemstone
     basicItem
-    ?uncommon #//Questionmark declares an optional parameter
-    items
+    ingredients
     ?[E
         Swords
-        Axes
-        Pickaxes
+    ?]
+}
+{specialItem
+    amber_gemstone
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{specialItem
+    amethyst_gemstone
+    basicItem
+    ingredients
+    ?[E
+        Swords
+    ?]
+}
+{specialItem
+    jade_gemstone
+    basicItem
+    ingredients
+    ?[E
+        Swords
     ?]
 }
 
 {simpleSword
-    sword1
+    steel_sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
     createSwordItem
     handheldItem
     steel
-    items
+    weapons
     ?[E
-        Axes
+        swords
     ?]
 }
-
 {specialSword
-    sword2
-    STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
-    createSwordItemWithRarityAndDescription
+    stumpfl_bat
+    !ULTRA
+    createSwordItemWithDescription
     handheldItem
-    steel
-    items
-    [ #//Specify brackets
-        uncommon
-    ]
-    !NO_ENCHANTS
+    developium
+    weapons
+    ?[E
+        swords
+    ?]
 }
-
-{specialSword
-    sword3
+{simpleSword
+    damask_sword
     STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
+    createSwordItem
+    handheldItem
+    damask
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{simpleSword
+    reinforced_iron_sword
+    STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
+    createSwordItem
+    handheldItem
+    reinforced_iron
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{simpleSword
+    scrap_iron_sword
+    STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
+    createSwordItem
+    handheldItem
+    scrap_iron
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{simpleSword
+    scrap_sword
+    STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
+    createSwordItem
+    handheldItem
+    scrap
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{specialSword
+    rusty_claymore
+    !ULTRA
     createSwordItemWithRarityAndDescription
     handheldItem
-    steel
-    ?rare
-    items
+    carbon_steel
+    weapons
     [ #//Specify brackets
         uncommon
     ]
     ?[E
-        Axes
-        Pickaxes
+        swords
+    ?]
+}
+{specialSword
+    claymore
+    !ULTRA
+    createSwordItemWithRarityAndDescription
+    handheldItem
+    carbon_steel
+    weapons
+    [ #//Specify brackets
+        uncommon
+    ]
+    ?[E
+        swords
+    ?]
+}
+{simpleSword
+    damask_knife
+    STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED
+    createSwordItem
+    handheldItem
+    damask
+    weapons
+    ?[E
+        swords
     ?]
 }
 
 {upgradableSword
-    sword4
+    overgrown_claymore
+    LushWeapon
+    createSpecialSwordItem
+    handheldItem
+    lush
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    hollow_claymore
+    MorsiumWeapon
+    createSpecialSwordItem
+    handheldItem
+    morsium
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    infernal_claymore
+    IgnisiumWeapon
+    createSpecialSwordItem
+    handheldItem
+    ignisium
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    claymore_of_the_void
+    InanisiumWeapon
+    createSpecialSwordItem
+    handheldItem
+    inanisium
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    curseblood_claymore
+    VulnusiumWeapon
+    createSpecialSwordItem
+    handheldItem
+    vulnusium
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    dreambound_claymore
+    SomniumWeapon
+    createSpecialSwordItem
+    handheldItem
+    somnium
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    shrieking_claymore
+    PulsiteWeapon
+    createSpecialSwordItem
+    handheldItem
+    pulsite
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}
+{upgradableSword
+    claymore_of_thunder
     ElectriumWeapon
     createSpecialSwordItem
     handheldItem
-    mat
+    electrium
     [
-        !ALL #//! declares a command, and ALL means all variations
-    ]        #//instead of !ALL, there could be the following:
-    #//[
-    #//   none,
-    #//   amber_gemstone,
-    #//   ruby_gemstone
-    #//]
-    items
-    !NO_ENCHANTS
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
 }
-
-#//sets {
-    #//!CREATE_TOOLSET |steel|STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED|
-#//}
+{upgradableSword
+    storming_claymore
+    TaifuniteWeapon
+    createSpecialSwordItem
+    handheldItem
+    taifunite
+    [
+        !ALL
+    ]
+    weapons
+    ?[E
+        swords
+    ?]
+}

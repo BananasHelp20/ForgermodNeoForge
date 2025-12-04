@@ -17,15 +17,15 @@ public class InterpretedSimpleBlock implements InterpretedBlock {
     }
 
     public String getTag() {
-        return "                .add(ModBlocks." + blockProperties.get(0).toUpperCase() + ".get())";
+        return blockProperties.get(5).contains("!NO_TOOL") ? "" : "                .add(ModBlocks." + blockProperties.get(0).toUpperCase() + ".get())";
     }
 
     public String getTagTool() {
-        return blockProperties.get(5);
+        return blockProperties.get(5).contains("!NO_TOOL") ? "" : blockProperties.get(5);
     }
 
     public String getTagType() {
-        return blockProperties.get(6);
+        return blockProperties.get(5).contains("!NO_TOOL") ? "" : blockProperties.get(6);
     }
 
     public String getBlockState() {

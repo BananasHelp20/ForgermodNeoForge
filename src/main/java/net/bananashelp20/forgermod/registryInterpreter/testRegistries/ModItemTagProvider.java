@@ -21,27 +21,6 @@ public class ModItemTagProvider extends ItemTagsProvider {
         //!GENERATE ITEM_TAGS
 
         tag(ItemTags.SWORDS)
-                .add(ModItems.ITEM3.get())
-                .add(ModItems.ITEM2.get())
-                .add(ModItems.ITEM1.get())
-        ;
-        tag(ItemTags.AXES)
-                .add(ModItems.SWORD3.get())
-                .add(ModItems.SWORD1.get())
-                .add(ModItems.ITEM3.get())
-                .add(ModItems.ITEM2.get())
-                .add(ModItems.ITEM1.get())
-        ;
-        tag(ItemTags.PICKAXES)
-                .add(ModItems.SWORD3.get())
-                .add(ModItems.SWORD3.get())
-                .add(ModItems.SWORD1.get())
-                .add(ModItems.ITEM3.get())
-                .add(ModItems.ITEM3.get())
-                .add(ModItems.ITEM2.get())
-                .add(ModItems.ITEM2.get())
-                .add(ModItems.ITEM1.get())
-                .add(ModItems.ITEM1.get())
         ;
     }
 }

@@ -1,84 +1,141 @@
-{smelting
-    misc
-    moditem item1
-    0.5f, 200
-    [
-        moditem item2
-        moditem sword1
-    ]
-}
-{smelting
-    misc
-    moditem item2
-    0.5f, 200
-    [
-        moditem sword1
-        moditem sword2
-    ]
-}
-
 {blasting
     misc
-    moditem sword1
-    0.5f, 200
+    moditem carbon_steel_ingot
+    1f, 100
     [
-        moditem item1
-        moditem item2
+        moditem unrefined_carbon_steel
+        moditem claymore
+        moditem carbon_steel_cross_guard
+        moditem advanced_handle
+        moditem sharpened_blade
+    ]
+}
+{blasting
+    misc
+    moditem steel_ingot
+    1f, 100
+    [
+        moditem unrefined_steel
+        moditem steel_sword
     ]
 }
 
 {both
     misc
-    moditem item1
+    moditem damask_ingot
     0.5f, 200 #//smelting properties
-    0.5f, 200 #//blasting properties
+    1f, 100 #//blasting properties
     [
-        moditem sword2
-        moditem sword4
+        moditem scrap_ingot
+        moditem damask_sword
+        moditem damask_knife
+        moditem handle
+    ]
+}
+{both
+    misc
+    moditem reinforced_iron_ingot
+    0.5f, 200 #//smelting properties
+    1f, 100 #//blasting properties
+    [
+        moditem scrap_iron_ingot
+        moditem reinforced_iron_sword
+    ]
+}
+{both
+    misc
+    moditem jade_gemstone
+    2f, 100 #//smelting properties
+    2f, 100 #//blasting properties
+    [
+        modblock jade_end_ore
+        modblock jade_nether_ore
+        modblock jade_obsidian_ore
+        modblock jade_stone_ore
+        modblock jade_deepslate_ore
+    ]
+}
+{both
+    misc
+    moditem ruby_gemstone
+    2f, 100 #//smelting properties
+    2f, 100 #//blasting properties
+    [
+        modblock ruby_end_ore
+        modblock ruby_nether_ore
+        modblock ruby_obsidian_ore
+        modblock ruby_stone_ore
+        modblock ruby_deepslate_ore
+    ]
+}
+{both
+    misc
+    moditem amethyst_gemstone
+    2f, 100 #//smelting properties
+    2f, 100 #//blasting properties
+    [
+        modblock amethyst_end_ore
+        modblock amethyst_nether_ore
+        modblock amethyst_obsidian_ore
+        modblock amethyst_stone_ore
+        modblock amethyst_deepslate_ore
+    ]
+}
+{both
+    misc
+    moditem amber_gemstone
+    2f, 100 #//smelting properties
+    2f, 100 #//blasting properties
+    [
+        modblock amber_end_ore
+        modblock amber_nether_ore
+        modblock amber_obsidian_ore
+        modblock amber_stone_ore
+        modblock amber_deepslate_ore
     ]
 }
 
-{shaped
-    misc
-    AAA
-    BXX
-    CCC
-    A -> moditem sword1
-    B -> moditem sword2
-    C -> item stick
-    moditem sword2
-    moditem sword2
-}
-
-{shaped
-    misc
-    AHI
-    BDE
-    CFG
-    A -> moditem item2
-    B -> moditem item1
-    C -> item stick
-    D -> block iron_block
-    E -> item iron_sword
-    F -> item iron_ingot
-    G -> block grass_block
-    H -> block diamond_block
-    I -> block oak_planks
-    moditem sword1
-    moditem sword1
-}
-
-{shapeless
-    misc
-    moditem sword1
-    item stick
-    9
-    [
-        moditem sword2
-        moditem sword3
-    ]
-}
-
+#//{shaped
+#//    misc
+#//    AAA
+#//    BXX
+#//    CCC
+#//    A -> moditem sword1
+#//    B -> moditem sword2
+#//    C -> item stick
+#//    moditem sword2
+#//    moditem sword2
+#//}
+#//
+#//{shaped
+#//    misc
+#//    AHI
+#//    BDE
+#//    CFG
+#//    A -> moditem item2
+#//    B -> moditem item1
+#//    C -> item stick
+#//    D -> block iron_block
+#//    E -> item iron_sword
+#//    F -> item iron_ingot
+#//    G -> block grass_block
+#//    H -> block diamond_block
+#//    I -> block oak_planks
+#//    moditem sword1
+#//    moditem sword1
+#//}
+#//
+#//{shapeless
+#//    misc
+#//    moditem sword1
+#//    item stick
+#//    9
+#//    [
+#//        moditem sword2
+#//        moditem sword3
+#//    ]
+#//}
+#//
 #//{custom
 #//    ForgeBlockEntity
 #//    [

@@ -1,10 +1,80 @@
 {normal
-    item1 #//ingredient
-    steel #//material
+    scrap_iron_ingot #//ingredient
+    scrap_iron #//material
     350, 6.5f, 3, 12 #//properties
 }
 {normal
-    item2
-    mat
+    scrap_ingot
+    scrap
     350, 6.5f, 3, 12
+}
+{normal
+    reinforced_iron_ingot
+    reinforced_iron
+    500, 7f, 4, 12
+}
+{normal
+    damask_ingot
+    damask
+    1200, 8.5f, 5, 14
+}
+{normal
+    developium_ingot
+    developium
+    1750, 9f, 6, 16
+}
+{normal
+    steel_ingot
+    steel
+    1750, 9f, 6, 16
+}
+{normal
+    carbon_steel_ingot
+    carbon_steel
+    2500, 11f, 7, 18
+}
+{normal
+    inanisium_ingot
+    inanisium
+    3500, 14f, 9, 20
+}
+{normal
+    ignisium_ingot
+    ignisium
+    3500, 14f, 9, 20
+}
+{normal
+    somnium_ingot
+    somnium
+    3500, 14f, 9, 20
+}
+{normal
+    morsium_ingot
+    morsium
+    3500, 14f, 9, 20
+}
+{normal
+    vulnusium_ingot
+    vulnusium
+    3500, 14f, 9, 20
+}
+{normal
+    pulsite_ingot
+    pulsite
+    3500, 14f, 9, 20
+}
+{normal
+    electrium_ingot
+    electrium
+    3500, 14f, 9, 20
+}
+{normal
+    lush_ingot
+    lush
+    3500, 14f, 9, 20
+}
+{normal
+    taifunite_ingot
+    taifunite
+    3500, 14f, 9, 20
 }

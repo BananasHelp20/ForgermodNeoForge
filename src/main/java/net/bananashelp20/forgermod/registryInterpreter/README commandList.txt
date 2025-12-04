@@ -29,6 +29,7 @@ Block Commands
 !NO_MODEL --> model isn't created, to make room for custom models #has to be declared instead of the block model method
 !INDESTRUCTIBLE --> makes block basically indestructible #has to be declared instead of the block properties
 !NO_TAB --> block does not appear in any creative tab
+!NO_TOOL --> block can be mined by hand
 
 
 *********************

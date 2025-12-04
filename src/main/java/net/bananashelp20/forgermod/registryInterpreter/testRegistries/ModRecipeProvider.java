@@ -95,43 +95,5 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     protected void buildRecipes(RecipeOutput output) {
         //!GENERATE
 
-        oreSmelting(output, List.of(ModItems.ITEM2.get(), ModItems.SWORD1.get()), RecipeCategory.MISC, ModItems.ITEM1.get(), 0.5f, 200, "item1");
-
-        oreSmelting(output, List.of(ModItems.SWORD1.get(), ModItems.SWORD2.get()), RecipeCategory.MISC, ModItems.ITEM2.get(), 0.5f, 200, "item2");
-
-        oreBlasting(output, List.of(ModItems.ITEM1.get(), ModItems.ITEM2.get()), RecipeCategory.MISC, ModItems.SWORD1.get(), 0.5f, 200, "sword1");
-
-        oreSmelting(output, List.of(ModItems.SWORD2.get(), ModItems.SWORD4.get()), RecipeCategory.MISC, ModItems.ITEM1.get(), 0.5f, 200, "item1");
-        oreBlasting(output, List.of(ModItems.SWORD2.get(), ModItems.SWORD4.get()), RecipeCategory.MISC, ModItems.ITEM1.get(), 0.5f, 200, "item1");
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SWORD2.get())
-                .pattern("AAA")
-                .pattern("B  ")
-                .pattern("CCC")
-                .define('A', ModItems.SWORD1.get())
-                .define('B', ModItems.SWORD2.get())
-                .define('C', Items.STICK)
-                .unlockedBy(getHasName(ModItems.SWORD2.get()), has(ModItems.SWORD2.get())).save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SWORD1.get())
-                .pattern("AHI")
-                .pattern("BDE")
-                .pattern("CFG")
-                .define('A', ModItems.ITEM2.get())
-                .define('B', ModItems.ITEM1.get())
-                .define('C', Items.STICK)
-                .define('D', Blocks.IRON_BLOCK)
-                .define('E', Items.IRON_SWORD)
-                .define('F', Items.IRON_INGOT)
-                .define('G', Blocks.GRASS_BLOCK)
-                .define('H', Blocks.DIAMOND_BLOCK)
-                .define('I', Blocks.OAK_PLANKS)
-                .unlockedBy(getHasName(ModItems.SWORD1.get()), has(ModItems.SWORD1.get())).save(output);
-
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STICK, 9)
-                .requires(ModItems.SWORD2.get())
-                .requires(ModItems.SWORD3.get())
-                .unlockedBy(getHasName(ModItems.SWORD1.get()), has(ModItems.SWORD1.get())).save(output, ForgerMod.MOD_ID + ":stick_from_shapeless_crafting_6");
-
     }
 }

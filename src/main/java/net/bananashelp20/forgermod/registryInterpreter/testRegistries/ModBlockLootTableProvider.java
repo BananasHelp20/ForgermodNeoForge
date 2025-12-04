@@ -52,7 +52,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     protected void generate() {
         //!GENERATE DROPS
 
-        dropOther(ModBlocks.BLOCK1.get(), ModItems.ITEM2.get());
+        dropOther(ModBlocks.BLOCK1.get(), ModItems.LUSH_SHARD.get());
         dropSelf(ModBlocks.BLOCK2.get());
         dropSelf(ModBlocks.BLOCK3.get());
     }

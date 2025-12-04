@@ -8,7 +8,8 @@ import net.neoforged.neoforge.common.SimpleTier;
 
 
 public class ModToolTiers {
-    public static final Tier SCRAP_IRON = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_SCRAP_IRON_TOOL,350, 6.5f, 3, 12,
+    public static final Tier SCRAP_IRON = new SimpleTier(
+            ModTags.Blocks.INCORRECT_FOR_SCRAP_IRON_TOOL,350, 6.5f, 3, 12,
             () -> Ingredient.of(ModItems.SCRAP_IRON_INGOT.get()));
 
     public static final Tier SCRAP = new SimpleTier(

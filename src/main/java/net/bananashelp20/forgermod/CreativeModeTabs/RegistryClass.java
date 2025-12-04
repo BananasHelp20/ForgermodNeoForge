@@ -24,7 +24,6 @@ public class RegistryClass {
     public static ItemLike[] getIngredientTabRegister() {
         return new ItemLike[] {
                 ModBlocks.REINFORCED_IRON_BLOCK.get(),
-                ModBlocks.REINFORCED_IRON_BLOCK.get(),
                 ModItems.REINFORCED_IRON_INGOT.get(),
 
                 ModBlocks.SCRAP_IRON_BLOCK.get(),
@@ -168,7 +167,7 @@ public class RegistryClass {
     }
     public static ItemLike[] getMiscellaneousTabRegister() {
         return new ItemLike[] {
-//                ModBlocks.ANCIENT_SWORD_STAND.get(),
+                ModBlocks.ANCIENT_SWORD_STAND.get(),
                 ModBlocks.FORGE.get(),
                 ModBlocks.INFUSION_TABLE.get()
         };

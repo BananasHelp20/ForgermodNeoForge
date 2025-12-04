@@ -168,7 +168,7 @@ public class RegistryInterpreter {
         writeCreativeTabCode(true);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote creative tab objects to files");
-        writeItemCode(true); //WORKS!
+        writeItemCode(false); //WORKS! //NO IT DOESN'T (Out of Memory Error)
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote item objects to files");
         writeBlockCode(true); //WORKS!

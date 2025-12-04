@@ -583,11 +583,11 @@ public class RegistryInterpreterHelperMethods {
         write(prevContent + "\n" + newStuff + "    }\n}", modBlockTagProviderFile);
         tagContent = getContentFromFileAsListNonFormated(modBlockTagProviderFile);
         for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < blocks.size() && k < blocks.size(); i++) {
-            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase())) {
+            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase()) && !blocks.get(j).getTagTool().isEmpty()) {
                 tagContent.add(i+1, blocks.get(j).getTag());
                 j++;
             }
-            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT")) {
+            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT") && !blocks.get(k).getTagTool().isEmpty()) {
                 tagContent.add(i+1, blocks.get(k).getTag());
                 k++;
             }
@@ -755,12 +755,14 @@ public class RegistryInterpreterHelperMethods {
                     || blocks.get(i).getTagTool().toUpperCase().contains("pickaxe".toUpperCase())
                     || blocks.get(i).getTagTool().toUpperCase().contains("hoe".toUpperCase())) {
                 tag.add("BlockTags.");
-            } else {
+            } else if (!blocks.get(i).getTagTool().isEmpty()) {
                 tag.add("ModTags.Blocks.");
             }
-            tag.add(blocks.get(i).getTagTool());
-            tag.add("tool");
-            differentTags.add(tag);
+            if (!blocks.get(i).getTagTool().isEmpty()) {
+                tag.add(blocks.get(i).getTagTool());
+                tag.add("tool");
+                differentTags.add(tag);
+            }
         }
 
         for (int i = 0; i < blocks.size(); i++) {
@@ -769,12 +771,14 @@ public class RegistryInterpreterHelperMethods {
                     || blocks.get(i).getTagType().toUpperCase().contains("diamond".toUpperCase())
                     || blocks.get(i).getTagType().toUpperCase().contains("iron".toUpperCase())) {
                 tag.add("BlockTags.");
-            } else {
+            } else if (!blocks.get(i).getTagType().isEmpty()) {
                 tag.add("ModTags.Blocks.");
             }
-            tag.add(blocks.get(i).getTagType());
-            tag.add("type");
-            differentTags.add(tag);
+            if (!blocks.get(i).getTagType().isEmpty()) {
+                tag.add(blocks.get(i).getTagType());
+                tag.add("type");
+                differentTags.add(tag);
+            }
         }
         removeDuplicatesFromTagList(differentTags);
         return differentTags;
@@ -782,7 +786,7 @@ public class RegistryInterpreterHelperMethods {
 
     public static ArrayList<ArrayList<String>> getDifferentItemTags() {
         ArrayList<ArrayList<String>> differentTags = new ArrayList<>(); //alles tags
-        ArrayList<String> tag = new ArrayList<>(); //ein tag objekt (tag prefix, und tag selbst)
+        ArrayList<String> tag; //ein tag objekt (tag prefix, und tag selbst)
 
         for (int i = 0; i < items.size(); i++) {
             for (int j = 1; j < items.get(i).getTagsOfItem().size(); j++) {
