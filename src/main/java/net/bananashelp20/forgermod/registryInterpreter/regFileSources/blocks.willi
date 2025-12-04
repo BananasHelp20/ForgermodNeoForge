@@ -1,8 +1,7 @@
 {simple
-    block1
+    damask_block
     77f, 50, SoundType.HEAVY_CORE
-    dropOther
-    ?moditem item2
+    dropSelf
     blockWithItem
     pickaxe
     carbon_steel
