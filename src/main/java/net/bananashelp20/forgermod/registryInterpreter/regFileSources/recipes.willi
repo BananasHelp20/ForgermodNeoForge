@@ -34,7 +34,7 @@
     0.5f, 200 #//blasting properties
     [
         moditem sword2
-        modblock sword4
+        moditem sword4
     ]
 }
 

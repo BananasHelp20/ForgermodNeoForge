@@ -25,10 +25,10 @@ public class RegistryInterpreter {
             }
             System.out.println(ANSI_RED + "#SYSTEM@INFO> successfully finished program without any problems!" + ANSI_RESET);
         } catch (Exception e) {
-            System.out.print(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase!" + ANSI_RESET);
-            System.out.print(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
+            System.out.println(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase!" + ANSI_RESET);
+            System.out.println(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
             rewriteAllAfterError(true);
-            System.out.print(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code" + ANSI_RESET);
+            System.out.println(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code" + ANSI_RESET);
             throw e;
         }
     }
@@ -127,19 +127,19 @@ public class RegistryInterpreter {
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase\n" + ANSI_RESET);
 
 
-        printRegistryFromList(toolTiers);
+//        printRegistryFromList(toolTiers);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
-        success("Successfully generated tool tier objects\n");
-        printRegistryFromList(items);
+        success("Successfully generated tool tier objects");
+//        printRegistryFromList(items);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
-        success("Successfully generated item objects\n");
-        printRegistryFromList(blocks);
+        success("Successfully generated item objects");
+//        printRegistryFromList(blocks);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
-        success("Successfully generated block objects\n");
-        printRegistryFromList(creativeTabs);
+        success("Successfully generated block objects");
+//        printRegistryFromList(creativeTabs);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
-        success("Successfully generated creative tab objects\n");
-        printRegistryFromList(recipes);
+        success("Successfully generated creative tab objects");
+//        printRegistryFromList(recipes);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
         success("Successfully generated recipe objects");
         System.out.println(ANSI_RED + "#SYSTEM@INFO> Successfully completed generating phase" + ANSI_RESET);
@@ -157,8 +157,9 @@ public class RegistryInterpreter {
                 return true;
             }
         }
-        System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
+        if (!confirmed) System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
+        stillGenerating = false;
 
         //!PRESERVE geht nu ned, ds musst nu mochn [DONE]
         writeToolTierCode(true); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
@@ -170,10 +171,10 @@ public class RegistryInterpreter {
         writeItemCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote item objects to files");
-        writeBlockCode(false); //WORKS!
+        writeBlockCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote block tab objects to files");
-        writeRecipeCode(false); //WORKS!
+        writeRecipeCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote recipe objects to files");
         return true;
@@ -448,7 +449,7 @@ public class RegistryInterpreter {
                 currItem = new ArrayList<>();
                 currItem.add(currName);
                 while (i < filecontent.size() && !filecontent.get(i).contains("?]")) {
-                    currItem.add(filecontent.get(i).trim().split("Enchantable:")[0].toUpperCase());
+                    currItem.add(filecontent.get(i).trim().toUpperCase());
                     i++;
                 }
                 enchantingTagsForEachItem.add(currItem);
@@ -461,4 +462,7 @@ public class RegistryInterpreter {
         }
         return new ArrayList<>();
     }
+
+
+
 }

@@ -1,9 +1,47 @@
+package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
+import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
+import java.util.concurrent.CompletableFuture;
+public class ModItemTagProvider extends ItemTagsProvider {
 
-        tag(ModTags.Items.item1)
-        ;        tag(ModTags.Items.)
-        ;        tag(ModTags.Items.item2)
-        ;        tag(ModTags.Items.item3)
-        ;        tag(ModTags.Items.sword1)
-        ;        tag(ModTags.Items.sword3)
-        ;    }
+    public ModItemTagProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, CompletableFuture<TagLookup<Block>> pBlockTags, @Nullable ExistingFileHelper existingFileHelper) {
+        super(pOutput, pLookupProvider, pBlockTags, ForgerMod.MOD_ID, existingFileHelper);
+    }
+
+    @Override
+    protected void addTags(HolderLookup.Provider pProvider) {
+//        tag(ModTags.Items.TRANSFORMABLE_ITEMS)
+//        ;
+        //!GENERATE ITEM_TAGS
+
+        tag(ItemTags.SWORDS)
+                .add(ModItems.ITEM3.get())
+                .add(ModItems.ITEM2.get())
+                .add(ModItems.ITEM1.get())
+        ;
+        tag(ItemTags.AXES)
+                .add(ModItems.SWORD3.get())
+                .add(ModItems.SWORD1.get())
+                .add(ModItems.ITEM3.get())
+                .add(ModItems.ITEM2.get())
+                .add(ModItems.ITEM1.get())
+        ;
+        tag(ItemTags.PICKAXES)
+                .add(ModItems.SWORD3.get())
+                .add(ModItems.SWORD3.get())
+                .add(ModItems.SWORD1.get())
+                .add(ModItems.ITEM3.get())
+                .add(ModItems.ITEM3.get())
+                .add(ModItems.ITEM2.get())
+                .add(ModItems.ITEM2.get())
+                .add(ModItems.ITEM1.get())
+                .add(ModItems.ITEM1.get())
+        ;
+    }
 }

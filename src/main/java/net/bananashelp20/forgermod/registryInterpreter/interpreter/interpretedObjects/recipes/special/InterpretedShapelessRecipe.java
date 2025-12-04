@@ -25,11 +25,14 @@ public class InterpretedShapelessRecipe extends InterpretedRecipe {
     @Override
     public String toString() {
         String[] result = getCorrectItemWithType(reslutItem.split(" "));
+        String[] unlockedByItem = getCorrectItemWithType(unlockedBy.split(" "));
+        String[] currentItem;
         String ret = "        ShapelessRecipeBuilder.shapeless(RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + resltCount + ")\n";
         for (int i = 0; i < itemsNeeded.size(); i++) {
-            ret += "                .requires(" + itemsNeeded.get(i).split(" ")[0] + "s." + itemsNeeded.get(i).split(" ")[1].toUpperCase() + (itemsNeeded.get(i).split(" ")[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
+            currentItem = getCorrectItemWithType(itemsNeeded.get(i).split(" "));
+            ret += "                .requires(" + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
         }
-        return ret + "                .unlockedBy(getHasName(ModBlocks." + unlockedBy.toUpperCase() + ".get()), has(ModBlocks." + unlockedBy.toUpperCase() + ".get())).save(output, ForgerMod.MOD_ID + \":" + result[1].toLowerCase() + "_from_shapeless_crafting_" + recipeID + "\");\n";
+        return ret + "                .unlockedBy(getHasName(" + unlockedByItem[0] + "s." + unlockedByItem[1].toUpperCase() + ".get()), has(" + unlockedByItem[0] + "s." + unlockedByItem[1].toUpperCase() + ".get())).save(output, ForgerMod.MOD_ID + \":" + result[1].toLowerCase() + "_from_shapeless_crafting_" + recipeID + "\");\n";
     }
 
 

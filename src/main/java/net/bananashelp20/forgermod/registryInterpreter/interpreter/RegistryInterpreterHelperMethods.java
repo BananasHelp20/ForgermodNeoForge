@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
+import com.mojang.realmsclient.dto.BackupList;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedComplexBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSimpleBlock;
@@ -401,6 +402,23 @@ public class RegistryInterpreterHelperMethods {
         return fileContent;
     }
 
+
+    public static ArrayList<String> getContentFromFileAsListNonFormated(File file) {
+        Scanner reader;
+        ArrayList<String> fileContent = new ArrayList<>();
+        try {
+            reader = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        while (reader.hasNextLine()) {
+            fileContent.add(reader.nextLine());
+        }
+
+        return fileContent;
+    }
+
     public static void clearContentFromUnneccesary(ArrayList<String> content, String comment) {
         for (int i = 0; i < content.size(); i++) {
             content.set(i, content.get(i).trim());
@@ -476,17 +494,17 @@ public class RegistryInterpreterHelperMethods {
     }
 
     public static void writeItemTags() {
-        String prevContent = getWholeFileContentTillGenerate(modItemTagProviderFile, "//!GENERATE BLOCK_TAGS");
+        String prevContent = getWholeFileContentTillGenerate(modItemTagProviderFile, "//!GENERATE ITEM_TAGS");
         String newStuff = "";
         ArrayList<ArrayList<String>> differentTags = getDifferentItemTags();
         ArrayList<String> tagContent;
 
         for (int i = 0; i < differentTags.size(); i++) {
-            newStuff += "        tag(" + differentTags.get(i).getFirst() + differentTags.get(i).get(1) + ")\n        ;";
+            newStuff += "        tag(" + differentTags.get(i).getFirst() + differentTags.get(i).get(1) + ")\n        ;\n";
         }
 
         write(prevContent + "\n" + newStuff + "    }\n}", modItemTagProviderFile);
-        tagContent = getContentFromFileAsList(modItemTagProviderFile, "");
+        tagContent = getContentFromFileAsListNonFormated(modItemTagProviderFile);
         for (int i = 0; i < items.size(); i++) {
             for (int k = 0; k < items.get(i).getTagsOfItem().size(); k++) {
                 for (int j = 0; j < tagContent.size(); j++) {
@@ -549,7 +567,7 @@ public class RegistryInterpreterHelperMethods {
             newStuff += blocks.get(i).getLoottable() + "\n";
         }
 
-        write(prevContent + "\n" + newStuff + "}", modBlockLootTableProviderFile);
+        write(prevContent + "\n" + newStuff + "    }\n}", modBlockLootTableProviderFile);
     }
 
     public static void writeBlockTags() {
@@ -559,11 +577,11 @@ public class RegistryInterpreterHelperMethods {
         ArrayList<String> tagContent;
 
         for (int i = 0; i < differentTags.size(); i++) {
-            newStuff += "        tag(" + differentTags.get(i).getFirst() + (differentTags.get(i).get(2).equals("type") ? "NEEDS_" + differentTags.get(i).get(1).toUpperCase() + "_TOOL" : "MINEABLE_WITH_" + differentTags.get(i).get(1).toUpperCase()) + ")\n        ;";
+            newStuff += "        tag(" + differentTags.get(i).getFirst() + (differentTags.get(i).get(2).equals("type") ? "NEEDS_" + differentTags.get(i).get(1).toUpperCase() + "_TOOL" : "MINEABLE_WITH_" + differentTags.get(i).get(1).toUpperCase()) + ")\n        ;\n";
         }
 
         write(prevContent + "\n" + newStuff + "    }\n}", modBlockTagProviderFile);
-        tagContent = getContentFromFileAsList(modBlockTagProviderFile, "");
+        tagContent = getContentFromFileAsListNonFormated(modBlockTagProviderFile);
         for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < blocks.size() && k < blocks.size(); i++) {
             if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase())) {
                 tagContent.add(i+1, blocks.get(j).getTag());
@@ -580,10 +598,8 @@ public class RegistryInterpreterHelperMethods {
     public static void writeBlockStates() {
         String prevContent = getWholeFileContentTillGenerate(modBlockStateProviderFile, "//!GENERATE MODELS");
         String newStuff = "";
-        ArrayList<String> tagContent = getContentFromFileAsList(modBlockStateProviderFile, "");
-        ArrayList<ArrayList<String>> differentTags = getDifferentBlockTags();
 
-        for (int i = 0; i < differentTags.size(); i++) {
+        for (int i = 0; i < blocks.size(); i++) {
             newStuff += blocks.get(i).getBlockState() + (blocks.get(i).getBlockState().isEmpty() ? "" : "\n");
         }
 
@@ -723,7 +739,7 @@ public class RegistryInterpreterHelperMethods {
         ));
 
         for (int i = 0; i < itemTags.size(); i++) {
-            if ((ignoreCase ? itemTags.get(i).equalsIgnoreCase(searched) : itemTags.get(i).equals(searched))) return true;
+            if (itemTags.get(i).toUpperCase().equalsIgnoreCase(searched)) return true;
         }
         return false;
     }
@@ -734,10 +750,10 @@ public class RegistryInterpreterHelperMethods {
 
         for (int i = 0; i < blocks.size(); i++) {
             tag = new ArrayList<>();
-            if (blocks.get(i).getTagTool().equalsIgnoreCase("shovel")
-                    && blocks.get(i).getTagTool().equalsIgnoreCase("axe")
-                    && blocks.get(i).getTagTool().equalsIgnoreCase("pickaxe")
-                    && blocks.get(i).getTagTool().equalsIgnoreCase("hoe")) {
+            if (blocks.get(i).getTagTool().toUpperCase().contains("shovel".toUpperCase())
+                    || blocks.get(i).getTagTool().toUpperCase().contains("axe".toUpperCase())
+                    || blocks.get(i).getTagTool().toUpperCase().contains("pickaxe".toUpperCase())
+                    || blocks.get(i).getTagTool().toUpperCase().contains("hoe".toUpperCase())) {
                 tag.add("BlockTags.");
             } else {
                 tag.add("ModTags.Blocks.");
@@ -749,9 +765,9 @@ public class RegistryInterpreterHelperMethods {
 
         for (int i = 0; i < blocks.size(); i++) {
             tag = new ArrayList<>();
-            if (blocks.get(i).getTagType().equalsIgnoreCase("stone")
-                    && blocks.get(i).getTagType().equalsIgnoreCase("diamond")
-                    && blocks.get(i).getTagType().equalsIgnoreCase("iron")) {
+            if (blocks.get(i).getTagType().toUpperCase().contains("stone".toUpperCase())
+                    || blocks.get(i).getTagType().toUpperCase().contains("diamond".toUpperCase())
+                    || blocks.get(i).getTagType().toUpperCase().contains("iron".toUpperCase())) {
                 tag.add("BlockTags.");
             } else {
                 tag.add("ModTags.Blocks.");
@@ -769,9 +785,9 @@ public class RegistryInterpreterHelperMethods {
         ArrayList<String> tag = new ArrayList<>(); //ein tag objekt (tag prefix, und tag selbst)
 
         for (int i = 0; i < items.size(); i++) {
-            for (int j = 0; j < items.get(i).getTagsOfItem().size(); j++) {
+            for (int j = 1; j < items.get(i).getTagsOfItem().size(); j++) {
                 tag = new ArrayList<>();
-                if (isPartOfItemTags(items.get(i).getTagsOfItem().get(j), true)) {
+                if (isPartOfItemTags(items.get(i).getTagsOfItem().get(j).toUpperCase(), true)) {
                     tag.add("ItemTags.");
                 } else {
                     tag.add("ModTags.Items.");

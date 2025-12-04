@@ -8,9 +8,9 @@
     basicItem
     items
     ?[E
-        Enchantable:Sword
-        Enchantable:Axe
-        Enchantable:Pickaxe
+        Swords
+        Axes
+        Pickaxes
     ?]
 }
 
@@ -19,9 +19,9 @@
     basicItem
     items
     ?[E
-        Enchantable:Sword
-        Enchantable:Axe
-        Enchantable:Pickaxe
+        Swords
+        Axes
+        Pickaxes
     ?]
 }
 
@@ -31,9 +31,9 @@
     ?uncommon #//Questionmark declares an optional parameter
     items
     ?[E
-        Enchantable:Sword
-        Enchantable:Axe
-        Enchantable:Pickaxe
+        Swords
+        Axes
+        Pickaxes
     ?]
 }
 
@@ -45,7 +45,7 @@
     steel
     items
     ?[E
-        Enchantable:Axe
+        Axes
     ?]
 }
 
@@ -74,8 +74,8 @@
         uncommon
     ]
     ?[E
-        Enchantable:Axe
-        Enchantable:Pickaxe
+        Axes
+        Pickaxes
     ?]
 }
 

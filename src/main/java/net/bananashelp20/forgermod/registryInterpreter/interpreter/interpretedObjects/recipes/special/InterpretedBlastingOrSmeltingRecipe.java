@@ -36,12 +36,12 @@ public class InterpretedBlastingOrSmeltingRecipe extends InterpretedRecipe {
 
     public String getSmeltingRecipe() {
         String[] result = getCorrectItemWithType(reslutItem.split(" "));
-        return "        oreSmelting(output, " + getIngredientList() + ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[0] + ", \"" + result[1].toLowerCase() + "\");\n";
+        return "        oreSmelting(output, " + getIngredientList() + ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[0].trim() + ", \"" + result[1].toLowerCase() + "\");\n";
     }
 
     public String getBlastingRecipe() {
         String[] result = getCorrectItemWithType(reslutItem.split(" "));
-        return "        oreBlasting(output, " + getIngredientList() +  ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[1] + ", \"" + result[1].toLowerCase() + "\");\n";
+        return "        oreBlasting(output, " + getIngredientList() +  ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[0].trim() + ", \"" + result[1].toLowerCase() + "\");\n";
     }
 
     public String getIngredientList() {
@@ -49,18 +49,18 @@ public class InterpretedBlastingOrSmeltingRecipe extends InterpretedRecipe {
         String ret = "List.of(";
         for (int i = 0; i < inputItems.size(); i++) {
             currentItem = getCorrectItemWithType(inputItems.get(i).split(" "));
-            ret += currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ",";
+            ret += currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", ";
         }
-        return ret + ")";
+        return ret.substring(0, ret.length()-2) + ")";
     }
 
     @Override
     public String toString() {
-        String[] result = reslutItem.split(" ");
+        String[] result = getCorrectItemWithType(reslutItem.split(" "));
         String ret;
         if (this.smeltingAndBlasting) {
             ret = getSmeltingRecipe();
-            ret += getBlastingRecipe();
+            ret +=  "        oreBlasting(output, " + getIngredientList() +  ", RecipeCategory." + category.toUpperCase() + ", " + result[0] + "s." + result[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ", " + smeltingProperties[1].trim() + ", \"" + result[1].toLowerCase() + "\");\n";
         } else if (smelting) {
             ret = getSmeltingRecipe();
         } else {

@@ -51,24 +51,9 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         //!GENERATE DROPS
-        dropSelf(ModBlocks.DAMASK_BLOCK.get());
-        dropSelf(ModBlocks.SCRAP_BLOCK.get());
-        dropSelf(ModBlocks.INANISIUM_BLOCK.get());
-        dropSelf(ModBlocks.IGNISIUM_BLOCK.get());
-        dropSelf(ModBlocks.REINFORCED_IRON_BLOCK.get());
-        dropSelf(ModBlocks.SCRAP_IRON_BLOCK.get());
-        dropSelf(ModBlocks.OVERGROWN_BLOCK.get());
-        dropSelf(ModBlocks.MORSIUM_BLOCK.get());
-        dropSelf(ModBlocks.SOMNIUM_BLOCK.get());
-        dropSelf(ModBlocks.VULNUSIUM_BLOCK.get());
-        dropSelf(ModBlocks.PULSITE_BLOCK.get());
-        dropSelf(ModBlocks.CARBON_STEEL_BLOCK.get());
-        dropSelf(ModBlocks.STEEL_BLOCK.get());
-        dropSelf(ModBlocks.ELECTRIUM_BLOCK.get());
-        dropSelf(ModBlocks.TAIFUNITE_BLOCK.get());
-        dropSelf(ModBlocks.DEVELOPIUM_BLOCK.get());
-        dropSelf(ModBlocks.FORGE.get());
-        dropSelf(ModBlocks.INFUSION_TABLE.get());
-        dropWhenSilkTouch(ModBlocks.ANCIENT_SWORD_STAND.get());
+
+        dropOther(ModBlocks.BLOCK1.get(), ModItems.ITEM2.get());
+        dropSelf(ModBlocks.BLOCK2.get());
+        dropSelf(ModBlocks.BLOCK3.get());
     }
 }
