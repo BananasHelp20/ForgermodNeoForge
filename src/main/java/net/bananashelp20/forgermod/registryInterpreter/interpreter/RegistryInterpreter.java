@@ -208,8 +208,8 @@ public class RegistryInterpreter {
         if (!allowed) return;
         write(prevContent, modBlocksFile);
         writeBlockLoottables();
-        writeBlockTags();
-        writeBlockStates(); 
+        writeBlockTags(); //do liegts problem, wo denn a sunst...
+        writeBlockStates();
     }
 
     private static void writeItemCode(boolean allowed) {
