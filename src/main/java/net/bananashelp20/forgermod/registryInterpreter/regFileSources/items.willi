@@ -7,131 +7,134 @@
     inanisium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     ignisium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     morsium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     somnium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     vulnusium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     lush_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     pulsite_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     electrium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     taifunite_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     developium_shard
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
+}
+
+{simpleItem
+    inanisium_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    ignisium_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    morsium_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    somnium_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    vulnusium_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    lush_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    pulsite_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    electrium_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    taifunite_ingot
+    basicItem
+    ingredients
+}
+{simpleItem
+    developium_ingot
+    basicItem
+    ingredients
 }
 
 {specialItem
     ancient_upgrade_template
     basicItem
     items
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     gemstone_upgrade_template
     basicItem
-    ingredients
-    ?[E
-        Swords
-    ?]
+    items
 }
 
 {simpleItem
     scrap_ingot
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     scrap_iron_ingot
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     unrefined_steel
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     unrefined_carbon_steel
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     sharpened_blade
@@ -145,91 +148,58 @@
     carbon_steel_cross_guard
     basicItem
     items
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     handle
     handheldItem
     items
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     advanced_handle
     handheldItem
     items
-    ?[E
-        Swords
-    ?]
 }
 
 {simpleItem
     damask_ingot
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     reinforced_iron_ingot
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     carbon_steel_ingot
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {simpleItem
     steel_ingot
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 
 {specialItem
     ruby_gemstone
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     amber_gemstone
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     amethyst_gemstone
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 {specialItem
     jade_gemstone
     basicItem
     ingredients
-    ?[E
-        Swords
-    ?]
 }
 
 {simpleSword
@@ -241,6 +211,7 @@
     weapons
     ?[E
         swords
+        axes
     ?]
 }
 {specialSword

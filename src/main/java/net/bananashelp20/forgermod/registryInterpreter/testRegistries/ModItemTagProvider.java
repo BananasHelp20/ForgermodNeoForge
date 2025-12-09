@@ -21,6 +21,39 @@ public class ModItemTagProvider extends ItemTagsProvider {
         //!GENERATE ITEM_TAGS
 
         tag(ItemTags.SWORDS)
+                .add(ModItems.STORMING_CLAYMORE.get())
+                .add(ModItems.CLAYMORE_OF_THUNDER.get())
+                .add(ModItems.SHRIEKING_CLAYMORE.get())
+                .add(ModItems.DREAMBOUND_CLAYMORE.get())
+                .add(ModItems.CURSEBLOOD_CLAYMORE.get())
+                .add(ModItems.CLAYMORE_OF_THE_VOID.get())
+                .add(ModItems.INFERNAL_CLAYMORE.get())
+                .add(ModItems.HOLLOW_CLAYMORE.get())
+                .add(ModItems.OVERGROWN_CLAYMORE.get())
+                .add(ModItems.DAMASK_KNIFE.get())
+                .add(ModItems.STORMING_CLAYMORE.get())
+                .add(ModItems.CLAYMORE_OF_THUNDER.get())
+                .add(ModItems.SHRIEKING_CLAYMORE.get())
+                .add(ModItems.DREAMBOUND_CLAYMORE.get())
+                .add(ModItems.CURSEBLOOD_CLAYMORE.get())
+                .add(ModItems.CLAYMORE_OF_THE_VOID.get())
+                .add(ModItems.INFERNAL_CLAYMORE.get())
+                .add(ModItems.HOLLOW_CLAYMORE.get())
+                .add(ModItems.OVERGROWN_CLAYMORE.get())
+                .add(ModItems.CLAYMORE.get())
+                .add(ModItems.RUSTY_CLAYMORE.get())
+                .add(ModItems.RUSTY_CLAYMORE.get())
+                .add(ModItems.SCRAP_SWORD.get())
+                .add(ModItems.SCRAP_IRON_SWORD.get())
+                .add(ModItems.REINFORCED_IRON_SWORD.get())
+                .add(ModItems.DAMASK_SWORD.get())
+                .add(ModItems.STUMPFL_BAT.get())
+                .add(ModItems.STEEL_SWORD.get())
+                .add(ModItems.SHARPENED_BLADE.get())
+        ;
+
+        tag(ItemTags.AXES)
+                .add(ModItems.STEEL_SWORD.get())
         ;
     }
 }

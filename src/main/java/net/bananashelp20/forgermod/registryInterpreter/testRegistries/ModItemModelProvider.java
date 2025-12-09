@@ -31,7 +31,6 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         //!GENERATE MODELS
-
         basicItem(ModItems.INANISIUM_SHARD);
         basicItem(ModItems.IGNISIUM_SHARD);
         basicItem(ModItems.MORSIUM_SHARD);
@@ -42,6 +41,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.ELECTRIUM_SHARD);
         basicItem(ModItems.TAIFUNITE_SHARD);
         basicItem(ModItems.DEVELOPIUM_SHARD);
+        basicItem(ModItems.INANISIUM_INGOT);
+        basicItem(ModItems.IGNISIUM_INGOT);
+        basicItem(ModItems.MORSIUM_INGOT);
+        basicItem(ModItems.SOMNIUM_INGOT);
+        basicItem(ModItems.VULNUSIUM_INGOT);
+        basicItem(ModItems.LUSH_INGOT);
+        basicItem(ModItems.PULSITE_INGOT);
+        basicItem(ModItems.ELECTRIUM_INGOT);
+        basicItem(ModItems.TAIFUNITE_INGOT);
+        basicItem(ModItems.DEVELOPIUM_INGOT);
         basicItem(ModItems.ANCIENT_UPGRADE_TEMPLATE);
         basicItem(ModItems.GEMSTONE_UPGRADE_TEMPLATE);
         basicItem(ModItems.SCRAP_INGOT);

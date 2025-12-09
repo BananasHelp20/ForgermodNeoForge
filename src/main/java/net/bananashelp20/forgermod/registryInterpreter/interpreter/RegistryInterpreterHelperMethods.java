@@ -459,7 +459,7 @@ public class RegistryInterpreterHelperMethods {
             Scanner reader = new Scanner(file);
             int startGeneratingAtLine = getWritablePos(file, command);
             for (int i = 1; i < startGeneratingAtLine && reader.hasNextLine(); i++) {
-                saved += reader.nextLine() + "\n";
+                saved += reader.nextLine() + (i < startGeneratingAtLine-1 ? "\n" : "");
             }
             reader.close();
         } catch (Exception e) {
@@ -500,16 +500,21 @@ public class RegistryInterpreterHelperMethods {
         ArrayList<String> tagContent;
 
         for (int i = 0; i < differentTags.size(); i++) {
-            newStuff += "        tag(" + differentTags.get(i).getFirst() + differentTags.get(i).get(1) + ")\n        ;\n";
+            newStuff += "\n        tag(" + differentTags.get(i).getFirst() + differentTags.get(i).get(1) + ")\n        ;\n";
         }
 
         write(prevContent + "\n" + newStuff + "    }\n}", modItemTagProviderFile);
         tagContent = getContentFromFileAsListNonFormated(modItemTagProviderFile);
-        for (int i = 0; i < items.size(); i++) {
-            for (int k = 0; k < items.get(i).getTagsOfItem().size(); k++) {
-                for (int j = 0; j < tagContent.size(); j++) {
-                    if (tagContent.get(j).toUpperCase().contains(items.get(i).getTagsOfItem().get(k).toUpperCase())) {
-                        tagContent.add(j+1, items.get(i).getItemTagCode());
+        ArrayList<ArrayList<String>> tagsForEachItem = RegistryInterpreter.getAllEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"));
+        for (int i = 0; i < tagsForEachItem.size(); i++) {
+            for (int j = 1; j < tagsForEachItem.get(i).size(); j++) {
+                for (int k = 0; k < tagContent.size(); k++) {
+                    if (tagContent.get(k).toUpperCase().contains(tagsForEachItem.get(i).get(j).toUpperCase())) {
+                        for (int l = 0; l < items.size(); l++) {
+                            if (items.get(l).getItemTagCode().toUpperCase().contains(tagsForEachItem.get(i).getFirst().toUpperCase())) {
+                                tagContent.add(k+1, items.get(l).getItemTagCode());
+                            }
+                        }
                     }
                 }
             }
@@ -538,13 +543,13 @@ public class RegistryInterpreterHelperMethods {
             newStuff += toolTiers.get(i).getTags() + "\n";
         }
 
-        prevContent += "\n" + newStuff + "    public static class Items {\n" +
+        prevContent += "\n" + newStuff + "    }\n    public static class Items {\n" +
                 "        private static TagKey<Item> createTag(String name) {\n" +
                 "            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, name));\n" +
                 "        }\n" +
                 "        //!GENERATE MOD_ITEM_TAGS\n" +
                 "    }";
-        write(prevContent + "    }\n}", modTagsFile);
+        write(prevContent + "\n}", modTagsFile);
         //writeModTagsForItems(); //moch i erst wenns soweit is
     }
 
@@ -586,9 +591,13 @@ public class RegistryInterpreterHelperMethods {
             if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase()) && !blocks.get(j).getTagTool().isEmpty()) {
                 tagContent.add(i+1, blocks.get(j).getTag());
                 j++;
+            } else if (blocks.get(j).getTagTool().isEmpty()) {
+                j++;
             }
             if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT") && !blocks.get(k).getTagTool().isEmpty()) {
                 tagContent.add(i+1, blocks.get(k).getTag());
+                k++;
+            } else if (blocks.get(j).getTagTool().isEmpty()) {
                 k++;
             }
         }
@@ -808,6 +817,7 @@ public class RegistryInterpreterHelperMethods {
         for (int i = 0; i < tags.size(); i++) {
             removeDuplicatesOf(tags.get(i).get(1), tags, i);
         }
+        removeDuplicatesOf("!NO_TOOL", tags, 0);
     }
 
     private static void removeDuplicatesOf(String s, ArrayList<ArrayList<String>> elements, int fromPoint) {

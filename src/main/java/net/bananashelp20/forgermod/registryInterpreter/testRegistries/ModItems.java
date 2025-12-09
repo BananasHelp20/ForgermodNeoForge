@@ -113,6 +113,16 @@ public class ModItems {
     public static final DeferredItem<Item> ELECTRIUM_SHARD = createItem("electrium_shard");
     public static final DeferredItem<Item> TAIFUNITE_SHARD = createItem("taifunite_shard");
     public static final DeferredItem<Item> DEVELOPIUM_SHARD = createItem("developium_shard");
+    public static final DeferredItem<Item> INANISIUM_INGOT = createItem("inanisium_ingot");
+    public static final DeferredItem<Item> IGNISIUM_INGOT = createItem("ignisium_ingot");
+    public static final DeferredItem<Item> MORSIUM_INGOT = createItem("morsium_ingot");
+    public static final DeferredItem<Item> SOMNIUM_INGOT = createItem("somnium_ingot");
+    public static final DeferredItem<Item> VULNUSIUM_INGOT = createItem("vulnusium_ingot");
+    public static final DeferredItem<Item> LUSH_INGOT = createItem("lush_ingot");
+    public static final DeferredItem<Item> PULSITE_INGOT = createItem("pulsite_ingot");
+    public static final DeferredItem<Item> ELECTRIUM_INGOT = createItem("electrium_ingot");
+    public static final DeferredItem<Item> TAIFUNITE_INGOT = createItem("taifunite_ingot");
+    public static final DeferredItem<Item> DEVELOPIUM_INGOT = createItem("developium_ingot");
     public static final DeferredItem<Item> ANCIENT_UPGRADE_TEMPLATE = createItemWithDescription("ancient_upgrade_template", "tooltips.forgermod.ancient_upgrade_template.tooltip");
     public static final DeferredItem<Item> GEMSTONE_UPGRADE_TEMPLATE = createItemWithDescription("gemstone_upgrade_template", "tooltips.forgermod.gemstone_upgrade_template.tooltip");
     public static final DeferredItem<Item> SCRAP_INGOT = createItem("scrap_ingot");

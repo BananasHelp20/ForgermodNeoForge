@@ -51,9 +51,44 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         //!GENERATE DROPS
-
-        dropOther(ModBlocks.BLOCK1.get(), ModItems.LUSH_SHARD.get());
-        dropSelf(ModBlocks.BLOCK2.get());
-        dropSelf(ModBlocks.BLOCK3.get());
+        dropSelf(ModBlocks.DAMASK_BLOCK.get());
+        dropSelf(ModBlocks.PULSITE_BLOCK.get());
+        dropSelf(ModBlocks.SCRAP_BLOCK.get());
+        dropSelf(ModBlocks.INANISIUM_BLOCK.get());
+        dropSelf(ModBlocks.IGNISIUM_BLOCK.get());
+        dropSelf(ModBlocks.REINFORCED_IRON_BLOCK.get());
+        dropSelf(ModBlocks.SCRAP_IRON_BLOCK.get());
+        dropSelf(ModBlocks.OVERGROWN_BLOCK.get());
+        dropSelf(ModBlocks.MORSIUM_BLOCK.get());
+        dropSelf(ModBlocks.SOMNIUM_BLOCK.get());
+        dropSelf(ModBlocks.VULNUSIUM_BLOCK.get());
+        dropSelf(ModBlocks.CARBON_STEEL_BLOCK.get());
+        dropSelf(ModBlocks.STEEL_BLOCK.get());
+        dropSelf(ModBlocks.ELECTRIUM_BLOCK.get());
+        dropSelf(ModBlocks.TAIFUNITE_BLOCK.get());
+        dropOther(ModBlocks.JADE_END_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_NETHER_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_STONE_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_DEEPSLATE_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.JADE_OBSIDIAN_ORE.get(), ModItems.JADE_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_END_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_NETHER_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_STONE_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_DEEPSLATE_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.RUBY_OBSIDIAN_ORE.get(), ModItems.RUBY_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_END_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_NETHER_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_STONE_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_DEEPSLATE_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMETHYST_OBSIDIAN_ORE.get(), ModItems.AMETHYST_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_END_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_NETHER_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_STONE_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_DEEPSLATE_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropOther(ModBlocks.AMBER_OBSIDIAN_ORE.get(), ModItems.AMBER_GEMSTONE.get());
+        dropSelf(ModBlocks.DEVELOPIUM_BLOCK.get());
+        dropWhenSilkTouch(ModBlocks.ANCIENT_SWORD_STAND.get());
+        dropSelf(ModBlocks.FORGE.get());
+        dropSelf(ModBlocks.INFUSION_TABLE.get());
     }
 }

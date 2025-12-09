@@ -25,20 +25,19 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         ;
 
         //!GENERATE BLOCK_TAGS
-
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.BLOCK1.get())
-        ;
-        tag(BlockTags.MINEABLE_WITH_SHOVEL)
-        ;
-        tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
-                .add(ModBlocks.BLOCK1.get())
+                .add(ModBlocks.DAMASK_BLOCK.get())
         ;
         tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                .add(ModBlocks.BLOCK2.get())
+                .add(ModBlocks.DAMASK_BLOCK.get())
+        ;
+        tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+                .add(ModBlocks.PULSITE_BLOCK.get())
         ;
         tag(BlockTags.NEEDS_IRON_TOOL)
-                .add(ModBlocks.BLOCK3.get())
+                .add(ModBlocks.SCRAP_BLOCK.get())
+        ;
+        tag(ModTags.Blocks.NEEDS_STEEL_TOOL)
         ;
     }
 }

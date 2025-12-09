@@ -11,14 +11,18 @@ public class InterpretedCreativeTab {
         this.name = name;
         String[] temp = displayItemName.split(" ");
         this.displayItemName = temp[1];
-        if (temp[0].toUpperCase().contains("MODITEM")) {
-            this.displayItemType = "ModItems.";
-        } else if (temp[0].toUpperCase().contains("MODBLOCK")) {
-            this.displayItemType = "ModBlocks.";
-        } else if (temp[0].toUpperCase().contains("ITEM")) {
-            this.displayItemType = "Items.";
+        if (temp[0].toUpperCase().contains("MOD")) {
+            if (temp[0].toUpperCase().contains("ITEM")) {
+                this.displayItemType = "ModItems.";
+            } else {
+                this.displayItemType = "ModBlocks.";
+            }
         } else {
-            this.displayItemType = "Blocks.";
+            if (temp[0].toUpperCase().contains("ITEM")) {
+                this.displayItemType = "Items.";
+            } else {
+                this.displayItemType = "Blocks.";
+            }
         }
     }
 

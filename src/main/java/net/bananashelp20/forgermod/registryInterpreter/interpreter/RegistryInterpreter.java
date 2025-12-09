@@ -107,9 +107,9 @@ public class RegistryInterpreter {
             return false;
         }
         Scanner userHelper = new Scanner(System.in);
-        String input;
+        String input = "";
         boolean confirmed = false;
-        warning("****************************************************************************************************************************************\n" +
+        /*warning("****************************************************************************************************************************************\n" +
                 "* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *\n* ModToolTiers and ModCreativeModeTabs." +
                 "Other Files might also be affected, and there is no guarantee the code works as it should.      *\n* Please make sure to " + ANSI_RESET + ANSI_PURPLE + "//!PRESERVE " + ANSI_RESET +
                 ANSI_YELLOW + "every important code line that shall not be overridden                                               *\n" +
@@ -125,7 +125,8 @@ public class RegistryInterpreter {
         }
         if (input.toUpperCase().contains("-Y")) confirmed = true;
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase\n" + ANSI_RESET);
-
+        */
+        confirmed = true;
 
 //        printRegistryFromList(toolTiers);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
@@ -161,20 +162,19 @@ public class RegistryInterpreter {
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
         stillGenerating = false;
 
-        //!PRESERVE geht nu ned, ds musst nu mochn [DONE]
-        writeToolTierCode(true); //WORKS! (jo vatrau ma des geht wirkli, wenns nd geht host wos augstöt)
+        writeToolTierCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote tool tier objects to file");
-        writeCreativeTabCode(true);
+        writeCreativeTabCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote creative tab objects to files");
-        writeItemCode(false); //WORKS! //NO IT DOESN'T (Out of Memory Error)
+        writeItemCode(true); //WORKS!
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote item objects to files");
-        writeBlockCode(true); //WORKS!
+        writeBlockCode(true); //WORKS! //writing oba ned
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote block tab objects to files");
-        writeRecipeCode(true); //WORKS!
+        writeRecipeCode(true); //WORKS! //ig
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote recipe objects to files");
         return true;
@@ -259,7 +259,7 @@ public class RegistryInterpreter {
 
         if (!allowed) return;
         write(prevContent, modToolTiersFile);
-        writeModTags();
+        writeModTags(); //do liegt a a problem, wo a sunst...
     }
 
     public static void printRegistryFromList(ArrayList<?> o) {
@@ -463,6 +463,25 @@ public class RegistryInterpreter {
         return new ArrayList<>();
     }
 
-
-
+    public static ArrayList<ArrayList<String>> getAllEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent) {
+        ArrayList<ArrayList<String>> enchantingTagsForEachItem = new ArrayList<>();
+        ArrayList<String> currItem;
+        String currName = "";
+        for (int i = 0; i < filecontent.size(); i++) {
+            if (filecontent.get(i).contains("{")) {
+                currName = filecontent.get(i+1).trim();
+            }
+            if (filecontent.get(i).contains("?[E")) {
+                i++;
+                currItem = new ArrayList<>();
+                currItem.add(currName);
+                while (i < filecontent.size() && !filecontent.get(i).contains("?]")) {
+                    currItem.add(filecontent.get(i).trim().toUpperCase());
+                    i++;
+                }
+                enchantingTagsForEachItem.add(currItem);
+            }
+        }
+        return enchantingTagsForEachItem;
+    }
 }

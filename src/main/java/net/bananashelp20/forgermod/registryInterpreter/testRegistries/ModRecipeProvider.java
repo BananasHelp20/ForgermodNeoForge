@@ -95,5 +95,27 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     protected void buildRecipes(RecipeOutput output) {
         //!GENERATE
 
+        oreBlasting(output, List.of(ModItems.UNREFINED_CARBON_STEEL.get(), ModItems.CLAYMORE.get(), ModItems.CARBON_STEEL_CROSS_GUARD.get(), ModItems.ADVANCED_HANDLE.get(), ModItems.SHARPENED_BLADE.get()), RecipeCategory.MISC, ModItems.CARBON_STEEL_INGOT.get(), 1f, 100, "carbon_steel_ingot");
+
+        oreBlasting(output, List.of(ModItems.UNREFINED_STEEL.get(), ModItems.STEEL_SWORD.get()), RecipeCategory.MISC, ModItems.STEEL_INGOT.get(), 1f, 100, "steel_ingot");
+
+        oreSmelting(output, List.of(ModItems.SCRAP_INGOT.get(), ModItems.DAMASK_SWORD.get(), ModItems.DAMASK_KNIFE.get(), ModItems.HANDLE.get()), RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 0.5f, 200, "damask_ingot");
+        oreBlasting(output, List.of(ModItems.SCRAP_INGOT.get(), ModItems.DAMASK_SWORD.get(), ModItems.DAMASK_KNIFE.get(), ModItems.HANDLE.get()), RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 1f, 100, "damask_ingot");
+
+        oreSmelting(output, List.of(ModItems.SCRAP_IRON_INGOT.get(), ModItems.REINFORCED_IRON_SWORD.get()), RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 0.5f, 200, "reinforced_iron_ingot");
+        oreBlasting(output, List.of(ModItems.SCRAP_IRON_INGOT.get(), ModItems.REINFORCED_IRON_SWORD.get()), RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 1f, 100, "reinforced_iron_ingot");
+
+        oreSmelting(output, List.of(ModBlocks.JADE_END_ORE.get(), ModBlocks.JADE_NETHER_ORE.get(), ModBlocks.JADE_OBSIDIAN_ORE.get(), ModBlocks.JADE_STONE_ORE.get(), ModBlocks.JADE_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
+        oreBlasting(output, List.of(ModBlocks.JADE_END_ORE.get(), ModBlocks.JADE_NETHER_ORE.get(), ModBlocks.JADE_OBSIDIAN_ORE.get(), ModBlocks.JADE_STONE_ORE.get(), ModBlocks.JADE_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
+
+        oreSmelting(output, List.of(ModBlocks.RUBY_END_ORE.get(), ModBlocks.RUBY_NETHER_ORE.get(), ModBlocks.RUBY_OBSIDIAN_ORE.get(), ModBlocks.RUBY_STONE_ORE.get(), ModBlocks.RUBY_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
+        oreBlasting(output, List.of(ModBlocks.RUBY_END_ORE.get(), ModBlocks.RUBY_NETHER_ORE.get(), ModBlocks.RUBY_OBSIDIAN_ORE.get(), ModBlocks.RUBY_STONE_ORE.get(), ModBlocks.RUBY_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.RUBY_GEMSTONE.get(), 2f, 100, "ruby_gemstone");
+
+        oreSmelting(output, List.of(ModBlocks.AMETHYST_END_ORE.get(), ModBlocks.AMETHYST_NETHER_ORE.get(), ModBlocks.AMETHYST_OBSIDIAN_ORE.get(), ModBlocks.AMETHYST_STONE_ORE.get(), ModBlocks.AMETHYST_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
+        oreBlasting(output, List.of(ModBlocks.AMETHYST_END_ORE.get(), ModBlocks.AMETHYST_NETHER_ORE.get(), ModBlocks.AMETHYST_OBSIDIAN_ORE.get(), ModBlocks.AMETHYST_STONE_ORE.get(), ModBlocks.AMETHYST_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
+
+        oreSmelting(output, List.of(ModBlocks.AMBER_END_ORE.get(), ModBlocks.AMBER_NETHER_ORE.get(), ModBlocks.AMBER_OBSIDIAN_ORE.get(), ModBlocks.AMBER_STONE_ORE.get(), ModBlocks.AMBER_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
+        oreBlasting(output, List.of(ModBlocks.AMBER_END_ORE.get(), ModBlocks.AMBER_NETHER_ORE.get(), ModBlocks.AMBER_OBSIDIAN_ORE.get(), ModBlocks.AMBER_STONE_ORE.get(), ModBlocks.AMBER_DEEPSLATE_ORE.get()), RecipeCategory.MISC, ModItems.AMBER_GEMSTONE.get(), 2f, 100, "amber_gemstone");
+
     }
 }

@@ -15,7 +15,6 @@ public class ModTags {
         }
 
         //!GENERATE MOD_TAGS
-
         public static final TagKey<Block> NEEDS_SCRAP_IRON_TOOL = createTag("needs_scrap_iron_tool");
         public static final TagKey<Block> INCORRECT_FOR_SCRAP_IRON_TOOL = createTag("incorrect_for_scrap_iron_tool");
 
@@ -64,10 +63,11 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_TAIFUNITE_TOOL = createTag("needs_taifunite_tool");
         public static final TagKey<Block> INCORRECT_FOR_TAIFUNITE_TOOL = createTag("incorrect_for_taifunite_tool");
 
+    }
     public static class Items {
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, name));
         }
         //!GENERATE MOD_ITEM_TAGS
-    }    }
+    }
 }
