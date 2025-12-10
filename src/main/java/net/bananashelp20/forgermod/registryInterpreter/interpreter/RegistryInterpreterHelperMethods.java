@@ -587,18 +587,21 @@ public class RegistryInterpreterHelperMethods {
 
         write(prevContent + "\n" + newStuff + "    }\n}", modBlockTagProviderFile);
         tagContent = getContentFromFileAsListNonFormated(modBlockTagProviderFile);
-        for (int i = 0, j = 0, k = 0; i < tagContent.size() && j < blocks.size() && k < blocks.size(); i++) {
-            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase()) && !blocks.get(j).getTagTool().isEmpty()) {
-                tagContent.add(i+1, blocks.get(j).getTag());
-                j++;
-            } else if (blocks.get(j).getTagTool().isEmpty()) {
-                j++;
-            }
-            if (tagContent.get(i).contains(" tag(") && tagContent.get(i).toUpperCase().contains(blocks.get(k).getTagType().toUpperCase()) && !tagContent.get(i).toUpperCase().contains("INCORRECT") && !blocks.get(k).getTagTool().isEmpty()) {
-                tagContent.add(i+1, blocks.get(k).getTag());
-                k++;
-            } else if (blocks.get(j).getTagTool().isEmpty()) {
-                k++;
+        for (int i = 0; i < tagContent.size(); i++) {
+            if (tagContent.get(i).contains(" tag(") && !tagContent.get(i).contains("INCORRECT")) {
+                if (tagContent.get(i).contains("MINEABLE")) {
+                    for (int j = 0; j < blocks.size(); j++) {
+                        if (tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagTool().toUpperCase())) {
+                            tagContent.add(i+1, blocks.get(j).getTag());
+                        }
+                    }
+                } else {
+                    for (int j = 0; j < blocks.size(); j++) {
+                        if (tagContent.get(i).toUpperCase().contains(blocks.get(j).getTagType().toUpperCase())) {
+                            tagContent.add(i+1, blocks.get(j).getTag());
+                        }
+                    }
+                }
             }
         }
         write(getListAsString(tagContent), modBlockTagProviderFile);
