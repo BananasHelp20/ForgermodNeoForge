@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "forgermod:jade_stone_ore"
+          "Name": "forgermod:amethyst_stone_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "forgermod:jade_deepslate_ore"
+          "Name": "forgermod:amethyst_deepslate_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

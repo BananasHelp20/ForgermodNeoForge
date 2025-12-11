@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "forgermod:jade_end_ore"
+          "Name": "forgermod:amber_end_ore"
         },
         "target": {
           "block": "minecraft:end_stone",
@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "forgermod:jade_obsidian_ore"
+          "Name": "forgermod:amber_obsidian_ore"
         },
         "target": {
           "block": "minecraft:obsidian",

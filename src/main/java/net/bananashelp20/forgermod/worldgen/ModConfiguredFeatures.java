@@ -92,20 +92,20 @@ public class ModConfiguredFeatures {
                 ModBlocks.JADE_NETHER_ORE.get().defaultBlockState(), 1));
         register(context, END_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(endJadeOres, 1));
 
-        register(context, OVERWORLD_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(overworldJadeOres, 1));
+        register(context, OVERWORLD_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(overworldRubyOres, 1));
         register(context, NETHER_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
                 ModBlocks.RUBY_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(endJadeOres, 1));
+        register(context, END_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(endRubyOres, 1));
 
-        register(context, OVERWORLD_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(overworldJadeOres, 1));
+        register(context, OVERWORLD_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAmethystOres, 1));
         register(context, NETHER_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
                 ModBlocks.AMETHYST_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(endJadeOres, 1));
+        register(context, END_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(endAmethystOres, 1));
 
-        register(context, OVERWORLD_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(overworldJadeOres, 1));
+        register(context, OVERWORLD_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAmberOres, 1));
         register(context, NETHER_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
                 ModBlocks.AMBER_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(endJadeOres, 1));
+        register(context, END_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(endAmberOres, 1));
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
