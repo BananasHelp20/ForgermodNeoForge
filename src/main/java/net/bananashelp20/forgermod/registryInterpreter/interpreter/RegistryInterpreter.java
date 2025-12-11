@@ -23,7 +23,7 @@ public class RegistryInterpreter {
                 System.out.println(ANSI_RED + "#SYSTEM@INFO> Restored all overriden code!" + ANSI_RESET);
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
             }
-            System.out.println(ANSI_RED + "#SYSTEM@INFO> successfully finished program without any problems!" + ANSI_RESET);
+            System.out.println(ANSI_RED + "#SYSTEM@INFO>" + ANSI_RESET + ANSI_GREEN + " Successfully finished program without any problems!" + ANSI_RESET);
         } catch (Exception e) {
             System.out.println(ANSI_RED + "#SYSTEM@INFO> CRITICAL: Interpreter was interrupted during " + (stillGenerating ? "generating" : "writing") + " phase!" + ANSI_RESET);
             System.out.println(ANSI_RED + "#SYSTEM@INFO> Trying to restore all overridden code!" + ANSI_RESET);
@@ -109,7 +109,7 @@ public class RegistryInterpreter {
         Scanner userHelper = new Scanner(System.in);
         String input = "";
         boolean confirmed = false;
-        /*warning("****************************************************************************************************************************************\n" +
+        warning("****************************************************************************************************************************************\n" +
                 "* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *\n* ModToolTiers and ModCreativeModeTabs." +
                 "Other Files might also be affected, and there is no guarantee the code works as it should.      *\n* Please make sure to " + ANSI_RESET + ANSI_PURPLE + "//!PRESERVE " + ANSI_RESET +
                 ANSI_YELLOW + "every important code line that shall not be overridden                                               *\n" +
@@ -122,11 +122,10 @@ public class RegistryInterpreter {
             if (input.contains("!STOP")) {
                 return true;
             }
+            error("#SYSTEM@INFO> couldn't resolve '" + (input.isEmpty() ? "\\n" : input) + "'");
         }
         if (input.toUpperCase().contains("-Y")) confirmed = true;
-        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase\n" + ANSI_RESET);
-        */
-        confirmed = true;
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with generating phase" + ANSI_RESET);
 
 //        printRegistryFromList(toolTiers);
         System.out.print(ANSI_RED + "#SYSTEM@INFO[GEN_PHASE]> " + ANSI_RESET);
@@ -151,14 +150,14 @@ public class RegistryInterpreter {
                 "* If you want to stop without any code being written, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"." + ANSI_RESET + ANSI_YELLOW +
                 "                                                     *\n" +
                 "****************************************************************************************************************************************");
-        while (!confirmed) {
-            confirmed = (input = userInputWithoutLineBreak(userHelper)).contains("!RESUME");
+        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!RESUME")) {
             if (input.contains("!STOP")) {
                 System.out.println(ANSI_RED + "#SYSTEM@INFO> stopping program..." + ANSI_RESET);
                 return true;
             }
+            error("#SYSTEM@INFO> couldn't resolve '" + (input.isEmpty() ? "\\n" : input) + "'");
         }
-        if (!confirmed) System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
+        System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
         stillGenerating = false;
 
