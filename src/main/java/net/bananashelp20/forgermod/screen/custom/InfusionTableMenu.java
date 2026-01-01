@@ -25,6 +25,10 @@ public class InfusionTableMenu extends AbstractContainerMenu {
         return blockEntity.getCorrectGemstoneTexturePath();
     }
 
+    public Slot getSlot(int index) {
+        return slots.get(index);
+    }
+
     public InfusionTableMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.INFUSION_TABLE_MENU.get(), pContainerId);
         this.blockEntity = ((InfusionTableBlockEntity) entity);
@@ -40,7 +44,6 @@ public class InfusionTableMenu extends AbstractContainerMenu {
         this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 0, 12, 35)); //gemstone
 
         addDataSlots(data);
-
     }
 
     public boolean isCrafting() {

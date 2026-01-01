@@ -15,6 +15,10 @@ public class InfusionTableScreen extends AbstractContainerScreen<InfusionTableMe
     }
 
     private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "textures/gui/infusion_table/infusion_table_gui.png");
+//    private static final ResourceLocation TEMPLATE_PLACEHOLDER = ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "textures/gui/infusion_table/template_placeholder.png");
+//    private static final ResourceLocation WEAPON_PLACEHOLDER = ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "textures/gui/infusion_table/weapon_placeholder");
+//    private static final ResourceLocation GEMSTONE_PLACEHOLDER = ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "textures/gui/infusion_table/gemstone_placeholder.png");
+
     private ResourceLocation arrow_texture;
 
     @Override
@@ -27,8 +31,24 @@ public class InfusionTableScreen extends AbstractContainerScreen<InfusionTableMe
 
         pGuiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
+        //renderPlaceholderitems(pGuiGraphics, x, y);
         renderProgressArrow(pGuiGraphics, x, y);
     }
+
+    /*private void renderPlaceholderitems(GuiGraphics pGuiGraphics, int x, int y) {
+        if (!menu.getSlot(0).hasItem()) {
+            pGuiGraphics.blit();
+        }
+        if (!menu.getSlot(1).hasItem()) {
+
+        }
+        if (!menu.getSlot(2).hasItem()) {
+
+        }
+        if (!menu.getSlot(3).hasItem()) {
+
+        }
+    }*/
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
