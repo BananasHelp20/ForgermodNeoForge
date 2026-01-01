@@ -312,7 +312,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAA")
                 .define('A', ModItems.SOMNIUM_INGOT.get())
                 .unlockedBy(getHasName(ModItems.SOMNIUM_INGOT.get()), has(ModItems.SOMNIUM_INGOT.get())).save(output);
-
+//stehblim
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.MORSIUM_BLOCK.get())
                 .pattern("AAA")
                 .pattern("AAA")

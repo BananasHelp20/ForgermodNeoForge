@@ -95,17 +95,543 @@
     ]
 }
 
-#//{shaped
-#//    misc
-#//    AAA
-#//    BXX
-#//    CCC
-#//    A -> moditem sword1
-#//    B -> moditem sword2
-#//    C -> item stick
-#//    moditem sword2
-#//    moditem sword2
-#//}
+{shaped
+    misc
+    XDX
+    CAC
+    XDX
+    D -> moditem reinforced_iron_ingot
+    A -> moditem scrap_iron_sword
+    C -> moditem scrap_iron_ingot
+    moditem reinforced_iron_ingot
+    moditem reinforced_iron_sword
+}
+
+{shaped
+    misc
+    XBX
+    CAC
+    XBX
+    A -> item iron_sword
+    B -> item copper_ingot
+    C -> moditem scrap_iron_ingot
+    moditem scrap_iron_ingot
+    moditem scrap_iron_sword
+}
+
+{shaped
+    misc
+    XAX
+    XAX
+    XBX
+    A -> moditem steel_ingot
+    B -> moditem handle
+    moditem steel_ingot
+    moditem steel_sword
+}
+
+{shaped
+    misc
+    XAX
+    XAX
+    XBX
+    A -> moditem damask_ingot
+    B -> moditem handle
+    moditem damask_ingot
+    moditem damask_sword
+}
+
+{shaped
+    misc
+    XAX
+    XBX
+    XCX
+    A -> moditem sharpened_blade
+    B -> moditem carbon_steel_cross_guard
+    C -> moditem advanced_handle
+    moditem carbon_steel_ingot
+    moditem claymore
+}
+
+{shaped
+    misc
+    XAX
+    DBE
+    XCX
+    A -> moditem sharpened_blade
+    B -> moditem rusty_claymore
+    C -> moditem handle
+    D -> moditem damask_ingot
+    E -> moditem carbon_steel_ingot
+    moditem rusty_claymore
+    moditem claymore
+}
+
+{shaped
+    misc
+    XCX
+    ABA
+    XCX
+    A -> moditem damask_ingot
+    B -> moditem handle
+    C -> moditem carbon_steel_ingot
+    moditem carbon_steel_ingot
+    moditem advanced_handle
+}
+
+{shaped
+    misc
+    XXX
+    ABA
+    XXX
+    A -> moditem damask_ingot
+    B -> item stick
+    moditem damask_ingot
+    moditem handle
+}
+
+{shaped
+    misc
+    CXC
+    ABA
+    XCX
+    A -> moditem damask_ingot
+    B -> item netherite_ingot
+    C -> moditem carbon_steel_ingot
+    moditem damask_ingot
+    moditem carbon_steel_cross_guard
+}
+
+{shaped
+    misc
+    XAX
+    XBX
+    XAX
+    A -> moditem damask_ingot
+    B -> moditem carbon_steel_ingot
+    moditem damask_ingot
+    moditem sharpened_blade
+}
+
+{shaped
+    misc
+    BAA
+    ACA
+    AAB
+    A -> block coal_block
+    B -> item diamond
+    C -> moditem steel_ingot
+    moditem unrefined_steel
+    moditem unrefined_carbon_steel
+}
+
+{shaped
+    misc
+    ABA
+    BCB
+    ABA
+    A -> block iron_block
+    B -> block coal_block
+    C -> item netherite_ingot
+    item netherite_ingot
+    moditem unrefined_carbon_steel
+}
+
+{shaped
+    misc
+    AAA
+    BCB
+    AAA
+    A -> item iron_ingot
+    B -> item netherite_scrap
+    C -> item netherite_ingot
+    item netherite_ingot
+    moditem scrap_ingot
+}
+
+{shaped
+    misc
+    AAA
+    ACA
+    ABA
+    A -> item iron_ingot
+    B -> item copper_ingot
+    C -> item netherite_ingot
+    item netherite_ingot
+    moditem scrap_iron_ingot
+}
+
+{conversion
+    misc
+    moditem pulsite_ingot <-> modblock pulsite_block
+}
+
+{conversion
+    misc
+    moditem carbon_steel_ingot <-> modblock carbon_steel_block
+}
+
+{conversion
+    misc
+    moditem steel_ingot <-> modblock steel_block
+}
+
+{conversion
+    misc
+    moditem lush_ingot <-> modblock overgrown_block
+}
+
+{conversion
+    misc
+    moditem vulnusium_ingot <-> modblock vulnusium_block
+}
+
+{conversion
+    misc
+    moditem somnium_ingot <-> modblock somnium_block
+}
+
+{conversion
+    misc
+    moditem morsium_ingot <-> modblock morsium_block
+}
+
+{conversion
+    misc
+    moditem damask_ingot <-> modblock damask_block
+}
+
+{conversion
+    misc
+    moditem scrap_ingot <-> modblock scrap_block
+}
+
+{conversion
+    misc
+    moditem scrap_iron_ingot <-> modblock scrap_iron_block
+}
+
+{conversion
+    misc
+    moditem inanisium_ingot <-> modblock inanisium_block
+}
+
+{conversion
+    misc
+    moditem reinforced_iron_ingot <-> modblock reinforced_iron_block
+}
+
+{conversion
+    misc
+    moditem ignisium_ingot <-> modblock ignisium_block
+}
+
+{conversion
+    misc
+    moditem developium_ingot <-> modblock developium_block
+}
+
+{conversion
+    misc
+    moditem electrium_ingot <-> modblock electrium_block
+}
+
+{conversion
+    misc
+    moditem taifunite_ingot <-> modblock taifunite_block
+}
+
+#//test
+{conversion
+    misc
+    item nether_wart <- block nether_wart_block
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem electrium_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem electrium_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem inanisium_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem inanisium_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem pulsite_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem pulsite_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem somnium_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem somnium_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem vulnusium_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem vulnusium_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem morsium_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem morsium_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem lush_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem lush_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem taifunite_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem taifunite_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem ignisium_shard
+        moditem carbon_steel_ingot
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem ignisium_ingot
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem electrium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem claymore_of_thunder
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem inanisium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem claymore_of_the_void
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem pulsite_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem shrieking_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem somnium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem dreambound_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem vulnusium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem curseblood_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem morsium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem hollow_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem lush_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem overgrown_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem taifunite_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem storming_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem ignisium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem infernal_claymore
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem developium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem stumpfl_bat
+    ]
+}
+
+{custom
+    ForgeBlockEntity
+    [
+        moditem developium_ingot
+        moditem claymore
+        moditem ancient_upgrade_template
+    ]
+    [
+        moditem stumpfl_bat
+    ]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [claymore_of_thunder]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [infernal_claymore]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [claymore_of_the_void]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [overgrown_claymore]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [hollow_claymore]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [curseblood_claymore]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [dreambound_claymore]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [shrieking_claymore]
+}
+
+{custom
+    InfusionBlockEntity
+    !GEMSTONE_INFUSION_RECIPE [storming_claymore]
+}
+
 #//
 #//{shaped
 #//    misc

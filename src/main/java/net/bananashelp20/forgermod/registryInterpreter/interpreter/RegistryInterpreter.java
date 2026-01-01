@@ -150,12 +150,14 @@ public class RegistryInterpreter {
                 "* If you want to stop without any code being written, type in the command "+ ANSI_RESET + ANSI_RED + "\"!STOP\"." + ANSI_RESET + ANSI_YELLOW +
                 "                                                     *\n" +
                 "****************************************************************************************************************************************");
-        while (!(input = userInputWithoutLineBreak(userHelper)).contains("!RESUME")) {
-            if (input.contains("!STOP")) {
-                System.out.println(ANSI_RED + "#SYSTEM@INFO> stopping program..." + ANSI_RESET);
-                return true;
+        if (!confirmed ) {
+            while (!(input = userInputWithoutLineBreak(userHelper)).contains("!RESUME")) {
+                if (input.contains("!STOP")) {
+                    System.out.println(ANSI_RED + "#SYSTEM@INFO> stopping program..." + ANSI_RESET);
+                    return true;
+                }
+                error("#SYSTEM@INFO> couldn't resolve '" + (input.isEmpty() ? "\\n" : input) + "'");
             }
-            error("#SYSTEM@INFO> couldn't resolve '" + (input.isEmpty() ? "\\n" : input) + "'");
         }
         System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);

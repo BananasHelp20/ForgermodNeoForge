@@ -32,8 +32,6 @@ public class InterpretedShapelessRecipe extends InterpretedRecipe {
             currentItem = getCorrectItemWithType(itemsNeeded.get(i).split(" "));
             ret += "                .requires(" + currentItem[0] + "s." + currentItem[1].toUpperCase() + (currentItem[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")\n";
         }
-        return ret + "                .unlockedBy(getHasName(" + unlockedByItem[0] + "s." + unlockedByItem[1].toUpperCase() + ".get()), has(" + unlockedByItem[0] + "s." + unlockedByItem[1].toUpperCase() + ".get())).save(output, ForgerMod.MOD_ID + \":" + result[1].toLowerCase() + "_from_shapeless_crafting_" + recipeID + "\");\n";
+        return ret + "                .unlockedBy(getHasName(" + unlockedByItem[0] + "s." + unlockedByItem[1].toUpperCase() + ".get()), has(" + unlockedByItem[0] + "s." + unlockedByItem[1].toUpperCase() + (result[0].toUpperCase().contains("MOD") ? ".get()" : "") + ")).save(output, ForgerMod.MOD_ID + \":" + result[1].toLowerCase() + "_from_shapeless_crafting_" + recipeID + "\");\n";
     }
-
-
 }

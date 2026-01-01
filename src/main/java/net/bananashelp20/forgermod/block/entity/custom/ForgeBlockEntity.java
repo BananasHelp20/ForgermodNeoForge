@@ -60,7 +60,7 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
             {ModItems.MORSIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
             {ModItems.LUSH_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
             {ModItems.TAIFUNITE_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            //{ModItems.DEVELOPIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
+            //{ModItems.DEVELOPIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()}, //!PRESERVE
             {ModItems.IGNISIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
 
             //claymore recipes
@@ -102,8 +102,6 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
             new ItemStack(ModItems.INFERNAL_CLAYMORE.get())
     };
 
-//    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-
     private static final int resetMaxProgressTo = 250;
     protected final ContainerData data;
     private int progress = 0;
@@ -136,12 +134,6 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
             }
         };
     }
-
-//    @Override
-//    public void onLoad() {
-//        super.onLoad();
-//        lazyItemHandler = LazyOptional.of(() -> inventory);
-//    }
 
     @Override
     public Component getDisplayName() {

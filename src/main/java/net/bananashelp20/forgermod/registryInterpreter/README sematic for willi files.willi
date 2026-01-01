@@ -159,6 +159,11 @@
     ]
 }
 
+{conversion
+    category
+    item <-> block #// auch -> und <- sind möglich für einseitige conversion
+}
+
 #//TOOL TIERS
 {normal
     ingredientItem

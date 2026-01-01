@@ -9,10 +9,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedBlastingOrSmeltingRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedCustomRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapedRecipe;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.InterpretedShapelessRecipe;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
 import org.checkerframework.checker.units.qual.A;
 
@@ -263,9 +260,21 @@ public class RegistryInterpreterHelperMethods {
             if (recipeText.get(i).contains("{")) {
                 recipeStringObjects.add(new ArrayList<>());
                 ctr++;
-                for (int j = i; j < recipeText.size() && !recipeText.get(j).contains("}"); j++) {
-                    recipeStringObjects.get(ctr).add(recipeText.get(j));
-                    i = j;
+                if (recipeText.get(i).contains("custom") && recipeText.get(i+2).contains("!GEMSTONE_INFUSION_RECIPE")) {
+                    i++;
+                    gemstoneInfusionRecipe(recipeStringObjects, recipeText, ctr, i, "ruby");
+                    recipeStringObjects.add(new ArrayList<>());
+                    gemstoneInfusionRecipe(recipeStringObjects, recipeText, ++ctr, i, "amethyst");
+                    recipeStringObjects.add(new ArrayList<>());
+                    gemstoneInfusionRecipe(recipeStringObjects, recipeText, ++ctr, i, "amber");
+                    recipeStringObjects.add(new ArrayList<>());
+                    gemstoneInfusionRecipe(recipeStringObjects, recipeText, ++ctr, i, "jade");
+                    i += 2;
+                } else {
+                    for (int j = i; j < recipeText.size() && !recipeText.get(j).contains("}"); j++) {
+                        recipeStringObjects.get(ctr).add(recipeText.get(j));
+                        i = j;
+                    }
                 }
             }
         }
@@ -305,11 +314,27 @@ public class RegistryInterpreterHelperMethods {
                 }
                 ArrayList<String> output = new ArrayList<>(getContentInBrackets(i, x + 1, recipeStringObjects));
                 recipeToAdd = new InterpretedCustomRecipe(recipeStringObjects.get(i).get(1), inputItems, output, i);
+            } else if (recipeStringObjects.get(i).contains("{conversion")) {
+                pattern = recipeStringObjects.get(i).get(2).split(" ");
+                recipeToAdd = new InterpretedConversionRecipe(recipeStringObjects.get(i).get(1), pattern[0] + " " + pattern[1], pattern[2], pattern[3] + " " + pattern[4], i);
             }
             interpretedRecipes.add(recipeToAdd);
         }
 
         return interpretedRecipes;
+    }
+
+    private static void gemstoneInfusionRecipe(ArrayList<ArrayList<String>> recipeStringObjects, ArrayList<String> recipeText, int objIndex, int textIndex, String gemstone) {
+        recipeStringObjects.get(objIndex).add("{custom");
+        recipeStringObjects.get(objIndex).add(recipeText.get(textIndex));
+        recipeStringObjects.get(objIndex).add("[");
+        recipeStringObjects.get(objIndex).add("moditem " + gemstone + "_gemstone");
+        recipeStringObjects.get(objIndex).add("moditem " + recipeText.get(textIndex+1).split(" ")[1].substring(1, recipeText.get(textIndex+1).split(" ")[1].length()-1));
+        recipeStringObjects.get(objIndex).add("moditem gemstone_upgrade_template");
+        recipeStringObjects.get(objIndex).add("]");
+        recipeStringObjects.get(objIndex).add("[");
+        recipeStringObjects.get(objIndex).add("moditem " + recipeText.get(textIndex+1).split(" ")[1].substring(1, recipeText.get(textIndex+1).split(" ")[1].length()-1) + "_" + gemstone);
+        recipeStringObjects.get(objIndex).add("]");
     }
 
     private static ArrayList<String> getContentInBrackets(int listIndex, int elementIndex, ArrayList<ArrayList<String>> stringObjects) {
