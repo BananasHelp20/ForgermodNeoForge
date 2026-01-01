@@ -87,25 +87,25 @@ public class ModConfiguredFeatures {
                 OreConfiguration.target(obsidianReplaceables, ModBlocks.AMBER_OBSIDIAN_ORE.get().defaultBlockState())
         );
 
-        register(context, OVERWORLD_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(overworldJadeOres, 1));
+        register(context, OVERWORLD_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(overworldJadeOres, 9));
         register(context, NETHER_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
-                ModBlocks.JADE_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(endJadeOres, 1));
+                ModBlocks.JADE_NETHER_ORE.get().defaultBlockState(), 9));
+        register(context, END_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(endJadeOres, 9));
 
-        register(context, OVERWORLD_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(overworldRubyOres, 1));
+        register(context, OVERWORLD_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(overworldRubyOres, 9));
         register(context, NETHER_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
-                ModBlocks.RUBY_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(endRubyOres, 1));
+                ModBlocks.RUBY_NETHER_ORE.get().defaultBlockState(), 9));
+        register(context, END_RUBY_ORE_KEY, Feature.ORE, new OreConfiguration(endRubyOres, 9));
 
-        register(context, OVERWORLD_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAmethystOres, 1));
+        register(context, OVERWORLD_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAmethystOres, 9));
         register(context, NETHER_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
-                ModBlocks.AMETHYST_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(endAmethystOres, 1));
+                ModBlocks.AMETHYST_NETHER_ORE.get().defaultBlockState(), 9));
+        register(context, END_AMETHYST_ORE_KEY, Feature.ORE, new OreConfiguration(endAmethystOres, 9));
 
-        register(context, OVERWORLD_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAmberOres, 1));
+        register(context, OVERWORLD_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAmberOres, 9));
         register(context, NETHER_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
-                ModBlocks.AMBER_NETHER_ORE.get().defaultBlockState(), 1));
-        register(context, END_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(endAmberOres, 1));
+                ModBlocks.AMBER_NETHER_ORE.get().defaultBlockState(), 9));
+        register(context, END_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(endAmberOres, 9));
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
