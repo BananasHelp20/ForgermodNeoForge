@@ -6,6 +6,7 @@ import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -88,8 +89,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModBlocks.JADE_END_ORE.get(),
             ModBlocks.JADE_NETHER_ORE.get(),
             ModBlocks.JADE_STONE_ORE.get(),
-            ModBlocks.JADE_DEEPSLATE_ORE.get(),
-            ModBlocks.JADE_OBSIDIAN_ORE.get()
+            ModBlocks.JADE_DEEPSLATE_ORE.get()
     );
 
     @Override
@@ -131,7 +131,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("CAC")
                 .pattern(" D ")
                 .define('A', ModItems.SCRAP_IRON_SWORD.get())
-                .define('C', ModItems.SCRAP_IRON_INGOT.get())
+                .define('C', Items.IRON_INGOT)
                 .define('D', ModItems.REINFORCED_IRON_INGOT.get())
                 .unlockedBy(getHasName(ModItems.REINFORCED_IRON_INGOT.get()), has(ModItems.REINFORCED_IRON_INGOT.get())).save(output);
 
@@ -166,15 +166,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("B")
                 .define('A', ModItems.DAMASK_INGOT.get())
                 .define('B', ModItems.HANDLE.get())
-                .unlockedBy(getHasName(ModItems.DAMASK_INGOT.get()), has(ModItems.DAMASK_INGOT.get())).save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CLAYMORE.get())
-                .pattern("A")
-                .pattern("B")
-                .pattern("C")
-                .define('A', ModItems.SHARPENED_BLADE.get())
-                .define('B', ModItems.CARBON_STEEL_CROSS_GUARD.get())
-                .define('C', ModItems.ADVANCED_HANDLE.get())
                 .unlockedBy(getHasName(ModItems.DAMASK_INGOT.get()), has(ModItems.DAMASK_INGOT.get())).save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CLAYMORE.get())
@@ -225,8 +216,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.DAMASK_INGOT.get()), has(ModItems.DAMASK_INGOT.get())).save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SHARPENED_BLADE.get())
-                .pattern("B")
                 .pattern("A")
+                .pattern("B")
                 .pattern("B")
                 .define('A', ModItems.DAMASK_INGOT.get())
                 .define('B', ModItems.CARBON_STEEL_INGOT.get())
@@ -249,26 +240,27 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("ABA")
                 .define('A', Items.IRON_BLOCK)
                 .define('B', Items.COAL_BLOCK)
-                .define('C', Items.NETHERITE_INGOT)
-                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT)).save(output, ForgerMod.MOD_ID + ":unrefined_steel_from_primal_crafting");
+                .define('C', Items.NETHERITE_SCRAP)
+                .unlockedBy(getHasName(Items.NETHERITE_SCRAP), has(Items.NETHERITE_SCRAP)).save(output, ForgerMod.MOD_ID + ":unrefined_steel_from_primal_crafting");
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SCRAP_INGOT.get())
-                .pattern("AAA")
-                .pattern("BCB")
-                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("ACA")
+                .pattern("BAB")
                 .define('A', Items.IRON_INGOT)
                 .define('B', Items.NETHERITE_SCRAP)
-                .define('C', Items.NETHERITE_INGOT)
+                .define('C', Items.COPPER_INGOT)
                 .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT)).save(output, ForgerMod.MOD_ID + ":scrap_ingot_from_primal_crafting");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SCRAP_IRON_INGOT.get())
-                .pattern("AAA")
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SCRAP_IRON_BLOCK.get())
                 .pattern("ACA")
+                .pattern("CDC")
                 .pattern("ABA")
                 .define('A', Items.IRON_INGOT)
                 .define('B', Items.COPPER_INGOT)
-                .define('C', Items.NETHERITE_INGOT)
-                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT)).save(output, ForgerMod.MOD_ID + ":scrap_iron_ingot_from_primal_crafting");
+                .define('C', Items.NETHERITE_SCRAP)
+                .define('D', Items.IRON_BLOCK)
+                .unlockedBy(getHasName(Items.NETHERITE_SCRAP), has(Items.NETHERITE_SCRAP)).save(output, ForgerMod.MOD_ID + ":scrap_iron_ingot_from_primal_crafting");
 
         //materialblocks
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PULSITE_BLOCK.get())

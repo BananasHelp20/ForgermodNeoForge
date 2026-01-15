@@ -69,7 +69,7 @@ public class RegistryInterpreter {
     static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
     static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
     static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
-    static ArrayList<InterpretedOre> oreBlocks = getAllOres();
+//    static ArrayList<InterpretedOre> oreBlocks = getAllOres();
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlocksFile);
     static String unchangedModRegistryContent = getContentFromFile(modRegistry);

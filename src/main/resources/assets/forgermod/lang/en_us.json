@@ -144,7 +144,7 @@
   "tooltips.forgermod.overgrown_claymore.tooltip": "§7A very old claymore which must have\nbeen in a lush cave for a very long\ntime.\n\nEffect on hit: Hunger III for 10 Seconds§r§r",
   "tooltips.forgermod.hollow_claymore.tooltip": "§7A claymore reinforced by bones from\nthe enemies it killed. A truly scary\nsword to possess.\n\nEffect on hit: Weakness III for 5 Seconds§r§r",
   "tooltips.forgermod.curseblood_claymore.tooltip": "§7A bloody claymore cursed by all the\nenemies it defeated. It's being said\nthat it belonged to a psychopath long\nago.\n\nEffect on hit: Wither II for 4 Seconds§r§r",
-  "tooltips.forgermod.dreambound_claymore.tooltip": "§7A claymore sending enemies to eternal\nrest. A claymore known as deadly as\ndeath itself, and often used for killing\npeople while they are asleep.\n\nEffect on hit: Nausea IV for 4 Seconds§r§r",
+  "tooltips.forgermod.dreambound_claymore.tooltip": "§7A claymore sending enemies to eternal\nrest. A claymore known as deadly as\ndeath itself, and often used for killing\npeople while they are asleep.\n\nEffect on hit: Nausea IV for 10 Seconds§r§r",
   "tooltips.forgermod.shrieking_claymore.tooltip": "§7A claymore found in the deepest depths,\nreinforced with sculk, a material\nfrom another dimension.\n\nEffect on hit: Darkness V for 7 Seconds§r§r",
   "tooltips.forgermod.claymore_of_thunder.tooltip": "§7A claymore charged by the might of\nlightning, 1,000,000 volts of electricity\nflow through this blade electrifying\neveryone coming too close.\n\nEffect on hit: Slowness III for 5 Seconds§r§r",
   "tooltips.forgermod.storming_claymore.tooltip": "§7A claymore found at high altitudes, due\nto the high wind speeds blowing everything\naway.\n\nEffect on hit: Levitation II for 3 Seconds§r§r",
