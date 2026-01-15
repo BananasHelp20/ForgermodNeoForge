@@ -47,7 +47,6 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     private static final int TEMPLATE_SLOT = 2; //template
     private static final int INPUT_SLOT1 = 1; //carbon material
     private static final int OUTPUT_SLOT = 3; //output (ingot)
-
     private static final int SHARD_CRAFT_COST = 4;
 
     private static final Item[][] RECIPE_INPUTS = {
