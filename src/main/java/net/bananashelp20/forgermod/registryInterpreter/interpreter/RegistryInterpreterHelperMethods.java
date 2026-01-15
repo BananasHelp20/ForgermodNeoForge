@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
-import com.mojang.realmsclient.dto.BackupList;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedOre;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedComplexBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSimpleBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSpecialBlock;
@@ -11,7 +11,6 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.special.*;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.toolTiers.InterpretedToolTier;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -128,6 +127,73 @@ public class RegistryInterpreterHelperMethods {
         }
         return interpretedBlocks;
     }
+
+    public static ArrayList<InterpretedOre> getAllOres() {
+        ArrayList<InterpretedBlock> interpretedOres = new ArrayList<>();
+        ArrayList<String> blockText = getContentFromFileAsList(blockFile, "#"); //comment must be declared as # since it wouldn't work otherwise (with #// declared or //#)
+        ArrayList<ArrayList<String>> blockStringObjects = new ArrayList<>();
+        String dropOtherItem;
+        boolean dropOther;
+        int indexExpander;
+        InterpretedBlock blockToAdd;
+        int ctr = -1;
+        for (int i = 0; i < blockText.size(); i++) {
+            if (blockText.get(i).contains("{")) {
+                blockStringObjects.add(new ArrayList<>());
+                ctr++;
+                for (int j = i; j < blockText.size() && !blockText.get(j).contains("}"); j++) {
+                    blockStringObjects.get(ctr).add(blockText.get(j));
+                    i = j;
+                }
+            }
+        }
+
+//        interpretedBlocks.add(new InterpretedSimpleBlock("name", "p", "drop", "", "b", "type", "tab", "tab"));
+//        interpretedBlocks.add(new InterpretedSimpleBlock("name2", "p", "drop", "", "b", "type", "tab", "tab"));
+
+        for (int i = 0; i < blockStringObjects.size(); i++) {
+            dropOther = false;
+            indexExpander = 0;
+            dropOtherItem = "";
+            blockToAdd = null;
+            if (blockStringObjects.get(i).getFirst().contains("{simpleOre")) {
+                if (blockStringObjects.get(i).getFirst().contains("{simple")) {
+                    if (blockStringObjects.get(i).get(4).contains("?")) {
+                        dropOther = true;
+                        indexExpander++;
+                        dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
+                    }
+                    blockToAdd = new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2), blockStringObjects.get(i).get(3), dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander), blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
+
+                } else if (blockStringObjects.get(i).getFirst().contains("{special")) {
+                    if (blockStringObjects.get(i).get(5).contains("?")) {
+                        dropOther = true;
+                        indexExpander++;
+                        dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
+                    }
+                    blockToAdd = new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                            blockStringObjects.get(i).get(3), blockStringObjects.get(i).get(4),
+                            dropOtherItem, blockStringObjects.get(i).get(5 + indexExpander),
+                            blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander),
+                            blockStringObjects.get(i).get(8 + indexExpander));
+
+                } else if (blockStringObjects.get(i).getFirst().contains("{complex")) {
+                    if (blockStringObjects.get(i).get(4).contains("?")) {
+                        dropOther = true;
+                        indexExpander++;
+                        dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
+                    }
+                    blockToAdd = new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
+                            blockStringObjects.get(i).get(3),
+                            dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander),
+                            blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
+                }
+            }
+            interpretedOres.add(blockToAdd);
+        }
+        return interpretedOres;
+    }
+
 
     public static ArrayList<InterpretedItem> getAllItems() {
         ArrayList<InterpretedItem> items = new ArrayList<>();

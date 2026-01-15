@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter;
 
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedOre;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.recipes.InterpretedRecipe;
@@ -68,6 +69,7 @@ public class RegistryInterpreter {
     static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
     static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
     static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
+    static ArrayList<InterpretedOre> oreBlocks = getAllOres();
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlocksFile);
     static String unchangedModRegistryContent = getContentFromFile(modRegistry);
@@ -81,7 +83,6 @@ public class RegistryInterpreter {
     static String unchangedModItemsFileContent = getContentFromFile(modItemsFile);
     static String unchangedModCreativeModeTabsFileContent = getContentFromFile(modCreativeTabsFile);
     static String unchangedModTagsFileContent = getContentFromFile(modTagsFile);
-
 
     public static boolean generateCode() {
         if (!(modBlocksFile.exists() && modBlocksFile.canWrite() && modBlocksFile.canRead()
@@ -211,6 +212,7 @@ public class RegistryInterpreter {
         writeBlockLoottables();
         writeBlockTags(); //do liegts problem, wo denn a sunst...
         writeBlockStates();
+//        writeOreCode();
     }
 
     private static void writeItemCode(boolean allowed) {

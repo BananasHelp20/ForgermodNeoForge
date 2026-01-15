@@ -1,26 +1,17 @@
-package net.bananashelp20.forgermod.worldgen;
+package net.bananashelp20.forgermod.registryInterpreter.testRegistries;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SweetBerryBushBlock;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
@@ -54,7 +45,7 @@ public class ModConfiguredFeatures {
         List<OreConfiguration.TargetBlockState> overworldJadeOres = List.of(
                 OreConfiguration.target(stoneReplaceables, ModBlocks.JADE_STONE_ORE.get().defaultBlockState()),
                 OreConfiguration.target(deepslateReplaceables, ModBlocks.JADE_DEEPSLATE_ORE.get().defaultBlockState())
-        ); //do brauchst jo eig eh nur des fürd overworld, nur beim Special wirds deppat
+        );
         List<OreConfiguration.TargetBlockState> endJadeOres = List.of(
                 OreConfiguration.target(endReplaceables, ModBlocks.JADE_END_ORE.get().defaultBlockState()),
                 OreConfiguration.target(obsidianReplaceables, ModBlocks.JADE_OBSIDIAN_ORE.get().defaultBlockState())

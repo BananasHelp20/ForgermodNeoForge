@@ -204,6 +204,19 @@
     creativeTab
 }
 
+#//ores
+{simpleore
+    !SIMPLE_BLOCK oder !SPECIAL_BLOCK oder !COMPLEXBLOCK
+
+
+}
+
+{specialOre
+    !SIMPLE_BLOCK oder !SPECIAL_BLOCK oder !COMPLEXBLOCK
+
+}
+
+
 #//CREATIVETABS
 {simpleTab
     creative_tab_name
