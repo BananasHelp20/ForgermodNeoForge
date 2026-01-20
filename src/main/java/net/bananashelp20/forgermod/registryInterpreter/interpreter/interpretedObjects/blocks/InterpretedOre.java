@@ -1,6 +1,6 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks;
 
-public interface InterpretedOre extends InterpretedBlock {
+public interface InterpretedOre {
     String toString();
     String getPlacedFeatureRegistration();
     String getPlacedFeatureInitialisation();

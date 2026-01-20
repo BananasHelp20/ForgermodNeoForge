@@ -206,13 +206,79 @@
 
 #//ores
 {simpleore
-    !SIMPLE_BLOCK oder !SPECIAL_BLOCK oder !COMPLEXBLOCK
+    @simple {
+        blockName
+        blockProperties #//as in code
+        dropMethod
+        ?dropOtherItemItem #//only if dropMethod equals dropOther
+        modelingmethod
+        breakTool
+        material
+        creativeTab
+    }
 
+    @special {
+        blockName
+        createMethod
+        blockProperties
+        dropMethod
+        ?dropOtherItemItem #//only if dropMethod equals dropOther
+        blockWithItem
+        breakTool
+        material
+        creativeTab
+    }
 
+    @complex {
+        blockName
+        new BlockClass(blockProperties)
+        dropMethod
+        ?dropOtherItemItem #//only if dropMethod equals dropOther
+        !NO_MODEL
+        breakTool
+        material
+        creativeTab
+    }
+
+    defaultName
+    [
+        blockNames listed
+    ]
+    [
+        dimensions listed
+    ]
+    [
+        generationSteps listed
+    ]
+    [
+        generational ruletests listed
+        [
+            properties of ruletest listed
+        ]
+    ]
+    [
+        oreSizesForEachDimension listed
+    ]
+    [
+        placements for each dimension listed
+        [
+            placement properties listed
+        ]
+    ]
 }
 
 {specialOre
-    !SIMPLE_BLOCK oder !SPECIAL_BLOCK oder !COMPLEXBLOCK
+    @simple {
+        #//same as simpleOre
+    }
+
+    @special {
+        #//same as simpleOre
+    }
+
+    @complex {
+        #//same as simpleOre
+    }
 
 }
 

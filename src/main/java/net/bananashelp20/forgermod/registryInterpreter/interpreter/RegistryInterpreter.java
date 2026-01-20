@@ -65,11 +65,14 @@ public class RegistryInterpreter {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     static ArrayList<InterpretedItem> items = getAllItems();
-    static ArrayList<InterpretedBlock> blocks = getAllBlocks();
+
     static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
     static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
     static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
-//    static ArrayList<InterpretedOre> oreBlocks = getAllOres();
+    static ArrayList<InterpretedBlock> temporaryOreBlocks;
+    static ArrayList<InterpretedOre> oreBlocks = getAllOres();
+    static ArrayList<InterpretedBlock> blocks = getAllBlocks();
+
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlocksFile);
     static String unchangedModRegistryContent = getContentFromFile(modRegistry);

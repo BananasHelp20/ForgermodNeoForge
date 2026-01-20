@@ -180,25 +180,25 @@
 
   "block.forgermod.jade_stone_ore": "Jade Gemstone Ore",
   "block.forgermod.jade_deepslate_ore": "Deepslate Jade Gemstone Ore",
-  "block.forgermod.jade_obsidian_ore": "Dragon Jade Gemstone Ore",
+  "block.forgermod.jade_obsidian_ore": "Obsidian Jade Gemstone Ore",
   "block.forgermod.jade_nether_ore": "Nether Jade Gemstone Ore",
   "block.forgermod.jade_end_ore": "End Jade Gemstone Ore",
 
   "block.forgermod.ruby_stone_ore": "Ruby Gemstone Ore",
   "block.forgermod.ruby_deepslate_ore": "Deepslate Ruby Gemstone Ore",
-  "block.forgermod.ruby_obsidian_ore": "Dragon Ruby Gemstone Ore",
+  "block.forgermod.ruby_obsidian_ore": "Obsidian Ruby Gemstone Ore",
   "block.forgermod.ruby_nether_ore": "Nether Ruby Gemstone Ore",
   "block.forgermod.ruby_end_ore": "End Ruby Gemstone Ore",
 
   "block.forgermod.amethyst_stone_ore": "Amethyst Gemstone Ore",
-  "block.forgermod.amethyst_deepslate_ore": "DeespslateAmethyst Gemstone Ore",
-  "block.forgermod.amethyst_obsidian_ore": "Dragon Amethyst Gemstone Ore",
+  "block.forgermod.amethyst_deepslate_ore": "Deepslate Amethyst Gemstone Ore",
+  "block.forgermod.amethyst_obsidian_ore": "Obsidian Amethyst Gemstone Ore",
   "block.forgermod.amethyst_nether_ore": "Nether Amethyst Gemstone Ore",
   "block.forgermod.amethyst_end_ore": "End Amethyst Gemstone Ore",
 
   "block.forgermod.amber_stone_ore": "Amber Gemstone Ore",
   "block.forgermod.amber_deepslate_ore": "Deepslate Amber Gemstone Ore",
-  "block.forgermod.amber_obsidian_ore": "Dragon Amber Gemstone Ore",
+  "block.forgermod.amber_obsidian_ore": "Obsidian Amber Gemstone Ore",
   "block.forgermod.amber_nether_ore": "Nether Amber Gemstone Ore",
   "block.forgermod.amber_end_ore": "End Amber Gemstone Ore"
 }

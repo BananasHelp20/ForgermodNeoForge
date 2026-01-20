@@ -5,6 +5,8 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedComplexBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSimpleBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.InterpretedSpecialBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.ores.InterpretedInterdimensionalOreBlock;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.ores.InterpretedInterdimensionalSpecialOreBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.creativeTabs.InterpretedCreativeTab;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.InterpretedItem;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.items.special.*;
@@ -74,7 +76,7 @@ public class RegistryInterpreterHelperMethods {
         InterpretedBlock blockToAdd;
         int ctr = -1;
         for (int i = 0; i < blockText.size(); i++) {
-            if (blockText.get(i).contains("{")) {
+            if (blockText.get(i).contains("{") && !blockText.get(i).toUpperCase().contains("ORE")) {
                 blockStringObjects.add(new ArrayList<>());
                 ctr++;
                 for (int j = i; j < blockText.size() && !blockText.get(j).contains("}"); j++) {
@@ -125,75 +127,106 @@ public class RegistryInterpreterHelperMethods {
             }
             interpretedBlocks.add(blockToAdd);
         }
+
+        interpretedBlocks.addAll(temporaryOreBlocks);
         return interpretedBlocks;
     }
 
-//    public static ArrayList<InterpretedOre> getAllOres() {
-//        ArrayList<InterpretedBlock> interpretedOres = new ArrayList<>();
-//        ArrayList<String> blockText = getContentFromFileAsList(blockFile, "#"); //comment must be declared as # since it wouldn't work otherwise (with #// declared or //#)
-//        ArrayList<ArrayList<String>> blockStringObjects = new ArrayList<>();
-//        String dropOtherItem;
-//        boolean dropOther;
-//        int indexExpander;
-//        InterpretedBlock blockToAdd;
-//        int ctr = -1;
-//        for (int i = 0; i < blockText.size(); i++) {
-//            if (blockText.get(i).contains("{")) {
-//                blockStringObjects.add(new ArrayList<>());
-//                ctr++;
-//                for (int j = i; j < blockText.size() && !blockText.get(j).contains("}"); j++) {
-//                    blockStringObjects.get(ctr).add(blockText.get(j));
-//                    i = j;
-//                }
-//            }
-//        }
-//
-////        interpretedBlocks.add(new InterpretedSimpleBlock("name", "p", "drop", "", "b", "type", "tab", "tab"));
-////        interpretedBlocks.add(new InterpretedSimpleBlock("name2", "p", "drop", "", "b", "type", "tab", "tab"));
-//
-//        for (int i = 0; i < blockStringObjects.size(); i++) {
-//            dropOther = false;
-//            indexExpander = 0;
-//            dropOtherItem = "";
-//            blockToAdd = null;
-//            if (blockStringObjects.get(i).getFirst().contains("{simpleOre")) {
-//                if (blockStringObjects.get(i).getFirst().contains("{simple")) {
-//                    if (blockStringObjects.get(i).get(4).contains("?")) {
-//                        dropOther = true;
-//                        indexExpander++;
-//                        dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
-//                    }
-//                    blockToAdd = new InterpretedSimpleBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2), blockStringObjects.get(i).get(3), dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander), blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
-//
-//                } else if (blockStringObjects.get(i).getFirst().contains("{special")) {
-//                    if (blockStringObjects.get(i).get(5).contains("?")) {
-//                        dropOther = true;
-//                        indexExpander++;
-//                        dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
-//                    }
-//                    blockToAdd = new InterpretedSpecialBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
-//                            blockStringObjects.get(i).get(3), blockStringObjects.get(i).get(4),
-//                            dropOtherItem, blockStringObjects.get(i).get(5 + indexExpander),
-//                            blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander),
-//                            blockStringObjects.get(i).get(8 + indexExpander));
-//
-//                } else if (blockStringObjects.get(i).getFirst().contains("{complex")) {
-//                    if (blockStringObjects.get(i).get(4).contains("?")) {
-//                        dropOther = true;
-//                        indexExpander++;
-//                        dropOtherItem = blockStringObjects.get(i).get(4).substring(1);
-//                    }
-//                    blockToAdd = new InterpretedComplexBlock(blockStringObjects.get(i).get(1), blockStringObjects.get(i).get(2),
-//                            blockStringObjects.get(i).get(3),
-//                            dropOtherItem, blockStringObjects.get(i).get(4 + indexExpander),
-//                            blockStringObjects.get(i).get(5 + indexExpander), blockStringObjects.get(i).get(6 + indexExpander), blockStringObjects.get(i).get(7 + indexExpander));
-//                }
-//            }
-//            interpretedOres.add(blockToAdd);
-//        }
-//        return interpretedOres;
-//    }
+    public static ArrayList<InterpretedOre> getAllOres() {
+        ArrayList<InterpretedOre> interpretedOres = new ArrayList<>();
+        ArrayList<InterpretedBlock> innerInterpretedBlocks = new ArrayList<>();
+        ArrayList<String> blockText = getContentFromFileAsList(blockFile, "#"); //comment must be declared as # since it wouldn't work otherwise (with #// declared or //#)
+        ArrayList<ArrayList<String>> oreStringObjects = new ArrayList<>();
+        ArrayList<ArrayList<ArrayList<String>>> innerBlockStringObjects = new ArrayList<>(); //arraylist for each Ore / arraylist for each Block / property list
+        String dropOtherItem;
+        boolean dropOther;
+        int indexExtender;
+        InterpretedOre oreToAdd;
+        InterpretedBlock innerBlockToAdd;
+        int ctr = -1;
 
+        for (int i = 0; i < blockText.size(); i++) {
+            if (blockText.get(i).contains("{") && !blockText.get(i).contains("@")) {
+                oreStringObjects.add(new ArrayList<>());
+                innerBlockStringObjects.add(new ArrayList<>());
+                ctr++;
+                for (int j = i; j < blockText.size() && !(blockText.get(j).contains("}") && !blockText.get(j).contains("@")); j++) {
+                    if (blockText.get(i).contains("@") && blockText.get(i).contains("{")) {
+                        innerBlockStringObjects.get(ctr).add(new ArrayList<>());
+                        for (int k = i; j < blockText.size() && !(blockText.get(j).contains("@}")); j++) {
+                            innerBlockStringObjects.get(ctr).get(k).add(blockText.get(j));
+                            j = k;
+                        }
+                        j++;
+                    }
+                    oreStringObjects.get(ctr).add(blockText.get(j));
+                    i = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < oreStringObjects.size(); i++) {
+            for (int j = 0; j < innerBlockStringObjects.get(i).size(); j++) {
+                dropOther = false;
+                indexExtender = 0;
+                dropOtherItem = "";
+                innerBlockToAdd = null;
+                if (innerBlockStringObjects.get(i).get(j).getFirst().contains("@simple")) {
+                    if (innerBlockStringObjects.get(i).get(j).get(4).contains("?")) {
+                        dropOther = true;
+                        indexExtender++;
+                        dropOtherItem = innerBlockStringObjects.get(i).get(j).get(4).substring(1);
+                    }
+                    innerBlockToAdd = new InterpretedSimpleBlock(innerBlockStringObjects.get(i).get(j).get(1), innerBlockStringObjects.get(i).get(j).get(2), innerBlockStringObjects.get(i).get(j).get(3), dropOtherItem, innerBlockStringObjects.get(i).get(j).get(4 + indexExtender), innerBlockStringObjects.get(i).get(j).get(5 + indexExtender), innerBlockStringObjects.get(i).get(j).get(6 + indexExtender), innerBlockStringObjects.get(i).get(j).get(7 + indexExtender));
+
+                } else if (innerBlockStringObjects.get(i).get(j).getFirst().contains("@special")) {
+                    if (innerBlockStringObjects.get(i).get(j).get(5).contains("?")) {
+                        dropOther = true;
+                        indexExtender++;
+                        dropOtherItem = innerBlockStringObjects.get(i).get(j).get(4).substring(1);
+                    }
+                    innerBlockToAdd = new InterpretedSpecialBlock(innerBlockStringObjects.get(i).get(j).get(1), innerBlockStringObjects.get(i).get(j).get(2),
+                            innerBlockStringObjects.get(i).get(j).get(3), innerBlockStringObjects.get(i).get(j).get(4),
+                            dropOtherItem, innerBlockStringObjects.get(i).get(j).get(5 + indexExtender),
+                            innerBlockStringObjects.get(i).get(j).get(6 + indexExtender), innerBlockStringObjects.get(i).get(j).get(7 + indexExtender),
+                            innerBlockStringObjects.get(i).get(j).get(8 + indexExtender));
+
+                } else if (innerBlockStringObjects.get(i).get(j).getFirst().contains("@complex")) {
+                    if (innerBlockStringObjects.get(i).get(4).contains("?")) {
+                        dropOther = true;
+                        indexExtender++;
+                        dropOtherItem = innerBlockStringObjects.get(i).get(j).get(4).substring(1);
+                    }
+                    innerBlockToAdd = new InterpretedComplexBlock(innerBlockStringObjects.get(i).get(j).get(1), innerBlockStringObjects.get(i).get(j).get(2),
+                            innerBlockStringObjects.get(i).get(j).get(3),
+                            dropOtherItem, innerBlockStringObjects.get(i).get(j).get(4 + indexExtender),
+                            innerBlockStringObjects.get(i).get(j).get(5 + indexExtender), innerBlockStringObjects.get(i).get(j).get(6 + indexExtender), innerBlockStringObjects.get(i).get(j).get(7 + indexExtender));
+                }
+                innerInterpretedBlocks.add(innerBlockToAdd);
+            }
+
+            //getArraylistFromBrackets returns a Arraylist<Arraylist<String>> 0th argument is the wanted arraylist, 1st argument is a stringified indexExtender to keep track of the current position in the stringObjectList
+            // and not get bamboozled and using the contend of the same brackets again and again
+            oreToAdd = null;
+            ArrayList<ArrayList<String>> blockNames = getArraylistFromBrackets(oreStringObjects.get(i), 2);
+            ArrayList<ArrayList<String>> dimensions = getArraylistFromBrackets(oreStringObjects.get(i), Integer.parseInt(blockNames.get(i).get(1)));
+            ArrayList<ArrayList<String>> generationSteps = getArraylistFromBrackets(oreStringObjects.get(i), Integer.parseInt(dimensions.get(i).get(1)));
+            ArrayList<ArrayList<ArrayList<String>>> ruleTests = getDoubleArraylistFromBrackets(oreStringObjects.get(i), Integer.parseInt(generationSteps.get(i).get(1)));
+            ArrayList<ArrayList<Integer>> oreSizesForEachDimension = getArraylistFromBracketsAsIntegers(oreStringObjects.get(i), Integer.parseInt(ruleTests.get(i).get(1).getFirst()));
+            ArrayList<ArrayList<ArrayList<String>>> placements = getDoubleArraylistFromBrackets(oreStringObjects.get(i), oreSizesForEachDimension.get(i).get(1));
+
+            if (oreStringObjects.get(i).getFirst().contains("{simpleOre")) {
+                oreToAdd = new InterpretedInterdimensionalOreBlock(oreStringObjects.get(i).get(1), blockNames.getFirst(), dimensions.getFirst(), generationSteps.getFirst(), ruleTests.getFirst(), oreSizesForEachDimension.getFirst(), placements.getFirst());
+            } else if (oreStringObjects.get(i).getFirst().contains("{specialOre")) {
+                oreToAdd = new InterpretedInterdimensionalSpecialOreBlock();
+            }
+
+            interpretedOres.add(oreToAdd);
+        }
+
+        temporaryOreBlocks = innerInterpretedBlocks;
+        return interpretedOres;
+    }
 
     public static ArrayList<InterpretedItem> getAllItems() {
         ArrayList<InterpretedItem> items = new ArrayList<>();
