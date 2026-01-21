@@ -241,7 +241,7 @@ public class RegistryInterpreterHelperMethods {
 
         ArrayList<ArrayList<String>> insideBrackets = new ArrayList<>();
         for (int i = startIndex; i < bracketedArray.size() && !bracketedArray.get(i).contains("]"); i++) {
-
+            //array durchgeh und zeigs aus de brackets extrahieren, in des insideBrackets eini
         }
 
         return insideBrackets;
