@@ -8,7 +8,7 @@ General
 #// declares a comment:
     #//comment//#
     #//comment
-    comment//# //this does work even tho colors say otherways
+    comment//# #//this does work even tho colors say otherwise
 
 ! declares a command:
     !COMMAND
