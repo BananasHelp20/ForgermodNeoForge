@@ -205,7 +205,7 @@ public class RegistryInterpreterHelperMethods {
                 innerInterpretedBlocks.add(innerBlockToAdd);
             }
 
-            //getArraylistFromBrackets returns a Arraylist<Arraylist<String>> 0th argument is the wanted arraylist, 1st argument is a stringified indexExtender to keep track of the current position in the stringObjectList
+            //getArraylistFromBrackets returns an Arraylist<Arraylist<String>> 0th argument is the wanted arraylist, 1st argument is a stringified indexExtender to keep track of the current position in the stringObjectList
             // and not get bamboozled and using the contend of the same brackets again and again
             oreToAdd = null;
             ArrayList<ArrayList<String>> blockNames = getArraylistFromBrackets(oreStringObjects.get(i), 2);
@@ -226,6 +226,25 @@ public class RegistryInterpreterHelperMethods {
 
         temporaryOreBlocks = innerInterpretedBlocks;
         return interpretedOres;
+    }
+
+    public static ArrayList<ArrayList<String>> getArraylistFromBrackets(ArrayList<String> bracketedArray, int startIndex) {
+        if (bracketedArray.get(startIndex).contains("[")) {
+            startIndex++;
+        } else if (bracketedArray.get(startIndex).contains("]")) {
+            startIndex += 2;
+        }
+
+        if (bracketedArray.size() == startIndex+1) {
+            throw new IndexOutOfBoundsException("Argument missing!");
+        }
+
+        ArrayList<ArrayList<String>> insideBrackets = new ArrayList<>();
+        for (int i = startIndex; i < bracketedArray.size() && !bracketedArray.get(i).contains("]"); i++) {
+
+        }
+
+        return insideBrackets;
     }
 
     public static ArrayList<InterpretedItem> getAllItems() {
