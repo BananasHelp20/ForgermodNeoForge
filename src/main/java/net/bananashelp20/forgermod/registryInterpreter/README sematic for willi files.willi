@@ -254,7 +254,7 @@
         generational ruletests listed
         [
             properties of ruletest listed
-        ]
+        ];
     ]
     [
         oreSizesForEachDimension listed
@@ -263,7 +263,7 @@
         placements for each dimension listed
         [
             placement properties listed
-        ]
+        ];
     ]
 }
 
