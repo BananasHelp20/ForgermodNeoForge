@@ -234,6 +234,30 @@ public class RegistryInterpreterHelperMethods {
         return interpretedOres;
     }
 
+    public static ArrayList<>
+
+    public static ArrayList<Integer> getArraylistFromBracketsAsIntegers(ArrayList<String> bracketStringList, int indexExpander) {
+        ArrayList<String> temp = getArraylistFromBrackets(bracketStringList, indexExpander, false);
+        ArrayList<Integer> toRet = new ArrayList<>();
+
+        for (int i = 0; i < temp.size(); i++) {
+            toRet.add(Integer.parseInt(temp.get(i)));
+        }
+
+        return toRet;
+    }
+
+    public static ArrayList<String> getArraylistFromBrackets(ArrayList<String> bracketStringList, int indexExpander, boolean multidimensionalList) {
+        if (bracketStringList.get(indexExpander).contains(multidimensionalList ? "];" : "]")) indexExpander += 2; else if (bracketStringList.get(indexExpander).contains("[")) indexExpander++;
+
+        ArrayList<String> bracketContent = new ArrayList<>();
+        for (indexExpander = indexExpander; indexExpander < bracketStringList.size() && !bracketStringList.get(indexExpander).contains(multidimensionalList ? "];" : "]"); indexExpander++) {
+            bracketContent.add(bracketContent.get(indexExpander));
+        }
+
+        return bracketContent;
+    }
+
     public static ArrayList<InterpretedItem> getAllItems() {
         ArrayList<InterpretedItem> items = new ArrayList<>();
         ArrayList<String> itemText = getContentFromFileAsList(itemFile, "#");
