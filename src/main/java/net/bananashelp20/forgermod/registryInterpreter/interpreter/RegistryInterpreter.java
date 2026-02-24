@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreterHelperMethods.*;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.FileIO.getContentFromFile;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.FileIO.rewriteAllAfterError;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.InterpretedObjectGetters.*;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.InterpretedObjectWriters.*;
 
 public class RegistryInterpreter {
     public static void main(String[] args) throws FileNotFoundException {
@@ -53,6 +57,7 @@ public class RegistryInterpreter {
     public static File modRecipeProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModRecipeProvider.java");
     public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
 
+
     private static boolean stillGenerating = true;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -64,14 +69,13 @@ public class RegistryInterpreter {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    static ArrayList<InterpretedItem> items = getAllItems();
-
-    static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
-    static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
-    static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
-    static ArrayList<InterpretedBlock> temporaryOreBlocks;
-    static ArrayList<InterpretedOre> oreBlocks = getAllOres();
-    static ArrayList<InterpretedBlock> blocks = getAllBlocks();
+    public static ArrayList<InterpretedItem> items = getAllItems();
+    public static ArrayList<InterpretedRecipe> recipes = getAllRecipes();
+    public static ArrayList<InterpretedCreativeTab> creativeTabs = getAllCreativeTabs();
+    public static ArrayList<InterpretedToolTier> toolTiers = getAllToolTiers();
+    public static ArrayList<InterpretedBlock> temporaryOreBlocks;
+    public static ArrayList<InterpretedOre> oreBlocks = getAllOres();
+    public static ArrayList<InterpretedBlock> blocks = getAllBlocks();
 
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlocksFile);
@@ -183,263 +187,6 @@ public class RegistryInterpreter {
         System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
         success("Successfully wrote recipe objects to files");
         return true;
-    }
-
-    private static void writeCreativeTabCode(boolean allowed) {
-        String prevContent = getWholeFileContentTillGenerate(modCreativeTabsFile, "//!GENERATE");
-        String newStuff = "";
-
-        for (int i = 0; i < creativeTabs.size(); i++) {
-            newStuff += creativeTabs.get(i).toString() + "\n";
-        }
-
-        prevContent += "\n" + newStuff + "}";
-
-        if (!allowed) return;
-        write(prevContent, modCreativeTabsFile);
-        writeRegistryMethods();
-    }
-
-    private static void writeBlockCode(boolean allowed) {
-        String prevContent = getWholeFileContentTillGenerate(modBlocksFile, "//!GENERATE");
-        String newStuff = "";
-
-        for (int i = 0; i < blocks.size(); i++) {
-            newStuff += blocks.get(i).toString() + "\n";
-        }
-
-        prevContent += "\n" + newStuff + "}";
-
-        if (!allowed) return;
-        write(prevContent, modBlocksFile);
-        writeBlockLoottables();
-        writeBlockTags(); //do liegts problem, wo denn a sunst...
-        writeBlockStates();
-//        writeOreCode();
-    }
-
-    private static void writeItemCode(boolean allowed) {
-        String prevContent = getWholeFileContentTillGenerate(modItemsFile, "//!GENERATE");
-        String newStuff = "";
-
-        for (int i = 0; i < items.size(); i++) {
-            newStuff += items.get(i).toString() + "\n";
-        }
-
-        prevContent += "\n" + newStuff + "}";
-
-        if (!allowed) return;
-        write(prevContent, modItemsFile);
-        writeItemModels();
-        writeItemsToTabRegistry();
-        writeItemTags(); //do ligts problem
-    }
-
-    private static void writeRecipeCode(boolean allowed) {
-        String prevContent = getWholeFileContentTillGenerate(modRecipeProviderFile, "//!GENERATE");
-        String newStuff = "";
-        ArrayList<Integer> relevantObjects = new ArrayList<>();
-        ArrayList<File> relevantClasses = new ArrayList<>();
-        for (int i = 0; i < recipes.size(); i++) {
-            if (!(recipes.get(i) instanceof InterpretedCustomRecipe)) {
-                newStuff += recipes.get(i).toString() + "\n";
-            } else {
-                relevantObjects.add(i);
-                relevantClasses.add(((InterpretedCustomRecipe) recipes.get(i)).getRecipeClass());
-            }
-        }
-
-        prevContent += "\n" + newStuff + "    }\n}";
-        if (!allowed) return;
-        write(prevContent, modRecipeProviderFile);
-    }
-
-    private static void writeToolTierCode(boolean allowed) {
-        String prevContent = getWholeFileContentTillGenerate(modToolTiersFile, "//!GENERATE");
-        String newStuff = "";
-        for (int i = 0; i < toolTiers.size(); i++) {
-            newStuff += toolTiers.get(i).getTierCode();
-        }
-
-        prevContent += "\n" + newStuff + "}";
-
-        if (!allowed) return;
-        write(prevContent, modToolTiersFile);
-        writeModTags(); //do liegt a a problem, wo a sunst...
-    }
-
-    public static void printRegistryFromList(ArrayList<?> o) {
-        for (Object object : o) {
-            System.out.println(object.toString());
-        }
-    }
-
-    public static ArrayList<String> subCollection(int index1, int index2, ArrayList<String> arrayList) {
-        ArrayList<String> toReturn = new ArrayList<>();
-        for (int i = index1; i < arrayList.size() && i < index2; i++) {
-            toReturn.add(arrayList.get(i));
-        }
-        return toReturn;
-    }
-
-    private static ArrayList<String> getContentInBrackets(int listIndex, int elementIndex, ArrayList<ArrayList<String>> stringObjects) {
-        ArrayList<String> objects = new ArrayList<>();
-        for (int i = elementIndex+1; i < stringObjects.get(listIndex).size() && !stringObjects.get(listIndex).get(i).contains("]"); i++) {
-            objects.add(stringObjects.get(listIndex).get(i));
-        }
-        return objects;
-    }
-
-    public static void rewriteAllAfterError(boolean allowed) {
-        try {
-            if (!allowed) return; //only for safety reasons
-            FileWriter[] writers = new FileWriter[12];
-            (writers[0] = new FileWriter(modBlocksFile)).write(unchangedModBlockFileContent);
-            (writers[1] = new FileWriter(modRegistry)).write(unchangedModRegistryContent);
-            (writers[2] = new FileWriter(modItemTagProviderFile)).write(unchangedModItemTagProviderContent);
-            (writers[3] = new FileWriter(modToolTiersFile)).write(unchangedModToolTiersFile);
-            (writers[4] = new FileWriter(modBlockStateProviderFile)).write(unchangedModBlockStateProviderFile);
-            (writers[5] = new FileWriter(modBlockLootTableProviderFile)).write(unchangedModBlockLootTableProviderFile);
-            (writers[6] = new FileWriter(modBlockTagProviderFile)).write(unchangedModBlockTagProviderFile);
-            (writers[7] = new FileWriter(modItemModelProviderFile)).write(unchangedModItemModelProviderFile);
-            (writers[8] = new FileWriter(modRecipeProviderFile)).write(unchangedModRecipeProviderFile);
-            (writers[9] = new FileWriter(modItemsFile)).write(unchangedModItemsFileContent);
-            (writers[10] = new FileWriter(modCreativeTabsFile)).write(unchangedModCreativeModeTabsFileContent);
-            (writers[11] = new FileWriter(modTagsFile)).write(unchangedModTagsFileContent);
-            for (int i = 0; i < writers.length; i++) {
-                writers[i].close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String userInput(Scanner s) {
-        System.out.println();
-        System.out.print(ANSI_CYAN + "#USER> " + ANSI_RESET);
-        String line = s.nextLine();
-        System.out.println();
-        return line;
-    }
-
-    public static String userInputWithoutLineBreak(Scanner s) {
-        System.out.print(ANSI_CYAN + "#USER> " + ANSI_RESET);
-        String line = s.nextLine();
-        return line;
-    }
-
-    public static void success(String msg) {
-        System.out.println(ANSI_GREEN + msg + ANSI_RESET);
-    }
-
-    public static void error(String msg) {
-        System.out.println(ANSI_RED + msg + ANSI_RESET);
-    }
-
-    public static void warning(String msg) {
-        System.out.println(ANSI_YELLOW + msg + ANSI_RESET);
-    }
-
-    public static String getPartWithoutComment(String s) {
-        String[] splitText = s.split("#");
-        for (int i = 0; i < splitText.length; i++) {
-            if (!splitText[i].contains("//")) {
-                return splitText[i];
-            }
-        }
-        return "";
-    }
-
-    public static void printFileFromList(ArrayList<String> listedFile) {
-        for (int i = 0; i < listedFile.size(); i++) {
-            System.out.print(listedFile.get(i));
-        }
-    }
-
-    public static ArrayList<String> getContentFromFileAsList(File file, String comment) {
-        Scanner reader;
-        ArrayList<String> fileContent = new ArrayList<>();
-        try {
-            reader = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        while (reader.hasNextLine()) {
-            fileContent.add(reader.nextLine() + "\n");
-        }
-
-        clearContentFromUnneccesary(fileContent, comment);
-        return fileContent;
-    }
-
-    public static void clearContentFromUnneccesary(ArrayList<String> content, String comment) {
-        for (int i = 0; i < content.size(); i++) {
-            content.set(i, content.get(i).trim());
-            if (!comment.isEmpty()) {
-                if (content.get(i).contains(comment)) {
-                    content.set(i, getPartWithoutComment(content.get(i)));
-                }
-            }
-            if (content.get(i).trim().equals("")) {
-                content.remove(i);
-                i--;
-            }
-        }
-    }
-
-    static int getWritablePos(File file, String commentCommand) {
-        Scanner reader;
-        try {
-            reader = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String searcher;
-        for (int i = 1; reader.hasNextLine(); i++) {
-            searcher = reader.nextLine();
-            if (searcher.trim().equals(commentCommand)) {
-                reader.close();
-                return i + 1;
-            }
-        }
-        return -1;
-    }
-
-    static String getWholeFileContentTillGenerate(File file, String command) {
-        String saved = "";
-        try {
-            Scanner reader = new Scanner(file);
-            int startGeneratingAtLine = getWritablePos(file, command);
-            for (int i = 1; i < startGeneratingAtLine && reader.hasNextLine(); i++) {
-                saved += reader.nextLine() + "\n";
-            }
-            String line;
-            while (reader.hasNextLine()) {
-                line = reader.nextLine();
-                if (line.contains("//!PRESERVE")) {
-                    saved += line + "\n";
-                }
-            }
-            reader.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return saved;
-    }
-
-    static String getContentFromFile(File file) {
-        Scanner reader;
-        try {
-            reader = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String content = "";
-        while (reader.hasNextLine()) {
-            content += reader.nextLine() + "\n";
-        }
-        return content;
     }
 
     public static ArrayList<String> getEnchantmentablesFromOptionalParameter(ArrayList<String> filecontent, String name) {

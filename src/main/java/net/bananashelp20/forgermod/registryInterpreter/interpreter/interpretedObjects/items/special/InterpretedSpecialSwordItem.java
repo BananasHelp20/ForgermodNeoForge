@@ -6,6 +6,8 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.FileIO.getContentFromFileAsList;
+
 public class InterpretedSpecialSwordItem implements InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> enchantmentExtras;
@@ -13,7 +15,7 @@ public class InterpretedSpecialSwordItem implements InterpretedItem {
     String rarity = "";
     public InterpretedSpecialSwordItem(String name, String properties, String itemCreationMethod, String modelMethod, ArrayList<String> inSpecifyBrackets, String material, String creativeTab) {
         itemProperties = new ArrayList<>(Arrays.asList(name, (properties.contains("!ULTRA") ? "999999999, 0.1f" : properties), itemCreationMethod, modelMethod, material, creativeTab));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
         specified = inSpecifyBrackets;
         if (itemProperties.get(2).contains("WithRarity"))
             this.rarity = specified.getFirst();

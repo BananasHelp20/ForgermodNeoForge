@@ -9,18 +9,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.FileIO.clearContentFromUnneccesary;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.interpreterHelperClasses.FileIO.getContentFromFileAsList;
+
 public class InterpretedItemWithUpgradedVariations implements InterpretedItem {
     ArrayList<String> itemProperties;
     ArrayList<String> variants;
     ArrayList<String> enchantmentExtras;
     public InterpretedItemWithUpgradedVariations(String name, String itemClass, String itemCreationMethod, String modelMethod, String material, ArrayList<String> variants, String creativeTab) {
         itemProperties = new ArrayList<>(Arrays.asList(name, itemClass, itemCreationMethod, modelMethod, material, creativeTab));
-        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
+        this.enchantmentExtras = RegistryInterpreter.getEnchantmentablesFromOptionalParameter(getContentFromFileAsList(RegistryInterpreter.itemFile, "#"), itemProperties.get(0));
         boolean hasValue = false;
         for (int i = 0; i < variants.size(); i++) {
             if (variants.get(i).trim().contains("!ALL")) {
-                this.variants = RegistryInterpreter.getContentFromFileAsList(RegistryInterpreter.upgradeList, "#");
-                RegistryInterpreter.clearContentFromUnneccesary(this.variants, "#");
+                this.variants = getContentFromFileAsList(RegistryInterpreter.upgradeList, "#");
+                clearContentFromUnneccesary(this.variants, "#");
                 hasValue = true;
             }
         }

@@ -242,28 +242,51 @@
 
     defaultName
     [
-        blockNames listed
+        blockNames listed e.g.
+        jade_ore
+        jade_nether_ore
+        jade_end_ore
     ]
     [
-        dimensions listed
+        dimensions listed e.g.
+        end
     ]
     [
-        generationSteps listed
+        generationSteps listed (ordered in blocknames) e.g.
+        Decoration.UNDERGROUND_ORES
+        Decoration.UNDERGROUND_ORES
+        Decoration.UNDERGROUND_ORES
     ]
     [
         generational ruletests listed
         [
-            properties of ruletest listed
-        ];
+            properties of ruletest listed e.g.
+            endReplaceables
+            BlockMatchTest
+            Blocks.END_STONE
+        ]
     ]
     [
-        oreSizesForEachDimension listed
+        oreSizesForEachDimension listed e.g.
+        9
+        7
+        5
     ]
     [
         placements for each dimension listed
         [
-            placement properties listed
-        ];
+            placement properties listed e.g.
+            commonOrePlacement
+            2
+            HeightRangePlacement
+            triangle
+            VerticalAnchor
+            absolute
+            -64
+            VerticalAnchor
+            absolute
+            80
+        ]
     ]
 }
 
