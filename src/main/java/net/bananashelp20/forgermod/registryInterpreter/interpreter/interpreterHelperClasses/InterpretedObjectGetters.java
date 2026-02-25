@@ -180,11 +180,11 @@ public class InterpretedObjectGetters {
             ruleTests.parseFromStringList(oreStringObjects.get(i), generationSteps.lastIndexExpander);
             TitledList<Integer> oreSizesForEachDimension = new TitledList<>("oreSizesForEachDimension", "String");
             oreSizesForEachDimension.parseFromStringList(oreStringObjects.get(i), ruleTests.lastIndexExpander);
-            TitledTable<String> placements = new TitledTable<>((ArrayList<String>) Arrays.asList(new String[]{"chance-method-name", "count", "placement-class", "placement-method", "anchor", "absoluteness", "height", "second-anchor", "second-absoluteness", "second-height"}), (ArrayList<String>) Arrays.asList(new String[]{"String", "int", "String", "String", "String", "String", "int", "String", "String", "int"}));
+            TitledTable<String> placements = new TitledTable<>((ArrayList<String>) Arrays.asList(new String[]{"placement-method", "anchor", "absoluteness", "height", "second-anchor", "second-absoluteness", "second-height"}), (ArrayList<String>) Arrays.asList(new String[]{"String", "String", "String", "int", "String", "String", "int"}));
             placements.parseFromStringList(oreStringObjects.get(i), oreSizesForEachDimension.lastIndexExpander);
 
             if (oreStringObjects.get(i).getFirst().contains("{simpleOre")) {
-                oreToAdd = new InterpretedInterdimensionalOreBlock(oreStringObjects.get(i).get(1), blockNames, dimensions, generationSteps, ruleTests, oreSizesForEachDimension, placements);
+                oreToAdd = new InterpretedInterdimensionalOreBlock(oreStringObjects.get(i).get(1), blockNames.getAsList(), dimensions, generationSteps, ruleTests, oreSizesForEachDimension, placements);
             } else if (oreStringObjects.get(i).getFirst().contains("{specialOre")) {
                 oreToAdd = new InterpretedInterdimensionalSpecialOreBlock();
             }

@@ -42,6 +42,14 @@ public class TitledList<S> {
         throw new ListObjectNotFoundException("List Object has invalid Type!");
     }
 
+    public int length() {
+        return list.size();
+    }
+
+    public ArrayList<S> getAsList() {
+        return list;
+    }
+
     public int lastIndexExpander;
     public void parseFromStringList(ArrayList<String> bracketStringList, int indexExpander) {
         for (int i = indexExpander + (bracketStringList.get(indexExpander).contains("[") ? 1 : 0); i < bracketStringList.size() && !bracketStringList.get(i).contains("]"); i++) {

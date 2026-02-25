@@ -1,5 +1,7 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.special.ores;
 
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.ListObjects.TitledList;
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.ListObjects.TitledTable;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedBlock;
 import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedObjects.blocks.InterpretedOre;
 
@@ -9,13 +11,27 @@ public class InterpretedInterdimensionalSpecialOreBlock implements InterpretedOr
     //appears more than one time in one/two/all dimensions
     ArrayList<String> blockNames; //e.g. nether_jade_ore, overworld_jade_ore, end_jade_ore
     String defaultName; //in CamelCase e.g. JadeOre
-    ArrayList<String> dimensions;
-    ArrayList<String> generationSteps; //per default: Decoration.UNDERGROUND_ORES
-    ArrayList<ArrayList<String>> ruleTests; //ruleTestVariableName, tagMatchTestType, test. e.g. stoneReplaceables, BlockMatchTest, stone_ore_replaceables
-    ArrayList<Integer> oreSizesForEachDimension;
-    ArrayList<ArrayList<String>> placements; //in format for each dimension: triangle/uniform, from (as written int between -64 and 256), to (as written int between -64 and 256)
+    TitledList<String> dimensions;
+    TitledList<String> generationSteps; //per default: Decoration.UNDERGROUND_ORES
+    TitledTable<String> ruleTests; //ruleTestVariableName, tagMatchTestType, test. e.g. stoneReplaceables, BlockMatchTest, stone_ore_replaceables
+    TitledList<Integer> oreSizesForEachDimension;
+    TitledTable<String> placements; //in format for each dimension: triangle/uniform, from (as written int between -64 and 256), to (as written int between -64 and 256)
     ArrayList<InterpretedBlock> oreBlocks;
 
+    public InterpretedInterdimensionalSpecialOreBlock(String defaultName, ArrayList<String> blockNames, TitledList<String> dimensions, TitledList<String> generationSteps, TitledTable<String> ruleTests, TitledList<Integer> oreSizesForEachDimension, TitledTable<String> placements, ArrayList<InterpretedBlock> oreBlocks) {
+        this.blockNames = blockNames;
+        this.defaultName = defaultName;
+        this.dimensions = dimensions;
+        this.generationSteps = generationSteps;
+        this.ruleTests = ruleTests;
+        this.oreSizesForEachDimension = oreSizesForEachDimension;
+        this.placements = placements;
+        this.oreBlocks = oreBlocks;
+    }
+
+    private ArrayList<String> placedKeys = getPlacedKeys(blockNames);
+    private ArrayList<String> primaryKeys = getPrimaryKeys(blockNames);
+    private ArrayList<String> addOre = getAddOres(blockNames);
 
     @Override
     public String getPlacedFeatureRegistration() {

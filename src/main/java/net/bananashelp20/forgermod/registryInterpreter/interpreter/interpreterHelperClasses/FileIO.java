@@ -156,4 +156,13 @@ public class FileIO {
             throw new RuntimeException(e);
         }
     }
+
+    public static ArrayList<String> getArraylistFromBrackets(ArrayList<String> bracketStringList, int indexExpander) {
+        if (bracketStringList.get(indexExpander).contains("]")) indexExpander += 2; else if (bracketStringList.get(indexExpander).contains("[")) indexExpander++;
+        ArrayList<String> bracketContent = new ArrayList<>();
+        for (indexExpander = indexExpander; indexExpander < bracketStringList.size() && !bracketStringList.get(indexExpander).contains("]"); indexExpander++) {
+            bracketContent.add(bracketContent.get(indexExpander));
+        }
+        return bracketContent;
+    }
 }

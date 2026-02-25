@@ -78,6 +78,18 @@ public class TitledTable<S> {
         return bracketContent;
     }
 
+    public ArrayList<ArrayList<S>> getAsList() {
+        return list;
+    }
+
+    public int length() {
+        return list.size();
+    }
+
+    public int innerLength(int index) {
+        return list.get(index).size();
+    }
+
     public int lastIndexExpander;
     public void parseFromStringList(ArrayList<String> bracketStringList, int indexExpander) {
         int acceptableBrackets = 0;

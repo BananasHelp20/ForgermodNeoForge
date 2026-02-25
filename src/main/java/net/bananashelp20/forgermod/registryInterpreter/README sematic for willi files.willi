@@ -258,7 +258,7 @@
         Decoration.UNDERGROUND_ORES
     ]
     [
-        generational ruletests listed
+        generational ruletests listed e.g.
         [
             properties of ruletest listed e.g.
             endReplaceables
@@ -273,12 +273,9 @@
         5
     ]
     [
-        placements for each dimension listed
+        placements for each dimension listed e.g.
         [
             placement properties listed e.g.
-            commonOrePlacement
-            2
-            HeightRangePlacement
             triangle
             VerticalAnchor
             absolute
