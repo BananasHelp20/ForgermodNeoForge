@@ -20,6 +20,7 @@ import net.bananashelp20.forgermod.registryInterpreter.interpreter.interpretedOb
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter.*;
 import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreterHelperMethods.*;
@@ -172,10 +173,19 @@ public class InterpretedObjectGetters {
             oreToAdd = null;
             TitledList<String> blockNames = new TitledList<>("blockNames", "String");
             blockNames.parseFromStringList(oreStringObjects.get(i), 2);
-            TitledList<String> dimensions = new TitledList<>("dimensions", "String");
-            dimensions.parseFromStringList(oreStringObjects.get(i), blockNames.lastIndexExpander);
+            int temp = 0;
+            Object dimensions = null;
+            if (oreStringObjects.get(i).getFirst().contains("{simpleOre")) {
+                dimensions = new TitledList<String>("dimensions", "String");
+                ((TitledList<String>) dimensions).parseFromStringList(oreStringObjects.get(i), blockNames.lastIndexExpander);
+                temp = ((TitledList<String>) dimensions).lastIndexExpander;
+            } else if (oreStringObjects.get(i).getFirst().contains("{specialOre")) {
+                dimensions = new TitledTable<String>((ArrayList<String>) Arrays.asList(new String[]{}), (ArrayList<String>) Arrays.asList(new String[]{}));
+                ((TitledTable<String>) dimensions).parseFromStringListWithTitles(oreStringObjects.get(i), blockNames.lastIndexExpander);
+                temp = ((TitledTable<String>) dimensions).lastIndexExpander;
+            }
             TitledList<String> generationSteps = new TitledList<>("generationSteps", "String");
-            generationSteps.parseFromStringList(oreStringObjects.get(i), dimensions.lastIndexExpander);
+            generationSteps.parseFromStringList(oreStringObjects.get(i), temp);
             TitledTable<String> ruleTests = new TitledTable<>((ArrayList<String>) Arrays.asList(new String[]{"replace-variable-name", "matchtest-class", "replaceable-block"}), (ArrayList<String>) Arrays.asList(new String[]{"String", "String", "String"}));
             ruleTests.parseFromStringList(oreStringObjects.get(i), generationSteps.lastIndexExpander);
             TitledList<Integer> oreSizesForEachDimension = new TitledList<>("oreSizesForEachDimension", "String");
@@ -184,9 +194,9 @@ public class InterpretedObjectGetters {
             placements.parseFromStringList(oreStringObjects.get(i), oreSizesForEachDimension.lastIndexExpander);
 
             if (oreStringObjects.get(i).getFirst().contains("{simpleOre")) {
-                oreToAdd = new InterpretedInterdimensionalOreBlock(oreStringObjects.get(i).get(1), blockNames.getAsList(), dimensions, generationSteps, ruleTests, oreSizesForEachDimension, placements);
+                oreToAdd = new InterpretedInterdimensionalOreBlock(oreStringObjects.get(i).get(1), blockNames.getAsList(), (TitledList<String>) dimensions, generationSteps, ruleTests, oreSizesForEachDimension, placements);
             } else if (oreStringObjects.get(i).getFirst().contains("{specialOre")) {
-                oreToAdd = new InterpretedInterdimensionalSpecialOreBlock();
+                oreToAdd = new InterpretedInterdimensionalSpecialOreBlock(oreStringObjects.get(i).get(1), blockNames.getAsList(), (TitledTable<String>) dimensions, generationSteps, ruleTests, oreSizesForEachDimension, placements);
             }
 
             interpretedOres.add(oreToAdd);

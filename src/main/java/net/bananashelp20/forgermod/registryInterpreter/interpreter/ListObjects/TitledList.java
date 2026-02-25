@@ -58,4 +58,11 @@ public class TitledList<S> {
         }
         lastIndexExpander++;
     }
+
+    public boolean contains(S obj) {
+        for (int i = 0; i < list.size(); i++) {
+            if (obj.equals(get(i))) return true;
+        }
+        return false;
+    }
 }

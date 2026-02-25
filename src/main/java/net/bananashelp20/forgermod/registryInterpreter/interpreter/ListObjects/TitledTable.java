@@ -110,4 +110,32 @@ public class TitledTable<S> {
         }
         lastIndexExpander++;
     }
+
+    public String getTitle(int i) {
+        return tableTitles.get(i);
+    }
+
+    public void parseFromStringListWithTitles(ArrayList<String> bracketStringList, int indexExpander) {
+        int acceptableBrackets = 0;
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = indexExpander + (bracketStringList.get(indexExpander).contains("[") ? 1 : 0); i < bracketStringList.size() && !(bracketStringList.get(i).contains("]") && (acceptableBrackets == 0 && i > 0)); i++) {
+            if (bracketStringList.get(i).contains("[")) acceptableBrackets++;
+            if (bracketStringList.get(i).contains("]")) acceptableBrackets--;
+
+            if (acceptableBrackets != 0 && !bracketStringList.contains("]") && !bracketStringList.contains("[")) {
+                list.add(bracketStringList.get(i));
+            }
+
+            if (acceptableBrackets == 0 && !bracketStringList.contains("]") && !bracketStringList.contains("[")) {
+                addTableTitle(bracketStringList.get(i));
+            }
+
+            if (acceptableBrackets == 0 && !list.isEmpty()) {
+                this.list.add((ArrayList<S>) list);
+                list = new ArrayList<>();
+            }
+            lastIndexExpander = i;
+        }
+        lastIndexExpander++;
+    }
 }

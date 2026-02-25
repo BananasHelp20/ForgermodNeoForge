@@ -300,6 +300,37 @@
         #//same as simpleOre
     }
 
+    defaultName
+        [
+            blockNames listed like normal
+        ]
+        [
+            dimensions listed and blocks per dimension e.g.
+            overworld
+            [
+                blocknames per dimensions listed e.g.
+                jade_ore
+                jade_deepslate_ore
+            ]
+        ]
+        [
+            generationSteps listed (ordered in blocknames) like normal
+        ]
+        [
+            generational ruletests listed like normal
+            [
+                properties of ruletest listed like normal
+            ]
+        ]
+        [
+            oreSizesForEachDimension listed like normal
+        ]
+        [
+            placements for each dimension listed like normal
+            [
+                placement properties listed like normal
+            ]
+        ]
 }
 
 

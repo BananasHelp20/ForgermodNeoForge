@@ -28,7 +28,7 @@ public class InterpretedInterdimensionalOreBlock implements InterpretedOre {
 
     private ArrayList<String> placedKeys = getPlacedKeys(blockNames);
     private ArrayList<String> primaryKeys = getPrimaryKeys(blockNames);
-    private ArrayList<String> addOre = getAddOres(blockNames);
+    private ArrayList<String> addOres = getAddOres(blockNames);
 
     @Override
     public String getPlacedFeatureRegistration() {
@@ -38,43 +38,84 @@ public class InterpretedInterdimensionalOreBlock implements InterpretedOre {
                     + "                ModOrePlacement.commonOrePlacement(2, HeightRangePlacement." + placements.getFromList(i, "placement-method") + "("
                     + placements.getFromList(i, "anchor") + "." + placements.getFromList(i, "absoluteness") + "(" + placements.getFromList(i, "height") + "), "
                     + placements.getFromList(i, "second-anchor") + "." + placements.getFromList(i, "second-absoluteness") + "(" + placements.getFromList(i, "second-height")
-                    + "))));\n\n";
+                    + "))));\n";
         }
-        return s;
+        return s + "\n";
     }
 
     @Override
     public String getPlacedFeatureInitialisation() {
-        return "";
+        String s = "";
+        for (int i = 0; i < blockNames.size(); i++) {
+            s += "    public static final ResourceKey<PlacedFeature> " + placedKeys.get(i) + " = registerKey(\"" + placedKeys.get(i).substring(0, placedKeys.get(i).length()-4).toLowerCase() + "\");\n";
+        }
+        return s + "\n";
     }
 
     @Override
     public String getConfigurationList() {
-        return "";
+        String s = "";
+        if (dimensions.contains("overworld"))
+            s += "        List<OreConfiguration.TargetBlockState> overworld" + defaultName + "s = List.of(\n" +
+                    "                OreConfiguration.target(" + ruleTests.getFromList(0, "replace-variable-name") + ", ModBlocks." + blockNames.getFirst().toUpperCase() + ".get().defaultBlockState()),\n" +
+                    "                OreConfiguration.target(" + ruleTests.getFromList(1, "replace-variable-name") + ", ModBlocks." + blockNames.get(1).toUpperCase() + ".get().defaultBlockState())\n" +
+                    "        );\n\n";
+        return s;
     }
 
     @Override
     public String getConfiguredFeatureRegistration() {
-        return "";
+        String s = "";
+        if (dimensions.contains("overworld")) {
+            s += "        register(context, " + primaryKeys.getFirst() + ", Feature.ORE, new OreConfiguration(overworld" + defaultName + "s, " + oreSizesForEachDimension.get(0) + "));\n";
+        }
+        for (int i = (dimensions.contains("overworld") ? 2 : 0); i < blockNames.size(); i++) {
+            s += "        register(context, " + primaryKeys.get(i) + ", Feature.ORE, new OreConfiguration(" + ruleTests.getFromList(i, "replace-variable-name") + ",\n" +
+                    "                ModBlocks." + blockNames.get(i).toUpperCase() + ".get().defaultBlockState(), " + oreSizesForEachDimension.get(i) + "));\n";
+        }
+        return s + "\n";
     }
 
     @Override
     public String getConfiguredFeatureInitialisation() {
-        return "";
+        String s = "";
+        for (int i = 0; i < blockNames.size(); i++) {
+            s += "    public static final ResourceKey<ConfiguredFeature<?,?>> " + primaryKeys.get(i).toUpperCase() + " = registerKey(\"" + blockNames.get(i).toLowerCase() + "\");";
+        }
+        return s + "\n";
     }
 
     @Override
     public String getConfiguredFeatureRuleTests() {
-        return "";
+        String s = "";
+        for (int i = 0; i < blockNames.size(); i++) {
+            s += "        RuleTest " + ruleTests.getFromList(i, "replace-variable-name") + " = new " + ruleTests.getFromList(i, "matchtest-class") + "(" + ruleTests.getFromList(i, "replaceable-block") + ");\n";
+
+        }
+        return s + "\n";
     }
 
     @Override
     public String getBiomeModifierInitialisation() {
-        return "";
+        String s = "";
+        for (int i = 0; i < blockNames.size(); i++) {
+            s += "    public static final ResourceKey<BiomeModifier> " + addOres.get(i).toUpperCase() + " = registerKey(\"" + addOres.get(i).toLowerCase() + "\");\n";
+
+        }
+        return s + "\n";
     }
 
     @Override
     public String getBiomeModifierRegistration() {
-        return "";
+        String s = "";
+        for (int i = 0; i < blockNames.size(); i++) {
+            s += "        context.register(" + addOres.get(i).toUpperCase() + ", new BiomeModifiers.AddFeaturesBiomeModifier(\n" +
+                    "                biomes.getOrThrow(BiomeTags.IS_" + ((String) dimensions.get(i)).toUpperCase() + "),\n" +
+                    "                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures." + placedKeys.get(i).toUpperCase() + ")),\n" +
+                    "                GenerationStep." + generationSteps.get(i) + "\n" +
+                    "        ));\n";
+
+        }
+        return s + "\n";
     }
 }

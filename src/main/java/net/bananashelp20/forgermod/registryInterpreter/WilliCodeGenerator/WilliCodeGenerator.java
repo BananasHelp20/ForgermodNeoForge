@@ -1,5 +1,9 @@
 package net.bananashelp20.forgermod.registryInterpreter.WilliCodeGenerator;
 
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter;
+import net.bananashelp20.forgermod.registryInterpreter.interpreterInterfaceTerminal.InterpreterInterfaceTerminal;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -24,6 +28,9 @@ public class WilliCodeGenerator {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public static void main(String[] args) throws FileNotFoundException {
+//        InterpreterInterfaceTerminal.terminalMessage("Normale Nachricht", true);
+//        InterpreterInterfaceTerminal.terminalMessage("Fehler!", Color.RED, false);
+//        InterpreterInterfaceTerminal.terminalMessage("Erfolg!", Color.GREEN, true);
         try {
             if (!generateCode()) {
                 throw new FileNotFoundException(ANSI_RED + "Code could not be generated, an Error occurred" + ANSI_RESET);
@@ -31,6 +38,9 @@ public class WilliCodeGenerator {
         } catch (Exception e) {
             throw e;
         }
+        /*
+        terminalArea.append("Interpreter Interface Terminal\n\n");
+        terminalArea.append("By typing in '?' and pressing Enter, you can view all currently possible commands\n\n");*/
     }
 
     static boolean running;

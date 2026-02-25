@@ -57,7 +57,6 @@ public class RegistryInterpreter {
     public static File modRecipeProviderFile = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/ModRecipeProvider.java");
     public static File modRegistry = new File("./src/main/java/net/bananashelp20/forgermod/registryInterpreter/testRegistries/RegistryClass.java");
 
-
     private static boolean stillGenerating = true;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -76,7 +75,6 @@ public class RegistryInterpreter {
     public static ArrayList<InterpretedBlock> temporaryOreBlocks;
     public static ArrayList<InterpretedOre> oreBlocks = getAllOres();
     public static ArrayList<InterpretedBlock> blocks = getAllBlocks();
-
 
     static String unchangedModBlockFileContent = getContentFromFile(modBlocksFile);
     static String unchangedModRegistryContent = getContentFromFile(modRegistry);
@@ -238,3 +236,18 @@ public class RegistryInterpreter {
         return enchantingTagsForEachItem;
     }
 }
+
+/*
+
+public static void terminalMessage(String message, Color messageColor, boolean systemMessage) {
+        final String msg = (systemMessage) ? systemPromt + message : message;
+        SwingUtilities.invokeLater(() -> {
+            if (instance == null) {
+                instance = new InterpreterInterfaceTerminal();
+                instance.setVisible(true);
+            }
+            instance.printExternalMessage(msg, messageColor);
+        });
+    }
+
+*/
