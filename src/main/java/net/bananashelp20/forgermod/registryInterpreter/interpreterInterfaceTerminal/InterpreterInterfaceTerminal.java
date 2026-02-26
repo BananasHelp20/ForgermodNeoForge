@@ -1,72 +1,83 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreterInterfaceTerminal;
 
-import net.bananashelp20.forgermod.registryInterpreter.WilliCodeGenerator.WilliCodeGenerator;
-import net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter.*;
+import static net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreterHelperMethods.warning;
+
 public class InterpreterInterfaceTerminal extends JFrame {
 
     private static InterpreterInterfaceTerminal instance;
 
-    private JTextArea terminalArea;
+    private JTextPane terminalPane;
+    private StyledDocument document;
+
+    private Style defaultStyle;
+    private Style systemStyle;
+
     private List<String> history = new ArrayList<>();
-    private int historyIndex = -1;
+    private int historyPointer = -1;
 
     private File currentDirectory = new File(System.getProperty("user.dir"));
 
-    public boolean williInterpreterMode = false;
-    public boolean registryInterpreterMode = false;
+    public boolean editorMode = false;
+    private File mountedFile = null;
 
     private String PROMPT;
     private int inputStartPosition;
-    public static String systemPromt = "";
-    public static String currentPromt = "";
+    private int editorContentStart = 0;
 
     public InterpreterInterfaceTerminal() {
         instance = this;
 
-        setTitle("Custom PowerShell Terminal");
+        setTitle("Interpreter Terminal");
         setSize(800, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        terminalArea = new JTextArea();
-        terminalArea.setBackground(Color.BLACK);
+        terminalPane = new JTextPane();
+        terminalPane.setBackground(Color.BLACK);
+        terminalPane.setCaretColor(new Color(200, 200, 200));
+        terminalPane.setFont(new Font("Consolas", Font.PLAIN, 16));
+        terminalPane.setBorder(new EmptyBorder(8, 8, 8, 8));
 
-        // ===== Text jetzt hellgrau =====
-        terminalArea.setForeground(new Color(200, 200, 200));
-        terminalArea.setCaretColor(new Color(200, 200, 200));
-        // =================================
+        document = terminalPane.getStyledDocument();
 
-        terminalArea.setFont(new Font("Consolas", Font.PLAIN, 16));
-        terminalArea.setLineWrap(true);
-        terminalArea.setBorder(new EmptyBorder(8, 8, 8, 8));
+        defaultStyle = terminalPane.addStyle("default", null);
+        StyleConstants.setForeground(defaultStyle, new Color(200, 200, 200));
 
-        terminalArea.addKeyListener(new KeyAdapter() {
+        systemStyle = terminalPane.addStyle("system", null);
+        StyleConstants.setForeground(systemStyle, Color.RED);
+
+        terminalPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
 
-                int caret = terminalArea.getCaretPosition();
-
-                if (caret < inputStartPosition) {
-                    terminalArea.setCaretPosition(terminalArea.getText().length());
+                if (editorMode) {
+                    handleEditorKeys(e);
+                    return;
                 }
 
-                if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                    if (caret <= inputStartPosition) {
-                        e.consume();
-                        return;
-                    }
+                int caret = terminalPane.getCaretPosition();
+
+                if (caret < inputStartPosition) {
+                    terminalPane.setCaretPosition(document.getLength());
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && caret <= inputStartPosition) {
+                    e.consume();
+                    return;
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -76,17 +87,17 @@ public class InterpreterInterfaceTerminal extends JFrame {
 
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     e.consume();
-                    showPreviousCommand();
+                    historyUp();
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     e.consume();
-                    showNextCommand();
+                    historyDown();
                 }
             }
         });
 
-        JScrollPane scrollPane = new JScrollPane(terminalArea);
+        JScrollPane scrollPane = new JScrollPane(terminalPane);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane);
 
@@ -94,99 +105,125 @@ public class InterpreterInterfaceTerminal extends JFrame {
         printPrompt();
     }
 
-    public static void terminalMessage(String message, boolean systemMessage) {
-        SwingUtilities.invokeLater(() -> {
+    private void historyUp() {
+        if (history.isEmpty()) return;
 
-            if (instance == null) {
-                instance = new InterpreterInterfaceTerminal();
-                instance.setVisible(true);
-            }
-
-            instance.printExternalMessage(message, new Color(200, 200, 200));
-        });
-    }
-
-    public static void terminalMessage(String message, Color messageColor, boolean systemMessage) {
-        final String msg = (systemMessage) ? systemPromt + message : message;
-        SwingUtilities.invokeLater(() -> {
-            if (instance == null) {
-                instance = new InterpreterInterfaceTerminal();
-                instance.setVisible(true);
-            }
-            instance.printExternalMessage(msg, messageColor);
-        });
-    }
-
-    private void printExternalMessage(String message, Color MessageColor) {
-        if (!terminalArea.getText().endsWith("\n")) {
-            terminalArea.append("\n");
+        if (historyPointer == -1) {
+            historyPointer = history.size() - 1;
+        } else if (historyPointer > 0) {
+            historyPointer--;
         }
 
-        terminalArea.append(message + "\n");
-        printPrompt();
+        replaceCurrentInput(history.get(historyPointer));
     }
+
+    private void historyDown() {
+        if (history.isEmpty()) return;
+
+        if (historyPointer >= history.size() - 1) {
+            historyPointer = -1;
+            replaceCurrentInput("");
+        } else {
+            historyPointer++;
+            replaceCurrentInput(history.get(historyPointer));
+        }
+    }
+
+    private void replaceCurrentInput(String text) {
+        try {
+            document.remove(inputStartPosition,
+                    document.getLength() - inputStartPosition);
+
+            document.insertString(document.getLength(),
+                    text, defaultStyle);
+
+            terminalPane.setCaretPosition(document.getLength());
+        } catch (Exception ignored) {}
+    }
+
+    /* ========================= */
+
+    public void terminalMessage(String message, boolean lineBreak) {
+        appendStyled(message + "\n", defaultStyle);
+    }
+
+    public void terminalMessage(String message) {
+        terminalMessage(message, true);
+    }
+
+    public void terminalMessage(String message, Color messageColor) {
+        terminalMessage(message, messageColor, true);
+    }
+
+    public void terminalMessage(String message, Color messageColor, boolean lineBreak) {
+        Style custom = terminalPane.addStyle("custom_" + System.nanoTime(), null);
+        StyleConstants.setForeground(custom, messageColor);
+        appendStyled(message + (lineBreak ? "\n" : ""), custom);
+    }
+
+    public void terminalMessage(String message, boolean systemMessage, boolean lineBreak) {
+        if (systemMessage) {
+            appendStyled("#System> " + message + (lineBreak ? "\n" : ""), systemStyle);
+        } else {
+            terminalMessage(message);
+        }
+    }
+
+    private void appendStyled(String text, Style style) {
+        try {
+            document.insertString(document.getLength(), text, style);
+            terminalPane.setCaretPosition(document.getLength());
+        } catch (BadLocationException ignored) {}
+    }
+
+    private final Color DARK_CYAN = new Color(0, 204, 204);
 
     private void printWelcomeMessage() {
-        terminalArea.append("Windows PowerShell\n");
-        terminalArea.append("Custom Java Terminal\n\n");
+        terminalMessage("Interpreter Interface Terminal", DARK_CYAN);
+        terminalMessage("Type in ? to look at all commands currently available", Color.gray);
+        terminalMessage("");
     }
 
+    private String currentPromt = "";
+
     private void printPrompt() {
-        if (!registryInterpreterMode && !williInterpreterMode) {
+        if (!williMode && !registryMode) {
             PROMPT = currentDirectory.getAbsolutePath() + "> ";
-        } else {
-            PROMPT = currentPromt;
+            appendStyled(PROMPT, defaultStyle);
         }
-        terminalArea.append(PROMPT);
-        inputStartPosition = terminalArea.getText().length();
-        terminalArea.setCaretPosition(inputStartPosition);
+        inputStartPosition = document.getLength();
+        terminalPane.setCaretPosition(inputStartPosition);
     }
 
     private void handleEnter() {
-        String fullText = terminalArea.getText();
-
-        if (inputStartPosition > fullText.length()) {
-            inputStartPosition = fullText.length();
-        }
-
-        String command = fullText.substring(inputStartPosition).trim();
-
-        history.add(command);
-        historyIndex = history.size();
-
-        String[] parts = command.split(" ");
         try {
-            if (parts[0].equalsIgnoreCase("run") || parts[0].equalsIgnoreCase("start")) {
-                if (parts[1].toLowerCase().contains("reg")) {
-                    RegistryInterpreter.main(new String[]{});
-                    registryInterpreterMode = true;
-                } else if (parts[1].toLowerCase().contains("willi")) {
-                    WilliCodeGenerator.main(new String[]{});
-                    williInterpreterMode = true;
-                }
+            String fullText = document.getText(0, document.getLength());
+            String command = fullText.substring(inputStartPosition).trim();
+
+            if (!command.isEmpty()) {
+                history.add(command);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println(e);
-            throw new RuntimeException(e);
-        }
 
-        if (command.equalsIgnoreCase("clear")) {
-            terminalArea.setText("");
-            history.clear();
-            historyIndex = -1;
-            printPrompt();
-            return;
-        }
+            historyPointer = -1;
 
-        terminalArea.append("\n");
+            appendStyled("\n", defaultStyle);
 
-        executeCommand(command);
+            if (command.equalsIgnoreCase("clear")) {
+                document.remove(0, document.getLength());
+                printPrompt();
+                return;
+            }
 
-        printPrompt();
+            executeCommand(command);
+
+            if (!editorMode) {
+                printPrompt();
+            }
+
+        } catch (Exception ignored) {}
     }
 
     private void executeCommand(String command) {
-
         if (command.equals("ls")) {
             listFiles(false);
             return;
@@ -202,20 +239,171 @@ public class InterpreterInterfaceTerminal extends JFrame {
             return;
         }
 
-        if (command.equals("cd")) {
+        if (command.startsWith("mkdir ")) {
+            createFileOrDirectory(command.substring(6).trim());
             return;
+        }
+
+        if (command.startsWith("mount ")) {
+            mountFile(command.substring(6).trim());
+            return;
+        }
+
+        String[] parts = command.split(" ");
+        if (parts.length >= 2 && (parts[0].equalsIgnoreCase("run") || parts[0].equalsIgnoreCase("start"))) {
+            String target = parts[1].toLowerCase();
+            new Thread(() -> {
+                try {
+                    if (target.contains("reg")) {
+                        startRegistryInterpreterDialoge();
+                    } else if (target.contains("willi")) {
+                        startWilliCodeGeneratorDialoge();
+                    } else {
+                        terminalMessage("Unknown target for run/start: " + target, true);
+                    }
+                } catch (Exception e) {
+                    terminalMessage("Error running " + target + ": " + e.getMessage(), true);
+                }
+            }).start();
         }
     }
 
-    private void listFiles(boolean showHidden) {
+    private boolean registryMode = false;
+    private boolean williMode = false;
 
+    private void startWilliCodeGeneratorDialoge() {
+
+    }
+
+    private final Color PURPLE = new Color(213, 109, 220);
+    private final Color YELLOW = new Color(222, 197, 67);
+    private final Color GREEN = new Color(60, 131, 45);
+    private final Color RED = new Color(203, 73, 83);
+
+    private void startRegistryInterpreterDialoge() {
+        terminalMessage("****************************************************************************************************************************************", YELLOW);
+        terminalMessage("* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *", YELLOW);
+        terminalMessage("* ModToolTiers and ModCreativeModeTabs. Other Files might also be affected, and there is no guarantee the code works as it should.     *", YELLOW);
+        terminalMessage("* Please make sure to ", YELLOW, false);
+        terminalMessage("//!PRESERVE ", PURPLE, false);
+        terminalMessage("every important code line that shall not be overridden                                               *", YELLOW);
+        terminalMessage("* If you wish to continue anyways, type in ", YELLOW, false);
+        terminalMessage("\"!START\"", GREEN, false);
+        terminalMessage(".                                                                                   *", YELLOW);
+        terminalMessage("* If you want to stop without any code being generated, type in the command ", YELLOW, false);
+        terminalMessage("\"!STOP\".", RED, false);
+        terminalMessage("                                                   *", YELLOW);
+        terminalMessage("****************************************************************************************************************************************", YELLOW);
+    }
+
+
+    private void createFileOrDirectory(String path) {
+        try {
+            File target = new File(currentDirectory, path);
+
+            if (path.contains(".")) {
+                File parent = target.getParentFile();
+                if (parent != null) parent.mkdirs();
+
+                if (target.createNewFile()) {
+                    terminalMessage("File created");
+                } else {
+                    terminalMessage("File already exists");
+                }
+            } else {
+                if (target.mkdirs()) {
+                    terminalMessage("Directory created");
+                } else {
+                    terminalMessage("Directory already exists");
+                }
+            }
+
+        } catch (IOException e) {
+            terminalMessage("Error creating file/directory", true);
+        }
+    }
+
+    private void mountFile(String name) {
+        File target = new File(currentDirectory, name);
+
+        if (!target.exists() || !target.isFile()) {
+            terminalMessage("Invalid file", true);
+            return;
+        }
+
+        try {
+            mountedFile = target;
+            editorMode = true;
+
+            String content = new String(java.nio.file.Files.readAllBytes(target.toPath()));
+
+            document.remove(0, document.getLength());
+
+            appendStyled("-- MOUNT MODE (" + name + ") --\n", defaultStyle);
+            appendStyled("CTRL+S = Save | ESC or CTRL+C = Exit\n\n", defaultStyle);
+
+            editorContentStart = document.getLength();
+
+            appendStyled(content, defaultStyle);
+            terminalPane.setCaretPosition(document.getLength());
+
+        } catch (Exception e) {
+            terminalMessage("Error opening file", true);
+        }
+    }
+
+    private void handleEditorKeys(KeyEvent e) {
+        int caret = terminalPane.getCaretPosition();
+
+        if (caret < editorContentStart) {
+            terminalPane.setCaretPosition(editorContentStart);
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && caret <= editorContentStart) {
+            e.consume();
+            return;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_DELETE && caret < editorContentStart) {
+            e.consume();
+            return;
+        }
+
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+            e.consume();
+            saveMountedFile();
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE ||
+                (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C)) {
+            e.consume();
+            exitEditor();
+        }
+    }
+
+    private void saveMountedFile() {
+        try {
+            String content = document.getText(editorContentStart,
+                    document.getLength() - editorContentStart);
+            java.nio.file.Files.write(mountedFile.toPath(), content.getBytes());
+        } catch (Exception ignored) {}
+    }
+
+    private void exitEditor() {
+        editorMode = false;
+        mountedFile = null;
+        try { document.remove(0, document.getLength()); } catch (Exception ignored) {}
+        printWelcomeMessage();
+        printPrompt();
+    }
+
+    private void listFiles(boolean showHidden) {
         File[] files = currentDirectory.listFiles();
         if (files == null) return;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         for (File file : files) {
-
             if (!showHidden && file.isHidden()) continue;
 
             String type = file.isDirectory() ? "d" : "-";
@@ -223,12 +411,11 @@ public class InterpreterInterfaceTerminal extends JFrame {
             String date = sdf.format(new Date(file.lastModified()));
             String name = file.getName();
 
-            terminalArea.append(type + " " + size + " " + date + " " + name + "\n");
+            terminalMessage(type + " " + size + " " + date + " " + name);
         }
     }
 
     private void changeDirectory(String path) {
-
         File newDir;
 
         if (path.equals("..")) {
@@ -236,45 +423,15 @@ public class InterpreterInterfaceTerminal extends JFrame {
             if (newDir == null) return;
         } else {
             File temp = new File(path);
-            if (!temp.isAbsolute()) {
-                temp = new File(currentDirectory, path);
-            }
+            if (!temp.isAbsolute()) temp = new File(currentDirectory, path);
             newDir = temp;
         }
 
         if (newDir.exists() && newDir.isDirectory()) {
             currentDirectory = newDir;
         } else {
-            terminalArea.append("Directory not found\n");
+            terminalMessage("Directory not found", true);
         }
-    }
-
-    private void showPreviousCommand() {
-        if (history.isEmpty()) return;
-
-        if (historyIndex > 0) {
-            historyIndex--;
-            replaceCurrentInput(history.get(historyIndex));
-        }
-    }
-
-    private void showNextCommand() {
-        if (history.isEmpty()) return;
-
-        if (historyIndex < history.size() - 1) {
-            historyIndex++;
-            replaceCurrentInput(history.get(historyIndex));
-        } else {
-            historyIndex = history.size();
-            replaceCurrentInput("");
-        }
-    }
-
-    private void replaceCurrentInput(String command) {
-        String text = terminalArea.getText();
-        String newText = text.substring(0, inputStartPosition) + command;
-        terminalArea.setText(newText);
-        terminalArea.setCaretPosition(terminalArea.getText().length());
     }
 
     public static void main(String[] args) {
