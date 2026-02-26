@@ -112,8 +112,15 @@ public class RegistryInterpreter {
             error("ERROR: Some Files dont exist or cannot be read or written!\n");
             return false;
         }
-        Scanner userHelper = new Scanner(System.in);
-        String input = "";
+
+        items = getAllItems();
+        recipes = getAllRecipes();
+        creativeTabs = getAllCreativeTabs();
+        toolTiers = getAllToolTiers();
+        oreBlocks = getAllOres();
+        blocks = getAllBlocks();
+//        Scanner userHelper = new Scanner(System.in);
+        /*String input = "";
         boolean confirmed = false;
         warning("****************************************************************************************************************************************\n" +
                 "* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *\n* ModToolTiers and ModCreativeModeTabs." +
@@ -167,23 +174,23 @@ public class RegistryInterpreter {
         }
         System.out.println(ANSI_RED + "#SYSTEM@INFO> resuming program..." + ANSI_RESET);
         System.out.println(ANSI_RED + "#SYSTEM@INFO> starting with writing phase" + ANSI_RESET);
-        stillGenerating = false;
+        stillGenerating = false;*/
 
         writeToolTierCode(true); //WORKS!
-        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
-        success("Successfully wrote tool tier objects to file");
+//        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
+//        success("Successfully wrote tool tier objects to file");
         writeCreativeTabCode(true); //WORKS!
-        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
-        success("Successfully wrote creative tab objects to files");
+//        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
+//        success("Successfully wrote creative tab objects to files");
         writeItemCode(true); //WORKS!
-        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
-        success("Successfully wrote item objects to files");
+//        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
+//        success("Successfully wrote item objects to files");
         writeBlockCode(true); //WORKS! //writing oba ned
-        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
-        success("Successfully wrote block tab objects to files");
+//        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
+//        success("Successfully wrote block tab objects to files");
         writeRecipeCode(true); //WORKS! //ig
-        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
-        success("Successfully wrote recipe objects to files");
+//        System.out.print(ANSI_RED + "#SYSTEM@INFO[WRITING_PHASE]> " + ANSI_RESET);
+//        success("Successfully wrote recipe objects to files");
         return true;
     }
 

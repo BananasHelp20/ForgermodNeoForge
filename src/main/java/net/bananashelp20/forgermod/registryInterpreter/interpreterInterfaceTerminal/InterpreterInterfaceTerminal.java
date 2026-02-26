@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.registryInterpreter.interpreterInterfaceTerminal;
 
+import net.bananashelp20.forgermod.registryInterpreter.interpreter.RegistryInterpreter;
 import org.checkerframework.checker.units.qual.C;
 
 import javax.swing.*;
@@ -34,6 +35,7 @@ public class InterpreterInterfaceTerminal extends JFrame {
     public boolean editorMode = false;
     private File mountedFile = null;
 
+    private String systemPromt = "#Interpreter@INFO> ";
     private String PROMPT;
     private int inputStartPosition;
     private int editorContentStart = 0;
@@ -58,7 +60,7 @@ public class InterpreterInterfaceTerminal extends JFrame {
         StyleConstants.setForeground(defaultStyle, new Color(200, 200, 200));
 
         systemStyle = terminalPane.addStyle("system", null);
-        StyleConstants.setForeground(systemStyle, Color.RED);
+        StyleConstants.setForeground(systemStyle, RED);
 
         terminalPane.addKeyListener(new KeyAdapter() {
             @Override
@@ -82,7 +84,11 @@ public class InterpreterInterfaceTerminal extends JFrame {
 
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     e.consume();
-                    handleEnter();
+                    if (!williMode && !registryMode) {
+                        handleEnter();
+                    } else {
+                        validateInputAndGoOn(handleEnterAndReturnText());
+                    }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -102,6 +108,76 @@ public class InterpreterInterfaceTerminal extends JFrame {
         add(scrollPane);
 
         printWelcomeMessage();
+        printPrompt();
+    }
+
+    public int validateCounter = 0;
+
+    public void validateInputAndGoOn(String input) {
+        boolean valid = false;
+        input = input.trim().toLowerCase();
+        if (registryMode) {
+            switch (validateCounter) {
+                case 0 -> {
+                    if (input.equalsIgnoreCase("start") || input.equalsIgnoreCase("stop")) {
+                        valid = true;
+                        if (input.equalsIgnoreCase("stop")) {
+                            terminalMessage("stopping program...", true, true);
+                            registryMode = false;
+                            break;
+                        } else {
+                            terminalMessage("resuming program...", true, true);
+                            delay(1000);
+                            terminalMessage("starting with generating phase!",  true, true);
+                            delay(500);
+                            systemPromt = "#Interpreter@INFO[GEN_PHASE]> ";
+                            terminalMessage(systemPromt, RED, false);
+                            terminalMessage("Successfully generated tool tier objects", GREEN);
+                            delay(1000);
+                            terminalMessage(systemPromt, RED, false);
+                            terminalMessage("Successfully generated item objects", GREEN);
+                            delay(1000);
+                            terminalMessage(systemPromt, RED, false);
+                            terminalMessage("Successfully generated block objects", GREEN);
+                            delay(1000);
+                            terminalMessage(systemPromt, RED, false);
+                            terminalMessage("Successfully generated creative tab objects", GREEN);
+                            delay(1000);
+                            terminalMessage(systemPromt, RED, false);
+                            terminalMessage("Successfully generated recipe objects", GREEN);
+                            delay(100);
+                            systemPromt = "#Interpreter@INFO> ";
+                            terminalMessage("Successfully completed generating phase", true, true);
+                        }
+                    }
+                    break;
+                }
+                case 1 -> {
+                    if (input.equalsIgnoreCase("resume") || input.equalsIgnoreCase("start") || input.equalsIgnoreCase("stop")) {
+                        valid = true;
+                        if (input.equalsIgnoreCase("stop")) {
+                            terminalMessage("stopping program...", true, true);
+                            delay(1000);
+                            registryMode = false;
+                            break;
+                        } else {
+                            System.out.println("generating...");
+//                            RegistryInterpreter.generateCode();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        if (!valid) {
+            terminalMessage("couldn't resolve '" + (input.isEmpty() ? "\\n" : input) + "'", true, true);
+        } else {
+            validateCounter++;
+            valid = false;
+        }
+        if (validateCounter > 2 && registryMode) {
+            registryMode = false;
+        }
         printPrompt();
     }
 
@@ -141,8 +217,6 @@ public class InterpreterInterfaceTerminal extends JFrame {
         } catch (Exception ignored) {}
     }
 
-    /* ========================= */
-
     public void terminalMessage(String message, boolean lineBreak) {
         appendStyled(message + "\n", defaultStyle);
     }
@@ -163,10 +237,31 @@ public class InterpreterInterfaceTerminal extends JFrame {
 
     public void terminalMessage(String message, boolean systemMessage, boolean lineBreak) {
         if (systemMessage) {
-            appendStyled("#System> " + message + (lineBreak ? "\n" : ""), systemStyle);
+            appendStyled(systemPromt + message + (lineBreak ? "\n" : ""), systemStyle);
         } else {
             terminalMessage(message);
         }
+    }
+
+    public void terminalMessageDelayed(String message, long delayMillis) {
+        new Thread(() -> {
+            delay(delayMillis);
+            SwingUtilities.invokeLater(() -> terminalMessage(message));
+        }).start();
+    }
+
+    public void terminalMessageDelayed(String message, Color messageColor, long delayMillis) {
+        new Thread(() -> {
+            delay(delayMillis);
+            SwingUtilities.invokeLater(() -> terminalMessage(message, messageColor));
+        }).start();
+    }
+
+    public void terminalMessageDelayed(String message, boolean systemMessage, long delayMillis) {
+        new Thread(() -> {
+            delay(delayMillis);
+            SwingUtilities.invokeLater(() -> terminalMessage(message, systemMessage, true));
+        }).start();
     }
 
     private void appendStyled(String text, Style style) {
@@ -184,12 +279,14 @@ public class InterpreterInterfaceTerminal extends JFrame {
         terminalMessage("");
     }
 
-    private String currentPromt = "";
+    private String currentPromt = "#USER> ";
 
     private void printPrompt() {
+        PROMPT = currentDirectory.getAbsolutePath() + "> ";
         if (!williMode && !registryMode) {
-            PROMPT = currentDirectory.getAbsolutePath() + "> ";
             appendStyled(PROMPT, defaultStyle);
+        } else {
+            appendStyled(currentPromt, defaultStyle);
         }
         inputStartPosition = document.getLength();
         terminalPane.setCaretPosition(inputStartPosition);
@@ -223,7 +320,26 @@ public class InterpreterInterfaceTerminal extends JFrame {
         } catch (Exception ignored) {}
     }
 
+    private String handleEnterAndReturnText() {
+        String commandText = "";
+        try {
+            String fullText = document.getText(0, document.getLength());
+            String command = fullText.substring(inputStartPosition).trim();
+
+            if (!command.trim().isEmpty()) {
+                history.add(command);
+                commandText = command;
+            }
+
+            historyPointer = -1;
+            appendStyled("\n", defaultStyle);
+
+        } catch (Exception ignored) {}
+        return commandText;
+    }
+
     private void executeCommand(String command) {
+        command = command.trim();
         if (command.equals("ls")) {
             listFiles(false);
             return;
@@ -255,8 +371,10 @@ public class InterpreterInterfaceTerminal extends JFrame {
             new Thread(() -> {
                 try {
                     if (target.contains("reg")) {
+                        registryMode = true;
                         startRegistryInterpreterDialoge();
                     } else if (target.contains("willi")) {
+                        williMode = true;
                         startWilliCodeGeneratorDialoge();
                     } else {
                         terminalMessage("Unknown target for run/start: " + target, true);
@@ -281,19 +399,37 @@ public class InterpreterInterfaceTerminal extends JFrame {
     private final Color RED = new Color(203, 73, 83);
 
     private void startRegistryInterpreterDialoge() {
-        terminalMessage("****************************************************************************************************************************************", YELLOW);
-        terminalMessage("* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *", YELLOW);
-        terminalMessage("* ModToolTiers and ModCreativeModeTabs. Other Files might also be affected, and there is no guarantee the code works as it should.     *", YELLOW);
-        terminalMessage("* Please make sure to ", YELLOW, false);
+        terminalMessage("****************************************************************************************************************************************\n" +
+                "* Generating the code means OVERRIDING ALL CURRENT CODE that's been written to: all datagen files, ModItems, ModBlocks, RegistryClass, *\n" +
+                "* ModToolTiers and ModCreativeModeTabs. Other Files might also be affected, and there is no guarantee the code works as it should.     *\n" +
+                "* Please make sure to ", YELLOW, false);
         terminalMessage("//!PRESERVE ", PURPLE, false);
-        terminalMessage("every important code line that shall not be overridden                                               *", YELLOW);
-        terminalMessage("* If you wish to continue anyways, type in ", YELLOW, false);
-        terminalMessage("\"!START\"", GREEN, false);
-        terminalMessage(".                                                                                   *", YELLOW);
-        terminalMessage("* If you want to stop without any code being generated, type in the command ", YELLOW, false);
-        terminalMessage("\"!STOP\".", RED, false);
-        terminalMessage("                                                   *", YELLOW);
-        terminalMessage("****************************************************************************************************************************************", YELLOW);
+        terminalMessage("every important code line that shall not be overridden                                               *\n" +
+                "* If you wish to continue anyways, type in ", YELLOW, false);
+        terminalMessage("\"START\"", GREEN, false);
+        terminalMessage(".\n* If you want to stop without any code being generated, type in the command ", YELLOW, false);
+        terminalMessage("\"STOP\".", RED, false);
+        terminalMessage("                                                   *\n" +
+                "****************************************************************************************************************************************", YELLOW);
+        printPrompt();
+    }
+
+    private static final Object DELAY_LOCK = new Object();
+    private static long delayTimeline = System.currentTimeMillis();
+
+    public static void delay(long milliseconds) {
+        synchronized (DELAY_LOCK) {8
+            delayTimeline += milliseconds;
+            long waitTime = delayTimeline - System.currentTimeMillis();
+
+            if (waitTime > 0) {
+                try {
+                    Thread.sleep(waitTime);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
     }
 
 
