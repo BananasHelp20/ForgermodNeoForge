@@ -31,8 +31,8 @@ public class ForgeMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 3, 121, 31)); //output
-        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 1, 72, 31)); //ingot
         this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 2, 96, 53)); //template
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 1, 72, 31)); //ingot
         this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 0, 36, 31)); //shards
 
         addDataSlots(data);
@@ -75,6 +75,7 @@ public class ForgeMenu extends AbstractContainerMenu {
 
     //YOU HAVE TO DEFINE THIS!
     private static final int TE_INVENTORY_SLOT_COUNT = 4;  // must be the number of slots you have!
+    //Modified by banana: in the first if (!moveItemStackTo...), I added a +1 to the TE_INVENTORY_FIRST_SLOT_INDEX variable, to prevent quickmoving into my output slot
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
@@ -85,7 +86,7 @@ public class ForgeMenu extends AbstractContainerMenu {
         // Check if the slot clicked is one of the vanilla container slots
         if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
             // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
+            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX+1, TE_INVENTORY_FIRST_SLOT_INDEX
                     + TE_INVENTORY_SLOT_COUNT, true)) {//false
                 return ItemStack.EMPTY;  // EMPTY_ITEM
             }
@@ -126,4 +127,5 @@ public class ForgeMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
     }
+
 }

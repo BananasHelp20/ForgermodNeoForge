@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.block.entity.custom;
 
 import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
+import net.bananashelp20.forgermod.datagen.registry.TemplatePools;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.recipe.ForgeRecipe;
 import net.bananashelp20.forgermod.recipe.ForgeRecipeInput;
@@ -14,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -150,6 +152,8 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             inventory.setItem(i, itemStackHandler.getStackInSlot(i));
         }
+
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     @Override
@@ -188,6 +192,7 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
             }
         } else {
             resetProgress();
+            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
         }
     }
 
@@ -212,6 +217,7 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
 
         itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
         itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
+        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
         itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
     }
 

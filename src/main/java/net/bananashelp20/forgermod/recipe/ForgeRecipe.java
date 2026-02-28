@@ -13,15 +13,14 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public record ForgeRecipe(Ingredient inputItem1, Ingredient inputItem2, Ingredient templateItem, ItemStack output) implements Recipe<ForgeRecipeInput> {
+import java.util.Arrays;
+import java.util.Objects;
+
+public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output) implements Recipe<ForgeRecipeInput> {
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> list = NonNullList.create();
-        list.add(inputItem1);
-        list.add(inputItem2);
-        list.add(templateItem);
-        return list;
+        return ingredients;
     }
 
     @Override
@@ -30,7 +29,7 @@ public record ForgeRecipe(Ingredient inputItem1, Ingredient inputItem2, Ingredie
             return false;
         }
 
-        return inputItem1.test(pInput.getItem(1)) && inputItem2.test(pInput.getItem(3)) && templateItem.test(pInput.getItem(2));
+        return ingredients.get(0).test(pInput.getItem(1)) && ingredients.get(1).test(pInput.getItem(3)) && ingredients.get(2).test(pInput.getItem(2));
     }
 
     @Override
@@ -40,7 +39,7 @@ public record ForgeRecipe(Ingredient inputItem1, Ingredient inputItem2, Ingredie
 
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return false;
+        return true;
     }
 
     @Override
@@ -50,30 +49,30 @@ public record ForgeRecipe(Ingredient inputItem1, Ingredient inputItem2, Ingredie
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.FORGE_SERIALIZER.get();
+        return ModRecipes.FORGE_SERIALIZER.get(); //nu-uh, oba ka
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.FORGE_TYPE.get();
+        return ModRecipes.FORGE_TYPE.get(); //nu-uh, oba ka
     }
 
     public static class Serializer implements RecipeSerializer<ForgeRecipe> { //FUNKTIONIERT NICHT --> ALTERNATIVE IN ForgeBlockEntity.java
         public static final MapCodec<ForgeRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient1").forGetter(ForgeRecipe::inputItem1),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient2").forGetter(ForgeRecipe::inputItem2),
-                Ingredient.CODEC_NONEMPTY.fieldOf("template").forGetter(ForgeRecipe::templateItem),
-
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient1").forGetter((recipe) -> recipe.ingredients.getFirst()),
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient2").forGetter((recipe) -> recipe.ingredients.get(1)),
+                Ingredient.CODEC_NONEMPTY.fieldOf("template").forGetter((recipe) -> recipe.ingredients.get(2)),
                 ItemStack.CODEC.fieldOf("result").forGetter(ForgeRecipe::output)
-        ).apply(inst, ForgeRecipe::new));
+        ).apply(inst, (ingredient1, ingredient2, template, output) -> new ForgeRecipe(NonNullList.of(ingredient1, ingredient2, template), output)));
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC =
+        /*public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC =
                 StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC, ForgeRecipe::inputItem1,
-                        Ingredient.CONTENTS_STREAM_CODEC, ForgeRecipe::inputItem2,
-                        Ingredient.CONTENTS_STREAM_CODEC, ForgeRecipe::templateItem,
-                        ItemStack.STREAM_CODEC, ForgeRecipe::output, ForgeRecipe::new);
+                        Ingredient.CONTENTS_STREAM_CODEC, (recipe) -> recipe.getIngredients().get(0),
+                        Ingredient.CONTENTS_STREAM_CODEC, (recipe) -> recipe.ingredients.get(1),
+                        Ingredient.CONTENTS_STREAM_CODEC, (recipe) -> recipe.ingredients.get(2),
+                        ItemStack.STREAM_CODEC, ForgeRecipe::output,
+                        ForgeRecipe::new);*/
 
         @Override
         public MapCodec<ForgeRecipe> codec() {
@@ -82,9 +81,13 @@ public record ForgeRecipe(Ingredient inputItem1, Ingredient inputItem2, Ingredie
 
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> streamCodec() {
-            return STREAM_CODEC;
+            return null;
         }
-    }
 
+//        @Override
+//        public StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> streamCodec() {
+//            return Objects.requireNonNull(STREAM_CODEC);
+//        }
+    }
 }
 

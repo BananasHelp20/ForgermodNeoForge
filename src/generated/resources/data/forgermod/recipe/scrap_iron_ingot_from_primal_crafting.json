@@ -9,16 +9,19 @@
       "item": "minecraft:copper_ingot"
     },
     "C": {
-      "item": "minecraft:netherite_ingot"
+      "item": "minecraft:netherite_scrap"
+    },
+    "D": {
+      "item": "minecraft:iron_block"
     }
   },
   "pattern": [
-    "AAA",
     "ACA",
+    "CDC",
     "ABA"
   ],
   "result": {
     "count": 1,
-    "id": "forgermod:scrap_iron_ingot"
+    "id": "forgermod:scrap_iron_block"
   }
 }

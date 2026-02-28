@@ -9,13 +9,13 @@
       "item": "minecraft:netherite_scrap"
     },
     "C": {
-      "item": "minecraft:netherite_ingot"
+      "item": "minecraft:copper_ingot"
     }
   },
   "pattern": [
-    "AAA",
-    "BCB",
-    "AAA"
+    "ABA",
+    "ACA",
+    "BAB"
   ],
   "result": {
     "count": 1,

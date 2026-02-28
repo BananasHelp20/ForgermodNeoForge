@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_scrap": {
+    "has_taifunite_block": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:netherite_scrap"
+            "items": "forgermod:taifunite_block"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:unrefined_steel_from_primal_crafting"
+        "recipe": "forgermod:taifunite_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite_scrap"
+      "has_taifunite_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:unrefined_steel_from_primal_crafting"
+      "forgermod:taifunite_ingot"
     ]
   }
 }

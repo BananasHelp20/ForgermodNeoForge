@@ -1,5 +1,0 @@
-none
-ruby
-amber
-jade
-amethyst

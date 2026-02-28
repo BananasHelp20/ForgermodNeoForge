@@ -270,6 +270,20 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', ModItems.PULSITE_INGOT.get())
                 .unlockedBy(getHasName(ModItems.PULSITE_INGOT.get()), has(ModItems.PULSITE_INGOT.get())).save(output);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.TAIFUNITE_BLOCK.get())
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern("AAA")
+                .define('A', ModItems.TAIFUNITE_INGOT.get())
+                .unlockedBy(getHasName(ModItems.TAIFUNITE_INGOT.get()), has(ModItems.TAIFUNITE_INGOT.get())).save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ELECTRIUM_BLOCK.get())
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern("AAA")
+                .define('A', ModItems.ELECTRIUM_INGOT.get())
+                .unlockedBy(getHasName(ModItems.ELECTRIUM_INGOT.get()), has(ModItems.ELECTRIUM_INGOT.get())).save(output);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CARBON_STEEL_BLOCK.get())
                 .pattern("AAA")
                 .pattern("AAA")
@@ -367,6 +381,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.DEVELOPIUM_INGOT.get(), 9)
                 .requires(ModBlocks.DEVELOPIUM_BLOCK.get())
                 .unlockedBy(getHasName(ModBlocks.DEVELOPIUM_BLOCK.get()), has(ModBlocks.DEVELOPIUM_BLOCK.get())).save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ELECTRIUM_INGOT.get(), 9)
+                .requires(ModBlocks.ELECTRIUM_BLOCK.get())
+                .unlockedBy(getHasName(ModBlocks.ELECTRIUM_BLOCK.get()), has(ModBlocks.ELECTRIUM_BLOCK.get())).save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TAIFUNITE_INGOT.get(), 9)
+                .requires(ModBlocks.TAIFUNITE_BLOCK.get())
+                .unlockedBy(getHasName(ModBlocks.TAIFUNITE_BLOCK.get()), has(ModBlocks.TAIFUNITE_BLOCK.get())).save(output);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CARBON_STEEL_INGOT.get(), 9)
                 .requires(ModBlocks.CARBON_STEEL_BLOCK.get())

@@ -85,7 +85,7 @@ public class InfusionTableMenu extends AbstractContainerMenu {
         // Check if the slot clicked is one of the vanilla container slots
         if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
             // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
+            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX+1, TE_INVENTORY_FIRST_SLOT_INDEX
                     + TE_INVENTORY_SLOT_COUNT, true)) {//false
                 return ItemStack.EMPTY;  // EMPTY_ITEM
             }

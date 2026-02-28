@@ -75,6 +75,20 @@ public class ModItems {
                 });
     }
 
+    public static DeferredItem<SwordItem> createSwordItemWithRarityAndDescriptionBeingFireResistent(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName) {
+        return ITEMS.register(name,
+                () -> new SwordItem(tier, new Item.Properties()
+                        .rarity(rarity)
+                        .attributes(SwordItem.createAttributes(tier, damage, -speed)).fireResistant()) //Tier/Damage/attackSpeed
+                {
+                    @Override
+                    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+                        pTooltipComponents.add(Component.translatable(descriptionName));
+                        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
+                    }
+                });
+    }
+
     public static DeferredItem<SwordItem> createSpecialSwordItem(String name, Supplier<SwordItemWithEffect> weapon) {
         return ITEMS.register(name, weapon);
     }
@@ -165,7 +179,7 @@ public class ModItems {
     public static final DeferredItem<SwordItem> SCRAP_IRON_SWORD = createSwordItem("scrap_iron_sword", ModToolTiers.SCRAP_IRON, SCRAP_IRON_SWORD_DAMAGE, SCRAP_IRON_SWORD_SPEED);
     public static final DeferredItem<SwordItem> SCRAP_SWORD = createSwordItem("scrap_sword", ModToolTiers.SCRAP, SCRAP_SWORD_DAMAGE, SCRAP_SWORD_SPEED);
     public static final DeferredItem<SwordItem> RUSTY_CLAYMORE = createSwordItemWithRarityAndDescription("rusty_claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_DAMAGE, DEFAULT_RUSTY_SPEED, "tooltips.forgermod.rusty_claymore.tooltip");
-    public static final DeferredItem<SwordItem> CLAYMORE = createSwordItemWithRarityAndDescription("claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_CLAYMORE_DAMAGE, DEFAULT_CLAYMORE_SPEED, "tooltips.forgermod.claymore.tooltip");
+    public static final DeferredItem<SwordItem> CLAYMORE = createSwordItemWithRarityAndDescriptionBeingFireResistent("claymore", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_CLAYMORE_DAMAGE, DEFAULT_CLAYMORE_SPEED, "tooltips.forgermod.claymore.tooltip");
     public static final DeferredItem<SwordItem> DAMASK_KNIFE = createSwordItem("damask_knife", ModToolTiers.DAMASK, KNIFE_DAMASK_DAMAGE, KNIFE_DAMASK_SPEED);
 
     //special claymores
