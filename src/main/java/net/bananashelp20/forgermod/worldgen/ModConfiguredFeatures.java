@@ -44,6 +44,10 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?,?>> NETHER_AMBER_ORE_KEY = registerKey("nether_amber_ore");
     public static final ResourceKey<ConfiguredFeature<?,?>> END_AMBER_ORE_KEY = registerKey("end_amber_ore");
 
+    public static final ResourceKey<ConfiguredFeature<?,?>> OVERWORLD_SHARDIUM_ORE_KEY = registerKey("shardium_ore");
+    public static final ResourceKey<ConfiguredFeature<?,?>> NETHER_SHARDIUM_ORE_KEY = registerKey("nether_shardium_ore");
+    public static final ResourceKey<ConfiguredFeature<?,?>> END_SHARDIUM_ORE_KEY = registerKey("end_shardium_ore");
+
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         RuleTest stoneReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
@@ -87,6 +91,15 @@ public class ModConfiguredFeatures {
                 OreConfiguration.target(obsidianReplaceables, ModBlocks.AMBER_OBSIDIAN_ORE.get().defaultBlockState())
         );
 
+        List<OreConfiguration.TargetBlockState> overworldShardiumOres = List.of(
+                OreConfiguration.target(stoneReplaceables, ModBlocks.SHARDIUM_STONE_ORE.get().defaultBlockState()),
+                OreConfiguration.target(deepslateReplaceables, ModBlocks.SHARDIUM_DEEPSLATE_ORE.get().defaultBlockState())
+        );
+        List<OreConfiguration.TargetBlockState> endShardiumOres = List.of(
+                OreConfiguration.target(endReplaceables, ModBlocks.SHARDIUM_END_ORE.get().defaultBlockState()),
+                OreConfiguration.target(obsidianReplaceables, ModBlocks.SHARDIUM_OBSIDIAN_ORE.get().defaultBlockState())
+        );
+
         register(context, OVERWORLD_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(overworldJadeOres, 9));
         register(context, NETHER_JADE_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
                 ModBlocks.JADE_NETHER_ORE.get().defaultBlockState(), 9));
@@ -106,6 +119,11 @@ public class ModConfiguredFeatures {
         register(context, NETHER_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
                 ModBlocks.AMBER_NETHER_ORE.get().defaultBlockState(), 9));
         register(context, END_AMBER_ORE_KEY, Feature.ORE, new OreConfiguration(endAmberOres, 9));
+
+        register(context, OVERWORLD_SHARDIUM_ORE_KEY, Feature.ORE, new OreConfiguration(overworldShardiumOres, 9));
+        register(context, NETHER_SHARDIUM_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceables,
+                ModBlocks.SHARDIUM_NETHER_ORE.get().defaultBlockState(), 9));
+        register(context, END_SHARDIUM_ORE_KEY, Feature.ORE, new OreConfiguration(endShardiumOres, 9));
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {

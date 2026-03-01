@@ -1,11 +1,11 @@
 {
-  "type": "minecraft:blasting",
+  "type": "minecraft:smelting",
   "category": "misc",
   "cookingtime": 100,
   "experience": 2.0,
   "group": "shardium",
   "ingredient": {
-    "item": "forgermod:shardium_stone_ore"
+    "item": "forgermod:shardium_nether_ore"
   },
   "result": {
     "count": 1,

@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ai.behavior.GoAndGiveItemsToTarget;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -16,7 +17,10 @@ import javax.annotation.Nullable;
 
 public class AncientSwordStandBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<AncientSwordStandBlock> CODEC = simpleCodec(AncientSwordStandBlock::new);
-    private static final VoxelShape SHAPE = Block.box(0 ,  0, 5, 15, 28, 15);
+    private static final VoxelShape SHAPE_SOUTH = Block.box(-2,  0, 0, 18, 29, 11);
+    private static final VoxelShape SHAPE_NORTH = Block.box(-2,  0, 5, 18, 29, 11);
+    private static final VoxelShape SHAPE_WEST = Block.box(5,  0, -2, 11, 29, 18);
+    private static final VoxelShape SHAPE_EAST = Block.box(0,  0, -2, 11, 29, 18);
 
     public AncientSwordStandBlock(Properties pProperties) {
         super(pProperties);
@@ -24,7 +28,20 @@ public class AncientSwordStandBlock extends HorizontalDirectionalBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        switch (state.getValue(FACING)) {
+            case SOUTH -> {
+                return SHAPE_SOUTH;
+            }
+            case EAST -> {
+                return SHAPE_EAST;
+            }
+            case WEST -> {
+                return SHAPE_WEST;
+            }
+            default -> {
+                return SHAPE_NORTH;
+            }
+        }
     }
 
     @Override

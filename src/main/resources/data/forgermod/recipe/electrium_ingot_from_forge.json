@@ -1,0 +1,15 @@
+{
+  "type": "forgermod:forge",
+  "ingredient1": {
+    "item": "forgermod:electrium_shard"
+  },
+  "ingredient2": {
+    "item": "forgermod:carbon_steel_ingot"
+  },
+  "template": {
+    "item": "forgermod:ancient_upgrade_template"
+  },
+  "result": {
+    "id": "forgermod:electrium_ingot"
+  }
+}

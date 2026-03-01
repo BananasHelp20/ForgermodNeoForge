@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-01T01:31:16.5315462	Loot Tables
+// 1.21.1	2026-03-01T18:32:42.2366875	Loot Tables
 90ca4bef35a074345574bd1bd80974a7b12a687c data/forgermod/loot_table/blocks/amber_deepslate_ore.json
 3dc356ddb6af4128e514863f70e36aff004e6051 data/forgermod/loot_table/blocks/amber_end_ore.json
 e65408b4da2abe55f9a32925e6b61216eddb1b49 data/forgermod/loot_table/blocks/amber_nether_ore.json
@@ -34,11 +34,11 @@ eaa9117aad5ba782de376b3d687705c8315aeec8 data/forgermod/loot_table/blocks/ruby_o
 f1982602c0a4c038a9c903bbfa28c82d6f9bf889 data/forgermod/loot_table/blocks/ruby_stone_ore.json
 ba53ab0a4f0c8ac891921759ad7eae819815b333 data/forgermod/loot_table/blocks/scrap_block.json
 7d699af047dc59353d781d5aa2ad97dd6eab0c26 data/forgermod/loot_table/blocks/scrap_iron_block.json
-ad08b697684250f527b5c44c63365b90a338b90b data/forgermod/loot_table/blocks/shardium_deepslate_ore.json
-cbfa1b10b2402f4a2e0bc7b4da0e8e904c16847b data/forgermod/loot_table/blocks/shardium_end_ore.json
-f2cf196e0157aa939b53d2cec63ef3ad8c231521 data/forgermod/loot_table/blocks/shardium_nether_ore.json
-24a12fb629f03b16498525ee217c6f0066343906 data/forgermod/loot_table/blocks/shardium_obsidian_ore.json
-5e6fbc897cebf7ddb33989db0e0e601570c051df data/forgermod/loot_table/blocks/shardium_stone_ore.json
+28fd6313221cdf11c5cf02b30c58a384527d8542 data/forgermod/loot_table/blocks/shardium_deepslate_ore.json
+5dc72f913167f9605e5145542d614f8389e2ea15 data/forgermod/loot_table/blocks/shardium_end_ore.json
+e3aba057ec0e93dfb78c48151d0f12af6ce29b31 data/forgermod/loot_table/blocks/shardium_nether_ore.json
+edfebd0b614d3dfe9a701ef81738854a2c24c83f data/forgermod/loot_table/blocks/shardium_obsidian_ore.json
+d5538841dda85fde7571dafcab80e4fc451cf2e1 data/forgermod/loot_table/blocks/shardium_stone_ore.json
 a59ee45ecd02be93c80f057c0222bc5a3dd83d5a data/forgermod/loot_table/blocks/somnium_block.json
 eb911237c605535743de037dc76080983e707ba6 data/forgermod/loot_table/blocks/steel_block.json
 d2f8c7ece6b1bebe139dabab9f9a49185ea65782 data/forgermod/loot_table/blocks/taifunite_block.json

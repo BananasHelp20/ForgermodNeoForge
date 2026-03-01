@@ -28,9 +28,12 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
@@ -212,13 +215,43 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
         this.maxProgress = resetMaxProgressTo;
     }
 
+    private boolean isShardRecipe(Optional<RecipeHolder<ForgeRecipe>> recipe) {
+        for (int i = 0; i < shards.size(); i++) {
+            if (recipe.get().value().ingredients().getFirst().test(new ItemStack(shards.get(i)))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ArrayList<Item> shards = new ArrayList<>(Arrays.asList(
+            ModItems.TAIFUNITE_SHARD.get(),
+            ModItems.VULNUSIUM_SHARD.get(),
+            ModItems.MORSIUM_SHARD.get(),
+            ModItems.LUSH_SHARD.get(),
+            ModItems.IGNISIUM_SHARD.get(),
+            ModItems.ELECTRIUM_SHARD.get(),
+            ModItems.DEVELOPIUM_SHARD.get(),
+            ModItems.SOMNIUM_SHARD.get(),
+            ModItems.INANISIUM_SHARD.get(),
+            ModItems.PULSITE_SHARD.get()
+    ));
+
     private void craftItem(int recipeUsed) {
-        ItemStack output = RECIPE_OUTPUTS[recipeUsed];
+        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
+        ItemStack output = recipe.get().value().output();
 
         itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
-        itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
+        itemStackHandler.extractItem(INPUT_SLOT2, (isShardRecipe(recipe) ? SHARD_CRAFT_COST : 1), false);
         itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
         itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
+
+//        ItemStack output = RECIPE_OUTPUTS[recipeUsed];
+//
+//        itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
+//        itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
+//        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
+//        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
     }
 
     private boolean hasCraftingFinished() {
@@ -230,7 +263,18 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private boolean hasRecipe() {
-        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), RECIPE_INPUTS, RECIPE_OUTPUTS)) && canInsertItemIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed]) && canInsertAmountIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed].getCount()));
+        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
+
+        if (recipe.isEmpty()) {
+            return false;
+        }
+
+        ItemStack output = recipe.get().value().output();
+        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+
+//        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), RECIPE_INPUTS, RECIPE_OUTPUTS))
+//                && canInsertItemIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed])
+//                && canInsertAmountIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed].getCount()));
     }
 
     private boolean isValidRecipe(Boolean isShardRecipe, Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN //wenn ein recipe ned geht, geht alles nd

@@ -1,11 +1,11 @@
 {
-  "type": "minecraft:smelting",
+  "type": "minecraft:blasting",
   "category": "misc",
   "cookingtime": 100,
   "experience": 2.0,
   "group": "shardium",
   "ingredient": {
-    "item": "forgermod:shardium_deepslate_ore"
+    "item": "forgermod:shardium_end_ore"
   },
   "result": {
     "count": 1,

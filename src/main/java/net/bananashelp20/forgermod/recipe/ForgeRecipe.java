@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -49,12 +50,12 @@ public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output)
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.FORGE_SERIALIZER.get(); //nu-uh, oba ka
+        return ModRecipes.FORGE_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.FORGE_TYPE.get(); //nu-uh, oba ka
+        return ModRecipes.FORGE_TYPE.get();
     }
 
     public static class Serializer implements RecipeSerializer<ForgeRecipe> { //FUNKTIONIERT NICHT --> ALTERNATIVE IN ForgeBlockEntity.java
@@ -66,13 +67,11 @@ public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output)
                 ItemStack.CODEC.fieldOf("result").forGetter(ForgeRecipe::output)
         ).apply(inst, (ingredient1, ingredient2, template, output) -> new ForgeRecipe(NonNullList.of(ingredient1, ingredient2, template), output)));
 
-        /*public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC =
+        public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC =
                 StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC, (recipe) -> recipe.getIngredients().get(0),
-                        Ingredient.CONTENTS_STREAM_CODEC, (recipe) -> recipe.ingredients.get(1),
-                        Ingredient.CONTENTS_STREAM_CODEC, (recipe) -> recipe.ingredients.get(2),
+                        Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.collection((i -> NonNullList.withSize(i, Ingredient.EMPTY)))), ForgeRecipe::ingredients,
                         ItemStack.STREAM_CODEC, ForgeRecipe::output,
-                        ForgeRecipe::new);*/
+                        ForgeRecipe::new);
 
         @Override
         public MapCodec<ForgeRecipe> codec() {
@@ -81,13 +80,8 @@ public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output)
 
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> streamCodec() {
-            return null;
+            return STREAM_CODEC;
         }
-
-//        @Override
-//        public StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> streamCodec() {
-//            return Objects.requireNonNull(STREAM_CODEC);
-//        }
     }
 }
 

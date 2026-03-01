@@ -188,7 +188,13 @@ public class RegistryClass {
                 ModBlocks.AMBER_DEEPSLATE_ORE.get(),
                 ModBlocks.AMBER_NETHER_ORE.get(),
                 ModBlocks.AMBER_END_ORE.get(),
-                ModBlocks.AMBER_OBSIDIAN_ORE.get()
+                ModBlocks.AMBER_OBSIDIAN_ORE.get(),
+
+                ModBlocks.SHARDIUM_STONE_ORE.get(),
+                ModBlocks.SHARDIUM_DEEPSLATE_ORE.get(),
+                ModBlocks.SHARDIUM_NETHER_ORE.get(),
+                ModBlocks.SHARDIUM_END_ORE.get(),
+                ModBlocks.SHARDIUM_OBSIDIAN_ORE.get()
         };
     }
 }

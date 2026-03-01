@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shardium_deepslate_ore": {
+    "has_shardium_stone_ore": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:shardium_deepslate_ore"
+            "items": "forgermod:shardium_stone_ore"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:lush_shard_from_blasting_shardium_deepslate_ore"
+        "recipe": "forgermod:lush_shard_from_smelting_shardium_stone_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shardium_deepslate_ore"
+      "has_shardium_stone_ore"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:lush_shard_from_blasting_shardium_deepslate_ore"
+      "forgermod:lush_shard_from_smelting_shardium_stone_ore"
     ]
   }
 }

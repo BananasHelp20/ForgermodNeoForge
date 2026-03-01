@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:lush_shard_from_blasting_shardium_stone_ore"
+        "recipe": "forgermod:morsium_shard_from_blasting_shardium_stone_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "forgermod:lush_shard_from_blasting_shardium_stone_ore"
+      "forgermod:morsium_shard_from_blasting_shardium_stone_ore"
     ]
   }
 }

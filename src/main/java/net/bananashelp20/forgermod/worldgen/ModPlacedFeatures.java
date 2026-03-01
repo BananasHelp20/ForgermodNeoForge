@@ -31,6 +31,10 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> NETHER_RUBY_ORE_PLACED_KEY = registerKey("nether_ruby_ore_placed");
     public static final ResourceKey<PlacedFeature> END_RUBY_ORE_PLACED_KEY = registerKey("end_ruby_ore_placed");
 
+    public static final ResourceKey<PlacedFeature> SHARDIUM_ORE_PLACED_KEY = registerKey("shardium_ore_placed");
+    public static final ResourceKey<PlacedFeature> NETHER_SHARDIUM_ORE_PLACED_KEY = registerKey("nether_shardium_ore_placed");
+    public static final ResourceKey<PlacedFeature> END_SHARDIUM_ORE_PLACED_KEY = registerKey("end_shardium_ore_placed");
+
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         var configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
@@ -60,6 +64,13 @@ public class ModPlacedFeatures {
         register(context, NETHER_AMBER_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.NETHER_AMBER_ORE_KEY),
                 ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
         register(context, END_AMBER_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.END_AMBER_ORE_KEY),
+                ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+
+        register(context, SHARDIUM_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_SHARDIUM_ORE_KEY),
+                ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+        register(context, NETHER_SHARDIUM_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.NETHER_SHARDIUM_ORE_KEY),
+                ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+        register(context, END_SHARDIUM_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.END_SHARDIUM_ORE_KEY),
                 ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
     }
 
