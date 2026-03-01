@@ -23,12 +23,6 @@ public class RegistryClass {
 
     public static ItemLike[] getIngredientTabRegister() {
         return new ItemLike[] {
-                ModBlocks.REINFORCED_IRON_BLOCK.get(),
-                ModItems.REINFORCED_IRON_INGOT.get(),
-
-                ModBlocks.SCRAP_IRON_BLOCK.get(),
-                ModItems.SCRAP_IRON_INGOT.get(),
-
                 ModBlocks.DAMASK_BLOCK.get(),
                 ModItems.DAMASK_INGOT.get(),
 
@@ -90,8 +84,6 @@ public class RegistryClass {
     }
     public static ItemLike[] getWeaponTabRegister() {
         return new ItemLike[] {
-                ModItems.SCRAP_IRON_SWORD.get(),
-                ModItems.REINFORCED_IRON_SWORD.get(),
                 ModItems.SCRAP_SWORD.get(),
                 ModItems.DAMASK_KNIFE.get(),
                 ModItems.DAMASK_SWORD.get(),

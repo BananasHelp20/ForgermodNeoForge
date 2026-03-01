@@ -22,6 +22,11 @@
     "forgermod:amber_end_ore",
     "forgermod:amber_nether_ore",
     "forgermod:amber_deepslate_ore",
-    "forgermod:amber_obsidian_ore"
+    "forgermod:amber_obsidian_ore",
+    "forgermod:shardium_stone_ore",
+    "forgermod:shardium_deepslate_ore",
+    "forgermod:shardium_nether_ore",
+    "forgermod:shardium_end_ore",
+    "forgermod:shardium_obsidian_ore"
   ]
 }

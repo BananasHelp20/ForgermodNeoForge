@@ -74,6 +74,12 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.AMBER_STONE_ORE.get())
                 .add(ModBlocks.AMBER_DEEPSLATE_ORE.get())
                 .add(ModBlocks.AMBER_OBSIDIAN_ORE.get())
+
+                .add(ModBlocks.SHARDIUM_STONE_ORE.get())
+                .add(ModBlocks.SHARDIUM_DEEPSLATE_ORE.get())
+                .add(ModBlocks.SHARDIUM_NETHER_ORE.get())
+                .add(ModBlocks.SHARDIUM_END_ORE.get())
+                .add(ModBlocks.SHARDIUM_OBSIDIAN_ORE.get())
         ;
 
         tag(BlockTags.MINEABLE_WITH_AXE)
@@ -118,6 +124,11 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.AMBER_NETHER_ORE.get())
                 .add(ModBlocks.AMBER_DEEPSLATE_ORE.get())
                 .add(ModBlocks.AMBER_OBSIDIAN_ORE.get())
+                .add(ModBlocks.SHARDIUM_STONE_ORE.get())
+                .add(ModBlocks.SHARDIUM_DEEPSLATE_ORE.get())
+                .add(ModBlocks.SHARDIUM_NETHER_ORE.get())
+                .add(ModBlocks.SHARDIUM_END_ORE.get())
+                .add(ModBlocks.SHARDIUM_OBSIDIAN_ORE.get())
         ;
 
         tag(ModTags.Blocks.NEEDS_STEEL_TOOL)

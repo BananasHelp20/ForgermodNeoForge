@@ -92,6 +92,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModBlocks.JADE_DEEPSLATE_ORE.get()
     );
 
+    protected static final List<ItemLike> SHARDIUM_SMELTABLES = List.of(
+            ModBlocks.SHARDIUM_STONE_ORE.get(),
+            ModBlocks.SHARDIUM_DEEPSLATE_ORE.get(),
+            ModBlocks.SHARDIUM_NETHER_ORE.get(),
+            ModBlocks.SHARDIUM_END_ORE.get()
+    );
+
     @Override
     protected void buildRecipes(RecipeOutput pRecipeOutput) {
         //!GENERATE
@@ -121,6 +128,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         oreSmelting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
         oreBlasting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
+
+        oreSmelting(output, SHARDIUM_SMELTABLES, RecipeCategory.MISC, ModBlockLootTableProvider.getRandomShard(), 2f, 100, "shardium");
+        oreBlasting(output, SHARDIUM_SMELTABLES, RecipeCategory.MISC, ModBlockLootTableProvider.getRandomShard(), 2f, 100, "shardium");
     }
 
     private static void shapedRecipes(RecipeOutput output) {

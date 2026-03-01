@@ -104,6 +104,12 @@ public class ModBlocks {
     public static final DeferredBlock<Block> AMBER_DEEPSLATE_ORE = createSimpleBlock("amber_deepslate_ore",3.0f, 6, SoundType.DEEPSLATE);
     public static final DeferredBlock<Block> AMBER_OBSIDIAN_ORE = createSimpleBlock("amber_obsidian_ore",50.0f, 1200, SoundType.STONE);
 
+    public static final DeferredBlock<Block> SHARDIUM_END_ORE = createSimpleBlock("shardium_end_ore",3.0f, 9, SoundType.STONE);
+    public static final DeferredBlock<Block> SHARDIUM_NETHER_ORE = createSimpleBlock("shardium_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
+    public static final DeferredBlock<Block> SHARDIUM_STONE_ORE = createSimpleBlock("shardium_stone_ore",1.5f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> SHARDIUM_DEEPSLATE_ORE = createSimpleBlock("shardium_deepslate_ore",3.0f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> SHARDIUM_OBSIDIAN_ORE = createSimpleBlock("shardium_obsidian_ore",50.0f, 1200, SoundType.STONE);
+
     //non-block blocks and special blocks
     public static final DeferredBlock<Block> DEVELOPIUM_BLOCK = createBlockWithDescription("developium_block", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.developium_block.tooltip");
 
