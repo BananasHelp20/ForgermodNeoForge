@@ -1,0 +1,7 @@
+fixed textual errors in:
+    Stumpfl Bat Tooltip
+    Vulnusium Ingot Tooltip
+    Electrium Ingot Tooltip
+    Developium Ingot Tooltip
+    Taifunite Ingot Tooltip
+    Amber Gemstone Tooltip

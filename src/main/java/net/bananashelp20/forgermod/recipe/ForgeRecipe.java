@@ -14,8 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.function.Function;
 
 public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output) implements Recipe<ForgeRecipeInput> {
 
@@ -29,8 +28,12 @@ public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output)
         if (pLevel.isClientSide()) {
             return false;
         }
+        System.out.println(ingredients.size());
+        System.out.println(ingredients.get(0).test(pInput.getItem(0)));
+        System.out.println(ingredients.get(1).test(pInput.getItem(1)));
+        System.out.println(ingredients.get(2).test(pInput.getItem(2)));
 
-        return ingredients.get(0).test(pInput.getItem(1)) && ingredients.get(1).test(pInput.getItem(3)) && ingredients.get(2).test(pInput.getItem(2));
+        return ingredients.get(0).test(pInput.getItem(0)) && ingredients.get(1).test(pInput.getItem(1)) && ingredients.get(2).test(pInput.getItem(2));
     }
 
     @Override
@@ -69,7 +72,7 @@ public record ForgeRecipe(NonNullList<Ingredient> ingredients, ItemStack output)
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC =
                 StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.collection((i -> NonNullList.withSize(i, Ingredient.EMPTY)))), ForgeRecipe::ingredients,
+                        Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()).map(NonNullList::copyOf, Function.identity()), ForgeRecipe::ingredients,
                         ItemStack.STREAM_CODEC, ForgeRecipe::output,
                         ForgeRecipe::new);
 

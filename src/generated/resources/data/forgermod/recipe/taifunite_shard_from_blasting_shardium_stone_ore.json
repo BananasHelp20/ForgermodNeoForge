@@ -5,10 +5,10 @@
   "experience": 2.0,
   "group": "shardium",
   "ingredient": {
-    "item": "forgermod:shardium_nether_ore"
+    "item": "forgermod:shardium_stone_ore"
   },
   "result": {
     "count": 1,
-    "id": "forgermod:morsium_shard"
+    "id": "forgermod:taifunite_shard"
   }
 }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:morsium_shard_from_blasting_shardium_nether_ore"
+        "recipe": "forgermod:vulnusium_shard_from_smelting_shardium_nether_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "forgermod:morsium_shard_from_blasting_shardium_nether_ore"
+      "forgermod:vulnusium_shard_from_smelting_shardium_nether_ore"
     ]
   }
 }

@@ -238,20 +238,20 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     ));
 
     private void craftItem(int recipeUsed) {
-        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
-        ItemStack output = recipe.get().value().output();
-
-        itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
-        itemStackHandler.extractItem(INPUT_SLOT2, (isShardRecipe(recipe) ? SHARD_CRAFT_COST : 1), false);
-        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
-        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
-
-//        ItemStack output = RECIPE_OUTPUTS[recipeUsed];
+//        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
+//        ItemStack output = recipe.get().value().output();
 //
 //        itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
-//        itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
+//        itemStackHandler.extractItem(INPUT_SLOT2, /*(isShardRecipe(recipe) ? SHARD_CRAFT_COST : 1)*/1, false);
 //        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
 //        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
+
+        ItemStack output = RECIPE_OUTPUTS[recipeUsed];
+
+        itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
+        itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
+        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
+        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
     }
 
     private boolean hasCraftingFinished() {
@@ -263,18 +263,18 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
+//        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
+//
+//        if (recipe.isEmpty()) {
+//            return false;
+//        }
+//
+//        ItemStack output = recipe.get().value().output();
+//        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
 
-        if (recipe.isEmpty()) {
-            return false;
-        }
-
-        ItemStack output = recipe.get().value().output();
-        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
-
-//        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), RECIPE_INPUTS, RECIPE_OUTPUTS))
-//                && canInsertItemIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed])
-//                && canInsertAmountIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed].getCount()));
+        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), RECIPE_INPUTS, RECIPE_OUTPUTS))
+                && canInsertItemIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed])
+                && canInsertAmountIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed].getCount()));
     }
 
     private boolean isValidRecipe(Boolean isShardRecipe, Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN //wenn ein recipe ned geht, geht alles nd
