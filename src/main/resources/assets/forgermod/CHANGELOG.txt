@@ -5,3 +5,4 @@ fixed textual errors in:
     Developium Ingot Tooltip
     Taifunite Ingot Tooltip
     Amber Gemstone Tooltip
+    Ignisium Block
