@@ -5,10 +5,10 @@
   "experience": 2.0,
   "group": "shardium",
   "ingredient": {
-    "item": "forgermod:shardium_end_ore"
+    "item": "forgermod:shardium_nether_ore"
   },
   "result": {
     "count": 1,
-    "id": "forgermod:vulnusium_shard"
+    "id": "forgermod:lush_shard"
   }
 }

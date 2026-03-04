@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "forgermod:damask_ingot"
+    },
+    "B": {
+      "item": "minecraft:spruce_planks"
+    }
+  },
+  "pattern": [
+    "AA",
+    "BB",
+    "BB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:infusion_table"
+  }
+}

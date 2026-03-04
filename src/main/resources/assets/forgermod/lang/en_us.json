@@ -136,7 +136,7 @@
 
   "tooltips.forgermod.gemstone_upgrade_template.tooltip": "§7This template is used to upgrade weapons\nwith gemstones increasing specific weapon stats.\n\nUpgrade weapons at the Infusion Table!§r",
   "tooltips.forgermod.ancient_upgrade_template.tooltip": "§7This template is used to forge advanced\nweapons like claymores.\n\nForge weapons in the Forge!§r",
-  "tooltips.forgermod.claymore.tooltip": "§7A long Sword made from the best\nMaterials you found on your adventures\n\nCan be upgraded with any kind of\n§r§dsupreme Material.§r",
+  "tooltips.forgermod.claymore.tooltip": "§7A long Sword made from the best\nMaterials you found on your adventures.\n\nCan be upgraded with every\n§r§dsupreme Material.§r",
   "tooltips.forgermod.rusty_claymore.tooltip": "§7It looks like a claymore, but it's\nextremely rusty, it barely even cuts\nthrough grass. It must have been forged\nhundreds of years ago.\n\nCan be restored.§r",
   "tooltips.forgermod.stumpfl_bat.tooltip": "§7Böser Schueler! Gaunz böser Schueler!\n\n§r§dCreative only§r",
   "tooltips.forgermod.infernal_claymore.tooltip": "§7A blazing claymore usually found in\nancient nether structures, made by\nthe ancients.\n\nEffect on hit: Glowing I for 100 Seconds§r",

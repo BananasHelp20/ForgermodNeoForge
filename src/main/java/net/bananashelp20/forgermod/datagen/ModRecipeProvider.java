@@ -384,6 +384,23 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAA")
                 .define('A', ModItems.DEVELOPIUM_INGOT.get())
                 .unlockedBy(getHasName(ModItems.DEVELOPIUM_INGOT.get()), has(ModItems.DEVELOPIUM_INGOT.get())).save(output);
+
+        // misc
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FORGE.get())
+                .pattern("AA")
+                .pattern("BB")
+                .pattern("BB")
+                .define('B', Items.DARK_OAK_PLANKS)
+                .define('A', ModItems.STEEL_INGOT)
+                .unlockedBy(getHasName(ModItems.STEEL_INGOT.get()), has(ModItems.STEEL_INGOT.get())).save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.INFUSION_TABLE.get())
+                .pattern("AA")
+                .pattern("BB")
+                .pattern("BB")
+                .define('B', Items.SPRUCE_PLANKS)
+                .define('A', ModItems.DAMASK_INGOT)
+                .unlockedBy(getHasName(ModItems.DAMASK_INGOT.get()), has(ModItems.DAMASK_INGOT.get())).save(output);
     }
 
     private static void shapelessRecipes(RecipeOutput output) {

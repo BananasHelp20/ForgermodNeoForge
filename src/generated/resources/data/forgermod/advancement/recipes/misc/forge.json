@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shardium_end_ore": {
+    "has_steel_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:shardium_end_ore"
+            "items": "forgermod:steel_ingot"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:taifunite_shard_from_blasting_shardium_end_ore"
+        "recipe": "forgermod:forge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shardium_end_ore"
+      "has_steel_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:taifunite_shard_from_blasting_shardium_end_ore"
+      "forgermod:forge"
     ]
   }
 }
