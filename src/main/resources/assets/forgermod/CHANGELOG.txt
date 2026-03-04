@@ -6,3 +6,6 @@ fixed textual errors in:
     Taifunite Ingot Tooltip
     Amber Gemstone Tooltip
     Ignisium Block
+    Claymore
+
+you can now craft the Forge and the Infusion table
