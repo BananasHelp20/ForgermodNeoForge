@@ -124,9 +124,8 @@
   "item.forgermod.handle": "Handle",
   "item.forgermod.carbon_steel_cross_guard": "Carbon Steel Cross Guard",
   "item.forgermod.sharpened_blade": "Sharpened Blade",
-  "item.forgermod.ancient_upgrade_template": "Ancient Upgrade Template",
+  "item.forgermod.ancient_upgrade_template": "Ancient Infusion Template",
   "item.forgermod.gemstone_upgrade_template": "Gemstone Upgrade Template",
-
 
   "creativetab.forgermod.forger_miscellaneous_tab": "Forger Miscellaneous",
 
@@ -134,7 +133,7 @@
   "block.forgermod.forge": "Forge",
   "block.forgermod.infusion_table": "Infusion Table",
 
-  "tooltips.forgermod.gemstone_upgrade_template.tooltip": "§7This template is used to upgrade weapons\nwith gemstones increasing specific weapon stats.\n\nUpgrade weapons at the Infusion Table!§r",
+  "tooltips.forgermod.gemstone_upgrade_template.tooltip": "§7This template is used to infuse weapons\nwith gemstones increasing specific weapon stats.\n\nInfuse your weapons at the Infusion Table!§r",
   "tooltips.forgermod.ancient_upgrade_template.tooltip": "§7This template is used to forge advanced\nweapons like claymores.\n\nForge weapons in the Forge!§r",
   "tooltips.forgermod.claymore.tooltip": "§7A long Sword made from the best\nMaterials you found on your adventures.\n\nCan be upgraded with every\n§r§dsupreme Material.§r",
   "tooltips.forgermod.rusty_claymore.tooltip": "§7It looks like a claymore, but it's\nextremely rusty, it barely even cuts\nthrough grass. It must have been forged\nhundreds of years ago.\n\nCan be restored.§r",

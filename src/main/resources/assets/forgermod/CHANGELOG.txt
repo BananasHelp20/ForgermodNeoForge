@@ -8,4 +8,6 @@ fixed textual errors in:
     Ignisium Block
     Claymore
 
+Renamed "Gemstone Upgrade Template" to "Gemstone Infusion Template"
+
 you can now craft the Forge and the Infusion table
