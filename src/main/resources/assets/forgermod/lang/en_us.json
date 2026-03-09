@@ -124,8 +124,8 @@
   "item.forgermod.handle": "Handle",
   "item.forgermod.carbon_steel_cross_guard": "Carbon Steel Cross Guard",
   "item.forgermod.sharpened_blade": "Sharpened Blade",
-  "item.forgermod.ancient_upgrade_template": "Ancient Infusion Template",
-  "item.forgermod.gemstone_upgrade_template": "Gemstone Upgrade Template",
+  "item.forgermod.ancient_upgrade_template": "Ancient Upgrade Template",
+  "item.forgermod.gemstone_upgrade_template": "Gemstone Infusion Template",
 
   "creativetab.forgermod.forger_miscellaneous_tab": "Forger Miscellaneous",
 
