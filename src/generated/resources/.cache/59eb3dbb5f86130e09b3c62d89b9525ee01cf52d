@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-04T18:48:07.3658325	Loot Tables
+// 1.21.1	2026-04-21T15:52:39.1535387	Loot Tables
 90ca4bef35a074345574bd1bd80974a7b12a687c data/forgermod/loot_table/blocks/amber_deepslate_ore.json
 3dc356ddb6af4128e514863f70e36aff004e6051 data/forgermod/loot_table/blocks/amber_end_ore.json
 e65408b4da2abe55f9a32925e6b61216eddb1b49 data/forgermod/loot_table/blocks/amber_nether_ore.json
@@ -34,11 +34,11 @@ eaa9117aad5ba782de376b3d687705c8315aeec8 data/forgermod/loot_table/blocks/ruby_o
 f1982602c0a4c038a9c903bbfa28c82d6f9bf889 data/forgermod/loot_table/blocks/ruby_stone_ore.json
 ba53ab0a4f0c8ac891921759ad7eae819815b333 data/forgermod/loot_table/blocks/scrap_block.json
 7d699af047dc59353d781d5aa2ad97dd6eab0c26 data/forgermod/loot_table/blocks/scrap_iron_block.json
-ad08b697684250f527b5c44c63365b90a338b90b data/forgermod/loot_table/blocks/shardium_deepslate_ore.json
+aa7a2b7ac2331d2a1b42a6c689cea099a5d4eedd data/forgermod/loot_table/blocks/shardium_deepslate_ore.json
 c495f06adf8ce96ce04b584409e093ee26d0d6e1 data/forgermod/loot_table/blocks/shardium_end_ore.json
-fb7211cf2df92d6821287710c3c3e5cbd4591ff2 data/forgermod/loot_table/blocks/shardium_nether_ore.json
-edfebd0b614d3dfe9a701ef81738854a2c24c83f data/forgermod/loot_table/blocks/shardium_obsidian_ore.json
-9415c1b79a15ba92ae8a3f10554148cb06e9ff2d data/forgermod/loot_table/blocks/shardium_stone_ore.json
+0514e35a51eff2f92e13d8cad282c12da6b29b33 data/forgermod/loot_table/blocks/shardium_nether_ore.json
+24a12fb629f03b16498525ee217c6f0066343906 data/forgermod/loot_table/blocks/shardium_obsidian_ore.json
+d2c7ce90ee40cef1b3aa166cc5a1bb2c4c394f2e data/forgermod/loot_table/blocks/shardium_stone_ore.json
 a59ee45ecd02be93c80f057c0222bc5a3dd83d5a data/forgermod/loot_table/blocks/somnium_block.json
 eb911237c605535743de037dc76080983e707ba6 data/forgermod/loot_table/blocks/steel_block.json
 d2f8c7ece6b1bebe139dabab9f9a49185ea65782 data/forgermod/loot_table/blocks/taifunite_block.json
