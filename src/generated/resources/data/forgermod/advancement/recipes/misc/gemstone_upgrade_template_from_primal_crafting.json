@@ -1,11 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_handle": {
+    "has_netherite_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:handle"
+            "items": "minecraft:netherite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_ruby_gemstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:ruby_gemstone"
           }
         ]
       },
@@ -23,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:steel_sword"
+        "recipe": "forgermod:gemstone_upgrade_template_from_primal_crafting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -31,13 +41,14 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_handle",
-      "has_steel_ingot"
+      "has_netherite_ingot",
+      "has_steel_ingot",
+      "has_ruby_gemstone"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:steel_sword"
+      "forgermod:gemstone_upgrade_template_from_primal_crafting"
     ]
   }
 }

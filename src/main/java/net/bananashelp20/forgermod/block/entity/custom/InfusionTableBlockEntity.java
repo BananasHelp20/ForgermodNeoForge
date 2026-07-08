@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.block.entity.custom;
 
+import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.screen.custom.ForgeMenu;
@@ -263,14 +264,17 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         if (hasRecipe()) {
+            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, true));
             increaseCraftingProgress();
             setChanged(level, blockPos, blockState);
             if (hasCraftingFinished()) {
                 craftItem(recipeUsed);
                 resetProgress();
+                level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
             }
         } else {
             resetProgress();
+            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
         }
     }
 

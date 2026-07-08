@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_claymore": {
+    "has_gemstone_upgrade_template": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:claymore"
+            "items": "forgermod:gemstone_upgrade_template"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:infusion_table"
+        "recipe": "forgermod:gemstone_upgrade_template_from_multiplication_crafting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_claymore"
+      "has_gemstone_upgrade_template"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:infusion_table"
+      "forgermod:gemstone_upgrade_template_from_multiplication_crafting"
     ]
   }
 }

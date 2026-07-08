@@ -9,5 +9,17 @@ fixed textual errors in:
     Claymore
 
 Renamed "Gemstone Upgrade Template" to "Gemstone Infusion Template"
-
 you can now craft the Forge and the Infusion table
+you can now craft and multiply both Upgrade Templates
+upgraded amethyst gemstone texture
+balanced scrapy sword (nerved: 1.8 as -> 1.4, 8 ad -> 7 ad)
+changed electrium description
+rebalanced unrefined steel iron cost (4 blocks -> 4 ingots)
+removed scrap iron block recipe, removed reinforced iron block
+added possiblilty to smelt steel sword back to steel ingot
+changed countless recipe unlock triggers for a better game-flow
+
+TODO: Fix facing property of infusion table.
+TODO: implement new texture of infusion table.
+TODO: Fix Shardium drops (with blockentity drops idk)
+TODO: Add Axe Weapons

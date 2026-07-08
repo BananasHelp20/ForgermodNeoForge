@@ -3,22 +3,22 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:diamond"
     },
     "B": {
-      "item": "minecraft:coal_block"
+      "item": "forgermod:gemstone_upgrade_template"
     },
     "C": {
-      "item": "minecraft:netherite_scrap"
+      "item": "forgermod:damask_ingot"
     }
   },
   "pattern": [
     "ABA",
-    "BCB",
-    "ABA"
+    "ACA",
+    "AAA"
   ],
   "result": {
     "count": 1,
-    "id": "forgermod:unrefined_steel"
+    "id": "forgermod:gemstone_upgrade_template"
   }
 }

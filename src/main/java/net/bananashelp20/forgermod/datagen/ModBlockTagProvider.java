@@ -24,6 +24,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
                 .addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
                 .remove(ModTags.Blocks.NEEDS_STEEL_TOOL)
+//                .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL) //boah ka ob des geht wos was i
         ;
 
         tag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)

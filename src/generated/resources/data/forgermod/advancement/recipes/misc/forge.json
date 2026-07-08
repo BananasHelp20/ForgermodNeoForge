@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_steel_ingot": {
+    "has_claymore": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:steel_ingot"
+            "items": "forgermod:claymore"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_steel_ingot"
+      "has_claymore"
     ]
   ],
   "rewards": {

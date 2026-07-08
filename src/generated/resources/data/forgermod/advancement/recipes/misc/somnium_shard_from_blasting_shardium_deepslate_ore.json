@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_reinforced_iron_ingot": {
+    "has_shardium_deepslate_ore": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:reinforced_iron_ingot"
+            "items": "forgermod:shardium_deepslate_ore"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:reinforced_iron_block"
+        "recipe": "forgermod:somnium_shard_from_blasting_shardium_deepslate_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_reinforced_iron_ingot"
+      "has_shardium_deepslate_ore"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:reinforced_iron_block"
+      "forgermod:somnium_shard_from_blasting_shardium_deepslate_ore"
     ]
   }
 }

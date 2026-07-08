@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_scrap": {
+    "has_shardium_end_ore": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:netherite_scrap"
+            "items": "forgermod:shardium_end_ore"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:scrap_iron_ingot_from_primal_crafting"
+        "recipe": "forgermod:somnium_shard_from_smelting_shardium_end_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite_scrap"
+      "has_shardium_end_ore"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:scrap_iron_ingot_from_primal_crafting"
+      "forgermod:somnium_shard_from_smelting_shardium_end_ore"
     ]
   }
 }

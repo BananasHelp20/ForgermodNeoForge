@@ -11,11 +11,21 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_handle": {
+    "has_netherite_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:handle"
+            "items": "minecraft:netherite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_steel_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:steel_ingot"
           }
         ]
       },
@@ -23,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:damask_knife"
+        "recipe": "forgermod:ancient_upgrade_template_from_primal_crafting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -31,13 +41,14 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_handle",
+      "has_steel_ingot",
+      "has_netherite_ingot",
       "has_damask_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:damask_knife"
+      "forgermod:ancient_upgrade_template_from_primal_crafting"
     ]
   }
 }

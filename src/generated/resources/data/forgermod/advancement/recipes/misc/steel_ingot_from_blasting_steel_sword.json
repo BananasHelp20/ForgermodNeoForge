@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shardium_stone_ore": {
+    "has_steel_sword": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:shardium_stone_ore"
+            "items": "forgermod:steel_sword"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:ignisium_shard_from_blasting_shardium_stone_ore"
+        "recipe": "forgermod:steel_ingot_from_blasting_steel_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shardium_stone_ore"
+      "has_steel_sword"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:ignisium_shard_from_blasting_shardium_stone_ore"
+      "forgermod:steel_ingot_from_blasting_steel_sword"
     ]
   }
 }

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_damask_ingot": {
+    "has_carbon_steel_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:damask_ingot"
+            "items": "forgermod:carbon_steel_ingot"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_damask_ingot"
+      "has_carbon_steel_ingot"
     ]
   ],
   "rewards": {

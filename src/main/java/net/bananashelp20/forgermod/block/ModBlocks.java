@@ -19,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ForgerMod.MOD_ID);
@@ -133,6 +134,7 @@ public class ModBlocks {
             () -> new InfusionTableBlock(BlockBehaviour.Properties.of()
                     .strength(45f, 50)
                     .sound(SoundType.NETHERITE_BLOCK)
+//                    .lightLevel(state -> state.getValue(ForgeBlock.LIT) ? 10 : 0)
             )
     );
 

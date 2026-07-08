@@ -101,8 +101,8 @@ public class ModItems {
     private static final float REINFOCED_IRON_SWORD_SPEED = 2.8f;
     private static final int KNIFE_DAMASK_DAMAGE = 0;
     private static final float KNIFE_DAMASK_SPEED = 1f;
-    private static final int SCRAP_SWORD_DAMAGE = 4;
-    private static final float SCRAP_SWORD_SPEED = 2.2f;
+    private static final int SCRAP_SWORD_DAMAGE = 3;
+    private static final float SCRAP_SWORD_SPEED = 2.6f;
     private static final int DAMASK_SWORD_DAMAGE = 3;
     private static final float DAMASK_SWORD_SPEED = 2.4f;
     private static final int STEEL_SWORD_DAMAGE = 3;
