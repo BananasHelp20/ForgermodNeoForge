@@ -697,7 +697,7 @@ public class AncientSwordStandBlock extends HorizontalDirectionalBlock {
     public static final BooleanProperty FULL = BooleanProperty.create("FULL");
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { // full : empty
         switch (state.getValue(FACING)) {
             case SOUTH -> {
                 return state.getValue(FULL) ? facingSouthShapeFull() : facingSouthShapeFull();
