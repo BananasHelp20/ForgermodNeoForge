@@ -694,7 +694,7 @@ public class AncientSwordStandBlock extends HorizontalDirectionalBlock {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FULL, Boolean.valueOf(true)));
     }
-    public static final BooleanProperty FULL = BooleanProperty.create("FULL");
+    public static final BooleanProperty FULL = BooleanProperty.create("full");
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { // full : empty

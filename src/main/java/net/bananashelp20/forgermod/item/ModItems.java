@@ -251,7 +251,7 @@ public class ModItems {
     public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_AMETHYST = createSpecialSwordItem("hollow_claymore_amethyst",() -> new MorsiumWeapon("amethyst"));
     public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_JADE = createSpecialSwordItem("hollow_claymore_jade",() -> new MorsiumWeapon("jade"));
 
-    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_RUBY = createSpecialSwordItem("storming_axe_ruby",() -> new TaifuniteWeapon("ruby"));
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_RUBY = createSpecialSwordItem("storming_claymore_ruby",() -> new TaifuniteWeapon("ruby"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE_AMBER = createSpecialSwordItem("storming_claymore_amber",() -> new TaifuniteWeapon("amber"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE_AMETHYST = createSpecialSwordItem("storming_claymore_amethyst",() -> new TaifuniteWeapon("amethyst"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE_JADE = createSpecialSwordItem("storming_claymore_jade",() -> new TaifuniteWeapon("jade"));
