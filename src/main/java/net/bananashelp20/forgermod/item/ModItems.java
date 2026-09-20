@@ -193,6 +193,28 @@ public class ModItems {
     public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER = createSpecialSwordItem("claymore_of_thunder", () -> new ElectriumWeapon("no_gemstone"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE = createSpecialSwordItem("storming_claymore", () -> new TaifuniteWeapon("no_gemstone"));
 
+    //special axes
+    public static final DeferredItem<SwordItem> OVERGROWN_AXE = createSpecialSwordItem("nature_axe", () -> new LushWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> HOLLOW_AXE = createSpecialSwordItem("hollow_axe", () -> new MorsiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> INFERNAL_AXE = createSpecialSwordItem("infernal_axe", () -> new IgnisiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> AXE_OF_THE_VOID = createSpecialSwordItem("axe_of_the_void", () -> new InanisiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_AXE = createSpecialSwordItem("curseblood_axe", () -> new VulnusiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_AXE = createSpecialSwordItem("dreambound_axe", () -> new SomniumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> SHRIEKING_AXE = createSpecialSwordItem("shrieking_axe", () -> new PulsiteWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> AXE_OF_THUNDER = createSpecialSwordItem("axe_of_thunder", () -> new ElectriumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> STORMING_AXE = createSpecialSwordItem("storming_axe", () -> new TaifuniteWeapon("no_gemstone"));
+
+    //special knifes
+    public static final DeferredItem<SwordItem> OVERGROWN_KNIFE = createSpecialSwordItem("nature_knife", () -> new LushWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> HOLLOW_KNIFE = createSpecialSwordItem("hollow_knife", () -> new MorsiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> INFERNAL_KNIFE = createSpecialSwordItem("infernal_knife", () -> new IgnisiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THE_VOID = createSpecialSwordItem("knife_of_the_void", () -> new InanisiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_KNIFE = createSpecialSwordItem("curseblood_knife", () -> new VulnusiumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_KNIFE = createSpecialSwordItem("dreambound_knife", () -> new SomniumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> SHRIEKING_KNIFE = createSpecialSwordItem("shrieking_knife", () -> new PulsiteWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THUNDER = createSpecialSwordItem("knife_of_thunder", () -> new ElectriumWeapon("no_gemstone"));
+    public static final DeferredItem<SwordItem> STORMING_KNIFE = createSpecialSwordItem("storming_knife", () -> new TaifuniteWeapon("no_gemstone"));
+
     //gemstone infused variants
     public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_RUBY = createSpecialSwordItem("claymore_of_thunder_ruby", () -> new ElectriumWeapon("ruby"));
     public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_AMBER = createSpecialSwordItem("claymore_of_thunder_amber", () -> new ElectriumWeapon("amber"));
@@ -229,7 +251,7 @@ public class ModItems {
     public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_AMETHYST = createSpecialSwordItem("hollow_claymore_amethyst",() -> new MorsiumWeapon("amethyst"));
     public static final DeferredItem<SwordItem> HOLLOW_CLAYMORE_JADE = createSpecialSwordItem("hollow_claymore_jade",() -> new MorsiumWeapon("jade"));
 
-    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_RUBY = createSpecialSwordItem("storming_claymore_ruby",() -> new TaifuniteWeapon("ruby"));
+    public static final DeferredItem<SwordItem> STORMING_CLAYMORE_RUBY = createSpecialSwordItem("storming_axe_ruby",() -> new TaifuniteWeapon("ruby"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE_AMBER = createSpecialSwordItem("storming_claymore_amber",() -> new TaifuniteWeapon("amber"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE_AMETHYST = createSpecialSwordItem("storming_claymore_amethyst",() -> new TaifuniteWeapon("amethyst"));
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE_JADE = createSpecialSwordItem("storming_claymore_jade",() -> new TaifuniteWeapon("jade"));
@@ -238,6 +260,96 @@ public class ModItems {
     public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_AMBER = createSpecialSwordItem("overgrown_claymore_amber",() -> new LushWeapon("amber"));
     public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_AMETHYST = createSpecialSwordItem("overgrown_claymore_amethyst",() -> new LushWeapon("amethyst"));
     public static final DeferredItem<SwordItem> OVERGROWN_CLAYMORE_JADE = createSpecialSwordItem("overgrown_claymore_jade",() -> new LushWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> AXE_OF_THUNDER_RUBY = createSpecialSwordItem("axe_of_thunder_ruby", () -> new ElectriumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> AXE_OF_THUNDER_AMBER = createSpecialSwordItem("axe_of_thunder_amber", () -> new ElectriumWeapon("amber"));
+    public static final DeferredItem<SwordItem> AXE_OF_THUNDER_AMETHYST = createSpecialSwordItem("axe_of_thunder_amethyst", () -> new ElectriumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> AXE_OF_THUNDER_JADE = createSpecialSwordItem("axe_of_thunder_jade", () -> new ElectriumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> SHRIEKING_AXE_RUBY = createSpecialSwordItem("shrieking_axe_ruby", () -> new PulsiteWeapon("ruby"));
+    public static final DeferredItem<SwordItem> SHRIEKING_AXE_AMBER = createSpecialSwordItem("shrieking_axe_amber", () -> new PulsiteWeapon("amber"));
+    public static final DeferredItem<SwordItem> SHRIEKING_AXE_AMETHYST = createSpecialSwordItem("shrieking_axe_amethyst", () -> new PulsiteWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> SHRIEKING_AXE_JADE = createSpecialSwordItem("shrieking_axe_jade", () -> new PulsiteWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> DREAMBOUND_AXE_RUBY = createSpecialSwordItem("dreambound_axe_ruby", () -> new SomniumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_AXE_AMBER = createSpecialSwordItem("dreambound_axe_amber", () -> new SomniumWeapon("amber"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_AXE_AMETHYST = createSpecialSwordItem("dreambound_axe_amethyst", () -> new SomniumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_AXE_JADE = createSpecialSwordItem("dreambound_axe_jade", () -> new SomniumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> CURSEBLOOD_AXE_RUBY = createSpecialSwordItem("curseblood_axe_ruby", () -> new VulnusiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_AXE_AMBER = createSpecialSwordItem("curseblood_axe_amber", () -> new VulnusiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_AXE_AMETHYST = createSpecialSwordItem("curseblood_axe_amethyst", () -> new VulnusiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_AXE_JADE = createSpecialSwordItem("curseblood_axe_jade",() -> new VulnusiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> AXE_OF_THE_VOID_RUBY = createSpecialSwordItem("axe_of_the_void_ruby",() -> new InanisiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> AXE_OF_THE_VOID_AMBER = createSpecialSwordItem("axe_of_the_void_amber",() -> new InanisiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> AXE_OF_THE_VOID_AMETHYST = createSpecialSwordItem("axe_of_the_void_amethyst",() -> new InanisiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> AXE_OF_THE_VOID_JADE = createSpecialSwordItem("axe_of_the_void_jade",() -> new InanisiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> INFERNAL_AXE_RUBY = createSpecialSwordItem("infernal_axe_ruby",() -> new IgnisiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> INFERNAL_AXE_AMBER = createSpecialSwordItem("infernal_axe_amber",() -> new IgnisiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> INFERNAL_AXE_AMETHYST = createSpecialSwordItem("infernal_axe_amethyst",() -> new IgnisiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> INFERNAL_AXE_JADE = createSpecialSwordItem("infernal_axe_jade",() -> new IgnisiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> HOLLOW_AXE_RUBY = createSpecialSwordItem("hollow_axe_ruby",() -> new MorsiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> HOLLOW_AXE_AMBER = createSpecialSwordItem("hollow_axe_amber",() -> new MorsiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> HOLLOW_AXE_AMETHYST = createSpecialSwordItem("hollow_axe_amethyst",() -> new MorsiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> HOLLOW_AXE_JADE = createSpecialSwordItem("hollow_axe_jade",() -> new MorsiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> STORMING_AXE_RUBY = createSpecialSwordItem("storming_axe_ruby",() -> new TaifuniteWeapon("ruby"));
+    public static final DeferredItem<SwordItem> STORMING_AXE_AMBER = createSpecialSwordItem("storming_axe_amber",() -> new TaifuniteWeapon("amber"));
+    public static final DeferredItem<SwordItem> STORMING_AXE_AMETHYST = createSpecialSwordItem("storming_axe_amethyst",() -> new TaifuniteWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> STORMING_AXE_JADE = createSpecialSwordItem("storming_axe_jade",() -> new TaifuniteWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> OVERGROWN_AXE_RUBY = createSpecialSwordItem("overgrown_axe_ruby",() -> new LushWeapon("ruby"));
+    public static final DeferredItem<SwordItem> OVERGROWN_AXE_AMBER = createSpecialSwordItem("overgrown_axe_amber",() -> new LushWeapon("amber"));
+    public static final DeferredItem<SwordItem> OVERGROWN_AXE_AMETHYST = createSpecialSwordItem("overgrown_axe_amethyst",() -> new LushWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> OVERGROWN_AXE_JADE = createSpecialSwordItem("overgrown_axe_jade",() -> new LushWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> KNIFE_OF_THUNDER_RUBY = createSpecialSwordItem("knife_of_thunder_ruby", () -> new ElectriumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THUNDER_AMBER = createSpecialSwordItem("knife_of_thunder_amber", () -> new ElectriumWeapon("amber"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THUNDER_AMETHYST = createSpecialSwordItem("knife_of_thunder_amethyst", () -> new ElectriumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THUNDER_JADE = createSpecialSwordItem("knife_of_thunder_jade", () -> new ElectriumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> SHRIEKING_KNIFE_RUBY = createSpecialSwordItem("shrieking_knife_ruby", () -> new PulsiteWeapon("ruby"));
+    public static final DeferredItem<SwordItem> SHRIEKING_KNIFE_AMBER = createSpecialSwordItem("shrieking_knife_amber", () -> new PulsiteWeapon("amber"));
+    public static final DeferredItem<SwordItem> SHRIEKING_KNIFE_AMETHYST = createSpecialSwordItem("shrieking_knife_amethyst", () -> new PulsiteWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> SHRIEKING_KNIFE_JADE = createSpecialSwordItem("shrieking_knife_jade", () -> new PulsiteWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> DREAMBOUND_KNIFE_RUBY = createSpecialSwordItem("dreambound_knife_ruby", () -> new SomniumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_KNIFE_AMBER = createSpecialSwordItem("dreambound_knife_amber", () -> new SomniumWeapon("amber"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_KNIFE_AMETHYST = createSpecialSwordItem("dreambound_knife_amethyst", () -> new SomniumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> DREAMBOUND_KNIFE_JADE = createSpecialSwordItem("dreambound_knife_jade", () -> new SomniumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> CURSEBLOOD_KNIFE_RUBY = createSpecialSwordItem("curseblood_knife_ruby", () -> new VulnusiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_KNIFE_AMBER = createSpecialSwordItem("curseblood_knife_amber", () -> new VulnusiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_KNIFE_AMETHYST = createSpecialSwordItem("curseblood_knife_amethyst", () -> new VulnusiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> CURSEBLOOD_KNIFE_JADE = createSpecialSwordItem("curseblood_knife_jade",() -> new VulnusiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> KNIFE_OF_THE_VOID_RUBY = createSpecialSwordItem("knife_of_the_void_ruby",() -> new InanisiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THE_VOID_AMBER = createSpecialSwordItem("knife_of_the_void_amber",() -> new InanisiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THE_VOID_AMETHYST = createSpecialSwordItem("knife_of_the_void_amethyst",() -> new InanisiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> KNIFE_OF_THE_VOID_JADE = createSpecialSwordItem("knife_of_the_void_jade",() -> new InanisiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> INFERNAL_KNIFE_RUBY = createSpecialSwordItem("infernal_knife_ruby",() -> new IgnisiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> INFERNAL_KNIFE_AMBER = createSpecialSwordItem("infernal_knife_amber",() -> new IgnisiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> INFERNAL_KNIFE_AMETHYST = createSpecialSwordItem("infernal_knife_amethyst",() -> new IgnisiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> INFERNAL_KNIFE_JADE = createSpecialSwordItem("infernal_knife_jade",() -> new IgnisiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> HOLLOW_KNIFE_RUBY = createSpecialSwordItem("hollow_knife_ruby",() -> new MorsiumWeapon("ruby"));
+    public static final DeferredItem<SwordItem> HOLLOW_KNIFE_AMBER = createSpecialSwordItem("hollow_knife_amber",() -> new MorsiumWeapon("amber"));
+    public static final DeferredItem<SwordItem> HOLLOW_KNIFE_AMETHYST = createSpecialSwordItem("hollow_knife_amethyst",() -> new MorsiumWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> HOLLOW_KNIFE_JADE = createSpecialSwordItem("hollow_knife_jade",() -> new MorsiumWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> STORMING_KNIFE_RUBY = createSpecialSwordItem("storming_knife_ruby",() -> new TaifuniteWeapon("ruby"));
+    public static final DeferredItem<SwordItem> STORMING_KNIFE_AMBER = createSpecialSwordItem("storming_knife_amber",() -> new TaifuniteWeapon("amber"));
+    public static final DeferredItem<SwordItem> STORMING_KNIFE_AMETHYST = createSpecialSwordItem("storming_knife_amethyst",() -> new TaifuniteWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> STORMING_KNIFE_JADE = createSpecialSwordItem("storming_knife_jade",() -> new TaifuniteWeapon("jade"));
+
+    public static final DeferredItem<SwordItem> OVERGROWN_KNIFE_RUBY = createSpecialSwordItem("overgrown_knife_ruby",() -> new LushWeapon("ruby"));
+    public static final DeferredItem<SwordItem> OVERGROWN_KNIFE_AMBER = createSpecialSwordItem("overgrown_knife_amber",() -> new LushWeapon("amber"));
+    public static final DeferredItem<SwordItem> OVERGROWN_KNIFE_AMETHYST = createSpecialSwordItem("overgrown_knife_amethyst",() -> new LushWeapon("amethyst"));
+    public static final DeferredItem<SwordItem> OVERGROWN_KNIFE_JADE = createSpecialSwordItem("overgrown_knife_jade",() -> new LushWeapon("jade"));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
