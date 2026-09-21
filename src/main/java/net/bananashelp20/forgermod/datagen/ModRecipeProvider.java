@@ -57,7 +57,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.CLAYMORE.get(),
             ModItems.CARBON_STEEL_CROSS_GUARD.get(),
             ModItems.ADVANCED_HANDLE.get(),
-            ModItems.SHARPENED_BLADE.get()
+            ModItems.SHARPENED_BLADE.get(),
+            ModItems.CARBON_STEEL_KNIFE.get(),
+            ModItems.CARBON_STEEL_AXE.get()
     );
 
     protected static final List<ItemLike> STEEL_SMELTABLES = List.of(

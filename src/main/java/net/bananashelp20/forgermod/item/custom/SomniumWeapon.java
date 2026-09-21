@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -22,8 +23,8 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
 
-    public SomniumWeapon(String gemstone) {
-        super(ModToolTiers.SOMNIUM, ((gemstone.equals("amber") ? pProperties.fireResistant() : pProperties).attributes(SwordItem.createAttributes(ModToolTiers.LUSH, (gemstone.equals("ruby")) ? 5 : 4, (gemstone.equals("amethyst")) ? -2.4f : -2.8f))));
+    public SomniumWeapon(String gemstone, String type) {
+        super(ModToolTiers.SOMNIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "somnium"));
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;
@@ -35,6 +36,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
+        System.out.println(pTarget.getActiveEffects());
     }
 
     @Override

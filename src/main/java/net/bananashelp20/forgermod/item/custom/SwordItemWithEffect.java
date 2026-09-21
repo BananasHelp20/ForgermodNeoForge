@@ -55,11 +55,11 @@ public class SwordItemWithEffect extends SwordItem {
         return true;
     }
 
-//    @Override
-//    public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-//        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-//        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-//    }
+    @Override
+    public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 1)); //duration -> Ticks, AMPLIFIER
+    }
 
     @Override
     public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {

@@ -89,7 +89,11 @@ public class RegistryClass {
                 ModItems.DAMASK_SWORD.get(),
                 ModItems.STEEL_SWORD.get(),
                 ModItems.CLAYMORE.get(),
+                ModItems.CARBON_STEEL_AXE.get(),
+                ModItems.CARBON_STEEL_KNIFE.get(),
                 ModItems.RUSTY_CLAYMORE.get(),
+                ModItems.RUSTY_AXE.get(),
+                ModItems.RUSTY_KNIFE.get(),
                 ModItems.STUMPFL_BAT.get(),
 
                 ModItems.INFERNAL_CLAYMORE.get(),
