@@ -4,6 +4,8 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 
+import java.io.FileWriter;
+
 public class ModSpecialRegistry {
 
     //weapon type standards

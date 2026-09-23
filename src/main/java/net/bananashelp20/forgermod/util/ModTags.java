@@ -55,6 +55,15 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_SCRAP_TOOL = createTag("needs_scrap_tool");
         public static final TagKey<Block> INCORRECT_FOR_SCRAP_TOOL = createTag("incorrect_for_scrap_tool");
 
+        public static final TagKey<Block> NEEDS_TUNGSTEN_TOOL = createTag("needs_tungsten_tool");
+        public static final TagKey<Block> INCORRECT_FOR_TUNGSTEN_TOOL = createTag("incorrect_for_tungsten_tool");
+
+        public static final TagKey<Block> NEEDS_TITANIUM_TOOL = createTag("needs_titanium_tool");
+        public static final TagKey<Block> INCORRECT_FOR_TITANIUM_TOOL = createTag("incorrect_for_titanium_tool");
+
+        public static final TagKey<Block> NEEDS_METEORIC_IRON_TOOL = createTag("needs_meteoric_iron_tool");
+        public static final TagKey<Block> INCORRECT_FOR_METEORIC_IRON_TOOL = createTag("incorrect_for_meteoric_iron_tool");
+
         public static final TagKey<Block> NEEDS_SCRAP_IRON_TOOL = createTag("needs_damask_scrap_infused_iron_tool");
         public static final TagKey<Block> INCORRECT_FOR_SCRAP_IRON_TOOL = createTag("incorrect_for_damask_scrap_infused_iron_tool");
 

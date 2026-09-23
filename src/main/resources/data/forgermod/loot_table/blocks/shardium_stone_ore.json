@@ -1,0 +1,53 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:pulsite_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:inanisium_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:ignisium_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:morsium_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:somnium_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:vulnusium_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:lush_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:electrium_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "forgermod:taifunite_shard"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "forgermod:blocks/shardium_stone_ore"
+}

@@ -3,7 +3,6 @@ package net.bananashelp20.forgermod.datagen;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.minecraft.data.PackOutput;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;

@@ -67,6 +67,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.STEEL_SWORD.get()
     );
 
+    protected static final List<ItemLike> TITANIUM_SMELTABLES = List.of(
+    );
+
+    protected static final List<ItemLike> TUNGSTEN_SMELTABLES = List.of(
+    );
+
+    protected static final List<ItemLike> METEORIC_IRON_SMELTABLES = List.of(
+            ModItems.RAW_METEORIC_IRON.get()
+    );
+
     protected static final List<ItemLike> RUBY_SMELTABLES = List.of(
             ModBlocks.RUBY_END_ORE.get(),
             ModBlocks.RUBY_NETHER_ORE.get(),
@@ -114,6 +124,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreSmelting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 0.5f, 200, "damask_ingot");
         oreBlasting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 1f, 100, "damask_ingot");
 
+        oreSmelting(output, METEORIC_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.METEORIC_IRON_INGOT.get(), 0.5f, 250, "damask_ingot");
+        oreBlasting(output, METEORIC_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.METEORIC_IRON_INGOT.get(), 3f, 150, "damask_ingot");
+
         oreBlasting(output, CARBON_STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.CARBON_STEEL_INGOT.get(), 1f, 100, "carbon_steel_ingot");
         oreBlasting(output, STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.STEEL_INGOT.get(), 1f, 100, "steel_ingot");
 
@@ -132,8 +145,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreSmelting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
         oreBlasting(output, AMETHYST_SMELTABLES, RecipeCategory.MISC, ModItems.AMETHYST_GEMSTONE.get(), 2f, 100, "amethyst_gemstone");
 
-        oreSmelting(output, SHARDIUM_SMELTABLES, RecipeCategory.MISC, ModBlockLootTableProvider.getRandomShard(), 2f, 100, "shardium");
-        oreBlasting(output, SHARDIUM_SMELTABLES, RecipeCategory.MISC, ModBlockLootTableProvider.getRandomShard(), 2f, 100, "shardium");
+//        oreSmelting(output, SHARDIUM_SMELTABLES, RecipeCategory.MISC, ModBlockLootTableProvider.getRandomShard(), 2f, 100, "shardium");
+//        oreBlasting(output, SHARDIUM_SMELTABLES, RecipeCategory.MISC, ModBlockLootTableProvider.getRandomShard(), 2f, 100, "shardium");
     }
 
     private static void shapedRecipes(RecipeOutput output) {

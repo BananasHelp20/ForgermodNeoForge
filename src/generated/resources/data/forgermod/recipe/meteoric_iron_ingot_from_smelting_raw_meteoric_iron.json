@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 250,
+  "experience": 0.5,
+  "group": "damask_ingot",
+  "ingredient": {
+    "item": "forgermod:raw_meteoric_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:meteoric_iron_ingot"
+  }
+}

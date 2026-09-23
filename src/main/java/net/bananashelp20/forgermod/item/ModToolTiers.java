@@ -27,7 +27,25 @@ public class ModToolTiers {
             ModTags.Blocks.INCORRECT_FOR_DAMASK_TOOL,
             1200, 8.5f, 5, 14,
             () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
-            );
+    );
+
+    public static final Tier TITANIUM = new SimpleTier(
+            ModTags.Blocks.INCORRECT_FOR_TITANIUM_TOOL,
+            1200, 8.5f, 5, 14,
+            () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
+    );
+
+    public static final Tier METEORIC_IRON = new SimpleTier(
+            ModTags.Blocks.INCORRECT_FOR_METEORIC_IRON_TOOL,
+            1200, 8.5f, 5, 14,
+            () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
+    );
+
+    public static final Tier TUNGSTEN = new SimpleTier(
+            ModTags.Blocks.INCORRECT_FOR_TUNGSTEN_TOOL,
+            1200, 8.5f, 5, 14,
+            () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
+    );
 
     public static final Tier DEVELOPIUM = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_DEVELOPIUM_TOOL,

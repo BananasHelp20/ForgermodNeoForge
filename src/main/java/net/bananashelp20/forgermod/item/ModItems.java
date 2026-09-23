@@ -133,23 +133,25 @@ public class ModItems {
     public static final DeferredItem<Item> CARBON_STEEL_CROSS_GUARD = createItemWithDescription("carbon_steel_cross_guard", "tooltips.forgermod.carbon_steel_cross_guard.tooltip");
     public static final DeferredItem<Item> HANDLE = createItemWithDescription("handle", "tooltips.forgermod.handle.tooltip");
     public static final DeferredItem<Item> ADVANCED_HANDLE = createItemWithDescription("advanced_handle", "tooltips.forgermod.advanced_handle.tooltip");
+    public static final DeferredItem<Item> RAW_METEORIC_IRON = createItem("raw_meteoric_iron");
 
     //refined/reinforced metals or end products
     public static final DeferredItem<Item> DAMASK_INGOT = createItem("damask_ingot");
     public static final DeferredItem<Item> REINFORCED_IRON_INGOT = createItem("reinforced_iron_ingot");
     public static final DeferredItem<Item> CARBON_STEEL_INGOT = createItem("carbon_steel_ingot");
     public static final DeferredItem<Item> STEEL_INGOT = createItem("steel_ingot");
-
-//    public static final DeferredItem<Item> TITANIUM_INGOT = createItem("titanium_ingot");
+    public static final DeferredItem<Item> TITANIUM_INGOT = createItem("titanium_ingot");
+    public static final DeferredItem<Item> METEORIC_IRON_INGOT = createItem("meteoric_iron_ingot");
+    public static final DeferredItem<Item> TUNGSTEN_INGOT = createItem("tungsten_ingot");
 
     //gemstones
     public static final DeferredItem<Item> RUBY_GEMSTONE = createItemWithDescription("ruby_gemstone", "tooltips.forgermod.ruby.tooltip");
     public static final DeferredItem<Item> AMBER_GEMSTONE = createItemWithDescription("amber_gemstone", "tooltips.forgermod.amber.tooltip");
     public static final DeferredItem<Item> AMETHYST_GEMSTONE = createItemWithDescription("amethyst_gemstone", "tooltips.forgermod.amethyst.tooltip");
     public static final DeferredItem<Item> JADE_GEMSTONE = createItemWithDescription("jade_gemstone", "tooltips.forgermod.jade.tooltip");
+    public static final DeferredItem<Item> ALEXANDRITE_GEMSTONE = createItemWithDescription("alexandrite_gemstone", "tooltips.forgermod.alexandrite.tooltip");
 
     /**Tools (incl. Swords)*/
-
     //swords
     public static final DeferredItem<SwordItem> STEEL_SWORD = createSwordItem("steel_sword", ModToolTiers.STEEL, STEEL_SWORD_DAMAGE, STEEL_SWORD_SPEED);
     public static final DeferredItem<SwordItem> DAMASK_SWORD = createSwordItem("damask_sword", ModToolTiers.DAMASK, DAMASK_SWORD_DAMAGE, DAMASK_SWORD_SPEED);

@@ -2,7 +2,6 @@ package net.bananashelp20.forgermod.block.entity.custom;
 
 import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
-import net.bananashelp20.forgermod.datagen.registry.TemplatePools;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.recipe.ForgeRecipe;
 import net.bananashelp20.forgermod.recipe.ForgeRecipeInput;
@@ -28,13 +27,14 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.*;
 
 public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) { //4 -> 4 slots big
@@ -53,58 +53,6 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     private static final int INPUT_SLOT1 = 1; //carbon material
     private static final int OUTPUT_SLOT = 3; //output (ingot)
     private static final int SHARD_CRAFT_COST = 4;
-
-    private static final Item[][] RECIPE_INPUTS = {
-            //shard recipes
-            {ModItems.ELECTRIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.INANISIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.PULSITE_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.SOMNIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.VULNUSIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.MORSIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.LUSH_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.TAIFUNITE_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            //{ModItems.DEVELOPIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()}, //!PRESERVE
-            {ModItems.IGNISIUM_SHARD.get(), ModItems.CARBON_STEEL_INGOT.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-
-            //claymore recipes
-            {ModItems.ELECTRIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.INANISIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.PULSITE_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.SOMNIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.VULNUSIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.MORSIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.LUSH_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.TAIFUNITE_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.DEVELOPIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()},
-            {ModItems.IGNISIUM_INGOT.get(), ModItems.CLAYMORE.get(), ModItems.ANCIENT_UPGRADE_TEMPLATE.get()}
-    };
-
-    private static final ItemStack[] RECIPE_OUTPUTS = {
-            //shard recipe outputs
-            new ItemStack(ModItems.ELECTRIUM_INGOT.get()),
-            new ItemStack(ModItems.INANISIUM_INGOT.get()),
-            new ItemStack(ModItems.PULSITE_INGOT.get()),
-            new ItemStack(ModItems.SOMNIUM_INGOT.get()),
-            new ItemStack(ModItems.VULNUSIUM_INGOT.get()),
-            new ItemStack(ModItems.MORSIUM_INGOT.get()),
-            new ItemStack(ModItems.LUSH_INGOT.get()),
-            new ItemStack(ModItems.TAIFUNITE_INGOT.get()),
-            //new ItemStack(ModItems.DEVELOPIUM_INGOT.get()),
-            new ItemStack(ModItems.IGNISIUM_INGOT.get()),
-
-            //claymore recipe outputs
-            new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THE_VOID.get()),
-            new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()),
-            new ItemStack(ModItems.DREAMBOUND_CLAYMORE.get()),
-            new ItemStack(ModItems.CURSEBLOOD_CLAYMORE.get()),
-            new ItemStack(ModItems.HOLLOW_CLAYMORE.get()),
-            new ItemStack(ModItems.OVERGROWN_CLAYMORE.get()),
-            new ItemStack(ModItems.STORMING_CLAYMORE.get()),
-            new ItemStack(ModItems.STUMPFL_BAT.get()),
-            new ItemStack(ModItems.INFERNAL_CLAYMORE.get())
-    };
 
     private static final int resetMaxProgressTo = 250;
     protected final ContainerData data;
@@ -246,7 +194,7 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
 //        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
 //        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
 
-        ItemStack output = RECIPE_OUTPUTS[recipeUsed];
+        ItemStack output = FORGE_RECIPE_OUTPUTS[recipeUsed];
 
         itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
         itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
@@ -272,9 +220,9 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
 //        ItemStack output = recipe.get().value().output();
 //        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
 
-        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), RECIPE_INPUTS, RECIPE_OUTPUTS))
-                && canInsertItemIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed])
-                && canInsertAmountIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed].getCount()));
+        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), FORGE_RECIPE_INPUTS, FORGE_RECIPE_OUTPUTS))
+                && canInsertItemIntoOutputSlot(FORGE_RECIPE_OUTPUTS[recipeUsed])
+                && canInsertAmountIntoOutputSlot(FORGE_RECIPE_OUTPUTS[recipeUsed].getCount()));
     }
 
     private boolean isValidRecipe(Boolean isShardRecipe, Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN //wenn ein recipe ned geht, geht alles nd

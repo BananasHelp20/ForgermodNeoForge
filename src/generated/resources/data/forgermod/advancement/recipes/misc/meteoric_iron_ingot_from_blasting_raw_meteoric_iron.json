@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shardium_nether_ore": {
+    "has_raw_meteoric_iron": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:shardium_nether_ore"
+            "items": "forgermod:raw_meteoric_iron"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:vulnusium_shard_from_smelting_shardium_nether_ore"
+        "recipe": "forgermod:meteoric_iron_ingot_from_blasting_raw_meteoric_iron"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shardium_nether_ore"
+      "has_raw_meteoric_iron"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:vulnusium_shard_from_smelting_shardium_nether_ore"
+      "forgermod:meteoric_iron_ingot_from_blasting_raw_meteoric_iron"
     ]
   }
 }

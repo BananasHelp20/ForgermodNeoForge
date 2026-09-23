@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shardium_end_ore": {
+    "has_knife": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:shardium_end_ore"
+            "items": "forgermod:knife"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:vulnusium_shard_from_smelting_shardium_end_ore"
+        "recipe": "forgermod:carbon_steel_ingot_from_blasting_knife"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shardium_end_ore"
+      "has_knife"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:vulnusium_shard_from_smelting_shardium_end_ore"
+      "forgermod:carbon_steel_ingot_from_blasting_knife"
     ]
   }
 }

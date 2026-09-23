@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 150,
+  "experience": 3.0,
+  "group": "damask_ingot",
+  "ingredient": {
+    "item": "forgermod:raw_meteoric_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:meteoric_iron_ingot"
+  }
+}

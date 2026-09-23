@@ -50,7 +50,18 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
+        Set<Block> manuallyDefinedLootTables = Set.of(
+                ModBlocks.SHARDIUM_STONE_ORE.get(),
+                ModBlocks.SHARDIUM_DEEPSLATE_ORE.get(),
+                ModBlocks.SHARDIUM_NETHER_ORE.get(),
+                ModBlocks.SHARDIUM_END_ORE.get(),
+                ModBlocks.SHARDIUM_OBSIDIAN_ORE.get()
+        );
+
+        return ModBlocks.BLOCKS.getEntries().stream()
+                .map(Holder::value)
+                .filter(block -> !manuallyDefinedLootTables.contains(block))
+                ::iterator;
     }
 
     @Override
@@ -101,26 +112,20 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropOther(ModBlocks.JADE_STONE_ORE.get(), ModItems.JADE_GEMSTONE.get());
         dropOther(ModBlocks.JADE_DEEPSLATE_ORE.get(), ModItems.JADE_GEMSTONE.get());
         dropOther(ModBlocks.JADE_OBSIDIAN_ORE.get(), ModItems.JADE_GEMSTONE.get());
-
-        dropOther(ModBlocks.SHARDIUM_STONE_ORE.get(), getRandomShard());
-        dropOther(ModBlocks.SHARDIUM_DEEPSLATE_ORE.get(), getRandomShard());
-        dropOther(ModBlocks.SHARDIUM_END_ORE.get(), getRandomShard());
-        dropOther(ModBlocks.SHARDIUM_NETHER_ORE.get(), getRandomShard());
-        dropOther(ModBlocks.SHARDIUM_OBSIDIAN_ORE.get(), getRandomShard());
     }
 
-    public static Item getRandomShard() {
-        Random rand = new Random();
-        ArrayList<Item> shards = new ArrayList<>(Arrays.asList(
-                ModItems.SOMNIUM_SHARD.get(),
-                ModItems.ELECTRIUM_SHARD.get(),
-                ModItems.IGNISIUM_SHARD.get(),
-                ModItems.LUSH_SHARD.get(),
-                ModItems.MORSIUM_SHARD.get(),
-                ModItems.VULNUSIUM_SHARD.get(),
-                ModItems.TAIFUNITE_SHARD.get(),
-                ModItems.PULSITE_SHARD.get()
-        ));
-        return shards.get(rand.nextInt(shards.size()));
-    }
+//    public static Item getRandomShard() {
+//        Random rand = new Random();
+//        ArrayList<Item> shards = new ArrayList<>(Arrays.asList(
+//                ModItems.SOMNIUM_SHARD.get(),
+//                ModItems.ELECTRIUM_SHARD.get(),
+//                ModItems.IGNISIUM_SHARD.get(),
+//                ModItems.LUSH_SHARD.get(),
+//                ModItems.MORSIUM_SHARD.get(),
+//                ModItems.VULNUSIUM_SHARD.get(),
+//                ModItems.TAIFUNITE_SHARD.get(),
+//                ModItems.PULSITE_SHARD.get()
+//        ));
+//        return shards.get(rand.nextInt(shards.size()));
+//    }
 }

@@ -3,7 +3,6 @@ package net.bananashelp20.forgermod.block.entity.custom;
 import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
-import net.bananashelp20.forgermod.screen.custom.ForgeMenu;
 import net.bananashelp20.forgermod.screen.custom.InfusionTableMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -24,11 +23,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.INFUSION_TABLE_RECIPE_INPUTS;
+import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.INFUSION_TABLE_RECIPE_OUTPUTS;
 
 public class InfusionTableBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemHandler = new ItemStackHandler(4) { //4 -> 4 slots big
@@ -45,100 +44,6 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     private static final int GEAR_SLOT = 1;
     private static final int TEMPLATE_SLOT = 2;
     private static final int OUTPUT_SLOT = 3;
-
-    private static final Item[][] RECIPE_INPUTS = {
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.CLAYMORE_OF_THUNDER.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.CLAYMORE_OF_THUNDER.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.CLAYMORE_OF_THUNDER.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.CLAYMORE_OF_THUNDER.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.INFERNAL_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.INFERNAL_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.INFERNAL_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.INFERNAL_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.CLAYMORE_OF_THE_VOID.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.CLAYMORE_OF_THE_VOID.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.CLAYMORE_OF_THE_VOID.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.CLAYMORE_OF_THE_VOID.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.OVERGROWN_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.OVERGROWN_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.OVERGROWN_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.OVERGROWN_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.HOLLOW_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.HOLLOW_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.HOLLOW_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.HOLLOW_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.CURSEBLOOD_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.CURSEBLOOD_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.CURSEBLOOD_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.CURSEBLOOD_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.DREAMBOUND_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.DREAMBOUND_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.DREAMBOUND_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.DREAMBOUND_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.SHRIEKING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.SHRIEKING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.SHRIEKING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.SHRIEKING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-
-            {ModItems.RUBY_GEMSTONE.get(), ModItems.STORMING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMBER_GEMSTONE.get(), ModItems.STORMING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.AMETHYST_GEMSTONE.get(), ModItems.STORMING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-            {ModItems.JADE_GEMSTONE.get(), ModItems.STORMING_CLAYMORE.get(), ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()},
-    };
-
-    private static final ItemStack[] RECIPE_OUTPUTS = {
-            new ItemStack(ModItems.CLAYMORE_OF_THUNDER_RUBY.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THUNDER_AMBER.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THUNDER_AMETHYST.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THUNDER_JADE.get()),
-
-            new ItemStack(ModItems.INFERNAL_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.INFERNAL_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.INFERNAL_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.INFERNAL_CLAYMORE_JADE.get()),
-
-            new ItemStack(ModItems.CLAYMORE_OF_THE_VOID_RUBY.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THE_VOID_AMBER.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THE_VOID_AMETHYST.get()),
-            new ItemStack(ModItems.CLAYMORE_OF_THE_VOID_JADE.get()),
-
-            new ItemStack(ModItems.OVERGROWN_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.OVERGROWN_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.OVERGROWN_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.OVERGROWN_CLAYMORE_JADE.get()),
-
-            new ItemStack(ModItems.HOLLOW_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.HOLLOW_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.HOLLOW_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.HOLLOW_CLAYMORE_JADE.get()),
-
-            new ItemStack(ModItems.CURSEBLOOD_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.CURSEBLOOD_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.CURSEBLOOD_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.CURSEBLOOD_CLAYMORE_JADE.get()),
-
-            new ItemStack(ModItems.DREAMBOUND_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.DREAMBOUND_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.DREAMBOUND_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.DREAMBOUND_CLAYMORE_JADE.get()),
-
-            new ItemStack(ModItems.SHRIEKING_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.SHRIEKING_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.SHRIEKING_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.SHRIEKING_CLAYMORE_JADE.get()),
-
-            new ItemStack(ModItems.STORMING_CLAYMORE_RUBY.get()),
-            new ItemStack(ModItems.STORMING_CLAYMORE_AMBER.get()),
-            new ItemStack(ModItems.STORMING_CLAYMORE_AMETHYST.get()),
-            new ItemStack(ModItems.STORMING_CLAYMORE_JADE.get()),
-    };
 
 //    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
@@ -176,13 +81,13 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     }
 
     public String getCorrectGemstoneTexturePath() {
-        if (RECIPE_INPUTS[recipeUsed][0] == ModItems.RUBY_GEMSTONE.get()) {
+        if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.RUBY_GEMSTONE.get()) {
             return "textures/gui/infusion_table_progress_ruby.png";
-        } else if (RECIPE_INPUTS[recipeUsed][0] == ModItems.AMBER_GEMSTONE.get())  {
+        } else if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.AMBER_GEMSTONE.get())  {
             return "textures/gui/infusion_table_progress_amber.png";
-        } else if (RECIPE_INPUTS[recipeUsed][0] == ModItems.AMETHYST_GEMSTONE.get()) {
+        } else if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.AMETHYST_GEMSTONE.get()) {
             return "textures/gui/infusion_table_progress_amethyst.png";
-        } else if (RECIPE_INPUTS[recipeUsed][0] == ModItems.JADE_GEMSTONE.get()) {
+        } else if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.JADE_GEMSTONE.get()) {
             return "textures/gui/infusion_table_progress_jade.png";
         }
         return "textures/gui/infusion_table_progress.png";
@@ -279,7 +184,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     }
 
     private void craftItem(int recipeUsed) {
-        ItemStack output = RECIPE_OUTPUTS[recipeUsed];
+        ItemStack output = INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed];
 
         itemHandler.extractItem(GEMSTONE_SLOT, 1, false);
         itemHandler.extractItem(GEAR_SLOT, 1, false);
@@ -287,7 +192,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     }
 
     private boolean hasRecipe() {
-        return ((isValidRecipe(RECIPE_INPUTS, RECIPE_OUTPUTS)) && canInsertItemIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed]) && canInsertAmountIntoOutputSlot(RECIPE_OUTPUTS[recipeUsed].getCount()));
+        return ((isValidRecipe(INFUSION_TABLE_RECIPE_INPUTS, INFUSION_TABLE_RECIPE_OUTPUTS)) && canInsertItemIntoOutputSlot(INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed]) && canInsertAmountIntoOutputSlot(INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed].getCount()));
     }
 
     private boolean isValidRecipe(Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN

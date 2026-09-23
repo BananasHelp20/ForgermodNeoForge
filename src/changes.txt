@@ -1,0 +1,35 @@
+Added
+- Rusty Knife
+- Rusty Axe
+- Carbon Steel Knife
+- Carbon Steel Axe
+- Vulnusium Axe
+- Electrium Axe
+- Ignisium Axe
+- Inanisium Axe
+- Lush Axe
+- Morsium Axe
+- Pulsite Axe
+- Somnium Axe
+- Taifunite Axe
+- Vulnusium Knife
+- Electrium Knife
+- Ignisium Knife
+- Inanisium Knife
+- Lush Knife
+- Morsium Knife
+- Pulsite Knife
+- Somnium Knife
+- Taifunite Knife
+- Vulnusium Knife
+
+- Titanium Ingot
+- Meteoric Iron Ingot
+- Raw Meteoric Iron
+- Tungsten Ingot
+- Alexandrite Gemstone
+
+Changed
+
+
+Removed
