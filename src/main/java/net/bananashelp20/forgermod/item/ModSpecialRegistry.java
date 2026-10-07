@@ -4,8 +4,6 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 
-import java.io.FileWriter;
-
 public class ModSpecialRegistry {
 
     //weapon type standards
@@ -19,10 +17,10 @@ public class ModSpecialRegistry {
     public static final int DEFAULT_RUSTY_AXE_DAMAGE = 1;
     public static final float DEFAULT_RUSTY_AXE_SPEED = 6f;
 
-    public static final int DEFAULT_KNIFE_DAMAGE = 1;
-    public static final float DEFAULT_KNIFE_SPEED = 1.4f;
-    public static final int DEFAULT_RUSTY_KNIFE_DAMAGE = -4;
-    public static final float DEFAULT_RUSTY_KNIFE_SPEED = 2.6f;
+    public static final int DEFAULT_DAGGER_DAMAGE = 1;
+    public static final float DEFAULT_DAGGER_SPEED = 1.4f;
+    public static final int DEFAULT_RUSTY_DAGGER_DAMAGE = -4;
+    public static final float DEFAULT_RUSTY_DAGGER_SPEED = 2.6f;
 
     //knifes
     public static final int KNIFE_DAMASK_DAMAGE = 0;

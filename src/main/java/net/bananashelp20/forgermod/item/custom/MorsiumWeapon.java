@@ -22,6 +22,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     public static int effectAmplifier = 3;
     public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
+    public String type;
 
     public MorsiumWeapon(String gemstone, String type) {
         super(ModToolTiers.MORSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "morsium"));
@@ -30,13 +31,37 @@ public class MorsiumWeapon extends SwordItemWithEffect {
             durationInTicks += 20;
         }
         this.gemstone = gemstone;
+        this.type = type;
+    }
+
+    public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+
+    }
+
+    public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
+        System.out.println(pTarget.getActiveEffects());
+    }
+
+    public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+
     }
 
     @Override
     public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-        System.out.println(pTarget.getActiveEffects());
+        switch (this.type) {
+            case "claymore":
+                claymoreAttack(pStack, pTarget, pAttacker);
+                break;
+            case "axe":
+                axeAttack(pStack, pTarget, pAttacker);
+                break;
+            case "dagger":
+                daggerAttack(pStack, pTarget, pAttacker);
+                break;
+            default: claymoreAttack(pStack, pTarget, pAttacker);
+        }
     }
 
     @Override

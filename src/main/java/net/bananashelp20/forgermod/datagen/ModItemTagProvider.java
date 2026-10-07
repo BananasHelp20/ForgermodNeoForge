@@ -2,17 +2,12 @@ package net.bananashelp20.forgermod.datagen;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModItems;
-import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,25 +32,25 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.CLAYMORE_OF_THUNDER.get())
                 .add(ModItems.STORMING_CLAYMORE.get())
 
-                .add(ModItems.OVERGROWN_AXE.get())
-                .add(ModItems.HOLLOW_AXE.get())
-                .add(ModItems.INFERNAL_AXE.get())
-                .add(ModItems.AXE_OF_THE_VOID.get())
-                .add(ModItems.CURSEBLOOD_AXE.get())
-                .add(ModItems.DREAMBOUND_AXE.get())
-                .add(ModItems.SHRIEKING_AXE.get())
-                .add(ModItems.AXE_OF_THUNDER.get())
-                .add(ModItems.STORMING_AXE.get())
+                .add(ModItems.VERDANT_AXE.get())
+                .add(ModItems.GHOST_AXE.get())
+                .add(ModItems.MOLTEN_AXE.get())
+                .add(ModItems.NULLIFIED_AXE.get())
+                .add(ModItems.WOUNDMAKER_AXE.get())
+                .add(ModItems.DREAMWEAVER_AXE.get())
+                .add(ModItems.ECHOING_AXE.get())
+                .add(ModItems.VOLTAGE_AXE.get())
+                .add(ModItems.SKYBREAKER_AXE.get())
 
-                .add(ModItems.OVERGROWN_KNIFE.get())
-                .add(ModItems.HOLLOW_KNIFE.get())
-                .add(ModItems.INFERNAL_KNIFE.get())
-                .add(ModItems.KNIFE_OF_THE_VOID.get())
-                .add(ModItems.CURSEBLOOD_KNIFE.get())
-                .add(ModItems.DREAMBOUND_KNIFE.get())
-                .add(ModItems.SHRIEKING_KNIFE.get())
-                .add(ModItems.KNIFE_OF_THUNDER.get())
-                .add(ModItems.STORMING_KNIFE.get())
+                .add(ModItems.LEAFCUTTER_DAGGER.get())
+                .add(ModItems.DEATHWISPER_DAGGER.get())
+                .add(ModItems.EMBERFANG_DAGGER.get())
+                .add(ModItems.RIFTFANG_DAGGER.get())
+                .add(ModItems.ASSASSIN_DAGGER.get())
+                .add(ModItems.NIGHTMARE_DAGGER.get())
+                .add(ModItems.WARDENS_NEEDLE.get())
+                .add(ModItems.STATIC_DAGGER.get())
+                .add(ModItems.DEAD_CALM_DAGGER.get())
 
                 // THUNDER variants
                 .add(ModItems.CLAYMORE_OF_THUNDER_RUBY.get())
@@ -63,15 +58,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.CLAYMORE_OF_THUNDER_AMETHYST.get())
                 .add(ModItems.CLAYMORE_OF_THUNDER_JADE.get())
 
-                .add(ModItems.AXE_OF_THUNDER_RUBY.get())
-                .add(ModItems.AXE_OF_THUNDER_AMBER.get())
-                .add(ModItems.AXE_OF_THUNDER_AMETHYST.get())
-                .add(ModItems.AXE_OF_THUNDER_JADE.get())
+                .add(ModItems.VOLTAGE_AXE_RUBY.get())
+                .add(ModItems.VOLTAGE_AXE_AMBER.get())
+                .add(ModItems.VOLTAGE_AXE_AMETHYST.get())
+                .add(ModItems.VOLTAGE_AXE_JADE.get())
 
-                .add(ModItems.KNIFE_OF_THUNDER_RUBY.get())
-                .add(ModItems.KNIFE_OF_THUNDER_AMBER.get())
-                .add(ModItems.KNIFE_OF_THUNDER_AMETHYST.get())
-                .add(ModItems.KNIFE_OF_THUNDER_JADE.get())
+                .add(ModItems.STATIC_DAGGER_RUBY.get())
+                .add(ModItems.STATIC_DAGGER_AMBER.get())
+                .add(ModItems.STATIC_DAGGER_AMETHYST.get())
+                .add(ModItems.STATIC_DAGGER_JADE.get())
 
                 // SHRIEKING variants
                 .add(ModItems.SHRIEKING_CLAYMORE_RUBY.get())
@@ -79,15 +74,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.SHRIEKING_CLAYMORE_AMETHYST.get())
                 .add(ModItems.SHRIEKING_CLAYMORE_JADE.get())
 
-                .add(ModItems.SHRIEKING_AXE_RUBY.get())
-                .add(ModItems.SHRIEKING_AXE_AMBER.get())
-                .add(ModItems.SHRIEKING_AXE_AMETHYST.get())
-                .add(ModItems.SHRIEKING_AXE_JADE.get())
+                .add(ModItems.ECHOING_AXE_RUBY.get())
+                .add(ModItems.ECHOING_AXE_AMBER.get())
+                .add(ModItems.ECHOING_AXE_AMETHYST.get())
+                .add(ModItems.ECHOING_AXE_JADE.get())
 
-                .add(ModItems.SHRIEKING_KNIFE_RUBY.get())
-                .add(ModItems.SHRIEKING_KNIFE_AMBER.get())
-                .add(ModItems.SHRIEKING_KNIFE_AMETHYST.get())
-                .add(ModItems.SHRIEKING_KNIFE_JADE.get())
+                .add(ModItems.WARDENS_NEEDLE_RUBY.get())
+                .add(ModItems.WARDENS_NEEDLE_AMBER.get())
+                .add(ModItems.WARDENS_NEEDLE_AMETHYST.get())
+                .add(ModItems.WARDENS_NEEDLE_JADE.get())
 
                 // DREAMBOUND variants
                 .add(ModItems.DREAMBOUND_CLAYMORE_RUBY.get())
@@ -95,15 +90,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.DREAMBOUND_CLAYMORE_AMETHYST.get())
                 .add(ModItems.DREAMBOUND_CLAYMORE_JADE.get())
 
-                .add(ModItems.DREAMBOUND_AXE_RUBY.get())
-                .add(ModItems.DREAMBOUND_AXE_AMBER.get())
-                .add(ModItems.DREAMBOUND_AXE_AMETHYST.get())
-                .add(ModItems.DREAMBOUND_AXE_JADE.get())
+                .add(ModItems.DREAMWEAVER_AXE_RUBY.get())
+                .add(ModItems.DREAMWEAVER_AXE_AMBER.get())
+                .add(ModItems.DREAMWEAVER_AXE_AMETHYST.get())
+                .add(ModItems.DREAMWEAVER_AXE_JADE.get())
 
-                .add(ModItems.DREAMBOUND_KNIFE_RUBY.get())
-                .add(ModItems.DREAMBOUND_KNIFE_AMBER.get())
-                .add(ModItems.DREAMBOUND_KNIFE_AMETHYST.get())
-                .add(ModItems.DREAMBOUND_KNIFE_JADE.get())
+                .add(ModItems.NIGHTMARE_DAGGER_RUBY.get())
+                .add(ModItems.NIGHTMARE_DAGGER_AMBER.get())
+                .add(ModItems.NIGHTMARE_DAGGER_AMETHYST.get())
+                .add(ModItems.NIGHTMARE_DAGGER_JADE.get())
 
                 // CURSEBLOOD variants
                 .add(ModItems.CURSEBLOOD_CLAYMORE_RUBY.get())
@@ -111,15 +106,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.CURSEBLOOD_CLAYMORE_AMETHYST.get())
                 .add(ModItems.CURSEBLOOD_CLAYMORE_JADE.get())
 
-                .add(ModItems.CURSEBLOOD_AXE_RUBY.get())
-                .add(ModItems.CURSEBLOOD_AXE_AMBER.get())
-                .add(ModItems.CURSEBLOOD_AXE_AMETHYST.get())
-                .add(ModItems.CURSEBLOOD_AXE_JADE.get())
+                .add(ModItems.WOUNDMAKER_AXE_RUBY.get())
+                .add(ModItems.WOUNDMAKER_AXE_AMBER.get())
+                .add(ModItems.WOUNDMAKER_AXE_AMETHYST.get())
+                .add(ModItems.WOUNDMAKER_AXE_JADE.get())
 
-                .add(ModItems.CURSEBLOOD_KNIFE_RUBY.get())
-                .add(ModItems.CURSEBLOOD_KNIFE_AMBER.get())
-                .add(ModItems.CURSEBLOOD_KNIFE_AMETHYST.get())
-                .add(ModItems.CURSEBLOOD_KNIFE_JADE.get())
+                .add(ModItems.ASSASSIN_DAGGER_RUBY.get())
+                .add(ModItems.ASSASSIN_DAGGER_AMBER.get())
+                .add(ModItems.ASSASSIN_DAGGER_AMETHYST.get())
+                .add(ModItems.ASSASSIN_DAGGER_JADE.get())
 
                 // VOID variants
                 .add(ModItems.CLAYMORE_OF_THE_VOID_RUBY.get())
@@ -127,15 +122,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.CLAYMORE_OF_THE_VOID_AMETHYST.get())
                 .add(ModItems.CLAYMORE_OF_THE_VOID_JADE.get())
 
-                .add(ModItems.AXE_OF_THE_VOID_RUBY.get())
-                .add(ModItems.AXE_OF_THE_VOID_AMBER.get())
-                .add(ModItems.AXE_OF_THE_VOID_AMETHYST.get())
-                .add(ModItems.AXE_OF_THE_VOID_JADE.get())
+                .add(ModItems.NULLIFIED_AXE_RUBY.get())
+                .add(ModItems.NULLIFIED_AXE_AMBER.get())
+                .add(ModItems.NULLIFIED_AXE_AMETHYST.get())
+                .add(ModItems.NULLIFIED_AXE_JADE.get())
 
-                .add(ModItems.KNIFE_OF_THE_VOID_RUBY.get())
-                .add(ModItems.KNIFE_OF_THE_VOID_AMBER.get())
-                .add(ModItems.KNIFE_OF_THE_VOID_AMETHYST.get())
-                .add(ModItems.KNIFE_OF_THE_VOID_JADE.get())
+                .add(ModItems.RIFTFANG_DAGGER_RUBY.get())
+                .add(ModItems.RIFTFANG_DAGGER_AMBER.get())
+                .add(ModItems.RIFTFANG_DAGGER_AMETHYST.get())
+                .add(ModItems.RIFTFANG_DAGGER_JADE.get())
 
                 // INFERNAL variants
                 .add(ModItems.INFERNAL_CLAYMORE_RUBY.get())
@@ -143,15 +138,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.INFERNAL_CLAYMORE_AMETHYST.get())
                 .add(ModItems.INFERNAL_CLAYMORE_JADE.get())
 
-                .add(ModItems.INFERNAL_AXE_RUBY.get())
-                .add(ModItems.INFERNAL_AXE_AMBER.get())
-                .add(ModItems.INFERNAL_AXE_AMETHYST.get())
-                .add(ModItems.INFERNAL_AXE_JADE.get())
+                .add(ModItems.MOLTEN_AXE_RUBY.get())
+                .add(ModItems.MOLTEN_AXE_AMBER.get())
+                .add(ModItems.MOLTEN_AXE_AMETHYST.get())
+                .add(ModItems.MOLTEN_AXE_JADE.get())
 
-                .add(ModItems.INFERNAL_KNIFE_RUBY.get())
-                .add(ModItems.INFERNAL_KNIFE_AMBER.get())
-                .add(ModItems.INFERNAL_KNIFE_AMETHYST.get())
-                .add(ModItems.INFERNAL_KNIFE_JADE.get())
+                .add(ModItems.EMBERFANG_DAGGER_RUBY.get())
+                .add(ModItems.EMBERFANG_DAGGER_AMBER.get())
+                .add(ModItems.EMBERFANG_DAGGER_AMETHYST.get())
+                .add(ModItems.EMBERFANG_DAGGER_JADE.get())
 
                 // HOLLOW variants
                 .add(ModItems.HOLLOW_CLAYMORE_RUBY.get())
@@ -159,15 +154,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.HOLLOW_CLAYMORE_AMETHYST.get())
                 .add(ModItems.HOLLOW_CLAYMORE_JADE.get())
 
-                .add(ModItems.HOLLOW_AXE_RUBY.get())
-                .add(ModItems.HOLLOW_AXE_AMBER.get())
-                .add(ModItems.HOLLOW_AXE_AMETHYST.get())
-                .add(ModItems.HOLLOW_AXE_JADE.get())
+                .add(ModItems.GHOST_AXE_RUBY.get())
+                .add(ModItems.GHOST_AXE_AMBER.get())
+                .add(ModItems.GHOST_AXE_AMETHYST.get())
+                .add(ModItems.GHOST_AXE_JADE.get())
 
-                .add(ModItems.HOLLOW_KNIFE_RUBY.get())
-                .add(ModItems.HOLLOW_KNIFE_AMBER.get())
-                .add(ModItems.HOLLOW_KNIFE_AMETHYST.get())
-                .add(ModItems.HOLLOW_KNIFE_JADE.get())
+                .add(ModItems.DEATHWISPER_DAGGER_RUBY.get())
+                .add(ModItems.DEATHWISPER_DAGGER_AMBER.get())
+                .add(ModItems.DEATHWISPER_DAGGER_AMETHYST.get())
+                .add(ModItems.DEATHWISPER_DAGGER_JADE.get())
 
                 // STORMING variants
                 .add(ModItems.STORMING_CLAYMORE_RUBY.get())
@@ -175,15 +170,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.STORMING_CLAYMORE_AMETHYST.get())
                 .add(ModItems.STORMING_CLAYMORE_JADE.get())
 
-                .add(ModItems.STORMING_AXE_RUBY.get())
-                .add(ModItems.STORMING_AXE_AMBER.get())
-                .add(ModItems.STORMING_AXE_AMETHYST.get())
-                .add(ModItems.STORMING_AXE_JADE.get())
+                .add(ModItems.SKYBREAKER_AXE_RUBY.get())
+                .add(ModItems.SKYBREAKER_AXE_AMBER.get())
+                .add(ModItems.SKYBREAKER_AXE_AMETHYST.get())
+                .add(ModItems.SKYBREAKER_AXE_JADE.get())
 
-                .add(ModItems.STORMING_KNIFE_RUBY.get())
-                .add(ModItems.STORMING_KNIFE_AMBER.get())
-                .add(ModItems.STORMING_KNIFE_AMETHYST.get())
-                .add(ModItems.STORMING_KNIFE_JADE.get())
+                .add(ModItems.DEAD_CALM_DAGGER_RUBY.get())
+                .add(ModItems.DEAD_CALM_DAGGER_AMBER.get())
+                .add(ModItems.DEAD_CALM_DAGGER_AMETHYST.get())
+                .add(ModItems.DEAD_CALM_DAGGER_JADE.get())
 
                 // OVERGROWN variants
                 .add(ModItems.OVERGROWN_CLAYMORE_RUBY.get())
@@ -191,23 +186,23 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.OVERGROWN_CLAYMORE_AMETHYST.get())
                 .add(ModItems.OVERGROWN_CLAYMORE_JADE.get())
 
-                .add(ModItems.OVERGROWN_AXE_RUBY.get())
-                .add(ModItems.OVERGROWN_AXE_AMBER.get())
-                .add(ModItems.OVERGROWN_AXE_AMETHYST.get())
-                .add(ModItems.OVERGROWN_AXE_JADE.get())
+                .add(ModItems.VERDANT_AXE_RUBY.get())
+                .add(ModItems.VERDANT_AXE_AMBER.get())
+                .add(ModItems.VERDANT_AXE_AMETHYST.get())
+                .add(ModItems.VERDANT_AXE_JADE.get())
 
-                .add(ModItems.OVERGROWN_KNIFE_RUBY.get())
-                .add(ModItems.OVERGROWN_KNIFE_AMBER.get())
-                .add(ModItems.OVERGROWN_KNIFE_AMETHYST.get())
-                .add(ModItems.OVERGROWN_KNIFE_JADE.get())
+                .add(ModItems.LEAFCUTTER_DAGGER_RUBY.get())
+                .add(ModItems.LEAFCUTTER_DAGGER_AMBER.get())
+                .add(ModItems.LEAFCUTTER_DAGGER_AMETHYST.get())
+                .add(ModItems.LEAFCUTTER_DAGGER_JADE.get())
 
                 // other stuff
                 .add(ModItems.CLAYMORE.get())
                 .add(ModItems.RUSTY_CLAYMORE.get())
                 .add(ModItems.CARBON_STEEL_AXE.get())
                 .add(ModItems.RUSTY_AXE.get())
-                .add(ModItems.CARBON_STEEL_KNIFE.get())
-                .add(ModItems.RUSTY_KNIFE.get())
+                .add(ModItems.CARBON_STEEL_DAGGER.get())
+                .add(ModItems.RUSTY_DAGGER.get())
 
                 .add(ModItems.DAMASK_KNIFE.get())
 

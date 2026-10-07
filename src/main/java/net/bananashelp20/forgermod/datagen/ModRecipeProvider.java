@@ -6,7 +6,6 @@ import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -58,7 +57,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.CARBON_STEEL_CROSS_GUARD.get(),
             ModItems.ADVANCED_HANDLE.get(),
             ModItems.SHARPENED_BLADE.get(),
-            ModItems.CARBON_STEEL_KNIFE.get(),
+            ModItems.CARBON_STEEL_DAGGER.get(),
             ModItems.CARBON_STEEL_AXE.get()
     );
 

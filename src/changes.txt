@@ -30,6 +30,7 @@ Added
 - Alexandrite Gemstone
 
 Changed
-
+fixed shardium Ore not dropping random items.
+fixed sword effects
 
 Removed

@@ -1,14 +1,18 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -22,6 +26,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public static int effectAmplifier = 3;
     public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
+    public String type;
 
     public ElectriumWeapon(String gemstone, String type) {
         super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"));
@@ -30,13 +35,54 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             durationInTicks += 20;
         }
         this.gemstone = gemstone;
+        this.type = type;
+    }
+
+    public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+
+    }
+
+    public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
+        System.out.println(pTarget.getActiveEffects());
+    }
+
+    public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker, EquipmentSlot pSlot) {
+        pStack.hurtAndBreak(1, pAttacker, pSlot);
     }
 
     @Override
     public void postHurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-        System.out.println(pTarget.getActiveEffects());
+        switch (this.type) {
+            case "claymore":
+                claymoreAttack(pStack, pTarget, pAttacker);
+                break;
+            case "axe":
+                axeAttack(pStack, pTarget, pAttacker);
+                break;
+            case "dagger":
+                ItemStack offhand = pAttacker.getOffhandItem();
+                boolean matchingDagger = offhand.is(pStack.getItem());
+
+                daggerAttack(pStack, pTarget, pAttacker, EquipmentSlot.MAINHAND);
+
+                if (matchingDagger && pAttacker instanceof Player player
+                        && !player.level().isClientSide && !pTarget.isDeadOrDying()) {
+                    int previousInvulnerableTime = pTarget.invulnerableTime;
+                    pTarget.invulnerableTime = 0;
+
+                    float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                    if (pTarget.hurt(player.damageSources().playerAttack(player), damage)) {
+                        player.swing(InteractionHand.OFF_HAND, true);
+                        daggerAttack(offhand, pTarget, player, EquipmentSlot.OFFHAND);
+                    } else {
+                        pTarget.invulnerableTime = previousInvulnerableTime;
+                    }
+                }
+                break;
+            default: claymoreAttack(pStack, pTarget, pAttacker);
+        }
     }
 
     @Override
