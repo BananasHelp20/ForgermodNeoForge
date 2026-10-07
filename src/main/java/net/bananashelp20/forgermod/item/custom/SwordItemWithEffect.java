@@ -17,6 +17,8 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
+import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,18 +28,39 @@ import java.util.List;
 
 public class SwordItemWithEffect extends SwordItem {
     private final String weaponType;
+    @Nullable private final Holder<MobEffect> materialEffect;
+    private final int materialEffectDuration;
+    private final int materialEffectAmplifier;
 
     public SwordItemWithEffect(Tier pTier, Properties pProperties) {
         this(pTier, pProperties, "sword");
     }
 
     public SwordItemWithEffect(Tier pTier, Properties pProperties, String weaponType) {
+        this(pTier, pProperties, weaponType, "no_gemstone", null, 0, 0);
+    }
+
+    public SwordItemWithEffect(Tier pTier, Properties pProperties, String weaponType, String gemstone,
+                               @Nullable Holder<MobEffect> effect, int duration, int amplifier) {
         super(pTier, pProperties);
         this.weaponType = weaponType;
+        this.materialEffect = effect;
+        this.materialEffectDuration = duration + ("jade".equals(gemstone) ? 20 : 0);
+        this.materialEffectAmplifier = amplifier + ("jade".equals(gemstone) ? 1 : 0);
     }
 
     public boolean isDagger() {
         return "dagger".equals(weaponType);
+    }
+
+    public boolean isAxe() {
+        return "axe".equals(weaponType);
+    }
+
+    public final void applyMaterialEffect(LivingEntity target) {
+        if (materialEffect != null && !target.isDeadOrDying()) {
+            target.addEffect(new MobEffectInstance(materialEffect, materialEffectDuration, materialEffectAmplifier));
+        }
     }
 
     /** Override in a material weapon to implement a key-activated ability. Return true only when it activates. */
@@ -48,6 +71,28 @@ public class SwordItemWithEffect extends SwordItem {
     /** Cooldown applied after a successful ability. Zero leaves cooldown management to the weapon. */
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
         return 0;
+    }
+
+    /** Return a translation key for each implemented ability; null hides an unused slot. */
+    @Nullable
+    public String abilityDescriptionKey(WeaponAbilitySlot slot) {
+        return null;
+    }
+
+    protected final void appendWeaponTooltip(List<Component> tooltip, String loreKey, String gemstone) {
+        tooltip.add(Component.translatable(loreKey));
+        if (isAxe()) tooltip.add(Component.translatable("tooltips.forgermod.passive.axe"));
+        if (isDagger()) tooltip.add(Component.translatable("tooltips.forgermod.passive.dagger"));
+        for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
+            String descriptionKey = abilityDescriptionKey(slot);
+            if (descriptionKey != null) {
+                String keyId = slot == WeaponAbilitySlot.PRIMARY
+                        ? "key.forgermod.ability_primary" : "key.forgermod.ability_secondary";
+                tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip",
+                        Component.keybind(keyId), Component.translatable(descriptionKey)));
+            }
+        }
+        tooltip.add(Component.translatable("tooltips.forgermod." + gemstone + ".tooltip_extra"));
     }
 
     public static Tool createToolProperties() {

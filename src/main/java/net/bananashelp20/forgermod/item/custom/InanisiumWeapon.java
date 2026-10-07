@@ -25,27 +25,24 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     public String type;
 
     public InanisiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.INANISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "inanisium"), type);
-        if (gemstone.equals("jade")) {
-            effectAmplifier += 1;
-            durationInTicks += 20;
-        }
+        super(ModToolTiers.INANISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "inanisium"),
+                type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;
     }
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-        System.out.println(pTarget.getActiveEffects());
+        applyMaterialEffect(pTarget);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        applyMaterialEffect(pTarget);
     }
 
     @Override
@@ -66,8 +63,12 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod.claymore_of_the_void.tooltip"));
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
+        String loreKey = switch (this.type) {
+            case "axe" -> "tooltips.forgermod.nullified_axe.tooltip";
+            case "dagger" -> "tooltips.forgermod.riftfang_dagger.tooltip";
+            default -> "tooltips.forgermod.claymore_of_the_void.tooltip";
+        };
+        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.attacks.dagger;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -95,6 +96,9 @@ public class DualWieldNetwork {
         target.invulnerableTime = 0;
         float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         if (target.hurt(player.damageSources().playerAttack(player), damage)) {
+            if (offhand.getItem() instanceof SwordItemWithEffect weapon) {
+                weapon.applyMaterialEffect(target);
+            }
             offhand.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
         } else {
             target.invulnerableTime = previousInvulnerableTime;

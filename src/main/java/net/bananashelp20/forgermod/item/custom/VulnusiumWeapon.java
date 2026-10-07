@@ -25,28 +25,26 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
     public String type;
 
     public VulnusiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.VULNUSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "vulnusium"), type);
-        if (gemstone.equals("jade")) {
-            effectAmplifier += 1;
-            durationInTicks += 20;
-        }
+        super(ModToolTiers.VULNUSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "vulnusium"),
+                type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;
     }
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
+        applyMaterialEffect(pTarget);
 
         if (pTarget.isDeadOrDying()) pAttacker.heal(1); //heals 1hp?
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        applyMaterialEffect(pTarget);
     }
 
     @Override
@@ -67,8 +65,12 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
 
     @Override
     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod.curseblood_claymore.tooltip"));
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
+        String loreKey = switch (this.type) {
+            case "axe" -> "tooltips.forgermod.woundmaker_axe.tooltip";
+            case "dagger" -> "tooltips.forgermod.assassin_dagger.tooltip";
+            default -> "tooltips.forgermod.curseblood_claymore.tooltip";
+        };
+        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 

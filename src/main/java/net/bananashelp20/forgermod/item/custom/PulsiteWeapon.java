@@ -25,27 +25,24 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     public String type;
 
     public PulsiteWeapon(String gemstone, String type) {
-        super(ModToolTiers.PULSITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "pulsite"), type);
-        if (gemstone.equals("jade")) {
-            effectAmplifier += 1;
-            durationInTicks += 20;
-        }
+        super(ModToolTiers.PULSITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "pulsite"),
+                type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;
     }
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-        System.out.println(pTarget.getActiveEffects());
+        applyMaterialEffect(pTarget);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        applyMaterialEffect(pTarget);
     }
 
     @Override
@@ -66,8 +63,12 @@ public class PulsiteWeapon extends SwordItemWithEffect {
 
     @Override
     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod.shrieking_claymore.tooltip"));
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
+        String loreKey = switch (this.type) {
+            case "axe" -> "tooltips.forgermod.echoing_axe.tooltip";
+            case "dagger" -> "tooltips.forgermod.wardens_needle.tooltip";
+            default -> "tooltips.forgermod.shrieking_claymore.tooltip";
+        };
+        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

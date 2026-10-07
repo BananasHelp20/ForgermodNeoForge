@@ -28,9 +28,29 @@ Added
 - Raw Meteoric Iron
 - Tungsten Ingot
 - Alexandrite Gemstone
+- Dual-wield attacks for matching daggers (knives excluded), including an offhand swing after the main-hand swing
+- Axe heavy attack: the third attack within 10 seconds slams a 3x3 area ahead
+- First-person vertical swing animation, particles, and sound for the axe heavy attack
+- Configurable primary and secondary weapon ability keybindings, defaulting to 1 and 2
+- Server-side primary and secondary ability hooks for special-material daggers, claymores, and axes
+- Names and lore for special-material daggers and axes
+- Dynamic ability keybinding and passive descriptions in weapon tooltips
+- Axe offhand restriction: moves offhand items to inventory or drops any remainder when an axe is held
+- `sessionContext.md` handoff for the weapon work and NeoForge 1.21.1 requirements
 
 Changed
 fixed shardium Ore not dropping random items.
 fixed sword effects
+- Special-material daggers now apply their material effect on main-hand and offhand hits
+- Special-material claymore effects use per-item duration and amplifier values, so Jade bonuses do not affect other weapons
+- Special-material axes now lose durability on successful hits
+- Offhand item, block, and entity interactions are blocked while holding an axe
+
+Buffed
+- All axes gain the 3x3 heavy attack passive
+- Special-material daggers gain their material effect on hit alongside dual wielding
+
+Debuffed
+- Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 
 Removed

@@ -25,27 +25,24 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public String type;
 
     public IgnisiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.IGNISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "ignisium"), type);
-        if (gemstone.equals("jade")) {
-            effectAmplifier += 1;
-            durationInTicks += 20;
-        }
+        super(ModToolTiers.IGNISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "ignisium"),
+                type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;
     }
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        if (!pTarget.isDeadOrDying()) pTarget.addEffect(new MobEffectInstance(effect, durationInTicks, effectAmplifier)); //duration -> Ticks, AMPLIFIER
-        System.out.println(pTarget.getActiveEffects());
+        applyMaterialEffect(pTarget);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
+        pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        applyMaterialEffect(pTarget);
     }
 
     @Override
@@ -66,8 +63,12 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod.infernal_claymore.tooltip"));
-        pTooltipComponents.add(Component.translatable("tooltips.forgermod."+ this.gemstone + ".tooltip_extra"));
+        String loreKey = switch (this.type) {
+            case "axe" -> "tooltips.forgermod.molten_axe.tooltip";
+            case "dagger" -> "tooltips.forgermod.emberfang_dagger.tooltip";
+            default -> "tooltips.forgermod.infernal_claymore.tooltip";
+        };
+        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }
