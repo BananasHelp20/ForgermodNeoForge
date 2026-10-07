@@ -4,6 +4,8 @@ import net.bananashelp20.forgermod.CreativeModeTabs.ModCreativeModeTabs;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
+import net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork;
+import net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork;
 import net.bananashelp20.forgermod.recipe.ModRecipes;
 import net.bananashelp20.forgermod.screen.ModMenuTypes;
 import net.bananashelp20.forgermod.screen.custom.ForgeScreen;
@@ -38,6 +40,8 @@ public class ForgerMod {
     public ForgerMod(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(DualWieldNetwork::register);
+        modEventBus.addListener(WeaponAbilityNetwork::register);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ForgerMod) to respond directly to events.

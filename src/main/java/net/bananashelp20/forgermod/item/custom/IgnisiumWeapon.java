@@ -25,7 +25,7 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public String type;
 
     public IgnisiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.IGNISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "ignisium"));
+        super(ModToolTiers.IGNISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "ignisium"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

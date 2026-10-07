@@ -1,18 +1,14 @@
 package net.bananashelp20.forgermod.item.custom;
 
-import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -29,7 +25,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public String type;
 
     public ElectriumWeapon(String gemstone, String type) {
-        super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"));
+        super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;
@@ -62,24 +58,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
                 axeAttack(pStack, pTarget, pAttacker);
                 break;
             case "dagger":
-                ItemStack offhand = pAttacker.getOffhandItem();
-                boolean matchingDagger = offhand.is(pStack.getItem());
-
                 daggerAttack(pStack, pTarget, pAttacker, EquipmentSlot.MAINHAND);
-
-                if (matchingDagger && pAttacker instanceof Player player
-                        && !player.level().isClientSide && !pTarget.isDeadOrDying()) {
-                    int previousInvulnerableTime = pTarget.invulnerableTime;
-                    pTarget.invulnerableTime = 0;
-
-                    float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                    if (pTarget.hurt(player.damageSources().playerAttack(player), damage)) {
-                        player.swing(InteractionHand.OFF_HAND, true);
-                        daggerAttack(offhand, pTarget, player, EquipmentSlot.OFFHAND);
-                    } else {
-                        pTarget.invulnerableTime = previousInvulnerableTime;
-                    }
-                }
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }

@@ -1,4 +1,8 @@
 {
+  "key.categories.forgermod": "Forger Mod",
+  "key.forgermod.ability_primary": "Primary Weapon Ability",
+  "key.forgermod.ability_secondary": "Secondary Weapon Ability",
+
   "creativetab.forgermod.forger_ingredients_tab": "Forger Ingredients",
 
   "item.forgermod.scrap_ingot": "Scrap Ingot",

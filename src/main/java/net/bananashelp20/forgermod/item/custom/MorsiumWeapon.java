@@ -25,7 +25,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     public String type;
 
     public MorsiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.MORSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "morsium"));
+        super(ModToolTiers.MORSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "morsium"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

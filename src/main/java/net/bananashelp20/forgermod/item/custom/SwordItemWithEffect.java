@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.level.Level;
@@ -24,8 +25,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public class SwordItemWithEffect extends SwordItem {
+    private final String weaponType;
+
     public SwordItemWithEffect(Tier pTier, Properties pProperties) {
+        this(pTier, pProperties, "sword");
+    }
+
+    public SwordItemWithEffect(Tier pTier, Properties pProperties, String weaponType) {
         super(pTier, pProperties);
+        this.weaponType = weaponType;
+    }
+
+    public boolean isDagger() {
+        return "dagger".equals(weaponType);
+    }
+
+    /** Override in a material weapon to implement a key-activated ability. Return true only when it activates. */
+    public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        return false;
+    }
+
+    /** Cooldown applied after a successful ability. Zero leaves cooldown management to the weapon. */
+    public int abilityCooldownTicks(WeaponAbilitySlot slot) {
+        return 0;
     }
 
     public static Tool createToolProperties() {

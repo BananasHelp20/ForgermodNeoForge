@@ -25,7 +25,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     public String type;
 
     public PulsiteWeapon(String gemstone, String type) {
-        super(ModToolTiers.PULSITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "pulsite"));
+        super(ModToolTiers.PULSITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "pulsite"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

@@ -25,7 +25,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
     public String type;
 
     public VulnusiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.VULNUSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "vulnusium"));
+        super(ModToolTiers.VULNUSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "vulnusium"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

@@ -25,7 +25,7 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     public String type;
 
     public TaifuniteWeapon(String gemstone, String type) {
-        super(ModToolTiers.TAIFUNITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "taifunite"));
+        super(ModToolTiers.TAIFUNITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "taifunite"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

@@ -22,7 +22,7 @@ public class LushWeapon extends SwordItemWithEffect {
     public String type;
 
     public LushWeapon(String gemstone, String type) {
-        super(ModToolTiers.LUSH, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"));
+        super(ModToolTiers.LUSH, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;

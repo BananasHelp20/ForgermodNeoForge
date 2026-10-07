@@ -25,7 +25,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public String type;
 
     public SomniumWeapon(String gemstone, String type) {
-        super(ModToolTiers.SOMNIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "somnium"));
+        super(ModToolTiers.SOMNIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "somnium"), type);
         if (gemstone.equals("jade")) {
             effectAmplifier += 1;
             durationInTicks += 20;
