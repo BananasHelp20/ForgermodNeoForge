@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
 import net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState;
+import net.bananashelp20.forgermod.item.custom.abilities.ChainLightningTargets;
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.network.chat.Component;
@@ -63,8 +64,9 @@ public class ElectriumWeapon extends SwordItemWithEffect {
 
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
-        if (!(attacker instanceof ServerPlayer player) || !(target instanceof Mob)
-                || !CHARGE_ATTACK.recordMobHit(player.getUUID()) || target.isDeadOrDying()) return;
+        if (!(attacker instanceof ServerPlayer player)) return;
+        chainLightning(target, player);
+        if (!(target instanceof Mob) || !CHARGE_ATTACK.recordMobHit(player.getUUID()) || target.isDeadOrDying()) return;
 
         int previousInvulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
@@ -74,6 +76,30 @@ public class ElectriumWeapon extends SwordItemWithEffect {
                     20, 0.5, 0.5, 0.5, 0.1);
         } else {
             target.invulnerableTime = previousInvulnerableTime;
+        }
+    }
+
+    private void chainLightning(LivingEntity original, ServerPlayer player) {
+        List<Mob> chained = ChainLightningTargets.select(
+                player.serverLevel().getEntitiesOfClass(Mob.class, original.getBoundingBox().inflate(10)),
+                mob -> mob != original && mob instanceof Enemy && mob.isAlive(), original::distanceToSqr);
+        for (Mob mob : chained) {
+            int previousInvulnerableTime = mob.invulnerableTime;
+            mob.invulnerableTime = 0;
+            if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player), 5.0F)) {
+                for (int step = 1; step <= 6; step++) {
+                    double fraction = step / 7.0;
+                    player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                            original.getX() + (mob.getX() - original.getX()) * fraction,
+                            original.getY() + original.getBbHeight() * 0.5
+                                    + (mob.getY() + mob.getBbHeight() * 0.5
+                                    - original.getY() - original.getBbHeight() * 0.5) * fraction,
+                            original.getZ() + (mob.getZ() - original.getZ()) * fraction,
+                            1, 0, 0, 0, 0);
+                }
+            } else {
+                mob.invulnerableTime = previousInvulnerableTime;
+            }
         }
     }
 
@@ -117,6 +143,11 @@ public class ElectriumWeapon extends SwordItemWithEffect {
         return slot == WeaponAbilitySlot.PRIMARY
                 ? "tooltips.forgermod.ability.area_discharge"
                 : "tooltips.forgermod.ability.charge_attack";
+    }
+
+    @Override
+    public String passiveDescriptionKey() {
+        return isDagger() ? "tooltips.forgermod.passive.chain_lightning" : null;
     }
 
     @SubscribeEvent

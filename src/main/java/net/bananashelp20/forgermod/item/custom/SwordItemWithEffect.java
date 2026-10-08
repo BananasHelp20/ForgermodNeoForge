@@ -83,10 +83,19 @@ public class SwordItemWithEffect extends SwordItem {
         return null;
     }
 
+    /** Return a translation key for a material-specific passive, or null when absent. */
+    @Nullable
+    public String passiveDescriptionKey() {
+        return null;
+    }
+
     protected final void appendWeaponTooltip(List<Component> tooltip, String loreKey, String gemstone) {
         tooltip.add(Component.translatable(loreKey));
         if (isAxe()) tooltip.add(Component.translatable("tooltips.forgermod.passive.axe"));
         if (isDagger()) tooltip.add(Component.translatable("tooltips.forgermod.passive.dagger"));
+        String passiveKey = passiveDescriptionKey();
+        if (passiveKey != null) tooltip.add(Component.translatable("tooltips.forgermod.passive.tooltip",
+                Component.translatable(passiveKey)));
         for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
             String descriptionKey = abilityDescriptionKey(slot);
             if (descriptionKey != null) {

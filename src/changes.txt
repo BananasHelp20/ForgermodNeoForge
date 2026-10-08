@@ -53,6 +53,9 @@ Added
 - Area Discharge target-selection test covering hostile filtering and the five-block boundary
 - Electrium dagger secondary ability, Charge Attack: 20 mob hits build charge and the 21st deals 20 extra lightning damage, with a 2-minute cooldown
 - Charge Attack state test covering the 21-hit sequence, player isolation, rearming, and logout cleanup
+- Electrium dagger passive, Chain Lightning: hits arc to the two closest other hostile mobs within 10 blocks for 5 damage each
+- Chain Lightning target-selection test covering proximity, range, hostile filtering, and the two-target limit
+- Material-specific passive descriptions in weapon tooltips above gemstone infusion
 
 Changed
 fixed shardium Ore not dropping random items.
