@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.StrengthenedBonesState;
 import net.bananashelp20.forgermod.item.custom.abilities.StoringAngerState;
+import net.bananashelp20.forgermod.item.custom.abilities.DeathMarchDamage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Mob;
@@ -108,14 +109,19 @@ public class MorsiumWeapon extends SwordItemWithEffect {
         if (event.isCanceled()) return;
         if (!(event.getSource().getEntity() instanceof ServerPlayer attacker)
                 || attacker == event.getEntity()) return;
+        boolean morsiumDaggerHit = event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                && attacker.getMainHandItem().getItem() instanceof MorsiumWeapon weapon
+                && weapon.isDagger();
+        if (morsiumDaggerHit) {
+            event.setAmount(event.getAmount() * DeathMarchDamage.multiplier(
+                    event.getEntity().getHealth(), event.getEntity().getMaxHealth()));
+        }
         long now = attacker.level().getGameTime();
         if (ANGER.storeIfCharging(attacker.getUUID(), now, event.getAmount())) {
             event.setCanceled(true);
             return;
         }
-        if (!event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                || !(attacker.getMainHandItem().getItem() instanceof MorsiumWeapon weapon)
-                || !weapon.isDagger()) return;
+        if (!morsiumDaggerHit) return;
         float stored = ANGER.releaseOnDaggerHit(attacker.getUUID(), now);
         if (stored >= 0) event.setAmount(event.getAmount() + stored);
     }
@@ -124,6 +130,11 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         BONES.clear(event.getEntity().getUUID());
         ANGER.clear(event.getEntity().getUUID());
+    }
+
+    @Override
+    public String passiveDescriptionKey() {
+        return isDagger() ? "tooltips.forgermod.passive.death_march" : null;
     }
 
     @Override

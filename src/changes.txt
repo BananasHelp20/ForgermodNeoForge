@@ -74,6 +74,8 @@ Added
 - Strengthened Bones state test covering arming, kill activation, duration, player isolation, and logout cleanup
 - Morsium dagger secondary ability, Storing Anger: suppress and store outgoing damage for 10 seconds, then add it to the next dagger hit, with a 1-minute cooldown
 - Storing Anger state test covering timing, accumulated damage, single release, player isolation, and logout cleanup
+- Morsium dagger passive, Death March: melee damage scales with target missing health up to double damage
+- Death March multiplier test covering full, half, zero, and invalid health values
 
 Changed
 fixed shardium Ore not dropping random items.
