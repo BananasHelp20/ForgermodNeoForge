@@ -16,6 +16,8 @@ public final class DaggerCriticalTrackerTest {
         tracker.mark(player, 17, 100, dagger);
         expect(false, tracker.consume(player, 17, 100, other), "different dagger");
         tracker.mark(player, 17, 100, dagger);
+        expect(true, tracker.matches(player, 17, 100, dagger), "peek at matching critical");
+        expect(false, tracker.matches(player, 17, 100, other), "peek rejects another dagger");
         expect(true, tracker.consume(player, 17, 100, dagger), "matching successful critical");
         expect(false, tracker.consume(player, 17, 100, dagger), "one-time consumption");
         tracker.mark(player, 17, 100, dagger);

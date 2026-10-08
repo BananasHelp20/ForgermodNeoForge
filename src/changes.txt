@@ -79,6 +79,8 @@ Added
 - Morsium dagger passive, Revenge: 20% more melee damage against undead mobs
 - Revenge multiplier test covering undead and non-undead targets
 - Weapon tooltip support for multiple material-specific passives
+- Pulsite dagger primary ability, Sonically Charged Crit: next critical hit adds 15% of target maximum health as damage and releases sonic boom particles, with a 30-second cooldown
+- Sonic critical state and damage test, plus non-consuming critical-hit matching for the damage event
 
 Changed
 fixed shardium Ore not dropping random items.

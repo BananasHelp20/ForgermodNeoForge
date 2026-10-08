@@ -31,6 +31,8 @@
   "message.forgermod.storing_anger.active": "Storing Anger: damage is stored for 10 seconds",
   "tooltips.forgermod.passive.death_march": "Death March: Dagger damage rises as the target loses health, up to double damage",
   "tooltips.forgermod.passive.revenge": "Revenge: Deal 20% more dagger damage to undead mobs",
+  "tooltips.forgermod.ability.sonic_crit": "Sonically Charged Crit: Your next critical dagger hit adds damage equal to 15% of the target's maximum health and releases a sonic boom (30-second cooldown)",
+  "message.forgermod.sonic_crit.armed": "Sonically Charged Crit armed for your next critical hit",
   "tooltips.forgermod.passive.axe": "§7\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
   "tooltips.forgermod.passive.dagger": "§7\nPassive: Matching daggers strike in both hands; special daggers apply their material effect on hit.§r",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.\n\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",

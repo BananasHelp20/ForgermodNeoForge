@@ -15,6 +15,14 @@ public final class DaggerCriticalTracker {
 
     public boolean consume(UUID player, int targetId, long tick, Object dagger) {
         Pending critical = pending.remove(player);
+        return matches(critical, targetId, tick, dagger);
+    }
+
+    public boolean matches(UUID player, int targetId, long tick, Object dagger) {
+        return matches(pending.get(player), targetId, tick, dagger);
+    }
+
+    private static boolean matches(Pending critical, int targetId, long tick, Object dagger) {
         return critical != null && critical.targetId() == targetId
                 && critical.tick() == tick && critical.dagger() == dagger;
     }

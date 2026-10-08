@@ -30,6 +30,10 @@ public final class DaggerCriticalEvents {
         return TRACKER.consume(player.getUUID(), target.getId(), player.level().getGameTime(), stack.getItem());
     }
 
+    public static boolean matches(ServerPlayer player, LivingEntity target, ItemStack stack) {
+        return TRACKER.matches(player.getUUID(), target.getId(), player.level().getGameTime(), stack.getItem());
+    }
+
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         TRACKER.clear(event.getEntity().getUUID());
