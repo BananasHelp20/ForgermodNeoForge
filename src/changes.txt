@@ -76,6 +76,9 @@ Added
 - Storing Anger state test covering timing, accumulated damage, single release, player isolation, and logout cleanup
 - Morsium dagger passive, Death March: melee damage scales with target missing health up to double damage
 - Death March multiplier test covering full, half, zero, and invalid health values
+- Morsium dagger passive, Revenge: 20% more melee damage against undead mobs
+- Revenge multiplier test covering undead and non-undead targets
+- Weapon tooltip support for multiple material-specific passives
 
 Changed
 fixed shardium Ore not dropping random items.

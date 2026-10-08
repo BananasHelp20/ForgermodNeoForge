@@ -6,6 +6,8 @@ import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.StrengthenedBonesState;
 import net.bananashelp20.forgermod.item.custom.abilities.StoringAngerState;
 import net.bananashelp20.forgermod.item.custom.abilities.DeathMarchDamage;
+import net.bananashelp20.forgermod.item.custom.abilities.RevengeDamage;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Mob;
@@ -114,7 +116,8 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 && weapon.isDagger();
         if (morsiumDaggerHit) {
             event.setAmount(event.getAmount() * DeathMarchDamage.multiplier(
-                    event.getEntity().getHealth(), event.getEntity().getMaxHealth()));
+                    event.getEntity().getHealth(), event.getEntity().getMaxHealth())
+                    * RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD)));
         }
         long now = attacker.level().getGameTime();
         if (ANGER.storeIfCharging(attacker.getUUID(), now, event.getAmount())) {
@@ -133,8 +136,9 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     }
 
     @Override
-    public String passiveDescriptionKey() {
-        return isDagger() ? "tooltips.forgermod.passive.death_march" : null;
+    public List<String> passiveDescriptionKeys() {
+        return isDagger() ? List.of("tooltips.forgermod.passive.death_march",
+                "tooltips.forgermod.passive.revenge") : List.of();
     }
 
     @Override
