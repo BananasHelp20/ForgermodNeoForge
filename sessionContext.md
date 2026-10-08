@@ -1,54 +1,50 @@
 # Session context
 
-## Project and rules
+## Project, repository, and standing instructions
 
-- Workspace: `D:\Schule\4-Klasse\Projects\Mods\ForgermodNeoForge`.
-- Target **Minecraft 1.21.1 and NeoForge 21.1.x** for all code and documentation.
-- List every addition, deletion, buff, and debuff in `src/changes.txt`.
-- The user authorizes implementation, testing, and one commit and push after each ability. Continue with the next ability after a successful push.
-- `ability-thoughts.txt` is user-authored and has uncommitted changes. Do not stage or overwrite it without an explicit request. The text after `[CODEX IGNOGE THE FOLLOWING TEXT]` is excluded from the current ability list.
+- Workspace: `D:\Schule\4-Klasse\Projects\Mods\ForgermodNeoForge`; branch `main`; remote `origin` is `https://github.com/BananasHelp20/ForgermodNeoForge.git`.
+- Mod ID `forgermod`, mod version `0.2.0`, Minecraft **1.21.1**, NeoForge **21.1.93**, Java/Gradle project. Follow `AGENTS.md` and verify APIs against NeoForge 1.21.1.
+- The user wants every addition, deletion, buff, and debuff listed in `src/changes.txt`.
+- Implement abilities one by one. After each: test, review, fix bugs, rerun tests, review again, commit, and push. If committing or pushing fails, give the user commands to run and continue as previously instructed.
+- `ability-thoughts.txt` is the user's design input. Leave it untouched unless asked. The text after `[CODEX IGNOGE THE FOLLOWING TEXT]` is excluded from the approved list. The file was clean at the start of this handoff.
+- The user has not finalized primary/secondary designs for special claymores and axes. Their current notes after the marker are excluded. Ask for designs when needed; do not invent them as approved behavior.
 
-## Weapon framework
+## Weapon framework and established behavior
 
-- `WeaponAbilityClient` binds primary and secondary abilities to configurable keys, default `1` and `2`; `WeaponAbilityNetwork` handles activations on the server.
-- Ability tooltips show the current key with `Component.keybind` between weapon lore and gemstone infusion. Special passives also appear there.
-- All daggers except knives can dual wield a matching offhand dagger, with its swing roughly 100 ms after the main swing, including air swings. Special daggers apply their material effect on successful hits in either hand.
-- All axes have the third-hit 3×3 ground slam passive and forbid offhand use while held. Axe offhand items move to inventory or drop when full.
-- Special claymores retain material hit effects. The user wants primary and secondary abilities for all special claymores and axes, but their final designs are not defined in the active part of `ability-thoughts.txt`.
+- Configurable ability keys default to `1` for primary and `2` for secondary (`WeaponAbilityClient`). Tooltips show the live configured key with `Component.keybind`, under weapon lore and above gemstone infusion (`SwordItemWithEffect`). Ability activations are validated and executed on the server (`WeaponAbilityNetwork`).
+- Primary and secondary cooldowns are independent for each registered weapon item, including gemstone variants. Both can run on the same equipped `ItemStack`. An ongoing ability starts its full cooldown when it finishes or when switching away from that exact stack cancels it. Instant abilities start cooldown on use. Deadlines persist through logout and respawn via `WeaponCooldownAttachments`.
+- Ability packets include the selected hotbar slot and item ID so a delayed packet cannot trigger another weapon after switching. Active sessions track the stack identity and selected slot. Breakage, death, logout, or switching cancels ongoing states. Cooldown or failed activation displays an actionbar message.
+- Matching dagger items, except knives, dual wield. An offhand swing occurs about 100 ms after the main swing even on an air attack. Successful special dagger hits apply their material effect. The delayed attack retains the original target and checks the server's recent main-hand hit, range, and line of sight.
+- Axes have a 3×3 ground slam on the third attack if the previous two were within ten seconds, and disable offhand use. An occupied offhand moves into inventory or drops if full. The first-person slam animation is local; remote players see the ordinary swing plus particles.
+- Special claymores retain material hit effects. Amber special weapons receive their attack attributes and fire resistance without leaking item properties into other variants.
 
-## Implemented dagger abilities
+## Implemented special dagger abilities
 
-- Ignisium: Flaming Combo and Pyromaniac.
-- Inanisium: Stepping Through the Void and Sudden Presence.
-- Somnium: Absolute Nightmare (next two hits apply Darkness I and Weakness I for ten seconds; twenty-second cooldown) and Lucid Dreaming.
-- Electrium: Area Discharge, Charge Attack, and Chain Lightning passive.
-- Taifunite: Eye of the Storm, Windy Dash, and Double Jump passive.
-- Vulnusium: Deep Wound and Leech.
-- Overgrown (`LushWeapon`): Rooting Roots and Poisoned Vein.
-- Morsium: Strengthened Bones, Storing Anger, Death March passive, and Revenge passive.
-- Pulsite: Sonically Charged Crit and Sonic Boom. The user was asked what “15% of the enemy's damage” means; pending clarification, the implemented critical hit adds 15% of the target's maximum health as damage. Revise if the user answers differently.
-- All active abilities have cooldowns, including ones omitted from the design note. Exact behavior and cooldowns are in `en_us.json` tooltips and `src/changes.txt`.
+| Material | Primary | Secondary | Extra passive |
+| --- | --- | --- | --- |
+| Ignisium | Flaming Combo: hits add one second of burn during ten seconds | Pyromaniac: arm while burning; next hit ignites and heals 5 HP | Material effect |
+| Inanisium | Stepping Through the Void: clear-path forward teleport up to five blocks | Sudden Presence: safe landing behind a nearby hostile mob within 20 blocks | Material effect |
+| Somnium | Absolute Nightmare: next two hits inflict Darkness I and Weakness I for ten seconds | Lucid Dreaming: next enemy hit grants Speed II and halves fall damage for five seconds | Material effect |
+| Electrium | Area Discharge: lightning damage to hostile mobs within five blocks | Charge Attack: 20 mob hits charge; 21st adds 20 lightning damage | Chain Lightning to up to two nearby hostiles |
+| Taifunite | Eye of the Storm: whirl and levitate nearby hostiles for five seconds | Windy Dash: up to six blocks forward | One extra midair jump |
+| Vulnusium | Deep Wound: next critical hit doubles its damage and slows for two seconds | Leech: next ten dagger hits drain up to 10% of target maximum health | Material effect |
+| Overgrown / `LushWeapon` | Rooting Roots: hold and poison nearby hostiles for ten seconds | Poisoned Vein: next hostile melee kill leaves a five-second poison cloud | Material effect |
+| Morsium | Strengthened Bones: next hostile melee kill grants ten seconds of invulnerability | Storing Anger: store outgoing damage for ten seconds, release on next dagger hit | Death March and Revenge |
+| Pulsite | Sonically Charged Crit: next critical hit adds 15% of target maximum health as damage | Sonic Boom: next six attacks have four extra blocks of reach | Material effect |
 
-## Verification and remaining limits
+- All special daggers also have the matching-offhand dual wield passive. Exact cooldowns and player-facing descriptions are in `src/main/resources/assets/forgermod/lang/en_us.json` and `src/changes.txt`.
+- The Pulsite source note says “15% of the enemy's damage,” which is ambiguous. The implemented behavior uses 15% of the target's **maximum health**; change it if the user clarifies a different meaning.
+- A clarification was requested on whether switching weapons should remove status effects already applied to enemies. No answer was received before the latest commit. Current behavior cancels remaining charges and ongoing logic, including Rooting Roots anchors and Poisoned Vein clouds, while damage and status already applied by a completed hit retain their normal duration. Lucid Dreaming's active Speed effect is removed on cancellation, restoring a previous Speed effect when applicable.
 
-- Active primary and secondary abilities are now tracked independently for the exact main-hand `ItemStack` and selected slot. A switch, breakage, death, or logout cancels ongoing state and starts that slot's full cooldown. A naturally completed ongoing ability starts its cooldown when it ends; instant abilities start on use.
-- Cooldown keys use the registered weapon item ID and ability slot, so gemstone variants and the two slots have separate deadlines. Concurrent primary and secondary effects on the same equipped stack are supported.
-- Ability packets also carry the selected hotbar slot and item ID; the server rejects a packet if the player has switched to another weapon before it arrives.
-- Switching cancels ongoing ability state. Already completed damage and status applications retain their normal vanilla effects unless the user specifies otherwise; this interpretation was stated while awaiting clarification.
-- Ongoing state cancellation is implemented for all special dagger materials. Rooting Roots releases anchors and Poisoned Vein removes its clouds; Taifunite's airborne double-jump charge clears when unequipped.
-- `gradlew.bat test build` passes after the cooldown and switch lifecycle changes. Exact in-game behavior still needs a live playtest.
-- The latest audit checked all nine special dagger classes, their state helpers, the common ability payload/key registration, dual-wield follow-up, and the NeoForge 21.1.93 attack call order. `gradlew.bat test build` passes after each fix.
-- Sudden Presence now searches several safe positions behind nearby hostile mobs on uneven terrain and can try the next closest hostile if the nearest is blocked. Failed activations and cooldowns show an actionbar message.
-- Dual-wield follow-up retains the target from the main swing and validates the server's recent main-hand hit, preventing a delayed hit from turning into an air swing after knockback or camera movement.
-- Amber special weapons now receive their intended attributes. Every special weapon variant gets fresh `Item.Properties`, so Amber fire resistance does not leak into other variants.
-- These changes were committed and pushed as `9f94948`, `5b79b11`, and `b1d0de9` on `main`. The only remaining local modification is the user's `ability-thoughts.txt`.
-- `gradlew.bat test --offline` runs 24 lightweight ability test mains through Gradle and passes. JSON parsing and `git diff --check` pass.
-- No live Minecraft client or dedicated-server playtest has been done. In-game effects, animations, networking, and reach should still be verified in game.
-- Review found that logout cleared ability cooldowns; a persisted NeoForge player attachment with `copyOnDeath()` now keeps cooldown deadlines through relog and respawn.
-- Sonic Boom charges now count dagger attacks, including air swings.
-- The first-person heavy axe animation is local; remote players currently see an ordinary swing plus particles.
+## Recent fixes and verification
 
-## Repository state
+- Sudden Presence now searches multiple safe spots behind nearby hostiles, including uneven ground, and can try the next closest hostile if the nearest has no safe landing space (`9f94948`).
+- Dual wield follow-up retains the initial hit target through the 100 ms delay (`5b79b11`).
+- Each special weapon variant gets fresh `Item.Properties`; Amber weapons receive the intended attributes and other variants do not inherit Amber fire resistance (`b1d0de9`).
+- Cooldowns and switch cancellation were reworked for independent slots and weapon variants, with active-state cleanup across the nine special dagger materials (`8b97fa8`). Flaming Combo and Rooting Roots cannot be repeatedly restarted while active.
+- `gradlew.bat test build` passes. It runs 24 lightweight ability test mains and compiles/packages the mod. JSON parsing and `git diff --check` also passed during the last review. No live client or dedicated-server playtest has been done, so in-game targeting, animations, networking, and effects remain to be verified.
 
-- Branch `main`, remote `origin`. All implemented dagger abilities and the latest audit fixes are pushed through `b1d0de9`.
-- The next claymore and axe activated abilities await the user's final designs. Content after `[CODEX IGNOGE THE FOLLOWING TEXT]` in `ability-thoughts.txt` remains excluded.
+## Handoff state
+
+- The latest documentation-only update refreshed this file, added `AGENTS.md`, and recorded both in `src/changes.txt`. It did not change gameplay code; the latest gameplay commit is `8b97fa8`.
+- Continue only with abilities whose behavior the user has specified. The next activated abilities for special claymores and axes still need approved designs.

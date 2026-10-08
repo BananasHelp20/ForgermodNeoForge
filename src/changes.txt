@@ -1,4 +1,5 @@
 Added
+- `AGENTS.md` with the project's NeoForge 1.21.1, changelog, ability workflow, and weapon behavior rules
 - Updated `sessionContext.md` with per-weapon cooldowns and active-ability cancellation behavior
 - Server-side tracking for ongoing primary and secondary abilities on the currently equipped weapon stack
 - Tests for independent weapon/ability cooldown keys and cancellation of rooted enemies and poison clouds
@@ -94,6 +95,7 @@ Added
 - Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
+- Refreshed `sessionContext.md` with current repository state, implemented abilities, cooldown lifecycle, tests, and open design questions
 - Ability packets identify the selected hotbar slot and weapon item, so a delayed packet cannot activate a different weapon after a switch
 - Canceling Lucid Dreaming removes its Speed effect and restores a preexisting Speed effect when applicable
 - Flaming Combo and Rooting Roots cannot be reactivated while their effects are still active
