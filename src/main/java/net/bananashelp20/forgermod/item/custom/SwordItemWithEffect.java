@@ -63,6 +63,10 @@ public class SwordItemWithEffect extends SwordItem {
         }
     }
 
+    /** Called after a dagger deals damage, including a matching offhand dagger. */
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+    }
+
     /** Override in a material weapon to implement a key-activated ability. Return true only when it activates. */
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         return false;

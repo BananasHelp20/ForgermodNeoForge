@@ -37,6 +37,8 @@ Added
 - Dynamic ability keybinding and passive descriptions in weapon tooltips
 - Axe offhand restriction: moves offhand items to inventory or drops any remainder when an axe is held
 - `sessionContext.md` handoff for the weapon work and NeoForge 1.21.1 requirements
+- Ignisium dagger primary ability, Flaming Combo, with a 10-second active window and 30-second cooldown
+- Flaming Combo state test covering burn stacking, active-window boundaries, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
@@ -45,10 +47,12 @@ fixed sword effects
 - Special-material claymore effects use per-item duration and amplifier values, so Jade bonuses do not affect other weapons
 - Special-material axes now lose durability on successful hits
 - Offhand item, block, and entity interactions are blocked while holding an axe
+- Weapon ability cooldowns are tracked per weapon and ability slot
 
 Buffed
 - All axes gain the 3x3 heavy attack passive
 - Special-material daggers gain their material effect on hit alongside dual wielding
+- Flaming Combo adds 1 second of burn for each successful Ignisium dagger hit during its active window
 
 Debuffed
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full

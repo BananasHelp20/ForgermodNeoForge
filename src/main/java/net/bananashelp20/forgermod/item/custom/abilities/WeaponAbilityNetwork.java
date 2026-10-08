@@ -10,10 +10,20 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+@EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public final class WeaponAbilityNetwork {
+    private record CooldownKey(Class<?> material, boolean dagger, boolean axe, WeaponAbilitySlot slot) {}
+    private static final Map<UUID, Map<CooldownKey, Long>> COOLDOWNS = new HashMap<>();
     private WeaponAbilityNetwork() {}
 
     public record UseAbilityPayload(int slot) implements CustomPacketPayload {
@@ -38,13 +48,22 @@ public final class WeaponAbilityNetwork {
         if (payload.slot() < 0 || payload.slot() >= WeaponAbilitySlot.values().length) return;
 
         ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof SwordItemWithEffect weapon)
-                || player.getCooldowns().isOnCooldown(stack.getItem())) return;
+        if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return;
 
         WeaponAbilitySlot slot = WeaponAbilitySlot.values()[payload.slot()];
+        // Gemstone variants of the same material and weapon type share one ability cooldown.
+        CooldownKey key = new CooldownKey(weapon.getClass(), weapon.isDagger(), weapon.isAxe(), slot);
+        long now = player.level().getGameTime();
+        Map<CooldownKey, Long> playerCooldowns = COOLDOWNS.computeIfAbsent(player.getUUID(), unused -> new HashMap<>());
+        if (now < playerCooldowns.getOrDefault(key, 0L)) return;
         if (weapon.activateAbility(player, stack, slot)) {
             int cooldown = weapon.abilityCooldownTicks(slot);
-            if (cooldown > 0) player.getCooldowns().addCooldown(stack.getItem(), cooldown);
+            if (cooldown > 0) playerCooldowns.put(key, now + cooldown);
         }
+    }
+
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        COOLDOWNS.remove(event.getEntity().getUUID());
     }
 }

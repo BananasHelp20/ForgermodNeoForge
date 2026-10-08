@@ -27,13 +27,16 @@ vulnusium dagger:
 "Leech": the next 10 attacks each leech 10% of the target's maximum health. (cooldown: 15 seconds)
 
 overgrown dagger:
-""
-""
+"routing roots": all enemies within 5 blocks cannot move for the next 10 seconds and get poison damage.
+"poisoned vein": killing an enemy spawns a poison cloud that doesn't affect the attacker.
 
 morsium dagger:
-""
-""
+"strenghtend bones": when killing an enemy, get invincible for 10 seconds
+"Storing anger": you don't deal any damage for the next 10 seconds, then the next attack will release all the stored damage at once
+additional Passive:
+"Death March": damage increases the lower the enemy hp get during a fight (up to 2x damage).
+"revenge": deal 20% more damage to undead mobs
 
 pulsite dagger:
-""
-""
+"Sonically Charged Crit": the next Crit deals 15% of the enemies damage. (releasing the sonic boom effect particals)
+"Sonic Boom": the next 6 attacks will have an increased range of 4 blocks

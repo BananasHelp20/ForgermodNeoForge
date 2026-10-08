@@ -1,7 +1,9 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
+import net.bananashelp20.forgermod.item.custom.abilities.FlamingComboState;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
@@ -13,10 +15,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.List;
 
+@EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class IgnisiumWeapon extends SwordItemWithEffect {
+    private static final FlamingComboState FLAMING_COMBO = new FlamingComboState();
     public static Holder<MobEffect> effect = MobEffects.GLOWING;
     public static int durationInTicks = 2000;
     public static int effectAmplifier = 1;
@@ -43,6 +51,38 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         applyMaterialEffect(pTarget);
+        onDaggerHit(pTarget, pAttacker);
+    }
+
+    @Override
+    public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY) return false;
+        FLAMING_COMBO.activate(player.getUUID(), player.level().getGameTime());
+        return true;
+    }
+
+    @Override
+    public int abilityCooldownTicks(WeaponAbilitySlot slot) {
+        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 600 : 0;
+    }
+
+    @Override
+    public String abilityDescriptionKey(WeaponAbilitySlot slot) {
+        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.flaming_combo" : null;
+    }
+
+    @Override
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if (!(attacker instanceof ServerPlayer player) || target.isDeadOrDying()) return;
+        int before = target.getRemainingFireTicks();
+        int after = FLAMING_COMBO.fireTicksAfterHit(player.getUUID(), player.level().getGameTime(), before);
+        if (after != before) target.setRemainingFireTicks(after);
+    }
+
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        FLAMING_COMBO.clear(event.getEntity().getUUID());
     }
 
     @Override
