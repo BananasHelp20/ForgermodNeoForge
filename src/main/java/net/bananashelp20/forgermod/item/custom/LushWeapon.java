@@ -5,10 +5,17 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
 import net.bananashelp20.forgermod.item.custom.abilities.RootingRootsState;
+import net.bananashelp20.forgermod.item.custom.abilities.PoisonCloudState;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -21,12 +28,16 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.List;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class LushWeapon extends SwordItemWithEffect {
     private static final RootingRootsState ROOTS = new RootingRootsState();
+    private static final PoisonCloudState<ResourceKey<Level>> CLOUDS = new PoisonCloudState<>();
     public static Holder<MobEffect> effect = MobEffects.HUNGER;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 3;
@@ -57,7 +68,12 @@ public class LushWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY || !player.isAlive()) return false;
+        if (!isDagger() || !player.isAlive()) return false;
+        if (slot == WeaponAbilitySlot.SECONDARY) {
+            boolean armed = CLOUDS.arm(player.getUUID());
+            if (armed) player.displayClientMessage(Component.translatable("message.forgermod.poisoned_vein.armed"), true);
+            return armed;
+        }
         List<Mob> targets = AreaDischargeTargets.select(
                 player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(5)),
                 mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 5);
@@ -75,13 +91,49 @@ public class LushWeapon extends SwordItemWithEffect {
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 1200 : 0;
+        if (!isDagger()) return 0;
+        return slot == WeaponAbilitySlot.PRIMARY ? 1200 : 900;
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.rooting_roots" : null;
+        if (!isDagger()) return null;
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.rooting_roots"
+                : "tooltips.forgermod.ability.poisoned_vein";
+    }
+
+    @SubscribeEvent
+    public static void onHostileDeath(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Mob mob) || !(mob instanceof Enemy)
+                || !(event.getSource().getEntity() instanceof ServerPlayer player)
+                || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                || !(player.getMainHandItem().getItem() instanceof LushWeapon weapon)
+                || !weapon.isDagger()) return;
+        CLOUDS.createOnKill(player.getUUID(), mob.level().dimension(),
+                mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), mob.level().getGameTime());
+    }
+
+    @SubscribeEvent
+    public static void onLevelTick(LevelTickEvent.Post event) {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        long now = level.getGameTime();
+        for (PoisonCloudState.Cloud cloud : CLOUDS.active(level.dimension(), now)) {
+            if (now % 5 == 0) level.sendParticles(ParticleTypes.SPORE_BLOSSOM_AIR,
+                    cloud.x(), cloud.y(), cloud.z(), 12, 1.5, 0.7, 1.5, 0.01);
+            if (now % 10 != 0) continue;
+            AABB area = AABB.ofSize(new Vec3(cloud.x(), cloud.y(), cloud.z()), 6, 4, 6);
+            for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area)) {
+                if (target.getUUID().equals(cloud.owner()) || !target.isAlive()
+                        || target.distanceToSqr(cloud.x(), cloud.y(), cloud.z()) > 9) continue;
+                target.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        CLOUDS.clearPlayer(event.getEntity().getUUID());
     }
 
     @SubscribeEvent

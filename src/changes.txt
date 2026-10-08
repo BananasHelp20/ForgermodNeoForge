@@ -68,6 +68,8 @@ Added
 - Leech state test covering ten charges, player isolation, rearming, and logout cleanup
 - Overgrown dagger primary ability, Rooting Roots: hold hostile mobs within 5 blocks in place and poison them for 10 seconds, with a 1-minute cooldown
 - Rooting Roots state test covering ten-second anchors, reapplication, expiry, and cleanup
+- Overgrown dagger secondary ability, Poisoned Vein: next melee kill of a hostile mob creates a 3-block poison cloud for 5 seconds that excludes the attacker, with a 45-second cooldown
+- Poisoned Vein state test covering arming, cloud duration, dimension isolation, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
