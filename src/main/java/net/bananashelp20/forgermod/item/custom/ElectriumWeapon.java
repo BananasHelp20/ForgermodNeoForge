@@ -2,17 +2,24 @@ package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
+import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
 import net.minecraft.core.Holder;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
 
@@ -25,7 +32,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public String type;
 
     public ElectriumWeapon(String gemstone, String type) {
-        super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"),
+        super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "electrium"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;
@@ -43,6 +50,40 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker, EquipmentSlot pSlot) {
         pStack.hurtAndBreak(1, pAttacker, pSlot);
         applyMaterialEffect(pTarget);
+    }
+
+    @Override
+    public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY || !player.isAlive()) return false;
+        List<Mob> targets = AreaDischargeTargets.select(
+                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(5)),
+                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 5);
+        if (targets.isEmpty()) return false;
+
+        int struck = 0;
+        for (Mob target : targets) {
+            LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(player.serverLevel());
+            if (bolt == null) continue;
+            bolt.moveTo(target.position());
+            bolt.setVisualOnly(true);
+            bolt.setCause(player);
+            if (player.serverLevel().addFreshEntity(bolt)) {
+                target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player, bolt), 5.0F);
+                struck++;
+            }
+        }
+        return struck > 0;
+    }
+
+    @Override
+    public int abilityCooldownTicks(WeaponAbilitySlot slot) {
+        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 6000 : 0;
+    }
+
+    @Override
+    public String abilityDescriptionKey(WeaponAbilitySlot slot) {
+        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.area_discharge" : null;
     }
 
     @Override

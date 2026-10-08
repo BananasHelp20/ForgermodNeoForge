@@ -49,6 +49,8 @@ Added
 - Critical-hit tracking for later dagger abilities and a test for Absolute Nightmare's two-hit charge
 - Somnium dagger secondary ability, Lucid Dreaming: the next enemy hit grants Speed II and halves fall damage for 5 seconds, with a 15-second cooldown
 - Lucid Dreaming state test covering one-hit use, duration boundaries, player isolation, and logout cleanup
+- Electrium dagger primary ability, Area Discharge: strike hostile mobs within 5 blocks with lightning for 5 damage each, with a 5-minute cooldown
+- Area Discharge target-selection test covering hostile filtering and the five-block boundary
 
 Changed
 fixed shardium Ore not dropping random items.
@@ -59,6 +61,7 @@ fixed sword effects
 - Offhand item, block, and entity interactions are blocked while holding an axe
 - Weapon ability cooldowns are tracked per weapon and ability slot
 - Absolute Nightmare now uses two charged dagger hits instead of a repeating critical-hit toggle
+- Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
 - All axes gain the 3x3 heavy attack passive
