@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork;
+import net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpNetwork;
 import net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork;
 import net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork;
 import net.bananashelp20.forgermod.recipe.ModRecipes;
@@ -44,6 +45,7 @@ public class ForgerMod {
         modEventBus.addListener(DualWieldNetwork::register);
         modEventBus.addListener(AxeHeavyNetwork::register);
         modEventBus.addListener(WeaponAbilityNetwork::register);
+        modEventBus.addListener(DoubleJumpNetwork::register);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ForgerMod) to respond directly to events.

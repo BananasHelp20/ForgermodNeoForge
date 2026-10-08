@@ -88,6 +88,11 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
                 : "tooltips.forgermod.ability.windy_dash";
     }
 
+    @Override
+    public String passiveDescriptionKey() {
+        return isDagger() ? "tooltips.forgermod.passive.double_jump" : null;
+    }
+
     private static boolean dashStep(ServerPlayer player) {
         WindyDashState.Step step = DASH.nextStep(player.getUUID());
         if (step == null) return false;
