@@ -70,6 +70,8 @@ Added
 - Rooting Roots state test covering ten-second anchors, reapplication, expiry, and cleanup
 - Overgrown dagger secondary ability, Poisoned Vein: next melee kill of a hostile mob creates a 3-block poison cloud for 5 seconds that excludes the attacker, with a 45-second cooldown
 - Poisoned Vein state test covering arming, cloud duration, dimension isolation, player isolation, and logout cleanup
+- Morsium dagger primary ability, Strengthened Bones: next melee kill of a hostile mob grants 10 seconds of invulnerability, with a 90-second cooldown
+- Strengthened Bones state test covering arming, kill activation, duration, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
