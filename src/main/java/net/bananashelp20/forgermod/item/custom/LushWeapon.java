@@ -41,12 +41,11 @@ public class LushWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.HUNGER;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 3;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     private String gemstone;
     public String type;
 
     public LushWeapon(String gemstone, String type) {
-        super(ModToolTiers.LUSH, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "lush"),
+        super(ModToolTiers.LUSH, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "lush"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

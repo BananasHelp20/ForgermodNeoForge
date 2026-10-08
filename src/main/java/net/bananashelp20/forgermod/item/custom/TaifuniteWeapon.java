@@ -36,12 +36,11 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.LEVITATION;
     public static int durationInTicks = 60;
     public static int effectAmplifier = 2;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public TaifuniteWeapon(String gemstone, String type) {
-        super(ModToolTiers.TAIFUNITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "taifunite"),
+        super(ModToolTiers.TAIFUNITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "taifunite"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

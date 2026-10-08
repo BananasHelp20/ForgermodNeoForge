@@ -30,12 +30,11 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.GLOWING;
     public static int durationInTicks = 2000;
     public static int effectAmplifier = 1;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public IgnisiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.IGNISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "ignisium"),
+        super(ModToolTiers.IGNISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "ignisium"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

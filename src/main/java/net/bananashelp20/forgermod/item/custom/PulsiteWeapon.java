@@ -41,12 +41,11 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.DARKNESS;
     public static int durationInTicks = 140;
     public static int effectAmplifier = 5;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public PulsiteWeapon(String gemstone, String type) {
-        super(ModToolTiers.PULSITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "pulsite"),
+        super(ModToolTiers.PULSITE, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "pulsite"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

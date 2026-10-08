@@ -38,12 +38,11 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.WEAKNESS;
     public static int durationInTicks = 100;
     public static int effectAmplifier = 3;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public MorsiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.MORSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "morsium"),
+        super(ModToolTiers.MORSIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "morsium"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

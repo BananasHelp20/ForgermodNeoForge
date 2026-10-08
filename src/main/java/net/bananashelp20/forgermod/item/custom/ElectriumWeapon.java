@@ -36,12 +36,11 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.MOVEMENT_SLOWDOWN;
     public static int durationInTicks = 100;
     public static int effectAmplifier = 3;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public ElectriumWeapon(String gemstone, String type) {
-        super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "electrium"),
+        super(ModToolTiers.ELECTRIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "electrium"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

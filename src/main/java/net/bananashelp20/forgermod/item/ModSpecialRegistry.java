@@ -39,9 +39,7 @@ public class ModSpecialRegistry {
     public static final float STEEL_SWORD_SPEED = 2.4f;
     
     public static Properties getCorrectAttributes(String gemstone, String type, Properties pProperties, String variety) {
-        if (gemstone.equals("amber")) {
-            return pProperties.fireResistant();
-        }
+        if (gemstone.equals("amber")) pProperties.fireResistant();
 
         int varietyBaseDamage = 0;
         float varietyBaseSpeed = 0;

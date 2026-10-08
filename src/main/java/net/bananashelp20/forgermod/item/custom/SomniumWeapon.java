@@ -33,12 +33,11 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.CONFUSION;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 4;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public SomniumWeapon(String gemstone, String type) {
-        super(ModToolTiers.SOMNIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "somnium"),
+        super(ModToolTiers.SOMNIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "somnium"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

@@ -32,12 +32,11 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.BLINDNESS;
     public static int durationInTicks = 80;
     public static int effectAmplifier = 1;
-    public static Properties pProperties = new Properties().rarity(Rarity.EPIC);
     public String gemstone;
     public String type;
 
     public InanisiumWeapon(String gemstone, String type) {
-        super(ModToolTiers.INANISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, pProperties, "inanisium"),
+        super(ModToolTiers.INANISIUM, ModSpecialRegistry.getCorrectAttributes(gemstone, type, new Properties().rarity(Rarity.EPIC), "inanisium"),
                 type, gemstone, effect, durationInTicks, effectAmplifier);
         this.gemstone = gemstone;
         this.type = type;

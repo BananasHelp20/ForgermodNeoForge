@@ -90,6 +90,7 @@ Added
 - Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
+- Every special weapon variant now receives independent item properties, preventing Amber fire resistance from carrying over to later registered variants
 - Offhand dagger follow-up retains the original target and validates the recent main-hand hit, so knockback or camera movement during the 100 ms delay does not turn a hit into an air swing
 - Sudden Presence searches nearby safe landing positions behind hostile mobs, including uneven ground and the next nearest mob if the closest has no safe landing spot
 - Ability keys report remaining cooldown or failed activation in the actionbar
@@ -108,12 +109,14 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Amber special weapons now receive their intended attack damage and speed attributes
 - All axes gain the 3x3 heavy attack passive
 - Special-material daggers gain their material effect on hit alongside dual wielding
 - Flaming Combo adds 1 second of burn for each successful Ignisium dagger hit during its active window
 - Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
+- Non-Amber special weapons no longer inherit Amber's fire resistance through shared item properties
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 
 Removed
