@@ -90,6 +90,8 @@ Added
 - Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
+- Sudden Presence searches nearby safe landing positions behind hostile mobs, including uneven ground and the next nearest mob if the closest has no safe landing spot
+- Ability keys report remaining cooldown or failed activation in the actionbar
 fixed shardium Ore not dropping random items.
 fixed sword effects
 - Special-material daggers now apply their material effect on main-hand and offhand hits

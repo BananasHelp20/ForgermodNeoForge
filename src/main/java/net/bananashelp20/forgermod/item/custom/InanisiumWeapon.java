@@ -86,30 +86,41 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     }
 
     private static boolean suddenPresence(ServerPlayer player) {
-        Mob target = player.serverLevel().getEntitiesOfClass(Mob.class,
+        List<Mob> targets = player.serverLevel().getEntitiesOfClass(Mob.class,
                         player.getBoundingBox().inflate(20),
                         mob -> mob instanceof Enemy && mob.isAlive()
-                                && player.distanceToSqr(mob) <= 400.0)
-                .stream().min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
-        if (target == null) return false;
-
-        Vec3 look = target.getLookAngle();
-        for (double distance : new double[] {1.5, 2.0, 2.5}) {
-            BehindTargetOffset behind = BehindTargetOffset.fromLook(look.x, look.z, distance);
-            if (behind == null) return false;
-            Vec3 destination = target.position().add(behind.x(), 0, behind.z());
-            BlockPos destinationBlock = BlockPos.containing(destination);
-            AABB box = player.getBoundingBox().move(destination.subtract(player.position()));
-            if (!player.serverLevel().getWorldBorder().isWithinBounds(box)
-                    || !player.serverLevel().getChunkSource().hasChunk(
-                            destinationBlock.getX() >> 4, destinationBlock.getZ() >> 4)
-                    || !player.serverLevel().noCollision(player, box)) continue;
-            if (!player.serverLevel().getFluidState(destinationBlock).isEmpty()
-                    || !player.serverLevel().getFluidState(BlockPos.containing(
-                            destination.add(0, player.getBbHeight() - 0.1, 0))).isEmpty()) continue;
-            return teleportWithSound(player, destination, target.getYRot(), 0);
+                                && player.distanceToSqr(mob) <= 400.0);
+        targets.sort(Comparator.comparingDouble(player::distanceToSqr));
+        for (Mob target : targets) {
+            Vec3 look = target.getLookAngle();
+            for (double distance : new double[] {1.5, 2.0, 2.5, 3.0}) {
+                BehindTargetOffset behind = BehindTargetOffset.fromLook(look.x, look.z, distance);
+                if (behind == null) break;
+                for (double sideways : new double[] {0, 0.75, -0.75, 1.5, -1.5}) {
+                    for (double height : new double[] {0, 0.5, -0.5, 1.0, -1.0, 1.5, 2.0}) {
+                        Vec3 destination = target.position().add(
+                                behind.x() - behind.z() / distance * sideways,
+                                height,
+                                behind.z() + behind.x() / distance * sideways);
+                        if (safeLanding(player, destination)
+                                && teleportWithSound(player, destination, target.getYRot(), 0)) return true;
+                    }
+                }
+            }
         }
         return false;
+    }
+
+    private static boolean safeLanding(ServerPlayer player, Vec3 destination) {
+        BlockPos feet = BlockPos.containing(destination);
+        AABB box = player.getBoundingBox().move(destination.subtract(player.position()));
+        if (!player.serverLevel().getWorldBorder().isWithinBounds(box)
+                || !player.serverLevel().getChunkSource().hasChunk(feet.getX() >> 4, feet.getZ() >> 4)
+                || !player.serverLevel().noCollision(player, box)
+                || player.serverLevel().noCollision(player, box.move(0, -0.1, 0))) return false;
+        return player.serverLevel().getFluidState(feet).isEmpty()
+                && player.serverLevel().getFluidState(BlockPos.containing(
+                        destination.add(0, player.getBbHeight() - 0.1, 0))).isEmpty();
     }
 
     private static boolean teleportWithSound(ServerPlayer player, Vec3 destination, float yaw, float pitch) {

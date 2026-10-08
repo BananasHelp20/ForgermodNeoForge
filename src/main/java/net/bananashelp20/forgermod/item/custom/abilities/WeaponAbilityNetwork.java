@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -66,7 +67,12 @@ public final class WeaponAbilityNetwork {
         String key = WeaponCooldownKey.of(weapon.getClass(), weapon.isDagger(), weapon.isAxe(), slot);
         long now = player.level().getGameTime();
         Map<String, Long> playerCooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS);
-        if (now < playerCooldowns.getOrDefault(key, 0L)) return;
+        long readyAt = playerCooldowns.getOrDefault(key, 0L);
+        if (now < readyAt) {
+            player.displayClientMessage(Component.translatable("message.forgermod.ability.cooldown",
+                    (readyAt - now + 19) / 20), true);
+            return;
+        }
         if (weapon.activateAbility(player, stack, slot)) {
             int cooldown = weapon.abilityCooldownTicks(slot);
             if (cooldown > 0) {
@@ -74,6 +80,8 @@ public final class WeaponAbilityNetwork {
                 updated.put(key, now + cooldown);
                 player.setData(WeaponCooldownAttachments.COOLDOWNS, Map.copyOf(updated));
             }
+        } else {
+            player.displayClientMessage(Component.translatable("message.forgermod.ability.unavailable"), true);
         }
     }
 }
