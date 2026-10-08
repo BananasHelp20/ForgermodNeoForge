@@ -2,15 +2,18 @@ package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
+import net.bananashelp20.forgermod.item.custom.abilities.BehindTargetOffset;
 import net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath;
-import net.minecraft.core.Holder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -21,9 +24,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Set;
-
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class InanisiumWeapon extends SwordItemWithEffect {
     public static Holder<MobEffect> effect = MobEffects.BLINDNESS;
@@ -56,9 +59,14 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY || !player.isAlive()
-                || player.isPassenger()) return false;
+        if (!isDagger() || !player.isAlive() || player.isPassenger()) return false;
+        return switch (slot) {
+            case PRIMARY -> stepThroughVoid(player);
+            case SECONDARY -> suddenPresence(player);
+        };
+    }
 
+    private static boolean stepThroughVoid(ServerPlayer player) {
         Vec3 look = player.getLookAngle();
         double horizontalLength = Math.hypot(look.x, look.z);
         if (horizontalLength < 0.001) return false;
@@ -74,9 +82,38 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         if (clearSteps < 2) return false;
 
         Vec3 destination = start.add(direction.scale(clearSteps * VoidStepPath.STEP_DISTANCE));
+        return teleportWithSound(player, destination, player.getYRot(), player.getXRot());
+    }
+
+    private static boolean suddenPresence(ServerPlayer player) {
+        Mob target = player.serverLevel().getEntitiesOfClass(Mob.class,
+                        player.getBoundingBox().inflate(20),
+                        mob -> mob instanceof Enemy && mob.isAlive()
+                                && player.distanceToSqr(mob) <= 400.0)
+                .stream().min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
+        if (target == null) return false;
+
+        Vec3 look = target.getLookAngle();
+        for (double distance : new double[] {1.5, 2.0, 2.5}) {
+            BehindTargetOffset behind = BehindTargetOffset.fromLook(look.x, look.z, distance);
+            if (behind == null) return false;
+            Vec3 destination = target.position().add(behind.x(), 0, behind.z());
+            AABB box = player.getBoundingBox().move(destination.subtract(player.position()));
+            if (!player.serverLevel().getWorldBorder().isWithinBounds(box)
+                    || !player.serverLevel().hasChunkAt(BlockPos.containing(destination))
+                    || !player.serverLevel().noCollision(player, box)) continue;
+            if (!player.serverLevel().getFluidState(BlockPos.containing(destination)).isEmpty()
+                    || !player.serverLevel().getFluidState(BlockPos.containing(
+                            destination.add(0, player.getBbHeight() - 0.1, 0))).isEmpty()) continue;
+            return teleportWithSound(player, destination, target.getYRot(), 0);
+        }
+        return false;
+    }
+
+    private static boolean teleportWithSound(ServerPlayer player, Vec3 destination, float yaw, float pitch) {
         BlockPos departure = player.blockPosition();
         if (!player.teleportTo(player.serverLevel(), destination.x, destination.y, destination.z,
-                Set.of(), player.getYRot(), player.getXRot())) return false;
+                Set.of(), yaw, pitch)) return false;
         player.fallDistance = 0;
         player.serverLevel().playSound(null, departure, SoundEvents.ENDERMAN_TELEPORT,
                 SoundSource.PLAYERS, 0.7F, 1.2F);
@@ -87,13 +124,16 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 100 : 0;
+        if (!isDagger()) return 0;
+        return slot == WeaponAbilitySlot.PRIMARY ? 100 : 2400;
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.void_step" : null;
+        if (!isDagger()) return null;
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.void_step"
+                : "tooltips.forgermod.ability.sudden_presence";
     }
 
     @Override

@@ -43,6 +43,8 @@ Added
 - Pyromaniac state test covering activation, one-hit consumption, player isolation, and logout cleanup
 - Inanisium dagger primary ability, Stepping Through the Void: teleport up to 5 blocks forward, with a 5-second cooldown
 - Void Step path test covering full range, obstacles, and blocked starts
+- Inanisium dagger secondary ability, Sudden Presence: teleport behind the nearest hostile mob within 20 blocks, with a 2-minute cooldown
+- Sudden Presence placement test covering facing direction and zero-vector rejection
 
 Changed
 fixed shardium Ore not dropping random items.
