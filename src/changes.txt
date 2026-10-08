@@ -58,6 +58,8 @@ Added
 - Material-specific passive descriptions in weapon tooltips above gemstone infusion
 - Taifunite dagger primary ability, Eye of the Storm: whirl and levitate hostile mobs within 10 blocks for 5 seconds, with a 1-minute cooldown
 - Eye of the Storm state test covering duration, player isolation, reactivation, and logout cleanup
+- Taifunite dagger secondary ability, Windy Dash: move up to 6 blocks forward in six collision-checked steps, with a 5-second cooldown
+- Windy Dash state test covering six impulses, reactivation, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.

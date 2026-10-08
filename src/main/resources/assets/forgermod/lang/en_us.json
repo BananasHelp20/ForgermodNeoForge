@@ -15,6 +15,7 @@
   "tooltips.forgermod.passive.chain_lightning": "Chain Lightning: Dagger hits arc to up to 2 other hostile mobs within 10 blocks of the target for 5 damage each",
   "tooltips.forgermod.ability.eye_of_the_storm": "Eye of the Storm: Whirl and levitate hostile mobs within 10 blocks for 5 seconds (1-minute cooldown)",
   "message.forgermod.eye_of_the_storm.active": "Eye of the Storm active for 5 seconds",
+  "tooltips.forgermod.ability.windy_dash": "Windy Dash: Burst up to 6 blocks forward over a short dash (5-second cooldown)",
   "tooltips.forgermod.passive.axe": "§7\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
   "tooltips.forgermod.passive.dagger": "§7\nPassive: Matching daggers strike in both hands; special daggers apply their material effect on hit.§r",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.\n\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
