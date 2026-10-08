@@ -99,6 +99,8 @@ fixed sword effects
 - Weapon ability cooldowns are tracked per weapon and ability slot
 - Weapon ability cooldowns use a persistent NeoForge player attachment instead of a logout-cleared server map
 - Sonic Boom charges are spent on dagger air swings as well as successful hits, matching its six-attack description
+- Inanisium Sudden Presence uses the 1.21.1 server chunk-cache check instead of deprecated `hasChunkAt(BlockPos)`
+- Java compilation reports precise deprecated API usages with `-Xlint:deprecation`
 - Absolute Nightmare now uses two charged dagger hits instead of a repeating critical-hit toggle
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 

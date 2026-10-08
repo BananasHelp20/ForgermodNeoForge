@@ -177,6 +177,7 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.compilerArgs.add('-Xlint:deprecation')
 }
 
 // The lightweight ability checks use main methods so they can also run without a game instance.

@@ -98,11 +98,13 @@ public class InanisiumWeapon extends SwordItemWithEffect {
             BehindTargetOffset behind = BehindTargetOffset.fromLook(look.x, look.z, distance);
             if (behind == null) return false;
             Vec3 destination = target.position().add(behind.x(), 0, behind.z());
+            BlockPos destinationBlock = BlockPos.containing(destination);
             AABB box = player.getBoundingBox().move(destination.subtract(player.position()));
             if (!player.serverLevel().getWorldBorder().isWithinBounds(box)
-                    || !player.serverLevel().hasChunkAt(BlockPos.containing(destination))
+                    || !player.serverLevel().getChunkSource().hasChunk(
+                            destinationBlock.getX() >> 4, destinationBlock.getZ() >> 4)
                     || !player.serverLevel().noCollision(player, box)) continue;
-            if (!player.serverLevel().getFluidState(BlockPos.containing(destination)).isEmpty()
+            if (!player.serverLevel().getFluidState(destinationBlock).isEmpty()
                     || !player.serverLevel().getFluidState(BlockPos.containing(
                             destination.add(0, player.getBbHeight() - 0.1, 0))).isEmpty()) continue;
             return teleportWithSound(player, destination, target.getYRot(), 0);
