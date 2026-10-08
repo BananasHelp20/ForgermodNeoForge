@@ -56,6 +56,8 @@ Added
 - Electrium dagger passive, Chain Lightning: hits arc to the two closest other hostile mobs within 10 blocks for 5 damage each
 - Chain Lightning target-selection test covering proximity, range, hostile filtering, and the two-target limit
 - Material-specific passive descriptions in weapon tooltips above gemstone infusion
+- Taifunite dagger primary ability, Eye of the Storm: whirl and levitate hostile mobs within 10 blocks for 5 seconds, with a 1-minute cooldown
+- Eye of the Storm state test covering duration, player isolation, reactivation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
