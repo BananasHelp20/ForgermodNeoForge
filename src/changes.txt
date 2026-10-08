@@ -45,6 +45,8 @@ Added
 - Void Step path test covering full range, obstacles, and blocked starts
 - Inanisium dagger secondary ability, Sudden Presence: teleport behind the nearest hostile mob within 20 blocks, with a 2-minute cooldown
 - Sudden Presence placement test covering facing direction and zero-vector rejection
+- Somnium dagger primary ability, Absolute Nightmare: toggle to inflict Darkness I and Weakness I for 5 seconds on every third successful critical hit
+- Critical-hit tracking and Absolute Nightmare sequence tests
 
 Changed
 fixed shardium Ore not dropping random items.
