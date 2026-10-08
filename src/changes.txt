@@ -47,6 +47,8 @@ Added
 - Sudden Presence placement test covering facing direction and zero-vector rejection
 - Somnium dagger primary ability, Absolute Nightmare: the next 2 dagger hits inflict Darkness I and Weakness I for 10 seconds, with a 20-second cooldown
 - Critical-hit tracking for later dagger abilities and a test for Absolute Nightmare's two-hit charge
+- Somnium dagger secondary ability, Lucid Dreaming: the next enemy hit grants Speed II and halves fall damage for 5 seconds, with a 15-second cooldown
+- Lucid Dreaming state test covering one-hit use, duration boundaries, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
