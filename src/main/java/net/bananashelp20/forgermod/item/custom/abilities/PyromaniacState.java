@@ -18,6 +18,10 @@ public final class PyromaniacState {
         return armedPlayers.remove(playerId);
     }
 
+    public boolean isArmed(UUID playerId) {
+        return armedPlayers.contains(playerId);
+    }
+
     public void clear(UUID playerId) {
         armedPlayers.remove(playerId);
     }

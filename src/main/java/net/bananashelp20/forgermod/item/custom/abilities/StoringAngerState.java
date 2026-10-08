@@ -30,4 +30,8 @@ public final class StoringAngerState {
     public void clear(UUID player) {
         charges.remove(player);
     }
+
+    public boolean isActive(UUID player) {
+        return charges.containsKey(player);
+    }
 }

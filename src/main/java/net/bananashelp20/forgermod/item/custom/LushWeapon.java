@@ -73,13 +73,14 @@ public class LushWeapon extends SwordItemWithEffect {
             if (armed) player.displayClientMessage(Component.translatable("message.forgermod.poisoned_vein.armed"), true);
             return armed;
         }
+        if (ROOTS.hasRoots(player.getUUID(), player.level().getGameTime())) return false;
         List<Mob> targets = AreaDischargeTargets.select(
                 player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(5)),
                 mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 5);
         if (targets.isEmpty()) return false;
         long now = player.level().getGameTime();
         for (Mob mob : targets) {
-            ROOTS.root(mob.getUUID(), mob.getX(), mob.getZ(), now);
+            ROOTS.root(player.getUUID(), mob.getUUID(), mob.getX(), mob.getZ(), now);
             mob.getNavigation().stop();
             mob.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 0));
             player.serverLevel().sendParticles(ParticleTypes.COMPOSTER,
@@ -92,6 +93,19 @@ public class LushWeapon extends SwordItemWithEffect {
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
         if (!isDagger()) return 0;
         return slot == WeaponAbilitySlot.PRIMARY ? 1200 : 900;
+    }
+
+    @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? ROOTS.hasRoots(player.getUUID(), player.level().getGameTime())
+                : CLOUDS.isActive(player.getUUID(), player.level().getGameTime());
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) ROOTS.clearOwner(player.getUUID());
+        else CLOUDS.cancelPlayer(player.getUUID());
     }
 
     @Override

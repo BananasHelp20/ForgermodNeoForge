@@ -24,6 +24,10 @@ public final class ChargeAttackState {
         return false;
     }
 
+    public boolean isArmed(UUID player) {
+        return hits.containsKey(player);
+    }
+
     public void clear(UUID player) {
         hits.remove(player);
     }

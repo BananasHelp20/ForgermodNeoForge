@@ -80,6 +80,19 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     }
 
     @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? STORM.isActive(player.getUUID(), player.level().getGameTime())
+                : DASH.isActive(player.getUUID());
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) STORM.clear(player.getUUID());
+        else DASH.clear(player.getUUID());
+    }
+
+    @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
         if (!isDagger()) return null;
         return slot == WeaponAbilitySlot.PRIMARY

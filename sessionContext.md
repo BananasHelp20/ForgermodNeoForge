@@ -31,6 +31,12 @@
 
 ## Verification and remaining limits
 
+- Active primary and secondary abilities are now tracked independently for the exact main-hand `ItemStack` and selected slot. A switch, breakage, death, or logout cancels ongoing state and starts that slot's full cooldown. A naturally completed ongoing ability starts its cooldown when it ends; instant abilities start on use.
+- Cooldown keys use the registered weapon item ID and ability slot, so gemstone variants and the two slots have separate deadlines. Concurrent primary and secondary effects on the same equipped stack are supported.
+- Ability packets also carry the selected hotbar slot and item ID; the server rejects a packet if the player has switched to another weapon before it arrives.
+- Switching cancels ongoing ability state. Already completed damage and status applications retain their normal vanilla effects unless the user specifies otherwise; this interpretation was stated while awaiting clarification.
+- Ongoing state cancellation is implemented for all special dagger materials. Rooting Roots releases anchors and Poisoned Vein removes its clouds; Taifunite's airborne double-jump charge clears when unequipped.
+- `gradlew.bat test build` passes after the cooldown and switch lifecycle changes. Exact in-game behavior still needs a live playtest.
 - The latest audit checked all nine special dagger classes, their state helpers, the common ability payload/key registration, dual-wield follow-up, and the NeoForge 21.1.93 attack call order. `gradlew.bat test build` passes after each fix.
 - Sudden Presence now searches several safe positions behind nearby hostile mobs on uneven terrain and can try the next closest hostile if the nearest is blocked. Failed activations and cooldowns show an actionbar message.
 - Dual-wield follow-up retains the target from the main swing and validates the server's recent main-hand hit, preventing a delayed hit from turning into an air swing after knockback or camera movement.

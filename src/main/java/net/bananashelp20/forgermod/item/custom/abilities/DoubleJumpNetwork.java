@@ -63,7 +63,9 @@ public final class DoubleJumpNetwork {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player
-                && (!player.isAlive() || player.onGround() && player.getDeltaMovement().y <= 0)) {
+                && (!player.isAlive() || player.onGround() && player.getDeltaMovement().y <= 0
+                || !(player.getMainHandItem().getItem() instanceof TaifuniteWeapon weapon)
+                || !weapon.isDagger())) {
             STATE.clear(player.getUUID());
         }
     }

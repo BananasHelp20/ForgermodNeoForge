@@ -59,6 +59,7 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         if (!isDagger()) return false;
         if (slot == WeaponAbilitySlot.PRIMARY) {
+            if (FLAMING_COMBO.isActive(player.getUUID(), player.level().getGameTime())) return false;
             FLAMING_COMBO.activate(player.getUUID(), player.level().getGameTime());
             return true;
         }
@@ -70,6 +71,19 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
         if (!isDagger()) return 0;
         return slot == WeaponAbilitySlot.PRIMARY ? 600 : 1000;
+    }
+
+    @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? FLAMING_COMBO.isActive(player.getUUID(), player.level().getGameTime())
+                : PYROMANIAC.isArmed(player.getUUID());
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) FLAMING_COMBO.clear(player.getUUID());
+        else PYROMANIAC.clear(player.getUUID());
     }
 
     @Override

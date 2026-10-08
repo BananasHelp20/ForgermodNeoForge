@@ -106,6 +106,21 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     }
 
     @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? SONIC_CRIT.isArmed(player.getUUID()) : SONIC_BOOM.isArmed(player.getUUID());
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) SONIC_CRIT.clear(player.getUUID());
+        else {
+            SONIC_BOOM.clear(player.getUUID());
+            syncSonicReach(player);
+        }
+    }
+
+    @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
         if (!isDagger()) return null;
         return slot == WeaponAbilitySlot.PRIMARY

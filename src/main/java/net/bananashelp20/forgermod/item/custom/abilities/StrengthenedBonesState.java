@@ -29,6 +29,10 @@ public final class StrengthenedBonesState {
         return false;
     }
 
+    public boolean isActive(UUID player, long now) {
+        return armed.contains(player) || isProtected(player, now);
+    }
+
     public void clear(UUID player) {
         armed.remove(player);
         protectedUntil.remove(player);

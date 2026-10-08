@@ -137,6 +137,16 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     }
 
     @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return slot == WeaponAbilitySlot.SECONDARY && CHARGE_ATTACK.isArmed(player.getUUID());
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.SECONDARY) CHARGE_ATTACK.clear(player.getUUID());
+    }
+
+    @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
         if (!isDagger()) return null;
         return slot == WeaponAbilitySlot.PRIMARY

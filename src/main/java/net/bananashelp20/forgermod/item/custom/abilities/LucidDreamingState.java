@@ -30,6 +30,10 @@ public final class LucidDreamingState {
         return false;
     }
 
+    public boolean isActive(UUID player, long now) {
+        return armed.contains(player) || reducesFallDamage(player, now);
+    }
+
     public void clear(UUID player) {
         armed.remove(player);
         protectedUntil.remove(player);

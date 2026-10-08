@@ -72,6 +72,15 @@ public class SwordItemWithEffect extends SwordItem {
         return false;
     }
 
+    /** Whether this slot still has an armed or ongoing effect for the player. */
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return false;
+    }
+
+    /** End an armed or ongoing effect when the equipped weapon changes. */
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+    }
+
     /** Cooldown applied after a successful ability. Zero leaves cooldown management to the weapon. */
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
         return 0;

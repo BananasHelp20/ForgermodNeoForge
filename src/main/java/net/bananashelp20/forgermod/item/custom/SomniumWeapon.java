@@ -25,11 +25,15 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class SomniumWeapon extends SwordItemWithEffect {
     private static final NightmareHitState NIGHTMARE = new NightmareHitState();
     private static final LucidDreamingState LUCID = new LucidDreamingState();
+    private static final Map<UUID, MobEffectInstance> PREVIOUS_SPEED = new HashMap<>();
     public static Holder<MobEffect> effect = MobEffects.CONFUSION;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 4;
@@ -67,6 +71,8 @@ public class SomniumWeapon extends SwordItemWithEffect {
         }
         if ((target instanceof Enemy || target instanceof Player other && player.canHarmPlayer(other))
                 && LUCID.consumeHit(player.getUUID(), player.level().getGameTime())) {
+            MobEffectInstance previous = player.getEffect(MobEffects.MOVEMENT_SPEED);
+            if (previous != null) PREVIOUS_SPEED.put(player.getUUID(), new MobEffectInstance(previous));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 1));
         }
     }
@@ -98,6 +104,31 @@ public class SomniumWeapon extends SwordItemWithEffect {
                 : "tooltips.forgermod.ability.lucid_dreaming";
     }
 
+    @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) return NIGHTMARE.isArmed(player.getUUID());
+        boolean active = LUCID.isActive(player.getUUID(), player.level().getGameTime());
+        if (!active) PREVIOUS_SPEED.remove(player.getUUID());
+        return active;
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) NIGHTMARE.clear(player.getUUID());
+        else {
+            if (LUCID.reducesFallDamage(player.getUUID(), player.level().getGameTime())) {
+                MobEffectInstance current = player.getEffect(MobEffects.MOVEMENT_SPEED);
+                MobEffectInstance previous = PREVIOUS_SPEED.remove(player.getUUID());
+                if (current != null && current.getAmplifier() == 1 && current.getDuration() <= 100) {
+                    player.removeEffect(MobEffects.MOVEMENT_SPEED);
+                    if (previous != null) player.addEffect(previous);
+                }
+            }
+            PREVIOUS_SPEED.remove(player.getUUID());
+            LUCID.clear(player.getUUID());
+        }
+    }
+
     @SubscribeEvent
     public static void onFall(LivingFallEvent event) {
         if (event.getEntity() instanceof ServerPlayer player
@@ -110,6 +141,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         NIGHTMARE.clear(event.getEntity().getUUID());
         LUCID.clear(event.getEntity().getUUID());
+        PREVIOUS_SPEED.remove(event.getEntity().getUUID());
     }
 
     @Override

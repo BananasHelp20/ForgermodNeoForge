@@ -22,6 +22,10 @@ public final class NightmareHitState {
         return true;
     }
 
+    public boolean isArmed(UUID player) {
+        return remainingHits.containsKey(player);
+    }
+
     public void clear(UUID player) {
         remainingHits.remove(player);
     }

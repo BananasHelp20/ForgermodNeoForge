@@ -39,4 +39,18 @@ public final class PoisonCloudState<D> {
     public void clearPlayer(UUID player) {
         armed.remove(player);
     }
+
+    public boolean isActive(UUID player, long now) {
+        if (armed.contains(player)) return true;
+        for (List<Cloud> entries : clouds.values()) {
+            if (entries.stream().anyMatch(cloud -> cloud.owner.equals(player) && now < cloud.endTick)) return true;
+        }
+        return false;
+    }
+
+    public void cancelPlayer(UUID player) {
+        armed.remove(player);
+        clouds.values().forEach(entries -> entries.removeIf(cloud -> cloud.owner.equals(player)));
+        clouds.values().removeIf(List::isEmpty);
+    }
 }

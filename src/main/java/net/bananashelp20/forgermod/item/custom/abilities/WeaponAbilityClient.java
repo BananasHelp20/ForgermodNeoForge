@@ -6,6 +6,7 @@ import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -44,7 +45,9 @@ public final class WeaponAbilityClient {
         if (binding.getKey().equals(hotbarKey.getKey())) {
             while (hotbarKey.consumeClick()) { }
         }
-        PacketDistributor.sendToServer(new WeaponAbilityNetwork.UseAbilityPayload(slot.ordinal()));
+        PacketDistributor.sendToServer(new WeaponAbilityNetwork.UseAbilityPayload(
+                slot.ordinal(), minecraft.player.getInventory().selected,
+                BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString()));
     }
 
     @EventBusSubscriber(modid = ForgerMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

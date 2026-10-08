@@ -4,15 +4,15 @@ import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
 
 public final class WeaponCooldownKeyTest {
     public static void main(String[] args) {
-        String daggerPrimary = WeaponCooldownKey.of(String.class, true, false, WeaponAbilitySlot.PRIMARY);
-        expect(daggerPrimary, WeaponCooldownKey.of(String.class, true, false, WeaponAbilitySlot.PRIMARY),
-                "same material, type, and slot share a deadline");
-        reject(daggerPrimary, WeaponCooldownKey.of(String.class, true, false, WeaponAbilitySlot.SECONDARY),
+        String daggerPrimary = WeaponCooldownKey.of("forgermod:dagger_of_the_void", WeaponAbilitySlot.PRIMARY);
+        expect(daggerPrimary, WeaponCooldownKey.of("forgermod:dagger_of_the_void", WeaponAbilitySlot.PRIMARY),
+                "same registered weapon and slot share a deadline");
+        reject(daggerPrimary, WeaponCooldownKey.of("forgermod:dagger_of_the_void", WeaponAbilitySlot.SECONDARY),
                 "ability slots remain separate");
-        reject(daggerPrimary, WeaponCooldownKey.of(String.class, false, true, WeaponAbilitySlot.PRIMARY),
+        reject(daggerPrimary, WeaponCooldownKey.of("forgermod:dagger_of_the_void_ruby", WeaponAbilitySlot.PRIMARY),
+                "gemstone variants remain separate");
+        reject(daggerPrimary, WeaponCooldownKey.of("forgermod:axe_of_the_void", WeaponAbilitySlot.PRIMARY),
                 "weapon types remain separate");
-        reject(daggerPrimary, WeaponCooldownKey.of(Integer.class, true, false, WeaponAbilitySlot.PRIMARY),
-                "materials remain separate");
     }
 
     private static void expect(String expected, String actual, String description) {

@@ -28,4 +28,8 @@ public final class WindyDashState {
     public void clear(UUID player) {
         dashes.remove(player);
     }
+
+    public boolean isActive(UUID player) {
+        return dashes.containsKey(player);
+    }
 }

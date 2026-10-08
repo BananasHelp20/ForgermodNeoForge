@@ -14,6 +14,14 @@ public final class FlamingComboState {
         endTicks.put(playerId, now + DURATION_TICKS);
     }
 
+    public boolean isActive(UUID playerId, long now) {
+        Long end = endTicks.get(playerId);
+        if (end == null) return false;
+        if (now < end) return true;
+        endTicks.remove(playerId);
+        return false;
+    }
+
     public int fireTicksAfterHit(UUID playerId, long now, int currentFireTicks) {
         Long end = endTicks.get(playerId);
         if (end == null) return currentFireTicks;

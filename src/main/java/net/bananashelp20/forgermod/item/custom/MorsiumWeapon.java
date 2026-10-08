@@ -82,6 +82,19 @@ public class MorsiumWeapon extends SwordItemWithEffect {
     }
 
     @Override
+    public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? BONES.isActive(player.getUUID(), player.level().getGameTime())
+                : ANGER.isActive(player.getUUID());
+    }
+
+    @Override
+    public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
+        if (slot == WeaponAbilitySlot.PRIMARY) BONES.clear(player.getUUID());
+        else ANGER.clear(player.getUUID());
+    }
+
+    @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
         if (!isDagger()) return null;
         return slot == WeaponAbilitySlot.PRIMARY

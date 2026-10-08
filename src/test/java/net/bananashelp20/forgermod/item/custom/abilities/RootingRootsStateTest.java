@@ -7,14 +7,19 @@ public final class RootingRootsStateTest {
         RootingRootsState state = new RootingRootsState();
         UUID first = UUID.randomUUID();
         UUID second = UUID.randomUUID();
+        UUID owner = UUID.randomUUID();
         expect(null, state.anchor(first, 0), "not rooted");
-        state.root(first, 2, 4, 10);
+        state.root(owner, first, 2, 4, 10);
         expect(new RootingRootsState.Anchor(2, 4), state.anchor(first, 209), "anchored until last tick");
         expect(null, state.anchor(second, 20), "other mob unaffected");
         expect(null, state.anchor(first, 210), "expires at ten seconds");
-        state.root(first, 3, 5, 220);
-        state.root(first, 6, 7, 240);
+        state.root(owner, first, 3, 5, 220);
+        state.root(owner, first, 6, 7, 240);
         expect(new RootingRootsState.Anchor(6, 7), state.anchor(first, 430), "reapplication replaces anchor");
+        expect(true, state.hasRoots(owner, 430), "owner has an active root");
+        state.clearOwner(owner);
+        expect(null, state.anchor(first, 430), "switching weapons releases owner's roots");
+        state.root(owner, first, 6, 7, 240);
         state.prune(440);
         expect(null, state.anchor(first, 440), "prune removes expired root");
     }
