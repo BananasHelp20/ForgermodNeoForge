@@ -1,4 +1,5 @@
 Added
+- Updated `sessionContext.md` with the NeoForge 1.21.1 ability audit, fixes, verification, and current handoff state
 - Rusty Knife
 - Rusty Axe
 - Carbon Steel Knife

@@ -31,6 +31,11 @@
 
 ## Verification and remaining limits
 
+- The latest audit checked all nine special dagger classes, their state helpers, the common ability payload/key registration, dual-wield follow-up, and the NeoForge 21.1.93 attack call order. `gradlew.bat test build` passes after each fix.
+- Sudden Presence now searches several safe positions behind nearby hostile mobs on uneven terrain and can try the next closest hostile if the nearest is blocked. Failed activations and cooldowns show an actionbar message.
+- Dual-wield follow-up retains the target from the main swing and validates the server's recent main-hand hit, preventing a delayed hit from turning into an air swing after knockback or camera movement.
+- Amber special weapons now receive their intended attributes. Every special weapon variant gets fresh `Item.Properties`, so Amber fire resistance does not leak into other variants.
+- These changes were committed and pushed as `9f94948`, `5b79b11`, and `b1d0de9` on `main`. The only remaining local modification is the user's `ability-thoughts.txt`.
 - `gradlew.bat test --offline` runs 24 lightweight ability test mains through Gradle and passes. JSON parsing and `git diff --check` pass.
 - No live Minecraft client or dedicated-server playtest has been done. In-game effects, animations, networking, and reach should still be verified in game.
 - Review found that logout cleared ability cooldowns; a persisted NeoForge player attachment with `copyOnDeath()` now keeps cooldown deadlines through relog and respawn.
@@ -39,5 +44,5 @@
 
 ## Repository state
 
-- Branch `main`, remote `origin`. Every implemented dagger ability above has been committed and pushed separately, most recently Sonic Boom at `53df6c6`.
-- The review changes cover Gradle test discovery, persistent cooldowns, Sonic Boom air swings, this context refresh, and matching changelog entries.
+- Branch `main`, remote `origin`. All implemented dagger abilities and the latest audit fixes are pushed through `b1d0de9`.
+- The next claymore and axe activated abilities await the user's final designs. Content after `[CODEX IGNOGE THE FOLLOWING TEXT]` in `ability-thoughts.txt` remains excluded.
