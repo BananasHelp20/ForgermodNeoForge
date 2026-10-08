@@ -43,45 +43,44 @@ pulsite dagger:
 
 [CODEX IGNOGE THE FOLLOWING TEXT]
 
-ignisium dagger:
-"Flaming Combo": hits increase the target’s burn duration (1 hit -> 1 second). (for 10 seconds following a 30s cooldown)
-"Pyromaniac": when the attacker is burning, with the next hit, he can set his target ablaze and heals 5hp (50 second cooldown)
-
-inanisium dagger:
-"Stepping through the void" grants a short teleport (5 blocks) on rightclick (5 second cooldown)
+ignisium axe:
+"Flaming Stomp": the next attack will be a vertical strike, all enemies in 5x5m in the players view direction are set ablaze. (2 min cooldown)
+"Flameborn": grants the attacker fire resistance for 30 seconds, attacker and all enemies in a 10 block radius are being set ablaze with a cool fire explosion (5 min cooldown)
+inanisium axe:
+"Ender swing" the next attack will be a swing attack, damaging all enemies in a 1 block radius around the player, teleporting them 20 blocks in the air if possible.
 "Sudden Presence": Teleports you behind the nearest hostile Mob in a 20 block radius. (2min cooldown)
 
-somnium dagger:
+somnium axe:
 "Absolute Nightmare": every 3rd Critical hit inflicts Darkness and Weakness for a short duration.
 "Lucid dreaming": Hitting an enemy grants a short burst of speed and reduced fall damage.
 
-electrium dagger:
+electrium axe:
 "Areal-discharge": strikes lightning on all entities (hostile mobs) in a 5 block radius (5min cooldown)
 "Chargeattack": the next 20 hits on any mob charge up damage, which is discharged on the 21st hit dealing a high amount of damage. (2min cooldown)
 additional Passive:
 "Chain-Lightning": chains to 2 other hostile mobs when in under 10 blocks of range from the target.
 
-taifunite dagger:
+taifunite axe:
 "Eye of the storm": create a strom around you that lets all enemies in a 10 block radius levitate and whirl around. (1min cooldown)
 "Windy Dash": makes it possible to perform a dash, shooting you 6 blocks forward. (5 second cooldown)
 Additional Passive:
 When equipped, can perform a double jump (jumping once without having contact to the floor)
 
-vulnusium dagger:
+vulnusium axe:
 "Deep Wound": the next crit deals doubled damage and applies the slowness effect (2 seconds). (cooldown: 30 seconds)
 "Leech": the next 10 attacks each leech 10% of the target's maximum health. (cooldown: 15 seconds)
 
-overgrown dagger:
+overgrown axe:
 "routing roots": all enemies within 5 blocks cannot move for the next 10 seconds and get poison damage.
 "poisoned vein": killing an enemy spawns a poison cloud that doesn't affect the attacker.
 
-morsium dagger:
+morsium axe:
 "strenghtend bones": when killing an enemy, get invincible for 10 seconds
 "Storing anger": you don't deal any damage for the next 10 seconds, then the next attack will release all the stored damage at once
 additional Passive:
 "Death March": damage increases the lower the enemy hp get during a fight (up to 2x damage).
 "revenge": deal 20% more damage to undead mobs
 
-pulsite dagger:
+pulsite axe:
 "Sonically Charged Crit": the next Crit deals 15% of the enemies damage. (releasing the sonic boom effect particals)
 "Sonic Boom": the next 6 attacks will have an increased range of 4 blocks
