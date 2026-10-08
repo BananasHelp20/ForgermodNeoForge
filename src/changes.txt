@@ -64,6 +64,8 @@ Added
 - Server-validated Double Jump payload and state test covering the single extra jump, player isolation, and cleanup
 - Vulnusium dagger primary ability, Deep Wound: next successful critical hit doubles damage and inflicts Slowness I for 2 seconds, with a 30-second cooldown
 - Deep Wound state test covering arming, single-hit consumption, player isolation, and logout cleanup
+- Vulnusium dagger secondary ability, Leech: next 10 dagger hits drain up to 10% of target maximum health and heal by health actually drained, with a 15-second cooldown
+- Leech state test covering ten charges, player isolation, rearming, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.

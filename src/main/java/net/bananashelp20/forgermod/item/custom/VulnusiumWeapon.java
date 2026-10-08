@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.DaggerCriticalEvents;
 import net.bananashelp20.forgermod.item.custom.abilities.DeepWoundState;
+import net.bananashelp20.forgermod.item.custom.abilities.LeechState;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +28,7 @@ import java.util.List;
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class VulnusiumWeapon extends SwordItemWithEffect {
     private static final DeepWoundState DEEP_WOUND = new DeepWoundState();
+    private static final LeechState LEECH = new LeechState();
     public static Holder<MobEffect> effect = MobEffects.WITHER;
     public static int durationInTicks = 80;
     public static int effectAmplifier = 1;
@@ -59,12 +61,36 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
                 && DEEP_WOUND.consume(player.getUUID()) && !pTarget.isDeadOrDying()) {
             pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0));
         }
+        onDaggerHit(pTarget, pAttacker);
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
 
     @Override
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if (!(attacker instanceof ServerPlayer player) || target.isDeadOrDying()
+                || !LEECH.hasCharge(player.getUUID())) return;
+        int previousInvulnerableTime = target.invulnerableTime;
+        target.invulnerableTime = 0;
+        float healthBefore = target.getHealth();
+        if (target.hurt(player.damageSources().playerAttack(player), target.getMaxHealth() * 0.1F)) {
+            float drained = Math.max(0, healthBefore - target.getHealth());
+            if (drained > 0) {
+                player.heal(drained);
+                LEECH.consume(player.getUUID());
+            }
+        } else {
+            target.invulnerableTime = previousInvulnerableTime;
+        }
+    }
+
+    @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY || !player.isAlive()) return false;
+        if (!isDagger() || !player.isAlive()) return false;
+        if (slot == WeaponAbilitySlot.SECONDARY) {
+            boolean armed = LEECH.arm(player.getUUID());
+            if (armed) player.displayClientMessage(Component.translatable("message.forgermod.leech.armed"), true);
+            return armed;
+        }
         boolean armed = DEEP_WOUND.arm(player.getUUID());
         if (armed) player.displayClientMessage(Component.translatable("message.forgermod.deep_wound.armed"), true);
         return armed;
@@ -72,13 +98,16 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 600 : 0;
+        if (!isDagger()) return 0;
+        return slot == WeaponAbilitySlot.PRIMARY ? 600 : 300;
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.deep_wound" : null;
+        if (!isDagger()) return null;
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.deep_wound"
+                : "tooltips.forgermod.ability.leech";
     }
 
     @SubscribeEvent
@@ -93,6 +122,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         DEEP_WOUND.clear(event.getEntity().getUUID());
+        LEECH.clear(event.getEntity().getUUID());
     }
 
     @Override
