@@ -17,6 +17,8 @@
   "message.forgermod.eye_of_the_storm.active": "Eye of the Storm active for 5 seconds",
   "tooltips.forgermod.ability.windy_dash": "Windy Dash: Burst up to 6 blocks forward over a short dash (5-second cooldown)",
   "tooltips.forgermod.passive.double_jump": "Double Jump: Press Jump again in midair after a normal jump to leap once more",
+  "tooltips.forgermod.ability.deep_wound": "Deep Wound: Your next critical dagger hit deals double damage and inflicts Slowness I for 2 seconds (30-second cooldown)",
+  "message.forgermod.deep_wound.armed": "Deep Wound armed for your next critical hit",
   "tooltips.forgermod.passive.axe": "§7\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
   "tooltips.forgermod.passive.dagger": "§7\nPassive: Matching daggers strike in both hands; special daggers apply their material effect on hit.§r",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.\n\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",

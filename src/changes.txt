@@ -62,6 +62,8 @@ Added
 - Windy Dash state test covering six impulses, reactivation, player isolation, and logout cleanup
 - Taifunite dagger passive, Double Jump: one additional midair jump after a normal jump, triggered by a second Jump key press
 - Server-validated Double Jump payload and state test covering the single extra jump, player isolation, and cleanup
+- Vulnusium dagger primary ability, Deep Wound: next successful critical hit doubles damage and inflicts Slowness I for 2 seconds, with a 30-second cooldown
+- Deep Wound state test covering arming, single-hit consumption, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
