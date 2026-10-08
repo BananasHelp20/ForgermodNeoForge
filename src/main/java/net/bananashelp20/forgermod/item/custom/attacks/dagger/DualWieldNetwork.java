@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.item.custom.attacks.dagger;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
+import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -84,12 +85,13 @@ public class DualWieldNetwork {
         PacketDistributor.sendToPlayersTrackingEntity(player, new OffhandSwingPayload(player.getId()));
 
         Entity entity = player.level().getEntity(payload.targetId());
+        double reach = PulsiteWeapon.hasSonicReach(player) ? player.entityInteractionRange() : 4.5;
         if (!(entity instanceof LivingEntity target) || target.isDeadOrDying()
-                || entity == player || player.distanceToSqr(entity) > 25.0
+                || entity == player || player.distanceToSqr(entity) > (reach + 0.5) * (reach + 0.5)
                 || !player.hasLineOfSight(entity)) return;
 
         Vec3 eye = player.getEyePosition();
-        Vec3 reachEnd = eye.add(player.getLookAngle().scale(4.5));
+        Vec3 reachEnd = eye.add(player.getLookAngle().scale(reach));
         if (entity.getBoundingBox().inflate(0.3).clip(eye, reachEnd).isEmpty()) return;
 
         int previousInvulnerableTime = target.invulnerableTime;

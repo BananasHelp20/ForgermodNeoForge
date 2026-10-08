@@ -81,6 +81,9 @@ Added
 - Weapon tooltip support for multiple material-specific passives
 - Pulsite dagger primary ability, Sonically Charged Crit: next critical hit adds 15% of target maximum health as damage and releases sonic boom particles, with a 30-second cooldown
 - Sonic critical state and damage test, plus non-consuming critical-hit matching for the damage event
+- Pulsite dagger secondary ability, Sonic Boom: next 6 successful dagger hits gain 4 blocks of reach, with a 45-second cooldown
+- Sonic Boom state test covering six hits, player isolation, rearming, and logout cleanup
+- Matching offhand Pulsite dagger attacks respect the extended entity reach while Sonic Boom is active
 
 Changed
 fixed shardium Ore not dropping random items.
