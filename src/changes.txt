@@ -66,6 +66,8 @@ Added
 - Deep Wound state test covering arming, single-hit consumption, player isolation, and logout cleanup
 - Vulnusium dagger secondary ability, Leech: next 10 dagger hits drain up to 10% of target maximum health and heal by health actually drained, with a 15-second cooldown
 - Leech state test covering ten charges, player isolation, rearming, and logout cleanup
+- Overgrown dagger primary ability, Rooting Roots: hold hostile mobs within 5 blocks in place and poison them for 10 seconds, with a 1-minute cooldown
+- Rooting Roots state test covering ten-second anchors, reapplication, expiry, and cleanup
 
 Changed
 fixed shardium Ore not dropping random items.

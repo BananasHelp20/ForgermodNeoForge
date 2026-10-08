@@ -21,6 +21,7 @@
   "message.forgermod.deep_wound.armed": "Deep Wound armed for your next critical hit",
   "tooltips.forgermod.ability.leech": "Leech: Your next 10 dagger hits drain up to 10% of the target's maximum health each and heal you by the health drained (15-second cooldown)",
   "message.forgermod.leech.armed": "Leech armed for 10 hits",
+  "tooltips.forgermod.ability.rooting_roots": "Rooting Roots: Hold hostile mobs within 5 blocks in place and poison them for 10 seconds (1-minute cooldown)",
   "tooltips.forgermod.passive.axe": "§7\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
   "tooltips.forgermod.passive.dagger": "§7\nPassive: Matching daggers strike in both hands; special daggers apply their material effect on hit.§r",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.\n\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
