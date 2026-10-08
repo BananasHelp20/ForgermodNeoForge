@@ -22,7 +22,7 @@ import java.util.Queue;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID, value = Dist.CLIENT)
 public class DualWieldClient {
-    private record PendingSwing(long dueTick, Item dagger) {}
+    private record PendingSwing(long dueTick, Item dagger, int targetId) {}
 
     private static final Queue<PendingSwing> PENDING = new ArrayDeque<>();
     private static long lastQueuedTick = Long.MIN_VALUE;
@@ -53,7 +53,9 @@ public class DualWieldClient {
         }
         long now = minecraft.level.getGameTime();
         if (lastQueuedTick == Long.MIN_VALUE || now - lastQueuedTick >= 3) {
-            PENDING.add(new PendingSwing(now + 2, minecraft.player.getMainHandItem().getItem()));
+            int targetId = minecraft.hitResult instanceof EntityHitResult hit
+                    ? hit.getEntity().getId() : -1;
+            PENDING.add(new PendingSwing(now + 2, minecraft.player.getMainHandItem().getItem(), targetId));
             lastQueuedTick = now;
         }
     }
@@ -78,9 +80,7 @@ public class DualWieldClient {
             minecraft.player.swinging = false;
             minecraft.player.swing(InteractionHand.OFF_HAND);
 
-            int targetId = minecraft.hitResult instanceof EntityHitResult hit
-                    ? hit.getEntity().getId() : -1;
-            PacketDistributor.sendToServer(new DualWieldNetwork.OffhandAttackPayload(targetId));
+            PacketDistributor.sendToServer(new DualWieldNetwork.OffhandAttackPayload(pending.targetId()));
         }
     }
 }

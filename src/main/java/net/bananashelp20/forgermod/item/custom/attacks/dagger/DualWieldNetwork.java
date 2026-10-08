@@ -16,7 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -88,14 +87,8 @@ public class DualWieldNetwork {
         double reach = PulsiteWeapon.hasSonicReach(player) ? player.entityInteractionRange() : 4.5;
         if (!(entity instanceof LivingEntity target) || target.isDeadOrDying()
                 || entity == player || player.distanceToSqr(entity) > (reach + 0.5) * (reach + 0.5)
-                || !player.hasLineOfSight(entity)) {
-            PulsiteWeapon.consumeSonicAirSwing(player);
-            return;
-        }
-
-        Vec3 eye = player.getEyePosition();
-        Vec3 reachEnd = eye.add(player.getLookAngle().scale(reach));
-        if (entity.getBoundingBox().inflate(0.3).clip(eye, reachEnd).isEmpty()) {
+                || !player.hasLineOfSight(entity) || player.getLastHurtMob() != target
+                || player.tickCount - player.getLastHurtMobTimestamp() > 5) {
             PulsiteWeapon.consumeSonicAirSwing(player);
             return;
         }
