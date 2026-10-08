@@ -72,6 +72,8 @@ Added
 - Poisoned Vein state test covering arming, cloud duration, dimension isolation, player isolation, and logout cleanup
 - Morsium dagger primary ability, Strengthened Bones: next melee kill of a hostile mob grants 10 seconds of invulnerability, with a 90-second cooldown
 - Strengthened Bones state test covering arming, kill activation, duration, player isolation, and logout cleanup
+- Morsium dagger secondary ability, Storing Anger: suppress and store outgoing damage for 10 seconds, then add it to the next dagger hit, with a 1-minute cooldown
+- Storing Anger state test covering timing, accumulated damage, single release, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.

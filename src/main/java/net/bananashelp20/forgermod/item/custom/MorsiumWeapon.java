@@ -4,6 +4,7 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.StrengthenedBonesState;
+import net.bananashelp20.forgermod.item.custom.abilities.StoringAngerState;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Mob;
@@ -30,6 +31,7 @@ import java.util.List;
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class MorsiumWeapon extends SwordItemWithEffect {
     private static final StrengthenedBonesState BONES = new StrengthenedBonesState();
+    private static final StoringAngerState ANGER = new StoringAngerState();
     public static Holder<MobEffect> effect = MobEffects.WEAKNESS;
     public static int durationInTicks = 100;
     public static int effectAmplifier = 3;
@@ -60,7 +62,12 @@ public class MorsiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY || !player.isAlive()) return false;
+        if (!isDagger() || !player.isAlive()) return false;
+        if (slot == WeaponAbilitySlot.SECONDARY) {
+            boolean armed = ANGER.arm(player.getUUID(), player.level().getGameTime());
+            if (armed) player.displayClientMessage(Component.translatable("message.forgermod.storing_anger.active"), true);
+            return armed;
+        }
         boolean armed = BONES.arm(player.getUUID(), player.level().getGameTime());
         if (armed) player.displayClientMessage(Component.translatable("message.forgermod.strengthened_bones.armed"), true);
         return armed;
@@ -68,13 +75,16 @@ public class MorsiumWeapon extends SwordItemWithEffect {
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 1800 : 0;
+        if (!isDagger()) return 0;
+        return slot == WeaponAbilitySlot.PRIMARY ? 1800 : 1200;
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.strengthened_bones" : null;
+        if (!isDagger()) return null;
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.strengthened_bones"
+                : "tooltips.forgermod.ability.storing_anger";
     }
 
     @SubscribeEvent
@@ -95,11 +105,25 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 && BONES.isProtected(player.getUUID(), player.level().getGameTime())) {
             event.setCanceled(true);
         }
+        if (event.isCanceled()) return;
+        if (!(event.getSource().getEntity() instanceof ServerPlayer attacker)
+                || attacker == event.getEntity()) return;
+        long now = attacker.level().getGameTime();
+        if (ANGER.storeIfCharging(attacker.getUUID(), now, event.getAmount())) {
+            event.setCanceled(true);
+            return;
+        }
+        if (!event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                || !(attacker.getMainHandItem().getItem() instanceof MorsiumWeapon weapon)
+                || !weapon.isDagger()) return;
+        float stored = ANGER.releaseOnDaggerHit(attacker.getUUID(), now);
+        if (stored >= 0) event.setAmount(event.getAmount() + stored);
     }
 
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         BONES.clear(event.getEntity().getUUID());
+        ANGER.clear(event.getEntity().getUUID());
     }
 
     @Override

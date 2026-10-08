@@ -27,6 +27,8 @@
   "tooltips.forgermod.ability.strengthened_bones": "Strengthened Bones: Your next dagger kill against a hostile mob makes you invulnerable for 10 seconds (90-second cooldown)",
   "message.forgermod.strengthened_bones.armed": "Strengthened Bones armed for your next hostile kill",
   "message.forgermod.strengthened_bones.active": "Strengthened Bones: invulnerable for 10 seconds",
+  "tooltips.forgermod.ability.storing_anger": "Storing Anger: Deal no damage for 10 seconds; your next Morsium dagger hit releases all stored damage (1-minute cooldown)",
+  "message.forgermod.storing_anger.active": "Storing Anger: damage is stored for 10 seconds",
   "tooltips.forgermod.passive.axe": "§7\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
   "tooltips.forgermod.passive.dagger": "§7\nPassive: Matching daggers strike in both hands; special daggers apply their material effect on hit.§r",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.\n\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
