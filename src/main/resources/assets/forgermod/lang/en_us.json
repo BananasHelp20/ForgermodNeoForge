@@ -9,6 +9,8 @@
   "tooltips.forgermod.ability.lucid_dreaming": "Lucid Dreaming: Your next hit against an enemy grants Speed II and halves fall damage for 5 seconds (15-second cooldown)",
   "message.forgermod.lucid.armed": "Lucid Dreaming armed for your next hit",
   "tooltips.forgermod.ability.area_discharge": "Area Discharge: Strike hostile mobs within 5 blocks with lightning for 5 damage each (5-minute cooldown)",
+  "tooltips.forgermod.ability.charge_attack": "Charge Attack: Your next 20 mob hits build charge; the 21st deals 20 extra lightning damage (2-minute cooldown)",
+  "message.forgermod.charge_attack.armed": "Charge Attack armed for 21 mob hits",
   "tooltips.forgermod.passive.axe": "§7\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",
   "tooltips.forgermod.passive.dagger": "§7\nPassive: Matching daggers strike in both hands; special daggers apply their material effect on hit.§r",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.\n\nPassive: Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.§r",

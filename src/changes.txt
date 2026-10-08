@@ -51,6 +51,8 @@ Added
 - Lucid Dreaming state test covering one-hit use, duration boundaries, player isolation, and logout cleanup
 - Electrium dagger primary ability, Area Discharge: strike hostile mobs within 5 blocks with lightning for 5 damage each, with a 5-minute cooldown
 - Area Discharge target-selection test covering hostile filtering and the five-block boundary
+- Electrium dagger secondary ability, Charge Attack: 20 mob hits build charge and the 21st deals 20 extra lightning damage, with a 2-minute cooldown
+- Charge Attack state test covering the 21-hit sequence, player isolation, rearming, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.

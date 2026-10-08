@@ -1,8 +1,10 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
+import net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState;
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.network.chat.Component;
@@ -20,10 +22,16 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.particles.ParticleTypes;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.List;
 
+@EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class ElectriumWeapon extends SwordItemWithEffect {
+    private static final ChargeAttackState CHARGE_ATTACK = new ChargeAttackState();
     public static Holder<MobEffect> effect = MobEffects.MOVEMENT_SLOWDOWN;
     public static int durationInTicks = 100;
     public static int effectAmplifier = 3;
@@ -48,13 +56,35 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker, EquipmentSlot pSlot) {
-        pStack.hurtAndBreak(1, pAttacker, pSlot);
         applyMaterialEffect(pTarget);
+        onDaggerHit(pTarget, pAttacker);
+        pStack.hurtAndBreak(1, pAttacker, pSlot);
+    }
+
+    @Override
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if (!(attacker instanceof ServerPlayer player) || !(target instanceof Mob)
+                || !CHARGE_ATTACK.recordMobHit(player.getUUID()) || target.isDeadOrDying()) return;
+
+        int previousInvulnerableTime = target.invulnerableTime;
+        target.invulnerableTime = 0;
+        if (target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player), 20.0F)) {
+            player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                    target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
+                    20, 0.5, 0.5, 0.5, 0.1);
+        } else {
+            target.invulnerableTime = previousInvulnerableTime;
+        }
     }
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY || !player.isAlive()) return false;
+        if (!isDagger() || !player.isAlive()) return false;
+        if (slot == WeaponAbilitySlot.SECONDARY) {
+            boolean armed = CHARGE_ATTACK.arm(player.getUUID());
+            if (armed) player.displayClientMessage(Component.translatable("message.forgermod.charge_attack.armed"), true);
+            return armed;
+        }
         List<Mob> targets = AreaDischargeTargets.select(
                 player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(5)),
                 mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 5);
@@ -77,13 +107,21 @@ public class ElectriumWeapon extends SwordItemWithEffect {
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 6000 : 0;
+        if (!isDagger()) return 0;
+        return slot == WeaponAbilitySlot.PRIMARY ? 6000 : 2400;
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.area_discharge" : null;
+        if (!isDagger()) return null;
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.area_discharge"
+                : "tooltips.forgermod.ability.charge_attack";
+    }
+
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        CHARGE_ATTACK.clear(event.getEntity().getUUID());
     }
 
     @Override
