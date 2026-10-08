@@ -4,6 +4,7 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.FlamingComboState;
+import net.bananashelp20.forgermod.item.custom.abilities.PyromaniacState;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
@@ -25,6 +26,7 @@ import java.util.List;
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class IgnisiumWeapon extends SwordItemWithEffect {
     private static final FlamingComboState FLAMING_COMBO = new FlamingComboState();
+    private static final PyromaniacState PYROMANIAC = new PyromaniacState();
     public static Holder<MobEffect> effect = MobEffects.GLOWING;
     public static int durationInTicks = 2000;
     public static int effectAmplifier = 1;
@@ -56,25 +58,39 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY) return false;
-        FLAMING_COMBO.activate(player.getUUID(), player.level().getGameTime());
-        return true;
+        if (!isDagger()) return false;
+        if (slot == WeaponAbilitySlot.PRIMARY) {
+            FLAMING_COMBO.activate(player.getUUID(), player.level().getGameTime());
+            return true;
+        }
+        return slot == WeaponAbilitySlot.SECONDARY
+                && PYROMANIAC.arm(player.getUUID(), player.getRemainingFireTicks() > 0);
     }
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 600 : 0;
+        if (!isDagger()) return 0;
+        return slot == WeaponAbilitySlot.PRIMARY ? 600 : 1000;
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        return isDagger() && slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.flaming_combo" : null;
+        if (!isDagger()) return null;
+        return slot == WeaponAbilitySlot.PRIMARY
+                ? "tooltips.forgermod.ability.flaming_combo"
+                : "tooltips.forgermod.ability.pyromaniac";
     }
 
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
-        if (!(attacker instanceof ServerPlayer player) || target.isDeadOrDying()) return;
+        if (!(attacker instanceof ServerPlayer player)) return;
+        if (PYROMANIAC.consume(player.getUUID())) {
+            player.heal(5.0F);
+            if (!target.isDeadOrDying()) {
+                target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(), 100));
+            }
+        }
+        if (target.isDeadOrDying()) return;
         int before = target.getRemainingFireTicks();
         int after = FLAMING_COMBO.fireTicksAfterHit(player.getUUID(), player.level().getGameTime(), before);
         if (after != before) target.setRemainingFireTicks(after);
@@ -83,6 +99,7 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         FLAMING_COMBO.clear(event.getEntity().getUUID());
+        PYROMANIAC.clear(event.getEntity().getUUID());
     }
 
     @Override

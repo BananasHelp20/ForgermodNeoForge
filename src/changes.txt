@@ -39,6 +39,8 @@ Added
 - `sessionContext.md` handoff for the weapon work and NeoForge 1.21.1 requirements
 - Ignisium dagger primary ability, Flaming Combo, with a 10-second active window and 30-second cooldown
 - Flaming Combo state test covering burn stacking, active-window boundaries, player isolation, and logout cleanup
+- Ignisium dagger secondary ability, Pyromaniac, with a 50-second cooldown
+- Pyromaniac state test covering activation, one-hit consumption, player isolation, and logout cleanup
 
 Changed
 fixed shardium Ore not dropping random items.
@@ -53,6 +55,7 @@ Buffed
 - All axes gain the 3x3 heavy attack passive
 - Special-material daggers gain their material effect on hit alongside dual wielding
 - Flaming Combo adds 1 second of burn for each successful Ignisium dagger hit during its active window
+- Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
