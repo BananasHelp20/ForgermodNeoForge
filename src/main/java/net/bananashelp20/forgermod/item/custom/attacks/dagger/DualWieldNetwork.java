@@ -88,11 +88,17 @@ public class DualWieldNetwork {
         double reach = PulsiteWeapon.hasSonicReach(player) ? player.entityInteractionRange() : 4.5;
         if (!(entity instanceof LivingEntity target) || target.isDeadOrDying()
                 || entity == player || player.distanceToSqr(entity) > (reach + 0.5) * (reach + 0.5)
-                || !player.hasLineOfSight(entity)) return;
+                || !player.hasLineOfSight(entity)) {
+            PulsiteWeapon.consumeSonicAirSwing(player);
+            return;
+        }
 
         Vec3 eye = player.getEyePosition();
         Vec3 reachEnd = eye.add(player.getLookAngle().scale(reach));
-        if (entity.getBoundingBox().inflate(0.3).clip(eye, reachEnd).isEmpty()) return;
+        if (entity.getBoundingBox().inflate(0.3).clip(eye, reachEnd).isEmpty()) {
+            PulsiteWeapon.consumeSonicAirSwing(player);
+            return;
+        }
 
         int previousInvulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
@@ -105,6 +111,7 @@ public class DualWieldNetwork {
             offhand.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
         } else {
             target.invulnerableTime = previousInvulnerableTime;
+            PulsiteWeapon.consumeSonicAirSwing(player);
         }
     }
 }

@@ -76,7 +76,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
 
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof ServerPlayer player && SONIC_BOOM.consumeHit(player.getUUID())) {
+        if (attacker instanceof ServerPlayer player && SONIC_BOOM.consumeAttack(player.getUUID())) {
             syncSonicReach(player);
             player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,
                     target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
@@ -117,6 +117,10 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     public static boolean hasSonicReach(ServerPlayer player) {
         return SONIC_BOOM.isArmed(player.getUUID())
                 && player.getMainHandItem().getItem() instanceof PulsiteWeapon weapon && weapon.isDagger();
+    }
+
+    public static void consumeSonicAirSwing(ServerPlayer player) {
+        if (hasSonicReach(player) && SONIC_BOOM.consumeAttack(player.getUUID())) syncSonicReach(player);
     }
 
     private static void syncSonicReach(ServerPlayer player) {

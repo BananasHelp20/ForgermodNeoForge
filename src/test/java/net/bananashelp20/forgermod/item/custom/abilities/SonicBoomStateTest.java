@@ -8,15 +8,15 @@ public final class SonicBoomStateTest {
         UUID first = UUID.randomUUID();
         UUID second = UUID.randomUUID();
         expect(false, state.isArmed(first), "inactive");
-        expect(true, state.arm(first), "arm six hits");
+        expect(true, state.arm(first), "arm six attacks");
         expect(false, state.arm(first), "cannot rearm mid-sequence");
-        expect(false, state.consumeHit(second), "other player unaffected");
+        expect(false, state.consumeAttack(second), "other player unaffected");
         for (int hit = 1; hit <= 6; hit++) {
-            expect(true, state.isArmed(first), "charge for hit " + hit);
-            expect(true, state.consumeHit(first), "consume hit " + hit);
+            expect(true, state.isArmed(first), "charge for attack " + hit);
+            expect(true, state.consumeAttack(first), "consume attack " + hit);
         }
-        expect(false, state.isArmed(first), "sixth hit ends effect");
-        expect(false, state.consumeHit(first), "seventh hit uncharged");
+        expect(false, state.isArmed(first), "sixth attack ends effect");
+        expect(false, state.consumeAttack(first), "seventh attack uncharged");
         expect(true, state.arm(first), "can rearm");
         state.clear(first);
         expect(false, state.isArmed(first), "logout cleanup");

@@ -84,6 +84,10 @@ Added
 - Pulsite dagger secondary ability, Sonic Boom: next 6 successful dagger hits gain 4 blocks of reach, with a 45-second cooldown
 - Sonic Boom state test covering six hits, player isolation, rearming, and logout cleanup
 - Matching offhand Pulsite dagger attacks respect the extended entity reach while Sonic Boom is active
+- Gradle test task now runs every lightweight ability test main class, allowing the full ability suite to be checked with one command
+- Persistent player ability cooldowns that survive logout, world reload, and respawn
+- Cooldown key test covering material, weapon type, and ability slot separation
+- Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
 fixed shardium Ore not dropping random items.
@@ -93,6 +97,8 @@ fixed sword effects
 - Special-material axes now lose durability on successful hits
 - Offhand item, block, and entity interactions are blocked while holding an axe
 - Weapon ability cooldowns are tracked per weapon and ability slot
+- Weapon ability cooldowns use a persistent NeoForge player attachment instead of a logout-cleared server map
+- Sonic Boom charges are spent on dagger air swings as well as successful hits, matching its six-attack description
 - Absolute Nightmare now uses two charged dagger hits instead of a repeating critical-hit toggle
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 

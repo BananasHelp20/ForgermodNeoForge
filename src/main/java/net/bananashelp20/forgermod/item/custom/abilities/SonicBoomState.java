@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Six successful dagger hits consume one extended-reach activation. */
+/** Six dagger attacks, including air swings, consume one extended-reach activation. */
 public final class SonicBoomState {
     private final Map<UUID, Integer> remaining = new HashMap<>();
 
@@ -16,7 +16,7 @@ public final class SonicBoomState {
         return remaining.containsKey(player);
     }
 
-    public boolean consumeHit(UUID player) {
+    public boolean consumeAttack(UUID player) {
         Integer count = remaining.get(player);
         if (count == null) return false;
         if (count == 1) remaining.remove(player);
