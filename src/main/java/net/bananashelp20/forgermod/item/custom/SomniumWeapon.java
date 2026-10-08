@@ -3,8 +3,7 @@ package net.bananashelp20.forgermod.item.custom;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
-import net.bananashelp20.forgermod.item.custom.abilities.DaggerCriticalEvents;
-import net.bananashelp20.forgermod.item.custom.abilities.NightmareCritState;
+import net.bananashelp20.forgermod.item.custom.abilities.NightmareHitState;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
@@ -25,7 +24,7 @@ import java.util.List;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class SomniumWeapon extends SwordItemWithEffect {
-    private static final NightmareCritState NIGHTMARE = new NightmareCritState();
+    private static final NightmareHitState NIGHTMARE = new NightmareHitState();
     public static Holder<MobEffect> effect = MobEffects.CONFUSION;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 4;
@@ -50,25 +49,32 @@ public class SomniumWeapon extends SwordItemWithEffect {
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        boolean nightmareHit = pAttacker instanceof ServerPlayer player
-                && DaggerCriticalEvents.consume(player, pTarget, pStack)
-                && NIGHTMARE.onCritical(player.getUUID());
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         applyMaterialEffect(pTarget);
-        if (nightmareHit && !pTarget.isDeadOrDying()) {
-            pTarget.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0));
-            pTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
+        onDaggerHit(pTarget, pAttacker);
+    }
+
+    @Override
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if (attacker instanceof ServerPlayer player
+                && NIGHTMARE.consumeHit(player.getUUID())
+                && !target.isDeadOrDying()) {
+            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0));
+            target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
         }
     }
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         if (!isDagger() || slot != WeaponAbilitySlot.PRIMARY) return false;
-        boolean enabled = NIGHTMARE.toggle(player.getUUID());
-        player.displayClientMessage(Component.translatable(enabled
-                ? "message.forgermod.nightmare.enabled"
-                : "message.forgermod.nightmare.disabled"), true);
-        return true;
+        boolean armed = NIGHTMARE.arm(player.getUUID());
+        if (armed) player.displayClientMessage(Component.translatable("message.forgermod.nightmare.armed"), true);
+        return armed;
+    }
+
+    @Override
+    public int abilityCooldownTicks(WeaponAbilitySlot slot) {
+        return isDagger() && slot == WeaponAbilitySlot.PRIMARY ? 400 : 0;
     }
 
     @Override

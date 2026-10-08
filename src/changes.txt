@@ -45,8 +45,8 @@ Added
 - Void Step path test covering full range, obstacles, and blocked starts
 - Inanisium dagger secondary ability, Sudden Presence: teleport behind the nearest hostile mob within 20 blocks, with a 2-minute cooldown
 - Sudden Presence placement test covering facing direction and zero-vector rejection
-- Somnium dagger primary ability, Absolute Nightmare: toggle to inflict Darkness I and Weakness I for 5 seconds on every third successful critical hit
-- Critical-hit tracking and Absolute Nightmare sequence tests
+- Somnium dagger primary ability, Absolute Nightmare: the next 2 dagger hits inflict Darkness I and Weakness I for 10 seconds, with a 20-second cooldown
+- Critical-hit tracking for later dagger abilities and a test for Absolute Nightmare's two-hit charge
 
 Changed
 fixed shardium Ore not dropping random items.
@@ -56,6 +56,7 @@ fixed sword effects
 - Special-material axes now lose durability on successful hits
 - Offhand item, block, and entity interactions are blocked while holding an axe
 - Weapon ability cooldowns are tracked per weapon and ability slot
+- Absolute Nightmare now uses two charged dagger hits instead of a repeating critical-hit toggle
 
 Buffed
 - All axes gain the 3x3 heavy attack passive
@@ -67,3 +68,4 @@ Debuffed
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 
 Removed
+- Absolute Nightmare's earlier repeating critical-hit toggle
