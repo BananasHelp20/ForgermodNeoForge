@@ -1,5 +1,7 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.item.ModSpecialRegistry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.commands.SummonCommand;
@@ -45,7 +47,8 @@ public class SwordItemWithEffect extends SwordItem {
         super(pTier, pProperties);
         this.weaponType = weaponType;
         this.materialEffect = effect;
-        this.materialEffectDuration = duration + ("jade".equals(gemstone) ? 20 : 0);
+        this.materialEffectDuration = ModSpecialRegistry.materialEffectDuration(
+                duration + ("jade".equals(gemstone) ? 20 : 0), gemstone, weaponType);
         this.materialEffectAmplifier = amplifier + ("jade".equals(gemstone) ? 1 : 0);
     }
 

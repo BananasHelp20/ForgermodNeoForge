@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.attacks.axe;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -146,6 +147,7 @@ public final class AxeHeavyNetwork {
             int previousInvulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;
             if (target.hurt(player.damageSources().playerAttack(player), slam.damage())) {
+                if (slam.axe() instanceof SwordItemWithEffect weapon) weapon.applyMaterialEffect(target);
                 target.knockback(0.5, center.getX() + 0.5 - target.getX(),
                         center.getZ() + 0.5 - target.getZ());
             } else {

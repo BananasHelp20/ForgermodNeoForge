@@ -45,14 +45,14 @@ public class ModItems {
     public static DeferredItem<SwordItem> createSwordItem(String name, Tier tier, int damage, float speed) {
         return ITEMS.register(
                 name, () -> new SwordItem(
-                    tier, new Item.Properties().attributes(SwordItem.createAttributes(tier, damage, -speed)))
+                    tier, new Item.Properties().attributes(SwordItem.createAttributes(tier, damage, attackSpeedModifier(speed))))
                 );
     }
 
     public static DeferredItem<SwordItem> createSwordItemWithDescription(String name, Tier tier, int damage, float speed, String descriptionName) {
         return ITEMS.register(name,
                 () -> new SwordItem(tier, new Item.Properties()
-                        .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
+                        .attributes(SwordItem.createAttributes(tier, damage, attackSpeedModifier(speed)))) //Tier/Damage/attackSpeed
                 {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
@@ -66,7 +66,7 @@ public class ModItems {
         return ITEMS.register(name,
                 () -> new SwordItem(tier, new Item.Properties()
                         .rarity(rarity)
-                        .attributes(SwordItem.createAttributes(tier, damage, -speed))) //Tier/Damage/attackSpeed
+                        .attributes(SwordItem.createAttributes(tier, damage, attackSpeedModifier(speed)))) //Tier/Damage/attackSpeed
                 {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
@@ -80,7 +80,7 @@ public class ModItems {
         return ITEMS.register(name,
                 () -> new SwordItem(tier, new Item.Properties()
                         .rarity(rarity)
-                        .attributes(SwordItem.createAttributes(tier, damage, -speed)).fireResistant()) //Tier/Damage/attackSpeed
+                        .attributes(SwordItem.createAttributes(tier, damage, attackSpeedModifier(speed))).fireResistant()) //Tier/Damage/attackSpeed
                 {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
@@ -201,7 +201,7 @@ public class ModItems {
     public static final DeferredItem<SwordItem> DEAD_CALM_DAGGER = createSpecialSwordItem("storming_dagger", () -> new TaifuniteWeapon("no_gemstone", "dagger"));
 
     //other weapons
-    public static final DeferredItem<SwordItem> STUMPFL_BAT = createSwordItemWithDescription("stumpfl_bat", ModToolTiers.DEVELOPIUM, 7770, 1f, "tooltips.forgermod.stumpfl_bat.tooltip");
+    public static final DeferredItem<SwordItem> STUMPFL_BAT = createSwordItemWithDescription("stumpfl_bat", ModToolTiers.DEVELOPIUM, 7770, 3f, "tooltips.forgermod.stumpfl_bat.tooltip");
 
     //gemstone infused variants
     public static final DeferredItem<SwordItem> CLAYMORE_OF_THUNDER_RUBY = createSpecialSwordItem("claymore_of_thunder_ruby", () -> new ElectriumWeapon("ruby", "claymore"));

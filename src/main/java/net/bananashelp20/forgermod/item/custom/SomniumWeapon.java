@@ -49,6 +49,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+        applyMaterialEffect(pTarget);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {

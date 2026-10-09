@@ -1,4 +1,10 @@
 Added
+- Material effect durations use the corresponding gemstone claymore duration multiplied by claymore attack speed divided by weapon attack speed, rounded to the nearest tick; Jade strength/extra duration and Amethyst speed are included
+- Material-effect tests cover all 135 material weapons, all 45 offhand daggers, and all 45 axe slam variants against their corresponding claymore effect and actual attack speeds
+- All nine material axes now apply their claymore material effect on ordinary hits and successful slam hits, including every gemstone variant
+- Weapon speed settings now use positive final attacks per second, converted centrally to Minecraft's attack-speed modifier; zero, negative, and nonfinite configured speeds are rejected
+- Dedicated-server tests equip every registered weapon and verify positive attack speed and actual attack recharge, type/gemstone speed ordering, and invalid-speed rejection
+- Amethyst gemstone tooltips now correctly describe the existing +0.4 attack-speed bonus instead of +4
 - Poisoned Vein cloud regression tests cover the owner, other players, hostile and passive mobs, range limits, refreshed 30-second Poison I, and poison persisting after leaving, cloud expiry, or cancellation
 - Pulsite Dagger Sonic Boom now fires an instant 50-block straight piercing blast in the full view direction; every intersecting hostile mob or permitted enemy player takes twice the equipped attack-damage attribute
 - Sonic Boom uses Warden sonic rings visible across the full 50-block trail, sound, damage type, and knockback; block collision shapes stop its damage and visual trail, and unloaded terrain truncates the beam
@@ -128,6 +134,9 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Special axes now give longer material effects than claymores, with ordinary variants lasting about 1.78 times as long
+- Carbon Steel Axe now attacks at 0.9/s and Rusty Axe at 0.6/s, fixing their zero/negative attack speed and permanently stalled attack recharge
+- Special-material daggers now attack at 3.0/s (3.4/s with Amethyst), correctly handling the registered "dagger" type and making them faster than claymores
 - Poisoned Vein clouds now apply 30 seconds of Poison I instead of two seconds, refreshed while entities remain inside
 - Sonic Boom replaces four extra blocks of melee reach with up to 50 blocks of piercing range and twice equipped attack damage per enemy
 - Riftfang Dagger primary teleport increases from 5 to 10 blocks; equipping a second Riftfang Dagger of any gemstone variant in the offhand doubles its range to 20 blocks
@@ -138,6 +147,8 @@ Buffed
 - Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
+- Special daggers now give shorter material effects than claymores, with ordinary variants lasting about 0.53 times as long
+- Special-material axes now attack at 0.9/s (1.3/s with Amethyst), correcting the inverted speed adjustment that previously made them faster than claymores
 - Poisoned Vein cloud owner immunity is removed: the creator is poisoned along with anyone else inside the cloud
 - Sonic Boom is now one aimed blast instead of six enhanced melee attacks; its existing 45-second cooldown starts immediately on firing, including a miss
 - Riftfang Dagger primary teleport cooldown increases from 5 to 7 seconds, including when dual wielding
