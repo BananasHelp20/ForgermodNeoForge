@@ -1,4 +1,5 @@
 Added
+- Rooting Roots server regression checks cover targets within the expanded radius, exactly at ten blocks, beyond ten blocks, and retained root/poison behavior
 - Material effect durations use the corresponding gemstone claymore duration multiplied by claymore attack speed divided by weapon attack speed, rounded to the nearest tick; Jade strength/extra duration and Amethyst speed are included
 - Material-effect tests cover all 135 material weapons, all 45 offhand daggers, and all 45 axe slam variants against their corresponding claymore effect and actual attack speeds
 - All nine material axes now apply their claymore material effect on ordinary hits and successful slam hits, including every gemstone variant
@@ -134,6 +135,7 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Rooting Roots radius increases from five to ten blocks; effect duration and cooldown remain unchanged
 - Special axes now give longer material effects than claymores, with ordinary variants lasting about 1.78 times as long
 - Carbon Steel Axe now attacks at 0.9/s and Rusty Axe at 0.6/s, fixing their zero/negative attack speed and permanently stalled attack recharge
 - Special-material daggers now attack at 3.0/s (3.4/s with Amethyst), correctly handling the registered "dagger" type and making them faster than claymores

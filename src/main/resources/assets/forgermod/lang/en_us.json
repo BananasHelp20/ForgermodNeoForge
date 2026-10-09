@@ -23,7 +23,7 @@
   "message.forgermod.deep_wound.armed": "Deep Wound armed for your next critical hit",
   "tooltips.forgermod.ability.leech": "Leech: Your next 10 dagger hits drain up to 10% of the target's maximum health each and heal you by the health drained (15-second cooldown)",
   "message.forgermod.leech.armed": "Leech armed for 10 hits",
-  "tooltips.forgermod.ability.rooting_roots": "Rooting Roots: Hold hostile mobs within 5 blocks in place and poison them for 10 seconds (1-minute cooldown)",
+  "tooltips.forgermod.ability.rooting_roots": "Rooting Roots: Hold hostile mobs within 10 blocks in place and poison them for 10 seconds (1-minute cooldown)",
   "tooltips.forgermod.ability.poisoned_vein": "Poisoned Vein: Your next dagger kill against a hostile mob leaves a 3-block poison cloud for 5 seconds, applying 30 seconds of Poison I to anyone inside, including you (45-second cooldown)",
   "message.forgermod.poisoned_vein.armed": "Poisoned Vein armed for your next hostile kill",
   "tooltips.forgermod.ability.strengthened_bones": "Strengthened Bones: Your next dagger kill against a hostile mob makes you invulnerable for 10 seconds (90-second cooldown)",

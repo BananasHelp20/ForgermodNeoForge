@@ -79,3 +79,9 @@
 - Includes the previously authorized attack-speed correction as a prerequisite: positive final weapon rates, slow axes, medium claymores, fast daggers, +0.4 Amethyst, and validation rejecting nonpositive/nonfinite speeds. Ordinary swords and claymores retain their previous effective rates.
 - Two test/build/GameTestServer passes: 23 lightweight checks and all 25 required server tests. New tests cover all 135 material weapons, 45 offhand daggers, 45 axe slams, actual equipped speed ratios and unchanged effect identity/strength. Existing weapon recharge tests cover every registered weapon. Final code and whitespace review passed.
 - Earlier model work and tooltip/pairing changes remain uncommitted; staged src/review1.md is preserved. Pending user instructions: Rooting Roots range 10; Shift-only passive/active descriptions and passive names, all light gray; Deep Wound applies Slowness III for five seconds to the TARGET when the charged critical hit lands.
+
+## Rooting Roots ten-block range (2026-10-09)
+
+- Rooting Roots primary now selects hostile mobs within ten blocks instead of five. Duration remains 200 ticks and cooldown 1200 ticks.
+- Two test/build/server-test passes: 23 lightweight checks and all 26 server tests. New test verifies mobs at 9.5 and exactly 10 blocks receive poison and anchoring, and mobs beyond 10 are excluded. Code review passed.
+- Material-effect scaling and its attack-speed prerequisite were committed/pushed as 5252c72. Next: Shift-only descriptions/passive names and Deep Wound target Slowness III for five seconds on the charged critical hit.

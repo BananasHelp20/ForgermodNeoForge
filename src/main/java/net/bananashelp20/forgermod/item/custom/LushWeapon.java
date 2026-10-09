@@ -76,8 +76,8 @@ public class LushWeapon extends SwordItemWithEffect {
         }
         if (ROOTS.hasRoots(player.getUUID(), player.level().getGameTime())) return false;
         List<Mob> targets = AreaDischargeTargets.select(
-                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(5)),
-                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 5);
+                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(10)),
+                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 10);
         if (targets.isEmpty()) return false;
         long now = player.level().getGameTime();
         for (Mob mob : targets) {
