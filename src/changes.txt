@@ -1,4 +1,11 @@
 Added
+- Ancient Grave uses the authored v2 structure as one mandatory room in each newly generated Ancient City start, preserving vanilla center variants and excluding degradation from the grave
+- Ancient Grave packaging tool preserves the authored template and creates its city-room offset plus worldgen pool resources
+- Operator command /no-ability-cooldown <target> <true|false> persistently toggles cooldown bypass and clears existing deadlines on enable
+- Wardens Needle and all gemstone variants now use the authored wardens_needle textures
+- Carbon Steel Knife now has a translated name and description
+- Dual-wield animation waits for the main-hand swing and sends only one offhand animation to observers
+- Material passives now use effect-specific Hit names and Roman numeral strengths; Shift hint reads [Hold Shift] for more item information with blue key text
 - Sonic Boom now pierces all damageable entities except item drops in a three-block-wide beam, including passive mobs; only center-ray collision stops the blast
 - Charge Attack discharge now adds a large electrical explosion burst of explosion, flash, electric-spark, and end-rod particles alongside its lightning damage
 - Charge Attack state tests cover the five-percent damage ramp from the first hit through the twentieth hit and reset after discharge
@@ -199,6 +206,7 @@ Debuffed
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 
 Removed
+- Gemstone weapon variants are hidden from creative tabs while remaining available through upgrades and commands
 - Ancient Sword Stand's unconditional Rusty Claymore breaking drop and incorrectly offset, repeatedly rebuilt collision shapes
 - Absolute Nightmare's earlier repeating critical-hit toggle
 

@@ -14,6 +14,12 @@ import java.util.function.Supplier;
 public class ModCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ForgerMod.MOD_ID);
 
+    private static boolean isGemstoneVariant(ItemLike item) {
+        String id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
+        return id.endsWith("_ruby") || id.endsWith("_amber")
+                || id.endsWith("_amethyst") || id.endsWith("_jade");
+    }
+
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
     }
@@ -37,7 +43,7 @@ public class ModCreativeModeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         ItemLike[] register = RegistryClass.getWeaponTabRegister();
                         for (int i = 0; i < register.length; i++) {
-                            output.accept(register[i]);
+                            if (!isGemstoneVariant(register[i])) output.accept(register[i]);
                         }
                     }).build()
     );
@@ -49,7 +55,7 @@ public class ModCreativeModeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         ItemLike[] register = RegistryClass.getItemTabRegister();
                         for (int i = 0; i < register.length; i++) {
-                            output.accept(register[i]);
+                            if (!isGemstoneVariant(register[i])) output.accept(register[i]);
                         }
                     }).build()
     );
@@ -61,7 +67,7 @@ public class ModCreativeModeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         ItemLike[] register = RegistryClass.getMiscellaneousTabRegister();
                         for (int i = 0; i < register.length; i++) {
-                            output.accept(register[i]);
+                            if (!isGemstoneVariant(register[i])) output.accept(register[i]);
                         }
                     }).build()
     );
@@ -73,7 +79,7 @@ public class ModCreativeModeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         ItemLike[] register = RegistryClass.getBlocksTabRegister();
                         for (int i = 0; i < register.length; i++) {
-                            output.accept(register[i]);
+                            if (!isGemstoneVariant(register[i])) output.accept(register[i]);
                         }
                     }).build()
     );

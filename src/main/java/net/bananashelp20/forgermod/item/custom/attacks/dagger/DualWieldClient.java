@@ -47,7 +47,7 @@ public class DualWieldClient {
         if (lastQueuedTick == Long.MIN_VALUE || now - lastQueuedTick >= 3) {
             int targetId = minecraft.hitResult instanceof EntityHitResult hit
                     ? hit.getEntity().getId() : -1;
-            PENDING.add(new PendingSwing(now + 2, minecraft.player.getMainHandItem().getItem(), targetId));
+            PENDING.add(new PendingSwing(now + 6, minecraft.player.getMainHandItem().getItem(), targetId));
             lastQueuedTick = now;
         }
     }
@@ -68,7 +68,7 @@ public class DualWieldClient {
             if (!hasMatchingDaggers(minecraft.player)
                     || !minecraft.player.getMainHandItem().is(pending.dagger())) continue;
 
-            // Vanilla tracks only one hand swing at a time. Restart it for the offhand.
+            // Wait for the main-hand swing to finish before starting the offhand.
             minecraft.player.swinging = false;
             minecraft.player.swing(InteractionHand.OFF_HAND);
 

@@ -23,6 +23,23 @@ public final class SonicBoomBlast {
 
     private SonicBoomBlast() {}
 
+    private static AABB beamSpaceBox(AABB worldBox, Vec3 origin, Vec3 right, Vec3 up, Vec3 forward) {
+        double minX = Double.POSITIVE_INFINITY, minY = minX, minZ = minX;
+        double maxX = Double.NEGATIVE_INFINITY, maxY = maxX, maxZ = maxX;
+        for (double x : new double[]{worldBox.minX, worldBox.maxX}) {
+            for (double y : new double[]{worldBox.minY, worldBox.maxY}) {
+                for (double z : new double[]{worldBox.minZ, worldBox.maxZ}) {
+                    Vec3 point = new Vec3(x, y, z).subtract(origin);
+                    double a = point.dot(right), b = point.dot(up), c = point.dot(forward);
+                    minX = Math.min(minX, a); maxX = Math.max(maxX, a);
+                    minY = Math.min(minY, b); maxY = Math.max(maxY, b);
+                    minZ = Math.min(minZ, c); maxZ = Math.max(maxZ, c);
+                }
+            }
+        }
+        return new AABB(minX - 1.5, minY - 1.5, minZ, maxX + 1.5, maxY + 1.5, maxZ);
+    }
+
     public static void fire(ServerPlayer player) {
         ServerLevel level = player.serverLevel();
         Vec3 start = player.getEyePosition();
@@ -39,14 +56,19 @@ public final class SonicBoomBlast {
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
         Vec3 end = block.getLocation();
         double length = start.distanceTo(end);
+        // A square cross-section perpendicular to the aim, including vertical shots.
+        Vec3 right = Math.abs(direction.y) > .999 ? new Vec3(1, 0, 0)
+                : direction.cross(new Vec3(0, 1, 0)).normalize();
+        Vec3 up = right.cross(direction).normalize();
         float damage = (float)(2 * player.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        for (Entity target : level.getEntitiesOfClass(Entity.class, new AABB(start, end).inflate(1.5),
+        for (Entity target : level.getEntitiesOfClass(Entity.class, new AABB(start, end).inflate(2.13),
                 entity -> entity != player && entity.isAlive() && !entity.isSpectator()
                         && !(entity instanceof ItemEntity)
                         && (!(entity instanceof Player other) || player.canHarmPlayer(other)))) {
-            AABB box = target.getBoundingBox().inflate(1.5);
-            Vec3 hit = box.contains(start) ? start : box.clip(start, end).orElse(null);
-            if (hit == null || (block.getType() != HitResult.Type.MISS && start.distanceTo(hit) >= length)) continue;
+            AABB box = beamSpaceBox(target.getBoundingBox(), start, right, up, direction);
+            Vec3 beamStart = Vec3.ZERO;
+            Vec3 hit = box.contains(beamStart) ? beamStart : box.clip(beamStart, new Vec3(0, 0, length)).orElse(null);
+            if (hit == null || (block.getType() != HitResult.Type.MISS && hit.z >= length)) continue;
             if (target.hurt(level.damageSources().sonicBoom(player), damage)) {
                 double resistance = target instanceof LivingEntity living
                         ? 1 - living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) : 1;

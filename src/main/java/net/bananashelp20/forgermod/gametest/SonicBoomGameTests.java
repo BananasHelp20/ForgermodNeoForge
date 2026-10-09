@@ -91,7 +91,7 @@ public class SonicBoomGameTests {
         Zombie near = enemy(test, player.position().add(0, 0, 5));
         Zombie middle = enemy(test, player.position().add(0, 0, 25));
         Zombie far = enemy(test, player.position().add(0, 0, 49.9));
-        Zombie beyond = enemy(test, player.position().add(0, 0, 52));
+        Zombie beyond = enemy(test, player.position().add(0, 0, 50.5));
         Zombie offRay = enemy(test, player.position().add(3, 0, 15));
         Zombie wide = enemy(test, player.position().add(1.4, 0, 15));
         Zombie behind = enemy(test, player.position().add(0, 0, -4));
@@ -125,6 +125,30 @@ public class SonicBoomGameTests {
             damaged(test, player, before);
             test.assertTrue(after.getHealth() == 100, "Blast pierced a blocking " + block);
         }
+        test.succeed();
+    }
+
+    @GameTest(template = "sonic_boom_test")
+    public static void centerHolePassesBeamAndItemsAreExcluded(GameTestHelper test) {
+        ServerPlayer player = player(test, ModItems.WARDENS_NEEDLE.get());
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                if (x != 0 || y != 0) test.setBlock(new BlockPos(8 + x, 17 + y, 20), Blocks.STONE);
+            }
+        }
+        Zombie target = enemy(test, player.position().add(1.4, 0, 25));
+        var item = new net.minecraft.world.entity.item.ItemEntity(test.getLevel(),
+                player.getX(), player.getEyeY(), player.getZ() + 10,
+                new ItemStack(net.minecraft.world.item.Items.DIAMOND));
+        test.getLevel().addFreshEntity(item);
+        fire(test, player);
+        damaged(test, player, target);
+        test.assertTrue(item.isAlive() && item.getItem().getCount() == 1, "Blast damaged item drops");
+        target.setHealth(100);
+        target.invulnerableTime = 0;
+        test.setBlock(new BlockPos(8, 17, 20), Blocks.STONE);
+        fire(test, player);
+        test.assertTrue(target.getHealth() == 100, "Center wall failed to stop wide beam");
         test.succeed();
     }
 
@@ -176,6 +200,30 @@ public class SonicBoomGameTests {
             test.assertTrue(weapon(player).abilityCooldownTicks(WeaponAbilitySlot.SECONDARY) == 900, "Secondary cooldown changed");
             weapon(player).cancelAbility(player, WeaponAbilitySlot.PRIMARY);
             target.discard();
+        }
+        test.succeed();
+    }
+
+    @GameTest(template = "sonic_boom_test")
+    public static void cooldownCommandPersistsAndRestores(GameTestHelper test) throws Exception {
+        ServerPlayer player = player(test, ModItems.WARDENS_NEEDLE.get());
+        var server = test.getLevel().getServer();
+        // Named targets are online players; register the test player so selectors can resolve it.
+        var source = server.createCommandSourceStack().withEntity(player);
+        try {
+            String command = "no-ability-cooldown @s ";
+            server.getCommands().getDispatcher().execute(command + "true", source);
+            test.assertTrue(player.getData(WeaponCooldownAttachments.DISABLED), "Command did not enable bypass");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(), "Existing deadlines not cleared");
+            var save = new net.minecraft.nbt.CompoundTag();
+            player.saveWithoutId(save);
+            ServerPlayer loaded = player(test, ModItems.WARDENS_NEEDLE.get());
+            loaded.load(save);
+            test.assertTrue(loaded.getData(WeaponCooldownAttachments.DISABLED), "Bypass was not saved");
+            server.getCommands().getDispatcher().execute(command + "false", source);
+            test.assertFalse(player.getData(WeaponCooldownAttachments.DISABLED), "Command did not restore cooldowns");
+        } finally {
+            player.setData(WeaponCooldownAttachments.DISABLED, false);
         }
         test.succeed();
     }

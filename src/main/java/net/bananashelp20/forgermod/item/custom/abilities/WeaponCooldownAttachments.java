@@ -17,5 +17,9 @@ public final class WeaponCooldownAttachments {
             "weapon_cooldowns", () -> AttachmentType.builder(() -> Map.<String, Long>of())
                     .serialize(Codec.unboundedMap(Codec.STRING, Codec.LONG)).copyOnDeath().build());
 
+    public static final Supplier<AttachmentType<Boolean>> DISABLED = TYPES.register(
+            "ability_cooldowns_disabled", () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL).copyOnDeath().build());
+
     private WeaponCooldownAttachments() {}
 }

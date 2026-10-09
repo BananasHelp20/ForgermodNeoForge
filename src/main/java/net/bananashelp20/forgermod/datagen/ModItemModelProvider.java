@@ -198,6 +198,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 //        handheldItem(ModItems.EMBERFANG_DAGGER_AMETHYST);
 //        handheldItem(ModItems.RUSTY_DAGGER);
 
+        daggerItem(ModItems.WARDENS_NEEDLE, "wardens_needle");
+        daggerItem(ModItems.WARDENS_NEEDLE_RUBY, "wardens_needle_ruby");
+        daggerItem(ModItems.WARDENS_NEEDLE_AMBER, "wardens_needle_amber");
+        daggerItem(ModItems.WARDENS_NEEDLE_AMETHYST, "wardens_needle_amethyst");
+        daggerItem(ModItems.WARDENS_NEEDLE_JADE, "wardens_needle_jade");
+
         // Authored dagger textures use display names rather than registered item ids.
         daggerItem(ModItems.LEAFCUTTER_DAGGER, "leafcutter_dagger");
         daggerItem(ModItems.LEAFCUTTER_DAGGER_RUBY, "leafcutter_dagger_ruby");

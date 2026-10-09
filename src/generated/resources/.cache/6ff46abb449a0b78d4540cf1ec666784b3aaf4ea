@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-09T18:59:41.7810525	Item Models: forgermod
+// 1.21.1	2026-10-09T20:26:06.3007304	Item Models: forgermod
 6642fb43b1871f779df69a9257a0b1a2771aba62 assets/forgermod/models/item/advanced_handle.json
 a8b8f08cf4dc9abb721d7c62abdfd71d57be08f7 assets/forgermod/models/item/amber_gemstone.json
 4c3c88afba28f88938a3fb962267e28c610b678f assets/forgermod/models/item/amethyst_gemstone.json
@@ -110,6 +110,11 @@ b4f682a0b42ad3a35d9f37f1d99c8cf4bf5cb579 assets/forgermod/models/item/scrap_iron
 85f7f1be51d8055efeb783d0d23fa0ef3da10b21 assets/forgermod/models/item/shrieking_claymore_amethyst.json
 aed9a11676fb758beebece9f518619a185f93cea assets/forgermod/models/item/shrieking_claymore_jade.json
 c3033f44ce951ab636656cd80bae76ce04ac302f assets/forgermod/models/item/shrieking_claymore_ruby.json
+0ef13ab1ae0036d47c38d4c51278abc34f67adc2 assets/forgermod/models/item/shrieking_dagger.json
+d76e17e34f691c583b21bcce38197fe66b56e051 assets/forgermod/models/item/shrieking_dagger_amber.json
+bfb73078e6282ec7f6a572a67fec68734a23ee60 assets/forgermod/models/item/shrieking_dagger_amethyst.json
+385b3c32b27b7f1d4149338880e1903f95fb1a32 assets/forgermod/models/item/shrieking_dagger_jade.json
+cf40e67bf98be941e681981f481032c419bbaba7 assets/forgermod/models/item/shrieking_dagger_ruby.json
 8b8d29b84a8909df9e204cdca7b039b157f3a38b assets/forgermod/models/item/somnium_ingot.json
 9fcd557819b0580d4dd5d9e234c1017393644f8a assets/forgermod/models/item/somnium_shard.json
 3b0822f5ad92ebe6fe7553d6f8da10ccc8798762 assets/forgermod/models/item/steel_ingot.json

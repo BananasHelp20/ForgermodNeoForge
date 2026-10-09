@@ -66,7 +66,8 @@ public class DaggerReviewGameTests {
             if (!(entry.get() instanceof SwordItemWithEffect weapon)) continue;
             List<Component> collapsed = new ArrayList<>();
             weapon.appendHoverText(new ItemStack(weapon), Item.TooltipContext.of(test.getLevel()), collapsed, TooltipFlag.NORMAL);
-            String gemKey = key(collapsed.getLast());
+            String gemKey = collapsed.stream().map(DaggerReviewGameTests::key)
+                    .filter(k -> k.endsWith(".tooltip_extra")).findFirst().orElseThrow();
             String gem = gemKey.substring("tooltips.forgermod.".length(), gemKey.length() - ".tooltip_extra".length());
             for (boolean expanded : new boolean[]{false, true}) {
                 List<Component> tooltip = expanded ? new ArrayList<>() : collapsed;

@@ -67,7 +67,7 @@ public final class WeaponAbilityNetwork {
         long now = player.level().getGameTime();
         Map<String, Long> playerCooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS);
         long readyAt = playerCooldowns.getOrDefault(key, 0L);
-        if (now < readyAt) {
+        if (!player.getData(WeaponCooldownAttachments.DISABLED) && now < readyAt) {
             player.displayClientMessage(Component.translatable("message.forgermod.ability.cooldown",
                     (readyAt - now + 19) / 20), true);
             return;
@@ -98,6 +98,7 @@ public final class WeaponAbilityNetwork {
     }
 
     private static void setCooldown(ServerPlayer player, String key, long readyAt) {
+        if (player.getData(WeaponCooldownAttachments.DISABLED)) return;
         Map<String, Long> updated = new HashMap<>(player.getData(WeaponCooldownAttachments.COOLDOWNS));
         updated.put(key, Math.max(updated.getOrDefault(key, 0L), readyAt));
         player.setData(WeaponCooldownAttachments.COOLDOWNS, Map.copyOf(updated));

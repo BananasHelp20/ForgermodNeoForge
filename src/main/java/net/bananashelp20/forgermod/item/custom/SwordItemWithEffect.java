@@ -120,9 +120,9 @@ public class SwordItemWithEffect extends SwordItem {
             if (isAxe()) WeaponTooltips.passive(tooltip, "tooltips.forgermod.passive.axe", expanded);
             if (isDagger()) WeaponTooltips.passive(tooltip, "tooltips.forgermod.passive.dagger", expanded);
             if (materialEffect != null) {
-                tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect.name").withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect.name", materialEffect.value().getDisplayName()).withStyle(ChatFormatting.GRAY));
                 if (expanded) tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect",
-                        materialEffect.value().getDisplayName(), materialEffectAmplifier + 1,
+                        materialEffect.value().getDisplayName(), WeaponTooltips.romanNumeral(materialEffectAmplifier + 1),
                         String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0)).withStyle(ChatFormatting.GRAY));
             }
             for (String passiveKey : passiveDescriptionKeys()) WeaponTooltips.passive(tooltip, passiveKey, expanded);
@@ -142,8 +142,8 @@ public class SwordItemWithEffect extends SwordItem {
                     Component.translatable(descriptionKey + ".name"), Component.keybind(keyId)).withStyle(ChatFormatting.GRAY));
             if (expanded) tooltip.add(Component.translatable(descriptionKey).withStyle(ChatFormatting.GRAY));
         }
-        if (!expanded && (hasPassives || hasAbilities)) WeaponTooltips.hint(tooltip);
         tooltip.add(Component.translatable("tooltips.forgermod." + gemstone + ".tooltip_extra"));
+        if (!expanded && (hasPassives || hasAbilities)) WeaponTooltips.hint(tooltip);
     }
 
     public static Tool createToolProperties() {

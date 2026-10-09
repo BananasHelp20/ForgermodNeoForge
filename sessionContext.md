@@ -223,3 +223,13 @@
 ## instructions.md: Sonic Boom
 
 - Three-block-wide piercing blast now hits passive mobs and other damageable entities except item drops. Center collision ray controls walls and holes. Two test/server passes succeeded, all 32 server tests passed.
+
+## instructions.md completed (2026-10-09)
+
+- Ancient Grave: packages the user-authored forgermod_ancient_grave_v2.nbt as forgermod:ancient_grave. Each of the three city-center start choices is a list element containing the vanilla center plus one grave room at offset (18, 0, 10). Overrides only the vanilla Ancient City definition's start_pool; preserves vanilla center degradation and protects the grave from degradation. Applies to newly generated cities. All three variants and all four rotations place exactly one full sword stand in server tests.
+- Operator command /no-ability-cooldown <target> <true|false> persists a player attachment across saves/death. Enabling clears existing cooldowns, bypasses checks, and prevents new deadlines; disabling restores normal cooldown behavior. Active abilities still cannot be restarted while active. Command and saved attachment coverage pass.
+- Sonic Boom's three-block square cross-section follows the aim, including vertical shots, and retains exact fifty-block longitudinal range. All damageable entities except item drops are hit; only the center collision ray blocks the beam. Hole/item-drop, width, passive-mob, pitch, wall, slab, fluid, variant and cooldown tests pass.
+- Dual wield delays the offhand by six ticks to allow the main swing to finish and removes the duplicate server vanilla animation packet; observers receive one custom offhand animation. Extended the recent-main-hit validation window to ten ticks for the delayed offhand strike.
+- Carbon Steel Knife has a name and description. Warden's Needle uses authored textures for all five variants. Gemstone weapon variants are excluded from creative tabs. Material-effect passives use effect-specific Hit names and Roman numeral strength. Collapsed tooltip ends with [Hold Shift] for more item information, with Hold Shift blue.
+- Verification: runData passed, then test/build/runGameTestServer passed with all 35 required server tests. All 45 dagger texture paths and packaged grave/worldgen resources validated. Final whitespace/code review passed. Client animation appearance remains for live playtesting.
+- instructions.md was read as user-authored task input and left unchanged; its existing user edits are preserved.

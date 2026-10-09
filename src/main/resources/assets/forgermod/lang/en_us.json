@@ -1,7 +1,9 @@
 {
-  "tooltips.forgermod.passive.material_effect": "On hit: %1$s (level %2$s) for %3$s seconds",
-  "tooltips.forgermod.passive.material_effect.name": "Material Effect",
-  "tooltips.forgermod.ability.shift_hint": "Hold Shift for ability descriptions",
+  "tooltips.forgermod.dagger.tooltip": "A compact carbon steel blade made for quick, precise strikes.",
+  "item.forgermod.knife": "Carbon Steel Knife",
+  "tooltips.forgermod.passive.material_effect": "On hit: %1$s %2$s for %3$s seconds",
+  "tooltips.forgermod.passive.material_effect.name": "%s Hit",
+  "tooltips.forgermod.ability.shift_hint": "[%s] for more item information",
   "tooltips.forgermod.passive.heading": "Passives:",
   "tooltips.forgermod.passive.revenge.name": "Revenge",
   "tooltips.forgermod.passive.death_march.name": "Death March",

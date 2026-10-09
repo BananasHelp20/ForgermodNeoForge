@@ -33,7 +33,18 @@ public final class WeaponTooltips {
         if (!expanded) hint(tooltip);
     }
 
+    public static String romanNumeral(int level) {
+        StringBuilder result = new StringBuilder();
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        for (int i = 0; i < values.length; i++) {
+            while (level >= values[i]) { result.append(symbols[i]); level -= values[i]; }
+        }
+        return result.toString();
+    }
+
     public static void hint(List<Component> tooltip) {
-        tooltip.add(Component.translatable("tooltips.forgermod.ability.shift_hint").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltips.forgermod.ability.shift_hint",
+                Component.literal("Hold Shift").withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
     }
 }

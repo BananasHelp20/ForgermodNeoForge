@@ -78,8 +78,7 @@ public class DualWieldNetwork {
         LAST_ATTACK_TICK.put(player.getUUID(), now);
 
         // An air swing still animates; it simply has no target to damage.
-        player.swinging = false;
-        player.swing(InteractionHand.OFF_HAND, true);
+        // The attacking client already animates this swing. Send only one packet to observers.
         PacketDistributor.sendToPlayersTrackingEntity(player, new OffhandSwingPayload(player.getId()));
 
         Entity entity = player.level().getEntity(payload.targetId());
@@ -87,7 +86,7 @@ public class DualWieldNetwork {
         if (!(entity instanceof LivingEntity target) || target.isDeadOrDying()
                 || entity == player || player.distanceToSqr(entity) > (reach + 0.5) * (reach + 0.5)
                 || !player.hasLineOfSight(entity) || player.getLastHurtMob() != target
-                || player.tickCount - player.getLastHurtMobTimestamp() > 5) {
+                || player.tickCount - player.getLastHurtMobTimestamp() > 10) {
             return;
         }
 
