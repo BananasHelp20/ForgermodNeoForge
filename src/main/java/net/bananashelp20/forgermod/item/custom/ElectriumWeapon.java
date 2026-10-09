@@ -81,6 +81,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
         int previousInvulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
         if (target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player), 20.0F)) {
+            sendChargeExplosionParticles(target, player);
             player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
                     target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
                     20, 0.5, 0.5, 0.5, 0.1);
@@ -122,6 +123,19 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             }
             previous = mob;
         }
+    }
+
+    private static void sendChargeExplosionParticles(LivingEntity target, ServerPlayer player) {
+        double x = target.getX();
+        double y = target.getY() + target.getBbHeight() * 0.5;
+        double z = target.getZ();
+        var level = player.serverLevel();
+        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0, 0, 0, 0);
+        level.sendParticles(ParticleTypes.FLASH, x, y, z, 2, 0.15, 0.25, 0.15, 0);
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, y, z,
+                120, 0.9, 0.9, 0.9, 0.25);
+        level.sendParticles(ParticleTypes.END_ROD, x, y, z,
+                40, 0.65, 0.65, 0.65, 0.18);
     }
 
     @Override

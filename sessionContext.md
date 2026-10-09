@@ -152,3 +152,8 @@
 - Charge Attack damage increases by five percent per successful hit through the twenty-hit charge window.
 - Direct dagger hits, Chain Lightning, and Area Discharge apply and advance the same ramp; the next hit discharges the stored lightning damage.
 - Updated the Charge Attack tooltip and regression coverage.
+
+## Charge Attack electrical explosion particles (2026-10-09)
+
+- Charge Attack discharges now emit an explosion and flash burst with a much larger electric spark and end rod particle cloud.
+- The existing lightning damage and discharge behavior remain unchanged.
