@@ -13,8 +13,8 @@ public final class ChainLightningTargetsTest {
         Candidate peaceful = new Candidate("peaceful", false, 0);
         List<Candidate> chosen = ChainLightningTargets.select(
                 List.of(far, near, middle, outside, peaceful), Candidate::eligible, Candidate::distanceSquared);
-        if (!chosen.equals(List.of(near, middle))) {
-            throw new AssertionError("Expected two nearest eligible mobs: " + chosen);
+        if (!chosen.equals(List.of(near, middle, far))) {
+            throw new AssertionError("Expected every eligible target in range, ordered by distance: " + chosen);
         }
         if (!ChainLightningTargets.select(List.of(peaceful), Candidate::eligible, Candidate::distanceSquared).isEmpty()) {
             throw new AssertionError("Expected no targets when only peaceful mobs are nearby");

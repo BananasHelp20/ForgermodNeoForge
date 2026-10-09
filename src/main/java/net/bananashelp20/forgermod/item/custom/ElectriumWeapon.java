@@ -29,6 +29,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class ElectriumWeapon extends SwordItemWithEffect {
@@ -80,26 +83,35 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     }
 
     private void chainLightning(LivingEntity original, ServerPlayer player) {
-        List<Mob> chained = ChainLightningTargets.select(
-                player.serverLevel().getEntitiesOfClass(Mob.class, original.getBoundingBox().inflate(10)),
-                mob -> mob != original && mob instanceof Enemy && mob.isAlive(), original::distanceToSqr);
-        for (Mob mob : chained) {
+        Set<UUID> visited = new HashSet<>();
+        visited.add(original.getUUID());
+        LivingEntity previous = original;
+        for (int chain = 0; chain < 10; chain++) {
+            if (!ChainLightningTargets.shouldContinue(player.getRandom())) break;
+            LivingEntity mob = ChainLightningTargets.next(
+                    player.serverLevel().getEntitiesOfClass(Mob.class, previous.getBoundingBox().inflate(10)),
+                    candidate -> candidate instanceof Enemy && candidate.isAlive(),
+                    previous::distanceToSqr, visited, LivingEntity::getUUID);
+            if (mob == null) break;
+            visited.add(mob.getUUID());
             int previousInvulnerableTime = mob.invulnerableTime;
             mob.invulnerableTime = 0;
-            if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player), 5.0F)) {
+            if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player),
+                    (float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE) * 0.5F)) {
                 for (int step = 1; step <= 6; step++) {
                     double fraction = step / 7.0;
                     player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
-                            original.getX() + (mob.getX() - original.getX()) * fraction,
-                            original.getY() + original.getBbHeight() * 0.5
+                            previous.getX() + (mob.getX() - previous.getX()) * fraction,
+                            previous.getY() + previous.getBbHeight() * 0.5
                                     + (mob.getY() + mob.getBbHeight() * 0.5
-                                    - original.getY() - original.getBbHeight() * 0.5) * fraction,
-                            original.getZ() + (mob.getZ() - original.getZ()) * fraction,
+                                    - previous.getY() - previous.getBbHeight() * 0.5) * fraction,
+                            previous.getZ() + (mob.getZ() - previous.getZ()) * fraction,
                             1, 0, 0, 0, 0);
                 }
             } else {
                 mob.invulnerableTime = previousInvulnerableTime;
             }
+            previous = mob;
         }
     }
 
