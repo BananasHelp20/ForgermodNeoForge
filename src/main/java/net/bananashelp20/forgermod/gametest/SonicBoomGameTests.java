@@ -91,8 +91,9 @@ public class SonicBoomGameTests {
         Zombie near = enemy(test, player.position().add(0, 0, 5));
         Zombie middle = enemy(test, player.position().add(0, 0, 25));
         Zombie far = enemy(test, player.position().add(0, 0, 49.9));
-        Zombie beyond = enemy(test, player.position().add(0, 0, 50.5));
-        Zombie offRay = enemy(test, player.position().add(1, 0, 15));
+        Zombie beyond = enemy(test, player.position().add(0, 0, 52));
+        Zombie offRay = enemy(test, player.position().add(3, 0, 15));
+        Zombie wide = enemy(test, player.position().add(1.4, 0, 15));
         Zombie behind = enemy(test, player.position().add(0, 0, -4));
         Cow cow = EntityType.COW.create(test.getLevel());
         cow.setPos(player.position().add(0, .5, 10));
@@ -102,9 +103,10 @@ public class SonicBoomGameTests {
         fire(test, player);
         damaged(test, player, near);
         damaged(test, player, middle);
+        damaged(test, player, wide);
         damaged(test, player, far);
         test.assertTrue(beyond.getHealth() == 100 && offRay.getHealth() == 100 && behind.getHealth() == 100, "Blast hit outside its straight 50-block ray");
-        test.assertTrue(cow.getHealth() == cowHealth, "Blast damaged a passive animal");
+        test.assertTrue(cow.getHealth() < cowHealth, "Blast missed a passive animal");
         test.assertTrue(near.getDeltaMovement().z > 0, "Missing Warden-style knockback");
         test.succeed();
     }

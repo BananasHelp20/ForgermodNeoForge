@@ -219,3 +219,7 @@
 
 - Registered all authored special dagger textures in the item model data generator, including gemstone variants.
 - Generated item models now point to the matching authored texture names such as leafcutter, ghost, emberfang, riftfang, assassin, nightmare, static, and dead calm.
+
+## instructions.md: Sonic Boom
+
+- Three-block-wide piercing blast now hits passive mobs and other damageable entities except item drops. Center collision ray controls walls and holes. Two test/server passes succeeded, all 32 server tests passed.

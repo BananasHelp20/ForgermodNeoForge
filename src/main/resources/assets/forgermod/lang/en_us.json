@@ -64,7 +64,7 @@
   "tooltips.forgermod.passive.revenge": "Deal 20% more dagger damage to undead mobs",
   "tooltips.forgermod.ability.sonic_crit": "Your next critical dagger hit adds damage equal to 15% of the target's maximum health and releases a sonic boom (30-second cooldown)",
   "message.forgermod.sonic_crit.armed": "Sonically Charged Crit armed for your next critical hit",
-  "tooltips.forgermod.ability.sonic_boom": "Fire a 50-block piercing sonic blast along your aim, dealing twice your equipped attack damage to every enemy in its path; blocks stop the blast (45-second cooldown)",
+  "tooltips.forgermod.ability.sonic_boom": "Fire a 50-block, 3x3 piercing sonic blast along your aim for twice your equipped attack damage; hits all entities except items, and only blocks along its center stop it (45-second cooldown)",
   "tooltips.forgermod.passive.axe": "Every third attack within 10 seconds slams a 3×3 area ahead.\nRequires an empty offhand.",
   "tooltips.forgermod.passive.dagger": "Daggers of the same material strike in both hands, including different gemstone variants; special daggers apply their material effect on hit.",
   "tooltips.forgermod.axe.tooltip": "§7A heavy carbon steel head balanced for\nhard, deliberate strikes.§r",

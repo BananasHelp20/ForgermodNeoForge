@@ -7,6 +7,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -38,15 +40,16 @@ public final class SonicBoomBlast {
         Vec3 end = block.getLocation();
         double length = start.distanceTo(end);
         float damage = (float)(2 * player.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, new AABB(start, end).inflate(.01),
+        for (Entity target : level.getEntitiesOfClass(Entity.class, new AABB(start, end).inflate(1.5),
                 entity -> entity != player && entity.isAlive() && !entity.isSpectator()
-                        && !player.isAlliedTo(entity)
-                        && (entity instanceof Enemy || entity instanceof Player other && player.canHarmPlayer(other)))) {
-            AABB box = target.getBoundingBox();
+                        && !(entity instanceof ItemEntity)
+                        && (!(entity instanceof Player other) || player.canHarmPlayer(other)))) {
+            AABB box = target.getBoundingBox().inflate(1.5);
             Vec3 hit = box.contains(start) ? start : box.clip(start, end).orElse(null);
             if (hit == null || (block.getType() != HitResult.Type.MISS && start.distanceTo(hit) >= length)) continue;
             if (target.hurt(level.damageSources().sonicBoom(player), damage)) {
-                double resistance = 1 - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
+                double resistance = target instanceof LivingEntity living
+                        ? 1 - living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) : 1;
                 target.push(direction.x * 2.5 * resistance, direction.y * .5 * resistance,
                         direction.z * 2.5 * resistance);
             }
