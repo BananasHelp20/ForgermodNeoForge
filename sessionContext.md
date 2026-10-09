@@ -141,3 +141,8 @@
 - Area Discharge retains its five-block hostile-mob radius and five-minute cooldown, but successful lightning hits now deal half the player's current ATTACK_DAMAGE attribute rather than fixed five damage. Every successful lightning hit calls the shared Charge Attack counter, so an Area Discharge hit contributes to the twentieth charging hit and can trigger the twenty-first-hit lightning discharge.
 - The existing direct dagger-hit charge behavior and chain lightning behavior remain intact. Failed/blocked damage does not count as a successful lightning hit. Tooltip text explains the half-damage and Charge Attack interaction.
 - Two test/build/GameTestServer verification runs passed 23 lightweight checks and all 32 server tests; final run completed with BUILD SUCCESSFUL. Code and whitespace review passed.
+
+## Area Discharge thirty-second cooldown (2026-10-09)
+
+- Area Discharge primary cooldown is now 600 ticks (30 seconds), down from 6000 ticks (five minutes). Its five-block radius, half-current-weapon-damage behavior, and Charge Attack hit counting are unchanged. Tooltip text now shows the 30-second cooldown.
+- Full verification passed after the cooldown change: 23 lightweight checks, all 32 dedicated server tests, build, and whitespace review.

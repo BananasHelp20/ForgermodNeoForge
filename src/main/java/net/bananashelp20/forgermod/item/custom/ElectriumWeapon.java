@@ -155,7 +155,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
         if (!isDagger()) return 0;
-        return slot == WeaponAbilitySlot.PRIMARY ? 6000 : 2400;
+        return slot == WeaponAbilitySlot.PRIMARY ? 600 : 2400;
     }
 
     @Override

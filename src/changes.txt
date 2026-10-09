@@ -151,6 +151,7 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Area Discharge cooldown decreases from five minutes to 30 seconds
 - Area Discharge now deals half the current weapon damage to every hostile in range instead of a fixed five damage, and its lightning hits count toward Charge Attack
 - Chain Lightning chained targets now take half the equipped weapon damage and can continue through up to 10 enemies instead of stopping at two chained targets
 - Eye of the Storm now whirls every living and nonliving entity within ten blocks except its caster, including players, passive mobs, items, experience orbs, and projectiles; living targets also receive levitation
