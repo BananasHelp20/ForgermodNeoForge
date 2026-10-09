@@ -85,3 +85,11 @@
 - Rooting Roots primary now selects hostile mobs within ten blocks instead of five. Duration remains 200 ticks and cooldown 1200 ticks.
 - Two test/build/server-test passes: 23 lightweight checks and all 26 server tests. New test verifies mobs at 9.5 and exactly 10 blocks receive poison and anchoring, and mobs beyond 10 are excluded. Code review passed.
 - Material-effect scaling and its attack-speed prerequisite were committed/pushed as 5252c72. Next: Shift-only descriptions/passive names and Deep Wound target Slowness III for five seconds on the charged critical hit.
+
+## Named abilities and Shift-only descriptions (2026-10-09)
+
+- Active and passive names remain visible; active names show the live configured key. Descriptions only show while holding Shift, with a light-gray hint when collapsed. All ability names/headings/descriptions are light gray. Screen shift input is read only on the client, guarded by FMLEnvironment; server tooltip checks safely use the collapsed view.
+- Named passives: Dual Wield, Vertical Strike, Material Effect, Chain Lightning, Double Jump, Death March, Revenge. Material Effect describes actual scaled duration/amplifier including gems. Removed inline passive descriptions from ordinary axe/claymore lore. Lore and gemstone information remain visible.
+- Includes the previously authorized review1.md same-material dagger pairing and split active name/description translation layout. Matching gemstones of a material pair in either hand; knives remain excluded. AGENTS.md reflects that approved behavior. src/review1.md remains unchanged and staged.
+- Two test/build/GameTestServer passes: 23 lightweight tests and all 26 server tests. Tooltip tests cover collapsed/expanded views for 135 material weapons and ordinary axes/Rusty Dagger, dynamic keybinds, passive names, colors, and description visibility. Exhaustive dagger pairing tests pass. Final code/whitespace review passed; client visual Shift-hover testing remains outstanding.
+- Rooting Roots range change was committed/pushed as b2f2703. Next: Deep Wound target Slowness III for five seconds on the charged critical hit. Earlier model/stand/claymore-scale changes remain uncommitted.

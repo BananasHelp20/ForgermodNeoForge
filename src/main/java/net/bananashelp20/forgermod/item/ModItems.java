@@ -57,6 +57,8 @@ public class ModItems {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
                         pTooltipComponents.add(Component.translatable(descriptionName));
+                        WeaponTooltips.ordinaryPassives(pStack, pTooltipComponents,
+                                WeaponTooltips.descriptionsVisible());
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
                 });
@@ -71,6 +73,8 @@ public class ModItems {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
                         pTooltipComponents.add(Component.translatable(descriptionName));
+                        WeaponTooltips.ordinaryPassives(pStack, pTooltipComponents,
+                                WeaponTooltips.descriptionsVisible());
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
                 });
@@ -85,6 +89,8 @@ public class ModItems {
                     @Override
                     public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
                         pTooltipComponents.add(Component.translatable(descriptionName));
+                        WeaponTooltips.ordinaryPassives(pStack, pTooltipComponents,
+                                WeaponTooltips.descriptionsVisible());
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
                 });

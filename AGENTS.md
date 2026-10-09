@@ -6,5 +6,5 @@
 - Treat `ability-thoughts.txt` as user-authored design input. Do not change it unless asked. The content after `[CODEX IGNOGE THE FOLLOWING TEXT]` is excluded from the currently approved ability list.
 - Primary and secondary ability keys are configurable and default to `1` and `2`. Show the configured key in the item tooltip; do not hardcode the displayed key.
 - Primary and secondary cooldowns are independent for each registered weapon variant. They can be active at the same time on the same equipped stack. Switching away cancels ongoing ability state and starts the relevant cooldown. Instant abilities start their cooldown on use.
-- Daggers can dual wield only with the same dagger item in the offhand. Knives are excluded. Axes use the third-attack area slam and disable the offhand.
+- Daggers can dual wield with another dagger of the same material in the offhand, including different gemstone variants. Knives are excluded. Axes use the third-attack area slam and disable the offhand.
 - Keep `sessionContext.md` current when handing off substantial work.
