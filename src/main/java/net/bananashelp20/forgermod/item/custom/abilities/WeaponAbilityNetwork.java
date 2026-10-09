@@ -2,7 +2,6 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
-import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -48,26 +47,9 @@ public final class WeaponAbilityNetwork {
         }
     }
 
-    public record SonicAirSwingPayload() implements CustomPacketPayload {
-        public static final Type<SonicAirSwingPayload> TYPE = new Type<>(
-                ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "sonic_air_swing"));
-        public static final StreamCodec<RegistryFriendlyByteBuf, SonicAirSwingPayload> STREAM_CODEC =
-                StreamCodec.unit(new SonicAirSwingPayload());
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
-    }
-
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(
                 UseAbilityPayload.TYPE, UseAbilityPayload.STREAM_CODEC, WeaponAbilityNetwork::handleAbility);
-        event.registrar("1").playToServer(
-                SonicAirSwingPayload.TYPE, SonicAirSwingPayload.STREAM_CODEC,
-                (payload, context) -> {
-                    if (context.player() instanceof ServerPlayer player) PulsiteWeapon.consumeSonicAirSwing(player);
-                });
     }
 
     private static void handleAbility(UseAbilityPayload payload, IPayloadContext context) {

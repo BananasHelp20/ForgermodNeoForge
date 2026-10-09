@@ -1,8 +1,6 @@
 package net.bananashelp20.forgermod.item.custom.attacks.dagger;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
-import net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -37,12 +35,6 @@ public class DualWieldClient {
         if (!event.isAttack() || event.isCanceled()) return;
 
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player != null && minecraft.level != null && minecraft.screen == null
-                && minecraft.player.getMainHandItem().getItem() instanceof PulsiteWeapon weapon
-                && weapon.isDagger() && minecraft.hitResult != null
-                && minecraft.hitResult.getType() == HitResult.Type.MISS) {
-            PacketDistributor.sendToServer(new WeaponAbilityNetwork.SonicAirSwingPayload());
-        }
         if (minecraft.player == null || minecraft.level == null || !hasMatchingDaggers(minecraft.player)) return;
         if (minecraft.hitResult != null && minecraft.hitResult.getType() == HitResult.Type.BLOCK) return;
 

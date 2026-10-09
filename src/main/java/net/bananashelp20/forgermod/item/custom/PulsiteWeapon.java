@@ -5,16 +5,12 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.DaggerCriticalEvents;
 import net.bananashelp20.forgermod.item.custom.abilities.SonicCritState;
-import net.bananashelp20.forgermod.item.custom.abilities.SonicBoomState;
+import net.bananashelp20.forgermod.item.custom.abilities.SonicBoomBlast;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -28,16 +24,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class PulsiteWeapon extends SwordItemWithEffect {
     private static final SonicCritState SONIC_CRIT = new SonicCritState();
-    private static final SonicBoomState SONIC_BOOM = new SonicBoomState();
-    private static final ResourceLocation SONIC_REACH_ID =
-            ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "sonic_boom_reach");
     public static Holder<MobEffect> effect = MobEffects.DARKNESS;
     public static int durationInTicks = 140;
     public static int effectAmplifier = 5;
@@ -74,25 +66,11 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     }
 
     @Override
-    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof ServerPlayer player && SONIC_BOOM.consumeAttack(player.getUUID())) {
-            syncSonicReach(player);
-            player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,
-                    target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
-                    1, 0, 0, 0, 0);
-        }
-    }
-
-    @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
-            boolean armed = SONIC_BOOM.arm(player.getUUID());
-            if (armed) {
-                syncSonicReach(player);
-                player.displayClientMessage(Component.translatable("message.forgermod.sonic_boom.armed"), true);
-            }
-            return armed;
+            SonicBoomBlast.fire(player);
+            return true;
         }
         boolean armed = SONIC_CRIT.arm(player.getUUID());
         if (armed) player.displayClientMessage(Component.translatable("message.forgermod.sonic_crit.armed"), true);
@@ -107,17 +85,12 @@ public class PulsiteWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
-        return slot == WeaponAbilitySlot.PRIMARY
-                ? SONIC_CRIT.isArmed(player.getUUID()) : SONIC_BOOM.isArmed(player.getUUID());
+        return slot == WeaponAbilitySlot.PRIMARY && SONIC_CRIT.isArmed(player.getUUID());
     }
 
     @Override
     public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
         if (slot == WeaponAbilitySlot.PRIMARY) SONIC_CRIT.clear(player.getUUID());
-        else {
-            SONIC_BOOM.clear(player.getUUID());
-            syncSonicReach(player);
-        }
     }
 
     @Override
@@ -126,34 +99,6 @@ public class PulsiteWeapon extends SwordItemWithEffect {
         return slot == WeaponAbilitySlot.PRIMARY
                 ? "tooltips.forgermod.ability.sonic_crit"
                 : "tooltips.forgermod.ability.sonic_boom";
-    }
-
-    public static boolean hasSonicReach(ServerPlayer player) {
-        return SONIC_BOOM.isArmed(player.getUUID())
-                && player.getMainHandItem().getItem() instanceof PulsiteWeapon weapon && weapon.isDagger();
-    }
-
-    public static void consumeSonicAirSwing(ServerPlayer player) {
-        if (hasSonicReach(player) && SONIC_BOOM.consumeAttack(player.getUUID())) syncSonicReach(player);
-    }
-
-    private static void syncSonicReach(ServerPlayer player) {
-        AttributeInstance reach = player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE);
-        if (reach == null) return;
-        boolean shouldHaveReach = hasSonicReach(player);
-        if (shouldHaveReach && reach.getModifier(SONIC_REACH_ID) == null) {
-            reach.addTransientModifier(new AttributeModifier(
-                    SONIC_REACH_ID, 4, AttributeModifier.Operation.ADD_VALUE));
-        } else if (!shouldHaveReach && reach.getModifier(SONIC_REACH_ID) != null) {
-            reach.removeModifier(SONIC_REACH_ID);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        if (!player.isAlive()) SONIC_BOOM.clear(player.getUUID());
-        syncSonicReach(player);
     }
 
     @SubscribeEvent
@@ -169,7 +114,6 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         SONIC_CRIT.clear(event.getEntity().getUUID());
-        SONIC_BOOM.clear(event.getEntity().getUUID());
     }
 
     @Override
