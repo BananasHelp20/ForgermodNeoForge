@@ -146,3 +146,9 @@
 
 - Area Discharge primary cooldown is now 600 ticks (30 seconds), down from 6000 ticks (five minutes). Its five-block radius, half-current-weapon-damage behavior, and Charge Attack hit counting are unchanged. Tooltip text now shows the 30-second cooldown.
 - Full verification passed after the cooldown change: 23 lightweight checks, all 32 dedicated server tests, build, and whitespace review.
+
+## Charge Attack damage ramp (2026-10-09)
+
+- Charge Attack damage increases by five percent per successful hit through the twenty-hit charge window.
+- Direct dagger hits, Chain Lightning, and Area Discharge apply and advance the same ramp; the next hit discharges the stored lightning damage.
+- Updated the Charge Attack tooltip and regression coverage.

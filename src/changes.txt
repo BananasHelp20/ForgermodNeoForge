@@ -1,4 +1,6 @@
 Added
+- Charge Attack state tests cover the five-percent damage ramp from the first hit through the twentieth hit and reset after discharge
+- Charge Attack lightning hits use the same ramp and advance its hit counter, including Chain Lightning and Area Discharge
 - Area Discharge regression coverage verifies every hostile in the five-block radius takes half current weapon damage and successful lightning hits advance Charge Attack
 - Chain Lightning now recursively chains from each enemy to the nearest unvisited hostile within 10 blocks, with up to 10 links and a separate 50% continuation roll per link
 - Chain Lightning tests cover ordered unvisited targets, ten-block per-link radius, no repeat targets, and removing the old two-target cap; the server implementation applies a 50% continuation roll and ten-link cap
@@ -172,6 +174,7 @@ Buffed
 - Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
+- Charge Attack now starts at five percent bonus damage and increases by five percentage points per successful hit, reaching one hundred percent on the twentieth hit before the discharge hit
 - Lucid Dreaming now requires an enemy dagger kill instead of any enemy hit to consume its armed charge
 - Leech no longer deals ten percent of target maximum health as a second damage instance and cannot restore more than ten HP per activation
 - Special daggers now give shorter material effects than claymores, with ordinary variants lasting about 0.53 times as long

@@ -28,6 +28,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
 import java.util.HashSet;
@@ -103,7 +104,9 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             int previousInvulnerableTime = mob.invulnerableTime;
             mob.invulnerableTime = 0;
             if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player),
-                    (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F)) {
+                    (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F
+                            * CHARGE_ATTACK.damageMultiplier(player.getUUID()))) {
+                dischargeChargeIfReady(mob, player);
                 for (int step = 1; step <= 6; step++) {
                     double fraction = step / 7.0;
                     player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
@@ -135,7 +138,8 @@ public class ElectriumWeapon extends SwordItemWithEffect {
         if (targets.isEmpty()) return false;
 
         int struck = 0;
-        float damage = (float)(player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5);
+        float damage = (float)(player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5
+                * CHARGE_ATTACK.damageMultiplier(player.getUUID()));
         for (Mob target : targets) {
             LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(player.serverLevel());
             if (bolt == null) continue;
@@ -150,6 +154,15 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             }
         }
         return struck > 0;
+    }
+
+    @SubscribeEvent
+    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
+        if (!(player.getMainHandItem().getItem() instanceof ElectriumWeapon weapon) || !weapon.isDagger()) return;
+        if (event.getSource().is(DamageTypes.PLAYER_ATTACK)) {
+            event.setAmount(event.getAmount() * CHARGE_ATTACK.damageMultiplier(player.getUUID()));
+        }
     }
 
     @Override
