@@ -19,6 +19,8 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.phys.AABB;
@@ -66,22 +68,32 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     }
 
     private static boolean stepThroughVoid(ServerPlayer player) {
-        Vec3 look = player.getLookAngle();
-        double horizontalLength = Math.hypot(look.x, look.z);
-        if (horizontalLength < 0.001) return false;
-        Vec3 direction = new Vec3(look.x / horizontalLength, 0, look.z / horizontalLength);
+        Vec3 direction = player.getLookAngle().normalize();
+        boolean paired = player.getOffhandItem().getItem() instanceof InanisiumWeapon offhand && offhand.isDagger();
+        int maxSteps = paired ? VoidStepPath.PAIRED_STEPS : VoidStepPath.STEPS;
+        ServerLevel level = player.serverLevel();
         Vec3 start = player.position();
         AABB originalBox = player.getBoundingBox();
-        int clearSteps = VoidStepPath.furthestClearStep(step -> {
+        int clearSteps = VoidStepPath.furthestClearStep(maxSteps, step -> {
             Vec3 offset = direction.scale(step * VoidStepPath.STEP_DISTANCE);
             AABB box = originalBox.move(offset);
-            return player.serverLevel().getWorldBorder().isWithinBounds(box)
-                    && player.serverLevel().noCollision(player, box);
+            return box.minY >= level.getMinBuildHeight() && box.maxY <= level.getMaxBuildHeight()
+                    && level.getWorldBorder().isWithinBounds(box)
+                    && loadedBox(level, box) && level.noCollision(player, box);
         });
         if (clearSteps < 2) return false;
 
         Vec3 destination = start.add(direction.scale(clearSteps * VoidStepPath.STEP_DISTANCE));
         return teleportWithSound(player, destination, player.getYRot(), player.getXRot());
+    }
+
+    private static boolean loadedBox(ServerLevel level, AABB box) {
+        for (int x = Mth.floor(box.minX) >> 4; x <= (Mth.floor(Math.nextDown(box.maxX)) >> 4); x++) {
+            for (int z = Mth.floor(box.minZ) >> 4; z <= (Mth.floor(Math.nextDown(box.maxZ)) >> 4); z++) {
+                if (!level.getChunkSource().hasChunk(x, z)) return false;
+            }
+        }
+        return true;
     }
 
     private static boolean suddenPresence(ServerPlayer player) {
@@ -137,7 +149,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
         if (!isDagger()) return 0;
-        return slot == WeaponAbilitySlot.PRIMARY ? 100 : 2400;
+        return slot == WeaponAbilitySlot.PRIMARY ? 140 : 2400;
     }
 
     @Override

@@ -2,7 +2,7 @@
   "tooltips.forgermod.ability.tooltip": "§b\nAbility [%1$s]: %2$s§r",
   "tooltips.forgermod.ability.flaming_combo": "Flaming Combo: For 10 seconds, each dagger hit adds 1 second of burn (30-second cooldown)",
   "tooltips.forgermod.ability.pyromaniac": "Pyromaniac: While burning, arm your next dagger hit to ignite the target for 5 seconds and heal 5 HP (50-second cooldown)",
-  "tooltips.forgermod.ability.void_step": "Stepping Through the Void: Teleport up to 5 blocks forward along a clear path (5-second cooldown)",
+  "tooltips.forgermod.ability.void_step": "Stepping Through the Void: Teleport up to 10 blocks in your look direction, including into the air; up to 20 blocks with another Riftfang Dagger in your offhand (7-second cooldown)",
   "tooltips.forgermod.ability.sudden_presence": "Sudden Presence: Teleport behind the nearest hostile mob within 20 blocks (2-minute cooldown)",
   "message.forgermod.ability.cooldown": "Ability ready in %s s",
   "message.forgermod.ability.unavailable": "Ability cannot be used right now",

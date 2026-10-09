@@ -1,4 +1,6 @@
 Added
+- Riftfang's Stepping Through the Void follows the full view direction, including upward/downward and diagonal air teleports, while checking the entire player body against obstacles, loaded chunks, world border, and build-height limits
+- Riftfang teleport tests cover 10/20-block ranges, all 25 gemstone pairings, look pitch, walls/ceilings, blocked paths, height limits, and unchanged secondary cooldown
 - `AGENTS.md` with the project's NeoForge 1.21.1, changelog, ability workflow, and weapon behavior rules
 - Updated `sessionContext.md` with per-weapon cooldowns and active-ability cancellation behavior
 - Server-side tracking for ongoing primary and secondary abilities on the currently equipped weapon stack
@@ -122,6 +124,7 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Riftfang Dagger primary teleport increases from 5 to 10 blocks; equipping a second Riftfang Dagger of any gemstone variant in the offhand doubles its range to 20 blocks
 - Amber special weapons now receive their intended attack damage and speed attributes
 - All axes gain the 3x3 heavy attack passive
 - Special-material daggers gain their material effect on hit alongside dual wielding
@@ -129,6 +132,7 @@ Buffed
 - Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
+- Riftfang Dagger primary teleport cooldown increases from 5 to 7 seconds, including when dual wielding
 - Non-Amber special weapons no longer inherit Amber's fire resistance through shared item properties
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 

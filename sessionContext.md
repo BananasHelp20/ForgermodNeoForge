@@ -2,7 +2,7 @@
 
 ## Project, repository, and standing instructions
 
-- Workspace: `D:\Schule\4-Klasse\Projects\Mods\ForgermodNeoForge`; branch `main`; remote `origin` is `https://github.com/BananasHelp20/ForgermodNeoForge.git`.
+- Workspace: `D:\Minecraft Modding internal\Mods\ForgermodNeoForge`; branch `main`; remote `origin` is `https://github.com/BananasHelp20/ForgermodNeoForge.git`.
 - Mod ID `forgermod`, mod version `0.2.0`, Minecraft **1.21.1**, NeoForge **21.1.93**, Java/Gradle project. Follow `AGENTS.md` and verify APIs against NeoForge 1.21.1.
 - The user wants every addition, deletion, buff, and debuff listed in `src/changes.txt`.
 - Implement abilities one by one. After each: test, review, fix bugs, rerun tests, review again, commit, and push. If committing or pushing fails, give the user commands to run and continue as previously instructed.
@@ -23,7 +23,7 @@
 | Material | Primary | Secondary | Extra passive |
 | --- | --- | --- | --- |
 | Ignisium | Flaming Combo: hits add one second of burn during ten seconds | Pyromaniac: arm while burning; next hit ignites and heals 5 HP | Material effect |
-| Inanisium | Stepping Through the Void: clear-path forward teleport up to five blocks | Sudden Presence: safe landing behind a nearby hostile mob within 20 blocks | Material effect |
+| Inanisium | Stepping Through the Void: up to 10 blocks in view direction, 20 with an offhand Riftfang; seven-second cooldown | Sudden Presence: safe landing behind a nearby hostile mob within 20 blocks | Material effect |
 | Somnium | Absolute Nightmare: next two hits inflict Darkness I and Weakness I for ten seconds | Lucid Dreaming: next enemy hit grants Speed II and halves fall damage for five seconds | Material effect |
 | Electrium | Area Discharge: lightning damage to hostile mobs within five blocks | Charge Attack: 20 mob hits charge; 21st adds 20 lightning damage | Chain Lightning to up to two nearby hostiles |
 | Taifunite | Eye of the Storm: whirl and levitate nearby hostiles for five seconds | Windy Dash: up to six blocks forward | One extra midair jump |
@@ -48,3 +48,11 @@
 
 - The latest documentation-only update refreshed this file, added `AGENTS.md`, and recorded both in `src/changes.txt`. It did not change gameplay code; the latest gameplay commit is `8b97fa8`.
 - Continue only with abilities whose behavior the user has specified. The next activated abilities for special claymores and axes still need approved designs.
+
+## Riftfang teleport adjustment (2026-10-09)
+
+- Stepping Through the Void now travels up to 10 blocks along the full normalized look vector, including upward, downward, and diagonal air travel. A second Riftfang Dagger in the offhand doubles this to 20 blocks, including different gemstone variants.
+- Primary cooldown is 140 ticks (seven seconds); secondary cooldown remains 2400 ticks. Existing independent variant/slot cooldown handling is retained.
+- Quarter-block path checks use the entire player bounding box and stop before obstacles, unloaded chunks, the world border, or build-height limits. No supporting floor is required. Blocked paths shorter than half a block fail without consuming cooldown.
+- Fixed the initial test harness: NeoForge FakePlayer discards teleports, so these tests use a ServerPlayer with a real packet listener. After correction, `gradlew.bat test build runGameTestServer` passed all 24 lightweight tests and all 14 dedicated-server tests. Five new server tests cover view pitch, all 25 Riftfang variant pairings, unrelated offhands, walls/ceilings, blocked starts, height limits, and cooldown values. Final code review completed; client playtesting remains outstanding.
+- This ability change is prepared as its own commit. Earlier axe/stand models, claymore scale, dagger tooltip/pairing, and attack-speed work remain uncommitted; the user's staged `src/review1.md` is preserved.
