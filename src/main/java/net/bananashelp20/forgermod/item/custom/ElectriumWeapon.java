@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -69,7 +70,12 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
         chainLightning(target, player);
-        if (!(target instanceof Mob) || !CHARGE_ATTACK.recordMobHit(player.getUUID()) || target.isDeadOrDying()) return;
+        if (!(target instanceof Mob) || target.isDeadOrDying()) return;
+        dischargeChargeIfReady(target, player);
+    }
+
+    private static void dischargeChargeIfReady(LivingEntity target, ServerPlayer player) {
+        if (!CHARGE_ATTACK.recordMobHit(player.getUUID()) || target.isDeadOrDying()) return;
 
         int previousInvulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
@@ -97,7 +103,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             int previousInvulnerableTime = mob.invulnerableTime;
             mob.invulnerableTime = 0;
             if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player),
-                    (float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE) * 0.5F)) {
+                    (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F)) {
                 for (int step = 1; step <= 6; step++) {
                     double fraction = step / 7.0;
                     player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
@@ -129,6 +135,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
         if (targets.isEmpty()) return false;
 
         int struck = 0;
+        float damage = (float)(player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5);
         for (Mob target : targets) {
             LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(player.serverLevel());
             if (bolt == null) continue;
@@ -136,8 +143,10 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             bolt.setVisualOnly(true);
             bolt.setCause(player);
             if (player.serverLevel().addFreshEntity(bolt)) {
-                target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player, bolt), 5.0F);
-                struck++;
+                if (target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player, bolt), damage)) {
+                    struck++;
+                    dischargeChargeIfReady(target, player);
+                }
             }
         }
         return struck > 0;

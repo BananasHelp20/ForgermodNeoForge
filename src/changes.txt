@@ -1,4 +1,5 @@
 Added
+- Area Discharge regression coverage verifies every hostile in the five-block radius takes half current weapon damage and successful lightning hits advance Charge Attack
 - Chain Lightning now recursively chains from each enemy to the nearest unvisited hostile within 10 blocks, with up to 10 links and a separate 50% continuation roll per link
 - Chain Lightning tests cover ordered unvisited targets, ten-block per-link radius, no repeat targets, and removing the old two-target cap; the server implementation applies a 50% continuation roll and ten-link cap
 - Eye of the Storm regression tests cover hostile/passive mobs, players, item drops, experience orbs, arrows, range exclusion, caster exclusion, and motion synchronization
@@ -150,6 +151,7 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Area Discharge now deals half the current weapon damage to every hostile in range instead of a fixed five damage, and its lightning hits count toward Charge Attack
 - Chain Lightning chained targets now take half the equipped weapon damage and can continue through up to 10 enemies instead of stopping at two chained targets
 - Eye of the Storm now whirls every living and nonliving entity within ten blocks except its caster, including players, passive mobs, items, experience orbs, and projectiles; living targets also receive levitation
 - Lucid Dreaming now grants Speed II for thirty seconds and halves fall damage for fifteen seconds after the armed enemy kill; secondary cooldown remains fifteen seconds

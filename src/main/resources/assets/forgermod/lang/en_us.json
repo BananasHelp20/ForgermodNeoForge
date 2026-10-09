@@ -39,7 +39,7 @@
   "message.forgermod.nightmare.armed": "Absolute Nightmare armed for 2 hits",
   "tooltips.forgermod.ability.lucid_dreaming": "Your next dagger kill against an enemy grants Speed II for 30 seconds and halves fall damage for the next 15 seconds (15-second cooldown)",
   "message.forgermod.lucid.armed": "Lucid Dreaming armed for your next enemy kill",
-  "tooltips.forgermod.ability.area_discharge": "Strike hostile mobs within 5 blocks with lightning for 5 damage each (5-minute cooldown)",
+  "tooltips.forgermod.ability.area_discharge": "Strike every hostile mob within 5 blocks with lightning for half your current weapon damage; each lightning hit counts toward Charge Attack (5-minute cooldown)",
   "tooltips.forgermod.ability.charge_attack": "Your next 20 mob hits build charge; the 21st deals 20 extra lightning damage (2-minute cooldown)",
   "message.forgermod.charge_attack.armed": "Charge Attack armed for 21 mob hits",
   "tooltips.forgermod.passive.tooltip": "%1$s",

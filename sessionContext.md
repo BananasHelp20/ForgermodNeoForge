@@ -135,3 +135,9 @@
 - Each chained target takes half the player's equipped attack-damage attribute through the existing lightning damage source and receives the existing electrical particle link. The original hit and its existing material/charge behavior are unchanged.
 - Two test/build/GameTestServer runs passed 23 lightweight checks and all 32 server tests. Chain target tests verify every eligible target is returned in distance order instead of two, peaceful exclusions remain, and no-target behavior remains. Final code/whitespace review passed; random outcomes and visual lightning remain best checked in live gameplay.
 - All requested changes through Eye of the Storm were previously pushed. This chain change is separate; earlier model/stand/claymore-scale work remains uncommitted and staged src/review1.md is preserved.
+
+## Area Discharge current damage and Charge Attack integration (2026-10-09)
+
+- Area Discharge retains its five-block hostile-mob radius and five-minute cooldown, but successful lightning hits now deal half the player's current ATTACK_DAMAGE attribute rather than fixed five damage. Every successful lightning hit calls the shared Charge Attack counter, so an Area Discharge hit contributes to the twentieth charging hit and can trigger the twenty-first-hit lightning discharge.
+- The existing direct dagger-hit charge behavior and chain lightning behavior remain intact. Failed/blocked damage does not count as a successful lightning hit. Tooltip text explains the half-damage and Charge Attack interaction.
+- Two test/build/GameTestServer verification runs passed 23 lightweight checks and all 32 server tests; final run completed with BUILD SUCCESSFUL. Code and whitespace review passed.
