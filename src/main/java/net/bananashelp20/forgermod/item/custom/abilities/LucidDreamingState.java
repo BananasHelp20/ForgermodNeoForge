@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-/** One armed hit grants a five-second fall-damage reduction. */
+/** One armed kill grants a fifteen-second fall-damage reduction. */
 public final class LucidDreamingState {
-    private static final long DURATION_TICKS = 100;
+    private static final long DURATION_TICKS = 300;
     private final Set<UUID> armed = new HashSet<>();
     private final Map<UUID, Long> protectedUntil = new HashMap<>();
 
@@ -16,7 +16,7 @@ public final class LucidDreamingState {
         return armed.add(player);
     }
 
-    public boolean consumeHit(UUID player, long now) {
+    public boolean consumeKill(UUID player, long now) {
         if (!armed.remove(player)) return false;
         protectedUntil.put(player, now + DURATION_TICKS);
         return true;

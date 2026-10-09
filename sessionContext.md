@@ -106,3 +106,10 @@
 - The damage event hooks cover main and matching offhand hits and killing hits, with no second damage instance or invulnerability reset. Budget resets on reactivation and clears with consumed charges/cancellation.
 - Two test/build/GameTestServer runs passed 23 lightweight tests and all 29 required server tests. Tests verify identical damage bonus against different maximum-health targets, ten-HP cap even with large hits, ten-hit consumption, no bonus/healing when uncharged, and budget reset/nonfinite input. Final review passed.
 - Deep Wound target slow was committed/pushed as 7fc8049. Still pending: Lucid Dreaming kill trigger/Speed II 30s/fall protection 15s; Double Jump sprint momentum; Eye of the Storm all entities (caster inclusion clarification pending).
+
+## Lucid Dreaming enemy-kill buffs (2026-10-09)
+
+- Lucid Dreaming secondary consumes its armed charge only on an enemy dagger melee kill, including permitted enemy players. Nonlethal hits and passive animal kills do not trigger. Grants Speed II 600 ticks and half fall damage 300 ticks. Tooltips/actionbar reflect the kill trigger.
+- Secondary cooldown remains 300 ticks. As required by the standing ongoing-ability policy, it starts when the 15-second protection window ends or is canceled. Speed lasts 30 seconds naturally; switching during ongoing protection cancels its ability buffs, retaining the existing prior-Speed restoration behavior. Repeated activation cannot restart the ongoing protection window.
+- Two test/build/GameTestServer passes: 23 lightweight checks and all 30 server tests. State tests verify exact 300-tick protection expiry; server tests verify kill-only trigger, Speed II duration, half fall damage, cancellation, cooldown value, and no mid-effect restart. Final review passed.
+- Leech was committed/pushed as fd6ba83. Pending: preserve sprint momentum on Double Jump; Eye of the Storm targets all entities (caster clarification requested).

@@ -8,18 +8,18 @@ public final class LucidDreamingStateTest {
         UUID first = UUID.randomUUID();
         UUID second = UUID.randomUUID();
 
-        expect(false, state.consumeHit(first, 100), "unarmed hit");
+        expect(false, state.consumeKill(first, 100), "unarmed kill");
         expect(true, state.arm(first), "first activation");
         expect(false, state.arm(first), "already armed");
-        expect(false, state.consumeHit(second, 100), "other player cannot consume it");
-        expect(true, state.consumeHit(first, 100), "armed hit grants buff");
-        expect(false, state.consumeHit(first, 101), "one hit per activation");
-        expect(true, state.reducesFallDamage(first, 199), "last protected tick");
-        expect(false, state.reducesFallDamage(first, 200), "exact expiry");
+        expect(false, state.consumeKill(second, 100), "other player cannot consume it");
+        expect(true, state.consumeKill(first, 100), "armed kill grants buff");
+        expect(false, state.consumeKill(first, 101), "one kill per activation");
+        expect(true, state.reducesFallDamage(first, 399), "last protected tick");
+        expect(false, state.reducesFallDamage(first, 400), "exact expiry");
         state.arm(first);
         state.clear(first);
-        expect(false, state.consumeHit(first, 201), "logout clears armed hit");
-        expect(false, state.reducesFallDamage(first, 201), "logout clears buff");
+        expect(false, state.consumeKill(first, 401), "logout clears armed kill");
+        expect(false, state.reducesFallDamage(first, 401), "logout clears buff");
     }
 
     private static void expect(boolean expected, boolean actual, String caseName) {

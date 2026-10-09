@@ -23,6 +23,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.minecraft.world.damagesource.DamageTypes;
 
 import java.util.List;
 import java.util.HashMap;
@@ -70,18 +72,25 @@ public class SomniumWeapon extends SwordItemWithEffect {
             target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0));
             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
         }
-        if ((target instanceof Enemy || target instanceof Player other && player.canHarmPlayer(other))
-                && LUCID.consumeHit(player.getUUID(), player.level().getGameTime())) {
-            MobEffectInstance previous = player.getEffect(MobEffects.MOVEMENT_SPEED);
-            if (previous != null) PREVIOUS_SPEED.put(player.getUUID(), new MobEffectInstance(previous));
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 1));
-        }
+    }
+
+    @SubscribeEvent
+    public static void onEnemyKill(LivingDeathEvent event) {
+        if (event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player)
+                || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                || !(player.getMainHandItem().getItem() instanceof SomniumWeapon weapon) || !weapon.isDagger()
+                || !(event.getEntity() instanceof Enemy || event.getEntity() instanceof Player other && player.canHarmPlayer(other))
+                || !LUCID.consumeKill(player.getUUID(), player.level().getGameTime())) return;
+        MobEffectInstance previous = player.getEffect(MobEffects.MOVEMENT_SPEED);
+        if (previous != null) PREVIOUS_SPEED.put(player.getUUID(), new MobEffectInstance(previous));
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 1));
     }
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         if (!isDagger()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
+            if (LUCID.isActive(player.getUUID(), player.level().getGameTime())) return false;
             boolean armed = LUCID.arm(player.getUUID());
             if (armed) player.displayClientMessage(Component.translatable("message.forgermod.lucid.armed"), true);
             return armed;
@@ -120,7 +129,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
             if (LUCID.reducesFallDamage(player.getUUID(), player.level().getGameTime())) {
                 MobEffectInstance current = player.getEffect(MobEffects.MOVEMENT_SPEED);
                 MobEffectInstance previous = PREVIOUS_SPEED.remove(player.getUUID());
-                if (current != null && current.getAmplifier() == 1 && current.getDuration() <= 100) {
+                if (current != null && current.getAmplifier() == 1 && current.getDuration() <= 600) {
                     player.removeEffect(MobEffects.MOVEMENT_SPEED);
                     if (previous != null) player.addEffect(previous);
                 }
