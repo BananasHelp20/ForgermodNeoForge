@@ -44,7 +44,7 @@
   "message.forgermod.charge_attack.armed": "Charge Attack armed for 21 mob hits",
   "tooltips.forgermod.passive.tooltip": "%1$s",
   "tooltips.forgermod.passive.chain_lightning": "Dagger hits arc to up to 2 other hostile mobs within 10 blocks of the target for 5 damage each",
-  "tooltips.forgermod.ability.eye_of_the_storm": "Whirl and levitate hostile mobs within 10 blocks for 5 seconds (1-minute cooldown)",
+  "tooltips.forgermod.ability.eye_of_the_storm": "Whirl all entities except you within 10 blocks for 5 seconds; living targets are levitated (1-minute cooldown)",
   "message.forgermod.eye_of_the_storm.active": "Eye of the Storm active for 5 seconds",
   "tooltips.forgermod.ability.windy_dash": "Burst up to 6 blocks forward over a short dash (5-second cooldown)",
   "tooltips.forgermod.passive.double_jump": "Press Jump again in midair after a normal jump to leap once more",

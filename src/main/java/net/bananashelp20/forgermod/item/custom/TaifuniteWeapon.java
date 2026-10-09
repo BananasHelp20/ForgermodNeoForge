@@ -15,8 +15,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -132,20 +131,23 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
         dashStep(player);
         if (!STORM.isActive(player.getUUID(), now)) return;
 
-        List<Mob> targets = AreaDischargeTargets.select(
-                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(10)),
-                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 10);
-        for (Mob mob : targets) {
-            Vec3 radial = mob.position().subtract(player.position());
+        List<Entity> targets = AreaDischargeTargets.select(
+                player.serverLevel().getEntities(player, player.getBoundingBox().inflate(10), Entity::isAlive),
+                Entity::isAlive, player::distanceToSqr, 10);
+        for (Entity target : targets) {
+            Vec3 radial = target.position().subtract(player.position());
             Vec3 flat = new Vec3(radial.x, 0, radial.z);
             if (flat.lengthSqr() < 0.01) flat = new Vec3(1, 0, 0);
             Vec3 outward = flat.normalize();
             Vec3 tangent = new Vec3(-outward.z, 0, outward.x);
-            mob.setDeltaMovement(tangent.scale(0.35).subtract(outward.scale(0.08)).add(0, 0.16, 0));
-            mob.hasImpulse = true;
-            if (now % 10 == 0) mob.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 15, 0));
+            target.setDeltaMovement(tangent.scale(0.35).subtract(outward.scale(0.08)).add(0, 0.16, 0));
+            target.hasImpulse = true;
+            target.hurtMarked = true;
+            if (now % 10 == 0 && target instanceof LivingEntity living) {
+                living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 15, 0));
+            }
             if (now % 5 == 0) player.serverLevel().sendParticles(ParticleTypes.CLOUD,
-                    mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(),
+                    target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
                     2, 0.2, 0.3, 0.2, 0.01);
         }
     }
