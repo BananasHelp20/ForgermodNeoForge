@@ -1,4 +1,5 @@
 Added
+- Deep Wound server tests cover every gemstone variant, critical-only one-time activation, doubled critical damage, target-only slowness, and unchanged primary/secondary cooldowns
 - Tooltip regression tests check collapsed and expanded views across all 135 material weapons and ordinary axes/Rusty Dagger, including dynamic keybind components, named passives, colors, and description visibility
 - Material-effect on-hit descriptions move out of claymore lore into Shift-gated passives and show actual scaled duration and strength, including gemstones
 - All active/passive names and descriptions use light gray; ordinary axes and Rusty Dagger use the same Shift-gated passive layout
@@ -142,6 +143,7 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Deep Wound charged critical hits now inflict Slowness III for five seconds on the target instead of Slowness I for two seconds; doubled critical damage is retained
 - Daggers can dual wield across gemstone variants of the same material; different materials and knives remain excluded
 - Rooting Roots radius increases from five to ten blocks; effect duration and cooldown remain unchanged
 - Special axes now give longer material effects than claymores, with ordinary variants lasting about 1.78 times as long

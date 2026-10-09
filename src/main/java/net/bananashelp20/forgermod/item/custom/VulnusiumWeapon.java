@@ -59,7 +59,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (pAttacker instanceof ServerPlayer player
                 && DaggerCriticalEvents.consume(player, pTarget, pStack)
                 && DEEP_WOUND.consume(player.getUUID()) && !pTarget.isDeadOrDying()) {
-            pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0));
+            pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
         }
         onDaggerHit(pTarget, pAttacker);
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);

@@ -48,7 +48,7 @@
   "message.forgermod.eye_of_the_storm.active": "Eye of the Storm active for 5 seconds",
   "tooltips.forgermod.ability.windy_dash": "Burst up to 6 blocks forward over a short dash (5-second cooldown)",
   "tooltips.forgermod.passive.double_jump": "Press Jump again in midair after a normal jump to leap once more",
-  "tooltips.forgermod.ability.deep_wound": "Your next critical dagger hit deals double damage and inflicts Slowness I for 2 seconds (30-second cooldown)",
+  "tooltips.forgermod.ability.deep_wound": "Your next critical dagger hit deals double damage and inflicts Slowness III on the target for 5 seconds (30-second cooldown)",
   "message.forgermod.deep_wound.armed": "Deep Wound armed for your next critical hit",
   "tooltips.forgermod.ability.leech": "Your next 10 dagger hits drain up to 10% of the target's maximum health each and heal you by the health drained (15-second cooldown)",
   "message.forgermod.leech.armed": "Leech armed for 10 hits",
