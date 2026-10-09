@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.item.custom.TaifuniteWeapon;
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,8 +27,7 @@ public final class DoubleJumpClient {
         }
         boolean jumpDown = minecraft.options.keyJump.isDown();
         boolean grounded = minecraft.player.onGround();
-        boolean taifuniteDagger = minecraft.player.getMainHandItem().getItem() instanceof TaifuniteWeapon weapon
-                && weapon.isDagger();
+        boolean taifuniteDagger = Augmentations.hasPassive(minecraft.player.getMainHandItem(), "tooltips.forgermod.passive.double_jump");
         if (!taifuniteDagger || minecraft.screen != null) {
             jumpedFromGround = false;
         } else if (grounded && !jumpDown) {

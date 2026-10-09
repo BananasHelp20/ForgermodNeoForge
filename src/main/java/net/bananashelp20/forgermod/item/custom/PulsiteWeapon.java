@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
@@ -45,25 +46,29 @@ public class PulsiteWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        applyMaterialEffect(pTarget);
-        if (pAttacker instanceof ServerPlayer player
-                && DaggerCriticalEvents.consume(player, pTarget, pStack)
-                && SONIC_CRIT.consume(player.getUUID())) {
-            player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,
-                    pTarget.getX(), pTarget.getY() + pTarget.getBbHeight() * 0.5, pTarget.getZ(),
-                    1, 0, 0, 0, 0);
-        }
+        applyMaterialEffect(pTarget, pStack);
         onDaggerHit(pTarget, pAttacker);
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
+    }
+
+    @Override
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if (attacker instanceof ServerPlayer player
+                && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
+                && SONIC_CRIT.consume(player.getUUID())) {
+            player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,
+                    target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
+                    1, 0, 0, 0, 0);
+        }
     }
 
     @Override
@@ -107,7 +112,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
         if (event.isCanceled() || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !(player.getMainHandItem().getItem() instanceof PulsiteWeapon weapon)
-                || !weapon.isDagger() || !SONIC_CRIT.isArmed(player.getUUID())
+                || !Augmentations.hasActive(player.getMainHandItem()) || !SONIC_CRIT.isArmed(player.getUUID())
                 || !DaggerCriticalEvents.matches(player, event.getEntity(), player.getMainHandItem())) return;
         event.setAmount(event.getAmount() + SonicCritState.bonusDamage(event.getEntity().getMaxHealth()));
     }
@@ -131,6 +136,9 @@ public class PulsiteWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -140,7 +148,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.wardens_needle.tooltip";
             default -> "tooltips.forgermod.shrieking_claymore.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

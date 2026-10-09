@@ -33,7 +33,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         ;
 
         //generate TAGS!
-        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AUGMENTATION_TABLE.get())
                 .add(ModBlocks.DAMASK_BLOCK.get())
                 .add(ModBlocks.INANISIUM_BLOCK.get())
                 .add(ModBlocks.IGNISIUM_BLOCK.get())

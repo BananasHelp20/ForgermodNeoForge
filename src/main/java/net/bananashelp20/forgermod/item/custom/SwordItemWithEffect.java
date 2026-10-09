@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class SwordItemWithEffect extends SwordItem {
     private final String weaponType;
+    private final String gemstoneName;
     @Nullable private final Holder<MobEffect> materialEffect;
     private final int materialEffectDuration;
     private final int materialEffectAmplifier;
@@ -46,11 +48,15 @@ public class SwordItemWithEffect extends SwordItem {
                                @Nullable Holder<MobEffect> effect, int duration, int amplifier) {
         super(pTier, pProperties);
         this.weaponType = weaponType;
+        this.gemstoneName = gemstone;
         this.materialEffect = effect;
         this.materialEffectDuration = ModSpecialRegistry.materialEffectDuration(
                 duration + ("jade".equals(gemstone) ? 20 : 0), gemstone, weaponType);
         this.materialEffectAmplifier = amplifier + ("jade".equals(gemstone) ? 1 : 0);
     }
+
+    public String gemstoneName() { return gemstoneName; }
+    public boolean hasMaterialEffect() { return materialEffect != null; }
 
     public boolean isDagger() {
         return "dagger".equals(weaponType);
@@ -64,6 +70,58 @@ public class SwordItemWithEffect extends SwordItem {
         if (materialEffect != null && !target.isDeadOrDying()) {
             target.addEffect(new MobEffectInstance(materialEffect, materialEffectDuration, materialEffectAmplifier));
         }
+    }
+
+    public final void applyMaterialEffect(LivingEntity target, ItemStack stack) {
+        if (materialEffect != null && !target.isDeadOrDying()) {
+            int rank = Augmentations.level(stack, Augmentations.EMPOWERED_HIT);
+            target.addEffect(new MobEffectInstance(materialEffect,
+                    Math.round(materialEffectDuration * (1 + .25F * rank)), materialEffectAmplifier));
+        }
+    }
+
+    protected final void appendWeaponTooltip(ItemStack stack, List<Component> tooltip, String loreKey, String gemstone) {
+        if (Augmentations.count(stack) == 0) {
+            appendWeaponTooltip(tooltip, loreKey, gemstone);
+            return;
+        }
+        boolean expanded = WeaponTooltips.descriptionsVisible();
+        tooltip.add(Component.translatable(loreKey));
+        tooltip.add(Component.translatable("augmentation.forgermod.heading", Augmentations.count(stack)).withStyle(ChatFormatting.GRAY));
+        if (expanded) tooltip.add(Component.translatable("augmentation.forgermod.core_hint").withStyle(ChatFormatting.GRAY));
+        if (isAxe()) WeaponTooltips.passive(tooltip, "tooltips.forgermod.passive.axe", expanded);
+        if (isDagger()) WeaponTooltips.passive(tooltip, "tooltips.forgermod.passive.dagger", expanded);
+        if (materialEffect != null) {
+            tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect.name", materialEffect.value().getDisplayName()).withStyle(ChatFormatting.GRAY));
+            if (expanded) tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect",
+                    materialEffect.value().getDisplayName(), WeaponTooltips.romanNumeral(materialEffectAmplifier + 1),
+                    String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration * (1 + .25 * Augmentations.level(stack, Augmentations.EMPOWERED_HIT)) / 20.0)).withStyle(ChatFormatting.GRAY));
+        }
+        tooltip.add(Component.translatable("tooltips.forgermod.passive.heading").withStyle(ChatFormatting.GRAY));
+        for (String id : Augmentations.ids(stack, false)) {
+            tooltip.add(Component.translatable("augmentation.forgermod.rank", Component.translatable(id + ".name"),
+                    WeaponTooltips.romanNumeral(Augmentations.level(stack, id))).withStyle(ChatFormatting.GRAY));
+            if (expanded) {
+                tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
+                if (id.startsWith("tooltips.forgermod.passive.")) tooltip.add(Component.translatable(id.replace("tooltips.", "augmentation.") + ".rank").withStyle(ChatFormatting.GRAY));
+            }
+        }
+        tooltip.add(Component.translatable("tooltips.forgermod.ability.heading").withStyle(ChatFormatting.GRAY));
+        for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
+            String id = Augmentations.activeId(stack, slot);
+            if (id == null) continue;
+            Component name = Component.translatable("augmentation.forgermod.rank", Component.translatable(id + ".name"),
+                    WeaponTooltips.romanNumeral(Augmentations.level(stack, id)));
+            tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip", name,
+                    Component.keybind(slot == WeaponAbilitySlot.PRIMARY ? "key.forgermod.ability_primary" : "key.forgermod.ability_secondary")).withStyle(ChatFormatting.GRAY));
+            if (expanded) {
+                tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("augmentation.forgermod.cooldown",
+                        String.format(java.util.Locale.ROOT, "%.2f", Augmentations.cooldown(stack, slot, Augmentations.canonical(stack)) / 20.0)).withStyle(ChatFormatting.GRAY));
+            }
+        }
+        tooltip.add(Component.translatable("tooltips.forgermod." + gemstone + ".tooltip_extra"));
+        if (!expanded) WeaponTooltips.hint(tooltip);
     }
 
     /** Called after a dagger deals damage, including a matching offhand dagger. */

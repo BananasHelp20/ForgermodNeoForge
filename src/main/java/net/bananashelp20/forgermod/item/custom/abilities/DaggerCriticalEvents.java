@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,7 +23,7 @@ public final class DaggerCriticalEvents {
                 || !(event.getTarget() instanceof LivingEntity target)
                 || !event.isCriticalHit()) return;
         ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof SwordItemWithEffect weapon) || !weapon.isDagger()) return;
+        if (!(stack.getItem() instanceof SwordItemWithEffect weapon) || !Augmentations.hasActive(stack)) return;
         TRACKER.mark(player.getUUID(), target.getId(), player.level().getGameTime(), stack.getItem());
     }
 

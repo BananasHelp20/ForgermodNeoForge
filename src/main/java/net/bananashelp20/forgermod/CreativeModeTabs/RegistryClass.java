@@ -79,6 +79,7 @@ public class RegistryClass {
                 ModItems.RUBY_GEMSTONE.get(),
                 ModItems.AMBER_GEMSTONE.get(),
                 ModItems.AMETHYST_GEMSTONE.get(),
+                ModItems.SAPPHIRE_GEMSTONE.get(),
                 ModItems.JADE_GEMSTONE.get()
         };
     }
@@ -254,6 +255,7 @@ public class RegistryClass {
         return new ItemLike[] {
                 ModBlocks.ANCIENT_SWORD_STAND.get(),
                 ModBlocks.FORGE.get(),
+                ModBlocks.AUGMENTATION_TABLE.get(),
                 ModBlocks.INFUSION_TABLE.get()
         };
     }

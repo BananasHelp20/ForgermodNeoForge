@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
-import net.bananashelp20.forgermod.item.custom.TaifuniteWeapon;
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -59,7 +59,7 @@ public final class DoubleJumpNetwork {
 
     private static void boost(Player player) {
         Vec3 velocity = player.getDeltaMovement();
-        player.setDeltaMovement(velocity.x, 0.55, velocity.z);
+        player.setDeltaMovement(velocity.x, 0.55 + .05 * (Augmentations.level(player.getMainHandItem(), "tooltips.forgermod.passive.double_jump") - 1), velocity.z);
         player.hasImpulse = true;
         player.fallDistance = 0;
     }
@@ -67,8 +67,7 @@ public final class DoubleJumpNetwork {
     private static void handle(DoubleJumpPayload payload, IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer player) || player.onGround()
                 || player.isSpectator() || !player.isAlive()
-                || !(player.getMainHandItem().getItem() instanceof TaifuniteWeapon weapon)
-                || !weapon.isDagger() || !STATE.consume(player.getUUID())) return;
+                || !Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.double_jump") || !STATE.consume(player.getUUID())) return;
         boost(player);
         // A full server motion packet overwrites the client's current sprint momentum.
         // Acknowledge only the lift, preserving the client's horizontal movement.
@@ -80,16 +79,14 @@ public final class DoubleJumpNetwork {
     @SubscribeEvent
     public static void onNormalJump(LivingEvent.LivingJumpEvent event) {
         if (event.getEntity() instanceof ServerPlayer player
-                && player.getMainHandItem().getItem() instanceof TaifuniteWeapon weapon
-                && weapon.isDagger()) STATE.normalJump(player.getUUID());
+                && Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.double_jump")) STATE.normalJump(player.getUUID());
     }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player
                 && (!player.isAlive() || player.onGround() && player.getDeltaMovement().y <= 0
-                || !(player.getMainHandItem().getItem() instanceof TaifuniteWeapon weapon)
-                || !weapon.isDagger())) {
+                || !Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.double_jump"))) {
             STATE.clear(player.getUUID());
         }
     }

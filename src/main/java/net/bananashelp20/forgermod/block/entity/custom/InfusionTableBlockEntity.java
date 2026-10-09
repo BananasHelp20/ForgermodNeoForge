@@ -186,9 +186,11 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     private void craftItem(int recipeUsed) {
         ItemStack output = INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed];
 
+        ItemStack input = itemHandler.getStackInSlot(GEAR_SLOT);
+        ItemStack augmentedOutput = new ItemStack(output.getItem().builtInRegistryHolder(), 1, input.getComponentsPatch());
         itemHandler.extractItem(GEMSTONE_SLOT, 1, false);
         itemHandler.extractItem(GEAR_SLOT, 1, false);
-        itemHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
+        itemHandler.insertItem(OUTPUT_SLOT, augmentedOutput, false);
     }
 
     private boolean hasRecipe() {

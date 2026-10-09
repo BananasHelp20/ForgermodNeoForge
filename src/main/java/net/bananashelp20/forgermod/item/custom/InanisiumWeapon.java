@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.BehindTargetOffset;
@@ -46,17 +47,17 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     @Override
@@ -70,7 +71,8 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     private static boolean stepThroughVoid(ServerPlayer player) {
         Vec3 direction = player.getLookAngle().normalize();
-        boolean paired = player.getOffhandItem().getItem() instanceof InanisiumWeapon offhand && offhand.isDagger();
+        boolean paired = player.getMainHandItem().getItem() instanceof SwordItemWithEffect actual && actual.isDagger()
+                && player.getOffhandItem().getItem() instanceof InanisiumWeapon offhand && offhand.isDagger();
         int maxSteps = paired ? VoidStepPath.PAIRED_STEPS : VoidStepPath.STEPS;
         ServerLevel level = player.serverLevel();
         Vec3 start = player.position();
@@ -175,6 +177,9 @@ public class InanisiumWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -184,7 +189,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.riftfang_dagger.tooltip";
             default -> "tooltips.forgermod.claymore_of_the_void.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

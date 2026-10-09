@@ -95,6 +95,7 @@ public class ForgerMod {
         public static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.FORGE_MENU.get(), ForgeScreen::new);
             event.register(ModMenuTypes.INFUSION_TABLE_MENU.get(), InfusionTableScreen::new);
+            event.register(ModMenuTypes.AUGMENTATION_TABLE_MENU.get(), net.bananashelp20.forgermod.screen.custom.AugmentationTableScreen::new);
         }
     }
 }

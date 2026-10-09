@@ -218,3 +218,21 @@ Deleted
 - Removed Sonic Boom's six-hit extra-reach state, melee reach modifier, air-swing packet and consumers, old armed message, and obsolete six-hit state test
 
 
+
+Added
+- Sapphire Gemstone, crafted from one diamond and four lapis lazuli, for augmentation rather than gemstone infusion
+- Craftable Augmentation Table with a model, pickaxe mining tag, self drop, saved inventory, menu, loading animation and two random server-validated choices
+- Special-material weapon augmentation pools use their material's existing active/unique passive abilities; existing native abilities occupy slots, while material on-hit properties, dual wield and axe slam remain intrinsic
+- Augmentation consumes one Sapphire Gemstone and one Gemstone Upgrade Template per attempt; cooking lasts five seconds plus one second per completed augmentation
+- Item-local augmentation ranks and counts survive saves and gemstone infusion; names, enchantments, durability and other item component patches are preserved
+- Two active and two passive ability limits, rank IV cap, locked cooking/choice inputs, persistent offers, replay protection and no ingredient consumption for fully augmented items
+- Empowered Hit passive extends the item's material effect duration by 25% per rank, up to 100% at IV
+- Guarded passive reduces incoming damage while holding the item by 5% per rank, up to 20% at IV
+- Learned claymore and axe actives work with configurable ability keys and independent per-variant slot cooldowns; armed abilities complete on melee hits and cancel safely on switching or breaking
+- Expanded augmented-item tooltips show Roman numeral ranks, configured keys, passive upgrade effects and actual cooldowns
+
+Buffed
+- Each active ability upgrade reduces its cooldown by 15% of the base cooldown, reaching a 45% reduction at IV
+- Each Chain Lightning upgrade adds 25% of base chained damage, reaching a 75% bonus at IV
+- Each Double Jump upgrade adds 0.05 upward velocity while retaining horizontal momentum, reaching 0.70 at IV
+- Each Death March or Revenge upgrade adds 25% of its base bonus damage, reaching a 75% larger bonus at IV

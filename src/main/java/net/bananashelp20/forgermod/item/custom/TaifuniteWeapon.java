@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
@@ -47,17 +48,17 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     @Override
@@ -172,6 +173,9 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -181,7 +185,7 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.dead_calm_dagger.tooltip";
             default -> "tooltips.forgermod.storming_claymore.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

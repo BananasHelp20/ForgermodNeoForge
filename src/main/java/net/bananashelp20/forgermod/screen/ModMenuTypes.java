@@ -20,6 +20,8 @@ public class ModMenuTypes {
     public static final Supplier<MenuType<ForgeMenu>> FORGE_MENU = registerMenuType("forge_menu", ForgeMenu::new);
     public static final Supplier<MenuType<InfusionTableMenu>> INFUSION_TABLE_MENU = registerMenuType("infusion_table_menu", InfusionTableMenu::new);
 
+    public static final Supplier<MenuType<net.bananashelp20.forgermod.screen.custom.AugmentationTableMenu>> AUGMENTATION_TABLE_MENU = registerMenuType("augmentation_table", net.bananashelp20.forgermod.screen.custom.AugmentationTableMenu::new);
+
     private static <T extends AbstractContainerMenu>DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }

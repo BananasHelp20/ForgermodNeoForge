@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
@@ -50,17 +51,17 @@ public class MorsiumWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     @Override
@@ -109,7 +110,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(player.getMainHandItem().getItem() instanceof MorsiumWeapon weapon)
-                || !weapon.isDagger()) return;
+                || !Augmentations.hasActive(player.getMainHandItem())) return;
         if (BONES.consumeKill(player.getUUID(), player.level().getGameTime())) {
             player.displayClientMessage(Component.translatable("message.forgermod.strengthened_bones.active"), true);
         }
@@ -126,11 +127,19 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 || attacker == event.getEntity()) return;
         boolean morsiumDaggerHit = event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 && attacker.getMainHandItem().getItem() instanceof MorsiumWeapon weapon
-                && weapon.isDagger();
+                && (Augmentations.hasActive(attacker.getMainHandItem()) || !Augmentations.ids(attacker.getMainHandItem(), false).isEmpty());
         if (morsiumDaggerHit) {
-            event.setAmount(event.getAmount() * DeathMarchDamage.multiplier(
-                    event.getEntity().getHealth(), event.getEntity().getMaxHealth())
-                    * RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD)));
+            ItemStack held = attacker.getMainHandItem();
+            float multiplier = 1;
+            if (Augmentations.hasPassive(held, "tooltips.forgermod.passive.death_march")) {
+                multiplier *= 1 + (DeathMarchDamage.multiplier(event.getEntity().getHealth(), event.getEntity().getMaxHealth()) - 1)
+                        * (1 + .25F * (Augmentations.level(held, "tooltips.forgermod.passive.death_march") - 1));
+            }
+            if (Augmentations.hasPassive(held, "tooltips.forgermod.passive.revenge")) {
+                multiplier *= 1 + (RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD)) - 1)
+                        * (1 + .25F * (Augmentations.level(held, "tooltips.forgermod.passive.revenge") - 1));
+            }
+            event.setAmount(event.getAmount() * multiplier);
         }
         long now = attacker.level().getGameTime();
         if (ANGER.storeIfCharging(attacker.getUUID(), now, event.getAmount())) {
@@ -168,6 +177,9 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -177,7 +189,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.deathwisper_dagger.tooltip";
             default -> "tooltips.forgermod.hollow_claymore.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

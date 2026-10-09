@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "STS",
+    "LDL",
+    "DDD"
+  ],
+  "key": {
+    "S": {
+      "item": "forgermod:sapphire_gemstone"
+    },
+    "T": {
+      "item": "forgermod:gemstone_upgrade_template"
+    },
+    "L": {
+      "item": "minecraft:lapis_block"
+    },
+    "D": {
+      "item": "minecraft:polished_deepslate"
+    }
+  },
+  "result": {
+    "id": "forgermod:augmentation_table",
+    "count": 1
+  }
+}

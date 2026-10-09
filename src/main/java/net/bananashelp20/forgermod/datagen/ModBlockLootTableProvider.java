@@ -69,6 +69,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         //generate DROPS!
+        dropSelf(ModBlocks.AUGMENTATION_TABLE.get());
         dropSelf(ModBlocks.DAMASK_BLOCK.get());
         dropSelf(ModBlocks.SCRAP_BLOCK.get());
         dropSelf(ModBlocks.INANISIUM_BLOCK.get());

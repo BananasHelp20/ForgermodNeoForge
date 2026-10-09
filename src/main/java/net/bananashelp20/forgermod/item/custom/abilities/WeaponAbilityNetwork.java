@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
@@ -22,12 +23,15 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumSet;
+import java.util.EnumMap;
 import java.util.UUID;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public final class WeaponAbilityNetwork {
     private record EquippedSession(ItemStack stack, String itemId, int selectedSlot, SwordItemWithEffect weapon,
-                                   EnumSet<WeaponAbilitySlot> activeSlots) {}
+                                   EnumSet<WeaponAbilitySlot> activeSlots,
+                                   Map<WeaponAbilitySlot, WeaponAbilitySlot> sources,
+                                   Map<WeaponAbilitySlot, Integer> cooldowns) {}
     private static final Map<UUID, EquippedSession> ACTIVE = new HashMap<>();
     private WeaponAbilityNetwork() {}
 
@@ -72,17 +76,23 @@ public final class WeaponAbilityNetwork {
                     (readyAt - now + 19) / 20), true);
             return;
         }
-        if (weapon.activateAbility(player, stack, slot)) {
-            if (weapon.isAbilityActive(player, slot)) {
+        if (Augmentations.activeId(stack, slot) == null) return;
+        weapon = Augmentations.canonical(stack);
+        WeaponAbilitySlot source = Augmentations.sourceSlot(stack, slot);
+        if (weapon.activateAbility(player, stack, source)) {
+            if (weapon.isAbilityActive(player, source)) {
                 EquippedSession session = ACTIVE.get(player.getUUID());
                 if (session == null) {
                     session = new EquippedSession(stack, itemId(stack), player.getInventory().selected, weapon,
-                            EnumSet.noneOf(WeaponAbilitySlot.class));
+                            EnumSet.noneOf(WeaponAbilitySlot.class), new EnumMap<>(WeaponAbilitySlot.class),
+                            new EnumMap<>(WeaponAbilitySlot.class));
                     ACTIVE.put(player.getUUID(), session);
                 }
                 session.activeSlots().add(slot);
+                session.sources().put(slot, source);
+                session.cooldowns().put(slot, Augmentations.cooldown(stack, slot, weapon));
             } else {
-                setCooldown(player, key, now + weapon.abilityCooldownTicks(slot));
+                setCooldown(player, key, now + Augmentations.cooldown(stack, slot, weapon));
             }
         } else {
             player.displayClientMessage(Component.translatable("message.forgermod.ability.unavailable"), true);
@@ -109,8 +119,8 @@ public final class WeaponAbilityNetwork {
         if (session == null) return;
         long now = player.level().getGameTime();
         session.activeSlots().removeIf(slot -> {
-            if (session.weapon().isAbilityActive(player, slot)) return false;
-            int cooldown = session.weapon().abilityCooldownTicks(slot);
+            if (session.weapon().isAbilityActive(player, session.sources().get(slot))) return false;
+            int cooldown = session.cooldowns().get(slot);
             if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), slot), now + cooldown);
             return true;
         });
@@ -127,8 +137,8 @@ public final class WeaponAbilityNetwork {
     private static void cancelSession(ServerPlayer player, EquippedSession session) {
         long now = player.level().getGameTime();
         for (WeaponAbilitySlot slot : session.activeSlots()) {
-            session.weapon().cancelAbility(player, slot);
-            int cooldown = session.weapon().abilityCooldownTicks(slot);
+            session.weapon().cancelAbility(player, session.sources().get(slot));
+            int cooldown = session.cooldowns().get(slot);
             if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), slot), now + cooldown);
         }
         ACTIVE.remove(player.getUUID());

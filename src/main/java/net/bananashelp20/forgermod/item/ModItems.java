@@ -100,6 +100,8 @@ public class ModItems {
         return ITEMS.register(name, weapon);
     }
 
+    public static final DeferredItem<Item> SAPPHIRE_GEMSTONE = createItemWithDescription("sapphire_gemstone", "tooltips.forgermod.sapphire.tooltip");
+
     //STARTGENERATING
     /**ingredients*/
     //upgrade shards

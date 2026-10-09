@@ -24,6 +24,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("infusion_table_be", () -> BlockEntityType.Builder.of(
                     InfusionTableBlockEntity::new, ModBlocks.INFUSION_TABLE.get()).build(null));
 
+    public static final Supplier<BlockEntityType<net.bananashelp20.forgermod.block.entity.custom.AugmentationTableBlockEntity>> AUGMENTATION_TABLE_BE =
+            BLOCK_ENTITIES.register("augmentation_table", () -> BlockEntityType.Builder.of(
+                    net.bananashelp20.forgermod.block.entity.custom.AugmentationTableBlockEntity::new, ModBlocks.AUGMENTATION_TABLE.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

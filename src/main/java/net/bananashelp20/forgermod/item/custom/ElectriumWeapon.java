@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
@@ -53,16 +54,16 @@ public class ElectriumWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker, EquipmentSlot pSlot) {
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
         onDaggerHit(pTarget, pAttacker);
         pStack.hurtAndBreak(1, pAttacker, pSlot);
     }
@@ -70,7 +71,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
-        chainLightning(target, player);
+        if (Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.chain_lightning")) chainLightning(target, player);
         if (!(target instanceof Mob) || target.isDeadOrDying()) return;
         dischargeChargeIfReady(target, player);
     }
@@ -106,7 +107,8 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             mob.invulnerableTime = 0;
             if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player),
                     (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F
-                            * CHARGE_ATTACK.damageMultiplier(player.getUUID()))) {
+                            * CHARGE_ATTACK.damageMultiplier(player.getUUID())
+                            * (1 + .25F * (Augmentations.level(player.getMainHandItem(), "tooltips.forgermod.passive.chain_lightning") - 1)))) {
                 dischargeChargeIfReady(mob, player);
                 for (int step = 1; step <= 6; step++) {
                     double fraction = step / 7.0;
@@ -173,7 +175,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
-        if (!(player.getMainHandItem().getItem() instanceof ElectriumWeapon weapon) || !weapon.isDagger()) return;
+        if (!(player.getMainHandItem().getItem() instanceof ElectriumWeapon weapon) || !Augmentations.hasActive(player.getMainHandItem())) return;
         if (event.getSource().is(DamageTypes.PLAYER_ATTACK)) {
             event.setAmount(event.getAmount() * CHARGE_ATTACK.damageMultiplier(player.getUUID()));
         }
@@ -227,6 +229,9 @@ public class ElectriumWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -236,7 +241,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.static_dagger.tooltip";
             default -> "tooltips.forgermod.claymore_of_thunder.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

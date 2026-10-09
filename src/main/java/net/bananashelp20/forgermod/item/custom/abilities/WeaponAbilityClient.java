@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
@@ -38,7 +39,7 @@ public final class WeaponAbilityClient {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null
                 || !(minecraft.player.getMainHandItem().getItem() instanceof SwordItemWithEffect weapon)
-                || weapon.abilityDescriptionKey(slot) == null) return;
+                || Augmentations.activeId(minecraft.player.getMainHandItem(), slot) == null) return;
         // The default 1/2 bindings also select hotbar slots. Keep the weapon selected
         // when its ability key still shares that binding with the vanilla hotbar key.
         KeyMapping hotbarKey = minecraft.options.keyHotbarSlots[hotbarSlot];

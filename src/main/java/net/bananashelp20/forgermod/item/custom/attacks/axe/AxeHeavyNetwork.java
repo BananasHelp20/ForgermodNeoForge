@@ -147,7 +147,7 @@ public final class AxeHeavyNetwork {
             int previousInvulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;
             if (target.hurt(player.damageSources().playerAttack(player), slam.damage())) {
-                if (slam.axe() instanceof SwordItemWithEffect weapon) weapon.applyMaterialEffect(target);
+                if (slam.axe() instanceof SwordItemWithEffect weapon) weapon.applyMaterialEffect(target, player.getMainHandItem());
                 target.knockback(0.5, center.getX() + 0.5 - target.getX(),
                         center.getZ() + 0.5 - target.getZ());
             } else {

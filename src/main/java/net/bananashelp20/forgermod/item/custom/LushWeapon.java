@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
@@ -53,17 +54,17 @@ public class LushWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class LushWeapon extends SwordItemWithEffect {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(player.getMainHandItem().getItem() instanceof LushWeapon weapon)
-                || !weapon.isDagger()) return;
+                || !Augmentations.hasActive(player.getMainHandItem())) return;
         CLOUDS.createOnKill(player.getUUID(), mob.level().dimension(),
                 mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), mob.level().getGameTime());
     }
@@ -182,6 +183,9 @@ public class LushWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -191,7 +195,7 @@ public class LushWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.leafcutter_dagger.tooltip";
             default -> "tooltips.forgermod.overgrown_claymore.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

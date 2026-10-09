@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom;
 
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
@@ -47,23 +48,18 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
 
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
     }
 
     public void claymoreAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
-        applyMaterialEffect(pTarget);
+        applyMaterialEffect(pTarget, pStack);
 
         if (pTarget.isDeadOrDying()) pAttacker.heal(1); //heals 1hp?
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        applyMaterialEffect(pTarget);
-        if (pAttacker instanceof ServerPlayer player
-                && DaggerCriticalEvents.consume(player, pTarget, pStack)
-                && DEEP_WOUND.consume(player.getUUID()) && !pTarget.isDeadOrDying()) {
-            pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
-        }
+        applyMaterialEffect(pTarget, pStack);
         onDaggerHit(pTarget, pAttacker);
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
@@ -73,7 +69,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (event.isCanceled() || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
-                || !weapon.isDagger() || !LEECH.hasCharge(player.getUUID())) return;
+                || !Augmentations.hasActive(player.getMainHandItem()) || !LEECH.hasCharge(player.getUUID())) return;
         event.setAmount(event.getAmount() * 1.1F);
     }
 
@@ -82,13 +78,22 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (event.getNewDamage() <= 0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
-                || !weapon.isDagger() || !LEECH.hasCharge(player.getUUID())) return;
+                || !Augmentations.hasActive(player.getMainHandItem()) || !LEECH.hasCharge(player.getUUID())) return;
         // The bonus is one eleventh of the final 110% hit.
         float healing = LEECH.availableHealing(player.getUUID(), event.getNewDamage() / 11);
         float before = player.getHealth();
         player.heal(healing);
         LEECH.recordHealing(player.getUUID(), player.getHealth() - before);
         LEECH.consume(player.getUUID());
+    }
+
+    @Override
+    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if (attacker instanceof ServerPlayer player
+                && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
+                && DEEP_WOUND.consume(player.getUUID()) && !target.isDeadOrDying()) {
+            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
+        }
     }
 
     @Override
@@ -135,7 +140,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (!(event.getEntity() instanceof ServerPlayer player) || !event.isCriticalHit()
                 || !DEEP_WOUND.isArmed(player.getUUID())
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
-                || !weapon.isDagger()) return;
+                || !Augmentations.hasActive(player.getMainHandItem())) return;
         event.setDamageMultiplier(event.getDamageMultiplier() * 2);
     }
 
@@ -159,6 +164,9 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
                 break;
             default: claymoreAttack(pStack, pTarget, pAttacker);
         }
+        if (!isDagger() && pAttacker instanceof ServerPlayer player && Augmentations.eligible(pStack)) {
+            Augmentations.canonical(pStack).onDaggerHit(pTarget, player);
+        }
     }
 
     @Override
@@ -168,7 +176,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.assassin_dagger.tooltip";
             default -> "tooltips.forgermod.curseblood_claymore.tooltip";
         };
-        appendWeaponTooltip(pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 

@@ -95,7 +95,7 @@ public class DualWieldNetwork {
         float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         if (target.hurt(player.damageSources().playerAttack(player), damage)) {
             if (offhand.getItem() instanceof SwordItemWithEffect weapon) {
-                weapon.applyMaterialEffect(target);
+                weapon.applyMaterialEffect(target, player.getOffhandItem());
                 weapon.onDaggerHit(target, player);
             }
             offhand.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
