@@ -48,7 +48,7 @@
   "tooltips.forgermod.passive.chain_lightning": "Dagger hits arc to up to 2 other hostile mobs within 10 blocks of the target for 5 damage each",
   "tooltips.forgermod.ability.eye_of_the_storm": "Whirl all entities except you within 10 blocks for 5 seconds; living targets are levitated (1-minute cooldown)",
   "message.forgermod.eye_of_the_storm.active": "Eye of the Storm active for 5 seconds",
-  "tooltips.forgermod.ability.windy_dash": "Burst up to 6 blocks forward over a short dash (5-second cooldown)",
+  "tooltips.forgermod.ability.windy_dash": "Launch yourself in your look direction; momentum, gravity and collisions determine the distance (5-second base cooldown)",
   "tooltips.forgermod.passive.double_jump": "Press Jump again in midair after a normal jump to leap once more",
   "tooltips.forgermod.ability.deep_wound": "Your next critical dagger hit deals double damage and inflicts Slowness III on the target for 5 seconds (30-second cooldown)",
   "message.forgermod.deep_wound.armed": "Deep Wound armed for your next critical hit",

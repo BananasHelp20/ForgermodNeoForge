@@ -236,3 +236,9 @@ Buffed
 - Each Chain Lightning upgrade adds 25% of base chained damage, reaching a 75% bonus at IV
 - Each Double Jump upgrade adds 0.05 upward velocity while retaining horizontal momentum, reaching 0.70 at IV
 - Each Death March or Revenge upgrade adds 25% of its base bonus damage, reaching a 75% larger bonus at IV
+
+Changed
+- Windy Dash now sets launch velocity to 1.2 blocks per tick along the full look direction, including upward/downward aim; normal movement, drag, gravity and collisions determine travel distance
+- Windy Dash synchronizes launch velocity immediately to the player client and starts its five-second base cooldown on use; augmentation cooldown reductions still apply
+Removed
+- Removed Windy Dash repeated one-block teleports, six-step distance state and obsolete movement-state test

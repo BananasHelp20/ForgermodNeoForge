@@ -6,7 +6,7 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
 import net.bananashelp20.forgermod.item.custom.abilities.StormState;
-import net.bananashelp20.forgermod.item.custom.abilities.WindyDashState;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -32,7 +32,7 @@ import java.util.List;
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class TaifuniteWeapon extends SwordItemWithEffect {
     private static final StormState STORM = new StormState();
-    private static final WindyDashState DASH = new WindyDashState();
+    private static final double DASH_SPEED = 1.2; // Blocks per tick; travel distance follows normal physics.
     public static Holder<MobEffect> effect = MobEffects.LEVITATION;
     public static int durationInTicks = 60;
     public static int effectAmplifier = 2;
@@ -65,9 +65,14 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
-            Vec3 look = player.getLookAngle();
-            if (!DASH.start(player.getUUID(), look.x, look.z)) return false;
-            return dashStep(player);
+            if (player.isPassenger()) return false;
+            player.setDeltaMovement(player.getLookAngle().normalize().scale(DASH_SPEED));
+            player.hasImpulse = true;
+            player.hurtMarked = true;
+            player.connection.send(new ClientboundSetEntityMotionPacket(player));
+            player.serverLevel().sendParticles(ParticleTypes.CLOUD,
+                    player.getX(), player.getY() + 0.5, player.getZ(), 12, 0.2, 0.2, 0.2, 0.06);
+            return true;
         }
         boolean active = STORM.activate(player.getUUID(), player.level().getGameTime());
         if (active) player.displayClientMessage(Component.translatable("message.forgermod.eye_of_the_storm.active"), true);
@@ -83,14 +88,12 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     @Override
     public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
         return slot == WeaponAbilitySlot.PRIMARY
-                ? STORM.isActive(player.getUUID(), player.level().getGameTime())
-                : DASH.isActive(player.getUUID());
+                && STORM.isActive(player.getUUID(), player.level().getGameTime());
     }
 
     @Override
     public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
         if (slot == WeaponAbilitySlot.PRIMARY) STORM.clear(player.getUUID());
-        else DASH.clear(player.getUUID());
     }
 
     @Override
@@ -106,30 +109,14 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
         return isDagger() ? "tooltips.forgermod.passive.double_jump" : null;
     }
 
-    private static boolean dashStep(ServerPlayer player) {
-        WindyDashState.Step step = DASH.nextStep(player.getUUID());
-        if (step == null) return false;
-        if (!player.serverLevel().noCollision(player,
-                player.getBoundingBox().expandTowards(step.x(), 0, step.z()))) {
-            DASH.clear(player.getUUID());
-            return false;
-        }
-        player.teleportTo(player.getX() + step.x(), player.getY(), player.getZ() + step.z());
-        player.serverLevel().sendParticles(ParticleTypes.CLOUD,
-                player.getX(), player.getY() + 0.5, player.getZ(), 3, 0.2, 0.2, 0.2, 0.02);
-        return true;
-    }
-
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         long now = player.level().getGameTime();
         if (!player.isAlive()) {
             STORM.clear(player.getUUID());
-            DASH.clear(player.getUUID());
             return;
         }
-        dashStep(player);
         if (!STORM.isActive(player.getUUID(), now)) return;
 
         List<Entity> targets = AreaDischargeTargets.select(
@@ -156,7 +143,6 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         STORM.clear(event.getEntity().getUUID());
-        DASH.clear(event.getEntity().getUUID());
     }
 
     @Override
