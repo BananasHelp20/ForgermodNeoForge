@@ -28,7 +28,7 @@
 | Electrium | Area Discharge: lightning damage to hostile mobs within five blocks | Charge Attack: 20 mob hits charge; 21st adds 20 lightning damage | Chain Lightning to up to two nearby hostiles |
 | Taifunite | Eye of the Storm: whirl and levitate nearby hostiles for five seconds | Windy Dash: up to six blocks forward | One extra midair jump |
 | Vulnusium | Deep Wound: next critical hit doubles its damage and slows for two seconds | Leech: next ten dagger hits drain up to 10% of target maximum health | Material effect |
-| Overgrown / `LushWeapon` | Rooting Roots: hold and poison nearby hostiles for ten seconds | Poisoned Vein: next hostile melee kill leaves a five-second poison cloud | Material effect |
+| Overgrown / `LushWeapon` | Rooting Roots: hold and poison nearby hostiles for ten seconds | Poisoned Vein: next hostile melee kill leaves a five-second cloud applying 30 seconds of Poison I to anyone inside, including its creator | Material effect |
 | Morsium | Strengthened Bones: next hostile melee kill grants ten seconds of invulnerability | Storing Anger: store outgoing damage for ten seconds, release on next dagger hit | Death March and Revenge |
 | Pulsite | Sonically Charged Crit: next critical hit adds 15% of target maximum health as damage | Sonic Boom: 50-block block-clipped piercing blast, twice equipped attack damage; 45-second cooldown | Material effect |
 
@@ -63,4 +63,11 @@
 - Uses Minecraft 1.21.1's Warden sonic-boom damage source, particle rings one block apart (long-distance packets to nearby viewers so the full trail remains visible beyond 32 blocks), sound, and resistance-aware knockback. Ray clipping uses actual block collision shapes; solid/glass walls stop damage and particles, gaps over bottom slabs pass, fluids do not block. Unloaded chunks truncate the ray without loading terrain.
 - The 900-tick (45-second) secondary cooldown starts immediately even on a miss, with independent variant/slot cooldowns unchanged. The primary critical-hit charge is unaffected. Removed the six-hit state, reach modifier, air-swing networking, old armed message, and obsolete state test.
 - Checked implementation against locally cached Minecraft/NeoForge 1.21.1/21.1.93 sources. Three `gradlew.bat test build runGameTestServer` runs passed; the final run includes 23 lightweight tests and all 20 server tests. Six new tests cover multiple pierced enemies, 50-block boundaries, off-axis/behind/passive exclusions, stone/glass, partial slab shapes/water, vertical/diagonal aim, all five gemstone damage variants, primary independence, immediate cooldown and miss/repeat handling, and variant cooldown separation. Final code review and whitespace checks passed. Client visual/audio playtesting remains outstanding.
-- This redesign is committed separately from the earlier uncommitted models, tooltip/pairing, and attack-speed work. The user's staged `src/review1.md` remains untouched.
+- This redesign was committed as `14ce7e3` and pushed to `origin/main`, separately from the earlier uncommitted models, tooltip/pairing, and attack-speed work. The user's staged `src/review1.md` remains untouched.
+
+## Poisoned Vein poison duration (2026-10-09)
+
+- The user requested thirty seconds of poison for anybody inside the cloud. Each existing half-second pulse now applies 600 ticks of Poison I instead of 40, including the creator; removed the creator immunity and updated the tooltip. Normal Minecraft effect immunities are retained.
+- The five-second cloud lifespan, three-block radius, trigger, primary ability, and 45-second secondary cooldown are unchanged. Remaining inside refreshes the duration; leaving, cloud expiry, and cancellation do not remove poison already applied.
+- Two `gradlew.bat test build runGameTestServer` runs passed all 23 lightweight tests and all 22 server tests. Two new server tests exercise actual cloud pulses on the creator, another player, a passive animal, and a hostile mob; outside-radius exclusion, late entry, refresh, duration after leaving/canceling, and cloud expiry. Final code/whitespace review passed.
+- This change is committed separately from earlier uncommitted model, tooltip/pairing, and attack-speed work. The user's staged `src/review1.md` is preserved.

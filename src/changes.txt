@@ -1,4 +1,5 @@
 Added
+- Poisoned Vein cloud regression tests cover the owner, other players, hostile and passive mobs, range limits, refreshed 30-second Poison I, and poison persisting after leaving, cloud expiry, or cancellation
 - Pulsite Dagger Sonic Boom now fires an instant 50-block straight piercing blast in the full view direction; every intersecting hostile mob or permitted enemy player takes twice the equipped attack-damage attribute
 - Sonic Boom uses Warden sonic rings visible across the full 50-block trail, sound, damage type, and knockback; block collision shapes stop its damage and visual trail, and unloaded terrain truncates the beam
 - Six dedicated-server Sonic Boom tests cover piercing/range/aim, solid and glass walls, slab collision shapes and water, all gemstone damage variants, primary independence, and immediate independent cooldowns
@@ -127,6 +128,7 @@ fixed sword effects
 - Electrium weapons now use Electrium attributes instead of Lush attributes
 
 Buffed
+- Poisoned Vein clouds now apply 30 seconds of Poison I instead of two seconds, refreshed while entities remain inside
 - Sonic Boom replaces four extra blocks of melee reach with up to 50 blocks of piercing range and twice equipped attack damage per enemy
 - Riftfang Dagger primary teleport increases from 5 to 10 blocks; equipping a second Riftfang Dagger of any gemstone variant in the offhand doubles its range to 20 blocks
 - Amber special weapons now receive their intended attack damage and speed attributes
@@ -136,6 +138,7 @@ Buffed
 - Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
+- Poisoned Vein cloud owner immunity is removed: the creator is poisoned along with anyone else inside the cloud
 - Sonic Boom is now one aimed blast instead of six enhanced melee attacks; its existing 45-second cooldown starts immediately on firing, including a miss
 - Riftfang Dagger primary teleport cooldown increases from 5 to 7 seconds, including when dual wielding
 - Non-Amber special weapons no longer inherit Amber's fire resistance through shared item properties
