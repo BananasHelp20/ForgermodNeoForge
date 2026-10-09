@@ -30,7 +30,7 @@ public class EyeOfStormGameTests {
         player.setNoGravity(true);
         Vec3 center = test.getBounds().getCenter();
         player.setPos(center);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DEAD_CALM_DAGGER.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.DEAD_CALM_DAGGER.get()));
         var other = test.makeMockServerPlayerInLevel();
         other.setNoGravity(true);
         other.setPos(center.add(2, 0, 0));

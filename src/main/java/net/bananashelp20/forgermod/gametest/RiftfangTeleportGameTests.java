@@ -38,7 +38,7 @@ public class RiftfangTeleportGameTests {
         player.setPos(Vec3.atBottomCenterOf(test.absolutePos(START)));
         player.setYRot(0);
         player.setXRot(pitch);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(main));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(main));
         player.setItemInHand(InteractionHand.OFF_HAND, off == null ? ItemStack.EMPTY : new ItemStack(off));
         // Tests explicitly load their clear test path, never depending on neighboring tests' chunks.
         for (int x = -1; x <= 2; x++) {

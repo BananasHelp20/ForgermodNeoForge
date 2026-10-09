@@ -63,6 +63,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof ServerPlayer player
+                && Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.sonic_crit")
                 && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
                 && SONIC_CRIT.consume(player.getUUID())) {
             player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,
@@ -73,6 +74,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
             SonicBoomBlast.fire(player);
@@ -112,7 +114,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
         if (event.isCanceled() || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !(player.getMainHandItem().getItem() instanceof PulsiteWeapon weapon)
-                || !Augmentations.hasActive(player.getMainHandItem()) || !SONIC_CRIT.isArmed(player.getUUID())
+                || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.sonic_crit") || !SONIC_CRIT.isArmed(player.getUUID())
                 || !DaggerCriticalEvents.matches(player, event.getEntity(), player.getMainHandItem())) return;
         event.setAmount(event.getAmount() + SonicCritState.bonusDamage(event.getEntity().getMaxHealth()));
     }

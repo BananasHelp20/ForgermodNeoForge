@@ -27,7 +27,7 @@ public class DoubleJumpGameTests {
         player.setNoGravity(true);
         player.setPos(test.getBounds().getCenter());
         player.setOnGround(false);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DEAD_CALM_DAGGER.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.DEAD_CALM_DAGGER.get()));
         player.setSprinting(true);
         IPayloadContext context = (IPayloadContext)Proxy.newProxyInstance(IPayloadContext.class.getClassLoader(), new Class<?>[]{IPayloadContext.class},
                 (proxy, method, args) -> { if (method.getName().equals("player")) return player; throw new UnsupportedOperationException(method.getName()); });

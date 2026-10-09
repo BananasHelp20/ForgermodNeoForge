@@ -26,7 +26,7 @@ public class DeepWoundGameTests {
         ServerPlayer player = test.makeMockServerPlayerInLevel();
         player.setNoGravity(true);
         player.setPos(test.getBounds().getCenter());
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(item));
         return player;
     }
 

@@ -42,6 +42,8 @@ public class AugmentationGameTests {
             ItemStack stack = new ItemStack(entry.get());
             if (!Augmentations.eligible(stack)) continue;
             checked++;
+            test.assertTrue(Augmentations.ids(stack, true).isEmpty() && Augmentations.ids(stack, false).isEmpty()
+                    && Augmentations.level(stack, Augmentations.EMPOWERED_HIT) == 0, "Fresh item has learned abilities");
             test.assertTrue(Augmentations.duration(stack) == 100, "Initial cook time is not five seconds");
             var random = RandomSource.create(123);
             while (!Augmentations.available(stack).isEmpty()) {
@@ -55,7 +57,7 @@ public class AugmentationGameTests {
                 test.assertTrue(!stack.isEmpty() && Augmentations.count(stack) == oldCount + 1, "Augment did not apply once");
                 test.assertTrue(Augmentations.duration(stack) == 100 + 20 * (oldCount + 1), "Cook scaling wrong");
                 test.assertTrue(Augmentations.ids(stack, true).size() <= 2 && Augmentations.ids(stack, false).size() <= 2, "Slot cap exceeded");
-                test.assertTrue(Augmentations.count(stack) <= 16, "Augmentation loop did not terminate");
+                test.assertTrue(Augmentations.count(stack) <= 20, "Augmentation loop did not terminate");
             }
             test.assertTrue(Augmentations.offers(stack, random).isEmpty(), "Maxed item still has choices");
             for (boolean active : new boolean[]{false, true}) for (String id : Augmentations.ids(stack, active)) {
@@ -66,6 +68,32 @@ public class AugmentationGameTests {
         test.assertTrue(checked == 135, "Not all 135 special-material variants were checked: " + checked);
         test.assertFalse(Augmentations.eligible(new ItemStack(Items.DIAMOND_SWORD)), "Ordinary sword accepted");
         test.assertFalse(Augmentations.eligible(new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get())), "Ingredient accepted as gear");
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
+    public static void freshGearHasNoMaterialEffectAndLegacyAugmentsKeepNativeAbilities(GameTestHelper test) {
+        ItemStack fresh = new ItemStack(ModItems.DEATHWISPER_DAGGER.get());
+        var weapon = (SwordItemWithEffect)fresh.getItem();
+        Cow target = EntityType.COW.create(test.getLevel());
+        weapon.applyMaterialEffect(target, fresh);
+        test.assertFalse(target.hasEffect(MobEffects.WEAKNESS), "Fresh weapon still applies unlearned material effect");
+        ItemStack learned = Augmentations.apply(fresh, Augmentations.EMPOWERED_HIT);
+        weapon.applyMaterialEffect(target, learned);
+        test.assertTrue(target.hasEffect(MobEffects.WEAKNESS), "Learning material hit has no combat effect");
+        test.assertTrue(Augmentations.ids(learned, false).isEmpty(), "Material hit consumed a unique passive slot");
+        CompoundTag oldData = new CompoundTag(), augments = new CompoundTag();
+        augments.putInt("count", 1);
+        var levels = new net.minecraft.nbt.ListTag(); var row = new CompoundTag();
+        row.putString("id", "tooltips.forgermod.ability.storing_anger"); row.putInt("level", 2); levels.add(row);
+        augments.put("levels", levels); oldData.put("forgermod_augments", augments);
+        ItemStack legacy = fresh.copy(); legacy.set(DataComponents.CUSTOM_DATA, CustomData.of(oldData));
+        test.assertTrue(Augmentations.ids(legacy, true).size() == 2 && Augmentations.ids(legacy, false).size() == 2
+                && Augmentations.level(legacy, Augmentations.EMPOWERED_HIT) == 1, "Existing augmented item lost its native abilities");
+        ItemStack migrated = Augmentations.apply(legacy, "tooltips.forgermod.ability.storing_anger");
+        test.assertTrue(Augmentations.level(migrated, "tooltips.forgermod.ability.storing_anger") == 3
+                && Augmentations.ids(migrated, true).size() == 2 && Augmentations.ids(migrated, false).size() == 2,
+                "Upgrade did not preserve migrated abilities");
         test.succeed();
     }
 
@@ -150,7 +178,7 @@ public class AugmentationGameTests {
         test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Claymore hit did not consume learned ability");
         test.assertTrue(cow.isOnFire(), "Learned infernal hit had no effect");
         var update = WeaponAbilityNetwork.class.getDeclaredMethod("updateSession", ServerPlayer.class); update.setAccessible(true); update.invoke(null, player);
-        String key = WeaponCooldownKey.of(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(), WeaponAbilitySlot.PRIMARY);
+        String key = WeaponCooldownKey.of(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(), WeaponAbilitySlot.SECONDARY);
         long remaining = player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key) - player.level().getGameTime();
         test.assertTrue(remaining == Math.round(runtime.abilityCooldownTicks(WeaponAbilitySlot.SECONDARY) * .55F), "Rank IV cooldown wrong");
         cow.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
@@ -163,7 +191,7 @@ public class AugmentationGameTests {
         Cow baseline = EntityType.COW.create(test.getLevel()), augmented = EntityType.COW.create(test.getLevel());
         var weapon = (SwordItemWithEffect)stack.getItem();
         weapon.applyMaterialEffect(baseline); weapon.applyMaterialEffect(augmented, stack);
-        test.assertTrue(augmented.getEffect(MobEffects.HUNGER).getDuration() == baseline.getEffect(MobEffects.HUNGER).getDuration() * 2, "Empowered Hit IV did not double duration");
+        test.assertTrue(augmented.getEffect(MobEffects.HUNGER).getDuration() == Math.round(baseline.getEffect(MobEffects.HUNGER).getDuration() * 1.75F), "Material Hit IV did not extend duration by 75%");
         ItemStack converted = new ItemStack(ModItems.OVERGROWN_CLAYMORE_JADE.get().builtInRegistryHolder(), 1, stack.getComponentsPatch());
         test.assertTrue(Augmentations.level(converted, Augmentations.EMPOWERED_HIT) == 4 && Augmentations.count(converted) == 4, "Gem conversion lost upgrades");
         var table = table(test); table.inventory.setStackInSlot(0, converted);
@@ -190,8 +218,8 @@ public class AugmentationGameTests {
         test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.PRIMARY) || runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Broken weapon left an armed ability behind");
         var deadlines = player.getData(WeaponCooldownAttachments.COOLDOWNS);
         long now = player.level().getGameTime();
-        test.assertTrue(deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.PRIMARY)) == now + 1000
-                && deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.SECONDARY)) == now + 600, "Swapped learned slots lost independent cooldowns on break");
+        test.assertTrue(deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.SECONDARY)) == now + 1000
+                && deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.PRIMARY)) == now + 600, "Swapped learned slots lost independent cooldowns on break");
         test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
 

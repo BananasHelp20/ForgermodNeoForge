@@ -22,7 +22,7 @@ public class LucidDreamingGameTests {
         var player = test.makeMockServerPlayerInLevel();
         player.setNoGravity(true);
         player.setPos(test.getBounds().getCenter());
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.NIGHTMARE_DAGGER.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.NIGHTMARE_DAGGER.get()));
         SomniumWeapon weapon = (SomniumWeapon)player.getMainHandItem().getItem();
         weapon.activateAbility(player, player.getMainHandItem(), WeaponAbilitySlot.SECONDARY);
         var zombie = EntityType.ZOMBIE.create(test.getLevel());

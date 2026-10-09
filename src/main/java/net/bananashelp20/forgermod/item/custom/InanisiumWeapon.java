@@ -62,6 +62,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive() || player.isPassenger()) return false;
         return switch (slot) {
             case PRIMARY -> stepThroughVoid(player);

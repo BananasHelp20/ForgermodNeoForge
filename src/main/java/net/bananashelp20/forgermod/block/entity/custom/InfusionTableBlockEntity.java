@@ -32,9 +32,18 @@ import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.INFUSION_TABL
 public class InfusionTableBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemHandler = new ItemStackHandler(4) { //4 -> 4 slots big
         @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return switch (slot) {
+                case 0 -> net.bananashelp20.forgermod.screen.custom.TableInputs.gemstone(stack);
+                case 1 -> net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack);
+                case 2 -> stack.is(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get());
+                default -> false;
+            };
+        }
+        @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()) {
+            if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -190,7 +199,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         ItemStack augmentedOutput = new ItemStack(output.getItem().builtInRegistryHolder(), 1, input.getComponentsPatch());
         itemHandler.extractItem(GEMSTONE_SLOT, 1, false);
         itemHandler.extractItem(GEAR_SLOT, 1, false);
-        itemHandler.insertItem(OUTPUT_SLOT, augmentedOutput, false);
+        itemHandler.setStackInSlot(OUTPUT_SLOT, augmentedOutput);
     }
 
     private boolean hasRecipe() {

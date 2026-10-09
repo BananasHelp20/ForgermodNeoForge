@@ -147,7 +147,11 @@ public final class AxeHeavyNetwork {
             int previousInvulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;
             if (target.hurt(player.damageSources().playerAttack(player), slam.damage())) {
-                if (slam.axe() instanceof SwordItemWithEffect weapon) weapon.applyMaterialEffect(target, player.getMainHandItem());
+                if (slam.axe() instanceof SwordItemWithEffect weapon) {
+                    weapon.applyMaterialEffect(target, player.getMainHandItem());
+                    var runtime = net.bananashelp20.forgermod.augmentation.Augmentations.canonical(player.getMainHandItem());
+                    if (runtime != null) runtime.onDaggerHit(target, player);
+                }
                 target.knockback(0.5, center.getX() + 0.5 - target.getX(),
                         center.getZ() + 0.5 - target.getZ());
             } else {

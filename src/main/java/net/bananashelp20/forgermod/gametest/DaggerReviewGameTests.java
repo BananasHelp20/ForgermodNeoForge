@@ -58,66 +58,49 @@ public class DaggerReviewGameTests {
 
     @GameTest(template = "empty")
     public static void abilityTooltipLayout(GameTestHelper test) throws ReflectiveOperationException {
-        var append = SwordItemWithEffect.class.getDeclaredMethod("appendWeaponTooltip", List.class, String.class, String.class, boolean.class);
+        var append = SwordItemWithEffect.class.getDeclaredMethod("appendWeaponTooltip", ItemStack.class, List.class, String.class, String.class, boolean.class);
         append.setAccessible(true);
-        int abilities = 0;
-        int passives = 0;
+        int checked = 0;
         for (var entry : ModItems.ITEMS.getEntries()) {
             if (!(entry.get() instanceof SwordItemWithEffect weapon)) continue;
+            checked++;
+            ItemStack fresh = new ItemStack(weapon);
             List<Component> collapsed = new ArrayList<>();
-            weapon.appendHoverText(new ItemStack(weapon), Item.TooltipContext.of(test.getLevel()), collapsed, TooltipFlag.NORMAL);
-            String gemKey = collapsed.stream().map(DaggerReviewGameTests::key)
-                    .filter(k -> k.endsWith(".tooltip_extra")).findFirst().orElseThrow();
-            String gem = gemKey.substring("tooltips.forgermod.".length(), gemKey.length() - ".tooltip_extra".length());
+            weapon.appendHoverText(fresh, Item.TooltipContext.of(test.getLevel()), collapsed, TooltipFlag.NORMAL);
+            test.assertTrue(collapsed.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.can_augment")), "Fresh item has no augmentation notice");
+            test.assertFalse(collapsed.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.ability.heading") || key(line).equals("tooltips.forgermod.passive.heading")), "Fresh item displays unlearned abilities");
+            ItemStack learned = TestWeapons.ready(weapon);
             for (boolean expanded : new boolean[]{false, true}) {
-                List<Component> tooltip = expanded ? new ArrayList<>() : collapsed;
-                if (expanded) append.invoke(weapon, tooltip, key(collapsed.getFirst()), gem, true);
-                int headings = 0;
-                for (Component line : tooltip) {
-                    String lineKey = key(line);
-                    boolean abilityText = lineKey.startsWith("tooltips.forgermod.ability.") || lineKey.startsWith("tooltips.forgermod.passive.");
-                    if (!abilityText) continue;
-                    test.assertTrue(line.getStyle().getColor() != null && ChatFormatting.GRAY.getColor().equals(line.getStyle().getColor().getValue()), "Ability/passive text is not light gray: " + lineKey);
-                    if (lineKey.equals("tooltips.forgermod.ability.heading")) headings++;
-                    if (lineKey.startsWith("tooltips.forgermod.passive.") && lineKey.endsWith(".name")) passives++;
-                    if (!expanded && lineKey.startsWith("tooltips.forgermod.passive.")) {
-                        test.assertTrue(lineKey.endsWith(".name") || lineKey.endsWith(".heading"), "Passive description visible without Shift");
-                    }
+                List<Component> tooltip = new ArrayList<>();
+                append.invoke(weapon, learned, tooltip, key(collapsed.getFirst()), weapon.gemstoneName(), expanded);
+                for (String heading : new String[]{"tooltips.forgermod.ability.heading", "tooltips.forgermod.passive.heading"}) {
+                    var rows = tooltip.stream().filter(line -> key(line).equals(heading)).toList();
+                    test.assertTrue(rows.size() == 1 && rows.getFirst().getStyle().getColor().getValue() == ChatFormatting.LIGHT_PURPLE.getColor(), "Heading is missing, repeated or not purple");
                 }
-                int slots = 0;
                 for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
-                    String descriptionKey = weapon.abilityDescriptionKey(slot);
-                    if (descriptionKey == null) continue;
-                    slots++;
+                    String id = net.bananashelp20.forgermod.augmentation.Augmentations.activeId(learned, slot);
                     Component title = tooltip.stream().filter(line -> key(line).equals("tooltips.forgermod.ability.tooltip"))
-                            .filter(line -> ((Component)((TranslatableContents)line.getContents()).getArgs()[0]).getContents() instanceof TranslatableContents name
-                                    && name.getKey().equals(descriptionKey + ".name")).findFirst().orElseThrow();
+                            .filter(line -> {
+                                var rank = (TranslatableContents)((Component)((TranslatableContents)line.getContents()).getArgs()[0]).getContents();
+                                return key((Component)rank.getArgs()[0]).equals(id + ".name");
+                            }).findFirst().orElseThrow();
                     var args = ((TranslatableContents)title.getContents()).getArgs();
                     var binding = (KeybindContents)((Component)args[1]).getContents();
                     test.assertTrue(binding.getName().equals(slot == WeaponAbilitySlot.PRIMARY ? "key.forgermod.ability_primary" : "key.forgermod.ability_secondary"), "Configured key replaced by literal text");
-                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(descriptionKey)) == expanded, "Active description does not follow Shift state");
-                    abilities++;
+                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(id)) == expanded, "Active description does not follow Shift");
                 }
-                test.assertTrue(headings == (slots == 0 ? 0 : 1), "Missing or duplicate ability heading");
-                for (String passive : weapon.passiveDescriptionKeys()) {
-                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(passive + ".name")), "Missing passive name");
-                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(passive)) == expanded, "Material passive does not follow Shift state");
+                for (String id : net.bananashelp20.forgermod.augmentation.Augmentations.ids(learned, false))
+                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(id)) == expanded, "Passive description does not follow Shift");
+                test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.passive.material_effect")) == expanded, "Material description does not follow Shift");
+                test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.ability.shift_hint")) != expanded, "Shift hint state incorrect");
+                for (Component line : tooltip) {
+                    String id = key(line);
+                    if ((id.startsWith("tooltips.forgermod.ability.") || id.startsWith("tooltips.forgermod.passive.")) && !id.endsWith("heading"))
+                        test.assertTrue(line.getStyle().getColor().getValue() == ChatFormatting.GRAY.getColor(), "Ability text is not light gray");
                 }
-                test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.passive.material_effect")) == expanded, "On-hit description does not follow Shift state");
-                test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.ability.shift_hint")) != expanded, "Shift hint state is incorrect");
             }
         }
-        for (Item item : new Item[]{ModItems.CARBON_STEEL_AXE.get(), ModItems.RUSTY_AXE.get(), ModItems.RUSTY_DAGGER.get()}) {
-            List<Component> tooltip = new ArrayList<>();
-            item.appendHoverText(new ItemStack(item), Item.TooltipContext.of(test.getLevel()), tooltip, TooltipFlag.NORMAL);
-            String description = item == ModItems.RUSTY_DAGGER.get() ? "tooltips.forgermod.passive.dagger" : "tooltips.forgermod.passive.axe";
-            test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(description + ".name")), "Ordinary weapon has no passive name");
-            test.assertFalse(tooltip.stream().anyMatch(line -> key(line).equals(description)), "Ordinary weapon description visible without Shift");
-            List<Component> expanded = new ArrayList<>();
-            net.bananashelp20.forgermod.item.custom.WeaponTooltips.ordinaryPassives(new ItemStack(item), expanded, true);
-            test.assertTrue(expanded.stream().anyMatch(line -> key(line).equals(description)), "Ordinary passive description missing with Shift");
-        }
-        test.assertTrue(abilities == 180 && passives >= 450, "Tooltip checks skipped variants");
+        test.assertTrue(checked == 135, "Skipped tooltip variants");
         test.succeed();
     }
 }

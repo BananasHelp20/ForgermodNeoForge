@@ -54,6 +54,30 @@ public final class WeaponAbilityNetwork {
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(
                 UseAbilityPayload.TYPE, UseAbilityPayload.STREAM_CODEC, WeaponAbilityNetwork::handleAbility);
+        event.registrar("1").playToServer(SwapAbilitiesPayload.TYPE, SwapAbilitiesPayload.STREAM_CODEC,
+                WeaponAbilityNetwork::handleSwap);
+    }
+
+    public record SwapAbilitiesPayload(int selectedSlot, String itemId) implements CustomPacketPayload {
+        public static final Type<SwapAbilitiesPayload> TYPE = new Type<>(
+                ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "swap_weapon_abilities"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, SwapAbilitiesPayload> STREAM_CODEC =
+                StreamCodec.composite(ByteBufCodecs.VAR_INT, SwapAbilitiesPayload::selectedSlot,
+                        ByteBufCodecs.STRING_UTF8, SwapAbilitiesPayload::itemId, SwapAbilitiesPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+
+    private static void handleSwap(SwapAbilitiesPayload payload, IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || !player.isAlive()) return;
+        ItemStack stack = player.getMainHandItem();
+        if (payload.selectedSlot() != player.getInventory().selected || !payload.itemId().equals(itemId(stack))
+                || Augmentations.ids(stack, true).size() != 2) return;
+        updateSession(player);
+        EquippedSession session = ACTIVE.get(player.getUUID());
+        if (session != null) cancelSession(player, session);
+        Augmentations.swapActives(stack);
+        player.inventoryMenu.broadcastChanges();
+        player.displayClientMessage(Component.translatable("message.forgermod.ability.swapped"), true);
     }
 
     private static void handleAbility(UseAbilityPayload payload, IPayloadContext context) {
@@ -67,6 +91,7 @@ public final class WeaponAbilityNetwork {
                 || !payload.itemId().equals(itemId(stack))) return;
 
         WeaponAbilitySlot slot = WeaponAbilitySlot.values()[payload.slot()];
+        if (Augmentations.activeId(stack, slot) == null) return;
         String key = cooldownKey(stack, slot);
         long now = player.level().getGameTime();
         Map<String, Long> playerCooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS);
@@ -76,7 +101,6 @@ public final class WeaponAbilityNetwork {
                     (readyAt - now + 19) / 20), true);
             return;
         }
-        if (Augmentations.activeId(stack, slot) == null) return;
         weapon = Augmentations.canonical(stack);
         WeaponAbilitySlot source = Augmentations.sourceSlot(stack, slot);
         if (weapon.activateAbility(player, stack, source)) {
@@ -100,7 +124,7 @@ public final class WeaponAbilityNetwork {
     }
 
     private static String cooldownKey(ItemStack stack, WeaponAbilitySlot slot) {
-        return WeaponCooldownKey.of(itemId(stack), slot);
+        return WeaponCooldownKey.of(itemId(stack), Augmentations.sourceSlot(stack, slot));
     }
 
     private static String itemId(ItemStack stack) {
@@ -121,7 +145,7 @@ public final class WeaponAbilityNetwork {
         session.activeSlots().removeIf(slot -> {
             if (session.weapon().isAbilityActive(player, session.sources().get(slot))) return false;
             int cooldown = session.cooldowns().get(slot);
-            if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), slot), now + cooldown);
+            if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), session.sources().get(slot)), now + cooldown);
             return true;
         });
         if (session.activeSlots().isEmpty()) {
@@ -139,7 +163,7 @@ public final class WeaponAbilityNetwork {
         for (WeaponAbilitySlot slot : session.activeSlots()) {
             session.weapon().cancelAbility(player, session.sources().get(slot));
             int cooldown = session.cooldowns().get(slot);
-            if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), slot), now + cooldown);
+            if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), session.sources().get(slot)), now + cooldown);
         }
         ACTIVE.remove(player.getUUID());
     }

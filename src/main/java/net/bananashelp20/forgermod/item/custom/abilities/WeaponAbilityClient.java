@@ -30,6 +30,19 @@ public final class WeaponAbilityClient {
     private WeaponAbilityClient() {}
 
     @SubscribeEvent
+    public static void onKey(net.neoforged.neoforge.client.event.InputEvent.Key event) {
+        if (event.getKey() != GLFW.GLFW_KEY_S || event.getAction() != GLFW.GLFW_PRESS
+                || (event.getModifiers() & (GLFW.GLFW_MOD_SHIFT | GLFW.GLFW_MOD_ALT))
+                != (GLFW.GLFW_MOD_SHIFT | GLFW.GLFW_MOD_ALT)) return;
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.screen != null
+                || Augmentations.ids(minecraft.player.getMainHandItem(), true).size() != 2) return;
+        PacketDistributor.sendToServer(new WeaponAbilityNetwork.SwapAbilitiesPayload(
+                minecraft.player.getInventory().selected,
+                BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString()));
+    }
+
+    @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Pre event) {
         while (PRIMARY.consumeClick()) sendAbility(WeaponAbilitySlot.PRIMARY, PRIMARY, 0);
         while (SECONDARY.consumeClick()) sendAbility(WeaponAbilitySlot.SECONDARY, SECONDARY, 1);

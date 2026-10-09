@@ -13,10 +13,10 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.util.RandomSource;
 import java.util.*;
 
-/** Item-local learned abilities. Core material effects, dual wield and axe slam remain intrinsic. */
+/** Learned abilities; the material hit has its own rank, beside two active/two unique passive slots. */
 public final class Augmentations {
-    public record Ability(String id, boolean active) {
-        public Component name() { return Component.translatable(id + ".name"); }
+    public record Ability(String id, boolean active, Component name) {
+        public Ability(String id, boolean active) { this(id, active, Component.translatable(id + ".name")); }
     }
     public static final String EMPOWERED_HIT = "augmentation.forgermod.empowered_hit";
     public static final String GUARDED = "augmentation.forgermod.guarded";
@@ -46,7 +46,7 @@ public final class Augmentations {
             if (key != null) abilities.add(new Ability(key, true));
         }
         for (String key : canonical.passiveDescriptionKeys()) abilities.add(new Ability(key, false));
-        abilities.add(new Ability(EMPOWERED_HIT, false));
+        abilities.add(new Ability(EMPOWERED_HIT, false, canonical.materialAbilityName()));
         abilities.add(new Ability(GUARDED, false));
         return List.copyOf(abilities);
     }
@@ -56,6 +56,11 @@ public final class Augmentations {
     public static Map<String, Integer> learned(ItemStack stack) {
         Map<String, Integer> result = new LinkedHashMap<>();
         ListTag saved = data(stack).getList("levels", Tag.TAG_COMPOUND);
+        // Existing augmented stacks keep their former native abilities when migrating to learned-only gear.
+        if (data(stack).getInt("version") < 2 && count(stack) > 0) {
+            for (String id : nativeIds(stack)) result.put(id, 1);
+            result.put(EMPOWERED_HIT, 1);
+        }
         if (saved.isEmpty()) return result;
         Set<String> valid = new HashSet<>();
         for (var ability : pool(stack)) valid.add(ability.id());
@@ -69,27 +74,21 @@ public final class Augmentations {
     }
     public static List<String> ids(ItemStack stack, boolean active) {
         if (!eligible(stack)) return List.of();
-        var weapon = (SwordItemWithEffect)stack.getItem();
         List<String> result = new ArrayList<>();
-        if (active) {
-            for (var slot : WeaponAbilitySlot.values()) {
-                String key = weapon.abilityDescriptionKey(slot);
-                if (key != null) result.add(key);
-            }
-        } else result.addAll(weapon.passiveDescriptionKeys());
         Map<String, Boolean> types = new HashMap<>();
         for (var ability : pool(stack)) types.put(ability.id(), ability.active());
         for (String id : learned(stack).keySet()) {
-            if (Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < 2) result.add(id);
+            if (!id.equals(EMPOWERED_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < 2) result.add(id);
         }
+        if (active && data(stack).getBoolean("swapped")) Collections.reverse(result);
         return List.copyOf(result);
     }
     public static int level(ItemStack stack, String id) {
         Integer value = learned(stack).get(id);
         if (value != null) return value;
-        return idsWithoutLearned(stack).contains(id) ? 1 : 0;
+        return 0;
     }
-    private static List<String> idsWithoutLearned(ItemStack stack) {
+    private static List<String> nativeIds(ItemStack stack) {
         List<String> result = new ArrayList<>();
         if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return result;
         for (var slot : WeaponAbilitySlot.values()) {
@@ -107,7 +106,7 @@ public final class Augmentations {
         var result = new ArrayList<Ability>();
         for (var ability : pool(stack)) {
             int level = level(stack, ability.id());
-            if (level > 0 && level < 4 || level == 0 && ids(stack, ability.active()).size() < 2) result.add(ability);
+            if (level > 0 && level < 4 || level == 0 && (ability.id().equals(EMPOWERED_HIT) || ids(stack, ability.active()).size() < 2)) result.add(ability);
         }
         return List.copyOf(result);
     }
@@ -125,18 +124,34 @@ public final class Augmentations {
         var learned = new LinkedHashMap<>(learned(stack));
         learned.put(id, level(stack, id) + 1);
         CompoundTag all = result.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        CompoundTag augments = new CompoundTag();
+        CompoundTag augments = data(stack).copy();
         ListTag levels = new ListTag();
         learned.forEach((key, level) -> {
             CompoundTag row = new CompoundTag(); row.putString("id", key); row.putInt("level", level); levels.add(row);
         });
-        augments.put("levels", levels); augments.putInt("count", count(stack) + 1);
+        augments.put("levels", levels); augments.putInt("count", count(stack) + 1); augments.putInt("version", 2);
         all.put(DATA, augments); result.set(DataComponents.CUSTOM_DATA, CustomData.of(all));
         return result;
     }
     public static String activeId(ItemStack stack, WeaponAbilitySlot slot) {
         var ids = ids(stack, true);
         return slot.ordinal() < ids.size() ? ids.get(slot.ordinal()) : null;
+    }
+
+    public static boolean swapActives(ItemStack stack) {
+        if (ids(stack, true).size() != 2) return false;
+        CompoundTag all = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        CompoundTag augments = data(stack).copy();
+        // Persist legacy implicit abilities before changing format/version.
+        ListTag levels = new ListTag();
+        learned(stack).forEach((id, rank) -> {
+            CompoundTag row = new CompoundTag(); row.putString("id", id); row.putInt("level", rank); levels.add(row);
+        });
+        augments.put("levels", levels); augments.putInt("version", 2);
+        augments.putBoolean("swapped", !augments.getBoolean("swapped"));
+        all.put(DATA, augments);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(all));
+        return true;
     }
     public static WeaponAbilitySlot sourceSlot(ItemStack stack, WeaponAbilitySlot slot) {
         String id = activeId(stack, slot);

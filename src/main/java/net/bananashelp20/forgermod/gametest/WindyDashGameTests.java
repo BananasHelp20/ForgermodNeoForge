@@ -21,7 +21,7 @@ public class WindyDashGameTests {
     @GameTest(template = "riftfang_test")
     public static void launchStartsCooldownImmediatelyWithoutCancelingStorm(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
-        ItemStack stack = new ItemStack(ModItems.DEAD_CALM_DAGGER.get());
+        ItemStack stack = TestWeapons.ready(ModItems.DEAD_CALM_DAGGER.get());
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         var runtime = Augmentations.canonical(stack);
         var context = (net.neoforged.neoforge.network.handling.IPayloadContext)java.lang.reflect.Proxy.newProxyInstance(
@@ -55,7 +55,7 @@ public class WindyDashGameTests {
             if (!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.TaifuniteWeapon actual)) continue;
             ItemStack stack = new ItemStack(actual);
             var runtime = Augmentations.canonical(stack);
-            if (!actual.isDagger()) stack = Augmentations.apply(stack, runtime.abilityDescriptionKey(WeaponAbilitySlot.SECONDARY));
+            stack = Augmentations.apply(stack, runtime.abilityDescriptionKey(WeaponAbilitySlot.SECONDARY));
             player.setItemInHand(InteractionHand.MAIN_HAND, stack);
             for (float pitch : new float[]{0, -45, -90, 45, 90}) {
                 player.setXRot(pitch); player.setYRot(35);
@@ -80,7 +80,7 @@ public class WindyDashGameTests {
         player.setPos(pos.getX() + .5, pos.getY(), pos.getZ() + .5);
         player.setYRot(0); player.setXRot(0);
         for (int y = 0; y < 3; y++) test.getLevel().setBlockAndUpdate(pos.offset(0, y, 1), Blocks.STONE.defaultBlockState());
-        ItemStack stack = new ItemStack(ModItems.DEAD_CALM_DAGGER.get());
+        ItemStack stack = TestWeapons.ready(ModItems.DEAD_CALM_DAGGER.get());
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         var runtime = Augmentations.canonical(stack);
         Vec3 start = player.position();

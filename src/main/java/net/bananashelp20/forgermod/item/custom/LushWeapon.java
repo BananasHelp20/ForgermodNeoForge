@@ -69,6 +69,7 @@ public class LushWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
             boolean armed = CLOUDS.arm(player.getUUID());
@@ -124,7 +125,7 @@ public class LushWeapon extends SwordItemWithEffect {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(player.getMainHandItem().getItem() instanceof LushWeapon weapon)
-                || !Augmentations.hasActive(player.getMainHandItem())) return;
+                || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.poisoned_vein")) return;
         CLOUDS.createOnKill(player.getUUID(), mob.level().dimension(),
                 mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), mob.level().getGameTime());
     }

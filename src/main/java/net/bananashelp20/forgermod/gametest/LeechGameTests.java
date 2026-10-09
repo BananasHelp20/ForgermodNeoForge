@@ -23,7 +23,7 @@ public class LeechGameTests {
         player.setPos(test.getBounds().getCenter());
         player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40);
         player.setHealth(5);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.ASSASSIN_DAGGER.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.ASSASSIN_DAGGER.get()));
         VulnusiumWeapon weapon = (VulnusiumWeapon)player.getMainHandItem().getItem();
         weapon.activateAbility(player, player.getMainHandItem(), WeaponAbilitySlot.SECONDARY);
         for (int hit = 0; hit < 10; hit++) {

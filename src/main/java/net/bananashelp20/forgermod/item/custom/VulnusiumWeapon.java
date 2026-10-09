@@ -55,7 +55,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         applyMaterialEffect(pTarget, pStack);
 
-        if (pTarget.isDeadOrDying()) pAttacker.heal(1); //heals 1hp?
+        if (pTarget.isDeadOrDying() && Augmentations.level(pStack, Augmentations.EMPOWERED_HIT) > 0) pAttacker.heal(1);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
@@ -69,7 +69,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (event.isCanceled() || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
-                || !Augmentations.hasActive(player.getMainHandItem()) || !LEECH.hasCharge(player.getUUID())) return;
+                || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.leech") || !LEECH.hasCharge(player.getUUID())) return;
         event.setAmount(event.getAmount() * 1.1F);
     }
 
@@ -78,7 +78,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (event.getNewDamage() <= 0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
-                || !Augmentations.hasActive(player.getMainHandItem()) || !LEECH.hasCharge(player.getUUID())) return;
+                || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.leech") || !LEECH.hasCharge(player.getUUID())) return;
         // The bonus is one eleventh of the final 110% hit.
         float healing = LEECH.availableHealing(player.getUUID(), event.getNewDamage() / 11);
         float before = player.getHealth();
@@ -90,6 +90,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof ServerPlayer player
+                && Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.deep_wound")
                 && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
                 && DEEP_WOUND.consume(player.getUUID()) && !target.isDeadOrDying()) {
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
@@ -98,6 +99,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
             boolean armed = LEECH.arm(player.getUUID());
@@ -140,7 +142,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (!(event.getEntity() instanceof ServerPlayer player) || !event.isCriticalHit()
                 || !DEEP_WOUND.isArmed(player.getUUID())
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
-                || !Augmentations.hasActive(player.getMainHandItem())) return;
+                || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.deep_wound")) return;
         event.setDamageMultiplier(event.getDamageMultiplier() * 2);
     }
 

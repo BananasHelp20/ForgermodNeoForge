@@ -19,17 +19,17 @@ public final class AugmentationTableMenu extends AbstractContainerMenu {
     }
     public AugmentationTableMenu(int id, Inventory inventory, AugmentationTableBlockEntity table, ContainerData data) {
         super(ModMenuTypes.AUGMENTATION_TABLE_MENU.get(),id); this.table=table; this.data=data;
-        int[] x={28,88,148,224};
+        int[] x={8,48,88,148};
         for (int i=0;i<4;i++) {
             final int index=i;
-            addSlot(new SlotItemHandler(table.inventory,i,x[i],44) {
+            addSlot(new SlotItemHandler(table.inventory,i,x[i],35) {
                 @Override public boolean mayPlace(ItemStack stack) { return index != 3 && phase()==0 && super.mayPlace(stack); }
                 @Override public boolean mayPickup(Player player) { return index == 3 || phase()==0; }
             });
         }
         for (int row=0;row<3;row++) for (int col=0;col<9;col++)
-            addSlot(new Slot(inventory,col+row*9+9,52+col*18,140+row*18));
-        for (int col=0;col<9;col++) addSlot(new Slot(inventory,col,52+col*18,198));
+            addSlot(new Slot(inventory,col+row*9+9,8+col*18,134+row*18));
+        for (int col=0;col<9;col++) addSlot(new Slot(inventory,col,8+col*18,192));
         addDataSlots(data);
     }
     public int phase() { return data.get(0); }

@@ -59,6 +59,7 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger()) return false;
         if (slot == WeaponAbilitySlot.PRIMARY) {
             if (FLAMING_COMBO.isActive(player.getUUID(), player.level().getGameTime())) return false;
@@ -99,13 +100,13 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
-        if (PYROMANIAC.consume(player.getUUID())) {
+        if (Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.pyromaniac") && PYROMANIAC.consume(player.getUUID())) {
             player.heal(5.0F);
             if (!target.isDeadOrDying()) {
                 target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(), 100));
             }
         }
-        if (target.isDeadOrDying()) return;
+        if (target.isDeadOrDying() || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.flaming_combo")) return;
         int before = target.getRemainingFireTicks();
         int after = FLAMING_COMBO.fireTicksAfterHit(player.getUUID(), player.level().getGameTime(), before);
         if (after != before) target.setRemainingFireTicks(after);

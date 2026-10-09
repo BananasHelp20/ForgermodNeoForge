@@ -66,6 +66,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
             boolean armed = ANGER.arm(player.getUUID(), player.level().getGameTime());
@@ -110,7 +111,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(player.getMainHandItem().getItem() instanceof MorsiumWeapon weapon)
-                || !Augmentations.hasActive(player.getMainHandItem())) return;
+                || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.strengthened_bones")) return;
         if (BONES.consumeKill(player.getUUID(), player.level().getGameTime())) {
             player.displayClientMessage(Component.translatable("message.forgermod.strengthened_bones.active"), true);
         }

@@ -26,7 +26,7 @@ public class PoisonedVeinGameTests {
         ServerPlayer player = test.makeMockServerPlayerInLevel();
         player.setNoGravity(true);
         player.setPos(position);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.LEAFCUTTER_DAGGER.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.LEAFCUTTER_DAGGER.get()));
         return player;
     }
 

@@ -48,7 +48,7 @@ public class SonicBoomGameTests {
         player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8, 16, 8))));
         player.setYRot(0);
         player.setXRot(0);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(item));
         player.tick(); // Apply the equipped weapon's actual damage attributes.
         for (int x = -4; x <= 4; x++) {
             for (int z = -4; z <= 4; z++) {
@@ -250,7 +250,7 @@ public class SonicBoomGameTests {
         var primary = new WeaponAbilityNetwork.UseAbilityPayload(0, player.getInventory().selected, id);
         handle.invoke(null, primary, context);
         test.assertTrue(weapon(player).isAbilityActive(player, WeaponAbilitySlot.PRIMARY), "Secondary cooldown blocked primary");
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.WARDENS_NEEDLE_RUBY.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.WARDENS_NEEDLE_RUBY.get()));
         player.tick();
         String rubyId = BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString();
         handle.invoke(null, new WeaponAbilityNetwork.UseAbilityPayload(1, player.getInventory().selected, rubyId), context);

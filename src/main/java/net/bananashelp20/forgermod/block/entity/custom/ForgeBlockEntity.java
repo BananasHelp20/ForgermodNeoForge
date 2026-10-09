@@ -39,9 +39,13 @@ import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.*;
 public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) { //4 -> 4 slots big
         @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return slot != 3 && (slot != 2 || net.bananashelp20.forgermod.screen.custom.TableInputs.upgradeTemplate(stack));
+        }
+        @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()) {
+            if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -186,20 +190,15 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     ));
 
     private void craftItem(int recipeUsed) {
-//        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
-//        ItemStack output = recipe.get().value().output();
-//
-//        itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
-//        itemStackHandler.extractItem(INPUT_SLOT2, /*(isShardRecipe(recipe) ? SHARD_CRAFT_COST : 1)*/1, false);
-//        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
-//        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
-
         ItemStack output = FORGE_RECIPE_OUTPUTS[recipeUsed];
 
         itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
         itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
         itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
-        itemStackHandler.insertItem(OUTPUT_SLOT, new ItemStack(output.getItem(), 1), false);
+        ItemStack result = itemStackHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()
+                ? new ItemStack(output.getItem(), 1) : itemStackHandler.getStackInSlot(OUTPUT_SLOT).copy();
+        if (!itemStackHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()) result.grow(1);
+        itemStackHandler.setStackInSlot(OUTPUT_SLOT, result);
     }
 
     private boolean hasCraftingFinished() {

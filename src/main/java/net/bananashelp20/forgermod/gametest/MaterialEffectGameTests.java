@@ -54,7 +54,7 @@ public class MaterialEffectGameTests {
     }
 
     private static double equip(Player player, Item item) {
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(item));
         player.tick();
         return player.getAttributeValue(Attributes.ATTACK_SPEED);
     }
@@ -108,7 +108,7 @@ public class MaterialEffectGameTests {
             player.setNoGravity(true);
             player.setPos(test.getBounds().getCenter());
             equip(player, dagger);
-            player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(dagger));
+            player.setItemInHand(InteractionHand.OFF_HAND, TestWeapons.ready(dagger));
             Cow target = target(test, player.position().add(0, 0, 2));
             dagger.applyMaterialEffect(target);
             MobEffectInstance expected = effect(test, target);

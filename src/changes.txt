@@ -242,3 +242,27 @@ Changed
 - Windy Dash synchronizes launch velocity immediately to the player client and starts its five-second base cooldown on use; augmentation cooldown reductions still apply
 Removed
 - Removed Windy Dash repeated one-block teleports, six-step distance state and obsolete movement-state test
+
+Added
+- Shift+Alt+S swaps exactly two learned main-hand active abilities; offhand is ignored and order persists through augmentation, saving and gemstone infusion
+- Ability cooldowns follow material ability identity within each registered variant, so swapping slots or switching to an unswapped stack cannot reset/bypass cooldowns; swapping cancels ongoing abilities and starts their cooldowns
+- Explicit legacy migration preserves native abilities and learned ranks on already-augmented saved items
+- Material-hit augmentation choices use the actual effect name, such as Weakness Hit; the material hit has its own I-IV progression alongside two unique passive and two active slots, matching the written maxed Deathwisper example
+- Axe area-slam hits trigger the learned material's on-hit ability handling as well as the learned material effect
+
+Changed
+- Infusion slots accept only compatible gemstones, the Gemstone Upgrade Template and items with an infusion recipe; direct placement, shift-click routing and item handlers enforce the same rules
+- Forge and Infusion output slots reject input while allowing extraction and internally crafted outputs
+- Forge template slot accepts mod upgrade templates and vanilla/modded SmithingTemplateItem templates; template shift-clicks route exclusively to that slot
+- Augmentation screen now uses a standard 176-pixel Minecraft-style gray beveled panel, inset slots, aligned inventory, two stacked choice buttons, loading bar and empty-slot labels on hover
+- Weapon tooltips follow the written fresh/partial/maxed layouts: capability notices on fresh gear, purple Passives/Active Abilities headings, Roman ranks, configured ability keys, light-gray Shift-only descriptions and a final blue Hold Shift hint
+- Amber shows orange Amber and fire resistance; Jade shows green Jade and its amplifier/duration bonuses; Ruby and Amethyst show their actual names, colors and bonuses
+
+Debuffed
+- Fresh special-material weapons no longer receive active abilities, unique passives or material on-hit effects automatically; those abilities must first be learned through augmentation
+- Fresh Curseblood Claymore no longer gains its material-associated one-HP kill heal before the material hit is learned
+- Material-hit rank I unlocks the base effect; each of its three upgrades adds 25% of base duration, reaching a 75% duration bonus at IV rather than the previous Empowered Hit's 100% bonus
+
+Removed
+- Removed unlearned abilities, empty gemstone brackets and augmentation-count/debug explanations from normal weapon tooltips
+- Removed the augmentation screen's wide dark-blue panel styling and the obsolete native-only tooltip implementation

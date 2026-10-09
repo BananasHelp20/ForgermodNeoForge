@@ -34,7 +34,7 @@ public class RootingRootsGameTests {
         player.setNoGravity(true);
         Vec3 start = Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8, 8, 8)));
         player.setPos(start);
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.LEAFCUTTER_DAGGER.get()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(ModItems.LEAFCUTTER_DAGGER.get()));
         LushWeapon weapon = (LushWeapon)player.getMainHandItem().getItem();
         Creeper inside = target(test, start.add(0, 0, 9.5));
         Creeper edge = target(test, start.add(10, 0, 0));

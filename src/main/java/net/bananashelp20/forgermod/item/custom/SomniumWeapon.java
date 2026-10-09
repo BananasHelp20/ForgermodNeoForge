@@ -69,7 +69,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
-        if (NIGHTMARE.consumeHit(player.getUUID()) && !target.isDeadOrDying()) {
+        if (Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.absolute_nightmare") && NIGHTMARE.consumeHit(player.getUUID()) && !target.isDeadOrDying()) {
             target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0));
             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
         }
@@ -79,7 +79,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public static void onEnemyKill(LivingDeathEvent event) {
         if (event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                || !(player.getMainHandItem().getItem() instanceof SomniumWeapon weapon) || !Augmentations.hasActive(player.getMainHandItem())
+                || !(player.getMainHandItem().getItem() instanceof SomniumWeapon weapon) || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.lucid_dreaming")
                 || !(event.getEntity() instanceof Enemy || event.getEntity() instanceof Player other && player.canHarmPlayer(other))
                 || !LUCID.consumeKill(player.getUUID(), player.level().getGameTime())) return;
         MobEffectInstance previous = player.getEffect(MobEffects.MOVEMENT_SPEED);
@@ -89,6 +89,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
+        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
             if (LUCID.isActive(player.getUUID(), player.level().getGameTime())) return false;
