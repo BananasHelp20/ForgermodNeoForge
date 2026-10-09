@@ -208,6 +208,7 @@ Debuffed
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 
 Removed
+- Stumpfl Bat is excluded from the creative weapons menu
 - Removed the fixed-offset Ancient Grave city-start pool from new generation; retained its legacy padded template for saved-city compatibility
 - Gemstone weapon variants are hidden from creative tabs while remaining available through upgrades and commands
 - Ancient Sword Stand's unconditional Rusty Claymore breaking drop and incorrectly offset, repeatedly rebuilt collision shapes

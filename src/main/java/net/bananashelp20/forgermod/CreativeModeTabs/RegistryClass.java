@@ -94,7 +94,6 @@ public class RegistryClass {
                 ModItems.RUSTY_CLAYMORE.get(),
                 ModItems.RUSTY_AXE.get(),
                 ModItems.RUSTY_DAGGER.get(),
-                ModItems.STUMPFL_BAT.get(),
 
                 ModItems.INFERNAL_CLAYMORE.get(),
                 ModItems.INFERNAL_CLAYMORE_RUBY.get(),

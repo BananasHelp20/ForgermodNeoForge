@@ -242,3 +242,7 @@
 - Regression tests compare 48 spread-out seeds against vanilla city generation, assert one extra piece and no overlaps, exercise all three center variants and four root rotations, and check full stand placement in four rotations. Initial consecutive seeds did not cover all rotations; fixed the test seed distribution and all 36 server tests passed. Final verification also checks structure-reference range and rebuilt resource packaging.
 
 - Final verification: all 36 server tests and build passed, including neighboring-chunk reference range. Reused existing NeoForge 21.1.93 artifacts with -x createMinecraftArtifacts because the running Minecraft client locked the artifact jar during clean regeneration.
+
+## New instructions: Stumpfl Bat creative exclusion
+
+- Removed Stumpfl Bat from the creative weapons registry; its item registration and command availability remain intact.
