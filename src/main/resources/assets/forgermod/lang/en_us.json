@@ -50,7 +50,7 @@
   "tooltips.forgermod.passive.double_jump": "Press Jump again in midair after a normal jump to leap once more",
   "tooltips.forgermod.ability.deep_wound": "Your next critical dagger hit deals double damage and inflicts Slowness III on the target for 5 seconds (30-second cooldown)",
   "message.forgermod.deep_wound.armed": "Deep Wound armed for your next critical hit",
-  "tooltips.forgermod.ability.leech": "Your next 10 dagger hits drain up to 10% of the target's maximum health each and heal you by the health drained (15-second cooldown)",
+  "tooltips.forgermod.ability.leech": "Your next 10 dagger hits deal 10% more normal damage and heal you from that bonus, restoring at most 10 HP in total (15-second cooldown)",
   "message.forgermod.leech.armed": "Leech armed for 10 hits",
   "tooltips.forgermod.ability.rooting_roots": "Hold hostile mobs within 10 blocks in place and poison them for 10 seconds (1-minute cooldown)",
   "tooltips.forgermod.ability.poisoned_vein": "Your next dagger kill against a hostile mob leaves a 3-block poison cloud for 5 seconds, applying 30 seconds of Poison I to anyone inside, including you (45-second cooldown)",

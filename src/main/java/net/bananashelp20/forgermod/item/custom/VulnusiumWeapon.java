@@ -13,6 +13,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -65,22 +68,27 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
     }
 
-    @Override
-    public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
-        if (!(attacker instanceof ServerPlayer player) || target.isDeadOrDying()
-                || !LEECH.hasCharge(player.getUUID())) return;
-        int previousInvulnerableTime = target.invulnerableTime;
-        target.invulnerableTime = 0;
-        float healthBefore = target.getHealth();
-        if (target.hurt(player.damageSources().playerAttack(player), target.getMaxHealth() * 0.1F)) {
-            float drained = Math.max(0, healthBefore - target.getHealth());
-            if (drained > 0) {
-                player.heal(drained);
-                LEECH.consume(player.getUUID());
-            }
-        } else {
-            target.invulnerableTime = previousInvulnerableTime;
-        }
+    @SubscribeEvent
+    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        if (event.isCanceled() || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                || !(event.getSource().getEntity() instanceof ServerPlayer player)
+                || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
+                || !weapon.isDagger() || !LEECH.hasCharge(player.getUUID())) return;
+        event.setAmount(event.getAmount() * 1.1F);
+    }
+
+    @SubscribeEvent
+    public static void onDamageDealt(LivingDamageEvent.Post event) {
+        if (event.getNewDamage() <= 0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                || !(event.getSource().getEntity() instanceof ServerPlayer player)
+                || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon)
+                || !weapon.isDagger() || !LEECH.hasCharge(player.getUUID())) return;
+        // The bonus is one eleventh of the final 110% hit.
+        float healing = LEECH.availableHealing(player.getUUID(), event.getNewDamage() / 11);
+        float before = player.getHealth();
+        player.heal(healing);
+        LEECH.recordHealing(player.getUUID(), player.getHealth() - before);
+        LEECH.consume(player.getUUID());
     }
 
     @Override

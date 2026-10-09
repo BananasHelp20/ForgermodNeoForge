@@ -1,4 +1,5 @@
 Added
+- Leech now multiplies normal dagger hit damage by 1.1 and heals from the damage bonus within a shared ten-HP activation budget; successful damaging hits consume the existing ten-hit charge
 - Deep Wound server tests cover every gemstone variant, critical-only one-time activation, doubled critical damage, target-only slowness, and unchanged primary/secondary cooldowns
 - Tooltip regression tests check collapsed and expanded views across all 135 material weapons and ordinary axes/Rusty Dagger, including dynamic keybind components, named passives, colors, and description visibility
 - Material-effect on-hit descriptions move out of claymore lore into Shift-gated passives and show actual scaled duration and strength, including gemstones
@@ -159,6 +160,7 @@ Buffed
 - Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
 
 Debuffed
+- Leech no longer deals ten percent of target maximum health as a second damage instance and cannot restore more than ten HP per activation
 - Special daggers now give shorter material effects than claymores, with ordinary variants lasting about 0.53 times as long
 - Special-material axes now attack at 0.9/s (1.3/s with Amethyst), correcting the inverted speed adjustment that previously made them faster than claymores
 - Poisoned Vein cloud owner immunity is removed: the creator is poisoned along with anyone else inside the cloud
