@@ -7,6 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.network.codec.StreamCodec;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
@@ -37,6 +39,29 @@ public final class DoubleJumpNetwork {
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(
                 DoubleJumpPayload.TYPE, DoubleJumpPayload.STREAM_CODEC, DoubleJumpNetwork::handle);
+        event.registrar("1").playToClient(
+                DoubleJumpAcceptedPayload.TYPE, DoubleJumpAcceptedPayload.STREAM_CODEC, DoubleJumpNetwork::handleAccepted);
+    }
+
+    public record DoubleJumpAcceptedPayload() implements CustomPacketPayload {
+        public static final Type<DoubleJumpAcceptedPayload> TYPE = new Type<>(
+                ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "double_jump_accepted"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, DoubleJumpAcceptedPayload> STREAM_CODEC =
+                StreamCodec.unit(new DoubleJumpAcceptedPayload());
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+
+    private static void handleAccepted(DoubleJumpAcceptedPayload payload, IPayloadContext context) {
+        boost(context.player());
+    }
+
+    private static void boost(Player player) {
+        Vec3 velocity = player.getDeltaMovement();
+        player.setDeltaMovement(velocity.x, 0.55, velocity.z);
+        player.hasImpulse = true;
+        player.fallDistance = 0;
     }
 
     private static void handle(DoubleJumpPayload payload, IPayloadContext context) {
@@ -44,11 +69,10 @@ public final class DoubleJumpNetwork {
                 || player.isSpectator() || !player.isAlive()
                 || !(player.getMainHandItem().getItem() instanceof TaifuniteWeapon weapon)
                 || !weapon.isDagger() || !STATE.consume(player.getUUID())) return;
-        Vec3 velocity = player.getDeltaMovement();
-        player.setDeltaMovement(velocity.x, 0.55, velocity.z);
-        player.hurtMarked = true;
-        player.hasImpulse = true;
-        player.fallDistance = 0;
+        boost(player);
+        // A full server motion packet overwrites the client's current sprint momentum.
+        // Acknowledge only the lift, preserving the client's horizontal movement.
+        PacketDistributor.sendToPlayer(player, new DoubleJumpAcceptedPayload());
         player.serverLevel().sendParticles(ParticleTypes.CLOUD,
                 player.getX(), player.getY(), player.getZ(), 12, 0.35, 0.1, 0.35, 0.05);
     }

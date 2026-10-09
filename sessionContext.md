@@ -113,3 +113,10 @@
 - Secondary cooldown remains 300 ticks. As required by the standing ongoing-ability policy, it starts when the 15-second protection window ends or is canceled. Speed lasts 30 seconds naturally; switching during ongoing protection cancels its ability buffs, retaining the existing prior-Speed restoration behavior. Repeated activation cannot restart the ongoing protection window.
 - Two test/build/GameTestServer passes: 23 lightweight checks and all 30 server tests. State tests verify exact 300-tick protection expiry; server tests verify kill-only trigger, Speed II duration, half fall damage, cancellation, cooldown value, and no mid-effect restart. Final review passed.
 - Leech was committed/pushed as fd6ba83. Pending: preserve sprint momentum on Double Jump; Eye of the Storm targets all entities (caster clarification requested).
+
+## Double Jump sprint momentum preservation (2026-10-09)
+
+- The server previously marked its double-jump velocity for a full owner motion packet, overwriting the client horizontal sprint velocity with potentially stale server values. Confirmed against Minecraft 1.21.1 ServerEntity motion synchronization.
+- The server still validates/consumes the extra jump and applies lift, but sends a dedicated client acknowledgement. The client applies only vertical 0.55 lift to its current velocity, preserving horizontal x/z and sprint state; fall distance resets. No client-supplied velocity is trusted.
+- Fixed initial test harness mock-login channel negotiation; two subsequent test/build/GameTestServer passes succeeded with 23 lightweight checks and all 31 server tests. The server test checks stale horizontal server motion, no full owner velocity overwrite, one-jump-only validation, accepted client handler preserving three sprint vectors, sprint flag, and fall reset. Final review passed; live client/multiplayer movement feel remains to be checked.
+- Lucid Dreaming was committed/pushed as d93d091. Remaining task: Eye of the Storm affects all entities in its ten-block radius; requested caster-inclusion clarification received no response yet, so assume everyone except caster if needed. Earlier models remain uncommitted.

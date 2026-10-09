@@ -1,4 +1,6 @@
 Added
+- Double Jump now acknowledges the server-approved lift without overwriting the client horizontal velocity, retaining sprint momentum and the existing one-extra-jump validation
+- Double Jump regression tests cover stale server horizontal motion, sprint/velocity preservation, fall-distance reset, and rejected repeated air jumps
 - Lucid Dreaming kill-trigger regression tests cover nonlethal/passive exclusions, thirty-second Speed II, fifteen-second fall-protection expiry, cancellation, and blocked mid-effect rearming
 - Leech now multiplies normal dagger hit damage by 1.1 and heals from the damage bonus within a shared ten-HP activation budget; successful damaging hits consume the existing ten-hit charge
 - Deep Wound server tests cover every gemstone variant, critical-only one-time activation, doubled critical damage, target-only slowness, and unchanged primary/secondary cooldowns
