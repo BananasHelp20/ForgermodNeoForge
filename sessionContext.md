@@ -157,3 +157,8 @@
 
 - Charge Attack discharges now emit an explosion and flash burst with a much larger electric spark and end rod particle cloud.
 - The existing lightning damage and discharge behavior remain unchanged.
+
+## Use authored dagger textures (2026-10-09)
+
+- Registered all authored special dagger textures in the item model data generator, including gemstone variants.
+- Generated item models now point to the matching authored texture names such as leafcutter, ghost, emberfang, riftfang, assassin, nightmare, static, and dead calm.

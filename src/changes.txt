@@ -1,4 +1,5 @@
 Added
+
 - Charge Attack discharge now adds a large electrical explosion burst of explosion, flash, electric-spark, and end-rod particles alongside its lightning damage
 - Charge Attack state tests cover the five-percent damage ramp from the first hit through the twentieth hit and reset after discharge
 - Charge Attack lightning hits use the same ramp and advance its hit counter, including Chain Lightning and Area Discharge

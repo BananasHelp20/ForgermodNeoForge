@@ -142,11 +142,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 //        handheldItem(ModItems.VOLTAGE_AXE_AMBER);
 //        handheldItem(ModItems.VOLTAGE_AXE_AMETHYST);
 //        handheldItem(ModItems.VOLTAGE_AXE_JADE);
-//        handheldItem(ModItems.NULLIFIED_AXE);
-//        handheldItem(ModItems.NULLIFIED_AXE_JADE);
-//        handheldItem(ModItems.NULLIFIED_AXE_RUBY);
-//        handheldItem(ModItems.NULLIFIED_AXE_AMBER);
-//        handheldItem(ModItems.NULLIFIED_AXE_AMETHYST);
+        // Axe of the Void and its gemstone variants use authored OBJ item models in
+        // src/main/resources. Do not replace them with generated handheld sprites.
 //        handheldItem(ModItems.MOLTEN_AXE);
 //        handheldItem(ModItems.MOLTEN_AXE_JADE);
 //        handheldItem(ModItems.MOLTEN_AXE_RUBY);
@@ -201,6 +198,47 @@ public class ModItemModelProvider extends ItemModelProvider {
 //        handheldItem(ModItems.EMBERFANG_DAGGER_AMETHYST);
 //        handheldItem(ModItems.RUSTY_DAGGER);
 
+        // Authored dagger textures use display names rather than registered item ids.
+        daggerItem(ModItems.LEAFCUTTER_DAGGER, "leafcutter_dagger");
+        daggerItem(ModItems.LEAFCUTTER_DAGGER_RUBY, "leafcutter_dagger_ruby");
+        daggerItem(ModItems.LEAFCUTTER_DAGGER_AMBER, "leafcutter_dagger_amber");
+        daggerItem(ModItems.LEAFCUTTER_DAGGER_AMETHYST, "leafcutter_dagger_amethyst");
+        daggerItem(ModItems.LEAFCUTTER_DAGGER_JADE, "leafcutter_dagger_jade");
+        daggerItem(ModItems.DEATHWISPER_DAGGER, "ghost_dagger");
+        daggerItem(ModItems.DEATHWISPER_DAGGER_RUBY, "ghost_dagger_ruby");
+        daggerItem(ModItems.DEATHWISPER_DAGGER_AMBER, "ghost_dagger_amber");
+        daggerItem(ModItems.DEATHWISPER_DAGGER_AMETHYST, "ghost_dagger_amethyst");
+        daggerItem(ModItems.DEATHWISPER_DAGGER_JADE, "ghost_dagger_jade");
+        daggerItem(ModItems.EMBERFANG_DAGGER, "emberfang_dagger");
+        daggerItem(ModItems.EMBERFANG_DAGGER_RUBY, "emberfang_dagger_ruby");
+        daggerItem(ModItems.EMBERFANG_DAGGER_AMBER, "emberfang_dagger_amber");
+        daggerItem(ModItems.EMBERFANG_DAGGER_AMETHYST, "emberfang_dagger_amethyst");
+        daggerItem(ModItems.EMBERFANG_DAGGER_JADE, "emberfang_dagger_jade");
+        daggerItem(ModItems.RIFTFANG_DAGGER, "riftfang_dagger");
+        daggerItem(ModItems.RIFTFANG_DAGGER_RUBY, "riftfang_dagger_ruby");
+        daggerItem(ModItems.RIFTFANG_DAGGER_AMBER, "riftfang_dagger_amber");
+        daggerItem(ModItems.RIFTFANG_DAGGER_AMETHYST, "riftfang_dagger_amethyst");
+        daggerItem(ModItems.RIFTFANG_DAGGER_JADE, "riftfang_dagger_jade");
+        daggerItem(ModItems.ASSASSIN_DAGGER, "assassin_dagger");
+        daggerItem(ModItems.ASSASSIN_DAGGER_RUBY, "assassin_dagger_ruby");
+        daggerItem(ModItems.ASSASSIN_DAGGER_AMBER, "assassin_dagger_amber");
+        daggerItem(ModItems.ASSASSIN_DAGGER_AMETHYST, "assassin_dagger_amethyst");
+        daggerItem(ModItems.ASSASSIN_DAGGER_JADE, "assassin_dagger_jade");
+        daggerItem(ModItems.NIGHTMARE_DAGGER, "nightmare_dagger");
+        daggerItem(ModItems.NIGHTMARE_DAGGER_RUBY, "nightmare_dagger_ruby");
+        daggerItem(ModItems.NIGHTMARE_DAGGER_AMBER, "nightmare_dagger_amber");
+        daggerItem(ModItems.NIGHTMARE_DAGGER_AMETHYST, "nightmare_dagger_amethyst");
+        daggerItem(ModItems.NIGHTMARE_DAGGER_JADE, "nightmare_dagger_jade");
+        daggerItem(ModItems.STATIC_DAGGER, "static_dagger");
+        daggerItem(ModItems.STATIC_DAGGER_RUBY, "static_dagger_ruby");
+        daggerItem(ModItems.STATIC_DAGGER_AMBER, "static_dagger_amber");
+        daggerItem(ModItems.STATIC_DAGGER_AMETHYST, "static_dagger_amethyst");
+        daggerItem(ModItems.STATIC_DAGGER_JADE, "static_dagger_jade");
+        daggerItem(ModItems.DEAD_CALM_DAGGER, "dead_calm_dagger");
+        daggerItem(ModItems.DEAD_CALM_DAGGER_RUBY, "dead_calm_dagger_ruby");
+        daggerItem(ModItems.DEAD_CALM_DAGGER_AMBER, "dead_calm_dagger_amber");
+        daggerItem(ModItems.DEAD_CALM_DAGGER_AMETHYST, "dead_calm_dagger_amethyst");
+        daggerItem(ModItems.DEAD_CALM_DAGGER_JADE, "dead_calm_dagger_jade");
         //items
         basicItem(ModItems.CARBON_STEEL_CROSS_GUARD.get());
         handheldItem(ModItems.SHARPENED_BLADE);
@@ -210,10 +248,19 @@ public class ModItemModelProvider extends ItemModelProvider {
     }
 
     private ItemModelBuilder handheldItem(DeferredItem<?> item) {
-        return withExistingParent(item.getId().getPath(), ResourceLocation.parse("item/handheld"))
+        // Generated sprites always span 16 model units, even with 20x20 source art.
+        // Claymores compensate by 20/16 through shared display transforms.
+        ResourceLocation parent = item.getId().getPath().contains("claymore")
+                ? ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/claymore_handheld")
+                : ResourceLocation.parse("item/handheld");
+        return withExistingParent(item.getId().getPath(), parent)
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/" + item.getId().getPath()));
     }
 
+    private ItemModelBuilder daggerItem(DeferredItem<?> item, String texture) {
+        return withExistingParent(item.getId().getPath(), ResourceLocation.parse("item/handheld"))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/" + texture));
+    }
     private ItemModelBuilder simpleBlockItem(DeferredItem<?> item) {
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.parse("item/generated")).texture("layer0",
