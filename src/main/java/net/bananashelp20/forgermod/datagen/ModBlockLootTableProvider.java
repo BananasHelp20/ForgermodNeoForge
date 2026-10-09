@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.datagen;
 
 import net.bananashelp20.forgermod.block.ModBlocks;
+import net.bananashelp20.forgermod.block.custom.AncientSwordStandBlock;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
@@ -85,8 +87,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.DEVELOPIUM_BLOCK.get());
         dropSelf(ModBlocks.FORGE.get());
         dropSelf(ModBlocks.INFUSION_TABLE.get());
-        dropWhenSilkTouch(ModBlocks.ANCIENT_SWORD_STAND.get());
-        dropOther(ModBlocks.ANCIENT_SWORD_STAND.get(), ModItems.RUSTY_CLAYMORE.get());
+        add(ModBlocks.ANCIENT_SWORD_STAND.get(), createSingleItemTable(ModBlocks.ANCIENT_SWORD_STAND.get())
+                .apply(CopyBlockState.copyState(ModBlocks.ANCIENT_SWORD_STAND.get()).copy(AncientSwordStandBlock.FULL)));
 
         //ores
         dropOther(ModBlocks.RUBY_END_ORE.get(), ModItems.RUBY_GEMSTONE.get());

@@ -1,4 +1,4 @@
-// 1.21.1	2026-09-22T17:48:52.0876425	Loot Tables
+// 1.21.1	2026-10-08T19:34:47.000661	Loot Tables
 90ca4bef35a074345574bd1bd80974a7b12a687c data/forgermod/loot_table/blocks/amber_deepslate_ore.json
 3dc356ddb6af4128e514863f70e36aff004e6051 data/forgermod/loot_table/blocks/amber_end_ore.json
 e65408b4da2abe55f9a32925e6b61216eddb1b49 data/forgermod/loot_table/blocks/amber_nether_ore.json
@@ -9,7 +9,7 @@ bcb050067ade2cb56f5b639f472aa138a145ec86 data/forgermod/loot_table/blocks/amethy
 152db85b614edb06b9fb94c57209c1e0e1ba1f28 data/forgermod/loot_table/blocks/amethyst_nether_ore.json
 1346c3108d037143a8125f5b1fbfa784953ed8f9 data/forgermod/loot_table/blocks/amethyst_obsidian_ore.json
 628a32a81f1b07778f007a67b371f2299ffc7c77 data/forgermod/loot_table/blocks/amethyst_stone_ore.json
-01721e55f0d6ee2c4921c79975dac72e03bbd1fe data/forgermod/loot_table/blocks/ancient_sword_stand.json
+5ef72d5d1653c424a8bf6634388069d12f93e16c data/forgermod/loot_table/blocks/ancient_sword_stand.json
 79c96364238d118b33205b7bf15c13970f8a3c62 data/forgermod/loot_table/blocks/carbon_steel_block.json
 ce3794d7b517c6872d66eae1502e9d8a9d63b98f data/forgermod/loot_table/blocks/damask_block.json
 60cf7bda934f9ab1b35eaa1548c7102afb9e8e21 data/forgermod/loot_table/blocks/developium_block.json

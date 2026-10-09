@@ -1,0 +1,5 @@
+- I have already worked out a structure for the ancient Sword stand. it lies in: D:\Minecraft Modding internal\Mods\ForgermodNeoForge\run\saves\Structure\generated\minecraft\structures
+and is named forgermod_ancient_grave_v2 as a nbt file. The structure should be named the Ancient Grave and spawn as a guarantied room of an ancient city. (up to one)
+- implement a command (/no-ability-cooldown [target] true) that disables all abilitie cooldowns for the target until you do "/no-ability-cooldown [target] false"
+- the sonic charge hits all mobs in the player view direction. the "projectile" (area of the projectile, which pierces through all entities) has a 3x3 area (with the middle of the 3x3 area being in the face of the player).
+The boom is only stopped by solid blocks the player cannot walk through. and only if the center block (of the 3x3) is blocked. (so shooting through a 1x1 hole is possible if the player is locking through it). It pierces ALL enemies on its way (all entities except for items), not just a few.

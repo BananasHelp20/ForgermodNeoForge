@@ -49,6 +49,61 @@
 - The latest documentation-only update refreshed this file, added `AGENTS.md`, and recorded both in `src/changes.txt`. It did not change gameplay code; the latest gameplay commit is `8b97fa8`.
 - Continue only with abilities whose behavior the user has specified. The next activated abilities for special claymores and axes still need approved designs.
 
+## Inanisium axe item model (2026-10-08)
+
+- The user requested integration of the supplied model in `src/main/resources/assets/forgermod/textures/item/Axe_void/`. Its `Axe - Converted.geo.json` is a Bedrock/GeckoLib geometry export with 65 cubes and arbitrary blade rotations, not a Java item model.
+- Converted that geometry to `models/item/axe_of_the_void.obj` plus its material library, using NeoForge 21.1.93's built-in `neoforge:obj` loader. No new runtime dependency or gameplay behavior was added. The original texture is copied unchanged to the valid lowercase resource path `textures/item/axe_of_the_void.png`.
+- `axe_of_the_void.json` contains the loader settings and item display transforms. Ruby, Amber, Amethyst, and Jade item models inherit it and use the same supplied texture; distinct gemstone appearances were not supplied.
+- `tools/export_void_axe.py` regenerates the eight runtime resources from the source geometry and texture using Python's standard library. Run `python tools/export_void_axe.py --check` to check resource consistency. The datagen provider explicitly leaves these authored models alone.
+- Verification: `gradlew.bat test build` passed all 24 ability checks; export consistency passed. An independent local check matched all 65 cube shapes against `Axe-Void_1.bbmodel`, verified UVs for volumetric cubes, verified 382 nondegenerate exported faces and all five item models inside the built JAR, and rendered a texture preview. The supplied GEO uses different UVs for the flat tip decoration than the nearby BBMODEL files; the requested GEO is authoritative and its UVs were retained.
+- No Minecraft client playtest was performed; first-person/third-person positioning and actual runtime model loading still need an in-game check. The preview is `build/void-axe-preview.png` (ignored build artifact).
+- The existing staged/modified `src/review1.md` and untracked `Axe-Void*.bbmodel` files were left untouched. This model task does not add an ability and has not been committed or pushed.
+
+## Ancient Sword Stand model and interaction (2026-10-08)
+
+- Integrated the user's `models/block/ancient_sword_stand/ancient_sword_stand.bbmodel`, including its embedded texture and `Closed`, `Opening`, and `Open` keyframes. Source BBMODEL, converted animation file, and `voxals.txt` remain unchanged.
+- `tools/export_ancient_stand.py` exports full/empty OBJ models plus 19 cached opening poses. Its `--check` verifies authored model resources. Loot remains owned by `ModBlockLootTableProvider` and datagen. Runtime uses NeoForge's built-in OBJ loader with no added dependency.
+- Full/empty poses render in the normal chunk mesh. `AncientSwordStandRenderer` draws only during the 35-tick (1.75-second) opening, selecting a pre-baked pose every two ticks. No ongoing block entity ticker, runtime model parsing, or per-frame voxel shape construction. No FPS benchmark or visual Minecraft-client playtest has been performed.
+- `AncientSwordStandBlock` has cached collision/selection shapes for all four facings: four broad boxes for the base, lower body, ribs, and upper spine; a fifth includes the actual rotated sword bounds while full. The empty spine reaches 29/16 blocks high; the full sword reaches approximately 31.25/16. The opening uses the empty collision shape.
+- The first right-click (including while holding an item) atomically sets `full=false` on the server, gives one Rusty Claymore, and begins opening. Inventory overflow drops the sword once. Additional clicks during/after opening give no sword. The result remains the decorative stand block, not a vanilla armor-stand entity.
+- A registered stand block entity persists/synchronizes the opening timestamp. Scheduled ticks finish the animation; on-load recovery resumes remaining time or finishes an expired opening. `full` is persistent block state.
+- Breaking either pose now drops the stand item with `minecraft:block_state` preserving `full`, including without Silk Touch. The old unconditional claymore breaking drop was removed; replacing an empty stand leaves it empty. Loot/datagen must preserve this component to avoid refilling exploits.
+- Added four standard NeoForge GameTests and a five-block empty structure. `runGameTestServer` uses isolated `build/stand-gametest` storage. `gradlew.bat test build runGameTestServer` passed all 24 existing ability checks and all four real dedicated-server GameTests after the final shape fix. Tests cover repeated clicks and completion, full inventory, actual empty-item loot and replacement, all-facing shape bounds, and saving/loading animation progress. Both model exporters' consistency checks and `git diff --check` pass.
+- Preview: `build/ancient-stand-preview.png` shows closed, opening, and empty poses (ignored build artifact). Client-side model loading/animation and performance should still be checked in Minecraft. These changes are uncommitted; the user's `src/review1.md` and pre-existing untracked Axe BBMODEL sources were not changed.
+
+## Claymore display scale (2026-10-08)
+
+- All 47 claymore textures (ordinary, rusty, nine special materials, and gemstone variants) are 20x20. Generated item geometry normalizes them to 16 model units, so the default handheld parent made them normal sword-sized.
+- Added `models/item/claymore_handheld.json`, extending the vanilla handheld model with 20/16 (1.25x) display scaling for both hands in first/third person, ground, fixed/item-frame, and head contexts. Vanilla rotations/translations are retained. GUI display inherits normal slot-fitting size to avoid inventory clipping.
+- `ModItemModelProvider.handheldItem` chooses this parent for item IDs containing `claymore`, so all variants retain it after datagen. No texture, damage, reach, or attack-speed changes.
+- Verification: `gradlew.bat runData` and `gradlew.bat test build` passed, including all 24 existing lightweight ability tests. Checked all 47 registered claymores and packaged model references, all seven 1.25x display scales, and ordinary sword parents. Both earlier model exporters still pass `--check`; `git diff --check` passes. In-game visual scale/hand positioning has not been checked. Changes remain uncommitted.
+
+## Detailed stand shape reference (2026-10-08)
+
+- Read the user's `D:\William Riegler\Downloads\shapes.txt`: 162 fine-grained boxes in block coordinates. Left this external reference unchanged.
+- Refined the cached stand envelopes to include forward-projecting ribs and feet that the previous shallow body boxes missed. In model units: base `(0,0,2.5)-(16,1,13.5)`, lower body `(1,1,3)-(15,11,14.5)`, upper ribs `(-0.5,11,3)-(16.5,25,14.5)`, spine `(6,25,9)-(10,29,11.5)`. Full pose retains the actual rendered sword bounds `(3,3.5,8.5)-(14,31.25,9.5)`.
+- Still four broad source boxes while empty, five while full, with all rotations computed once. Small gaps between decorative ribs are intentionally filled by the simplified envelopes. No changes to the one-time reward or model.
+- Extended the existing shape GameTest with forward-rib reference points for every facing and a check that repeated queries return the same cached shape instance.
+- Verification after refinement: `gradlew.bat test build runGameTestServer` passed all 24 existing lightweight tests and all four dedicated-server tests, including the added shape checks. No client FPS benchmark was performed.
+
+## review1.md dagger pairing and tooltip layout (2026-10-09)
+
+- Implemented the user's review notes while leaving `src/review1.md` unchanged. The user's explicit new same-material pairing requirement replaces the previous exact-item requirement; `AGENTS.md` now reflects it.
+- Shared `DaggerItems.areMatchingDaggers` requires two actual daggers and compares their special material Tier identity, so all five gemstone/base variants of a material pair in either hand. Rusty Daggers retain exact-item pairing. Knives, empty hands, other weapon types, and different materials remain excluded. Client and server use this shared check. Delayed main-hand identity validation and independent weapon/ability cooldowns are unchanged.
+- Ability tooltips now have one light-gray `Abilities:` heading, followed by `Ability name: [configured key]` and a separate light-gray description line for each implemented slot, above gemstone information. `Component.keybind` remains dynamic. The 18 English ability names have separate `.name` translation keys; descriptions keep existing gameplay details and cooldowns. The general dagger passive tooltip now explains same-material gemstone pairing.
+- Added two dedicated-server GameTests: exhaustive pairings across all 46 registered daggers (including 45 special variants), forbidden knife/other-weapon combinations, and tooltip components/styles/slot order across all 45 special dagger variants. Existing four stand GameTests remain intact.
+- Verification: `gradlew.bat test build runGameTestServer` passed all 24 lightweight ability tests and all six dedicated-server GameTests. Translation checks confirm all 18 separate name/description pairs. No Minecraft-client tooltip screenshot or live dual-wield playtest was performed. Changes remain uncommitted with earlier model/stand work in the workspace.
+
+## Attack-speed correction (2026-10-09)
+
+- The user reported attacks never recharging on some axes and requested slow axes / medium claymores / fast daggers. Confirmed against Minecraft 1.21.1 sources: player base attack speed is 4; item attack-speed values are additive modifiers; recharge delay is `20 / final attack speed` ticks.
+- Root causes: ordinary Axe/Rusty Axe used penalties 4/6, resulting in final speeds 0/-2 (clamped to 0); the special axe adjustment subtracted a negative number, speeding axes up; special daggers were registered with type `dagger` but the speed branch checked only `knife`.
+- `ModSpecialRegistry` speed constants and all four ordinary weapon factory methods now consistently use positive final attacks per second. `attackSpeedModifier` rejects nonfinite/nonpositive configuration values and converts by subtracting the player base speed of 4. Signed negative item modifiers are still normal; final player speed must be positive.
+- Final ordinary speeds: Carbon Steel Axe 0.9, Claymore 1.2, Carbon Steel Knife 2.6. Rusty speeds: Axe 0.6, Claymore 0.8, Dagger 1.4. Special material speeds: Axe 0.9, Claymore 1.6, Dagger 3.0; Amethyst adds 0.4 to each. Ordinary/rusty claymores, knives, rusty daggers, normal swords, and creative bat retain their previous effective rates. Damage values, effects, reach, and ability cooldowns are unchanged.
+- Removed the misleading signed speed-amplifier arithmetic and handle both `dagger` and `knife` explicitly for special speed selection. Amethyst tooltip descriptions now say +0.4 Attack Speed instead of +4.
+- Added three dedicated-server GameTests: equip every registered SwordItem through actual player ticks, assert finite positive speed/delay, reset and fully recharge attacks, verify all special type/gemstone rates; check ordinary/rusty type ordering and unchanged sword/bat rates; reject invalid configured rates.
+- `gradlew.bat test build runGameTestServer` passed all 24 lightweight ability tests and all nine dedicated-server tests, including the previous stand and review checks. Balance values are choices made for the requested speed hierarchy; subjective feel still needs an in-game playtest. Work remains uncommitted.
+
 ## Riftfang teleport adjustment (2026-10-09)
 
 - Stepping Through the Void now travels up to 10 blocks along the full normalized look vector, including upward, downward, and diagonal air travel. A second Riftfang Dagger in the offhand doubles this to 20 blocks, including different gemstone variants.
@@ -70,7 +125,7 @@
 - The user requested thirty seconds of poison for anybody inside the cloud. Each existing half-second pulse now applies 600 ticks of Poison I instead of 40, including the creator; removed the creator immunity and updated the tooltip. Normal Minecraft effect immunities are retained.
 - The five-second cloud lifespan, three-block radius, trigger, primary ability, and 45-second secondary cooldown are unchanged. Remaining inside refreshes the duration; leaving, cloud expiry, and cancellation do not remove poison already applied.
 - Two `gradlew.bat test build runGameTestServer` runs passed all 23 lightweight tests and all 22 server tests. Two new server tests exercise actual cloud pulses on the creator, another player, a passive animal, and a hostile mob; outside-radius exclusion, late entry, refresh, duration after leaving/canceling, and cloud expiry. Final code/whitespace review passed.
-- This change is committed separately from earlier uncommitted model, tooltip/pairing, and attack-speed work. The user's staged `src/review1.md` is preserved.
+- This change was committed as `a37fa78` and pushed to `origin/main`, separately from earlier uncommitted model, tooltip/pairing, and attack-speed work. The user's staged `src/review1.md` is preserved.
 
 ## Material effect inheritance and speed scaling (2026-10-09)
 
@@ -129,6 +184,8 @@
 - All requested gameplay/tooltip tasks are implemented and pushed in separate reviewed commits: material effects and attack speeds 5252c72; Rooting Roots range b2f2703; named Shift-only light-gray descriptions and pairing 0ea5115; Deep Wound target Slowness III 7fc8049; Leech damage/heal cap fd6ba83; Lucid Dreaming kill buffs d93d091; Double Jump momentum 2c1974d. This commit completes Eye of the Storm.
 - Earlier axe/stand model integration, stand behavior/shapes, claymore scale and exporters remain in the working tree and were tested previously, but remain uncommitted. The staged src/review1.md is preserved. Live client movement/Shift-hover/audio/visual playtesting remains outstanding.
 
+- Final Eye of the Storm commit `a3249b0` was pushed to `origin/main`. All requested gameplay/tooltip work is committed and pushed; the earlier model/stand/claymore-scale work remains uncommitted.
+
 ## Chain Lightning recursive probabilistic chaining (2026-10-09)
 
 - Chain Lightning now rolls a 50% continuation chance before each link, up to ten successful chain links. Each next target is the nearest unvisited hostile Mob within ten blocks of the previous target, so the radius is evaluated per link rather than only around the initial enemy. Targets cannot be hit twice.
@@ -138,7 +195,7 @@
 
 ## Area Discharge current damage and Charge Attack integration (2026-10-09)
 
-- Area Discharge retains its five-block hostile-mob radius and five-minute cooldown, but successful lightning hits now deal half the player's current ATTACK_DAMAGE attribute rather than fixed five damage. Every successful lightning hit calls the shared Charge Attack counter, so an Area Discharge hit contributes to the twentieth charging hit and can trigger the twenty-first-hit lightning discharge.
+- Area Discharge retains its five-block hostile-mob radius and thirty-second cooldown, but successful lightning hits now deal half the player's current ATTACK_DAMAGE attribute rather than fixed five damage. Every successful lightning hit calls the shared Charge Attack counter, so an Area Discharge hit contributes to the twentieth charging hit and can trigger the twenty-first-hit lightning discharge.
 - The existing direct dagger-hit charge behavior and chain lightning behavior remain intact. Failed/blocked damage does not count as a successful lightning hit. Tooltip text explains the half-damage and Charge Attack interaction.
 - Two test/build/GameTestServer verification runs passed 23 lightweight checks and all 32 server tests; final run completed with BUILD SUCCESSFUL. Code and whitespace review passed.
 

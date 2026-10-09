@@ -1,18 +1,67 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "forgermod:block/ancient_sword_stand"
+    "facing=north,full=true,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 0
     },
-    "facing=south": {
+    "facing=north,full=true,opening=false": {
       "model": "forgermod:block/ancient_sword_stand",
-      "y": 180
+      "y": 0
     },
-    "facing=east": {
+    "facing=north,full=false,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 0
+    },
+    "facing=north,full=false,opening=false": {
+      "model": "forgermod:block/ancient_sword_stand_empty",
+      "y": 0
+    },
+    "facing=east,full=true,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 90
+    },
+    "facing=east,full=true,opening=false": {
       "model": "forgermod:block/ancient_sword_stand",
       "y": 90
     },
-    "facing=west": {
+    "facing=east,full=false,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 90
+    },
+    "facing=east,full=false,opening=false": {
+      "model": "forgermod:block/ancient_sword_stand_empty",
+      "y": 90
+    },
+    "facing=south,full=true,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 180
+    },
+    "facing=south,full=true,opening=false": {
       "model": "forgermod:block/ancient_sword_stand",
+      "y": 180
+    },
+    "facing=south,full=false,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 180
+    },
+    "facing=south,full=false,opening=false": {
+      "model": "forgermod:block/ancient_sword_stand_empty",
+      "y": 180
+    },
+    "facing=west,full=true,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 270
+    },
+    "facing=west,full=true,opening=false": {
+      "model": "forgermod:block/ancient_sword_stand",
+      "y": 270
+    },
+    "facing=west,full=false,opening=true": {
+      "model": "forgermod:block/ancient_sword_stand/opening",
+      "y": 270
+    },
+    "facing=west,full=false,opening=false": {
+      "model": "forgermod:block/ancient_sword_stand_empty",
       "y": 270
     }
   }

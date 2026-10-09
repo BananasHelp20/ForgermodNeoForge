@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.block.entity;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.block.entity.custom.ForgeBlockEntity;
+import net.bananashelp20.forgermod.block.entity.custom.AncientSwordStandBlockEntity;
 import net.bananashelp20.forgermod.block.entity.custom.InfusionTableBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,4 +27,8 @@ public class ModBlockEntities {
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }
+
+    public static final Supplier<BlockEntityType<AncientSwordStandBlockEntity>> ANCIENT_SWORD_STAND_BE =
+            BLOCK_ENTITIES.register("ancient_sword_stand", () -> BlockEntityType.Builder.of(
+                    AncientSwordStandBlockEntity::new, ModBlocks.ANCIENT_SWORD_STAND.get()).build(null));
 }

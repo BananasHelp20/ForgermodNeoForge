@@ -1,0 +1,12 @@
+{
+  "loader": "neoforge:obj",
+  "model": "forgermod:models/block/ancient_sword_stand/opening_3.obj",
+  "automatic_culling": false,
+  "flip_v": false,
+  "emissive_ambient": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "stand": "forgermod:block/ancient_sword_stand/full_texture",
+    "particle": "forgermod:block/ancient_sword_stand/full_texture"
+  }
+}

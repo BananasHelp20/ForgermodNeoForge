@@ -1,5 +1,14 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "block": "forgermod:ancient_sword_stand",
+      "function": "minecraft:copy_state",
+      "properties": [
+        "full"
+      ]
+    }
+  ],
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -11,7 +20,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgermod:rusty_claymore"
+          "name": "forgermod:ancient_sword_stand"
         }
       ],
       "rolls": 1.0
