@@ -233,3 +233,12 @@
 - Carbon Steel Knife has a name and description. Warden's Needle uses authored textures for all five variants. Gemstone weapon variants are excluded from creative tabs. Material-effect passives use effect-specific Hit names and Roman numeral strength. Collapsed tooltip ends with [Hold Shift] for more item information, with Hold Shift blue.
 - Verification: runData passed, then test/build/runGameTestServer passed with all 35 required server tests. All 45 dagger texture paths and packaged grave/worldgen resources validated. Final whitespace/code review passed. Client animation appearance remains for live playtesting.
 - instructions.md was read as user-authored task input and left unchanged; its existing user edits are preserved.
+
+## Ancient Grave collision correction (2026-10-09)
+
+- The original fixed (18, 0, 10) grave offset could clear the center template yet collide with walls/paths assembled afterward. Replaced the composite start pool with a custom structure type wrapping vanilla JigsawStructure generation.
+- Builds the full vanilla city first, preserving its original center pool and all piece positions, then adds exactly one independent grave piece. Checks candidates against every assembled piece with three blocks of clearance; dense layouts fall back just beyond the city's eastern edge. Room entrances face toward the city when selecting the four sides.
+- Removed the composite start-pool resource. Retained the legacy padded template so saved city pieces can still load; new generation never uses it. The authored ancient_grave.nbt remains unchanged. Existing generated cities are not moved; this fix applies to newly generated city layouts.
+- Regression tests compare 48 spread-out seeds against vanilla city generation, assert one extra piece and no overlaps, exercise all three center variants and four root rotations, and check full stand placement in four rotations. Initial consecutive seeds did not cover all rotations; fixed the test seed distribution and all 36 server tests passed. Final verification also checks structure-reference range and rebuilt resource packaging.
+
+- Final verification: all 36 server tests and build passed, including neighboring-chunk reference range. Reused existing NeoForge 21.1.93 artifacts with -x createMinecraftArtifacts because the running Minecraft client locked the artifact jar during clean regeneration.

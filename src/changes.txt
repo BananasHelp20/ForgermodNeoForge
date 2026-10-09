@@ -1,4 +1,6 @@
 Added
+- Ancient Grave placement now checks the complete assembled city and selects a room position with three blocks of clearance from every vanilla piece
+- Ancient Grave worldgen regression tests cover 48 complete seeded city layouts, all center variants/rotations, unchanged vanilla pieces, and full sword stand placement
 - Ancient Grave uses the authored v2 structure as one mandatory room in each newly generated Ancient City start, preserving vanilla center variants and excluding degradation from the grave
 - Ancient Grave packaging tool preserves the authored template and creates its city-room offset plus worldgen pool resources
 - Operator command /no-ability-cooldown <target> <true|false> persistently toggles cooldown bypass and clears existing deadlines on enable
@@ -206,6 +208,7 @@ Debuffed
 - Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
 
 Removed
+- Removed the fixed-offset Ancient Grave city-start pool from new generation; retained its legacy padded template for saved-city compatibility
 - Gemstone weapon variants are hidden from creative tabs while remaining available through upgrades and commands
 - Ancient Sword Stand's unconditional Rusty Claymore breaking drop and incorrectly offset, repeatedly rebuilt collision shapes
 - Absolute Nightmare's earlier repeating critical-hit toggle

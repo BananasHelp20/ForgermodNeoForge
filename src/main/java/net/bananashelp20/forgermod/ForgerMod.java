@@ -48,6 +48,7 @@ public class ForgerMod {
         modEventBus.addListener(WeaponAbilityNetwork::register);
         modEventBus.addListener(DoubleJumpNetwork::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
+        net.bananashelp20.forgermod.worldgen.ModStructures.TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ForgerMod) to respond directly to events.

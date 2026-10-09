@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "forgermod:ancient_city_with_grave",
   "biomes": "#minecraft:has_structure/ancient_city",
   "max_distance_from_center": 116,
   "size": 7,
@@ -41,7 +41,7 @@
     "absolute": -27
   },
   "start_jigsaw_name": "minecraft:city_anchor",
-  "start_pool": "forgermod:ancient_city_start",
+  "start_pool": "minecraft:ancient_city/city_center",
   "step": "underground_decoration",
   "terrain_adaptation": "beard_box",
   "use_expansion_hack": false
