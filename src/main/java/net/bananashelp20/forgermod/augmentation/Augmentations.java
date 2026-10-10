@@ -38,6 +38,7 @@ public final class Augmentations {
             if (key != null) abilities.add(new Ability(key, true));
         }
         for (String key : canonical.passiveDescriptionKeys()) abilities.add(new Ability(key, false));
+        abilities.addAll(RecommendedAbilities.pool(stack));
         abilities.add(new Ability(MATERIAL_HIT, false, canonical.materialAbilityName()));
         return List.copyOf(abilities);
     }

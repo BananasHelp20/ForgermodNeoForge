@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.quench_point.name": "Quench Point",
+  "tooltips.forgermod.passive.quench_point": "Successful melee hits extinguish burning enemies and store up to 10 seconds of their remaining fire for the next successful hit within 10 seconds. Each second adds 0.5/0.75/1/1.25 damage at levels I/II/III/IV. Switching weapons clears stored fire.",
+  "tooltips.forgermod.passive.quench_point.card": "Quench a burning enemy; stored fire strengthens your next hit.",
   "tooltips.forgermod.dagger.tooltip": "A compact carbon steel blade made for quick, precise strikes.",
   "item.forgermod.knife": "Carbon Steel Knife",
   "tooltips.forgermod.passive.material_effect": "On hit: %1$s %2$s for %3$s seconds",

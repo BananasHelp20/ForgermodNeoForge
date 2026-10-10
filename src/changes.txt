@@ -350,3 +350,10 @@ Removed
 2026-10-10 - Augmentation enchanting particle duration
 - Extended enchanting particle emission through all four overlays and the ability-card selection phase, stopping when augmentation completes or is canceled
 - Kept the existing particle count and appearance, with emission every ten world ticks so particles continue while selection progress is stationary
+
+2026-10-11 - Marked ability 1: Quench Point
+- Added learnable Quench Point exclusively to Emberfang Dagger and all four gemstone variants; fresh weapons and legacy native-ability migration do not gain it automatically
+- Successful player melee hits extinguish an already-burning victim and store fire damage for the next successful hit; unsuccessful hits retain the charge and secondary damage cannot recurse
+- Chosen balance: store at most ten seconds of remaining fire, worth 0.5/0.75/1/1.25 damage per second at ranks I/II/III/IV; stored fire expires after ten seconds and clears on switching, death or logout
+- Added full tooltip and compact augmentation card descriptions, while retaining the two learned passive-slot limit
+- Added server regressions for all gemstone variants, real damage, extinguishing, one-time use, rejected hits, switching, rank-IV cap and timed expiry
