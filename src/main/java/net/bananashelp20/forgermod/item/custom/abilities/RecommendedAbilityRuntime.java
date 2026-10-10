@@ -27,18 +27,21 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.SWING_ATTACK.equals(id)) return SwingAttackAbility.activate(player,stack);
         if(RecommendedAbilities.DEATH_STARE.equals(id)) return DeathStareAbility.activate(player,stack);
         if(RecommendedAbilities.NULL_RECEIPT.equals(id)) return NullReceiptEvents.activate(player,stack);
+        if(RecommendedAbilities.FALSE_AWAKENING.equals(id)) return FalseAwakeningEvents.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player,String id) {
         return RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
                 || RecommendedAbilities.EXPLOSIVE_HITS.equals(id) && ExplosiveHitsEvents.active(player)
                 || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.active(player)
-                || RecommendedAbilities.NULL_RECEIPT.equals(id) && NullReceiptEvents.active(player);
+                || RecommendedAbilities.NULL_RECEIPT.equals(id) && NullReceiptEvents.active(player)
+                || RecommendedAbilities.FALSE_AWAKENING.equals(id) && FalseAwakeningEvents.active(player);
     }
     public static void cancel(ServerPlayer player,String id) {
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) ExplosiveHitsEvents.cancel(player.getUUID());
         if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) CrucibleHookEvents.cancel(player.getUUID());
         if(RecommendedAbilities.NULL_RECEIPT.equals(id)) NullReceiptEvents.cancel(player.getUUID());
+        if(RecommendedAbilities.FALSE_AWAKENING.equals(id)) FalseAwakeningEvents.cancel(player.getUUID());
     }
 }

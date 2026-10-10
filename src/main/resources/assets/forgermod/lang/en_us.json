@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.false_awakening.name": "False Awakening",
+  "tooltips.forgermod.ability.false_awakening": "Mark an aimed enemy within 20 blocks with alternating real/echo silhouettes. A shadowless violet echo distracts visible hostile mobs within 8 blocks. Your next successful melee hit on the real target deals 10/15/20/25% more damage and ends the dream. Duration: 4/5/6/7 seconds; cooldown: 30/25/20/15 seconds.",
+  "tooltips.forgermod.ability.false_awakening.card": "Distract enemies with an echo; strike the real target for a bonus.",
   "tooltips.forgermod.passive.overwhelming_smash.name": "Overwhelming Smash",
   "tooltips.forgermod.passive.overwhelming_smash": "Melee hits that are successfully shield-blocked break that shield. Deal 20% extra armor durability damage, carrying fractional wear between hits. Mobs use the same vanilla armor-wear baseline for this bonus. Maximum level: I.",
   "tooltips.forgermod.passive.overwhelming_smash.card": "Break blocking shields and add 20% armor wear.",

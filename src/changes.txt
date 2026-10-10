@@ -424,3 +424,5 @@ Removed
 - Added learnable Null Receipt to all Nullified Axes: suppress knockback for five damaging hits (including absorption), record force up to five, release it in the next vertical axe slam; thirty-second duration and 40/35/30/25-second ending/cancellation cooldown.
 
 - Added single-level Overwhelming Smash to the 40 marked non-Ignisium axes: break successfully blocking shields and add exactly 20% armor wear with fractional carry; mobs receive the bonus using vanilla wear baseline, health damage is unchanged.
+
+- Added learnable False Awakening to all Nightmare Daggers: alternating real/echo silhouette markers, shadowless violet echo distracting visible hostile AI within eight blocks, one real-hit 10/15/20/25% bonus, 4/5/6/7-second duration and 30/25/20/15-second ending cooldown.

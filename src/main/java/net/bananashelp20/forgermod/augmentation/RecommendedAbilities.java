@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.augmentation;
 import net.bananashelp20.forgermod.item.custom.IgnisiumWeapon;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.InanisiumWeapon;
+import net.bananashelp20.forgermod.item.custom.SomniumWeapon;
 import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public final class RecommendedAbilities {
     public static final String DISTANCE_TAX="tooltips.forgermod.passive.distance_tax";
     public static final String NULL_RECEIPT="tooltips.forgermod.ability.null_receipt";
     public static final String OVERWHELMING_SMASH="tooltips.forgermod.passive.overwhelming_smash";
+    public static final String FALSE_AWAKENING="tooltips.forgermod.ability.false_awakening";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
@@ -35,6 +37,8 @@ public final class RecommendedAbilities {
         return List.copyOf(result);
     }
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
+        if(stack.getItem() instanceof SomniumWeapon weapon && weapon.isDagger())
+            return List.of(new Augmentations.Ability(FALSE_AWAKENING,true));
         if(stack.getItem() instanceof InanisiumWeapon weapon && weapon.isDagger())
             return List.of(new Augmentations.Ability(DEATH_STARE,true),new Augmentations.Ability(ECHOING_SPEED,false));
         if(stack.getItem() instanceof InanisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
@@ -53,9 +57,10 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(CRUCIBLE_HOOK,true),new Augmentations.Ability(STRONG_ARM,true));
         return List.of();
     }
-    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id); }
+    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id); }
     public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
+        if(FALSE_AWAKENING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(NULL_RECEIPT.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         if(DEATH_STARE.equals(id)) return 900-100*(Math.clamp(rank,1,4)-1);
         if(SWING_ATTACK.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);

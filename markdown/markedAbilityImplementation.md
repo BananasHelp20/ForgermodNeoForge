@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -121,3 +121,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Adds exactly 20% armor durability wear with fractional carry per armor stack, so five one-point wear attempts gain one extra point. Preserves normal health mitigation. Mobs, whose armor normally lacks vanilla wear, receive only the bonus calculated from the normal vanilla damage/4 baseline.
 - Fixed specified values use a single level; no redundant upgrades. Fresh weapons, rejected hits and unmarked Molten Axes are excluded. Weak armor-stack carry and tick-cleared damage-source context do not retain entities/equipment permanently.
 - Reviewed build/lightweight/server checks passed all 96 required tests, covering all 40 axes with actual survival PvP shield blocks, fresh rejection, exact 20% wear, unchanged health damage, one-level cap, Molten exclusion and mob/rejected-hit wear. PvP is temporarily enabled and restored in the test fixture.
+
+## False Awakening - completed
+
+- Weapons: Nightmare Dagger and all four gemstone variants. Aim at an enemy within twenty blocks to mark its real silhouette and create a shadowless violet humanoid echo beside it. Sparse silhouette outlines alternate between real and echo; real rendering/shadow remains unchanged. The echo uses a matching head where possible.
+- Visible hostile/aggro mobs within eight blocks briefly target the echo instead of the wielder. Previous valid targets restore afterward. Your next successful real-target melee hit deals 10/15/20/25% extra damage and ends the dream; rejected hits and echo hits do not consume it.
+- Rank I-IV durations: 4/5/6/7 seconds; ending/cancellation cooldowns: 30/25/20/15 seconds. Only one echo per wielder, no save/loot/item interaction; switching, dimension change, death/logout, target loss/range or expiry remove it.
+- Reviewed build/lightweight/server checks passed all 99 required tests: all variants, fresh rejection, AI distraction/restoration, equipment protection, one-time exact bonus, rejected hit, expiry/cooldown, wall rejection, switching, lethal hit and actual logout. Client appearance still needs in-game visual review.
