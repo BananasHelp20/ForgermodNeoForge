@@ -319,3 +319,12 @@ Removed
 - Extended command regression coverage for discoverability, usage help, explicit permission failure and unchanged authorized true/false behavior
 - Added an explicit @s command branch so self-targeting reports the cheats/operator requirement before vanilla rejects unauthorized selectors
 - Fixed Augmentation GUI overlay depth: revealed overlays and cards now cover slot item icons, stack counts and decorations, while transparent weapon holes and floating cursor items retain their intended visibility
+
+2026-10-10 - Authored ability card template
+- Added the user's unchanged ability_cards/template.png to augmentation selection cards, replacing the generic code-drawn card backgrounds
+- Centered ability titles without levels in the upper white box, with fitting dark blue/cyan text and adaptive text sizing
+- Added small right-aligned New/Upgrade eyebrows above the title boxes
+- Added blue Ability or cyan Passive Effect headings at the top of the lower white box, followed by light-gray compact ability descriptions
+- Retained hover highlighting, selected/rejected visuals and full hover descriptions; resulting levels now appear separately in hover details
+- Reduced the table heading size during card selection to leave room for the eyebrows
+- Corrected the stale Chain Lightning hover description to match the existing 50% chaining chance, up to ten links and half-current-weapon-damage behavior

@@ -15,11 +15,12 @@ import java.util.List;
 public final class AugmentationTableScreen extends AbstractContainerScreen<AugmentationTableMenu> {
     private static final String DIRECTORY="textures/gui/augementation_table/";
     private static final ResourceLocation BASE=texture("augmentation_table_gui.png");
+    private static final ResourceLocation CARD_TEMPLATE=texture("ability_cards/template.png");
     private static final ResourceLocation[] OVERLAYS={null,texture("augmentation_table_analyze_progress.png"),
             texture("augmentation_table_analyze_to_selection_transtion_1.png"),
             texture("augmentation_table_analyze_to_selection_transition_2.png"),texture("augmentation_table_selection_finalisation.png")};
-    private static final int CARD_Y=15,CARD_WIDTH=39,CARD_HEIGHT=54;
-    private static final int[] CARD_X={12,125};
+    private static final int CARD_Y=13,CARD_WIDTH=43,CARD_HEIGHT=58;
+    private static final int[] CARD_X={10,123};
     private static ResourceLocation texture(String name) { return ResourceLocation.fromNamespaceAndPath("forgermod",DIRECTORY+name); }
     public AugmentationTableScreen(AugmentationTableMenu menu,Inventory inventory,Component title) {
         super(menu,inventory,title); imageWidth=176; imageHeight=166; titleLabelY=4; inventoryLabelX=8; inventoryLabelY=73;
@@ -28,7 +29,13 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.blit(BASE,leftPos,topPos,0,0,imageWidth,imageHeight);
     }
     @Override protected void renderLabels(GuiGraphics gui,int mouseX,int mouseY) {
-        super.renderLabels(gui,mouseX,mouseY);
+        if(menu.phase()<AugmentationAnimation.CHOOSE) super.renderLabels(gui,mouseX,mouseY);
+        else {
+            // Leave space above both cards for the right-aligned eyebrows.
+            gui.drawString(font,playerInventoryTitle,inventoryLabelX,inventoryLabelY,4210752,false);
+            gui.pose().pushPose(); gui.pose().translate(titleLabelX,titleLabelY,0); gui.pose().scale(.5F,.5F,1);
+            gui.drawString(font,title,0,0,4210752,false); gui.pose().popPose();
+        }
         if(menu.phase()==AugmentationAnimation.IDLE) return;
         // Slot icons render at z=250 and their counts at z=300. Flush deferred slot
         // decorations, then cover both below floating cursor items (z=382) and tooltips.
@@ -77,20 +84,38 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         boolean rejected=completed && menu.selected()!=card;
         boolean hovered=!completed && overCard(card,mouseX,mouseY);
         int edge=rejected?0xff686868:completed?0xff78df96:hovered?0xffe2ffff:0xff51d8f5;
-        gui.fill(x,y,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
-        gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,rejected?0xff777777:hovered?0xffd3eced:0xffb5c6c8);
-        gui.fill(x+2,y+11,x+CARD_WIDTH-2,y+12,rejected?0xff999999:0xff549ca6);
-        // Code-rendered cards adapt to every translated ability and need no separate PNG per ability.
-        gui.pose().pushPose(); gui.pose().translate(x+3,y+3,0); gui.pose().scale(.5F,.5F,1);
-        int textColor=rejected?0xff555555:0xff20353b;
-        Component kind=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.learn":"augmentation.forgermod.card.upgrade");
-        gui.drawString(font,kind,0,0,textColor,false);
-        int lineY=20;
-        Component name=offer.name().copy().append(" "+WeaponTooltips.romanNumeral(menu.offerRank(card)+1));
-        for(var line:font.split(name,66)) { if(lineY>47) break; gui.drawString(font,line,0,lineY,textColor,false); lineY+=9; }
-        lineY+=4;
-        List<FormattedCharSequence> description=font.split(Component.translatable(offer.id()),66);
-        for(var line:description) { if(lineY>89) break; gui.drawString(font,line,0,lineY,textColor,false); lineY+=9; }
+        gui.blit(CARD_TEMPLATE,x,y,0,0,0,CARD_WIDTH,CARD_HEIGHT,CARD_WIDTH,CARD_HEIGHT);
+        if(hovered || completed && !rejected) {
+            gui.fill(x,y,x+CARD_WIDTH,y+1,edge); gui.fill(x,y+CARD_HEIGHT-1,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
+            gui.fill(x,y,x+1,y+CARD_HEIGHT,edge); gui.fill(x+CARD_WIDTH-1,y,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
+        }
+        Component eyebrow=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.new":"augmentation.forgermod.card.upgrade");
+        gui.pose().pushPose(); gui.pose().translate(x+CARD_WIDTH-2,y-4,0); gui.pose().scale(.5F,.5F,1);
+        gui.drawString(font,eyebrow,-font.width(eyebrow),0,0xff586672,false); gui.pose().popPose();
+        // Fit and center the title in the template's upper white box, without a rank suffix.
+        float scale=.5F;
+        List<FormattedCharSequence> titleLines=font.split(offer.name(),(int)(39/scale));
+        while(titleLines.size()*font.lineHeight*scale>9 && scale>.3F) {
+            scale=Math.max(.3F,scale-.025F); titleLines=font.split(offer.name(),(int)(39/scale));
+        }
+        int maxLines=Math.max(1,(int)(9/(font.lineHeight*scale)));
+        if(titleLines.size()>maxLines) titleLines=titleLines.subList(0,maxLines);
+        gui.pose().pushPose();
+        gui.pose().translate(x+CARD_WIDTH/2F,y+2+(9-titleLines.size()*font.lineHeight*scale)/2F,0);
+        gui.pose().scale(scale,scale,1);
+        for(int row=0;row<titleLines.size();row++) {
+            var line=titleLines.get(row);
+            gui.drawString(font,line,-font.width(line)/2,row*font.lineHeight,rejected?0xff666666:offer.active()?0xff244575:0xff006b7b,false);
+        }
+        gui.pose().popPose();
+        // The lower white box contains a colored category followed by a compact description.
+        gui.pose().pushPose(); gui.pose().translate(x+2,y+13,0); gui.pose().scale(.5F,.5F,1);
+        Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
+        gui.drawString(font,category,(78-font.width(category))/2,0,rejected?0xff666666:offer.active()?0xff2962d9:0xff00a9bd,false);
+        Component description=Component.translatable(offer.id()+".card");
+        if(!net.minecraft.client.resources.language.I18n.exists(offer.id()+".card")) description=Component.translatable(offer.id());
+        var lines=font.split(description,78);
+        for(int row=0;row<Math.min(lines.size(),7);row++) gui.drawString(font,lines.get(row),0,14+row*font.lineHeight,0xffaaaaaa,true);
         gui.pose().popPose();
         if(rejected) gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,0x55808080);
     }
@@ -108,9 +133,11 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
             for(int i=0;i<2;i++) {
                 var offer=menu.offer(i);
                 if(offer!=null && overCard(i,mouseX-leftPos,mouseY-topPos)) {
-                    Component name=offer.name().copy().append(" "+WeaponTooltips.romanNumeral(menu.offerRank(i)+1));
+                    Component name=offer.name();
                     var lines=new java.util.ArrayList<FormattedCharSequence>();
                     lines.add(name.getVisualOrderText());
+                    lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(menu.offerRank(i)+1))
+                            .withStyle(ChatFormatting.GRAY).getVisualOrderText());
                     lines.addAll(font.split(Component.translatable(offer.id()).withStyle(ChatFormatting.GRAY),180));
                     if(menu.phase()==AugmentationAnimation.COMPLETE) lines.add(Component.translatable(menu.selected()==i?
                             "augmentation.forgermod.card.selected":"augmentation.forgermod.card.rejected").withStyle(ChatFormatting.GRAY).getVisualOrderText());
