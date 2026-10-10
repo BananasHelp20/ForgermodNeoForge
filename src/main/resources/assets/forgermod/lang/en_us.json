@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.null_receipt.name": "Null Receipt",
+  "tooltips.forgermod.ability.null_receipt": "Negate knockback from the next five damaging hits and store the canceled force, up to 5. Release it as extra knockback with your next vertical axe slam. Lasts up to 30 seconds; switching cancels it. Cooldown after release/end: 40/35/30/25 seconds.",
+  "tooltips.forgermod.ability.null_receipt.card": "Store knockback from five hits; release it in a vertical slam.",
   "tooltips.forgermod.passive.distance_tax.name": "Distance Tax",
   "tooltips.forgermod.passive.distance_tax": "A successful hit marks one enemy for 10 seconds. Then its distance from you deals 0.5/0.75/1/1.25 damage per block at levels I/II/III/IV, capped at 40 damage. Repeated hits keep the deadline; another enemy replaces the mark. Switching cancels it.",
   "tooltips.forgermod.passive.distance_tax.card": "Mark an enemy, then move away before the ten-second tax.",

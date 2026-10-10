@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -107,3 +107,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Claymore of the Void and all four gemstone variants. Successful melee damage marks one enemy; after ten seconds, the distance between wielder and target converts into 0.5/0.75/1/1.25 damage per block, capped at 40 at every rank.
 - Repeated hits on the same enemy keep the original deadline. Hitting another replaces it. Switching/death/logout/invalid target cancels it. Sparse portal particles show the mark and payout; player-owned magic prevents recursive melee triggers.
 - Reviewed build/lightweight/server checks passed all 91 required tests, covering all variants, exact deadline/damage, repeated-hit deadline preservation, one-time payout, rank conversion/cap, target replacement, switching, fresh rejection and logout. Survival test players require explicitly driven player-tick events for scheduled effects.
+
+## Null Receipt - completed
+
+- Weapons: Nullified Axe and all four gemstone variants. Active protection cancels knockback from the next five damaging hits, including absorption damage, without preventing damage itself. All impulses from one hit share one charge. Rejected hits do not spend charges; the sixth damaging hit is unprotected.
+- Stores canceled force, capped at five impulse units. The next intrinsic vertical axe slam adds that force to its normal knockback, then consumes the receipt. Ordinary Swing Attack does not release it. State lasts up to thirty seconds; switching, dimension change, death/logout or expiry cancel it.
+- Rank I-IV cooldowns: 40/35/30/25 seconds after release or cancellation. Melee/projectile and actual explosion knockback hooks are handled; explosion client impulse is also zeroed.
+- Reviewed build/lightweight/server checks passed all 94 required tests, including every variant, fresh/rejected-hit checks, five-hit limit, unchanged damage, multiple impulses per hit, real vertical-slam release, independent circular swing, exact cooldown, real explosion suppression, switching and absorption/cap.

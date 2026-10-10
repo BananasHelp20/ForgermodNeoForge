@@ -134,6 +134,7 @@ public final class AxeHeavyNetwork {
     }
 
     private static void landSlam(ServerPlayer player, PendingSlam slam) {
+        double storedKnockback=net.bananashelp20.forgermod.item.custom.abilities.NullReceiptEvents.release(player);
         ServerLevel level = slam.level();
         BlockPos center = slam.center();
         AABB area = new AABB(center.getX() - 1, center.getY(), center.getZ() - 1,
@@ -152,7 +153,7 @@ public final class AxeHeavyNetwork {
                     var runtime = net.bananashelp20.forgermod.augmentation.Augmentations.canonical(player.getMainHandItem());
                     if (runtime != null) runtime.onDaggerHit(target, player);
                 }
-                target.knockback(0.5, center.getX() + 0.5 - target.getX(),
+                target.knockback(0.5+storedKnockback, center.getX() + 0.5 - target.getX(),
                         center.getZ() + 0.5 - target.getZ());
             } else {
                 target.invulnerableTime = previousInvulnerableTime;

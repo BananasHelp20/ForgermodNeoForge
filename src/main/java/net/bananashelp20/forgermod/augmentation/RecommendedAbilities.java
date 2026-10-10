@@ -23,6 +23,7 @@ public final class RecommendedAbilities {
     public static final String DEATH_STARE="tooltips.forgermod.ability.death_stare";
     public static final String ECHOING_SPEED="tooltips.forgermod.passive.echoing_speed";
     public static final String DISTANCE_TAX="tooltips.forgermod.passive.distance_tax";
+    public static final String NULL_RECEIPT="tooltips.forgermod.ability.null_receipt";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
@@ -35,6 +36,8 @@ public final class RecommendedAbilities {
             return List.of(new Augmentations.Ability(DEATH_STARE,true),new Augmentations.Ability(ECHOING_SPEED,false));
         if(stack.getItem() instanceof InanisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
             return List.of(new Augmentations.Ability(DISTANCE_TAX,false));
+        if(stack.getItem() instanceof InanisiumWeapon weapon && weapon.isAxe())
+            return List.of(new Augmentations.Ability(NULL_RECEIPT,true));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isDagger())
             return List.of(new Augmentations.Ability(QUENCH_POINT,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
@@ -47,9 +50,10 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(CRUCIBLE_HOOK,true),new Augmentations.Ability(STRONG_ARM,true));
         return List.of();
     }
-    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id); }
+    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id); }
     public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
+        if(NULL_RECEIPT.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         if(DEATH_STARE.equals(id)) return 900-100*(Math.clamp(rank,1,4)-1);
         if(SWING_ATTACK.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(STRONG_ARM.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
