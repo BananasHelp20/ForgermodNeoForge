@@ -482,3 +482,7 @@
 ## Always the Gardeners completed
 
 - Delusion pushed as a4fa8d4. Gardeners reviewed, all 103 server tests/build passed; all fifteen Lush weapons supported. Next newly marked addition: Grave Vault. Other older marked abilities remain pending in the implementation record.
+
+## Grave Vault completed
+
+- Gardeners pushed as 8100959. Grave Vault reviewed and all 105 server tests/build passed twice. Nine flower slots persist on each Lush weapon. Menu registered on both sides; placement uses normal NeoForge item hooks and permissions. Client validity handles synchronized stack replacement. Next: Echo Pin, then Warden Tone and Echo Salvage.

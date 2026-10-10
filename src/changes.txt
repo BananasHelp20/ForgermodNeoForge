@@ -432,3 +432,5 @@ Removed
 - Added learnable Delusion to all Somnium weapons: next-hit twenty-second mob aggression suppression; ranked cooldowns and server-side cleanup.
 
 - Added Always the Gardeners to all Lush weapons: next enemy kill creates a five-minute temporary plant and twenty-second Poison I cloud affecting all living entities; ranked radius and cooldown.
+
+- Added Grave Vault to all Lush weapons: persistent nine-slot flower inventory, crouch-use menu, normal terrain flower placement, server validation and weapon nesting protection.

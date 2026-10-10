@@ -490,5 +490,9 @@
   "tooltips.forgermod.ability.swap_hint": "Shift + Alt + S swaps your primary and secondary abilities",
   "tooltips.forgermod.ability.always_the_gardeners.name": "Always the Gardeners",
   "tooltips.forgermod.ability.always_the_gardeners": "Arm your next enemy kill for 60 seconds. It leaves a plant and a poison cloud for five minutes. Everyone in the cloud, including you and allies, receives Poison I for 20 seconds. Radius: 2/2.5/3/3.5 blocks. Switching cancels the garden. Cooldown after ending: 60/50/40/30 seconds.",
-  "tooltips.forgermod.ability.always_the_gardeners.card": "Your next enemy kill plants a five-minute poison cloud. Affects everyone for 20 seconds."
+  "tooltips.forgermod.ability.always_the_gardeners.card": "Your next enemy kill plants a five-minute poison cloud. Affects everyone for 20 seconds.",
+  "tooltips.forgermod.passive.grave_vault.name": "Grave Vault",
+  "tooltips.forgermod.passive.grave_vault": "Crouch-right-click to open nine flower storage slots inside this weapon. Right-click terrain to place the first flower that can grow there. Stored flowers persist on this weapon; normal placement rules and permissions apply.",
+  "tooltips.forgermod.passive.grave_vault.card": "Store flowers in nine slots. Right-click suitable terrain to plant them.",
+  "menu.forgermod.grave_vault": "Grave Vault"
 }

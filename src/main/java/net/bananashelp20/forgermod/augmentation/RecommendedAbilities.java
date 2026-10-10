@@ -30,6 +30,7 @@ public final class RecommendedAbilities {
     public static final String FALSE_AWAKENING="tooltips.forgermod.ability.false_awakening";
     public static final String DELUSION="tooltips.forgermod.ability.delusion";
     public static final String GARDENERS="tooltips.forgermod.ability.always_the_gardeners";
+    public static final String GRAVE_VAULT="tooltips.forgermod.passive.grave_vault";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
@@ -40,7 +41,7 @@ public final class RecommendedAbilities {
         return List.copyOf(result);
     }
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
-        if(stack.getItem() instanceof LushWeapon) return List.of(new Augmentations.Ability(GARDENERS,true));
+        if(stack.getItem() instanceof LushWeapon) return List.of(new Augmentations.Ability(GARDENERS,true),new Augmentations.Ability(GRAVE_VAULT,false));
         if(stack.getItem() instanceof SomniumWeapon weapon)
             return weapon.isDagger()?List.of(new Augmentations.Ability(FALSE_AWAKENING,true),new Augmentations.Ability(DELUSION,true))
                     :List.of(new Augmentations.Ability(DELUSION,true));
@@ -63,7 +64,7 @@ public final class RecommendedAbilities {
         return List.of();
     }
     public static boolean active(String id) { return GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
-    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id)?1:4; }
+    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         if(GARDENERS.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(DELUSION.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);

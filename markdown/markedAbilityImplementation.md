@@ -143,3 +143,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 
 - All fifteen Lush weapons. Next enemy kill within a sixty-second arming window leaves a vanilla-rendered azalea display and five-minute poison cloud. No terrain replacement or drops. One garden per wielder; poison affects everyone, including wielder, allies and neutral mobs, subject to vanilla effect immunity. Poison I lasts twenty seconds and refreshes while inside. Radius I-IV: 2/2.5/3/3.5 blocks.
 - Switching/death/logout cancels both entities; cooldown after ending: 60/50/40/30 seconds. Entities never save as orphans. Reviewed build and all 103 server tests passed: all variants, fresh/rejected kills, caster/neutral poison, exact duration/radius, neutral-kill exclusion, switching/cooldown and expiry. Updated maxed-gear regression to exhaust actual available offers.
+
+## Grave Vault - completed
+
+- All fifteen Lush weapons, single level. Crouch-right-click opens nine flower slots; normal terrain right-click places the first stored flower that can grow there. Each slot holds a normal stack. Item storage persists through vanilla stack save/load and augmentation; no cooldown or free intrinsic grant.
+- Dedicated synchronized menu/screen locks the bound weapon against pickup, shift-click, hotbar swap and offhand swap. Server requires exact equipped stack/hotbar and learned passive. Client allows the synchronized replacement of that stack after storage edits. Normal flower survival, collision, permissions, Adventure restrictions and NeoForge placement cancellation apply.
+- Reviewed/retested build and all 105 server tests passed: all variants, nine independent slots, persistence, flower-only input, extraction, weapon nesting prevention, number-key guard, switching, real valid/invalid-soil placement and Adventure exclusion. Client appearance has not been visually playtested.

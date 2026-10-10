@@ -22,6 +22,8 @@ public class ModMenuTypes {
 
     public static final Supplier<MenuType<net.bananashelp20.forgermod.screen.custom.AugmentationTableMenu>> AUGMENTATION_TABLE_MENU = registerMenuType("augmentation_table", net.bananashelp20.forgermod.screen.custom.AugmentationTableMenu::new);
 
+    public static final Supplier<MenuType<net.bananashelp20.forgermod.screen.custom.GraveVaultMenu>> GRAVE_VAULT_MENU = registerMenuType("grave_vault", net.bananashelp20.forgermod.screen.custom.GraveVaultMenu::new);
+
     private static <T extends AbstractContainerMenu>DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }
