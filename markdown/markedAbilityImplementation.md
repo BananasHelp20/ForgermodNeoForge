@@ -1,4 +1,4 @@
-﻿# Marked ability implementation record
+# Marked ability implementation record
 
 Only entries marked for implementation in abilityRecommendations.md are approved. Repeated entries share one implementation across their listed weapon families and gemstone variants. Abilities are learned through augmentation; each weapon retains two active and two unique passive slots, plus Material Hit separately. Missing balance values below were chosen with the user's permission.
 
@@ -12,9 +12,9 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Explosion; Cinder Decoy; Heating Up; Cold Bellows; Fire Resistance; Explosive Hits (active); Nether Born; Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Explosive Hits (active); Nether Born; Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
-Heating Up's unfinished maximum-level fragment does not yet define when to extinguish fire. Its explicitly described heat storage and ignition behavior remain approved.
+Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
 ## Explosion - completed
 
@@ -48,3 +48,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Rank IV follows the corrected design: remaining fire on the wielder becomes heat (one heat per burn second) and is extinguished if capacity remains. Full capacity leaves the wielder burning. Heat clears on switching/death/logout.
 - Ranged damage does not fill heat; canceled/failed hits do not spend it. Sweeping targets share one payment, while distinct same-tick attacks pay separately.
 - Reviewed build/lightweight/server checks passed all 70 required tests, including all five variants, actual survival damage, sweep cost, separate-attack isolation, projectile exclusion, burn absorption/full capacity and exact-stack switching cleanup.
+
+## Fire Resistance - completed
+
+- Weapons: Infernal Claymore and Molten Axe, including all gemstone variants.
+- Infinite Fire Resistance while holding the learned weapon in the main hand at level I; level II also qualifies in the offhand and is the maximum.
+- Protection ends when neither hand qualifies. Independent potions, hidden effect chains and naturally infinite effects are preserved with their normal timers. Curing removes old potion ownership; continued held protection can resume without resurrecting a cured potion.
+- Reviewed build/lightweight/server checks passed all 73 required tests, covering all ten variants, hand restrictions, rank cap, actual survival fire damage, removal, potion mixing/hidden expiry, curing and logout.

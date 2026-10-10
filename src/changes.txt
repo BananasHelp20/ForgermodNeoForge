@@ -383,3 +383,10 @@ Removed
 - Implemented the corrected rank-IV behavior: remaining fire on the wielder fills available heat at one heat per remaining burn second and is extinguished; full capacity leaves the wielder burning
 - Switching stacks/hotbar slots, death or logout clears stored heat; ranged damage does not provide melee heat
 - Added all-variant survival combat regressions, sweeping/payment checks, same-tick attack isolation, projectile exclusion, rank-IV burn absorption, capacity and switching cleanup
+
+2026-10-11 - Marked ability 6: Fire Resistance
+- Added learnable Fire Resistance to all five Infernal Claymores and all five Molten Axes: infinite held protection from the main hand at rank I and either hand at rank II
+- Enforced rank II as this passive's maximum in augmentation learning, offers and saved-rank validation; other abilities retain their rank-IV cap
+- Weapon-granted protection ends on loss of qualifying equipment, death or logout; independently acquired effects, hidden potion chains and potions added while protected retain their normal timers
+- Milk/effect removal does not resurrect previously cured potions; the held passive resumes while qualifying equipment remains
+- Added survival server regressions for all ten variants, hand requirements, upgrade cap, actual fire damage, equipment removal, potion preservation, hidden-effect expiry, curing and logout

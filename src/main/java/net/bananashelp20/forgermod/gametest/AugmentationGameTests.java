@@ -116,8 +116,8 @@ public class AugmentationGameTests {
             }
             test.assertTrue(Augmentations.offers(stack, random).isEmpty(), "Maxed item still has choices");
             for (boolean active : new boolean[]{false, true}) for (String id : Augmentations.ids(stack, active)) {
-                test.assertTrue(Augmentations.level(stack, id) == 4, "Ability did not reach IV");
-                test.assertTrue(Augmentations.apply(stack, id).isEmpty(), "Ability exceeded IV");
+                test.assertTrue(Augmentations.level(stack, id) == net.bananashelp20.forgermod.augmentation.RecommendedAbilities.maxRank(id), "Ability did not reach its maximum rank");
+                test.assertTrue(Augmentations.apply(stack, id).isEmpty(), "Ability exceeded its maximum rank");
             }
         }
         test.assertTrue(checked == 135, "Not all 135 special-material variants were checked: " + checked);

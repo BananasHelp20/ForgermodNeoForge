@@ -60,7 +60,7 @@ public final class Augmentations {
             CompoundTag row = (CompoundTag)tag;
             String id = migrateId(row.getString("id"));
             int level = row.getInt("level");
-            if (valid.contains(id) && level >= 1 && level <= 4) result.put(id, level);
+            if (valid.contains(id) && level >= 1 && level <= RecommendedAbilities.maxRank(id)) result.put(id, level);
         }
         return result;
     }
@@ -98,7 +98,7 @@ public final class Augmentations {
         var result = new ArrayList<Ability>();
         for (var ability : pool(stack)) {
             int level = level(stack, ability.id());
-            if (level > 0 && level < 4 || level == 0 && (ability.id().equals(MATERIAL_HIT) || ids(stack, ability.active()).size() < 2)) result.add(ability);
+            if (level > 0 && level < RecommendedAbilities.maxRank(ability.id()) || level == 0 && (ability.id().equals(MATERIAL_HIT) || ids(stack, ability.active()).size() < 2)) result.add(ability);
         }
         return List.copyOf(result);
     }
@@ -106,7 +106,7 @@ public final class Augmentations {
         var available = new ArrayList<>(available(stack));
         if (available.isEmpty()) return List.of();
         var first = available.remove(random.nextInt(available.size()));
-        // With only one legal upgrade remaining both buttons offer that upgrade; neither can exceed IV.
+        // With only one legal upgrade remaining both buttons offer it; neither can exceed its rank cap.
         var second = available.isEmpty() ? first : available.get(random.nextInt(available.size()));
         return List.of(first, second);
     }
