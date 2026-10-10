@@ -24,11 +24,14 @@ public final class RecommendedAbilities {
     public static final String ECHOING_SPEED="tooltips.forgermod.passive.echoing_speed";
     public static final String DISTANCE_TAX="tooltips.forgermod.passive.distance_tax";
     public static final String NULL_RECEIPT="tooltips.forgermod.ability.null_receipt";
+    public static final String OVERWHELMING_SMASH="tooltips.forgermod.passive.overwhelming_smash";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
-        if(stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect() && weapon.isAxe())
+        if(stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect() && weapon.isAxe()) {
             result.add(new Augmentations.Ability(SWING_ATTACK,true));
+            if(!(weapon instanceof IgnisiumWeapon)) result.add(new Augmentations.Ability(OVERWHELMING_SMASH,false));
+        }
         return List.copyOf(result);
     }
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
@@ -51,7 +54,7 @@ public final class RecommendedAbilities {
         return List.of();
     }
     public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id); }
-    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id)?1:4; }
+    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         if(NULL_RECEIPT.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         if(DEATH_STARE.equals(id)) return 900-100*(Math.clamp(rank,1,4)-1);

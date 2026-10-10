@@ -422,3 +422,5 @@ Removed
 - Added learnable Distance Tax to all Void Claymores: ten-second enemy mark pays 0.5/0.75/1/1.25 damage per separation block, capped at 40; same-target hits retain deadline, other targets replace it and switching/logout cancel it.
 
 - Added learnable Null Receipt to all Nullified Axes: suppress knockback for five damaging hits (including absorption), record force up to five, release it in the next vertical axe slam; thirty-second duration and 40/35/30/25-second ending/cancellation cooldown.
+
+- Added single-level Overwhelming Smash to the 40 marked non-Ignisium axes: break successfully blocking shields and add exactly 20% armor wear with fractional carry; mobs receive the bonus using vanilla wear baseline, health damage is unchanged.

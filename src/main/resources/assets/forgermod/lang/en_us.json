@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.overwhelming_smash.name": "Overwhelming Smash",
+  "tooltips.forgermod.passive.overwhelming_smash": "Melee hits that are successfully shield-blocked break that shield. Deal 20% extra armor durability damage, carrying fractional wear between hits. Mobs use the same vanilla armor-wear baseline for this bonus. Maximum level: I.",
+  "tooltips.forgermod.passive.overwhelming_smash.card": "Break blocking shields and add 20% armor wear.",
   "tooltips.forgermod.ability.null_receipt.name": "Null Receipt",
   "tooltips.forgermod.ability.null_receipt": "Negate knockback from the next five damaging hits and store the canceled force, up to 5. Release it as extra knockback with your next vertical axe slam. Lasts up to 30 seconds; switching cancels it. Cooldown after release/end: 40/35/30/25 seconds.",
   "tooltips.forgermod.ability.null_receipt.card": "Store knockback from five hits; release it in a vertical slam.",

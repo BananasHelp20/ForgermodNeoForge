@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -114,3 +114,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Stores canceled force, capped at five impulse units. The next intrinsic vertical axe slam adds that force to its normal knockback, then consumes the receipt. Ordinary Swing Attack does not release it. State lasts up to thirty seconds; switching, dimension change, death/logout or expiry cancel it.
 - Rank I-IV cooldowns: 40/35/30/25 seconds after release or cancellation. Melee/projectile and actual explosion knockback hooks are handled; explosion client impulse is also zeroed.
 - Reviewed build/lightweight/server checks passed all 94 required tests, including every variant, fresh/rejected-hit checks, five-hit limit, unchanged damage, multiple impulses per hit, real vertical-slam release, independent circular swing, exact cooldown, real explosion suppression, switching and absorption/cap.
+
+## Overwhelming Smash - completed
+
+- Weapons: all eight marked non-Ignisium axe families and gemstone variants (40 axes). A successfully shield-blocked melee hit destroys the blocking shield; that blocked hit does not gain health damage.
+- Adds exactly 20% armor durability wear with fractional carry per armor stack, so five one-point wear attempts gain one extra point. Preserves normal health mitigation. Mobs, whose armor normally lacks vanilla wear, receive only the bonus calculated from the normal vanilla damage/4 baseline.
+- Fixed specified values use a single level; no redundant upgrades. Fresh weapons, rejected hits and unmarked Molten Axes are excluded. Weak armor-stack carry and tick-cleared damage-source context do not retain entities/equipment permanently.
+- Reviewed build/lightweight/server checks passed all 96 required tests, covering all 40 axes with actual survival PvP shield blocks, fresh rejection, exact 20% wear, unchanged health damage, one-level cap, Molten exclusion and mob/rejected-hit wear. PvP is temporarily enabled and restored in the test fixture.
