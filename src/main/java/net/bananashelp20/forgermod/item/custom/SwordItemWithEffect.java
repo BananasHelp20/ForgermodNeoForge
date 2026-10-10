@@ -136,10 +136,8 @@ public class SwordItemWithEffect extends SwordItem {
             if (expanded && actives.size() == 2) tooltip.add(Component.translatable("tooltips.forgermod.ability.swap_hint").withStyle(ChatFormatting.GRAY));
         }
         tooltip.add(Component.empty());
-        if (!augmented && !hasAbilities) tooltip.add(Component.translatable("tooltips.forgermod.can_augment").withStyle(ChatFormatting.GRAY));
-        if (net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack))
-            tooltip.add(Component.translatable("tooltips.forgermod.can_infuse").withStyle(ChatFormatting.GRAY));
-        if (!"no_gemstone".equals(gemstone)) {
+        boolean hasGemstone = !"no_gemstone".equals(gemstone);
+        if (hasGemstone) {
             ChatFormatting color = switch (gemstone) {
                 case "ruby" -> ChatFormatting.RED;
                 case "amber" -> ChatFormatting.GOLD;
@@ -151,6 +149,11 @@ public class SwordItemWithEffect extends SwordItem {
             if (stack.has(net.minecraft.core.component.DataComponents.FIRE_RESISTANT)) tooltip.add(Component.translatable("tooltips.forgermod.fire_resistant").withStyle(ChatFormatting.GRAY));
             if (!"amber".equals(gemstone)) tooltip.add(Component.translatable("tooltips.forgermod.gemstone_bonus." + gemstone).withStyle(color));
         }
+        boolean canAugment = !augmented && !hasAbilities;
+        boolean canInfuse = net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack);
+        if (hasGemstone && (canAugment || canInfuse)) tooltip.add(Component.empty());
+        if (canAugment) tooltip.add(Component.translatable("tooltips.forgermod.can_augment").withStyle(ChatFormatting.GRAY));
+        if (canInfuse) tooltip.add(Component.translatable("tooltips.forgermod.can_infuse").withStyle(ChatFormatting.GRAY));
         if (hasAbilities && !expanded) { tooltip.add(Component.empty()); WeaponTooltips.hint(tooltip); }
     }
 

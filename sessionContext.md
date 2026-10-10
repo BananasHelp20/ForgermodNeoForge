@@ -295,3 +295,9 @@
 
 - Connected the user's src/main/resources/assets/forgermod/textures/item/sapphire_gemstone.png (16x16) to the Sapphire Gemstone item model, replacing vanilla lapis. Added basicItem(SAPPHIRE_GEMSTONE) to ModItemModelProvider to retain the texture reference on future generation. The authored PNG is unchanged.
 - Gradle build -x createMinecraftArtifacts passed. PNG signature/chunk checksums/decompression validated; the built jar contains the correct model reference and exact authored PNG. Whitespace check passed. User edits to instructions.md remain untouched.
+
+## Corrected fresh gemstone tooltip example
+
+- Reread instructions.md after the user corrected its example label to "no abilities and a gemstone upgrade." Fresh Jade Deathwisper tooltip now follows lore, blank line, Jade name and green bonus text, blank line, augmentation notice. Gemstone information precedes capability notices for all special weapons. Existing uninfused/learned/maxed layouts and Shift behavior remain; Minecraft supplies the item title and creative-tab category itself.
+- Extended the existing tooltip example regression with exact fresh-Jade row order/spacing, green name/bonuses, and exclusion of unlearned ability headings, Shift hint, infusion notice and Amber fire-resistance text. test/build/runGameTestServer -x createMinecraftArtifacts passed all 53 required server tests with BUILD SUCCESSFUL; code/whitespace review passed.
+- Preserved the user's instructions.md edits and untracked textures/gui/augementation_table assets; those GUI assets are not part of this tooltip task. Live tooltip rendering remains for client playtesting.
