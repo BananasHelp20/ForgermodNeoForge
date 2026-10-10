@@ -318,3 +318,4 @@ Removed
 - Added an explicit cheats/operator-level-2 error before any cooldown changes for unauthorized players; operator behavior and saved cooldown bypass remain unchanged
 - Extended command regression coverage for discoverability, usage help, explicit permission failure and unchanged authorized true/false behavior
 - Added an explicit @s command branch so self-targeting reports the cheats/operator requirement before vanilla rejects unauthorized selectors
+- Fixed Augmentation GUI overlay depth: revealed overlays and cards now cover slot item icons, stack counts and decorations, while transparent weapon holes and floating cursor items retain their intended visibility

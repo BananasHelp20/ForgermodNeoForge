@@ -29,6 +29,20 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
     }
     @Override protected void renderLabels(GuiGraphics gui,int mouseX,int mouseY) {
         super.renderLabels(gui,mouseX,mouseY);
+        if(menu.phase()==AugmentationAnimation.IDLE) return;
+        // Slot icons render at z=250 and their counts at z=300. Flush deferred slot
+        // decorations, then cover both below floating cursor items (z=382) and tooltips.
+        gui.flush();
+        gui.pose().pushPose();
+        gui.pose().translate(0,0,350);
+        try {
+            renderAugmentationLayers(gui,mouseX,mouseY);
+        } finally {
+            gui.flush();
+            gui.pose().popPose();
+        }
+    }
+    private void renderAugmentationLayers(GuiGraphics gui,int mouseX,int mouseY) {
         RenderSystem.enableBlend();
         for(int stage=1;stage<=4;stage++) {
             if(menu.phase()<stage) break;
