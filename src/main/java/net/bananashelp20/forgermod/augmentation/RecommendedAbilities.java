@@ -13,6 +13,7 @@ public final class RecommendedAbilities {
     public static final String HEATING_UP="tooltips.forgermod.passive.heating_up";
     public static final String FIRE_RESISTANCE="tooltips.forgermod.passive.fire_resistance";
     public static final String EXPLOSIVE_HITS="tooltips.forgermod.ability.explosive_hits";
+    public static final String NETHER_BORN="tooltips.forgermod.passive.nether_born";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isDagger())
@@ -21,13 +22,13 @@ public final class RecommendedAbilities {
             return List.of(new Augmentations.Ability(EXPLOSION,true),new Augmentations.Ability(CINDER_DECOY,true),
                     new Augmentations.Ability(EXPLOSIVE_HITS,true),
                     new Augmentations.Ability(COLD_BELLOWS,false),new Augmentations.Ability(HEATING_UP,false),
-                    new Augmentations.Ability(FIRE_RESISTANCE,false));
+                    new Augmentations.Ability(FIRE_RESISTANCE,false),new Augmentations.Ability(NETHER_BORN,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isAxe())
-            return List.of(new Augmentations.Ability(FIRE_RESISTANCE,false));
+            return List.of(new Augmentations.Ability(FIRE_RESISTANCE,false),new Augmentations.Ability(NETHER_BORN,false));
         return List.of();
     }
     public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id); }
-    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:4; }
+    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         return EXPLOSION.equals(id)?1200-100*(Math.clamp(rank,1,4)-1):CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id)?900:0;
     }

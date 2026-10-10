@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Nether Born; Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -62,3 +62,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Arms ten successful melee hits. Each produces a small blast dealing exactly 30% of current weapon attack damage to nearby non-allied living targets, including the original victim. No caster damage or terrain changes; blocks obstruct it.
 - Radii at ranks I-IV: 1.5/2/2.5/3 blocks. Cooldown is 45 seconds after all ten charges finish or switching cancels them. Failed hits retain charges. Secondary damage cannot recurse into melee-trigger abilities.
 - Reviewed build/lightweight/server checks passed all 75 required tests, covering every variant, exact damage/count, no recursion/eleventh blast, failed hits, same-stack arm rejection, switching, walls, rank-IV self-safety, original-victim damage and actual key-handler cooldown behavior.
+
+## Nether Born - completed
+
+- Weapons: Infernal Claymore and Molten Axe, including all gemstone variants.
+- Exactly 20% more melee and weapon-explosion damage while holding the learned weapon in the Nether. No bonus in other dimensions or on unrelated projectile damage.
+- Chosen cap: one level, because the specified fixed bonus has no separate upgrade behavior; this avoids wasting ingredients on identical upgrades.
+- Reviewed build/lightweight/server checks passed all 76 required tests. All ten variants tested against real Nether damage context, with exact melee/explosion bonus, fresh-weapon and Overworld exclusion and cap.

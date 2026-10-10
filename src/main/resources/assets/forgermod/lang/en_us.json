@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.nether_born.name": "Nether Born",
+  "tooltips.forgermod.passive.nether_born": "Deal 20% more melee and weapon-explosion damage while holding this weapon in the Nether. This passive has one level.",
+  "tooltips.forgermod.passive.nether_born.card": "Deal 20% more weapon damage in the Nether.",
   "tooltips.forgermod.ability.explosive_hits.name": "Explosive Hits",
   "tooltips.forgermod.ability.explosive_hits": "Your next 10 successful melee hits create small blasts dealing 30% of your current weapon damage, without harming you or terrain. Radius: 1.5/2/2.5/3 blocks at levels I/II/III/IV. Cooldown: 45 seconds after the charges finish or are canceled by switching.",
   "tooltips.forgermod.ability.explosive_hits.card": "Ten hits explode for 30% weapon damage, without harming you.",
