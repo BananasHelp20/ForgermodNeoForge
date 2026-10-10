@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -95,3 +95,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Rank I-IV ranges: 30/60/120 blocks/any loaded visible distance; cooldowns: 45/40/35/30 seconds, starting immediately after successful teleport. Failed targeting/landing does not consume it.
 - Uses loaded-entity iteration and chunk-path checks to avoid world-sized entity queries or loading unknown terrain. Solid obstacles block targeting; destination checks cover collision, world border, build height, loaded chunks and fluids.
 - Reviewed build/lightweight/server checks passed all 86 required tests, including all five variants, fresh rejection, exact destination/view/fall behavior, walls, distant rank-IV use, upward targeting, mounted rejection and packet cooldown.
+
+## Echoing Speed - completed
+
+- Weapons: Riftfang Dagger and all four gemstone variants. Successful melee hits on one living enemy each add 5% attack speed, capped at 20/30/40/50% by rank. A successful hit on another enemy restarts at 5%; rejected hits leave buildup intact.
+- Eight seconds without a successful hit, target death/removal/dimension change, weapon switching, death or logout clear the temporary modifier. No permanent attribute changes or removal of unrelated speed bonuses.
+- Reviewed build/lightweight/server checks passed all 88 required tests, covering every variant, unlearned rejection, exact gradual buildup/caps, rejected hits, target reset, exact-stack switching, rank-IV expiry/restart and logout with an independent speed modifier.

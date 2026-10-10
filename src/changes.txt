@@ -416,3 +416,5 @@ Removed
 - Added learnable Swing Attack to all 45 special axes: circular current-weapon-damage hit within current melee range, blocking walls and excluding allies/neutral targets; rank cooldowns 30/25/20/15 seconds.
 
 - Added learnable Death Stare to all five Riftfang Daggers: crosshair teleport beside a mob at 30/60/120/any loaded visible blocks, with 45/40/35/30-second cooldown; rejects walls, unsafe landing and mounted use.
+
+- Added learnable Echoing Speed to all Riftfang Daggers: each successful same-enemy melee hit adds 5% temporary attack speed, capped at 20/30/40/50%; different targets reset buildup and switching, eight-second inactivity, target death or logout clears it.

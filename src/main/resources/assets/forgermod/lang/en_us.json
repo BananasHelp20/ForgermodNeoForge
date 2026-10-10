@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.echoing_speed.name": "Echoing Speed",
+  "tooltips.forgermod.passive.echoing_speed": "Successful hits on the same enemy each add 5% attack speed, capped at 20/30/40/50% at levels I/II/III/IV. A different target resets buildup. Eight seconds without a hit, switching weapons or the target dying clears it.",
+  "tooltips.forgermod.passive.echoing_speed.card": "Build attack speed with repeated hits on one enemy.",
   "tooltips.forgermod.ability.death_stare.name": "Death Stare",
   "tooltips.forgermod.ability.death_stare": "Teleport beside the mob directly under your crosshair. Range: 30/60/120 blocks at levels I/II/III; level IV reaches any loaded, visible distance. Walls block targeting and occupied destinations are rejected. Cooldown: 45/40/35/30 seconds.",
   "tooltips.forgermod.ability.death_stare.card": "Teleport beside the mob directly under your crosshair.",
