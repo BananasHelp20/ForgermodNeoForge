@@ -10,6 +10,18 @@ public final class AugmentationAnimationTest {
             for(int tick=0;tick<=ticks;tick++) {
                 int pixels=AugmentationAnimation.revealedPixels(stage,tick,base);
                 if(pixels<last || pixels>(AugmentationAnimation.WIDTH[stage]+1)/2) throw new AssertionError("Invalid reveal front");
+                if(stage<=2) {
+                    var reveal=AugmentationAnimation.inwardReveal(stage,pixels);
+                    int center=stage==1?25:47;
+                    if(center-reveal.leftWidth()!=reveal.rightStart()-center)
+                        throw new AssertionError("Inward fronts are not symmetric about the weapon opening");
+                    if(pixels==0 && (reveal.leftWidth()!=0 || reveal.rightWidth()!=0))
+                        throw new AssertionError("Overlay appears before progress starts");
+                    if(pixels>0 && reveal.rightStart()+reveal.rightWidth()!=AugmentationAnimation.WIDTH[stage])
+                        throw new AssertionError("Right outer texture column was lost");
+                    if(tick==ticks && reveal.leftWidth()!=reveal.rightStart())
+                        throw new AssertionError("Completed inward reveal leaves a center gap");
+                }
                 last=pixels;
             }
             if(last!=(AugmentationAnimation.WIDTH[stage]+1)/2) throw new AssertionError("Overlay incomplete");

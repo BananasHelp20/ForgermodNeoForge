@@ -58,9 +58,9 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
             else {
                 int pixels=AugmentationAnimation.revealedPixels(stage,menu.progress(),menu.duration());
                 if(stage<=2) {
-                    crop(gui,stage,0,pixels);
-                    int right=Math.min(pixels,width-pixels);
-                    crop(gui,stage,width-right,right);
+                    var reveal=AugmentationAnimation.inwardReveal(stage,pixels);
+                    crop(gui,stage,0,reveal.leftWidth());
+                    crop(gui,stage,reveal.rightStart(),reveal.rightWidth());
                 } else {
                     int middle=width/2;
                     crop(gui,stage,middle-pixels,pixels); crop(gui,stage,middle,pixels);

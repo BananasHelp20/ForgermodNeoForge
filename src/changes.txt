@@ -328,3 +328,8 @@ Removed
 - Retained hover highlighting, selected/rejected visuals and full hover descriptions; resulting levels now appear separately in hover details
 - Reduced the table heading size during card selection to leave room for the eyebrows
 - Corrected the stale Chain Lightning hover description to match the existing 50% chaining chance, up to ten links and half-current-weapon-damage behavior
+
+2026-10-10 - Symmetric analyze overlay reveal
+- Fixed the first augmentation overlay's one-pixel front offset by centering both inward reveals on the weapon opening instead of the odd texture width
+- Preserved the extra outer right texture column, whole-pixel animation, existing stage timing and transparent-slot alignment
+- Added regression checks for symmetric fronts, no reveal at zero progress, complete coverage and the preserved outer column across supported analysis durations

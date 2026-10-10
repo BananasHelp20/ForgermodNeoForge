@@ -336,3 +336,10 @@
 - Lower white interiors start with blue Ability or cyan Passive Effect, followed by compact localized light-gray descriptions. Full descriptions and a separate resulting-level line remain on hover. Hover, chosen-card highlight and rejected-card disabling remain functional. Updated a stale Chain Lightning full description to the already-implemented chaining behavior; no ability behavior or costs changed.
 - test/build/runGameTestServer -x createMinecraftArtifacts passed all 58 required server tests with BUILD SUCCESSFUL. Code review and whitespace checks passed. Live client appearance has not been directly playtested.
 - Preserve the user's dirty instructions.md, Augmentations.java (newline-only change), augmentation_table_gui.png and sapphire_gemstone.png; none are included in this task's commit. The newly supplied ability-card template is included for packaging.
+
+## Symmetric first-overlay reveal
+
+- The first overlay is 51 pixels wide, but its transparent weapon opening spans local x16..33, centered at x25. The old right crop started at 51-pixels, one pixel behind the mirrored left front about that opening.
+- Shared AugmentationAnimation.inwardReveal now advances fronts around x25 for stage one (x47 for stage two). The extra outer right column is revealed with the right edge rather than counted as front movement. Both meet at the opening's actual center, with no gap/overlap and all authored texture columns retained. PNGs, origins, timings and later stages are unchanged.
+- Expanded the existing animation regression to cover front symmetry, empty zero-progress reveals, right-edge coverage and completed center coverage for analysis durations 100/180/500/10000. test build -x createMinecraftArtifacts passed all lightweight checks with BUILD SUCCESSFUL; whitespace and code review passed. Live client rendering has not been directly playtested.
+- Preserved user edits to instructions.md, Augmentations.java, augmentation_table_gui.png and sapphire_gemstone.png.
