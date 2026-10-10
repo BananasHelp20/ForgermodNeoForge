@@ -358,3 +358,9 @@
 
 - Removed the card hover-border and green selected-border rendering as requested. Both options use the normal authored template before selection; after selection only the unchosen card receives the existing disabled gray text/tint. That state remains until weapon pickup resets the table. Hover descriptions, click bounds and server selection validation remain unchanged.
 - Gradle build -x createMinecraftArtifacts passed with the existing lightweight checks after final code review; whitespace check passed. Live appearance remains unverified. Unrelated user edits to instructions.md, Augmentations.java and existing GUI/Sapphire PNGs were preserved.
+
+## Augmentation enchanting particle duration
+
+- Enchanting particles previously emitted only during ANALYZE. They now emit throughout ANALYZE/COVER/EXPAND/FINALIZE/CHOOSE, including while waiting for a card choice. Cadence uses world game time every ten ticks rather than stage progress, which is stationary during selection. Count, location, spread and speed are unchanged.
+- COMPLETE exits before emission; invalid/removed inputs reset and exit before emission, so completion/cancellation stops new particles. Existing particles finish their normal lifetime. Closing the menu while augmentation remains pending does not end emission.
+- test build runGameTestServer -x createMinecraftArtifacts passed all 58 required server tests and existing lightweight checks with BUILD SUCCESSFUL. Code/whitespace review passed; live client particle appearance remains unverified. Unrelated user edits were preserved.

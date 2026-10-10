@@ -113,11 +113,12 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
         if(legal.stream().noneMatch(a -> a.id().equals(first)) || legal.stream().noneMatch(a -> a.id().equals(second))) {
             rollOffers(); setChanged(); if(phase==0) return;
         }
+        if(phase>=AugmentationAnimation.ANALYZE && phase<=AugmentationAnimation.CHOOSE
+                && level.getGameTime()%10==0 && level instanceof net.minecraft.server.level.ServerLevel server) {
+            server.sendParticles(net.minecraft.core.particles.ParticleTypes.ENCHANT,worldPosition.getX()+.5,
+                    worldPosition.getY()+1,worldPosition.getZ()+.5,6,.3,.2,.3,.15);
+        }
         if(phase>=AugmentationAnimation.ANALYZE && phase<=AugmentationAnimation.FINALIZE) {
-            if(phase==AugmentationAnimation.ANALYZE && (progress+1)%10==0 && level instanceof net.minecraft.server.level.ServerLevel server) {
-                server.sendParticles(net.minecraft.core.particles.ParticleTypes.ENCHANT,worldPosition.getX()+.5,
-                        worldPosition.getY()+1,worldPosition.getZ()+.5,6,.3,.2,.3,.15);
-            }
             if(++progress>=AugmentationAnimation.stageTicks(phase,duration)) { phase++; progress=0; }
             setChanged();
         }

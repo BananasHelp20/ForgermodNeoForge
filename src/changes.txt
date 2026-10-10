@@ -346,3 +346,7 @@ Removed
 2026-10-10 - Ability card selection visuals
 - Removed ability card hover borders and green selected-card borders; the chosen card retains the normal authored template appearance
 - Retained the other card's disabled text/tint after selection until the augmented weapon is taken and the table resets
+
+2026-10-10 - Augmentation enchanting particle duration
+- Extended enchanting particle emission through all four overlays and the ability-card selection phase, stopping when augmentation completes or is canceled
+- Kept the existing particle count and appearance, with emission every ten world ticks so particles continue while selection progress is stationary
