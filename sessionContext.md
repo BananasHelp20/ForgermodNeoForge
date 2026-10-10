@@ -290,3 +290,8 @@
 - Updated regressions for native-only ability pools and unchanged rank baselines, and added all-variant saved-data migration/removal plus persisted pending-offer reroll/refund tests. First run exposed a tooltip test assuming every axe/claymore had dagger actives; corrected it to require their absence while continuing to check all 135 variants.
 - User edits to instructions.md and authored ability-thoughts.txt remain untouched. No new gameplay abilities have been added. Live client playtesting is still outstanding.
 - Final reviewed repeat: test/build/runGameTestServer passed all 53 required server tests with BUILD SUCCESSFUL on NeoForge 21.1.93 (using -x createMinecraftArtifacts to preserve the client's locked artifact). Whitespace check passed. Document audit confirmed exactly 27 weapon sections, four recommendations per section and 108 unique ability names. All withdrawn formulas/subscriber references and unsupported claymore/axe offers were reviewed; only the intentional legacy saved-ID alias remains.
+
+## Authored Sapphire Gemstone texture
+
+- Connected the user's src/main/resources/assets/forgermod/textures/item/sapphire_gemstone.png (16x16) to the Sapphire Gemstone item model, replacing vanilla lapis. Added basicItem(SAPPHIRE_GEMSTONE) to ModItemModelProvider to retain the texture reference on future generation. The authored PNG is unchanged.
+- Gradle build -x createMinecraftArtifacts passed. PNG signature/chunk checksums/decompression validated; the built jar contains the correct model reference and exact authored PNG. Whitespace check passed. User edits to instructions.md remain untouched.

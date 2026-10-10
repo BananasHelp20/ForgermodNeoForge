@@ -286,3 +286,7 @@ Debuffed
 Changed
 - Saved empowered_hit ranks migrate to material_hit without deleting weapon components or historical augmentation counts; I-IV progression remains pending user-defined rank bonuses
 - Approved dagger abilities, learned-only fresh weapons, configurable key labels, swapping, table mechanics and gemstone bonuses remain
+
+- Added the user-authored sapphire_gemstone.png texture to the mod assets
+- Replaced the Sapphire Gemstone's placeholder lapis texture with forgermod:item/sapphire_gemstone
+- Added Sapphire Gemstone item-model generation so future data generation retains the authored texture
