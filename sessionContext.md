@@ -348,3 +348,8 @@
 
 - User requested left-side eyebrows and softer description text. New/Upgrade now starts at card x+2 above the title box, replacing right alignment. Description text uses neutral gray #929292 without shadow, removing the harsh dark outline at half-scale on the white template.
 - Gradle build -x createMinecraftArtifacts passed, including the existing lightweight checks. Code/whitespace review passed; live client appearance remains unverified. User edits to instructions.md, Augmentations.java and the existing GUI/Sapphire PNGs were preserved.
+
+## Ability card padding follow-up
+
+- User requested one-pixel padding and the lower category heading one pixel down; clarified that only the description padding should change, not its wording. Upper title area now reserves a one-pixel margin inside the white box (37x7 usable instead of 39x9), preserving centered fitting. Lower heading/description origin moves from (x+2,y+13) to (x+3,y+14); wrapping narrows from 78 to 74 half-scale font units, leaving a one-pixel horizontal margin. Left eyebrow aligns at x+3. Seven description lines still fit with bottom padding.
+- Gradle build -x createMinecraftArtifacts passed with existing lightweight checks; code/whitespace review passed. Actual client appearance has not been directly playtested. Preserved unrelated user edits to instructions.md, Augmentations.java and the existing GUI/Sapphire PNGs.

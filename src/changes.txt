@@ -337,3 +337,8 @@ Removed
 2026-10-10 - Ability card text styling
 - Moved the New/Upgrade eyebrows to the left edge above each ability card's title box
 - Removed the dark shadow from card descriptions and adjusted their neutral gray color for softer, readable text on the white template
+
+2026-10-10 - Ability card text padding
+- Added one-pixel inner padding to both white card boxes, narrowing title fitting and description wrapping to keep text off the edges
+- Moved the lower Ability/Passive Effect heading down one pixel and inset its description one pixel horizontally and vertically
+- Aligned the left eyebrow with the padded text; description wording and colors are unchanged

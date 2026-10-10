@@ -90,31 +90,31 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
             gui.fill(x,y,x+1,y+CARD_HEIGHT,edge); gui.fill(x+CARD_WIDTH-1,y,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
         }
         Component eyebrow=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.new":"augmentation.forgermod.card.upgrade");
-        gui.pose().pushPose(); gui.pose().translate(x+2,y-4,0); gui.pose().scale(.5F,.5F,1);
+        gui.pose().pushPose(); gui.pose().translate(x+3,y-4,0); gui.pose().scale(.5F,.5F,1);
         gui.drawString(font,eyebrow,0,0,0xff586672,false); gui.pose().popPose();
         // Fit and center the title in the template's upper white box, without a rank suffix.
         float scale=.5F;
-        List<FormattedCharSequence> titleLines=font.split(offer.name(),(int)(39/scale));
-        while(titleLines.size()*font.lineHeight*scale>9 && scale>.3F) {
-            scale=Math.max(.3F,scale-.025F); titleLines=font.split(offer.name(),(int)(39/scale));
+        List<FormattedCharSequence> titleLines=font.split(offer.name(),(int)(37/scale));
+        while(titleLines.size()*font.lineHeight*scale>7 && scale>.3F) {
+            scale=Math.max(.3F,scale-.025F); titleLines=font.split(offer.name(),(int)(37/scale));
         }
-        int maxLines=Math.max(1,(int)(9/(font.lineHeight*scale)));
+        int maxLines=Math.max(1,(int)(7/(font.lineHeight*scale)));
         if(titleLines.size()>maxLines) titleLines=titleLines.subList(0,maxLines);
         gui.pose().pushPose();
-        gui.pose().translate(x+CARD_WIDTH/2F,y+2+(9-titleLines.size()*font.lineHeight*scale)/2F,0);
+        gui.pose().translate(x+CARD_WIDTH/2F,y+3+(7-titleLines.size()*font.lineHeight*scale)/2F,0);
         gui.pose().scale(scale,scale,1);
         for(int row=0;row<titleLines.size();row++) {
             var line=titleLines.get(row);
             gui.drawString(font,line,-font.width(line)/2,row*font.lineHeight,rejected?0xff666666:offer.active()?0xff244575:0xff006b7b,false);
         }
         gui.pose().popPose();
-        // The lower white box contains a colored category followed by a compact description.
-        gui.pose().pushPose(); gui.pose().translate(x+2,y+13,0); gui.pose().scale(.5F,.5F,1);
+        // Inset text one texture pixel from the white boxes; keep the lower heading one pixel lower.
+        gui.pose().pushPose(); gui.pose().translate(x+3,y+14,0); gui.pose().scale(.5F,.5F,1);
         Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
-        gui.drawString(font,category,(78-font.width(category))/2,0,rejected?0xff666666:offer.active()?0xff2962d9:0xff00a9bd,false);
+        gui.drawString(font,category,(74-font.width(category))/2,0,rejected?0xff666666:offer.active()?0xff2962d9:0xff00a9bd,false);
         Component description=Component.translatable(offer.id()+".card");
         if(!net.minecraft.client.resources.language.I18n.exists(offer.id()+".card")) description=Component.translatable(offer.id());
-        var lines=font.split(description,78);
+        var lines=font.split(description,74);
         for(int row=0;row<Math.min(lines.size(),7);row++) gui.drawString(font,lines.get(row),0,14+row*font.lineHeight,0xff929292,false);
         gui.pose().popPose();
         if(rejected) gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,0x55808080);
