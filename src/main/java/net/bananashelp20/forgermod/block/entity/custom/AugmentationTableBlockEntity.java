@@ -58,6 +58,22 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
     public boolean locked() { return phase != 0; }
     public void tick() {
         if (level == null || level.isClientSide) return;
+        // Saved choices may refer to withdrawn Codex proposals. Repair without another payment.
+        if (phase != 0) {
+            if (!first.equals(Augmentations.migrateId(first)) || !second.equals(Augmentations.migrateId(second))) setChanged();
+            first = Augmentations.migrateId(first); second = Augmentations.migrateId(second);
+            var legal = Augmentations.available(inventory.getStackInSlot(GEAR));
+            if (legal.stream().noneMatch(a -> a.id().equals(first)) || legal.stream().noneMatch(a -> a.id().equals(second))) {
+                var offers = Augmentations.offers(inventory.getStackInSlot(GEAR), level.random);
+                if (offers.isEmpty()) {
+                    // Keep the gear in its input slot and refund the already-spent pair.
+                    refund(TEMPLATE, new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()));
+                    refund(SAPPHIRE, new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get()));
+                    phase=0; progress=0; first=""; second=""; setChanged(); return;
+                }
+                first=offers.get(0).id(); second=offers.get(1).id(); setChanged();
+            }
+        }
         if (phase == 0 && inventory.getStackInSlot(OUTPUT).isEmpty()
                 && Augmentations.eligible(inventory.getStackInSlot(GEAR))
                 && inventory.getStackInSlot(GEAR).getCount() == 1
@@ -78,6 +94,11 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
                         6, .3, .2, .3, .15);
             }
         }
+    }
+    private void refund(int slot, ItemStack ingredient) {
+        ItemStack remainder = inventory.insertItem(slot, ingredient, false);
+        if (!remainder.isEmpty()) net.minecraft.world.Containers.dropItemStack(level,
+                worldPosition.getX()+.5, worldPosition.getY()+1, worldPosition.getZ()+.5, remainder);
     }
     public boolean choose(int button) {
         if (level == null || level.isClientSide || phase != 2 || button < 0 || button > 1

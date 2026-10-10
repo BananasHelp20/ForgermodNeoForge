@@ -52,7 +52,7 @@ public class WindyDashGameTests {
         var player = test.makeMockServerPlayerInLevel();
         player.setPos(test.getBounds().getCenter());
         for (var entry : ModItems.ITEMS.getEntries()) {
-            if (!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.TaifuniteWeapon actual)) continue;
+            if (!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.TaifuniteWeapon actual) || !actual.isDagger()) continue;
             ItemStack stack = new ItemStack(actual);
             var runtime = Augmentations.canonical(stack);
             stack = Augmentations.apply(stack, runtime.abilityDescriptionKey(WeaponAbilitySlot.SECONDARY));

@@ -107,8 +107,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             mob.invulnerableTime = 0;
             if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player),
                     (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F
-                            * CHARGE_ATTACK.damageMultiplier(player.getUUID())
-                            * (1 + .25F * (Augmentations.level(player.getMainHandItem(), "tooltips.forgermod.passive.chain_lightning") - 1)))) {
+                            * CHARGE_ATTACK.damageMultiplier(player.getUUID()))) {
                 dischargeChargeIfReady(mob, player);
                 for (int step = 1; step <= 6; step++) {
                     double fraction = step / 7.0;

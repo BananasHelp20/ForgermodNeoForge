@@ -266,3 +266,23 @@ Debuffed
 Removed
 - Removed unlearned abilities, empty gemstone brackets and augmentation-count/debug explanations from normal weapon tooltips
 - Removed the augmentation screen's wide dark-blue panel styling and the obsolete native-only tooltip implementation
+
+2026-10-10 — Withdraw unapproved Codex abilities for manual review
+Added
+- Added markdown/codexAbilities.md recording Guarded, Empowered Hit, copied dagger pools and invented rank bonuses, with their former behavior and withdrawal scope
+- Added markdown/abilityRecommendations.md with 108 distinct proposals: four for each of 27 special dagger/claymore/axe families, covering base and gemstone variants; none implemented
+- Added saved-choice recovery: obsolete augmentation offers reroll without extra payment; if no legal upgrade remains, unlock the retained weapon and refund the spent template and sapphire
+- Added migration/removal regression tests across all 135 special variants and persisted table choices
+Removed
+- Removed Guarded from every ability pool and deleted its incoming-damage handler and descriptions; saved Guarded ranks are inert
+- Removed copied dagger active/unique-passive assignments from special claymores and axes; their approved material Hit learning and intrinsic axe slam remain
+- Removed invented rank scaling descriptions and generic Empowered Hit branding
+Debuffed
+- Removed Empowered Hit's extra material-effect duration; all learned material Hit ranks now use approved base durations, including existing weapon-type and gemstone adjustments
+- Removed invented active rank cooldown reductions; I-IV use the approved base cooldown independently for each slot/variant
+- Removed invented Chain Lightning rank damage bonuses; approved half-current-weapon damage and Charge Attack interaction remain
+- Removed invented Death March/Revenge rank bonus multipliers; restored their original approved damage formulas
+- Removed invented Double Jump rank lift bonuses; lift is 0.55 with approved horizontal momentum preservation
+Changed
+- Saved empowered_hit ranks migrate to material_hit without deleting weapon components or historical augmentation counts; I-IV progression remains pending user-defined rank bonuses
+- Approved dagger abilities, learned-only fresh weapons, configurable key labels, swapping, table mechanics and gemstone bonuses remain

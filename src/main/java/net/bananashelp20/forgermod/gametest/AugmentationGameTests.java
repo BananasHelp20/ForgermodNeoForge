@@ -36,6 +36,66 @@ import java.lang.reflect.Proxy;
 @PrefixGameTestTemplate(false)
 public class AugmentationGameTests {
     @GameTest(template = "riftfang_test")
+    public static void withdrawnEntriesAreInertAndMaterialHitMigratesAcrossAllVariants(GameTestHelper test) {
+        for (var entry : ModItems.ITEMS.getEntries()) {
+            ItemStack stack = new ItemStack(entry.get());
+            if (!Augmentations.eligible(stack)) continue;
+            var old = new CompoundTag(); var data = new CompoundTag(); var levels = new net.minecraft.nbt.ListTag();
+            for (String id : new String[]{"augmentation.forgermod.guarded", "augmentation.forgermod.empowered_hit",
+                    Augmentations.canonical(new ItemStack(ModItems.DEAD_CALM_DAGGER.get())).abilityDescriptionKey(WeaponAbilitySlot.SECONDARY)}) {
+                var row = new CompoundTag(); row.putString("id", id); row.putInt("level", 4); levels.add(row);
+            }
+            data.put("levels", levels); data.putInt("version", 2); data.putInt("count", 12); old.put("forgermod_augments", data);
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(old));
+            test.assertTrue(Augmentations.level(stack, Augmentations.MATERIAL_HIT) == 4 && Augmentations.count(stack) == 12,
+                    "Material learning or historical count lost during migration");
+            test.assertFalse(Augmentations.hasPassive(stack, "augmentation.forgermod.guarded"), "Saved Guarded still active");
+            test.assertTrue(Augmentations.pool(stack).stream().noneMatch(a -> a.id().contains("guarded") || a.id().contains("empowered_hit")),
+                    "Withdrawn ability still offered");
+            if (!((SwordItemWithEffect)stack.getItem()).isDagger()) {
+                test.assertTrue(Augmentations.ids(stack, true).isEmpty() && Augmentations.ids(stack, false).isEmpty(), "Copied dagger abilities remain");
+                test.assertTrue(Augmentations.pool(stack).size() == 1, "Claymore/axe has invented ability assignments");
+            }
+        }
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
+    public static void withdrawnPendingChoicesRerollOrRefundWithoutLosingGear(GameTestHelper test) {
+        var table = table(test);
+        ItemStack fresh = new ItemStack(ModItems.OVERGROWN_CLAYMORE.get());
+        table.inventory.setStackInSlot(0, fresh);
+        table.inventory.setStackInSlot(1, new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get(), 2));
+        table.inventory.setStackInSlot(2, new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get(), 2));
+        table.tick();
+        CompoundTag saved = table.saveWithoutMetadata(test.getLevel().registryAccess());
+        saved.putInt("phase", 2); saved.putString("first", "augmentation.forgermod.guarded");
+        saved.putString("second", "tooltips.forgermod.ability.rooting_roots");
+        table.loadWithComponents(saved, test.getLevel().registryAccess()); table.tick();
+        test.assertTrue(table.data.get(0) == 2 && table.data.get(3) > 0 && table.data.get(4) > 0,
+                "Removed pending offers left table stuck");
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 1 && table.inventory.getStackInSlot(2).getCount() == 1,
+                "Repair charged another pair of ingredients");
+        test.assertTrue(table.choose(0) && Augmentations.level(table.inventory.getStackInSlot(3), Augmentations.MATERIAL_HIT) == 1,
+                "Repaired offer cannot be chosen");
+        ItemStack maxed = fresh;
+        for (int i=0; i<4; i++) maxed = Augmentations.apply(maxed, Augmentations.MATERIAL_HIT);
+        table.inventory.setStackInSlot(3, ItemStack.EMPTY); table.inventory.setStackInSlot(0, maxed);
+        saved = table.saveWithoutMetadata(test.getLevel().registryAccess());
+        saved.putInt("phase", 2); saved.putString("first", "augmentation.forgermod.guarded"); saved.putString("second", "augmentation.forgermod.guarded");
+        table.loadWithComponents(saved, test.getLevel().registryAccess()); table.tick();
+        test.assertFalse(table.locked(), "No legal choices still lock gear");
+        test.assertTrue(Augmentations.level(table.inventory.getStackInSlot(0), Augmentations.MATERIAL_HIT) == 4,
+                "Refund removed or changed weapon");
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 2 && table.inventory.getStackInSlot(2).getCount() == 2,
+                "Cancelled withdrawn offer did not refund consumed ingredients");
+        table.tick();
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 2 && table.inventory.getStackInSlot(2).getCount() == 2,
+                "Cancelled table refunded more than once");
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
     public static void allMaterialVariantsRespectSlotsRanksAndOffers(GameTestHelper test) {
         int checked = 0;
         for (var entry : ModItems.ITEMS.getEntries()) {
@@ -43,7 +103,7 @@ public class AugmentationGameTests {
             if (!Augmentations.eligible(stack)) continue;
             checked++;
             test.assertTrue(Augmentations.ids(stack, true).isEmpty() && Augmentations.ids(stack, false).isEmpty()
-                    && Augmentations.level(stack, Augmentations.EMPOWERED_HIT) == 0, "Fresh item has learned abilities");
+                    && Augmentations.level(stack, Augmentations.MATERIAL_HIT) == 0, "Fresh item has learned abilities");
             test.assertTrue(Augmentations.duration(stack) == 100, "Initial cook time is not five seconds");
             var random = RandomSource.create(123);
             while (!Augmentations.available(stack).isEmpty()) {
@@ -78,7 +138,7 @@ public class AugmentationGameTests {
         Cow target = EntityType.COW.create(test.getLevel());
         weapon.applyMaterialEffect(target, fresh);
         test.assertFalse(target.hasEffect(MobEffects.WEAKNESS), "Fresh weapon still applies unlearned material effect");
-        ItemStack learned = Augmentations.apply(fresh, Augmentations.EMPOWERED_HIT);
+        ItemStack learned = Augmentations.apply(fresh, Augmentations.MATERIAL_HIT);
         weapon.applyMaterialEffect(target, learned);
         test.assertTrue(target.hasEffect(MobEffects.WEAKNESS), "Learning material hit has no combat effect");
         test.assertTrue(Augmentations.ids(learned, false).isEmpty(), "Material hit consumed a unique passive slot");
@@ -89,7 +149,7 @@ public class AugmentationGameTests {
         augments.put("levels", levels); oldData.put("forgermod_augments", augments);
         ItemStack legacy = fresh.copy(); legacy.set(DataComponents.CUSTOM_DATA, CustomData.of(oldData));
         test.assertTrue(Augmentations.ids(legacy, true).size() == 2 && Augmentations.ids(legacy, false).size() == 2
-                && Augmentations.level(legacy, Augmentations.EMPOWERED_HIT) == 1, "Existing augmented item lost its native abilities");
+                && Augmentations.level(legacy, Augmentations.MATERIAL_HIT) == 1, "Existing augmented item lost its native abilities");
         ItemStack migrated = Augmentations.apply(legacy, "tooltips.forgermod.ability.storing_anger");
         test.assertTrue(Augmentations.level(migrated, "tooltips.forgermod.ability.storing_anger") == 3
                 && Augmentations.ids(migrated, true).size() == 2 && Augmentations.ids(migrated, false).size() == 2,
@@ -130,7 +190,7 @@ public class AugmentationGameTests {
         test.assertTrue(table.data.get(0) == 1, "Choices appeared before five seconds");
         table.tick();
         var first = menu.offer(0); var second = menu.offer(1);
-        test.assertTrue(first != null && second != null && !first.equals(second), "Missing/distinct choices");
+        test.assertTrue(first != null && second != null, "Missing legal choices");
         CompoundTag saved = table.saveWithoutMetadata(test.getLevel().registryAccess());
         table.loadWithComponents(saved, test.getLevel().registryAccess());
         test.assertTrue(menu.offer(0).equals(first) && menu.offer(1).equals(second) && table.data.get(0) == 2, "Reload rerolled or reset choices");
@@ -159,10 +219,10 @@ public class AugmentationGameTests {
     }
 
     @GameTest(template = "riftfang_test")
-    public static void learnedSecondaryBindsFirstKeyAndRankReducesCooldown(GameTestHelper test) throws Exception {
+    public static void learnedSecondaryBindsFirstKeyAndRanksKeepApprovedCooldown(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
         player.setPos(test.getBounds().getCenter());
-        ItemStack stack = new ItemStack(ModItems.INFERNAL_CLAYMORE.get());
+        ItemStack stack = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
         String id = Augmentations.canonical(stack).abilityDescriptionKey(WeaponAbilitySlot.SECONDARY);
         for (int i = 0; i < 4; i++) stack = Augmentations.apply(stack, id);
         test.assertTrue(Augmentations.sourceSlot(stack, WeaponAbilitySlot.PRIMARY) == WeaponAbilitySlot.SECONDARY, "Acquired secondary source mapping wrong");
@@ -171,29 +231,29 @@ public class AugmentationGameTests {
         var runtime = Augmentations.canonical(stack);
         player.setRemainingFireTicks(200);
         use(player, WeaponAbilitySlot.PRIMARY);
-        test.assertTrue(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Claymore could not activate learned ability");
+        test.assertTrue(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Dagger could not activate learned ability");
         Cow cow = EntityType.COW.create(test.getLevel()); cow.setPos(player.position().add(0, 0, 2));
         test.getLevel().addFreshEntity(cow);
         ((SwordItemWithEffect)stack.getItem()).postHurtEnemy(stack, cow, player);
-        test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Claymore hit did not consume learned ability");
+        test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Dagger hit did not consume learned ability");
         test.assertTrue(cow.isOnFire(), "Learned infernal hit had no effect");
         var update = WeaponAbilityNetwork.class.getDeclaredMethod("updateSession", ServerPlayer.class); update.setAccessible(true); update.invoke(null, player);
         String key = WeaponCooldownKey.of(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(), WeaponAbilitySlot.SECONDARY);
         long remaining = player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key) - player.level().getGameTime();
-        test.assertTrue(remaining == Math.round(runtime.abilityCooldownTicks(WeaponAbilitySlot.SECONDARY) * .55F), "Rank IV cooldown wrong");
+        test.assertTrue(remaining == runtime.abilityCooldownTicks(WeaponAbilitySlot.SECONDARY), "Rank IV cooldown wrong");
         cow.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
 
     @GameTest(template = "riftfang_test")
-    public static void passiveRanksStrengthenMaterialAndPreserveGemConversion(GameTestHelper test) {
+    public static void materialRanksKeepApprovedDurationAndPreserveGemConversion(GameTestHelper test) {
         ItemStack stack = new ItemStack(ModItems.OVERGROWN_CLAYMORE.get());
-        for (int i = 0; i < 4; i++) stack = Augmentations.apply(stack, Augmentations.EMPOWERED_HIT);
+        for (int i = 0; i < 4; i++) stack = Augmentations.apply(stack, Augmentations.MATERIAL_HIT);
         Cow baseline = EntityType.COW.create(test.getLevel()), augmented = EntityType.COW.create(test.getLevel());
         var weapon = (SwordItemWithEffect)stack.getItem();
         weapon.applyMaterialEffect(baseline); weapon.applyMaterialEffect(augmented, stack);
-        test.assertTrue(augmented.getEffect(MobEffects.HUNGER).getDuration() == Math.round(baseline.getEffect(MobEffects.HUNGER).getDuration() * 1.75F), "Material Hit IV did not extend duration by 75%");
+        test.assertTrue(augmented.getEffect(MobEffects.HUNGER).getDuration() == baseline.getEffect(MobEffects.HUNGER).getDuration(), "Unapproved material duration bonus remains");
         ItemStack converted = new ItemStack(ModItems.OVERGROWN_CLAYMORE_JADE.get().builtInRegistryHolder(), 1, stack.getComponentsPatch());
-        test.assertTrue(Augmentations.level(converted, Augmentations.EMPOWERED_HIT) == 4 && Augmentations.count(converted) == 4, "Gem conversion lost upgrades");
+        test.assertTrue(Augmentations.level(converted, Augmentations.MATERIAL_HIT) == 4 && Augmentations.count(converted) == 4, "Gem conversion lost upgrades");
         var table = table(test); table.inventory.setStackInSlot(0, converted);
         test.assertTrue(Augmentations.duration(converted) == 180, "Previous augment cook duration wrong");
         test.succeed();
@@ -202,7 +262,7 @@ public class AugmentationGameTests {
     @GameTest(template = "riftfang_test")
     public static void brokenWeaponCancelsLearnedSecondaryAndBothCooldownsRemainIndependent(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
-        ItemStack stack = new ItemStack(ModItems.INFERNAL_CLAYMORE.get());
+        ItemStack stack = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
         var runtime = Augmentations.canonical(stack);
         String secondary = runtime.abilityDescriptionKey(WeaponAbilitySlot.SECONDARY);
         String primary = runtime.abilityDescriptionKey(WeaponAbilitySlot.PRIMARY);
@@ -224,13 +284,12 @@ public class AugmentationGameTests {
     }
 
     @GameTest(template = "riftfang_test")
-    public static void learnedAxeCriticalCompletesAndGuardedRankReducesDamage(GameTestHelper test) throws Exception {
+    public static void learnedDaggerCriticalCompletes(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
         ItemStack stack = ModItems.ITEMS.getEntries().stream().map(e -> new ItemStack(e.get()))
-                .filter(s -> s.getItem() instanceof net.bananashelp20.forgermod.item.custom.VulnusiumWeapon w && w.isAxe()).findFirst().orElseThrow();
+                .filter(s -> s.getItem() instanceof net.bananashelp20.forgermod.item.custom.VulnusiumWeapon w && w.isDagger()).findFirst().orElseThrow();
         String deep = Augmentations.canonical(stack).abilityDescriptionKey(WeaponAbilitySlot.PRIMARY);
         stack = Augmentations.apply(stack, deep);
-        for (int i = 0; i < 4; i++) stack = Augmentations.apply(stack, Augmentations.GUARDED);
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         use(player, WeaponAbilitySlot.PRIMARY);
         Cow cow = EntityType.COW.create(test.getLevel());
@@ -238,13 +297,10 @@ public class AugmentationGameTests {
         var crit = new net.neoforged.neoforge.event.entity.player.CriticalHitEvent(player, cow, 1.5F, true);
         net.bananashelp20.forgermod.item.custom.abilities.DaggerCriticalEvents.onCriticalHit(crit);
         net.bananashelp20.forgermod.item.custom.VulnusiumWeapon.onCriticalHit(crit);
-        test.assertTrue(crit.getDamageMultiplier() == 3, "Learned axe critical did not gain damage");
+        test.assertTrue(crit.getDamageMultiplier() == 3, "Learned dagger critical did not gain damage");
         ((SwordItemWithEffect)stack.getItem()).postHurtEnemy(stack, cow, player);
-        test.assertTrue(cow.hasEffect(MobEffects.MOVEMENT_SLOWDOWN) && cow.getEffect(MobEffects.MOVEMENT_SLOWDOWN).getAmplifier() == 2, "Learned axe Deep Wound failed to slow target");
+        test.assertTrue(cow.hasEffect(MobEffects.MOVEMENT_SLOWDOWN) && cow.getEffect(MobEffects.MOVEMENT_SLOWDOWN).getAmplifier() == 2, "Learned dagger Deep Wound failed to slow target");
         test.assertFalse(Augmentations.canonical(stack).isAbilityActive(player, WeaponAbilitySlot.PRIMARY), "Learned critical charge not consumed");
-        var damage = new net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent(player, new net.neoforged.neoforge.common.damagesource.DamageContainer(player.damageSources().generic(), 10));
-        net.bananashelp20.forgermod.augmentation.AugmentationCombatEvents.onDamage(damage);
-        test.assertTrue(Math.abs(damage.getAmount() - 8) < .001, "Guarded IV did not reduce damage by 20%");
         var update = WeaponAbilityNetwork.class.getDeclaredMethod("updateSession", ServerPlayer.class); update.setAccessible(true); update.invoke(null, player);
         test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }

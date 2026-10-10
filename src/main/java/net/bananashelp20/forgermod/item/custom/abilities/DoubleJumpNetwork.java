@@ -59,7 +59,7 @@ public final class DoubleJumpNetwork {
 
     private static void boost(Player player) {
         Vec3 velocity = player.getDeltaMovement();
-        player.setDeltaMovement(velocity.x, 0.55 + .05 * (Augmentations.level(player.getMainHandItem(), "tooltips.forgermod.passive.double_jump") - 1), velocity.z);
+        player.setDeltaMovement(velocity.x, 0.55, velocity.z);
         player.hasImpulse = true;
         player.fallDistance = 0;
     }

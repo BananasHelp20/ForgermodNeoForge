@@ -55,7 +55,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         applyMaterialEffect(pTarget, pStack);
 
-        if (pTarget.isDeadOrDying() && Augmentations.level(pStack, Augmentations.EMPOWERED_HIT) > 0) pAttacker.heal(1);
+        if (pTarget.isDeadOrDying() && Augmentations.level(pStack, Augmentations.MATERIAL_HIT) > 0) pAttacker.heal(1);
     }
 
     public void daggerAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {

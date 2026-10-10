@@ -73,10 +73,10 @@ public class SwordItemWithEffect extends SwordItem {
     }
 
     public final void applyMaterialEffect(LivingEntity target, ItemStack stack) {
-        int rank = Augmentations.level(stack, Augmentations.EMPOWERED_HIT);
+        int rank = Augmentations.level(stack, Augmentations.MATERIAL_HIT);
         if (materialEffect != null && rank > 0 && !target.isDeadOrDying()) {
             target.addEffect(new MobEffectInstance(materialEffect,
-                    Math.round(materialEffectDuration * (1 + .25F * (rank - 1))), materialEffectAmplifier));
+                    materialEffectDuration, materialEffectAmplifier));
         }
     }
 
@@ -91,7 +91,7 @@ public class SwordItemWithEffect extends SwordItem {
     protected final void appendWeaponTooltip(ItemStack stack, List<Component> tooltip, String loreKey, String gemstone, boolean expanded) {
         tooltip.add(Component.translatable(loreKey));
         boolean augmented = Augmentations.count(stack) > 0;
-        int materialRank = Augmentations.level(stack, Augmentations.EMPOWERED_HIT);
+        int materialRank = Augmentations.level(stack, Augmentations.MATERIAL_HIT);
         var passives = Augmentations.ids(stack, false);
         var actives = Augmentations.ids(stack, true);
         boolean hasAbilities = !passives.isEmpty() || !actives.isEmpty() || materialRank > 0;
@@ -106,14 +106,13 @@ public class SwordItemWithEffect extends SwordItem {
                             WeaponTooltips.romanNumeral(materialRank)).withStyle(ChatFormatting.GRAY));
                     if (expanded) tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect",
                             materialEffect.value().getDisplayName(), WeaponTooltips.romanNumeral(materialEffectAmplifier + 1),
-                            String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration * (1 + .25 * (materialRank - 1)) / 20.0)).withStyle(ChatFormatting.GRAY));
+                            String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0)).withStyle(ChatFormatting.GRAY));
                 }
                 for (String id : passives) {
                     tooltip.add(Component.translatable("augmentation.forgermod.rank", Component.translatable(id + ".name"),
                             WeaponTooltips.romanNumeral(Augmentations.level(stack, id))).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
                         tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
-                        if (id.startsWith("tooltips.forgermod.passive.")) tooltip.add(Component.translatable(id.replace("tooltips.", "augmentation.") + ".rank").withStyle(ChatFormatting.GRAY));
                     }
                 }
             }

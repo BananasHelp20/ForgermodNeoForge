@@ -1,6 +1,5 @@
 package net.bananashelp20.forgermod.augmentation;
 
-import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
 import net.minecraft.core.component.DataComponents;
@@ -18,9 +17,8 @@ public final class Augmentations {
     public record Ability(String id, boolean active, Component name) {
         public Ability(String id, boolean active) { this(id, active, Component.translatable(id + ".name")); }
     }
-    public static final String EMPOWERED_HIT = "augmentation.forgermod.empowered_hit";
-    public static final String GUARDED = "augmentation.forgermod.guarded";
-    private static final Map<net.minecraft.world.item.Item, SwordItemWithEffect> CANONICAL = new java.util.concurrent.ConcurrentHashMap<>();
+    public static final String MATERIAL_HIT = "augmentation.forgermod.material_hit";
+    private static final String LEGACY_MATERIAL_HIT = "augmentation.forgermod.empowered_hit";
     private static final String DATA = "forgermod_augments";
     private Augmentations() {}
 
@@ -29,13 +27,7 @@ public final class Augmentations {
     }
     public static SwordItemWithEffect canonical(ItemStack stack) {
         if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return null;
-        return CANONICAL.computeIfAbsent(stack.getItem(), ignored -> {
-            for (var entry : ModItems.ITEMS.getEntries()) {
-                if (entry.get() instanceof SwordItemWithEffect candidate && candidate.getClass() == weapon.getClass()
-                        && candidate.isDagger() && candidate.gemstoneName().equals(weapon.gemstoneName())) return candidate;
-            }
-            return weapon;
-        });
+        return weapon;
     }
     public static List<Ability> pool(ItemStack stack) {
         if (!eligible(stack)) return List.of();
@@ -46,8 +38,7 @@ public final class Augmentations {
             if (key != null) abilities.add(new Ability(key, true));
         }
         for (String key : canonical.passiveDescriptionKeys()) abilities.add(new Ability(key, false));
-        abilities.add(new Ability(EMPOWERED_HIT, false, canonical.materialAbilityName()));
-        abilities.add(new Ability(GUARDED, false));
+        abilities.add(new Ability(MATERIAL_HIT, false, canonical.materialAbilityName()));
         return List.copyOf(abilities);
     }
     private static CompoundTag data(ItemStack stack) {
@@ -59,14 +50,14 @@ public final class Augmentations {
         // Existing augmented stacks keep their former native abilities when migrating to learned-only gear.
         if (data(stack).getInt("version") < 2 && count(stack) > 0) {
             for (String id : nativeIds(stack)) result.put(id, 1);
-            result.put(EMPOWERED_HIT, 1);
+            result.put(MATERIAL_HIT, 1);
         }
         if (saved.isEmpty()) return result;
         Set<String> valid = new HashSet<>();
         for (var ability : pool(stack)) valid.add(ability.id());
         for (Tag tag : saved) {
             CompoundTag row = (CompoundTag)tag;
-            String id = row.getString("id");
+            String id = migrateId(row.getString("id"));
             int level = row.getInt("level");
             if (valid.contains(id) && level >= 1 && level <= 4) result.put(id, level);
         }
@@ -78,7 +69,7 @@ public final class Augmentations {
         Map<String, Boolean> types = new HashMap<>();
         for (var ability : pool(stack)) types.put(ability.id(), ability.active());
         for (String id : learned(stack).keySet()) {
-            if (!id.equals(EMPOWERED_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < 2) result.add(id);
+            if (!id.equals(MATERIAL_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < 2) result.add(id);
         }
         if (active && data(stack).getBoolean("swapped")) Collections.reverse(result);
         return List.copyOf(result);
@@ -106,7 +97,7 @@ public final class Augmentations {
         var result = new ArrayList<Ability>();
         for (var ability : pool(stack)) {
             int level = level(stack, ability.id());
-            if (level > 0 && level < 4 || level == 0 && (ability.id().equals(EMPOWERED_HIT) || ids(stack, ability.active()).size() < 2)) result.add(ability);
+            if (level > 0 && level < 4 || level == 0 && (ability.id().equals(MATERIAL_HIT) || ids(stack, ability.active()).size() < 2)) result.add(ability);
         }
         return List.copyOf(result);
     }
@@ -161,8 +152,9 @@ public final class Augmentations {
         return WeaponAbilitySlot.PRIMARY;
     }
     public static int cooldown(ItemStack stack, WeaponAbilitySlot slot, SwordItemWithEffect weapon) {
-        String id = activeId(stack, slot);
-        int level = id == null ? 1 : Math.max(1, level(stack, id));
-        return Math.max(0, Math.round(weapon.abilityCooldownTicks(sourceSlot(stack, slot)) * (1 - .15F * (level - 1))));
+        return Math.max(0, weapon.abilityCooldownTicks(sourceSlot(stack, slot)));
+    }
+    public static String migrateId(String id) {
+        return LEGACY_MATERIAL_HIT.equals(id) ? MATERIAL_HIT : id;
     }
 }
