@@ -414,3 +414,5 @@ Removed
 - Added learnable Strong-arm to all Molten Axe variants: one random armor piece can break on an aimed melee enemy, 30/55/80/100% chance and 60/50/40/30-second cooldown; invalid armorless targets do not consume the ability.
 
 - Added learnable Swing Attack to all 45 special axes: circular current-weapon-damage hit within current melee range, blocking walls and excluding allies/neutral targets; rank cooldowns 30/25/20/15 seconds.
+
+- Added learnable Death Stare to all five Riftfang Daggers: crosshair teleport beside a mob at 30/60/120/any loaded visible blocks, with 45/40/35/30-second cooldown; rejects walls, unsafe landing and mounted use.

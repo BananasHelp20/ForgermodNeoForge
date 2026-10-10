@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.death_stare.name": "Death Stare",
+  "tooltips.forgermod.ability.death_stare": "Teleport beside the mob directly under your crosshair. Range: 30/60/120 blocks at levels I/II/III; level IV reaches any loaded, visible distance. Walls block targeting and occupied destinations are rejected. Cooldown: 45/40/35/30 seconds.",
+  "tooltips.forgermod.ability.death_stare.card": "Teleport beside the mob directly under your crosshair.",
   "tooltips.forgermod.ability.swing_attack.name": "Swing Attack",
   "tooltips.forgermod.ability.swing_attack": "Swing around, dealing current weapon damage to every visible enemy within your current melee range. Cooldown: 30/25/20/15 seconds at levels I/II/III/IV.",
   "tooltips.forgermod.ability.swing_attack.card": "Strike every visible enemy in your melee range.",

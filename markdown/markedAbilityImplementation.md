@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -88,3 +88,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: all nine special axe families and all gemstone variants (45 axes). Learned-only instant circular strike deals current weapon attack damage to every visible enemy within current melee range, excluding allies and neutral entities. Blocks stop hits. Successful hits use ordinary weapon wear and learned material effects.
 - Rank I-IV cooldowns: 30/25/20/15 seconds; damage and range continue to follow weapon attributes. Swinging empty space also starts the cooldown. Sixteen brief sweep particles show the circular range.
 - Reviewed build/lightweight/server checks passed all 83 required tests, covering every variant, front and rear hits, exact damage/wear, fresh rejection, walls, range, neutral mobs, team allies, caster safety and instant cooldown/replay.
+
+## Death Stare - completed
+
+- Weapons: Riftfang Dagger and all four gemstone variants. Teleport beside the living, non-allied mob directly under the crosshair; yaw/pitch are preserved, fall distance reset. Includes airborne targets. Mounted use is rejected.
+- Rank I-IV ranges: 30/60/120 blocks/any loaded visible distance; cooldowns: 45/40/35/30 seconds, starting immediately after successful teleport. Failed targeting/landing does not consume it.
+- Uses loaded-entity iteration and chunk-path checks to avoid world-sized entity queries or loading unknown terrain. Solid obstacles block targeting; destination checks cover collision, world border, build height, loaded chunks and fluids.
+- Reviewed build/lightweight/server checks passed all 86 required tests, including all five variants, fresh rejection, exact destination/view/fall behavior, walls, distant rank-IV use, upward targeting, mounted rejection and packet cooldown.
