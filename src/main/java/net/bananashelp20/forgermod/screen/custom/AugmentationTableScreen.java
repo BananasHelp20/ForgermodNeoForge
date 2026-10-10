@@ -31,7 +31,7 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
     @Override protected void renderLabels(GuiGraphics gui,int mouseX,int mouseY) {
         if(menu.phase()<AugmentationAnimation.CHOOSE) super.renderLabels(gui,mouseX,mouseY);
         else {
-            // Leave space above both cards for the right-aligned eyebrows.
+            // Leave space above both cards for the left-aligned eyebrows.
             gui.drawString(font,playerInventoryTitle,inventoryLabelX,inventoryLabelY,4210752,false);
             gui.pose().pushPose(); gui.pose().translate(titleLabelX,titleLabelY,0); gui.pose().scale(.5F,.5F,1);
             gui.drawString(font,title,0,0,4210752,false); gui.pose().popPose();
@@ -90,8 +90,8 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
             gui.fill(x,y,x+1,y+CARD_HEIGHT,edge); gui.fill(x+CARD_WIDTH-1,y,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
         }
         Component eyebrow=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.new":"augmentation.forgermod.card.upgrade");
-        gui.pose().pushPose(); gui.pose().translate(x+CARD_WIDTH-2,y-4,0); gui.pose().scale(.5F,.5F,1);
-        gui.drawString(font,eyebrow,-font.width(eyebrow),0,0xff586672,false); gui.pose().popPose();
+        gui.pose().pushPose(); gui.pose().translate(x+2,y-4,0); gui.pose().scale(.5F,.5F,1);
+        gui.drawString(font,eyebrow,0,0,0xff586672,false); gui.pose().popPose();
         // Fit and center the title in the template's upper white box, without a rank suffix.
         float scale=.5F;
         List<FormattedCharSequence> titleLines=font.split(offer.name(),(int)(39/scale));
@@ -115,7 +115,7 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         Component description=Component.translatable(offer.id()+".card");
         if(!net.minecraft.client.resources.language.I18n.exists(offer.id()+".card")) description=Component.translatable(offer.id());
         var lines=font.split(description,78);
-        for(int row=0;row<Math.min(lines.size(),7);row++) gui.drawString(font,lines.get(row),0,14+row*font.lineHeight,0xffaaaaaa,true);
+        for(int row=0;row<Math.min(lines.size(),7);row++) gui.drawString(font,lines.get(row),0,14+row*font.lineHeight,0xff929292,false);
         gui.pose().popPose();
         if(rejected) gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,0x55808080);
     }

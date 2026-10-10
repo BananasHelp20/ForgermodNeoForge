@@ -333,3 +333,7 @@ Removed
 - Fixed the first augmentation overlay's one-pixel front offset by centering both inward reveals on the weapon opening instead of the odd texture width
 - Preserved the extra outer right texture column, whole-pixel animation, existing stage timing and transparent-slot alignment
 - Added regression checks for symmetric fronts, no reveal at zero progress, complete coverage and the preserved outer column across supported analysis durations
+
+2026-10-10 - Ability card text styling
+- Moved the New/Upgrade eyebrows to the left edge above each ability card's title box
+- Removed the dark shadow from card descriptions and adjusted their neutral gray color for softer, readable text on the white template

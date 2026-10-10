@@ -343,3 +343,8 @@
 - Shared AugmentationAnimation.inwardReveal now advances fronts around x25 for stage one (x47 for stage two). The extra outer right column is revealed with the right edge rather than counted as front movement. Both meet at the opening's actual center, with no gap/overlap and all authored texture columns retained. PNGs, origins, timings and later stages are unchanged.
 - Expanded the existing animation regression to cover front symmetry, empty zero-progress reveals, right-edge coverage and completed center coverage for analysis durations 100/180/500/10000. test build -x createMinecraftArtifacts passed all lightweight checks with BUILD SUCCESSFUL; whitespace and code review passed. Live client rendering has not been directly playtested.
 - Preserved user edits to instructions.md, Augmentations.java, augmentation_table_gui.png and sapphire_gemstone.png.
+
+## Ability card text styling follow-up
+
+- User requested left-side eyebrows and softer description text. New/Upgrade now starts at card x+2 above the title box, replacing right alignment. Description text uses neutral gray #929292 without shadow, removing the harsh dark outline at half-scale on the white template.
+- Gradle build -x createMinecraftArtifacts passed, including the existing lightweight checks. Code/whitespace review passed; live client appearance remains unverified. User edits to instructions.md, Augmentations.java and the existing GUI/Sapphire PNGs were preserved.
