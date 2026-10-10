@@ -13,6 +13,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,6 +40,10 @@ import java.util.UUID;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class SonicBoomGameTests {
+    private static boolean hasTranslation(Component message, String key) {
+        if (message.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals(key)) return true;
+        return message.getSiblings().stream().anyMatch(child -> hasTranslation(child, key));
+    }
     private static ServerPlayer player(GameTestHelper test, Item item) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), "sonic-test");
         ServerPlayer player = new ServerPlayer(test.getLevel().getServer(), test.getLevel(), profile, ClientInformation.createDefault());
@@ -212,6 +217,20 @@ public class SonicBoomGameTests {
         var source = server.createCommandSourceStack().withEntity(player);
         try {
             String command = "no-ability-cooldown @s ";
+            var messages = new java.util.ArrayList<Component>();
+            var restricted = source.withPermission(0).withSource(new net.minecraft.commands.CommandSource() {
+                @Override public void sendSystemMessage(Component message) { messages.add(message); }
+                @Override public boolean acceptsSuccess() { return true; }
+                @Override public boolean acceptsFailure() { return true; }
+                @Override public boolean shouldInformAdmins() { return false; }
+            });
+            var dispatcher = server.getCommands().getDispatcher();
+            test.assertTrue(dispatcher.getRoot().getChild("no-ability-cooldown").canUse(restricted), "Command hidden from chat without operator permission");
+            test.assertTrue(dispatcher.execute(command + "true", restricted) == 0
+                    && !player.getData(WeaponCooldownAttachments.DISABLED), "Non-operator changed cooldowns");
+            test.assertTrue(messages.stream().anyMatch(message -> hasTranslation(message, "commands.forgermod.cooldown.permission")), "Missing explicit permission error");
+            dispatcher.execute("no-ability-cooldown", restricted);
+            test.assertTrue(messages.stream().anyMatch(message -> hasTranslation(message, "commands.forgermod.cooldown.usage")), "Bare command has no usage help");
             server.getCommands().getDispatcher().execute(command + "true", source);
             test.assertTrue(player.getData(WeaponCooldownAttachments.DISABLED), "Command did not enable bypass");
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(), "Existing deadlines not cleared");

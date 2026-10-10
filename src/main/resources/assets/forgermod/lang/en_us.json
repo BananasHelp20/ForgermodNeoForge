@@ -444,6 +444,8 @@
   "augmentation.forgermod.core_hint": "Dual wield and axe slam are intrinsic. The material hit has its own augmentation rank, alongside two active and two unique passive slots.",
   "augmentation.forgermod.passive_rank": "Current ability level: %s",
   "message.forgermod.ability.swapped": "Primary and secondary abilities swapped",
+  "commands.forgermod.cooldown.usage": "Usage: /no-ability-cooldown <player or selector> <true|false>. For yourself: /no-ability-cooldown @s true",
+  "commands.forgermod.cooldown.permission": "This command requires cheats or operator permission (level 2). In singleplayer, enable cheats; on a server, ask an operator.",
   "key.forgermod.ability_swap": "Swap weapon abilities (Shift + Alt + S)",
   "gemstone.forgermod.ruby": "Ruby",
   "gemstone.forgermod.amber": "Amber",
