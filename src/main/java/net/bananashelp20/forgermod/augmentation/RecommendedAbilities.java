@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.InanisiumWeapon;
 import net.bananashelp20.forgermod.item.custom.SomniumWeapon;
 import net.minecraft.world.item.ItemStack;
+import net.bananashelp20.forgermod.item.custom.LushWeapon;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public final class RecommendedAbilities {
     public static final String OVERWHELMING_SMASH="tooltips.forgermod.passive.overwhelming_smash";
     public static final String FALSE_AWAKENING="tooltips.forgermod.ability.false_awakening";
     public static final String DELUSION="tooltips.forgermod.ability.delusion";
+    public static final String GARDENERS="tooltips.forgermod.ability.always_the_gardeners";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
@@ -38,6 +40,7 @@ public final class RecommendedAbilities {
         return List.copyOf(result);
     }
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
+        if(stack.getItem() instanceof LushWeapon) return List.of(new Augmentations.Ability(GARDENERS,true));
         if(stack.getItem() instanceof SomniumWeapon weapon)
             return weapon.isDagger()?List.of(new Augmentations.Ability(FALSE_AWAKENING,true),new Augmentations.Ability(DELUSION,true))
                     :List.of(new Augmentations.Ability(DELUSION,true));
@@ -59,9 +62,10 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(CRUCIBLE_HOOK,true),new Augmentations.Ability(STRONG_ARM,true));
         return List.of();
     }
-    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
+    public static boolean active(String id) { return GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
     public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
+        if(GARDENERS.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(DELUSION.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         if(FALSE_AWAKENING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(NULL_RECEIPT.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);

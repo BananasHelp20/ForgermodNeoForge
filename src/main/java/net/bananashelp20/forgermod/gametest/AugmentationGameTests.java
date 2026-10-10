@@ -78,7 +78,7 @@ public class AugmentationGameTests {
         test.assertTrue(table.choose(0),"Repaired offer cannot be chosen");
         table.inventory.extractItem(3,1,false);
         ItemStack maxed=new ItemStack(ModItems.OVERGROWN_CLAYMORE.get());
-        for(int i=0;i<4;i++) maxed=Augmentations.apply(maxed,Augmentations.MATERIAL_HIT);
+        while(!Augmentations.available(maxed).isEmpty()) maxed=Augmentations.apply(maxed,Augmentations.available(maxed).getFirst().id());
         table.inventory.setStackInSlot(0,maxed);
         saved=table.saveWithoutMetadata(test.getLevel().registryAccess()); saved.putInt("phase",AugmentationAnimation.CHOOSE);
         saved.putString("first","augmentation.forgermod.guarded"); saved.putString("second","augmentation.forgermod.guarded");

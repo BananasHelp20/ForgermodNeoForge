@@ -478,3 +478,7 @@
 
 - All 101 server tests and build passed after review. All fifteen Somnium weapons supported.
 - Newly marked recommendations: Always the Gardeners, Grave Vault, Echo Pin, Warden Tone and rewritten Echo Salvage. Implement these additions sequentially next. Earlier marked abilities beyond Delusion remain pending. Preserve user dirty files and staged codexAbilities.md deletion.
+
+## Always the Gardeners completed
+
+- Delusion pushed as a4fa8d4. Gardeners reviewed, all 103 server tests/build passed; all fifteen Lush weapons supported. Next newly marked addition: Grave Vault. Other older marked abilities remain pending in the implementation record.

@@ -144,13 +144,10 @@
   "tooltips.forgermod.wardens_needle.tooltip": "§7A sculk-tipped needle from the deepest\ndark. Its narrow point is almost lost\nagainst the shadows around it.§r",
   "tooltips.forgermod.static_dagger.tooltip": "§7Lightning left a restless charge in\nthis small Electrium blade. Tiny\nsparks dance along its edge.§r",
   "tooltips.forgermod.dead_calm_dagger.tooltip": "§7A Taifunite dagger honed by high\nwinds. The air goes strangely still\njust before it moves.§r",
-
   "key.categories.forgermod": "Forger Mod",
   "key.forgermod.ability_primary": "Primary Weapon Ability",
   "key.forgermod.ability_secondary": "Secondary Weapon Ability",
-
   "creativetab.forgermod.forger_ingredients_tab": "Forger Ingredients",
-
   "item.forgermod.scrap_ingot": "Scrap Ingot",
   "item.forgermod.damask_ingot": "Damask Ingot",
   "item.forgermod.scrap_iron_ingot": "Scrap Iron Ingot",
@@ -182,7 +179,6 @@
   "item.forgermod.ruby_gemstone": "Ruby Gemstone",
   "item.forgermod.amber_gemstone": "Amber Gemstone",
   "item.forgermod.jade_gemstone": "Jade Gemstone",
-
   "block.forgermod.scrap_iron_block": "Block of Scrap Iron",
   "block.forgermod.reinforced_iron_block": "Block of Reinforced Iron",
   "block.forgermod.damask_block": "Block of Damask",
@@ -199,10 +195,7 @@
   "block.forgermod.electrium_block": "Block of Electrium",
   "block.forgermod.taifunite_block": "Block of Taifunite",
   "block.forgermod.developium_block": "Block of Developium",
-
-
   "creativetab.forgermod.forger_weapons_tab": "Forger Weapons",
-
   "item.forgermod.scrap_iron_sword": "Scrap Iron Sword",
   "item.forgermod.reinforced_iron_sword": "Reinforced Iron Sword",
   "item.forgermod.damask_knife": "Damask Knife",
@@ -212,191 +205,155 @@
   "item.forgermod.rusty_claymore": "Rusty Claymore",
   "item.forgermod.claymore": "Claymore",
   "item.forgermod.stumpfl_bat": "Stumpfl's Bat",
-
   "item.forgermod.infernal_claymore": "Infernal Claymore",
   "item.forgermod.infernal_claymore_ruby": "Infernal Claymore",
   "item.forgermod.infernal_claymore_amber": "Infernal Claymore",
   "item.forgermod.infernal_claymore_amethyst": "Infernal Claymore",
   "item.forgermod.infernal_claymore_jade": "Infernal Claymore",
-
   "item.forgermod.claymore_of_the_void": "Claymore of the Void",
   "item.forgermod.claymore_of_the_void_ruby": "Claymore of the Void",
   "item.forgermod.claymore_of_the_void_amber": "Claymore of the Void",
   "item.forgermod.claymore_of_the_void_amethyst": "Claymore of the Void",
   "item.forgermod.claymore_of_the_void_jade": "Claymore of the Void",
-
   "item.forgermod.overgrown_claymore": "Overgrown Claymore",
   "item.forgermod.overgrown_claymore_ruby": "Overgrown Claymore",
   "item.forgermod.overgrown_claymore_amber": "Overgrown Claymore",
   "item.forgermod.overgrown_claymore_amethyst": "Overgrown Claymore",
   "item.forgermod.overgrown_claymore_jade": "Overgrown Claymore",
-
   "item.forgermod.hollow_claymore": "Hollow Claymore",
   "item.forgermod.hollow_claymore_ruby": "Hollow Claymore",
   "item.forgermod.hollow_claymore_amber": "Hollow Claymore",
   "item.forgermod.hollow_claymore_amethyst": "Hollow Claymore",
   "item.forgermod.hollow_claymore_jade": "Hollow Claymore",
-
   "item.forgermod.curseblood_claymore": "Curseblood Claymore",
   "item.forgermod.curseblood_claymore_ruby": "Curseblood Claymore",
   "item.forgermod.curseblood_claymore_amber": "Curseblood Claymore",
   "item.forgermod.curseblood_claymore_amethyst": "Curseblood Claymore",
   "item.forgermod.curseblood_claymore_jade": "Curseblood Claymore",
-
   "item.forgermod.dreambound_claymore": "Dreambound Claymore",
   "item.forgermod.dreambound_claymore_ruby": "Dreambound Claymore",
   "item.forgermod.dreambound_claymore_amber": "Dreambound Claymore",
   "item.forgermod.dreambound_claymore_amethyst": "Dreambound Claymore",
   "item.forgermod.dreambound_claymore_jade": "Dreambound Claymore",
-
   "item.forgermod.shrieking_claymore": "Shrieking Claymore",
   "item.forgermod.shrieking_claymore_ruby": "Shrieking Claymore",
   "item.forgermod.shrieking_claymore_amber": "Shrieking Claymore",
   "item.forgermod.shrieking_claymore_amethyst": "Shrieking Claymore",
   "item.forgermod.shrieking_claymore_jade": "Shrieking Claymore",
-
   "item.forgermod.claymore_of_thunder": "Claymore of Thunder",
   "item.forgermod.claymore_of_thunder_ruby": "Claymore of Thunder",
   "item.forgermod.claymore_of_thunder_amber": "Claymore of Thunder",
   "item.forgermod.claymore_of_thunder_amethyst": "Claymore of Thunder",
   "item.forgermod.claymore_of_thunder_jade": "Claymore of Thunder",
-
   "item.forgermod.storming_claymore": "Storming Claymore",
   "item.forgermod.storming_claymore_ruby": "Storming Claymore",
   "item.forgermod.storming_claymore_amber": "Storming Claymore",
   "item.forgermod.storming_claymore_amethyst": "Storming Claymore",
   "item.forgermod.storming_claymore_jade": "Storming Claymore",
   "item.forgermod.axe": "Carbon Steel Axe",
-
   "item.forgermod.rusty_axe": "Rusty Axe",
-
   "item.forgermod.rusty_dagger": "Rusty Dagger",
-
   "item.forgermod.nature_axe": "Verdant Axe",
   "item.forgermod.overgrown_axe_ruby": "Verdant Axe",
   "item.forgermod.overgrown_axe_amber": "Verdant Axe",
   "item.forgermod.overgrown_axe_amethyst": "Verdant Axe",
   "item.forgermod.overgrown_axe_jade": "Verdant Axe",
-
   "item.forgermod.hollow_axe": "Ghost Axe",
   "item.forgermod.hollow_axe_ruby": "Ghost Axe",
   "item.forgermod.hollow_axe_amber": "Ghost Axe",
   "item.forgermod.hollow_axe_amethyst": "Ghost Axe",
   "item.forgermod.hollow_axe_jade": "Ghost Axe",
-
   "item.forgermod.infernal_axe": "Molten Axe",
   "item.forgermod.infernal_axe_ruby": "Molten Axe",
   "item.forgermod.infernal_axe_amber": "Molten Axe",
   "item.forgermod.infernal_axe_amethyst": "Molten Axe",
   "item.forgermod.infernal_axe_jade": "Molten Axe",
-
   "item.forgermod.axe_of_the_void": "Nullified Axe",
   "item.forgermod.axe_of_the_void_ruby": "Nullified Axe",
   "item.forgermod.axe_of_the_void_amber": "Nullified Axe",
   "item.forgermod.axe_of_the_void_amethyst": "Nullified Axe",
   "item.forgermod.axe_of_the_void_jade": "Nullified Axe",
-
   "item.forgermod.curseblood_axe": "Woundmaker Axe",
   "item.forgermod.curseblood_axe_ruby": "Woundmaker Axe",
   "item.forgermod.curseblood_axe_amber": "Woundmaker Axe",
   "item.forgermod.curseblood_axe_amethyst": "Woundmaker Axe",
   "item.forgermod.curseblood_axe_jade": "Woundmaker Axe",
-
   "item.forgermod.dreambound_axe": "Dreamweaver Axe",
   "item.forgermod.dreambound_axe_ruby": "Dreamweaver Axe",
   "item.forgermod.dreambound_axe_amber": "Dreamweaver Axe",
   "item.forgermod.dreambound_axe_amethyst": "Dreamweaver Axe",
   "item.forgermod.dreambound_axe_jade": "Dreamweaver Axe",
-
   "item.forgermod.shrieking_axe": "Echoing Axe",
   "item.forgermod.shrieking_axe_ruby": "Echoing Axe",
   "item.forgermod.shrieking_axe_amber": "Echoing Axe",
   "item.forgermod.shrieking_axe_amethyst": "Echoing Axe",
   "item.forgermod.shrieking_axe_jade": "Echoing Axe",
-
   "item.forgermod.axe_of_thunder": "Voltage Axe",
   "item.forgermod.axe_of_thunder_ruby": "Voltage Axe",
   "item.forgermod.axe_of_thunder_amber": "Voltage Axe",
   "item.forgermod.axe_of_thunder_amethyst": "Voltage Axe",
   "item.forgermod.axe_of_thunder_jade": "Voltage Axe",
-
   "item.forgermod.storming_axe": "Skybreaker Axe",
   "item.forgermod.storming_axe_ruby": "Skybreaker Axe",
   "item.forgermod.storming_axe_amber": "Skybreaker Axe",
   "item.forgermod.storming_axe_amethyst": "Skybreaker Axe",
   "item.forgermod.storming_axe_jade": "Skybreaker Axe",
-
   "item.forgermod.nature_dagger": "Leafcutter Dagger",
   "item.forgermod.overgrown_dagger_ruby": "Leafcutter Dagger",
   "item.forgermod.overgrown_dagger_amber": "Leafcutter Dagger",
   "item.forgermod.overgrown_dagger_amethyst": "Leafcutter Dagger",
   "item.forgermod.overgrown_dagger_jade": "Leafcutter Dagger",
-
   "item.forgermod.hollow_dagger": "Deathwisper Dagger",
   "item.forgermod.hollow_dagger_ruby": "Deathwisper Dagger",
   "item.forgermod.hollow_dagger_amber": "Deathwisper Dagger",
   "item.forgermod.hollow_dagger_amethyst": "Deathwisper Dagger",
   "item.forgermod.hollow_dagger_jade": "Deathwisper Dagger",
-
   "item.forgermod.infernal_dagger": "Emberfang Dagger",
   "item.forgermod.infernal_dagger_ruby": "Emberfang Dagger",
   "item.forgermod.infernal_dagger_amber": "Emberfang Dagger",
   "item.forgermod.infernal_dagger_amethyst": "Emberfang Dagger",
   "item.forgermod.infernal_dagger_jade": "Emberfang Dagger",
-
   "item.forgermod.dagger_of_the_void": "Riftfang Dagger",
   "item.forgermod.dagger_of_the_void_ruby": "Riftfang Dagger",
   "item.forgermod.dagger_of_the_void_amber": "Riftfang Dagger",
   "item.forgermod.dagger_of_the_void_amethyst": "Riftfang Dagger",
   "item.forgermod.dagger_of_the_void_jade": "Riftfang Dagger",
-
   "item.forgermod.curseblood_dagger": "Assassin Dagger",
   "item.forgermod.curseblood_dagger_ruby": "Assassin Dagger",
   "item.forgermod.curseblood_dagger_amber": "Assassin Dagger",
   "item.forgermod.curseblood_dagger_amethyst": "Assassin Dagger",
   "item.forgermod.curseblood_dagger_jade": "Assassin Dagger",
-
   "item.forgermod.dreambound_dagger": "Nightmare Dagger",
   "item.forgermod.dreambound_dagger_ruby": "Nightmare Dagger",
   "item.forgermod.dreambound_dagger_amber": "Nightmare Dagger",
   "item.forgermod.dreambound_dagger_amethyst": "Nightmare Dagger",
   "item.forgermod.dreambound_dagger_jade": "Nightmare Dagger",
-
   "item.forgermod.shrieking_dagger": "Warden's Needle",
   "item.forgermod.shrieking_dagger_ruby": "Warden's Needle",
   "item.forgermod.shrieking_dagger_amber": "Warden's Needle",
   "item.forgermod.shrieking_dagger_amethyst": "Warden's Needle",
   "item.forgermod.shrieking_dagger_jade": "Warden's Needle",
-
   "item.forgermod.dagger_of_thunder": "Static Dagger",
   "item.forgermod.dagger_of_thunder_ruby": "Static Dagger",
   "item.forgermod.dagger_of_thunder_amber": "Static Dagger",
   "item.forgermod.dagger_of_thunder_amethyst": "Static Dagger",
   "item.forgermod.dagger_of_thunder_jade": "Static Dagger",
-
   "item.forgermod.storming_dagger": "Dead Calm Dagger",
   "item.forgermod.storming_dagger_ruby": "Dead Calm Dagger",
   "item.forgermod.storming_dagger_amber": "Dead Calm Dagger",
   "item.forgermod.storming_dagger_amethyst": "Dead Calm Dagger",
   "item.forgermod.storming_dagger_jade": "Dead Calm Dagger",
-
-
-
   "creativetab.forgermod.forger_items_tab": "Forger Items",
-
   "item.forgermod.advanced_handle": "Advanced Handle",
   "item.forgermod.handle": "Handle",
   "item.forgermod.carbon_steel_cross_guard": "Carbon Steel Cross Guard",
   "item.forgermod.sharpened_blade": "Sharpened Blade",
   "item.forgermod.ancient_upgrade_template": "Ancient Upgrade Template",
   "item.forgermod.gemstone_upgrade_template": "Gemstone Infusion Template",
-
   "creativetab.forgermod.forger_miscellaneous_tab": "Forger Miscellaneous",
-
   "block.forgermod.ancient_sword_stand": "Ancient Sword Stand",
   "block.forgermod.forge": "Forge",
   "block.forgermod.infusion_table": "Infusion Table",
-
   "tooltips.forgermod.gemstone_upgrade_template.tooltip": "§7This template is used to infuse weapons\nwith gemstones increasing specific weapon stats.\n\nInfuse your weapons at the Infusion Table!§r",
   "tooltips.forgermod.ancient_upgrade_template.tooltip": "§7This template is used to forge advanced\nweapons like claymores.\n\nForge weapons in the Forge!§r",
   "tooltips.forgermod.claymore.tooltip": "§7A long Sword made from the best\nMaterials you found on your adventures.\n\nCan be upgraded with every\n§r§dsupreme Material.§r",
@@ -411,7 +368,6 @@
   "tooltips.forgermod.shrieking_claymore.tooltip": "§7A claymore found in the deepest depths,\nreinforced with sculk, a material\nfrom another dimension.§r",
   "tooltips.forgermod.claymore_of_thunder.tooltip": "§7A claymore charged by the might of\nlightning, 1,000,000 volts of electricity\nflow through this blade electrifying\neveryone coming too close.§r",
   "tooltips.forgermod.storming_claymore.tooltip": "§7A claymore found at high altitudes, due\nto the high wind speeds blowing everything\naway.§r",
-
   "tooltips.forgermod.inanisium_ingot.tooltip": "§7A supreme material found in the void,\nwhere nothing else is able to exist.§r",
   "tooltips.forgermod.ignisium_ingot.tooltip": "§7A supreme material found deep in the\nnether, mostly submerged in lava\nand magma.§r",
   "tooltips.forgermod.pulsite_ingot.tooltip": "§7A supreme material found in the deepest\ndepths, in a very dark environment.§r",
@@ -423,7 +379,6 @@
   "tooltips.forgermod.taifunite_ingot.tooltip": "§7A supreme material refined by endless storms and\nstrong winds blowing on high\naltitudes.§r",
   "tooltips.forgermod.developium_ingot.tooltip": "§7A supreme material made up by the\ngenius (BananasHelp20), who made the\nmod, in cooperation with\nALLESBANANE11§r\n\n§dCreative only!§r",
   "tooltips.forgermod.developium_block.tooltip": "§dCreative only!§r",
-
   "tooltips.forgermod.carbon_steel_cross_guard.tooltip": "§7A good sword needs a cross guard,\nprotecting the owner from hits of\nenemies.§r",
   "tooltips.forgermod.sharpened_blade.tooltip": "§7A blade sharpened till all of the\nfingers bleed, the smith of this\nblade must have been extremely\nfocused on sharpening the blade.§r",
   "tooltips.forgermod.handle.tooltip": "§7This handle is used for more advanced\nweapons, than the regular ones.\nIt's very stable and way harder\nthan a simple stick.§r",
@@ -432,39 +387,32 @@
   "tooltips.forgermod.amber.tooltip": "§7It burns your finger upon touching it.\nIt's a flawless, yet extremely hot stone\nand you've never seen something like it\nbefore.\n\nWhen applied to a Weapon:\n§r§6makes item fire resistant§r",
   "tooltips.forgermod.ruby.tooltip": "§7A sharp and edgy stone. It's shining\nas red as the blood your enemies\nbleed when killed with a very sharp\nweapon.\n\nWhen applied to a Weapon:§r\n§4+1 Damage§r",
   "tooltips.forgermod.jade.tooltip": "§7A very precious jewel, which gives you\nthe feeling that it could bring up the true\npotential of any supreme weapon.\n\nWhen applied to a Weapon:§r\n§2+1 Effect Amplifier\n+1 Second Effect Duration§r",
-
   "tooltips.forgermod.no_gemstone.tooltip_extra": "§7\nGemstone: []§r",
   "tooltips.forgermod.ruby.tooltip_extra": "§7\nGemstone: [§r§4Ruby§r§7]\nGemstone bonus:§r§4\n+1 Damage§r",
   "tooltips.forgermod.amber.tooltip_extra": "§7\nGemstone: [§r§6Amber§r§7]\nGemstone bonus:§r§6\nItem fire resistance§r",
   "tooltips.forgermod.amethyst.tooltip_extra": "§7\nGemstone: [§r§5Amethyst§r§7]\nGemstone bonus:§r§5\n+0.4 Attack Speed§r",
   "tooltips.forgermod.jade.tooltip_extra": "§7\nGemstone: [§r§2Jade§r§7]\nGemstone bonus:§r\n§2+1 Effect Amplifier\n+1 Second Effect Duration§r",
-
   "creativetab.forgermod.forger_blocks_tab": "Forger Blocks",
-
   "block.forgermod.jade_stone_ore": "Jade Gemstone Ore",
   "block.forgermod.jade_deepslate_ore": "Deepslate Jade Gemstone Ore",
   "block.forgermod.jade_obsidian_ore": "Obsidian Jade Gemstone Ore",
   "block.forgermod.jade_nether_ore": "Nether Jade Gemstone Ore",
   "block.forgermod.jade_end_ore": "End Jade Gemstone Ore",
-
   "block.forgermod.ruby_stone_ore": "Ruby Gemstone Ore",
   "block.forgermod.ruby_deepslate_ore": "Deepslate Ruby Gemstone Ore",
   "block.forgermod.ruby_obsidian_ore": "Obsidian Ruby Gemstone Ore",
   "block.forgermod.ruby_nether_ore": "Nether Ruby Gemstone Ore",
   "block.forgermod.ruby_end_ore": "End Ruby Gemstone Ore",
-
   "block.forgermod.amethyst_stone_ore": "Amethyst Gemstone Ore",
   "block.forgermod.amethyst_deepslate_ore": "Deepslate Amethyst Gemstone Ore",
   "block.forgermod.amethyst_obsidian_ore": "Obsidian Amethyst Gemstone Ore",
   "block.forgermod.amethyst_nether_ore": "Nether Amethyst Gemstone Ore",
   "block.forgermod.amethyst_end_ore": "End Amethyst Gemstone Ore",
-
   "block.forgermod.amber_stone_ore": "Amber Gemstone Ore",
   "block.forgermod.amber_deepslate_ore": "Deepslate Amber Gemstone Ore",
   "block.forgermod.amber_obsidian_ore": "Obsidian Amber Gemstone Ore",
   "block.forgermod.amber_nether_ore": "Nether Amber Gemstone Ore",
   "block.forgermod.amber_end_ore": "End Amber Gemstone Ore",
-
   "block.forgermod.shardium_stone_ore": "Shardium Ore",
   "block.forgermod.shardium_deepslate_ore": "Deepslate Shardium Ore",
   "block.forgermod.shardium_obsidian_ore": "Obsidian Shardium Ore",
@@ -539,5 +487,8 @@
   "tooltips.forgermod.gemstone_bonus.ruby": "+1 Damage",
   "tooltips.forgermod.gemstone_bonus.amethyst": "+0.4 Attack Speed",
   "tooltips.forgermod.gemstone_bonus.jade": "+1 Effect Amplifier\n+1 Second Effect Duration",
-  "tooltips.forgermod.ability.swap_hint": "Shift + Alt + S swaps your primary and secondary abilities"
+  "tooltips.forgermod.ability.swap_hint": "Shift + Alt + S swaps your primary and secondary abilities",
+  "tooltips.forgermod.ability.always_the_gardeners.name": "Always the Gardeners",
+  "tooltips.forgermod.ability.always_the_gardeners": "Arm your next enemy kill for 60 seconds. It leaves a plant and a poison cloud for five minutes. Everyone in the cloud, including you and allies, receives Poison I for 20 seconds. Radius: 2/2.5/3/3.5 blocks. Switching cancels the garden. Cooldown after ending: 60/50/40/30 seconds.",
+  "tooltips.forgermod.ability.always_the_gardeners.card": "Your next enemy kill plants a five-minute poison cloud. Affects everyone for 20 seconds."
 }

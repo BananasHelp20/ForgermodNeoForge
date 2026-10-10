@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -138,3 +138,8 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 
 - All fifteen Somnium variants: next successful melee hit on a mob clears aggression and blocks reacquisition for twenty seconds. Thirty-second arming timeout; no forced player behavior or frozen wandering. Switching/death/logout cancel; cooldowns 40/35/30/25 seconds after ending.
 - Reviewed build and all 101 server tests passed: all variants, fresh/rejected hits, retaliation memory, reacquisition, switching/cooldown and twenty-second expiry.
+
+## Always the Gardeners - completed
+
+- All fifteen Lush weapons. Next enemy kill within a sixty-second arming window leaves a vanilla-rendered azalea display and five-minute poison cloud. No terrain replacement or drops. One garden per wielder; poison affects everyone, including wielder, allies and neutral mobs, subject to vanilla effect immunity. Poison I lasts twenty seconds and refreshes while inside. Radius I-IV: 2/2.5/3/3.5 blocks.
+- Switching/death/logout cancels both entities; cooldown after ending: 60/50/40/30 seconds. Entities never save as orphans. Reviewed build and all 103 server tests passed: all variants, fresh/rejected kills, caster/neutral poison, exact duration/radius, neutral-kill exclusion, switching/cooldown and expiry. Updated maxed-gear regression to exhaust actual available offers.
