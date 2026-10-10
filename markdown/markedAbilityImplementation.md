@@ -23,3 +23,11 @@ Heating Up's unfinished maximum-level fragment does not yet define when to extin
 - Rank I-IV cooldowns: 60/55/50/45 seconds. Activation completes immediately, so cooldown starts immediately.
 - Learned-only key dispatch and cooldown persistence are integrated. New ability deadlines follow ability identity through key swaps and are independent across registered variants; prior dagger cooldowns are preserved.
 - Server coverage: all five variants, no unlearned activation, enemy damage, survival at 1 HP, no self-knockback, terrain preservation, replay rejection, independent variant deadlines, rank-IV cooldown and Resistance expiry. Reviewed build/lightweight/server checks passed all 62 required tests.
+
+## Cinder Decoy - completed
+
+- Weapons: Infernal Claymore and all four gemstone variants.
+- Ember-colored humanoid silhouette with the caster's head attracts visible hostile mobs within ten blocks. Hostile contact, melee or projectile impact detonates a power-two explosion with no terrain destruction or self-damage.
+- Ignites surviving unobstructed hostile enemies within four blocks for 3/4/5/6 seconds at ranks I-IV. Silhouette lifetime is 6/8/10/12 seconds; cooldown is 45 seconds after ending or cancellation.
+- One non-persistent, non-lootable decoy per caster. Switching, death, logout, dimension change and expiry remove it and restore valid previous mob targets. It can coexist with Explosion on the other key.
+- Reviewed tests cover all variants, targeting/restoration, explosion/ignition, owner safety, equipment protection, contact, real hostile arrows, expiry, logout, switching and independent cooldowns. Final build/lightweight/server checks passed all 66 required tests. Client visual appearance still needs in-game review.

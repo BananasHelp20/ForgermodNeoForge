@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.cinder_decoy.name": "Cinder Decoy",
+  "tooltips.forgermod.ability.cinder_decoy": "Leave an ember silhouette that attracts nearby hostile mobs for 6/8/10/12 seconds. Hostile contact or attacks detonate it, damaging and igniting nearby enemies for 3/4/5/6 seconds. Cooldown: 45 seconds after it ends. Switching cancels the decoy.",
+  "tooltips.forgermod.ability.cinder_decoy.card": "Leave an ember decoy; hostile contact detonates and ignites it.",
   "tooltips.forgermod.ability.explosion.name": "Explosion",
   "tooltips.forgermod.ability.explosion": "Gain Resistance IV for 2 seconds and unleash a creeper-strength explosion. Your own explosion does not hurt or knock you back and does not destroy terrain. Cooldown: 60/55/50/45 seconds at levels I/II/III/IV.",
   "tooltips.forgermod.ability.explosion.card": "Gain Resistance IV, then explode without harming yourself.",

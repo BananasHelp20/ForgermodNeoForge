@@ -363,3 +363,10 @@ Removed
 - Chosen rank progression: cooldowns of 60/55/50/45 seconds, beginning immediately on use; explosion power and Resistance remain as specified at all ranks
 - Added identity-based dispatch for new learned actives through configured keys, with persisted per-weapon-variant cooldowns that follow the ability through primary/secondary swaps
 - Added full tooltip/card descriptions and server tests for all five variants, unlearned rejection, enemy damage, low-health survival, terrain preservation, replay rejection, independent variant cooldowns and timed Resistance expiry
+
+2026-10-11 - Marked ability 3: Cinder Decoy
+- Added learnable Cinder Decoy on all five Infernal Claymores: temporary ember-colored humanoid silhouette attracts visible hostile AI within ten blocks
+- Hostile contact, melee damage or hostile projectile impact detonates a power-two explosion and ignites nearby unobstructed enemies; owner and terrain are protected
+- Chosen rank balance: silhouette lasts 6/8/10/12 seconds, ignition lasts 3/4/5/6 seconds, cooldown is 45 seconds after detonation, expiry or cancellation
+- Decoys cannot be looted, player-damaged or saved as permanent equipment; switching, death, logout, removal and dimension changes clean up the entity and restore appropriate previous mob targets
+- Added regressions for all variants, targeting/restoration, detonation, owner protection, equipment safety, contact, genuine hostile arrow collision, expiry, logout and independent primary/secondary behavior with Explosion

@@ -20,8 +20,13 @@ public final class RecommendedAbilityRuntime {
             player.level().explode(player,player.getX(),player.getY(),player.getZ(),3,false,Level.ExplosionInteraction.NONE);
             return true;
         }
+        if(RecommendedAbilities.CINDER_DECOY.equals(id)) return CinderDecoyEvents.activate(player,stack);
         return false;
     }
-    public static boolean active(ServerPlayer player,String id) { return false; }
-    public static void cancel(ServerPlayer player,String id) {}
+    public static boolean active(ServerPlayer player,String id) {
+        return RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player);
+    }
+    public static void cancel(ServerPlayer player,String id) {
+        if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
+    }
 }
