@@ -15,6 +15,7 @@ public final class RecommendedAbilities {
     public static final String EXPLOSIVE_HITS="tooltips.forgermod.ability.explosive_hits";
     public static final String NETHER_BORN="tooltips.forgermod.passive.nether_born";
     public static final String CRUCIBLE_HOOK="tooltips.forgermod.ability.crucible_hook";
+    public static final String STRONG_ARM="tooltips.forgermod.ability.strong_arm";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isDagger())
@@ -26,12 +27,13 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(FIRE_RESISTANCE,false),new Augmentations.Ability(NETHER_BORN,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isAxe())
             return List.of(new Augmentations.Ability(FIRE_RESISTANCE,false),new Augmentations.Ability(NETHER_BORN,false),
-                    new Augmentations.Ability(CRUCIBLE_HOOK,true));
+                    new Augmentations.Ability(CRUCIBLE_HOOK,true),new Augmentations.Ability(STRONG_ARM,true));
         return List.of();
     }
-    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id); }
+    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id); }
     public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
+        if(STRONG_ARM.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(CRUCIBLE_HOOK.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         return EXPLOSION.equals(id)?1200-100*(Math.clamp(rank,1,4)-1):CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id)?900:0;
     }

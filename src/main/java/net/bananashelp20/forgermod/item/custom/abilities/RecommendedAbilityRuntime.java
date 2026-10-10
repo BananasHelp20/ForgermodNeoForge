@@ -23,6 +23,7 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) return CinderDecoyEvents.activate(player,stack);
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) return ExplosiveHitsEvents.activate(player,stack);
         if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) return CrucibleHookEvents.activate(player,stack);
+        if(RecommendedAbilities.STRONG_ARM.equals(id)) return StrongArmAbility.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player,String id) {

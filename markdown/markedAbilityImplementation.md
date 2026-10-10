@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -76,3 +76,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Aimed, unobstructed enemy within twenty blocks is pulled with velocity, then smashed upon entering melee range. No teleportation or wall penetration. Hook expires after two seconds; switching/lost target/sight/dimension cancels it.
 - Ranks I-IV: damage 1.25/1.5/1.75/2 times current weapon damage; burn 3/4/5/6 seconds; cooldown 40/35/30/25 seconds after completion/cancellation. Successful smash uses normal durability/material-hit handling.
 - Reviewed build/lightweight/server checks passed all 78 required tests. Coverage includes all variants, real mob movement physics, max-rank damage/fire/wear, obstruction, failed-use rejection/no cooldown and switch/full-cooldown behavior.
+
+## Strong-arm - completed
+
+- Weapons: Molten Axe and all four gemstone variants. Aim at an unobstructed armored enemy within current melee range. One randomly chosen equipped armor piece breaks on a successful roll; no health damage is added.
+- Rank I-IV chances: 30/55/80/100%; cooldowns: 60/50/40/30 seconds. Valid attempts start cooldown even on a failed roll; missing armored targets do not.
+- Tests cover every variant, exactly one broken piece, both deterministic rank-I roll outcomes, armorless rejection and real packet cooldown handling. Review corrected a test corridor that inherited solid terrain; ability obstruction remains intact. Final build/lightweight/server checks passed all 81 required tests.

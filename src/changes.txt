@@ -410,3 +410,5 @@ Removed
 - Hook does not teleport or ignore solid walls; it expires after two seconds and cancels on switching, death, lost sight, target loss, dimension change or excessive separation
 - Successful smash applies normal weapon durability/material-hit handling; appropriate hostile mobs and permitted PvP targets are supported
 - Added all-variant real-physics pull/smash tests, exact rank-IV damage/ignition/durability, obstructed activation rejection, no failed-use cooldown and switch cancellation/full cooldown checks
+
+- Added learnable Strong-arm to all Molten Axe variants: one random armor piece can break on an aimed melee enemy, 30/55/80/100% chance and 60/50/40/30-second cooldown; invalid armorless targets do not consume the ability.
