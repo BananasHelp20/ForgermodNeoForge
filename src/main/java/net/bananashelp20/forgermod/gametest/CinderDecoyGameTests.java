@@ -31,7 +31,7 @@ import java.lang.reflect.Proxy;
 public class CinderDecoyGameTests {
     @GameTest(template="riftfang_test")
     public static void hostileProjectileDetonatesAndLogoutRemovesReplacement(GameTestHelper test) {
-        var player=test.makeMockServerPlayerInLevel(); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CINDER_DECOY); var decoy=decoy(test,player);
@@ -63,7 +63,7 @@ public class CinderDecoyGameTests {
     public static void allVariantsAttractDetonateAndRestoreTargets(GameTestHelper test) {
         for(Item item:new Item[]{ModItems.INFERNAL_CLAYMORE.get(),ModItems.INFERNAL_CLAYMORE_RUBY.get(),
                 ModItems.INFERNAL_CLAYMORE_AMBER.get(),ModItems.INFERNAL_CLAYMORE_AMETHYST.get(),ModItems.INFERNAL_CLAYMORE_JADE.get()}) {
-            var player=test.makeMockServerPlayerInLevel(); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+            var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
             var stack=Augmentations.apply(new ItemStack(item),RecommendedAbilities.CINDER_DECOY); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
             var zombie=EntityType.ZOMBIE.create(test.getLevel()); zombie.setNoAi(true); zombie.setNoGravity(true);
             zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200); zombie.setHealth(200);
@@ -86,7 +86,7 @@ public class CinderDecoyGameTests {
     }
     @GameTest(template="riftfang_test")
     public static void contactAndSwitchCleanupStartIndependentCooldowns(GameTestHelper test) throws Exception {
-        var player=test.makeMockServerPlayerInLevel(); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         stack=Augmentations.apply(stack,RecommendedAbilities.EXPLOSION); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         use(player,0); var decoy=decoy(test,player); use(player,1);
@@ -107,7 +107,7 @@ public class CinderDecoyGameTests {
     }
     @GameTest(template="riftfang_test",timeoutTicks=180)
     public static void expirationRemovesDecoyWithoutExplosion(GameTestHelper test) throws Exception {
-        var player=test.makeMockServerPlayerInLevel(); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); use(player,0); var decoy=decoy(test,player);
         test.runAfterDelay(121,()->{

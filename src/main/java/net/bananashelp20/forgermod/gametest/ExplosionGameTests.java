@@ -37,7 +37,7 @@ public class ExplosionGameTests {
     }
     @GameTest(template="riftfang_test")
     public static void allVariantsExplodeSafelyAndRespectIndependentCooldowns(GameTestHelper test) throws Exception {
-        var player=test.makeMockServerPlayerInLevel(); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stone=player.blockPosition().below(); test.getLevel().setBlockAndUpdate(stone,Blocks.STONE.defaultBlockState());
         for(Item item:new Item[]{ModItems.INFERNAL_CLAYMORE.get(),ModItems.INFERNAL_CLAYMORE_RUBY.get(),
                 ModItems.INFERNAL_CLAYMORE_AMBER.get(),ModItems.INFERNAL_CLAYMORE_AMETHYST.get(),ModItems.INFERNAL_CLAYMORE_JADE.get()}) {
@@ -65,7 +65,7 @@ public class ExplosionGameTests {
     }
     @GameTest(template="riftfang_test")
     public static void rankFourCooldownAndResistanceExpire(GameTestHelper test) throws Exception {
-        var player=test.makeMockServerPlayerInLevel(); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         ItemStack stack=new ItemStack(ModItems.INFERNAL_CLAYMORE.get());
         for(int rank=0;rank<4;rank++) stack=Augmentations.apply(stack,RecommendedAbilities.EXPLOSION);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); use(player);

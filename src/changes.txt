@@ -370,3 +370,9 @@ Removed
 - Chosen rank balance: silhouette lasts 6/8/10/12 seconds, ignition lasts 3/4/5/6 seconds, cooldown is 45 seconds after detonation, expiry or cancellation
 - Decoys cannot be looted, player-damaged or saved as permanent equipment; switching, death, logout, removal and dimension changes clean up the entity and restore appropriate previous mob targets
 - Added regressions for all variants, targeting/restoration, detonation, owner protection, equipment safety, contact, genuine hostile arrow collision, expiry, logout and independent primary/secondary behavior with Explosion
+
+2026-10-11 - Marked ability 4: Cold Bellows
+- Added learnable Cold Bellows on all five Infernal Claymores: successful shield blocks ignite the attacking enemy or projectile shooter for 3/4/5/6 seconds at ranks I-IV
+- Canceled blocks, non-blocking attacks, zero blocked damage, unused shields, allied sources and unlearned weapons do not trigger ignition
+- Added all-variant block-event checks and a real rank-IV raised-shield damage-pipeline regression
+- Added a survival-mode combat test player because Minecraft's default GameTest server player hardcodes creative mode; strengthened Explosion and Cinder Decoy safety regressions with survival players

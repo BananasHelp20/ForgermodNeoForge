@@ -31,3 +31,12 @@ Heating Up's unfinished maximum-level fragment does not yet define when to extin
 - Ignites surviving unobstructed hostile enemies within four blocks for 3/4/5/6 seconds at ranks I-IV. Silhouette lifetime is 6/8/10/12 seconds; cooldown is 45 seconds after ending or cancellation.
 - One non-persistent, non-lootable decoy per caster. Switching, death, logout, dimension change and expiry remove it and restore valid previous mob targets. It can coexist with Explosion on the other key.
 - Reviewed tests cover all variants, targeting/restoration, explosion/ignition, owner safety, equipment protection, contact, real hostile arrows, expiry, logout, switching and independent cooldowns. Final build/lightweight/server checks passed all 66 required tests. Client visual appearance still needs in-game review.
+
+## Cold Bellows - completed
+
+- Weapons: Infernal Claymore and all four gemstone variants, held in the main hand while a shield is used.
+- Successful damage blocks ignite the source attacker (including the shooter of a projectile) for 3/4/5/6 seconds at ranks I-IV. Failed/canceled blocks and zero blocked damage do not trigger it; allies are excluded.
+- Tests cover every variant and the real survival-player raised-shield damage pipeline, plus rejected/canceled/zero blocks, projectile ownership, missing shield and unlearned weapon rejection.
+- Minecraft's default test player hardcodes creative mode. Added a survival-mode fixture and reran Explosion/Cinder protection checks with it. Reviewed build/lightweight/server checks passed all 68 required tests.
+
+Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain heat while capacity remains; at full capacity the wielder stays burning.

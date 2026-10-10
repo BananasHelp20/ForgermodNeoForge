@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.cold_bellows.name": "Cold Bellows",
+  "tooltips.forgermod.passive.cold_bellows": "Successfully blocking damage with a shield ignites the attacker, including the shooter of a blocked projectile, for 3/4/5/6 seconds at levels I/II/III/IV. Hold this claymore in your main hand.",
+  "tooltips.forgermod.passive.cold_bellows.card": "Shield blocks ignite the attacking enemy or projectile shooter.",
   "tooltips.forgermod.ability.cinder_decoy.name": "Cinder Decoy",
   "tooltips.forgermod.ability.cinder_decoy": "Leave an ember silhouette that attracts nearby hostile mobs for 6/8/10/12 seconds. Hostile contact or attacks detonate it, damaging and igniting nearby enemies for 3/4/5/6 seconds. Cooldown: 45 seconds after it ends. Switching cancels the decoy.",
   "tooltips.forgermod.ability.cinder_decoy.card": "Leave an ember decoy; hostile contact detonates and ignites it.",
