@@ -486,3 +486,7 @@
 ## Grave Vault completed
 
 - Gardeners pushed as 8100959. Grave Vault reviewed and all 105 server tests/build passed twice. Nine flower slots persist on each Lush weapon. Menu registered on both sides; placement uses normal NeoForge item hooks and permissions. Client validity handles synchronized stack replacement. Next: Echo Pin, then Warden Tone and Echo Salvage.
+
+## Echo Pin completed
+
+- Grave Vault pushed as bd4d88c. Echo Pin reviewed and all 107 server tests/build passed. All fifteen Pulsite weapons supported; vanilla vibration pulse and brief outline on next loud event even after losing sight. Distant Death Stare test now explicitly loads its isolated corridor and waits for entity-ticking status before adding its target. Next: Warden Tone, then Echo Salvage.

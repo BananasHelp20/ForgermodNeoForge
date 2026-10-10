@@ -434,3 +434,5 @@ Removed
 - Added Always the Gardeners to all Lush weapons: next enemy kill creates a five-minute temporary plant and twenty-second Poison I cloud affecting all living entities; ranked radius and cooldown.
 
 - Added Grave Vault to all Lush weapons: persistent nine-slot flower inventory, crouch-use menu, normal terrain flower placement, server validation and weapon nesting protection.
+
+- Added Echo Pin to all Pulsite weapons: visible enemy mark, next-loud-event directional vibration pulse and brief outline, ranked targeting/reveal/cooldown and server cleanup.

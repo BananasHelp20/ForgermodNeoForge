@@ -24,6 +24,8 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 public class DeathStareGameTests {
     private static ServerPlayer player(GameTestHelper test,int length) {
         var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter()); player.setYRot(0); player.setXRot(0);
+        // Keep the 150-block sight line above neighboring test arenas and their mobs.
+        if(length>120) player.setPos(player.getX(),160,player.getZ());
         for(int x=-2;x<=2;x++) for(int z=-2;z<=length+2;z++) for(int y=0;y<=8;y++)
             test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
         return player;
@@ -57,10 +59,19 @@ public class DeathStareGameTests {
         }
         test.succeed();
     }
-    @GameTest(template="riftfang_test",timeoutTicks=200)
+    @GameTest(template="riftfang_test",timeoutTicks=600)
     public static void unlimitedRankUsesLoadedMobButRejectsWallsAndStartsInstantCooldown(GameTestHelper test) throws Exception {
-        var player=player(test,160); ItemStack stack=Augmentations.apply(new ItemStack(ModItems.RIFTFANG_DAGGER.get()),RecommendedAbilities.DEATH_STARE);
-        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var player=player(test,160); ItemStack initial=Augmentations.apply(new ItemStack(ModItems.RIFTFANG_DAGGER.get()),RecommendedAbilities.DEATH_STARE);
+        player.setItemInHand(InteractionHand.MAIN_HAND,initial);
+        var destination=player.position().add(0,0,150);
+        var forced=new java.util.HashMap<net.minecraft.world.level.ChunkPos,Boolean>();
+        for(int x=(player.blockPosition().getX()-2)>>4;x<=((player.blockPosition().getX()+2)>>4);x++)
+            for(int z=(player.blockPosition().getZ()-2)>>4;z<=((player.blockPosition().getZ()+162)>>4);z++) {
+                var chunk=new net.minecraft.world.level.ChunkPos(x,z); forced.put(chunk,test.getLevel().getForcedChunks().contains(chunk.toLong()));
+                test.getLevel().setChunkForced(x,z,true);
+            }
+        test.startSequence().thenWaitUntil(()->test.assertTrue(forced.keySet().stream().allMatch(chunk->test.getLevel().isPositionEntityTicking(chunk.getWorldPosition())),"Waiting for fixture chunks to become entity-ticking")).thenExecute(()-> { try {
+        ItemStack stack=player.getMainHandItem();
         var mob=EntityType.ZOMBIE.create(test.getLevel()); mob.setNoAi(true); mob.setNoGravity(true); mob.setPos(player.position().add(0,0,150)); test.getLevel().addFreshEntity(mob);
         test.assertFalse(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.DEATH_STARE),"Rank I exceeds 30 blocks");
         for(int rank=1;rank<4;rank++) stack=Augmentations.apply(stack,RecommendedAbilities.DEATH_STARE);
@@ -69,10 +80,16 @@ public class DeathStareGameTests {
         AbilityTestPackets.use(player,0);
         String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.DEATH_STARE;
         test.assertFalse(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Blocked targeting starts cooldown");
-        test.getLevel().setBlockAndUpdate(wall,Blocks.AIR.defaultBlockState()); AbilityTestPackets.use(player,0);
+        test.getLevel().setBlockAndUpdate(wall,Blocks.AIR.defaultBlockState());
+        test.assertTrue(DeathStareAbility.target(player,Double.POSITIVE_INFINITY)==mob,"Far fixture target unavailable: entity="+test.getLevel().getEntity(mob.getId())+", alive="+mob.isAlive()+", loaded="+test.getLevel().getChunkSource().hasChunk(mob.blockPosition().getX()>>4,mob.blockPosition().getZ()>>4));
+        AbilityTestPackets.use(player,0);
         test.assertTrue(player.distanceToSqr(mob)<4,"Rank IV fails beyond rank III range");
         test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+600,"Instant rank IV cooldown wrong");
         test.assertTrue(DeathStareAbility.range(2)==60 && DeathStareAbility.range(3)==120 && Double.isInfinite(DeathStareAbility.range(4)),"Upgrade range wrong");
-        mob.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
+        mob.discard(); test.succeed();
+        } catch(Exception error) { throw new RuntimeException(error); } finally {
+            forced.forEach((chunk,wasForced)->test.getLevel().setChunkForced(chunk.x,chunk.z,wasForced));
+            test.getLevel().getServer().getPlayerList().remove(player);
+        } });
     }
 }
