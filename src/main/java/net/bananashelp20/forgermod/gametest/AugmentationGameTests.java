@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.gametest;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.AugmentationAnimation;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.block.entity.custom.AugmentationTableBlockEntity;
 import net.bananashelp20.forgermod.item.ModItems;
@@ -61,37 +62,30 @@ public class AugmentationGameTests {
     }
 
     @GameTest(template = "riftfang_test")
-    public static void withdrawnPendingChoicesRerollOrRefundWithoutLosingGear(GameTestHelper test) {
-        var table = table(test);
-        ItemStack fresh = new ItemStack(ModItems.OVERGROWN_CLAYMORE.get());
-        table.inventory.setStackInSlot(0, fresh);
-        table.inventory.setStackInSlot(1, new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get(), 2));
-        table.inventory.setStackInSlot(2, new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get(), 2));
+    public static void withdrawnPendingChoicesRepairWithoutLosingGear(GameTestHelper test) {
+        var table=table(test);
+        table.inventory.setStackInSlot(0,new ItemStack(ModItems.OVERGROWN_CLAYMORE.get()));
+        table.inventory.setStackInSlot(1,new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get(),2));
+        table.inventory.setStackInSlot(2,new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get(),2));
         table.tick();
-        CompoundTag saved = table.saveWithoutMetadata(test.getLevel().registryAccess());
-        saved.putInt("phase", 2); saved.putString("first", "augmentation.forgermod.guarded");
-        saved.putString("second", "tooltips.forgermod.ability.rooting_roots");
-        table.loadWithComponents(saved, test.getLevel().registryAccess()); table.tick();
-        test.assertTrue(table.data.get(0) == 2 && table.data.get(3) > 0 && table.data.get(4) > 0,
-                "Removed pending offers left table stuck");
-        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 1 && table.inventory.getStackInSlot(2).getCount() == 1,
-                "Repair charged another pair of ingredients");
-        test.assertTrue(table.choose(0) && Augmentations.level(table.inventory.getStackInSlot(3), Augmentations.MATERIAL_HIT) == 1,
-                "Repaired offer cannot be chosen");
-        ItemStack maxed = fresh;
-        for (int i=0; i<4; i++) maxed = Augmentations.apply(maxed, Augmentations.MATERIAL_HIT);
-        table.inventory.setStackInSlot(3, ItemStack.EMPTY); table.inventory.setStackInSlot(0, maxed);
-        saved = table.saveWithoutMetadata(test.getLevel().registryAccess());
-        saved.putInt("phase", 2); saved.putString("first", "augmentation.forgermod.guarded"); saved.putString("second", "augmentation.forgermod.guarded");
-        table.loadWithComponents(saved, test.getLevel().registryAccess()); table.tick();
-        test.assertFalse(table.locked(), "No legal choices still lock gear");
-        test.assertTrue(Augmentations.level(table.inventory.getStackInSlot(0), Augmentations.MATERIAL_HIT) == 4,
-                "Refund removed or changed weapon");
-        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 2 && table.inventory.getStackInSlot(2).getCount() == 2,
-                "Cancelled withdrawn offer did not refund consumed ingredients");
-        table.tick();
-        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 2 && table.inventory.getStackInSlot(2).getCount() == 2,
-                "Cancelled table refunded more than once");
+        CompoundTag saved=table.saveWithoutMetadata(test.getLevel().registryAccess());
+        saved.putInt("phase",AugmentationAnimation.CHOOSE); saved.putString("first","augmentation.forgermod.guarded");
+        saved.putString("second","tooltips.forgermod.ability.rooting_roots");
+        table.loadWithComponents(saved,test.getLevel().registryAccess()); table.tick();
+        test.assertTrue(table.data.get(0)==AugmentationAnimation.CHOOSE && table.data.get(3)>0 && table.data.get(4)>0,"Removed pending offers stuck");
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount()==2 && table.inventory.getStackInSlot(2).getCount()==2,"Repair charged ingredients");
+        test.assertTrue(table.choose(0),"Repaired offer cannot be chosen");
+        table.inventory.extractItem(3,1,false);
+        ItemStack maxed=new ItemStack(ModItems.OVERGROWN_CLAYMORE.get());
+        for(int i=0;i<4;i++) maxed=Augmentations.apply(maxed,Augmentations.MATERIAL_HIT);
+        table.inventory.setStackInSlot(0,maxed);
+        saved=table.saveWithoutMetadata(test.getLevel().registryAccess()); saved.putInt("phase",AugmentationAnimation.CHOOSE);
+        saved.putString("first","augmentation.forgermod.guarded"); saved.putString("second","augmentation.forgermod.guarded");
+        table.loadWithComponents(saved,test.getLevel().registryAccess()); table.tick();
+        test.assertFalse(table.locked(),"No legal choices still lock ingredients");
+        test.assertTrue(Augmentations.level(table.inventory.getStackInSlot(0),Augmentations.MATERIAL_HIT)==4,"Repair changed gear");
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount()==1 && table.inventory.getStackInSlot(2).getCount()==1,"Cancellation duplicated or lost ingredients");
+        table.tick(); test.assertTrue(table.inventory.getStackInSlot(1).getCount()==1,"Repeated refund");
         test.succeed();
     }
 
@@ -181,28 +175,33 @@ public class AugmentationGameTests {
         table.inventory.setStackInSlot(2, new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get(), 2));
         table.tick();
         test.assertTrue(table.locked() && table.data.get(2) == 100, "Cooking failed to start");
-        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 1 && table.inventory.getStackInSlot(2).getCount() == 1, "Wrong ingredient consumption");
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount() == 2 && table.inventory.getStackInSlot(2).getCount() == 2, "Ingredients consumed before selection");
         var menu = new AugmentationTableMenu(0, player.getInventory(), table, table.data);
-        test.assertFalse(menu.getSlot(0).mayPickup(player), "Cooking gear can be removed");
+        test.assertTrue(menu.getSlot(0).mayPickup(player), "Weapon cannot cancel crafting");
         test.assertFalse(menu.getSlot(1).mayPlace(new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get())), "Cooking inputs can be changed");
         test.assertFalse(menu.clickMenuButton(player, 0), "Premature choice succeeded");
         for (int i = 0; i < 99; i++) table.tick();
         test.assertTrue(table.data.get(0) == 1, "Choices appeared before five seconds");
         table.tick();
+        test.assertTrue(table.data.get(0) == AugmentationAnimation.COVER, "First overlay did not advance to second");
+        while (table.data.get(0) < AugmentationAnimation.CHOOSE) table.tick();
         var first = menu.offer(0); var second = menu.offer(1);
         test.assertTrue(first != null && second != null, "Missing legal choices");
         CompoundTag saved = table.saveWithoutMetadata(test.getLevel().registryAccess());
         table.loadWithComponents(saved, test.getLevel().registryAccess());
-        test.assertTrue(menu.offer(0).equals(first) && menu.offer(1).equals(second) && table.data.get(0) == 2, "Reload rerolled or reset choices");
+        test.assertTrue(menu.offer(0).equals(first) && menu.offer(1).equals(second) && table.data.get(0) == AugmentationAnimation.CHOOSE, "Reload rerolled or reset choices");
         test.assertFalse(menu.clickMenuButton(player, -1) || menu.clickMenuButton(player, 2), "Invalid choice accepted");
         test.assertTrue(menu.clickMenuButton(player, 0), "Valid choice failed");
         test.assertFalse(menu.clickMenuButton(player, 0), "Replayed choice accepted");
+        test.assertTrue(table.inventory.getStackInSlot(1).getCount()==1 && table.inventory.getStackInSlot(2).getCount()==1
+                && table.data.get(0)==AugmentationAnimation.COMPLETE && table.data.get(5)==0,"Selection did not consume exactly one pair or persist selected card");
         ItemStack result = table.inventory.getStackInSlot(3);
         test.assertTrue(Augmentations.count(result) == 1 && Augmentations.level(result, first.id()) == 1, "Wrong learned ability");
         test.assertTrue(result.getDamageValue() == 12 && result.getHoverName().getString().equals("Keep my name"), "Damage/name lost");
         test.assertTrue(result.get(DataComponents.CUSTOM_DATA).copyTag().getString("other_mod").equals("keep me"), "Other custom data lost");
         test.assertTrue(table.inventory.getStackInSlot(0).isEmpty() && menu.getSlot(3).mayPickup(player), "Output inventory broken");
         test.assertTrue(!menu.quickMoveStack(player, 3).isEmpty() && table.inventory.getStackInSlot(3).isEmpty(), "Output shift click failed");
+        test.assertTrue(table.data.get(0)==0 && menu.getSlot(0).isActive() && !menu.getSlot(3).isActive(),"Taking result did not reset GUI");
         player.setPos(table.getBlockPos().getCenter().add(20, 0, 0));
         test.assertFalse(menu.stillValid(player) || menu.clickMenuButton(player, 1), "Remote choice allowed");
         test.getLevel().getServer().getPlayerList().remove(player);

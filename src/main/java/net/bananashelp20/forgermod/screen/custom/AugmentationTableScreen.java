@@ -1,77 +1,112 @@
 package net.bananashelp20.forgermod.screen.custom;
 
-import net.bananashelp20.forgermod.augmentation.Augmentations;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.bananashelp20.forgermod.augmentation.AugmentationAnimation;
 import net.bananashelp20.forgermod.item.custom.WeaponTooltips;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
+import java.util.List;
 
 public final class AugmentationTableScreen extends AbstractContainerScreen<AugmentationTableMenu> {
-    private final Button[] choices=new Button[2];
+    private static final String DIRECTORY="textures/gui/augementation_table/";
+    private static final ResourceLocation BASE=texture("augmentation_table_gui.png");
+    private static final ResourceLocation[] OVERLAYS={null,texture("augmentation_table_analyze_progress.png"),
+            texture("augmentation_table_analyze_to_selection_transtion_1.png"),
+            texture("augmentation_table_analyze_to_selection_transition_2.png"),texture("augmentation_table_selection_finalisation.png")};
+    private static final int CARD_Y=15,CARD_WIDTH=39,CARD_HEIGHT=54;
+    private static final int[] CARD_X={12,125};
+    private static ResourceLocation texture(String name) { return ResourceLocation.fromNamespaceAndPath("forgermod",DIRECTORY+name); }
     public AugmentationTableScreen(AugmentationTableMenu menu,Inventory inventory,Component title) {
-        super(menu,inventory,title); imageWidth=176; imageHeight=218; inventoryLabelX=8; inventoryLabelY=122;
-    }
-    @Override protected void init() {
-        super.init();
-        for (int i=0;i<2;i++) {
-            final int button=i;
-            choices[i]=addRenderableWidget(Button.builder(Component.empty(),ignored ->
-                    minecraft.gameMode.handleInventoryButtonClick(menu.containerId,button))
-                    .bounds(leftPos+8,topPos+78+i*21,160,20).build());
-        }
-        refresh();
-    }
-    private void refresh() {
-        for (int i=0;i<2;i++) {
-            var offer=menu.offer(i); choices[i].visible=menu.phase()==2 && offer!=null;
-            if (offer==null) continue;
-            int level=Augmentations.level(menu.getSlot(0).getItem(),offer.id());
-            Component label=Component.translatable(level==0?"augmentation.forgermod.get":"augmentation.forgermod.upgrade",
-                    offer.name(),WeaponTooltips.romanNumeral(level+1));
-            choices[i].setMessage(label); choices[i].setTooltip(Tooltip.create(label.copy().append("\n")
-                    .append(Component.translatable(offer.id())).append("\n")
-                    .append(Component.translatable(offer.active()?"augmentation.forgermod.active_hint":"augmentation.forgermod.passive_hint"))));
-        }
+        super(menu,inventory,title); imageWidth=176; imageHeight=166; titleLabelY=4; inventoryLabelX=8; inventoryLabelY=73;
     }
     @Override protected void renderBg(GuiGraphics gui,float delta,int mouseX,int mouseY) {
-        int x=leftPos,y=topPos;
-        // Vanilla-style raised panel and inset slots, matching the existing Forge/Infusion screens.
-        gui.fill(x,y,x+imageWidth,y+imageHeight,0xff000000);
-        gui.fill(x+1,y+1,x+imageWidth-1,y+imageHeight-1,0xff555555);
-        gui.fill(x+1,y+1,x+imageWidth-2,y+2,0xffffffff);
-        gui.fill(x+1,y+1,x+2,y+imageHeight-2,0xffffffff);
-        gui.fill(x+3,y+3,x+imageWidth-3,y+imageHeight-3,0xffc6c6c6);
-        for (var slot:menu.slots) {
-            gui.fill(x+slot.x-1,y+slot.y-1,x+slot.x+17,y+slot.y+17,0xffffffff);
-            gui.fill(x+slot.x-1,y+slot.y-1,x+slot.x+16,y+slot.y+16,0xff373737);
-            gui.fill(x+slot.x,y+slot.y,x+slot.x+16,y+slot.y+16,0xff8b8b8b);
-        }
-        gui.drawString(font,Component.literal(">"),x+118,y+39,0xff555555,false);
-        if(menu.phase()==1) {
-            gui.fill(x+8,y+66,x+168,y+72,0xff555555);
-            int width=158*menu.progress()/Math.max(1,menu.duration());
-            gui.fill(x+9,y+67,x+9+width,y+71,0xff58a7e8);
-            int glow=(int)(System.currentTimeMillis()/35%158);
-            if(glow<width) gui.fill(x+9+glow,y+67,x+11+glow,y+71,0xffc9eeff);
-            gui.drawCenteredString(font,Component.translatable("augmentation.forgermod.cooking",
-                    String.format(java.util.Locale.ROOT,"%.1f",Math.max(0,menu.duration()-menu.progress())/20.0)),x+88,y+85,0xff404040);
-        } else {
-            String status=menu.phase()==2?"choose":!menu.getSlot(3).getItem().isEmpty()?"take":
-                    Augmentations.eligible(menu.getSlot(0).getItem()) && Augmentations.available(menu.getSlot(0).getItem()).isEmpty()?"complete":"insert";
-            int lineY=y+62;
-            for(var line:font.split(Component.translatable("augmentation.forgermod."+status),160)) {
-                gui.drawString(font,line,x+8,lineY,0xff404040,false); lineY+=10;
+        gui.blit(BASE,leftPos,topPos,0,0,imageWidth,imageHeight);
+    }
+    @Override protected void renderLabels(GuiGraphics gui,int mouseX,int mouseY) {
+        super.renderLabels(gui,mouseX,mouseY);
+        RenderSystem.enableBlend();
+        for(int stage=1;stage<=4;stage++) {
+            if(menu.phase()<stage) break;
+            int width=AugmentationAnimation.WIDTH[stage];
+            if(menu.phase()>stage) crop(gui,stage,0,width);
+            else {
+                int pixels=AugmentationAnimation.revealedPixels(stage,menu.progress(),menu.duration());
+                if(stage<=2) {
+                    crop(gui,stage,0,pixels);
+                    int right=Math.min(pixels,width-pixels);
+                    crop(gui,stage,width-right,right);
+                } else {
+                    int middle=width/2;
+                    crop(gui,stage,middle-pixels,pixels); crop(gui,stage,middle,pixels);
+                }
             }
         }
+        if(menu.phase()>=AugmentationAnimation.CHOOSE) for(int i=0;i<2;i++) renderCard(gui,i,mouseX-leftPos,mouseY-topPos);
+    }
+    private void crop(GuiGraphics gui,int stage,int start,int width) {
+        if(width<=0) return;
+        gui.blit(OVERLAYS[stage],AugmentationAnimation.X[stage]+start,AugmentationAnimation.Y[stage],0,
+                (float)start,0,width,AugmentationAnimation.HEIGHT[stage],AugmentationAnimation.WIDTH[stage],AugmentationAnimation.HEIGHT[stage]);
+    }
+    private boolean overCard(int card,double x,double y) {
+        return x>=CARD_X[card] && x<CARD_X[card]+CARD_WIDTH && y>=CARD_Y && y<CARD_Y+CARD_HEIGHT;
+    }
+    private void renderCard(GuiGraphics gui,int card,int mouseX,int mouseY) {
+        var offer=menu.offer(card); if(offer==null) return;
+        int x=CARD_X[card],y=CARD_Y;
+        boolean completed=menu.phase()==AugmentationAnimation.COMPLETE;
+        boolean rejected=completed && menu.selected()!=card;
+        boolean hovered=!completed && overCard(card,mouseX,mouseY);
+        int edge=rejected?0xff686868:completed?0xff78df96:hovered?0xffe2ffff:0xff51d8f5;
+        gui.fill(x,y,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
+        gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,rejected?0xff777777:hovered?0xffd3eced:0xffb5c6c8);
+        gui.fill(x+2,y+11,x+CARD_WIDTH-2,y+12,rejected?0xff999999:0xff549ca6);
+        // Code-rendered cards adapt to every translated ability and need no separate PNG per ability.
+        gui.pose().pushPose(); gui.pose().translate(x+3,y+3,0); gui.pose().scale(.5F,.5F,1);
+        int textColor=rejected?0xff555555:0xff20353b;
+        Component kind=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.learn":"augmentation.forgermod.card.upgrade");
+        gui.drawString(font,kind,0,0,textColor,false);
+        int lineY=20;
+        Component name=offer.name().copy().append(" "+WeaponTooltips.romanNumeral(menu.offerRank(card)+1));
+        for(var line:font.split(name,66)) { if(lineY>47) break; gui.drawString(font,line,0,lineY,textColor,false); lineY+=9; }
+        lineY+=4;
+        List<FormattedCharSequence> description=font.split(Component.translatable(offer.id()),66);
+        for(var line:description) { if(lineY>89) break; gui.drawString(font,line,0,lineY,textColor,false); lineY+=9; }
+        gui.pose().popPose();
+        if(rejected) gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,0x55808080);
+    }
+    @Override public boolean mouseClicked(double x,double y,int button) {
+        if(button==0 && menu.phase()==AugmentationAnimation.CHOOSE && menu.getCarried().isEmpty()) {
+            for(int i=0;i<2;i++) if(menu.offer(i)!=null && overCard(i,x-leftPos,y-topPos)) {
+                minecraft.gameMode.handleInventoryButtonClick(menu.containerId,i); return true;
+            }
+        }
+        return super.mouseClicked(x,y,button);
     }
     @Override public void render(GuiGraphics gui,int mouseX,int mouseY,float delta) {
-        refresh(); super.render(gui,mouseX,mouseY,delta); renderTooltip(gui,mouseX,mouseY);
-        if (hoveredSlot != null && hoveredSlot.index < 4 && !hoveredSlot.hasItem()) {
-            String[] names={"gear","template","sapphire","output"};
-            gui.renderTooltip(font,Component.translatable("augmentation.forgermod.slot."+names[hoveredSlot.index]),mouseX,mouseY);
+        super.render(gui,mouseX,mouseY,delta); renderTooltip(gui,mouseX,mouseY);
+        if(menu.phase()>=AugmentationAnimation.CHOOSE && menu.getCarried().isEmpty()) {
+            for(int i=0;i<2;i++) {
+                var offer=menu.offer(i);
+                if(offer!=null && overCard(i,mouseX-leftPos,mouseY-topPos)) {
+                    Component name=offer.name().copy().append(" "+WeaponTooltips.romanNumeral(menu.offerRank(i)+1));
+                    var lines=new java.util.ArrayList<FormattedCharSequence>();
+                    lines.add(name.getVisualOrderText());
+                    lines.addAll(font.split(Component.translatable(offer.id()).withStyle(ChatFormatting.GRAY),180));
+                    if(menu.phase()==AugmentationAnimation.COMPLETE) lines.add(Component.translatable(menu.selected()==i?
+                            "augmentation.forgermod.card.selected":"augmentation.forgermod.card.rejected").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+                    gui.renderTooltip(font,lines,mouseX,mouseY);
+                }
+            }
+        }
+        if(hoveredSlot!=null && hoveredSlot.index<4 && !hoveredSlot.hasItem()) {
+            String key=hoveredSlot.index==0?"gear":hoveredSlot.index==3?"output":"ingredient";
+            gui.renderTooltip(font,Component.translatable("augmentation.forgermod.slot."+key),mouseX,mouseY);
         }
     }
 }

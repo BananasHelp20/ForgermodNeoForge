@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-09T20:26:06.3007304	Item Models: forgermod
+// 1.21.1	2026-10-10T17:06:41.6266303	Item Models: forgermod
 6642fb43b1871f779df69a9257a0b1a2771aba62 assets/forgermod/models/item/advanced_handle.json
 a8b8f08cf4dc9abb721d7c62abdfd71d57be08f7 assets/forgermod/models/item/amber_gemstone.json
 4c3c88afba28f88938a3fb962267e28c610b678f assets/forgermod/models/item/amethyst_gemstone.json
@@ -100,6 +100,7 @@ d9c302a6bdc24fea2f1e7c607cf16e403bca0efa assets/forgermod/models/item/pulsite_sh
 d5f55638ac76a8382972566a4ce4474a506196a4 assets/forgermod/models/item/reinforced_iron_sword.json
 1fec739a02fa1aeb6b0a2430fc6a03f6f068cf33 assets/forgermod/models/item/ruby_gemstone.json
 e9c3aab58069d2737bee6f38b176b63398092092 assets/forgermod/models/item/rusty_claymore.json
+87000fa978a224599c291e45cb86cedf1f5a2eb6 assets/forgermod/models/item/sapphire_gemstone.json
 166aa2599a87b0e75230ad72f35df4285d1caaa7 assets/forgermod/models/item/scrap_ingot.json
 d5ea57b4bed4c91eee48e601ff215d0f6b03fdc7 assets/forgermod/models/item/scrap_iron_ingot.json
 b4f682a0b42ad3a35d9f37f1d99c8cf4bf5cb579 assets/forgermod/models/item/scrap_iron_sword.json

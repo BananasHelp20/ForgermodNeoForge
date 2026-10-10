@@ -292,3 +292,22 @@ Changed
 - Added Sapphire Gemstone item-model generation so future data generation retains the authored texture
 - Reordered special-weapon tooltips to show gemstone name and bonuses before capability notices, with a blank separator, matching the corrected fresh Jade-infused Deathwisper example
 - Extended existing tooltip regression coverage to check the fresh Jade example's exact order, spacing, green colors and absence of unlearned ability/infusion/fire-resistance text
+
+2026-10-10 — Authored Augmentation Table GUI and reversible selection workflow
+Added
+- Integrated the user's five authored GUI PNGs without editing their pixels; middle weapon slot and inventory align with the 176x166 panel
+- Added four sequential whole-pixel overlay reveals at relative front speeds 1x, 2x, 3x and 1x: first/second inward from both ends, third/fourth outward from the middle
+- Added generated learn/upgrade cards inside the authored boxes, with target rank, short descriptions, hover highlighting/full-description tooltips, and selected/disabled completion styling
+- Added persisted overlay phase/progress, offer ranks and selected card, plus recovery for old tables that previously spent ingredients upfront
+- Added server regressions for cancellation at every phase, both ingredient orders, normal/shift pickup, covered-slot locks, exact spending, save/reload, legacy refunds and block-breaking drops; added pixel timing and actual PNG hole-alignment checks
+Changed
+- Both side slots accept Sapphire Gemstone or Gemstone Upgrade Template; crafting requires exactly one ingredient type in each, in either order
+- Ingredients remain in the table throughout analysis and selection; choosing one card consumes exactly one sapphire and one template and augments the weapon once
+- Removing the unfinished weapon cancels immediately, resets all overlays and unlocks both unchanged ingredient stacks
+- Covered side slots stop rendering items/hover effects and reject extraction/insertion after overlay two completes; unfinished weapon remains removable
+- Completed weapon appears in the same middle slot; selected/unselected cards remain until taking it resets the GUI and unlocks leftover ingredients
+- Removed developer-design wording from the material Hit card's player-facing description
+Removed
+- Removed the old code-drawn panel/loading bar and wide selection buttons, replacing them with the authored GUI and generated cards
+- Removed start-of-cooking consumption and the old weapon lock that prevented cancellation
+- Removed the duplicate hand-authored Sapphire model; the generated model now supplies the same texture reference without resource-copy conflicts
