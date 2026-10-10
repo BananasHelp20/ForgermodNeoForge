@@ -21,12 +21,15 @@ public final class RecommendedAbilityRuntime {
             return true;
         }
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) return CinderDecoyEvents.activate(player,stack);
+        if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) return ExplosiveHitsEvents.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player,String id) {
-        return RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player);
+        return RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
+                || RecommendedAbilities.EXPLOSIVE_HITS.equals(id) && ExplosiveHitsEvents.active(player);
     }
     public static void cancel(ServerPlayer player,String id) {
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
+        if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) ExplosiveHitsEvents.cancel(player.getUUID());
     }
 }

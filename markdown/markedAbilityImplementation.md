@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Explosive Hits (active); Nether Born; Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Nether Born; Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -55,3 +55,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Infinite Fire Resistance while holding the learned weapon in the main hand at level I; level II also qualifies in the offhand and is the maximum.
 - Protection ends when neither hand qualifies. Independent potions, hidden effect chains and naturally infinite effects are preserved with their normal timers. Curing removes old potion ownership; continued held protection can resume without resurrecting a cured potion.
 - Reviewed build/lightweight/server checks passed all 73 required tests, covering all ten variants, hand restrictions, rank cap, actual survival fire damage, removal, potion mixing/hidden expiry, curing and logout.
+
+## Explosive Hits - completed
+
+- Weapons: Infernal Claymore and all four gemstone variants. Active, as the user confirmed.
+- Arms ten successful melee hits. Each produces a small blast dealing exactly 30% of current weapon attack damage to nearby non-allied living targets, including the original victim. No caster damage or terrain changes; blocks obstruct it.
+- Radii at ranks I-IV: 1.5/2/2.5/3 blocks. Cooldown is 45 seconds after all ten charges finish or switching cancels them. Failed hits retain charges. Secondary damage cannot recurse into melee-trigger abilities.
+- Reviewed build/lightweight/server checks passed all 75 required tests, covering every variant, exact damage/count, no recursion/eleventh blast, failed hits, same-stack arm rejection, switching, walls, rank-IV self-safety, original-victim damage and actual key-handler cooldown behavior.

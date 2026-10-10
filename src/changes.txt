@@ -390,3 +390,10 @@ Removed
 - Weapon-granted protection ends on loss of qualifying equipment, death or logout; independently acquired effects, hidden potion chains and potions added while protected retain their normal timers
 - Milk/effect removal does not resurrect previously cured potions; the held passive resumes while qualifying equipment remains
 - Added survival server regressions for all ten variants, hand requirements, upgrade cap, actual fire damage, equipment removal, potion preservation, hidden-effect expiry, curing and logout
+
+2026-10-11 - Marked ability 7: Explosive Hits
+- Added active, learnable Explosive Hits to all five Infernal Claymores: exactly ten successful melee hits create small blasts dealing 30% of current weapon attack damage
+- Blasts include the directly hit victim, ignore the wielder and allies, stop at solid obstruction and never alter terrain; secondary explosion damage cannot recursively trigger melee abilities
+- Chosen rank balance: blast radii 1.5/2/2.5/3 blocks, with a 45-second cooldown after ten charges finish or switching cancels them
+- Failed hits do not consume charges; armed charges cannot be restarted, and exact-stack/hotbar/death/logout validation cleans up state
+- Added all-variant survival tests for exact damage and charge count, non-recursion, no eleventh blast, owner safety, failed hits, switching, rank-IV radius/obstruction, primary victim damage and packet-handler cooldown enforcement

@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.explosive_hits.name": "Explosive Hits",
+  "tooltips.forgermod.ability.explosive_hits": "Your next 10 successful melee hits create small blasts dealing 30% of your current weapon damage, without harming you or terrain. Radius: 1.5/2/2.5/3 blocks at levels I/II/III/IV. Cooldown: 45 seconds after the charges finish or are canceled by switching.",
+  "tooltips.forgermod.ability.explosive_hits.card": "Ten hits explode for 30% weapon damage, without harming you.",
   "tooltips.forgermod.passive.fire_resistance.name": "Fire Resistance",
   "tooltips.forgermod.passive.fire_resistance": "Gain infinite Fire Resistance while holding this weapon in your main hand. Level II also works in the offhand and is the maximum level. Weapon protection ends when neither hand qualifies; other Fire Resistance effects keep their normal duration.",
   "tooltips.forgermod.passive.fire_resistance.card": "Fire Resistance while held; level II also protects from offhand.",
