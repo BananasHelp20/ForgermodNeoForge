@@ -1,7 +1,9 @@
 package net.bananashelp20.forgermod.augmentation;
 
 import net.bananashelp20.forgermod.item.custom.IgnisiumWeapon;
+import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.world.item.ItemStack;
+import java.util.ArrayList;
 import java.util.List;
 
 /** User-marked recommendations become learnable only after their implementation is complete. */
@@ -16,8 +18,15 @@ public final class RecommendedAbilities {
     public static final String NETHER_BORN="tooltips.forgermod.passive.nether_born";
     public static final String CRUCIBLE_HOOK="tooltips.forgermod.ability.crucible_hook";
     public static final String STRONG_ARM="tooltips.forgermod.ability.strong_arm";
+    public static final String SWING_ATTACK="tooltips.forgermod.ability.swing_attack";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
+        var result=new ArrayList<>(materialPool(stack));
+        if(stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect() && weapon.isAxe())
+            result.add(new Augmentations.Ability(SWING_ATTACK,true));
+        return List.copyOf(result);
+    }
+    private static List<Augmentations.Ability> materialPool(ItemStack stack) {
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isDagger())
             return List.of(new Augmentations.Ability(QUENCH_POINT,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
@@ -30,9 +39,10 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(CRUCIBLE_HOOK,true),new Augmentations.Ability(STRONG_ARM,true));
         return List.of();
     }
-    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id); }
+    public static boolean active(String id) { return EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id); }
     public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
+        if(SWING_ATTACK.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(STRONG_ARM.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(CRUCIBLE_HOOK.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         return EXPLOSION.equals(id)?1200-100*(Math.clamp(rank,1,4)-1):CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id)?900:0;

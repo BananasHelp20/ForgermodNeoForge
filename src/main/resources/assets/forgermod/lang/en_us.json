@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.swing_attack.name": "Swing Attack",
+  "tooltips.forgermod.ability.swing_attack": "Swing around, dealing current weapon damage to every visible enemy within your current melee range. Cooldown: 30/25/20/15 seconds at levels I/II/III/IV.",
+  "tooltips.forgermod.ability.swing_attack.card": "Strike every visible enemy in your melee range.",
   "tooltips.forgermod.ability.strong_arm.name": "Strong-arm",
   "tooltips.forgermod.ability.strong_arm": "Attempt to break one random armor piece on the enemy you aim at within melee range. Chance: 30/55/80/100% at levels I/II/III/IV. A valid attempt starts a 60/50/40/30-second cooldown even if the roll fails. No armored target means no cooldown.",
   "tooltips.forgermod.ability.strong_arm.card": "Chance to break one random armor piece on an aimed enemy.",

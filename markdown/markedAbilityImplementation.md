@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -82,3 +82,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Molten Axe and all four gemstone variants. Aim at an unobstructed armored enemy within current melee range. One randomly chosen equipped armor piece breaks on a successful roll; no health damage is added.
 - Rank I-IV chances: 30/55/80/100%; cooldowns: 60/50/40/30 seconds. Valid attempts start cooldown even on a failed roll; missing armored targets do not.
 - Tests cover every variant, exactly one broken piece, both deterministic rank-I roll outcomes, armorless rejection and real packet cooldown handling. Review corrected a test corridor that inherited solid terrain; ability obstruction remains intact. Final build/lightweight/server checks passed all 81 required tests.
+
+## Swing Attack - completed
+
+- Weapons: all nine special axe families and all gemstone variants (45 axes). Learned-only instant circular strike deals current weapon attack damage to every visible enemy within current melee range, excluding allies and neutral entities. Blocks stop hits. Successful hits use ordinary weapon wear and learned material effects.
+- Rank I-IV cooldowns: 30/25/20/15 seconds; damage and range continue to follow weapon attributes. Swinging empty space also starts the cooldown. Sixteen brief sweep particles show the circular range.
+- Reviewed build/lightweight/server checks passed all 83 required tests, covering every variant, front and rear hits, exact damage/wear, fresh rejection, walls, range, neutral mobs, team allies, caster safety and instant cooldown/replay.
