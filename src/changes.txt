@@ -418,3 +418,5 @@ Removed
 - Added learnable Death Stare to all five Riftfang Daggers: crosshair teleport beside a mob at 30/60/120/any loaded visible blocks, with 45/40/35/30-second cooldown; rejects walls, unsafe landing and mounted use.
 
 - Added learnable Echoing Speed to all Riftfang Daggers: each successful same-enemy melee hit adds 5% temporary attack speed, capped at 20/30/40/50%; different targets reset buildup and switching, eight-second inactivity, target death or logout clears it.
+
+- Added learnable Distance Tax to all Void Claymores: ten-second enemy mark pays 0.5/0.75/1/1.25 damage per separation block, capped at 40; same-target hits retain deadline, other targets replace it and switching/logout cancel it.

@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.distance_tax.name": "Distance Tax",
+  "tooltips.forgermod.passive.distance_tax": "A successful hit marks one enemy for 10 seconds. Then its distance from you deals 0.5/0.75/1/1.25 damage per block at levels I/II/III/IV, capped at 40 damage. Repeated hits keep the deadline; another enemy replaces the mark. Switching cancels it.",
+  "tooltips.forgermod.passive.distance_tax.card": "Mark an enemy, then move away before the ten-second tax.",
   "tooltips.forgermod.passive.echoing_speed.name": "Echoing Speed",
   "tooltips.forgermod.passive.echoing_speed": "Successful hits on the same enemy each add 5% attack speed, capped at 20/30/40/50% at levels I/II/III/IV. A different target resets buildup. Eight seconds without a hit, switching weapons or the target dying clears it.",
   "tooltips.forgermod.passive.echoing_speed.card": "Build attack speed with repeated hits on one enemy.",

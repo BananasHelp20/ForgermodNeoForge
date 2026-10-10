@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -101,3 +101,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Riftfang Dagger and all four gemstone variants. Successful melee hits on one living enemy each add 5% attack speed, capped at 20/30/40/50% by rank. A successful hit on another enemy restarts at 5%; rejected hits leave buildup intact.
 - Eight seconds without a successful hit, target death/removal/dimension change, weapon switching, death or logout clear the temporary modifier. No permanent attribute changes or removal of unrelated speed bonuses.
 - Reviewed build/lightweight/server checks passed all 88 required tests, covering every variant, unlearned rejection, exact gradual buildup/caps, rejected hits, target reset, exact-stack switching, rank-IV expiry/restart and logout with an independent speed modifier.
+
+## Distance Tax - completed
+
+- Weapons: Claymore of the Void and all four gemstone variants. Successful melee damage marks one enemy; after ten seconds, the distance between wielder and target converts into 0.5/0.75/1/1.25 damage per block, capped at 40 at every rank.
+- Repeated hits on the same enemy keep the original deadline. Hitting another replaces it. Switching/death/logout/invalid target cancels it. Sparse portal particles show the mark and payout; player-owned magic prevents recursive melee triggers.
+- Reviewed build/lightweight/server checks passed all 91 required tests, covering all variants, exact deadline/damage, repeated-hit deadline preservation, one-time payout, rank conversion/cap, target replacement, switching, fresh rejection and logout. Survival test players require explicitly driven player-tick events for scheduled effects.

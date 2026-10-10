@@ -22,6 +22,7 @@ public final class RecommendedAbilities {
     public static final String SWING_ATTACK="tooltips.forgermod.ability.swing_attack";
     public static final String DEATH_STARE="tooltips.forgermod.ability.death_stare";
     public static final String ECHOING_SPEED="tooltips.forgermod.passive.echoing_speed";
+    public static final String DISTANCE_TAX="tooltips.forgermod.passive.distance_tax";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
@@ -32,6 +33,8 @@ public final class RecommendedAbilities {
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
         if(stack.getItem() instanceof InanisiumWeapon weapon && weapon.isDagger())
             return List.of(new Augmentations.Ability(DEATH_STARE,true),new Augmentations.Ability(ECHOING_SPEED,false));
+        if(stack.getItem() instanceof InanisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
+            return List.of(new Augmentations.Ability(DISTANCE_TAX,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isDagger())
             return List.of(new Augmentations.Ability(QUENCH_POINT,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
