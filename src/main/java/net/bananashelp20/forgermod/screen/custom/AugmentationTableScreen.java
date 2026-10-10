@@ -43,13 +43,13 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.pose().pushPose();
         gui.pose().translate(0,0,350);
         try {
-            renderAugmentationLayers(gui,mouseX,mouseY);
+            renderAugmentationLayers(gui);
         } finally {
             gui.flush();
             gui.pose().popPose();
         }
     }
-    private void renderAugmentationLayers(GuiGraphics gui,int mouseX,int mouseY) {
+    private void renderAugmentationLayers(GuiGraphics gui) {
         RenderSystem.enableBlend();
         for(int stage=1;stage<=4;stage++) {
             if(menu.phase()<stage) break;
@@ -67,7 +67,7 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
                 }
             }
         }
-        if(menu.phase()>=AugmentationAnimation.CHOOSE) for(int i=0;i<2;i++) renderCard(gui,i,mouseX-leftPos,mouseY-topPos);
+        if(menu.phase()>=AugmentationAnimation.CHOOSE) for(int i=0;i<2;i++) renderCard(gui,i);
     }
     private void crop(GuiGraphics gui,int stage,int start,int width) {
         if(width<=0) return;
@@ -77,18 +77,12 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
     private boolean overCard(int card,double x,double y) {
         return x>=CARD_X[card] && x<CARD_X[card]+CARD_WIDTH && y>=CARD_Y && y<CARD_Y+CARD_HEIGHT;
     }
-    private void renderCard(GuiGraphics gui,int card,int mouseX,int mouseY) {
+    private void renderCard(GuiGraphics gui,int card) {
         var offer=menu.offer(card); if(offer==null) return;
         int x=CARD_X[card],y=CARD_Y;
         boolean completed=menu.phase()==AugmentationAnimation.COMPLETE;
         boolean rejected=completed && menu.selected()!=card;
-        boolean hovered=!completed && overCard(card,mouseX,mouseY);
-        int edge=rejected?0xff686868:completed?0xff78df96:hovered?0xffe2ffff:0xff51d8f5;
         gui.blit(CARD_TEMPLATE,x,y,0,0,0,CARD_WIDTH,CARD_HEIGHT,CARD_WIDTH,CARD_HEIGHT);
-        if(hovered || completed && !rejected) {
-            gui.fill(x,y,x+CARD_WIDTH,y+1,edge); gui.fill(x,y+CARD_HEIGHT-1,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
-            gui.fill(x,y,x+1,y+CARD_HEIGHT,edge); gui.fill(x+CARD_WIDTH-1,y,x+CARD_WIDTH,y+CARD_HEIGHT,edge);
-        }
         Component eyebrow=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.new":"augmentation.forgermod.card.upgrade");
         gui.pose().pushPose(); gui.pose().translate(x+3,y-4,0); gui.pose().scale(.5F,.5F,1);
         gui.drawString(font,eyebrow,0,0,0xff586672,false); gui.pose().popPose();

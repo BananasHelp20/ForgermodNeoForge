@@ -353,3 +353,8 @@
 
 - User requested one-pixel padding and the lower category heading one pixel down; clarified that only the description padding should change, not its wording. Upper title area now reserves a one-pixel margin inside the white box (37x7 usable instead of 39x9), preserving centered fitting. Lower heading/description origin moves from (x+2,y+13) to (x+3,y+14); wrapping narrows from 78 to 74 half-scale font units, leaving a one-pixel horizontal margin. Left eyebrow aligns at x+3. Seven description lines still fit with bottom padding.
 - Gradle build -x createMinecraftArtifacts passed with existing lightweight checks; code/whitespace review passed. Actual client appearance has not been directly playtested. Preserved unrelated user edits to instructions.md, Augmentations.java and the existing GUI/Sapphire PNGs.
+
+## Simplified ability card selection visuals
+
+- Removed the card hover-border and green selected-border rendering as requested. Both options use the normal authored template before selection; after selection only the unchosen card receives the existing disabled gray text/tint. That state remains until weapon pickup resets the table. Hover descriptions, click bounds and server selection validation remain unchanged.
+- Gradle build -x createMinecraftArtifacts passed with the existing lightweight checks after final code review; whitespace check passed. Live appearance remains unverified. Unrelated user edits to instructions.md, Augmentations.java and existing GUI/Sapphire PNGs were preserved.
