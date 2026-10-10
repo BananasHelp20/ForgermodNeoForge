@@ -403,3 +403,10 @@ Removed
 - Chosen progression: a single-level passive, preserving the specified fixed 20% bonus without charging for identical upgrades
 - Other dimensions, unlearned weapons and unrelated projectile damage do not receive this bonus
 - Added all-ten-variant damage-pipeline tests using the actual Nether level, exact melee/explosion bonus, Overworld exclusion, fresh-weapon rejection and the single-level cap
+
+2026-10-11 - Marked ability 9: Crucible Hook
+- Added learnable Crucible Hook to all five Molten Axes: acquire an unobstructed aimed enemy within 20 blocks, pull it with velocity and automatically smash it upon entering melee range
+- Chosen rank balance: smash damage 1.25/1.5/1.75/2 times current weapon damage, ignition 3/4/5/6 seconds and cooldown 40/35/30/25 seconds
+- Hook does not teleport or ignore solid walls; it expires after two seconds and cancels on switching, death, lost sight, target loss, dimension change or excessive separation
+- Successful smash applies normal weapon durability/material-hit handling; appropriate hostile mobs and permitted PvP targets are supported
+- Added all-variant real-physics pull/smash tests, exact rank-IV damage/ignition/durability, obstructed activation rejection, no failed-use cooldown and switch cancellation/full cooldown checks

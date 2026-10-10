@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.crucible_hook.name": "Crucible Hook",
+  "tooltips.forgermod.ability.crucible_hook": "Hook the enemy you aim at within 20 blocks, pull it toward you and smash it upon reaching melee range. Damage: 1.25/1.5/1.75/2 times current weapon damage; burn: 3/4/5/6 seconds. Cooldown: 40/35/30/25 seconds. Blocks obstruct the hook; switching cancels it.",
+  "tooltips.forgermod.ability.crucible_hook.card": "Pull an aimed enemy close, then smash and ignite it.",
   "tooltips.forgermod.passive.nether_born.name": "Nether Born",
   "tooltips.forgermod.passive.nether_born": "Deal 20% more melee and weapon-explosion damage while holding this weapon in the Nether. This passive has one level.",
   "tooltips.forgermod.passive.nether_born.card": "Deal 20% more weapon damage in the Nether.",

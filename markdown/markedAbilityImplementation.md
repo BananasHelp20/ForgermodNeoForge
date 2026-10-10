@@ -12,7 +12,7 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 
 ## Remaining marked abilities — pending
 
-Crucible Hook; Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+Strong-arm; Swing Attack; Death Stare; Echoing Speed; Distance Tax; Null Receipt; Overwhelming Smash; False Awakening; Delusion; Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
@@ -69,3 +69,10 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Exactly 20% more melee and weapon-explosion damage while holding the learned weapon in the Nether. No bonus in other dimensions or on unrelated projectile damage.
 - Chosen cap: one level, because the specified fixed bonus has no separate upgrade behavior; this avoids wasting ingredients on identical upgrades.
 - Reviewed build/lightweight/server checks passed all 76 required tests. All ten variants tested against real Nether damage context, with exact melee/explosion bonus, fresh-weapon and Overworld exclusion and cap.
+
+## Crucible Hook - completed
+
+- Weapons: Molten Axe and all four gemstone variants.
+- Aimed, unobstructed enemy within twenty blocks is pulled with velocity, then smashed upon entering melee range. No teleportation or wall penetration. Hook expires after two seconds; switching/lost target/sight/dimension cancels it.
+- Ranks I-IV: damage 1.25/1.5/1.75/2 times current weapon damage; burn 3/4/5/6 seconds; cooldown 40/35/30/25 seconds after completion/cancellation. Successful smash uses normal durability/material-hit handling.
+- Reviewed build/lightweight/server checks passed all 78 required tests. Coverage includes all variants, real mob movement physics, max-rank damage/fire/wear, obstruction, failed-use rejection/no cooldown and switch/full-cooldown behavior.
