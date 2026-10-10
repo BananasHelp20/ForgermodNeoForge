@@ -153,6 +153,8 @@ public final class Augmentations {
         return WeaponAbilitySlot.PRIMARY;
     }
     public static int cooldown(ItemStack stack, WeaponAbilitySlot slot, SwordItemWithEffect weapon) {
+        String id=activeId(stack,slot);
+        if(RecommendedAbilities.active(id)) return RecommendedAbilities.cooldown(id,level(stack,id));
         return Math.max(0, weapon.abilityCooldownTicks(sourceSlot(stack, slot)));
     }
     public static String migrateId(String id) {

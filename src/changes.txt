@@ -357,3 +357,9 @@ Removed
 - Chosen balance: store at most ten seconds of remaining fire, worth 0.5/0.75/1/1.25 damage per second at ranks I/II/III/IV; stored fire expires after ten seconds and clears on switching, death or logout
 - Added full tooltip and compact augmentation card descriptions, while retaining the two learned passive-slot limit
 - Added server regressions for all gemstone variants, real damage, extinguishing, one-time use, rejected hits, switching, rank-IV cap and timed expiry
+
+2026-10-11 - Marked ability 2: Explosion
+- Added learnable Explosion to Infernal Claymore and all four gemstone variants: creeper-strength power-three explosion, Resistance IV for two seconds, no self-damage/knockback and no terrain destruction
+- Chosen rank progression: cooldowns of 60/55/50/45 seconds, beginning immediately on use; explosion power and Resistance remain as specified at all ranks
+- Added identity-based dispatch for new learned actives through configured keys, with persisted per-weapon-variant cooldowns that follow the ability through primary/secondary swaps
+- Added full tooltip/card descriptions and server tests for all five variants, unlearned rejection, enemy damage, low-health survival, terrain preservation, replay rejection, independent variant cooldowns and timed Resistance expiry

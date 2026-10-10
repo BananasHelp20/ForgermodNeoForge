@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
@@ -31,6 +32,7 @@ public final class WeaponAbilityNetwork {
     private record EquippedSession(ItemStack stack, String itemId, int selectedSlot, SwordItemWithEffect weapon,
                                    EnumSet<WeaponAbilitySlot> activeSlots,
                                    Map<WeaponAbilitySlot, WeaponAbilitySlot> sources,
+                                   Map<WeaponAbilitySlot, String> ids,
                                    Map<WeaponAbilitySlot, Integer> cooldowns) {}
     private static final Map<UUID, EquippedSession> ACTIVE = new HashMap<>();
     private WeaponAbilityNetwork() {}
@@ -81,7 +83,7 @@ public final class WeaponAbilityNetwork {
     }
 
     private static void handleAbility(UseAbilityPayload payload, IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator()) return;
+        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || !player.isAlive()) return;
         if (payload.slot() < 0 || payload.slot() >= WeaponAbilitySlot.values().length) return;
         updateSession(player);
 
@@ -91,7 +93,8 @@ public final class WeaponAbilityNetwork {
                 || !payload.itemId().equals(itemId(stack))) return;
 
         WeaponAbilitySlot slot = WeaponAbilitySlot.values()[payload.slot()];
-        if (Augmentations.activeId(stack, slot) == null) return;
+        String id=Augmentations.activeId(stack, slot);
+        if (id == null) return;
         String key = cooldownKey(stack, slot);
         long now = player.level().getGameTime();
         Map<String, Long> playerCooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS);
@@ -103,17 +106,20 @@ public final class WeaponAbilityNetwork {
         }
         weapon = Augmentations.canonical(stack);
         WeaponAbilitySlot source = Augmentations.sourceSlot(stack, slot);
-        if (weapon.activateAbility(player, stack, source)) {
-            if (weapon.isAbilityActive(player, source)) {
+        boolean recommended=RecommendedAbilities.active(id);
+        if (recommended?RecommendedAbilityRuntime.activate(player,stack,id):weapon.activateAbility(player, stack, source)) {
+            if (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source)) {
                 EquippedSession session = ACTIVE.get(player.getUUID());
                 if (session == null) {
                     session = new EquippedSession(stack, itemId(stack), player.getInventory().selected, weapon,
                             EnumSet.noneOf(WeaponAbilitySlot.class), new EnumMap<>(WeaponAbilitySlot.class),
+                            new EnumMap<>(WeaponAbilitySlot.class),
                             new EnumMap<>(WeaponAbilitySlot.class));
                     ACTIVE.put(player.getUUID(), session);
                 }
                 session.activeSlots().add(slot);
                 session.sources().put(slot, source);
+                session.ids().put(slot,id);
                 session.cooldowns().put(slot, Augmentations.cooldown(stack, slot, weapon));
             } else {
                 setCooldown(player, key, now + Augmentations.cooldown(stack, slot, weapon));
@@ -124,7 +130,10 @@ public final class WeaponAbilityNetwork {
     }
 
     private static String cooldownKey(ItemStack stack, WeaponAbilitySlot slot) {
-        return WeaponCooldownKey.of(itemId(stack), Augmentations.sourceSlot(stack, slot));
+        return cooldownKey(itemId(stack),Augmentations.sourceSlot(stack,slot),Augmentations.activeId(stack,slot));
+    }
+    private static String cooldownKey(String item,WeaponAbilitySlot source,String id) {
+        return RecommendedAbilities.active(id)?item+":"+id:WeaponCooldownKey.of(item,source);
     }
 
     private static String itemId(ItemStack stack) {
@@ -143,9 +152,11 @@ public final class WeaponAbilityNetwork {
         if (session == null) return;
         long now = player.level().getGameTime();
         session.activeSlots().removeIf(slot -> {
-            if (session.weapon().isAbilityActive(player, session.sources().get(slot))) return false;
+            String id=session.ids().get(slot);
+            if (RecommendedAbilities.active(id)?RecommendedAbilityRuntime.active(player,id)
+                    :session.weapon().isAbilityActive(player, session.sources().get(slot))) return false;
             int cooldown = session.cooldowns().get(slot);
-            if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), session.sources().get(slot)), now + cooldown);
+            if (cooldown > 0) setCooldown(player, cooldownKey(session.itemId(),session.sources().get(slot),id), now + cooldown);
             return true;
         });
         if (session.activeSlots().isEmpty()) {
@@ -161,9 +172,11 @@ public final class WeaponAbilityNetwork {
     private static void cancelSession(ServerPlayer player, EquippedSession session) {
         long now = player.level().getGameTime();
         for (WeaponAbilitySlot slot : session.activeSlots()) {
-            session.weapon().cancelAbility(player, session.sources().get(slot));
+            String id=session.ids().get(slot);
+            if(RecommendedAbilities.active(id)) RecommendedAbilityRuntime.cancel(player,id);
+            else session.weapon().cancelAbility(player, session.sources().get(slot));
             int cooldown = session.cooldowns().get(slot);
-            if (cooldown > 0) setCooldown(player, WeaponCooldownKey.of(session.itemId(), session.sources().get(slot)), now + cooldown);
+            if (cooldown > 0) setCooldown(player, cooldownKey(session.itemId(),session.sources().get(slot),id), now + cooldown);
         }
         ACTIVE.remove(player.getUUID());
     }

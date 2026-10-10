@@ -55,7 +55,8 @@ public class AugmentationGameTests {
                     "Withdrawn ability still offered");
             if (!((SwordItemWithEffect)stack.getItem()).isDagger()) {
                 test.assertTrue(Augmentations.ids(stack, true).isEmpty() && Augmentations.ids(stack, false).isEmpty(), "Copied dagger abilities remain");
-                test.assertTrue(Augmentations.pool(stack).size() == 1, "Claymore/axe has invented ability assignments");
+                test.assertTrue(Augmentations.pool(stack).size() == 1
+                        +net.bananashelp20.forgermod.augmentation.RecommendedAbilities.pool(stack).size(), "Claymore/axe has unapproved ability assignments");
             }
         }
         test.succeed();

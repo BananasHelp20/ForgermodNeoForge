@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.explosion.name": "Explosion",
+  "tooltips.forgermod.ability.explosion": "Gain Resistance IV for 2 seconds and unleash a creeper-strength explosion. Your own explosion does not hurt or knock you back and does not destroy terrain. Cooldown: 60/55/50/45 seconds at levels I/II/III/IV.",
+  "tooltips.forgermod.ability.explosion.card": "Gain Resistance IV, then explode without harming yourself.",
   "tooltips.forgermod.passive.quench_point.name": "Quench Point",
   "tooltips.forgermod.passive.quench_point": "Successful melee hits extinguish burning enemies and store up to 10 seconds of their remaining fire for the next successful hit within 10 seconds. Each second adds 0.5/0.75/1/1.25 damage at levels I/II/III/IV. Switching weapons clears stored fire.",
   "tooltips.forgermod.passive.quench_point.card": "Quench a burning enemy; stored fire strengthens your next hit.",
