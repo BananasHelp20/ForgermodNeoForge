@@ -128,3 +128,13 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Visible hostile/aggro mobs within eight blocks briefly target the echo instead of the wielder. Previous valid targets restore afterward. Your next successful real-target melee hit deals 10/15/20/25% extra damage and ends the dream; rejected hits and echo hits do not consume it.
 - Rank I-IV durations: 4/5/6/7 seconds; ending/cancellation cooldowns: 30/25/20/15 seconds. Only one echo per wielder, no save/loot/item interaction; switching, dimension change, death/logout, target loss/range or expiry remove it.
 - Reviewed build/lightweight/server checks passed all 99 required tests: all variants, fresh rejection, AI distraction/restoration, equipment protection, one-time exact bonus, rejected hit, expiry/cooldown, wall rejection, switching, lethal hit and actual logout. Client appearance still needs in-game visual review.
+
+## Delusion - completed
+
+- All fifteen Somnium variants: arm the next successful melee hit on a mob for thirty seconds; it forgets aggression and cannot reacquire an attack target for twenty seconds, without freezing ordinary wandering. Exact-stack switching, death/logout and expiry cancel; cooldowns 40/35/30/25 seconds after ending. Player targets are not given forced AI behavior.
+- Reviewed build and all 101 server tests passed, including all variants, fresh/rejected hits, retaliation memory, reacquisition, switching/cooldown and twenty-second expiry. Fixed the 1.21.1 goal-selector API and protected the expiry fixture against daylight burning.
+
+## Delusion - completed
+
+- All fifteen Somnium variants: next successful melee hit on a mob clears aggression and blocks reacquisition for twenty seconds. Thirty-second arming timeout; no forced player behavior or frozen wandering. Switching/death/logout cancel; cooldowns 40/35/30/25 seconds after ending.
+- Reviewed build and all 101 server tests passed: all variants, fresh/rejected hits, retaliation memory, reacquisition, switching/cooldown and twenty-second expiry.

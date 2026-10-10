@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.ability.delusion.name": "Delusion",
+  "tooltips.forgermod.ability.delusion": "Arm your next successful melee hit on a mob for up to 30 seconds. That mob forgets its aggression and cannot acquire an attack target for 20 seconds. It may still wander. Switching cancels the effect. Cooldown after ending: 40/35/30/25 seconds.",
+  "tooltips.forgermod.ability.delusion.card": "Your next mob hit makes it forget aggression for 20 seconds.",
   "tooltips.forgermod.ability.false_awakening.name": "False Awakening",
   "tooltips.forgermod.ability.false_awakening": "Mark an aimed enemy within 20 blocks with alternating real/echo silhouettes. A shadowless violet echo distracts visible hostile mobs within 8 blocks. Your next successful melee hit on the real target deals 10/15/20/25% more damage and ends the dream. Duration: 4/5/6/7 seconds; cooldown: 30/25/20/15 seconds.",
   "tooltips.forgermod.ability.false_awakening.card": "Distract enemies with an echo; strike the real target for a bonus.",
