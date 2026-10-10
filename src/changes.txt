@@ -376,3 +376,10 @@ Removed
 - Canceled blocks, non-blocking attacks, zero blocked damage, unused shields, allied sources and unlearned weapons do not trigger ignition
 - Added all-variant block-event checks and a real rank-IV raised-shield damage-pipeline regression
 - Added a survival-mode combat test player because Minecraft's default GameTest server player hardcodes creative mode; strengthened Explosion and Cinder Decoy safety regressions with survival players
+
+2026-10-11 - Marked ability 5: Heating Up
+- Added learnable Heating Up on all five Infernal Claymores: half of actual melee damage taken becomes heat, capped at 20
+- A successful melee attack spends five heat once to ignite its affected targets, including sweeping hits, for 3/4/5/6 seconds at ranks I-IV; separate attacks cannot share a payment
+- Implemented the corrected rank-IV behavior: remaining fire on the wielder fills available heat at one heat per remaining burn second and is extinguished; full capacity leaves the wielder burning
+- Switching stacks/hotbar slots, death or logout clears stored heat; ranged damage does not provide melee heat
+- Added all-variant survival combat regressions, sweeping/payment checks, same-tick attack isolation, projectile exclusion, rank-IV burn absorption, capacity and switching cleanup

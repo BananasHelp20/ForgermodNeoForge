@@ -40,3 +40,11 @@ Heating Up's unfinished maximum-level fragment does not yet define when to extin
 - Minecraft's default test player hardcodes creative mode. Added a survival-mode fixture and reran Explosion/Cinder protection checks with it. Reviewed build/lightweight/server checks passed all 68 required tests.
 
 Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain heat while capacity remains; at full capacity the wielder stays burning.
+
+## Heating Up - completed
+
+- Weapons: Infernal Claymore and all four gemstone variants.
+- Store half of actual melee damage taken, capped at 20 heat. Spend five heat per successful attack to ignite all affected targets, including sweeps, for 3/4/5/6 seconds at ranks I-IV.
+- Rank IV follows the corrected design: remaining fire on the wielder becomes heat (one heat per burn second) and is extinguished if capacity remains. Full capacity leaves the wielder burning. Heat clears on switching/death/logout.
+- Ranged damage does not fill heat; canceled/failed hits do not spend it. Sweeping targets share one payment, while distinct same-tick attacks pay separately.
+- Reviewed build/lightweight/server checks passed all 70 required tests, including all five variants, actual survival damage, sweep cost, separate-attack isolation, projectile exclusion, burn absorption/full capacity and exact-stack switching cleanup.

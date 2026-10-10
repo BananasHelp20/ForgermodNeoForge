@@ -1,4 +1,7 @@
 {
+  "tooltips.forgermod.passive.heating_up.name": "Heating Up",
+  "tooltips.forgermod.passive.heating_up": "Store half of melee damage taken as heat, up to 20. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. At level IV, remaining fire on you becomes heat and is extinguished unless capacity is already full. Switching clears heat.",
+  "tooltips.forgermod.passive.heating_up.card": "Store melee damage as heat; spend heat to ignite your attacks.",
   "tooltips.forgermod.passive.cold_bellows.name": "Cold Bellows",
   "tooltips.forgermod.passive.cold_bellows": "Successfully blocking damage with a shield ignites the attacker, including the shooter of a blocked projectile, for 3/4/5/6 seconds at levels I/II/III/IV. Hold this claymore in your main hand.",
   "tooltips.forgermod.passive.cold_bellows.card": "Shield blocks ignite the attacking enemy or projectile shooter.",
