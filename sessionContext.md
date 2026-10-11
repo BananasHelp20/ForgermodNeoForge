@@ -494,3 +494,10 @@
 ## Warden Tone completed
 
 - Echo Pin pushed as 56170e5. Warden Tone reviewed; build and all 109 server tests passed twice, including a real sculk sensor and actual damage. Vibration suppression only, matching the user sensor clarification; no player silence/invisibility mutation. Last newly marked addition: rewritten Echo Salvage.
+
+## New markings implementation completed
+
+- Warden Tone pushed as c98a081. Echo Salvage reviewed and all 112 server tests/build passed; actual AxeHeavyNetwork.landSlam integration, all five variants, one-time capped damage, neutral/rejected/ordinary hit rules and cleanup.
+- Reread every marked line again: all five additions since the previous authoritative list are now implemented (Always the Gardeners, Grave Vault, Echo Pin, Warden Tone, rewritten Echo Salvage), plus finished the previously pending Delusion. Each tested, reviewed, retested and committed/pushed individually. No further new markings appeared during this work.
+- Earlier backlog remains explicitly listed in markdown/markedAbilityImplementation.md (twenty distinct abilities, starting Lonely Dream); do not claim every marked ability is complete. Latest request was to find and implement newly marked additions. Client visuals have not been manually playtested.
+- Preserve dirty instructions.md, abilityRecommendations.md, GUI/sapphire textures and user-staged codexAbilities.md deletion. Scheduled shutdown remains due 02:44 local on 2026-10-11; do not cancel unasked.

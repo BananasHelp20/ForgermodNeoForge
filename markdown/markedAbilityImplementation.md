@@ -161,3 +161,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - All fifteen Pulsite weapons, single level. Suppresses owner-originated sculk game-event vibrations while the learned weapon is held, including owned projectile events. ENTITY_DAMAGE remains audible to vibration listeners; other entities/events remain untouched. No player invisibility, damage immunity, saved silent flag or global sound change.
 - Uses NeoForge VanillaGameEvent before broadcast, so sensors and vibration AI never receive muted events. No retained state or cooldown; switching immediately stops suppression.
 - Reviewed/retested build and all 109 server tests passed: every variant, unlearned/switch rejection, movement/action/block/projectile suppression, unrelated entity protection, damage exception and a real sculk sensor that ignores footsteps but activates from actual damage.
+
+## Echo Salvage - completed
+
+- Echoing Axe and four gemstone variants, following the rewritten marked description. Actual intrinsic vertical slam that hits solid terrain but misses living entities stores one echo for thirty seconds. Empty air and successful neutral hits cannot generate it. No stacking.
+- Next vertical strike successfully damaging an enemy releases the echo across its eligible enemy hits: half the weapon attack damage when stored, capped at 2/4/6/8 by rank. Normal armor/absorption mitigation applies. Rejected hits, ordinary melee and circular Swing Attack do not spend it; neutral targets get neither bonus nor consumption. Switching, expiry, death/logout clear state.
+- Reviewed/retested build and all 112 server tests passed: all five variants, fresh/air rejection, solid miss, cap/no stacking, rejected and ordinary hits, exact one-time real-slam bonus, circular-swing independence, neutral hit rules, damage below cap, switching and expiry.

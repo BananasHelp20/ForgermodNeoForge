@@ -34,6 +34,7 @@ public final class RecommendedAbilities {
     public static final String GRAVE_VAULT="tooltips.forgermod.passive.grave_vault";
     public static final String ECHO_PIN="tooltips.forgermod.ability.echo_pin";
     public static final String WARDEN_TONE="tooltips.forgermod.passive.warden_tone";
+    public static final String ECHO_SALVAGE="tooltips.forgermod.passive.echo_salvage";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
@@ -44,7 +45,9 @@ public final class RecommendedAbilities {
         return List.copyOf(result);
     }
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
-        if(stack.getItem() instanceof PulsiteWeapon) return List.of(new Augmentations.Ability(ECHO_PIN,true),new Augmentations.Ability(WARDEN_TONE,false));
+        if(stack.getItem() instanceof PulsiteWeapon weapon) return weapon.isAxe()
+                ?List.of(new Augmentations.Ability(ECHO_PIN,true),new Augmentations.Ability(WARDEN_TONE,false),new Augmentations.Ability(ECHO_SALVAGE,false))
+                :List.of(new Augmentations.Ability(ECHO_PIN,true),new Augmentations.Ability(WARDEN_TONE,false));
         if(stack.getItem() instanceof LushWeapon) return List.of(new Augmentations.Ability(GARDENERS,true),new Augmentations.Ability(GRAVE_VAULT,false));
         if(stack.getItem() instanceof SomniumWeapon weapon)
             return weapon.isDagger()?List.of(new Augmentations.Ability(FALSE_AWAKENING,true),new Augmentations.Ability(DELUSION,true))

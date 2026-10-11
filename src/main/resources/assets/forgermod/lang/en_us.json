@@ -500,5 +500,8 @@
   "tooltips.forgermod.ability.echo_pin.card": "Mark an enemy. Its next loud action sends you a pulse and briefly reveals its movement.",
   "tooltips.forgermod.passive.warden_tone.name": "Warden Tone",
   "tooltips.forgermod.passive.warden_tone": "While holding this weapon, your actions and owned projectiles make no detectable sculk vibrations. Taking damage remains detectable. Other entities and sounds remain unaffected.",
-  "tooltips.forgermod.passive.warden_tone.card": "Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you."
+  "tooltips.forgermod.passive.warden_tone.card": "Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you.",
+  "tooltips.forgermod.passive.echo_salvage.name": "Echo Salvage",
+  "tooltips.forgermod.passive.echo_salvage": "A vertical strike that misses living targets but strikes solid ground or a wall stores one echo for 30 seconds. Your next vertical strike that successfully hits an enemy consumes it, adding half your weapon damage, capped at 2/4/6/8 bonus damage. Echoes do not stack; ordinary attacks and circular swings do not consume them. Switching clears the echo.",
+  "tooltips.forgermod.passive.echo_salvage.card": "A missed vertical strike stores an echo. Your next successful vertical strike releases capped bonus damage."
 }

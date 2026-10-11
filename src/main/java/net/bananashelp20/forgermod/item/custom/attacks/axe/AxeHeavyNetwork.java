@@ -134,6 +134,8 @@ public final class AxeHeavyNetwork {
     }
 
     private static void landSlam(ServerPlayer player, PendingSlam slam) {
+        float echoBonus=net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.bonus(player);
+        boolean hitAnything=false,hitEnemy=false;
         double storedKnockback=net.bananashelp20.forgermod.item.custom.abilities.NullReceiptEvents.release(player);
         ServerLevel level = slam.level();
         BlockPos center = slam.center();
@@ -147,7 +149,9 @@ public final class AxeHeavyNetwork {
 
             int previousInvulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;
-            if (target.hurt(player.damageSources().playerAttack(player), slam.damage())) {
+            boolean enemy=net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityTargets.enemy(player,target);
+            if (target.hurt(player.damageSources().playerAttack(player), slam.damage()+(enemy?echoBonus:0))) {
+                hitAnything=true; hitEnemy|=enemy;
                 if (slam.axe() instanceof SwordItemWithEffect weapon) {
                     weapon.applyMaterialEffect(target, player.getMainHandItem());
                     var runtime = net.bananashelp20.forgermod.augmentation.Augmentations.canonical(player.getMainHandItem());
@@ -159,6 +163,9 @@ public final class AxeHeavyNetwork {
                 target.invulnerableTime = previousInvulnerableTime;
             }
         }
+
+        boolean solidImpact=!level.getBlockState(center.below()).getCollisionShape(level,center.below()).isEmpty();
+        net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.onImpact(player,hitAnything,hitEnemy,solidImpact);
 
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
