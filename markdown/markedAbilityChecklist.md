@@ -62,4 +62,4 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Aftershock**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [x] **Ringing Steel**: Pulsite claymore
 - [x] **Stone Song**: Pulsite claymore
-- [ ] **Challenge Roar**: Pulsite axe
+- [x] **Challenge Roar**: Pulsite axe

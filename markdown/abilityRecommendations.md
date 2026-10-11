@@ -149,15 +149,12 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Warden's Needle — `shrieking_dagger`
 
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
-2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
 ### Shrieking Claymore — `shrieking_claymore`
 
 1. **Dissonance — Active.** Your next melee hit removes one random positive potion effect from the enemy.
-2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
 ### Echoing Axe — `shrieking_axe`
 
 1. **Rebound — Active.** Aim at a solid wall within three blocks to launch yourself away from its face with velocity.
-2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 3. **Bedrock Grip — Passive.** Take 50% less damage from falling anvils and dripstone while holding the axe.

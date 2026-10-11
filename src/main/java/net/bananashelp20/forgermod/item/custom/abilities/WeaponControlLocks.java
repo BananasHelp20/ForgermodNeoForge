@@ -17,12 +17,16 @@ import java.util.*;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class WeaponControlLocks {
     private static final class Lock {
-        final Vec3 position;final boolean noGravity,noAi;final LivingEntity target;
+        final Vec3 position;final boolean noGravity,noAi;LivingEntity target;
         final Map<String,Long> leases=new HashMap<>();
         Lock(LivingEntity entity) {position=entity.position();noGravity=entity.isNoGravity();noAi=entity instanceof Mob mob && mob.isNoAi();target=entity instanceof Mob mob?mob.getTarget():null;}
     }
     private static final Map<LivingEntity,Lock> LOCKS=new HashMap<>();
     private WeaponControlLocks() {}
+    public static void redirectTarget(Mob mob,LivingEntity target) {
+        if(frozen(mob)) LOCKS.get(mob).target=target;
+        else mob.setTarget(target);
+    }
     private static String token(UUID owner,String id) {return owner+"|"+id;}
     public static void acquire(LivingEntity entity,UUID owner,String id,int ticks) {
         if(!entity.isAlive() || ticks<=0 || entity instanceof ServerPlayer player && player.isSpectator()) return;

@@ -511,3 +511,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Pulsite claymore; all gemstone variants.
 - Learned main-hand blade grants exactly two additional armor points only below Y=0. Uses one synchronized transient modifier, so repeated ticks cannot stack it and it is not saved permanently. Unequipping, moving to Y=0 or above, death, logout and dimension travel remove it. Offhand blades and fresh weapons grant no armor. Tested all five variants and the fractional negative-Y boundary. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 189 required server tests passed.
+
+## Challenge Roar - completed
+
+- Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
+- An instant visible roar makes hostile mobs within 6/8/10/12 blocks target the wielder. Supports ordinary target AI, brain attack/anger memories, neutral-mob anger and wardens; players, allies, neutral creatures and enemies behind walls are excluded. A taunt applied during a stun is retained when the stun releases without canceling immobilization. Normal AI handles later aggression; ordinary anger memories last thirty seconds. No damage or terrain changes. Instant cooldown 30/25/20/15 seconds. Tested all fifteen variants, wardens, piglins, walls, range, pets and stun overlap.
+- Tested, reviewed, retested and reviewed again; build and all 190 required server tests passed.

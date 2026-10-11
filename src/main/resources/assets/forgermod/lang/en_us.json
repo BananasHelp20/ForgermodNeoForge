@@ -678,5 +678,8 @@
   "tooltips.forgermod.ability.ringing_steel.card": "Your next hit damages the enemy's held weapon by 15 durability.",
   "tooltips.forgermod.passive.stone_song.name": "Stone Song",
   "tooltips.forgermod.passive.stone_song": "Gain two armor points while holding this blade below Y=0.",
-  "tooltips.forgermod.passive.stone_song.card": "Holding this blade below Y=0 grants two armor points."
+  "tooltips.forgermod.passive.stone_song.card": "Holding this blade below Y=0 grants two armor points.",
+  "tooltips.forgermod.ability.challenge_roar.name": "Challenge Roar",
+  "tooltips.forgermod.ability.challenge_roar": "Roar to make visible hostile mobs within 6/8/10/12 blocks target you. Players, allies and neutral creatures are unaffected.",
+  "tooltips.forgermod.ability.challenge_roar.card": "Nearby visible hostile mobs turn their aggression toward you."
 }

@@ -35,6 +35,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.BONE_GUARD.equals(id)) return BoneGuardEvents.activate(player,stack);
         if (AdditionalAbilities.SKULL_THROW.equals(id)) return SkullThrowEvents.activate(player,stack);
         if (AdditionalAbilities.RINGING_STEEL.equals(id)) return RingingSteelEvents.activate(player,stack);
+        if (AdditionalAbilities.CHALLENGE_ROAR.equals(id)) return ChallengeRoarAbility.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.RINGING_STEEL.equals(id) && RingingSteelEvents.active(player)
