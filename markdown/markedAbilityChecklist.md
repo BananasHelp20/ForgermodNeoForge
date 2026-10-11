@@ -29,7 +29,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Stunning Presence**: Electrium claymore
 - [x] **Heavy Current**: Electrium axe
 - [x] **Downdraft Bell**: Taifunite dagger, Taifunite claymore, Taifunite axe
-- [ ] **Crosswind**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [x] **Crosswind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Slipstream**: Taifunite dagger
 - [ ] **Upwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Windcharge**: Taifunite dagger, Taifunite claymore, Taifunite axe

@@ -34,6 +34,7 @@ public final class AdditionalAbilities {
     public static final String STUNNING_PRESENCE = "tooltips.forgermod.ability.stunning_presence";
     public static final String HEAVY_CURRENT = "tooltips.forgermod.passive.heavy_current";
     public static final String DOWNDRAFT_BELL = "tooltips.forgermod.ability.downdraft_bell";
+    public static final String CROSSWIND = "tooltips.forgermod.ability.crosswind";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -62,7 +63,8 @@ public final class AdditionalAbilities {
             new Definition(DIRECT_CURRENT, true, 4, 2400, 400, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(STUNNING_PRESENCE, true, 4, 1200, 200, Set.of("Electrium:claymore")),
             new Definition(HEAVY_CURRENT, false, 1, 0, 0, Set.of("Electrium:axe")),
-            new Definition(DOWNDRAFT_BELL, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe"))
+            new Definition(DOWNDRAFT_BELL, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe")),
+            new Definition(CROSSWIND, true, 4, 3600, 400, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

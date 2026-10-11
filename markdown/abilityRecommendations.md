@@ -80,7 +80,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Dead Calm Dagger — `storming_dagger`
 
-2. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 3. **Air Bubble — Active.** Gain Water Breathing for thirty seconds and Dolphin's Grace for ten seconds.
 4. [implement] **Slipstream — Passive.** Running immediately behind a moving allied entity gives a small movement benefit. You lose it when overtaking, stopping or breaking sight, so it supports formation travel rather than free speed.
 5. **Skimming Step — Passive.** Move 20% faster through shallow water while your head remains above the surface.
@@ -91,7 +90,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Storming Claymore — `storming_claymore`
 
-2. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 3. [implement] **Upwind — Active.** the next hit hits the enemy with extra knockback and launches it in the air
 4. [implement] **Feather Shelter — Active.** Give yourself and nearby allies Slow Falling for ten seconds.
 5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
@@ -101,7 +99,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Skybreaker Axe — `storming_axe`
 
-1. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 2. [implement] **Pocket Storm -active** The next hit will create an areal smash attack with great knockback to all affected enemies.
 4. [implement] **Vacuum Burst — Active.** Pull nearby dropped items and experience orbs toward you with one gust.
 5. **Sky Hunter — Passive.** Deal 20% more damage to phantoms, blazes and ghasts.

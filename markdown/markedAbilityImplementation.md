@@ -331,3 +331,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
 - All Taifunite weapon types force visible airborne enemies downward once within rank I-IV radius 4/6/8/10, preserving horizontal velocity, position, HP and existing fall distance. Minimum downward speed 0.8/1.0/1.2/1.4; already faster descents, grounded targets, swimming targets and neutral mobs are unchanged. Instant cooldown 30/25/20/15 seconds. A shared vertical-only client correction preserves actual sprint momentum and uses a native motion fallback for peers without that channel.
 - Tested, reviewed, retested and reviewed again; build and all 151 required server tests passed.
+
+## Crosswind - completed
+
+- Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
+- All Taifunite weapon types grant two minutes of projectile deflection. Before entity ticks, incoming projectiles within 12 blocks are steered sideways at their existing speed when their predicted path threatens the player; own shots are excluded. Impact-event fallback blocks last-moment and guided hits. Switching, dimension changes, death and logout end protection; already deflected flight keeps its physical momentum. Rank I-IV ending cooldown 180/160/140/120 seconds. Real arrow flight, owner filtering and cancellation tested.
+- Tested, reviewed, retested and reviewed again; build and all 153 required server tests passed.
