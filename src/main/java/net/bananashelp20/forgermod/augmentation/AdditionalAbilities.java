@@ -27,6 +27,7 @@ public final class AdditionalAbilities {
     public static final String LIVE_WIRE = "tooltips.forgermod.ability.live_wire";
     public static final String QUICK_RECHARGE = "tooltips.forgermod.passive.quick_recharge";
     public static final String CONDUCTIVE_EDGE = "tooltips.forgermod.passive.conductive_edge";
+    public static final String STATIC_BLADE = "tooltips.forgermod.ability.static_blade";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -48,7 +49,8 @@ public final class AdditionalAbilities {
             new Definition(MAGNETIC_THROW, true, 4, 500, 100, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(LIVE_WIRE, true, 4, 800, 100, Set.of("Electrium:dagger")),
             new Definition(QUICK_RECHARGE, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
-            new Definition(CONDUCTIVE_EDGE, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe"))
+            new Definition(CONDUCTIVE_EDGE, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
+            new Definition(STATIC_BLADE, true, 4, 800, 100, Set.of("Electrium:dagger"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

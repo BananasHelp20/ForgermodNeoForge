@@ -563,5 +563,8 @@
   "tooltips.forgermod.passive.quick_recharge.card": "Charged critical hits shorten the primary cooldown by one second, once every two seconds.",
   "tooltips.forgermod.passive.conductive_edge.name": "Conductive Edge",
   "tooltips.forgermod.passive.conductive_edge": "Deal 20% more melee damage to enemies standing in water or exposed to rain.",
-  "tooltips.forgermod.passive.conductive_edge.card": "Deal 20% more melee damage to wet enemies."
+  "tooltips.forgermod.passive.conductive_edge.card": "Deal 20% more melee damage to wet enemies.",
+  "tooltips.forgermod.ability.static_blade.name": "Static blade",
+  "tooltips.forgermod.ability.static_blade": "Arm the next swing for up to 30 seconds. It releases a four-block-wide, half-block-high echo along your look direction at that swing, traveling 20 blocks and dealing current weapon damage once to each enemy. Solid blocks stop it. Switching cancels. Cooldown after ending: 40/35/30/25 seconds.",
+  "tooltips.forgermod.ability.static_blade.card": "Your next swing releases a wide piercing blade echo for 20 blocks; walls stop it."
 }

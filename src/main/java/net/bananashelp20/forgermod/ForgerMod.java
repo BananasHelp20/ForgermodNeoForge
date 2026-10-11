@@ -47,6 +47,7 @@ public class ForgerMod {
         modEventBus.addListener(AxeHeavyNetwork::register);
         modEventBus.addListener(WeaponAbilityNetwork::register);
         modEventBus.addListener(DoubleJumpNetwork::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.StaticBladeNetwork::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.worldgen.ModStructures.TYPES.register(modEventBus);
 

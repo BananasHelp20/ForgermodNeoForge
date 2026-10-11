@@ -289,3 +289,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
 - Rank-I passive increases successful enemy melee damage by exactly 20 percent only while the target is in water or exposed to rain. Fresh weapons, dry or roof-sheltered enemies and spells receive no bonus. All 15 variants tested, with an actual Plains rain fixture and roof check.
 - Tested, reviewed, retested and reviewed again; build and all 138 required server tests passed.
+
+## Static blade - completed
+
+- Weapons: Electrium dagger; all gemstone variants.
+- Next swing (air, block or enemy) launches a server-authoritative four-block-wide, half-block-high echo along the view direction captured on that swing. Travels one block per tick up to 20 blocks; full-width collision sampling stops at solid blocks, while enemies are pierced once each for current weapon damage. Arms for 30 seconds; released flight has its own deadline. Exact-stack switching/death/logout cancels; ranks reduce ending cooldown to 40/35/30/25 seconds. Uses particles and compact state without a ticking projectile entity.
+- Tested, reviewed, retested and reviewed again; build and all 139 required server tests passed.
