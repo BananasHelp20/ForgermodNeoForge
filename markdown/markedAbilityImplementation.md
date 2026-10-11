@@ -469,3 +469,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Morsium claymore, Morsium axe; all gemstone variants.
 - Summons one friendly vanilla-rendered skeleton for 15 seconds, with ordinary skeleton bow damage and rank-scaled 8/10/12/14-block targeting range. It shoots only visible enemies; arrows cannot hurt allies or be collected. Summon, gear and arrows cannot persist or yield loot/experience. Switching, expiry, death and logout remove the summon and its shots. Ending cooldown 60/50/40/30 seconds.
 - Tested, reviewed, retested and reviewed again; build and all 178 required server tests passed.
+
+## Skull Throw - completed
+
+- Weapons: Morsium axe; all gemstone variants.
+- Fires a slow blue wither skull, using vanilla dangerous-skull flight. First enemy or block impact deals current weapon damage to visible enemies within 2/2.5/3/3.5 blocks and applies Wither I for five seconds. No terrain damage, vanilla skull healing or extra vanilla impact damage. Caster and allies are excluded. Flight expires after five seconds or switching/death/logout; ending cooldown 50/40/30/20 seconds.
+- Tested, reviewed, retested and reviewed again; build and all 180 required server tests passed.

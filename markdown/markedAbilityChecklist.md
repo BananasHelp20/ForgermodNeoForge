@@ -55,7 +55,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Soul Hunger**: Morsium dagger, Morsium claymore, Morsium axe
 - [x] **Last Stand**: Morsium dagger, Morsium claymore, Morsium axe
 - [x] **Bone Guard**: Morsium axe
-- [ ] **Skull Throw**: Morsium axe
+- [x] **Skull Throw**: Morsium axe
 - [ ] **Death's Due**: Morsium axe
 - [ ] **Echo Appetite**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [ ] **Resonance Crit**: Pulsite dagger, Pulsite claymore

@@ -144,7 +144,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Ghost Axe — `hollow_axe`
 
-2. [implement] **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 4. **Undead Ward — Passive.** Take 15% less damage from undead enemies.
 

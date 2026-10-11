@@ -655,5 +655,8 @@
   "tooltips.forgermod.passive.last_stand.card": "Survive a fatal hit at 1 HP, once every 2 minutes.",
   "tooltips.forgermod.ability.bone_guard.name": "Bone Guard",
   "tooltips.forgermod.ability.bone_guard": "Summon one friendly skeleton for 15 seconds. It shoots nearby enemies, drops no items or experience, and disappears when you put the weapon away.",
-  "tooltips.forgermod.ability.bone_guard.card": "Summon a friendly skeleton for 15 seconds."
+  "tooltips.forgermod.ability.bone_guard.card": "Summon a friendly skeleton for 15 seconds.",
+  "tooltips.forgermod.ability.skull_throw.name": "Skull Throw",
+  "tooltips.forgermod.ability.skull_throw": "Fire a slow wither skull. Its first impact bursts for weapon damage and Wither I for 5 seconds against nearby enemies, without breaking blocks.",
+  "tooltips.forgermod.ability.skull_throw.card": "A slow skull bursts for weapon damage and brief Wither."
 }
