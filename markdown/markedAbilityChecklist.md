@@ -40,7 +40,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Blood Rush**: Vulnusium dagger, Vulnusium claymore
 - [x] **Final strike**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [x] **Blood Sacrafice**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
-- [ ] **Scar Compass**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
+- [x] **Scar Compass**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [ ] **Revengeful Exit**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 
 ## Newly marked entries found on reread (2026-10-11)

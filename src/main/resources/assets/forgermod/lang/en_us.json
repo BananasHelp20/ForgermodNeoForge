@@ -619,5 +619,8 @@
   "tooltips.forgermod.passive.final_strike.card": "Deal 50% more damage to your last hit enemy below 10% health.",
   "tooltips.forgermod.ability.blood_sacrafice.name": "Blood Sacrafice",
   "tooltips.forgermod.ability.blood_sacrafice": "Sacrifice half your health and absorption to deal double weapon damage for 20 seconds. Switching weapons ends the effect.",
-  "tooltips.forgermod.ability.blood_sacrafice.card": "Sacrifice half your health and absorption for 20 seconds of double damage."
+  "tooltips.forgermod.ability.blood_sacrafice.card": "Sacrifice half your health and absorption for 20 seconds of double damage.",
+  "tooltips.forgermod.passive.scar_compass.name": "Scar Compass",
+  "tooltips.forgermod.passive.scar_compass": "Your most recently hit enemy glows for 10 minutes, until you hit another enemy or stop holding this weapon.",
+  "tooltips.forgermod.passive.scar_compass.card": "Mark your most recently hit enemy with a 10-minute glow."
 }

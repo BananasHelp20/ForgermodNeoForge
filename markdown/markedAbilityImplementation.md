@@ -397,3 +397,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
 - On activation halves real health and absorption independently, then doubles outgoing attributed weapon damage to non-allied targets for 20 seconds, including melee and weapon ability damage. Reusing the active stance spends no further health. Exact stack/slot switching, dimension change, expiry, death or logout ends it; no health refund. Cooldown 60/50/40/30 seconds begins when the stance ends. Fixed cost and duration; ranks improve cooldown.
 - Tested, reviewed, retested and reviewed again; build and all 163 required server tests passed.
+
+## Scar Compass - completed
+
+- Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
+- Successful melee hits mark the most recent living enemy with a 10-minute Glowing effect; a new enemy replaces the old mark. Shared ownership prevents one wielder removing another mark. Existing and externally applied Glowing effects retain their own timers and are restored when the last mark ends. Dispelled potions are not resurrected. Switching exact stack/slot, expiry, dimension travel, death, unloading or logout cleans ownership. No extra ticking entities; fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 164 required server tests passed.
