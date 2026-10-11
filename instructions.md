@@ -1,14 +1,14 @@
 - I have already worked out a structure for the ancient Sword stand. it lies in: D:\Minecraft Modding internal\Mods\ForgermodNeoForge\run\saves\Structure\generated\minecraft\structures
 and is named forgermod_ancient_grave_v2 as a nbt file. The structure should be named the Ancient Grave and spawn as a guarantied room of an ancient city. (up to one)
-- implement a command (/no-ability-cooldown [target] true) that disables all abilitie cooldowns for the target until you do "/no-ability-cooldown [target] false"
-- the sonic charge hits all mobs in the player view direction. the "projectile" (area of the projectile, which pierces through all entities) has a 3x3 area (with the middle of the 3x3 area being in the face of the player).
-The boom is only stopped by solid blocks the player cannot walk through. and only if the center block (of the 3x3) is blocked. (so shooting through a 1x1 hole is possible if the player is locking through it). It pierces ALL enemies on its way (all entities except for items), not just a few.
-- the animatione of the dual wield attack looks like the offhand hits tiwice and the main hand doesn't
-- The first infusion table slot (visually the one on the most left of the screen) should only accept gemstones as input (when shift clicking, or trying to place it in)
-- The second infusion table slot should only accept the gemstone template as input (when shift clicking, or trying to place it in)
-- The thrid infusion table slot should only accept Gemstone-infusion able items (when shift clicking, or trying to place it in)
-- The Infusion table output slot should not accept input.
-- The Forge output slot should not accept input
-- The Template slot in the Forge should only accept upgrade templates (any upgrade template)
-- The augmentation table UI should look simelar to the Forge and Infusion table UI (minecraft-like).
 - when pressing shift+alt+s while holding an item that has 2 abilities (ignores offhanditem), the primary and secondary ability switch places, making the previous primary ability the secondary ability and the other one the primary abilty.
+
+- make the forge, infusion table and augmentation table aswell as all crafting table, furnace and blast furnace recipes jei compatible.
+- for passives, only one of the 2 daggers has to have them. (e.g. dual wield only has to be on the dagger in the main or offhand) (only works when the daggers are the same and one of them has dual wield).
+- make gemstone ores rarer (same rarity as diamond, but only one ore block per vein). Implement a saphire ore, it has the same rarity as ancient debries and spawns in all dimensions. (stone, deepslate, endstone, obsidian, netherrack, blackstone varieties) For designing, use the lighter sapphire gemstone colors, and orient yourself by the other gemstone ore blocks. Make a blackstone variety for all other gemstone ores based on their other ore designs and blackstone.
+- all weapons can now have a third ability (also include that as a tertiar ability in the keybindings, default: 3)
+- make a fitting design for the augmentation table but keep the enchanting particles (abilies are simelar to enchantments)
+- all weapons except for daggers can now have up to 5 passives
+- the transition between the overlay overlaying the 2 slots and the following overlay takes way too long. (the overlay overlaying the 2 slots should end earlier so that the other overlay can start sooner) (augmentation table)
+- when using a dead calm dagger in dual wield and both of them have double jump or windwalker, you are able to do an additional jump in the air. (if both of them have windwalker, you gain 2 additional jumps, if only one of them has windwalker, and the otherone has double jump, only one additional jump is added like both having double jump). When double jump hits max level, it changes it's name to Windwalker, and gains an aditional jump in the air.
+- the notices "this item can be..." and "[hold shift] to..." should always be below the enchantments (seperated with a /n) if the item has enchantments. Enchantments should also have a "title" like Enchantments:/n[enchantments]. like with active abilites: Active Abilities:/n[abilities] and passives: Passives:/n[passives]
+- find a new name for warden's needle based on it's texture and material. Find 5 fitting names and present them to me for me to choose
