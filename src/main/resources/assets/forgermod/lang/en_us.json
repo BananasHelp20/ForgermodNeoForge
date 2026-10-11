@@ -518,5 +518,8 @@
   "tooltips.forgermod.ability.displace.card": "Swap places with a visible aimed enemy within ten blocks if both destinations are clear.",
   "tooltips.forgermod.passive.backstab.name": "Backstab",
   "tooltips.forgermod.passive.backstab": "Deal 20% more melee damage when striking an enemy from behind, within 60 degrees of directly behind it. Maximum level: I.",
-  "tooltips.forgermod.passive.backstab.card": "Deal 20% more melee damage when striking an enemy from behind."
+  "tooltips.forgermod.passive.backstab.card": "Deal 20% more melee damage when striking an enemy from behind.",
+  "tooltips.forgermod.passive.void_grip.name": "Void Grip",
+  "tooltips.forgermod.passive.void_grip": "Your melee hits produce 25% less knockback, keeping enemies within dagger reach. Maximum level: I.",
+  "tooltips.forgermod.passive.void_grip.card": "Your melee hits produce 25% less knockback."
 }

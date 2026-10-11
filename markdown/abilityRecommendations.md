@@ -36,7 +36,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Riftfang Dagger — `dagger_of_the_void`
 
 1. [implement] **Displace — Active.** Swap places with the visible enemy you aim at within ten blocks, if both destinations are clear.
-3. [implement] **Void Grip — Passive.** Your melee hits produce 25% less knockback, keeping enemies within dagger reach.
 
 ### Claymore of the Void — `claymore_of_the_void`
 

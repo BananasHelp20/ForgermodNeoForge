@@ -197,3 +197,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Inanisium dagger, Somnium dagger, Electrium dagger, Taifunite dagger, Vulnusium dagger, Lush dagger, Morsium dagger, Pulsite dagger; all gemstone variants.
 - Rank-I passive adds exactly 20% melee damage from the rear, within 60 degrees of directly behind the target. Target yaw determines facing even when looking vertically. Front/side hits, unlearned weapons, allies and secondary damage receive no bonus.
 - Tested, reviewed, retested and reviewed again; build and all 120 required server tests passed.
+
+## Void Grip - completed
+
+- Weapons: Inanisium dagger; all gemstone variants.
+- Rank-I passive reduces melee knockback strength by exactly 25% without changing damage. Damage-source context is limited to the current server tick and exact held stack; spells, unrelated damage and later impulses do not inherit the reduction.
+- Tested, reviewed, retested and reviewed again; build and all 121 required server tests passed.
