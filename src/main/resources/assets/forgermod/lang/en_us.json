@@ -576,5 +576,8 @@
   "tooltips.forgermod.ability.direct_current.name": "Direct Current",
   "tooltips.forgermod.ability.direct_current": "Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing a visible barrier deals two hearts of damage, at most once per half-second. Rank IV becomes Static Field: at three marks, all living entities inside their triangle take one damage per second. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.",
   "tooltips.forgermod.ability.direct_current.card": "Mark enemies to stun them and form damaging barriers. Rank IV adds a field that also hurts you and allies.",
-  "tooltips.forgermod.ability.static_field.name": "Static Field"
+  "tooltips.forgermod.ability.static_field.name": "Static Field",
+  "tooltips.forgermod.ability.stunning_presence.name": "Stunning Presence",
+  "tooltips.forgermod.ability.stunning_presence": "For 30 seconds, visible enemies within 4/6/8/10 blocks take one damage and are stunned for 0.3 seconds per pulse. Pulses occur every 2/1.65/1.35/1 seconds. Switching cancels. Cooldown after ending: 60/50/40/30 seconds.",
+  "tooltips.forgermod.ability.stunning_presence.card": "For 30 seconds, repeatedly damage and briefly stun nearby enemies."
 }

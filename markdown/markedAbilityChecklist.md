@@ -26,7 +26,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Lightning Rod**: Electrium dagger, Electrium claymore, Electrium axe
 - [x] **Alternating Current**: Electrium dagger, Electrium claymore, Electrium axe
 - [x] **Direct Current**: Electrium dagger, Electrium claymore, Electrium axe
-- [ ] **Stunning Presence**: Electrium claymore
+- [x] **Stunning Presence**: Electrium claymore
 - [ ] **Heavy Current**: Electrium axe
 - [ ] **Downdraft Bell**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Crosswind**: Taifunite dagger, Taifunite claymore, Taifunite axe

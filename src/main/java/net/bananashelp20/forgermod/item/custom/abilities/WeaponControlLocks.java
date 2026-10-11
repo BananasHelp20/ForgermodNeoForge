@@ -26,14 +26,15 @@ public final class WeaponControlLocks {
     private static String token(UUID owner,String id) {return owner+"|"+id;}
     public static void acquire(LivingEntity entity,UUID owner,String id,int ticks) {
         if(!entity.isAlive() || ticks<=0 || entity instanceof ServerPlayer player && player.isSpectator()) return;
-        var lock=LOCKS.computeIfAbsent(entity,Lock::new);lock.leases.merge(token(owner,id),entity.level().getGameTime()+ticks,Math::max);hold(entity,lock);
+        var lock=LOCKS.computeIfAbsent(entity,Lock::new);lock.leases.merge(token(owner,id),entity.level().getGameTime()+ticks,Math::max);hold(entity,lock,true);
     }
-    private static void hold(LivingEntity entity,Lock lock) {
+    private static void hold(LivingEntity entity,Lock lock,boolean force) {
+        boolean moving=entity.getDeltaMovement().lengthSqr()>.000001 || entity.position().distanceToSqr(lock.position)>.0001;
         entity.setNoGravity(true);entity.setDeltaMovement(Vec3.ZERO);entity.stopUsingItem();entity.hasImpulse=true;
         if(entity instanceof Mob mob) {mob.setNoAi(true);mob.setTarget(null);}
         if(entity instanceof ServerPlayer player) {
-            if(entity.position().distanceToSqr(lock.position)>.0001) player.connection.teleport(lock.position.x,lock.position.y,lock.position.z,player.getYRot(),player.getXRot());
-            player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(player));
+            if(entity.position().distanceToSqr(lock.position)>.0001) player.connection.teleport(lock.position.x,lock.position.y,lock.position.z,player.getYRot(),player.getXRot(),Set.of(net.minecraft.world.entity.RelativeMovement.X_ROT,net.minecraft.world.entity.RelativeMovement.Y_ROT));
+            if(force || moving) player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(player));
         } else entity.setPos(lock.position);
     }
     private static void restore(LivingEntity entity,Lock lock) {
@@ -52,7 +53,14 @@ public final class WeaponControlLocks {
         for(var entry:List.copyOf(LOCKS.entrySet())) {entry.getValue().leases.remove(token(owner,id));if(entry.getValue().leases.isEmpty()) restore(entry.getKey(),entry.getValue());}
     }
     @SubscribeEvent
-    public static void tick(ServerTickEvent.Pre event) {for(var entity:List.copyOf(LOCKS.keySet())) if(frozen(entity)) hold(entity,LOCKS.get(entity));}
+    public static void tick(ServerTickEvent.Pre event) {for(var entity:List.copyOf(LOCKS.keySet())) if(frozen(entity)) hold(entity,LOCKS.get(entity),false);}
+    @SubscribeEvent
+    public static void afterTick(ServerTickEvent.Post event) {for(var entity:List.copyOf(LOCKS.keySet())) if(frozen(entity)) hold(entity,LOCKS.get(entity),false);}
+    @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.HIGHEST)
+    public static void incomingAttack(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if((event.getSource().is(net.minecraft.world.damagesource.DamageTypes.MOB_ATTACK) || event.getSource().is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK))
+            && event.getSource().getEntity() instanceof LivingEntity attacker && frozen(attacker)) event.setCanceled(true);
+    }
     @SubscribeEvent
     public static void attack(AttackEntityEvent event) {if(frozen(event.getEntity())) event.setCanceled(true);}
     @SubscribeEvent

@@ -313,3 +313,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
 - Ranks I-IV allow 2/3/4/4 melee-marked enemies, each within 50 blocks of every other anchor. Two marks start 20-second stuns and visible barriers; additional marks refresh that duration. Crossing a barrier deals 4 HP with a 10-tick per-entity guard, including fast dashes. Rank IV is named Static Field in item tooltips and upgrade cards: three visible anchors form a triangular field dealing 1 HP per second to all living occupants, including neutral creatures and the caster; other players retain normal PvP protection. Walls block barrier/field formation. Exact-stack switching, death, range separation and expiry release stuns. Ending cooldown 120/100/80/60 seconds. Visibility is checked once per pair per tick and particle counts are bounded.
 - Tested, reviewed, retested and reviewed again; build and all 147 required server tests passed.
+
+## Stunning Presence - completed
+
+- Weapons: Electrium claymore; all gemstone variants.
+- Ranks I-IV provide a 30-second aura with 4/6/8/10-block radius, one HP per pulse and six-tick stuns; pulses repeat every 40/33/27/20 ticks. Visible enemies only, including cancellation on switching, death and logout; ending cooldown 60/50/40/30 seconds. Shared locks enforce position before and after entity ticks, block melee damage emitted by frozen attackers, avoid redundant motion packets and preserve client camera rotation with relative rotation flags.
+- Tested, reviewed, retested and reviewed again; build and all 149 required server tests passed.
