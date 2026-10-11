@@ -367,3 +367,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
 - Learned passive halves only the ground-sprinting hunger exhaustion branch while the weapon is in the main hand. Jumping, swimming, generic exhaustion and offhand equipment retain vanilla costs. A required version-specific ServerPlayer mixin targets exactly the fourth exhaustion call in Minecraft 1.21.1 checkMovementStatistics; actual sprint, jump and swimming paths verified on NeoForge 21.1.93. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 158 required server tests passed.
+
+## Feather Shelter - completed
+
+- Weapons: Taifunite claymore, Taifunite axe; all gemstone variants.
+- On use, gives the wielder and visible allied living entities Slow Falling for 10 seconds, with 4/6/8/10-block radius. Allies include teams, owned pets and cooperative players when PvP is disabled; corrected this shared ally check for Slipstream too. Enemies and targets behind walls are excluded. Vanilla effect merging preserves stronger pre-existing effects. Cooldown 60/50/40/30 seconds starts on use.
+- Tested, reviewed, retested and reviewed again; build and all 159 required server tests passed.

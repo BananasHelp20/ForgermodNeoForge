@@ -604,5 +604,8 @@
   "tooltips.forgermod.ability.vacuum_burst.card": "Pull nearby drops and experience toward you.",
   "tooltips.forgermod.passive.headwind.name": "Headwind",
   "tooltips.forgermod.passive.headwind": "Sprinting uses half the normal hunger exhaustion while this weapon is held.",
-  "tooltips.forgermod.passive.headwind.card": "Halve hunger exhaustion from sprinting."
+  "tooltips.forgermod.passive.headwind.card": "Halve hunger exhaustion from sprinting.",
+  "tooltips.forgermod.ability.feather_shelter.name": "Feather Shelter",
+  "tooltips.forgermod.ability.feather_shelter": "Grant yourself and allies within 4/6/8/10 blocks Slow Falling for 10 seconds.",
+  "tooltips.forgermod.ability.feather_shelter.card": "Give yourself and nearby allies 10 seconds of Slow Falling."
 }
