@@ -62,6 +62,7 @@ public final class AdditionalAbilities {
     public static final String ECHO_APPETITE = "tooltips.forgermod.passive.echo_appetite";
     public static final String RESONANCE_CRIT = "tooltips.forgermod.passive.resonance_crit";
     public static final String AFTERSHOCK = "tooltips.forgermod.passive.aftershock";
+    public static final String RINGING_STEEL = "tooltips.forgermod.ability.ringing_steel";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -118,7 +119,8 @@ public final class AdditionalAbilities {
             new Definition(DEATHS_DUE, false, 1, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe")),
             new Definition(ECHO_APPETITE, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe")),
             new Definition(RESONANCE_CRIT, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore")),
-            new Definition(AFTERSHOCK, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe"))
+            new Definition(AFTERSHOCK, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe")),
+            new Definition(RINGING_STEEL, true, 4, 600, 100, Set.of("Pulsite:claymore"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

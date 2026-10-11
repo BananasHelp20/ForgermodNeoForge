@@ -672,5 +672,8 @@
   "tooltips.forgermod.passive.aftershock": "Each fully charged melee hit echoes for one damage point after one second. Echoes cannot trigger hit abilities or another echo; putting the weapon away cancels them.",
   "tooltips.forgermod.passive.aftershock.card": "Charged melee hits echo for one damage after one second.",
   "death.attack.forgermod.aftershock": "%1$s was silenced by an aftershock from %2$s",
-  "death.attack.forgermod.aftershock.player": "%1$s was silenced by an aftershock from %2$s"
+  "death.attack.forgermod.aftershock.player": "%1$s was silenced by an aftershock from %2$s",
+  "tooltips.forgermod.ability.ringing_steel.name": "Ringing Steel",
+  "tooltips.forgermod.ability.ringing_steel": "Arm your next successful melee hit for up to 30 seconds. It also deals 15 durability damage to the victim's held weapon, respecting normal durability enchantments. Armor and shields are unaffected.",
+  "tooltips.forgermod.ability.ringing_steel.card": "Your next hit damages the enemy's held weapon by 15 durability."
 }

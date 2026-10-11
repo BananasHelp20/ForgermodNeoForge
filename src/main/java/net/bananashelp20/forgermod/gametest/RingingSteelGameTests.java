@@ -1,0 +1,37 @@
+package net.bananashelp20.forgermod.gametest;
+import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.augmentation.*;
+import net.bananashelp20.forgermod.item.ModItems;
+import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
+import net.bananashelp20.forgermod.item.custom.abilities.*;
+import net.minecraft.gametest.framework.*;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.*;
+import net.neoforged.neoforge.gametest.*;
+@GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
+public class RingingSteelGameTests {
+    @GameTest(template="riftfang_test")
+    public static void fiveClaymoresDamageOnlyOneHeldWeaponOnNextMeleeHit(GameTestHelper test) {
+        var player=TestPlayers.survival(test);var mob=EntityType.ZOMBIE.create(test.getLevel());mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);mob.setHealth(1000);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);int count=0;
+        try {for(var entry:ModItems.ITEMS.getEntries()) {
+            var fresh=new ItemStack(entry.get());boolean eligible=entry.get() instanceof PulsiteWeapon w && !w.isAxe() && !w.isDagger();
+            test.assertTrue(Augmentations.pool(fresh).stream().anyMatch(a->a.id().equals(AdditionalAbilities.RINGING_STEEL))==eligible,"Wrong Ringing Steel pool");if(!eligible)continue;count++;
+            player.setItemInHand(InteractionHand.MAIN_HAND,fresh);test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.RINGING_STEEL),"Fresh weapon arms strike");
+            var stack=Augmentations.apply(fresh,AdditionalAbilities.RINGING_STEEL);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            var sword=new ItemStack(Items.IRON_SWORD);sword.setDamageValue(6);var chest=new ItemStack(Items.IRON_CHESTPLATE);chest.setDamageValue(10);var shield=new ItemStack(Items.SHIELD);shield.setDamageValue(10);
+            mob.setItemSlot(EquipmentSlot.MAINHAND,sword);mob.setItemSlot(EquipmentSlot.CHEST,chest);mob.setItemSlot(EquipmentSlot.OFFHAND,shield);
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL),"Cannot arm");
+            mob.invulnerableTime=0;mob.hurt(player.damageSources().indirectMagic(player,player),1);test.assertTrue(RingingSteelEvents.active(player) && sword.getDamageValue()==6,"Spell consumes strike");
+            mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);
+            test.assertTrue(sword.getDamageValue()==21 && shield.getDamageValue()==10 && chest.getDamageValue()==10,"Wrong durability target or amount");test.assertFalse(RingingSteelEvents.active(player),"Strike not consumed");
+            mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(sword.getDamageValue()==21,"Strike repeats");
+            var axe=new ItemStack(Items.IRON_AXE);mob.setItemSlot(EquipmentSlot.MAINHAND,shield);mob.setItemSlot(EquipmentSlot.OFFHAND,axe);RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(axe.getDamageValue()==15 && shield.getDamageValue()==10,"Offhand fallback damages shield");
+            mob.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(Items.SHIELD));RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(shield.getDamageValue()==10 && !RingingSteelEvents.active(player),"No-weapon strike damages shield or fails to consume");
+            sword=new ItemStack(Items.IRON_SWORD);sword.setDamageValue(sword.getMaxDamage()-1);mob.setItemSlot(EquipmentSlot.MAINHAND,sword);RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(sword.isEmpty(),"Last durability does not break weapon");
+            RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(RingingSteelEvents.active(player),"Switch keeps armed strike");
+        }}finally{RingingSteelEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
+        test.assertTrue(count==5,"Skipped variants");test.succeed();
+    }
+}

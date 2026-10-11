@@ -499,3 +499,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
 - Successful fully charged melee hits, including normal sweep victims, schedule one damage point after 20 ticks. A dedicated armor-bypassing damage type bypasses immunity frames without resetting them and cannot trigger melee-hit abilities or another echo. Normal absorption, resistance and player protection still apply. Exact stack/slot switching, dimension changes, death and logout cancel pending echoes; dead enemies are skipped. Tested all fifteen variants, actual timing, recent immunity, no recursion and invalid-hit/switch cases. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 187 required server tests passed.
+
+## Ringing Steel - completed
+
+- Weapons: Pulsite claymore; all gemstone variants.
+- Arms one successful enemy melee hit for up to 30 seconds. Damages one held sword, axe, bow, crossbow, trident or mace by 15 durability using normal enchantment rules, checking the offhand if the main hand has no weapon. Armor, shields and nonweapon tools are excluded; a hit without a weapon still consumes the strike. Spell/blocked hits do not consume it. Switching, expiry, dimension changes, death and logout cancel it. Ending cooldown 30/25/20/15 seconds; ranks improve cooldown only. Tested five variants, weapon breakage, offhand fallback and excluded equipment.
+- Tested, reviewed, retested and reviewed again; build and all 188 required server tests passed.
