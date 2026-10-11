@@ -1370,7 +1370,7 @@ The tables below expand that template into the actual English item descriptions 
 
 ### Darkness Hit (Pulsite)
 
-**Weapons:** Warden's Needle, Shrieking Claymore, Echoing Axe
+**Weapons:** Resonance Dagger, Shrieking Claymore, Echoing Axe
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
