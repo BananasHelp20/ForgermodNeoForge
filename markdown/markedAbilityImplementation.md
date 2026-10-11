@@ -451,3 +451,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
 - Grants vanilla Invisibility for ten seconds; worn armor remains visible. Valid entity attacks, block attacks, air swings and dagger offhand swings end it, including misses. Existing and independently applied invisibility retain their own durations and are restored when the owned effect ends; dispelling does not resurrect removed potions. Natural potion expiry is distinguished from dispelling, including expiry-order edge cases. Exact stack/slot switching, dimension travel, death or logout cancels it. Cooldown 30/25/20/15 seconds begins when Ghostwalk ends. Reuses the validated swing packet; no ticking marker entities.
 - Tested, reviewed, retested and reviewed again; build and all 174 required server tests passed.
+
+## Soul Hunger - completed
+
+- Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
+- Each valid enemy kill adds two absorption health points, up to six owned by this passive. A separate transient capacity and consumed-health ledger keep the cap independent of existing absorption. Absorbed damage spends the owned portion first; later kills replenish it. Absorption potions and refreshes coexist without overwriting the passive or being removed on switching. The remaining owned health and capacity clear on exact stack/slot switching, dimension travel, death or logout. Canceled deaths and fresh weapons grant nothing. No artificial expiry; hearts last until consumed or the weapon is put away. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 175 required server tests passed.
