@@ -13,7 +13,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Lonely Dream**: Somnium dagger
 - [x] **Unfinished Dream**: Somnium dagger, Somnium claymore, Somnium axe
 - [x] **Just a Dream**: Somnium dagger, Somnium claymore, Somnium axe
-- [ ] **Sleepwalker**: Somnium dagger
+- [x] **Sleepwalker**: Somnium dagger
 - [ ] **Lullaby**: Somnium claymore
 - [ ] **Dream Feast**: Somnium claymore
 - [ ] **Daydreamer**: Somnium axe

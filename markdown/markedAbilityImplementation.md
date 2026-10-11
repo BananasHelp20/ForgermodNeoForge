@@ -233,3 +233,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium dagger, Somnium claymore, Somnium axe; all gemstone variants.
 - Instant safe return using Minecraft 1.21.1 respawn resolution, including cross-dimension beds/anchors and vanilla world-spawn fallback. Loads destination body chunks, checks full collision/fluid/border/build-height safety, preserves anchor charges and clears fall distance/momentum. Mounted use rejected; rank I-IV cooldown 60/50/40/30 seconds.
 - Tested, reviewed, retested and reviewed again; build and all 127 required server tests passed.
+
+## Sleepwalker - completed
+
+- Weapons: Somnium dagger; all gemstone variants.
+- Rank-I passive grants exactly 10% more melee damage during world times 13000-22999 in skylit dimensions. Daytime storms do not masquerade as night; unlearned gear and other weapon types receive no bonus. Day/night boundary tests preserve the original world clock.
+- Tested, reviewed, retested and reviewed again; build and all 128 required server tests passed.

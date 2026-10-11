@@ -536,5 +536,8 @@
   "tooltips.forgermod.passive.unfinished_dream.card": "Killing an enemy before it hits you heals half a heart.",
   "tooltips.forgermod.ability.just_a_dream.name": "Just a Dream",
   "tooltips.forgermod.ability.just_a_dream": "Teleport safely to your respawn point, including across dimensions. Missing beds or anchors fall back to world spawn. Does not consume respawn-anchor charges. Mounted use is rejected. Cooldown: 60/50/40/30 seconds.",
-  "tooltips.forgermod.ability.just_a_dream.card": "Teleport safely to your respawn point, even in another dimension."
+  "tooltips.forgermod.ability.just_a_dream.card": "Teleport safely to your respawn point, even in another dimension.",
+  "tooltips.forgermod.passive.sleepwalker.name": "Sleepwalker",
+  "tooltips.forgermod.passive.sleepwalker": "Deal 10% more melee damage at night in dimensions with a day-night cycle. Night is between world times 13000 and 23000; storms during daytime do not count. Maximum level: I.",
+  "tooltips.forgermod.passive.sleepwalker.card": "Deal 10% more melee damage at night."
 }

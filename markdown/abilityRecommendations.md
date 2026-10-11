@@ -50,7 +50,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Nightmare Dagger — `dreambound_dagger`
 
-4. [implement] **Sleepwalker - passive** deal 10% more damage at night.
 
 ### Dreambound Claymore — `dreambound_claymore`
 

@@ -19,6 +19,9 @@ public final class AdditionalPassiveEvents {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !player.isAlive() || player.isSpectator() || !WeaponAbilityTargets.enemy(player,event.getEntity())) return;
         var stack=player.getMainHandItem();
+        long time=Math.floorMod(player.level().getDayTime(),24000L);
+        if(Augmentations.hasPassive(stack,AdditionalAbilities.SLEEPWALKER) && player.level().dimensionType().hasSkyLight() && time>=13000 && time<23000)
+            event.setAmount(event.getAmount()*1.1F);
         if(Augmentations.hasPassive(stack,AdditionalAbilities.CHARRED_EDGE) && event.getEntity().hasEffect(MobEffects.FIRE_RESISTANCE))
             event.setAmount(event.getAmount()*1.15F);
         if(Augmentations.hasPassive(stack,AdditionalAbilities.BACKSTAB)) {
