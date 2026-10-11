@@ -259,3 +259,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium axe; all gemstone variants.
 - Rank-I passive grants Jump Boost I only while the learned axe is held in the main hand during daylight (world times 0-12999 and 23000-23999 in skylit dimensions). Night, putting it away, death and logout remove the owned grant. Previous and newly acquired potion effects, including stronger Jump Boost and hidden effect chains, retain their remaining durations.
 - Tested, reviewed, retested and reviewed again; build and all 132 required server tests passed.
+
+## Pillow Armor - completed
+
+- Weapons: Somnium axe; all gemstone variants.
+- Rank-I passive multiplies fall damage by 0.75 while the learned axe is held in the main hand. Real damage tests confirm the exact reduction, fresh/offhand rejection and unchanged non-fall damage.
+- Tested, reviewed, retested and reviewed again; build and all 133 required server tests passed.

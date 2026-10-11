@@ -14,6 +14,13 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 public final class AdditionalPassiveEvents {
     private AdditionalPassiveEvents() {}
     @SubscribeEvent
+    public static void onFallDamage(LivingIncomingDamageEvent event) {
+        if(!event.isCanceled() && event.getAmount()>0 && event.getSource().is(DamageTypes.FALL)
+                && event.getEntity() instanceof ServerPlayer player && player.isAlive() && !player.isSpectator()
+                && Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.PILLOW_ARMOR))
+            event.setAmount(event.getAmount()*.75F);
+    }
+    @SubscribeEvent
     public static void onDamage(LivingIncomingDamageEvent event) {
         if(event.isCanceled() || event.getAmount()<=0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)

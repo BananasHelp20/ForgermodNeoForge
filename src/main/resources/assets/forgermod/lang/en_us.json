@@ -548,5 +548,8 @@
   "tooltips.forgermod.ability.dream_feast.card": "Restore four food icons.",
   "tooltips.forgermod.passive.daydreamer.name": "Daydreamer",
   "tooltips.forgermod.passive.daydreamer": "Gain Jump Boost I while holding this axe in your main hand during daytime. Ends when you put it away or night begins. Stronger potion effects are preserved.",
-  "tooltips.forgermod.passive.daydreamer.card": "Gain Jump Boost I while holding the axe during daytime."
+  "tooltips.forgermod.passive.daydreamer.card": "Gain Jump Boost I while holding the axe during daytime.",
+  "tooltips.forgermod.passive.pillow_armor.name": "Pillow Armor",
+  "tooltips.forgermod.passive.pillow_armor": "Take 25% less fall damage while holding this axe in your main hand.",
+  "tooltips.forgermod.passive.pillow_armor.card": "Take 25% less fall damage while holding the axe."
 }

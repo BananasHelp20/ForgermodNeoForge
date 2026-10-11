@@ -17,7 +17,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Lullaby**: Somnium claymore
 - [x] **Dream Feast**: Somnium claymore
 - [x] **Daydreamer**: Somnium axe
-- [ ] **Pillow Armor**: Somnium axe
+- [x] **Pillow Armor**: Somnium axe
 - [ ] **Magnetic Throw**: Electrium dagger, Electrium claymore, Electrium axe
 - [ ] **Live Wire**: Electrium dagger
 - [ ] **Quick Recharge**: Electrium dagger, Electrium claymore, Electrium axe
