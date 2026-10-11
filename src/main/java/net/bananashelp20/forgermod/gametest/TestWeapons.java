@@ -19,6 +19,7 @@ final class TestWeapons {
         for (String id : canonical.passiveDescriptionKeys()) stack = Augmentations.apply(stack, id);
         if (canonical.isDagger() && Augmentations.ids(stack, false).size() < 2)
             stack = Augmentations.apply(stack, Augmentations.DUAL_WIELD);
+        if (canonical.isAxe()) stack = Augmentations.apply(stack, Augmentations.VERTICAL_STRIKE);
         return stack;
     }
 }

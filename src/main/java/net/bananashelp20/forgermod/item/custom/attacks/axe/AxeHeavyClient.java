@@ -21,7 +21,8 @@ public final class AxeHeavyClient {
         if (!event.isAttack() || event.isCanceled()) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null
-                || !AxeItems.isAxe(minecraft.player.getMainHandItem())) return;
+                || !minecraft.player.getOffhandItem().isEmpty()
+                || !AxeItems.canVerticalStrike(minecraft.player.getMainHandItem())) return;
         if (minecraft.hitResult != null && minecraft.hitResult.getType() == HitResult.Type.BLOCK) return;
 
         PacketDistributor.sendToServer(new AxeHeavyNetwork.AxeAttackPayload(0));
@@ -30,7 +31,7 @@ public final class AxeHeavyClient {
     @SubscribeEvent
     public static void onRenderHand(RenderHandEvent event) {
         if (event.getHand() != InteractionHand.MAIN_HAND
-                || !AxeItems.isAxe(event.getItemStack())) return;
+                || !AxeItems.canVerticalStrike(event.getItemStack())) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.level == null) return;
 

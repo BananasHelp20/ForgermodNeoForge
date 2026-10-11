@@ -17,6 +17,7 @@ public final class Augmentations {
     public record Ability(String id, boolean active, Component name) {
         public Ability(String id, boolean active) { this(id, active, Component.translatable(id + ".name")); }
     }
+    public static final String VERTICAL_STRIKE = "tooltips.forgermod.passive.axe";
     public static final String DUAL_WIELD = "tooltips.forgermod.passive.dagger";
     public static final String MATERIAL_HIT = "augmentation.forgermod.material_hit";
     private static final String LEGACY_MATERIAL_HIT = "augmentation.forgermod.empowered_hit";
@@ -40,6 +41,7 @@ public final class Augmentations {
         }
         for (String key : canonical.passiveDescriptionKeys()) abilities.add(new Ability(key, false));
         if (canonical.isDagger()) abilities.add(new Ability(DUAL_WIELD, false));
+        if (canonical.isAxe()) abilities.add(new Ability(VERTICAL_STRIKE, false));
         abilities.addAll(RecommendedAbilities.pool(stack));
         abilities.add(new Ability(MATERIAL_HIT, false, canonical.materialAbilityName()));
         return List.copyOf(abilities);
@@ -107,8 +109,9 @@ public final class Augmentations {
     public static List<Ability> offers(ItemStack stack, RandomSource random) {
         var available = new ArrayList<>(available(stack));
         if (available.isEmpty()) return List.of();
-        // A fresh dagger always offers its weapon technique alongside a different choice.
-        String technique = canonical(stack).isDagger() ? DUAL_WIELD : null;
+        // A fresh dagger/axe always offers its weapon technique alongside a different choice.
+        String technique = canonical(stack).isDagger() ? DUAL_WIELD
+                : canonical(stack).isAxe() ? VERTICAL_STRIKE : null;
         Ability guaranteed = count(stack) == 0 && technique != null
                 ? available.stream().filter(a -> a.id().equals(technique)).findFirst().orElse(null) : null;
         var first = guaranteed != null ? guaranteed : available.get(random.nextInt(available.size()));

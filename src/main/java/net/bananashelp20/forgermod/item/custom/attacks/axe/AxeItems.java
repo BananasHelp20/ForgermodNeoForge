@@ -7,6 +7,12 @@ import net.minecraft.world.item.ItemStack;
 public final class AxeItems {
     private AxeItems() {}
 
+    public static boolean canVerticalStrike(ItemStack stack) {
+        return isAxe(stack) && (!net.bananashelp20.forgermod.augmentation.Augmentations.eligible(stack)
+                || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(stack,
+                        net.bananashelp20.forgermod.augmentation.Augmentations.VERTICAL_STRIKE));
+    }
+
     public static boolean isAxe(ItemStack stack) {
         return stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe()
                 || stack.is(ModItems.CARBON_STEEL_AXE)

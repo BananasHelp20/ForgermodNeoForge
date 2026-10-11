@@ -81,7 +81,11 @@ public final class AxeHeavyNetwork {
     private static void handleAttack(AxeAttackPayload payload, IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer player) || player.isSpectator()) return;
         ItemStack stack = player.getMainHandItem();
-        if (!AxeItems.isAxe(stack)) return;
+        if (!AxeItems.canVerticalStrike(stack) || !player.getOffhandItem().isEmpty()) {
+            COMBOS.remove(player.getUUID());
+            PENDING.remove(player.getUUID());
+            return;
+        }
 
         UUID id = player.getUUID();
         long now = player.level().getGameTime();
@@ -126,6 +130,12 @@ public final class AxeHeavyNetwork {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!AxeItems.canVerticalStrike(player.getMainHandItem()) || !player.getOffhandItem().isEmpty()
+                || !player.isAlive() || player.isSpectator()) {
+            COMBOS.remove(player.getUUID());
+            PENDING.remove(player.getUUID());
+            return;
+        }
         PendingSlam slam = PENDING.get(player.getUUID());
         if (slam == null || player.level().getGameTime() < slam.dueTick()) return;
         PENDING.remove(player.getUUID());

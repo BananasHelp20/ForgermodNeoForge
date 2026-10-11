@@ -521,3 +521,8 @@
 - User explicitly overrides intrinsic Dual Wield/Vertical Strike: special weapons must learn them; first augmentation guarantees that technique as one of two choices. Dual Wield changed first, with all-variant offer/one-choice/runtime regression. Next: Vertical Strike. These techniques use normal unique passive slots and have one rank. Ordinary unaugmentable gear retains existing mechanics.
 
 - Dual Wield reviewed and full build/server suite passed all 113 tests after updating the two previous automatic-Dual-Wield fixtures. First choices and selecting the alternative tested across all 45 variants and twenty random seeds each. Learned-only runtime shared between client/server; same-material fresh offhand works.
+
+
+- Dual Wield committed/pushed as fc2ffca. Vertical Strike now also learned via its guaranteed first offer. Both techniques use normal passive slots with one rank, remain absent on fresh special weapons and are never granted by selecting another card. Client/server axe packet gates and pending cancellation added; all-variant regression added.
+
+- Vertical Strike reviewed, corrected mock-player cleanup, then full build/server suite passed all 114 required tests repeatedly with verified Gradle exit code zero. Regression covers all 45 axe variants/twenty random seeds, alternate-card single learning, learned/unlearned server packet acceptance, empty-offhand requirement, rank-I cap and cancellation when swapping to an unlearned copy. Documentation updated to reflect learned techniques. User changed markdown/abilityRecommendations.md during this work; preserve that change outside the fix commits.

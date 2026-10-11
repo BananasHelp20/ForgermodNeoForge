@@ -96,10 +96,9 @@ public class SwordItemWithEffect extends SwordItem {
         var actives = Augmentations.ids(stack, true);
         boolean hasAbilities = !passives.isEmpty() || !actives.isEmpty() || materialRank > 0;
         if (hasAbilities) {
-            if (isAxe() || materialRank > 0 || !passives.isEmpty()) {
+            if (materialRank > 0 || !passives.isEmpty()) {
                 tooltip.add(Component.empty());
                 tooltip.add(Component.translatable("tooltips.forgermod.passive.heading").withStyle(ChatFormatting.LIGHT_PURPLE));
-                if (isAxe()) WeaponTooltips.passive(tooltip, "tooltips.forgermod.passive.axe", expanded);
                 if (materialRank > 0) {
                     tooltip.add(Component.translatable("augmentation.forgermod.rank", materialAbilityName(),
                             WeaponTooltips.romanNumeral(materialRank)).withStyle(ChatFormatting.GRAY));

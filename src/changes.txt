@@ -548,3 +548,5 @@ Removed
 - Added markdown/weaponAbilities.md listing weapon names, types and available ability names for all 148 registered weapons, including all 135 special gemstone variants.
 
 - Changed Dual Wield on special daggers to a learned rank-I passive; the first augmentation always offers it alongside a different choice, and only the selected ability is learned. Matching offhand daggers need not learn it; ordinary Rusty Dagger behavior is unchanged.
+
+- Changed Vertical Strike on special axes to a learned rank-I passive; first augmentation always offers it alongside a different choice. Unlearned axes cannot initiate the slam on either client or server, and switching to unlearned gear or occupying the offhand cancels pending slams. Ordinary unaugmentable axes retain their slam.

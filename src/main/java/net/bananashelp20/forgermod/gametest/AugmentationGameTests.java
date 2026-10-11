@@ -37,6 +37,68 @@ import java.lang.reflect.Proxy;
 @PrefixGameTestTemplate(false)
 public class AugmentationGameTests {
     @GameTest(template = "riftfang_test")
+    public static void firstAxeAugmentationOffersButDoesNotGrantVerticalStrike(GameTestHelper test) throws Exception {
+        var type = net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.class;
+        var handle = type.getDeclaredMethod("handleAttack", net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.AxeAttackPayload.class, IPayloadContext.class);
+        handle.setAccessible(true);
+        var combosField = type.getDeclaredField("COMBOS"); combosField.setAccessible(true);
+        var combos = (java.util.Map<?, ?>)combosField.get(null);
+        var player = test.makeMockServerPlayerInLevel();
+        player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        IPayloadContext context = (IPayloadContext)Proxy.newProxyInstance(IPayloadContext.class.getClassLoader(), new Class<?>[]{IPayloadContext.class},
+                (proxy, method, args) -> { if (method.getName().equals("player")) return player; throw new UnsupportedOperationException(method.getName()); });
+        int checked = 0;
+        for (var entry : ModItems.ITEMS.getEntries()) {
+            var fresh = new ItemStack(entry.get());
+            if (!Augmentations.eligible(fresh) || !Augmentations.canonical(fresh).isAxe()) continue;
+            checked++;
+            player.setItemInHand(InteractionHand.MAIN_HAND, fresh);
+            handle.invoke(null, new net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.AxeAttackPayload(0), context);
+            test.assertFalse(combos.containsKey(player.getUUID()), "Fresh axe accepts slam packet");
+            for (int seed = 0; seed < 20; seed++) {
+                var offers = Augmentations.offers(fresh, RandomSource.create(seed));
+                test.assertTrue(offers.size() == 2 && offers.stream().filter(a -> a.id().equals(Augmentations.VERTICAL_STRIKE)).count() == 1,
+                        "First offers must contain Vertical Strike once");
+                var other = offers.stream().filter(a -> !a.id().equals(Augmentations.VERTICAL_STRIKE)).findFirst().orElseThrow();
+                var result = Augmentations.apply(fresh, other.id());
+                test.assertTrue(Augmentations.learned(result).size() == 1 && Augmentations.level(result, other.id()) == 1,
+                        "First axe augmentation grants another ability");
+                test.assertFalse(net.bananashelp20.forgermod.item.custom.attacks.axe.AxeItems.canVerticalStrike(result), "Other choice unlocks Vertical Strike");
+                test.assertTrue(Augmentations.learned(fresh).isEmpty(), "Augmentation mutates original axe");
+            }
+            var learned = Augmentations.apply(fresh, Augmentations.VERTICAL_STRIKE);
+            player.setItemInHand(InteractionHand.MAIN_HAND, learned);
+            handle.invoke(null, new net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.AxeAttackPayload(0), context);
+            test.assertTrue(combos.containsKey(player.getUUID()), "Learned axe rejects slam packet");
+            player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.STICK));
+            handle.invoke(null, new net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.AxeAttackPayload(0), context);
+            test.assertFalse(combos.containsKey(player.getUUID()), "Occupied offhand allows slam");
+            player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            test.assertTrue(Augmentations.learned(learned).size() == 1 && Augmentations.count(learned) == 1,
+                    "Learning Vertical Strike grants another ability");
+            test.assertTrue(Augmentations.apply(learned, Augmentations.VERTICAL_STRIKE).isEmpty(), "One-level technique can be upgraded");
+        }
+        var pendingType = Class.forName(type.getName() + "$PendingSlam");
+        var constructor = pendingType.getDeclaredConstructor(net.minecraft.server.level.ServerLevel.class,
+                net.minecraft.world.item.Item.class, long.class, BlockPos.class, float.class);
+        constructor.setAccessible(true);
+        var pendingField = type.getDeclaredField("PENDING"); pendingField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        var pending = (java.util.Map<java.util.UUID, Object>)pendingField.get(null);
+        var heldItem = player.getMainHandItem().getItem();
+        pending.put(player.getUUID(), constructor.newInstance(test.getLevel(), heldItem,
+                test.getLevel().getGameTime() + 3, player.blockPosition(), 1f));
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(heldItem));
+        net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.onPlayerTick(
+                new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
+        test.assertFalse(pending.containsKey(player.getUUID()), "Switching to an unlearned copy retains pending slam");
+        net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
+        test.getLevel().getServer().getPlayerList().remove(player);
+        test.assertTrue(checked == 45, "Skipped axe variants");
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
     public static void firstDaggerAugmentationOffersButDoesNotGrantDualWield(GameTestHelper test) {
         int checked = 0;
         var player = test.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
@@ -89,7 +151,7 @@ public class AugmentationGameTests {
                     "Withdrawn ability still offered");
             if (!((SwordItemWithEffect)stack.getItem()).isDagger()) {
                 test.assertTrue(Augmentations.ids(stack, true).isEmpty() && Augmentations.ids(stack, false).isEmpty(), "Copied dagger abilities remain");
-                test.assertTrue(Augmentations.pool(stack).size() == 1
+                test.assertTrue(Augmentations.pool(stack).size() == (Augmentations.canonical(stack).isAxe() ? 2 : 1)
                         +net.bananashelp20.forgermod.augmentation.RecommendedAbilities.pool(stack).size(), "Claymore/axe has unapproved ability assignments");
             }
         }
