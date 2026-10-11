@@ -16,7 +16,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Sleepwalker**: Somnium dagger
 - [x] **Lullaby**: Somnium claymore
 - [x] **Dream Feast**: Somnium claymore
-- [ ] **Daydreamer**: Somnium axe
+- [x] **Daydreamer**: Somnium axe
 - [ ] **Pillow Armor**: Somnium axe
 - [ ] **Magnetic Throw**: Electrium dagger, Electrium claymore, Electrium axe
 - [ ] **Live Wire**: Electrium dagger

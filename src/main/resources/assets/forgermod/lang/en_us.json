@@ -545,5 +545,8 @@
   "tooltips.forgermod.ability.lullaby.card": "Sleep an aimed mob for three seconds; damage wakes it. Players receive brief Slowness.",
   "tooltips.forgermod.ability.dream_feast.name": "Dream Feast",
   "tooltips.forgermod.ability.dream_feast": "Restore eight hunger points (four food icons), capped at full hunger. Adds no saturation. Cooldown: 60/50/40/30 seconds.",
-  "tooltips.forgermod.ability.dream_feast.card": "Restore four food icons."
+  "tooltips.forgermod.ability.dream_feast.card": "Restore four food icons.",
+  "tooltips.forgermod.passive.daydreamer.name": "Daydreamer",
+  "tooltips.forgermod.passive.daydreamer": "Gain Jump Boost I while holding this axe in your main hand during daytime. Ends when you put it away or night begins. Stronger potion effects are preserved.",
+  "tooltips.forgermod.passive.daydreamer.card": "Gain Jump Boost I while holding the axe during daytime."
 }

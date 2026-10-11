@@ -253,3 +253,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium claymore; all gemstone variants.
 - Restores exactly eight hunger points (four food icons), capped at 20, without adding saturation; refuses activation when hunger is full. Ranks reduce the instant cooldown from 60 to 50/40/30 seconds.
 - Tested, reviewed, retested and reviewed again; build and all 131 required server tests passed.
+
+## Daydreamer - completed
+
+- Weapons: Somnium axe; all gemstone variants.
+- Rank-I passive grants Jump Boost I only while the learned axe is held in the main hand during daylight (world times 0-12999 and 23000-23999 in skylit dimensions). Night, putting it away, death and logout remove the owned grant. Previous and newly acquired potion effects, including stronger Jump Boost and hidden effect chains, retain their remaining durations.
+- Tested, reviewed, retested and reviewed again; build and all 132 required server tests passed.

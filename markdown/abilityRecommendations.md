@@ -60,7 +60,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Drowsy Blow — Active.** Your next vertical strike gives every enemy it hits Weakness II for five seconds.
 2. **Wake-up Call — Active.** Remove Slowness and Weakness from yourself and nearby allies.
-3. [implement] **Daydreamer — Passive.** Gain Jump Boost I while holding the axe during daytime.
 4. [implement] **Pillow Armor — Passive.** Take 25% less fall damage while holding the axe.
 
 ## Electrium
