@@ -14,6 +14,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.GRAVITY_WELL.equals(id)) return GravityWellEvents.activate(player, stack);
         if (AdditionalAbilities.JUST_A_DREAM.equals(id)) return JustADreamAbility.activate(player, stack);
         if (AdditionalAbilities.LULLABY.equals(id)) return LullabyEvents.activate(player, stack);
+        if (AdditionalAbilities.DREAM_FEAST.equals(id)) return DreamFeastAbility.activate(player);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)

@@ -247,3 +247,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium claymore; all gemstone variants.
 - Rank I-IV targets 10/12/14/16 blocks with wall-clipped aiming. Mobs sleep for 60 ticks, wake on successful damage including absorbed hits, and recover original AI/gravity/target settings on expiry or cancellation. Players instead receive Slowness II for 60 ticks. Cooldown 40/35/30/25 seconds starts after sleep ends. Concurrent sleepers cannot overwrite one another.
 - Tested, reviewed, retested and reviewed again; build and all 130 required server tests passed.
+
+## Dream Feast - completed
+
+- Weapons: Somnium claymore; all gemstone variants.
+- Restores exactly eight hunger points (four food icons), capped at 20, without adding saturation; refuses activation when hunger is full. Ranks reduce the instant cooldown from 60 to 50/40/30 seconds.
+- Tested, reviewed, retested and reviewed again; build and all 131 required server tests passed.

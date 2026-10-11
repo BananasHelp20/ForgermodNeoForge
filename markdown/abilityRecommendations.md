@@ -53,7 +53,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Dreambound Claymore — `dreambound_claymore`
 
-2. [implement] **Dream Feast — Active.** Restore eight hunger points, equal to 4 food icons.
 3. **Rested Blade — Passive.** After sleeping through the night, deal 15% more melee damage until the next sunset.
 4. **Dream Catcher — Passive.** Negative potion effects applied to you while holding the blade last 20% less time.
 
