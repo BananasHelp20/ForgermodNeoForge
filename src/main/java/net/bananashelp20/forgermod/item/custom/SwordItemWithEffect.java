@@ -107,7 +107,7 @@ public class SwordItemWithEffect extends SwordItem {
                             String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0)).withStyle(ChatFormatting.GRAY));
                 }
                 for (String id : passives) {
-                    tooltip.add(Component.translatable("augmentation.forgermod.rank", Component.translatable(id + ".name"),
+                    tooltip.add(Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,Augmentations.level(stack,id)),
                             WeaponTooltips.romanNumeral(Augmentations.level(stack, id))).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
                         tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
@@ -120,7 +120,7 @@ public class SwordItemWithEffect extends SwordItem {
                 for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
                     String id = Augmentations.activeId(stack, slot);
                     if (id == null) continue;
-                    Component name = Component.translatable("augmentation.forgermod.rank", Component.translatable(id + ".name"),
+                    Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,Augmentations.level(stack,id)),
                             WeaponTooltips.romanNumeral(Augmentations.level(stack, id)));
                     tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip", name,
                             Component.keybind(slot == WeaponAbilitySlot.PRIMARY ? "key.forgermod.ability_primary" : "key.forgermod.ability_secondary")).withStyle(ChatFormatting.GRAY));
