@@ -16,10 +16,12 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.LULLABY.equals(id)) return LullabyEvents.activate(player, stack);
         if (AdditionalAbilities.DREAM_FEAST.equals(id)) return DreamFeastAbility.activate(player);
         if (AdditionalAbilities.MAGNETIC_THROW.equals(id)) return MagneticThrowAbility.activate(player,stack);
+        if (AdditionalAbilities.LIVE_WIRE.equals(id)) return LiveWireEvents.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)
             || AdditionalAbilities.GRAVITY_WELL.equals(id) && GravityWellEvents.active(player)
-            || AdditionalAbilities.LULLABY.equals(id) && LullabyEvents.active(player); }
-    public static void cancel(ServerPlayer player, String id) { if (AdditionalAbilities.LULLABY.equals(id)) LullabyEvents.cancel(player.getUUID()); if (AdditionalAbilities.MAGMA_TOSS.equals(id)) MagmaTossEvents.cancel(player.getUUID()); if (AdditionalAbilities.GRAVITY_WELL.equals(id)) GravityWellEvents.cancel(player.getUUID()); }
+            || AdditionalAbilities.LULLABY.equals(id) && LullabyEvents.active(player)
+            || AdditionalAbilities.LIVE_WIRE.equals(id) && LiveWireEvents.active(player); }
+    public static void cancel(ServerPlayer player, String id) { if (AdditionalAbilities.LIVE_WIRE.equals(id)) LiveWireEvents.cancel(player.getUUID()); if (AdditionalAbilities.LULLABY.equals(id)) LullabyEvents.cancel(player.getUUID()); if (AdditionalAbilities.MAGMA_TOSS.equals(id)) MagmaTossEvents.cancel(player.getUUID()); if (AdditionalAbilities.GRAVITY_WELL.equals(id)) GravityWellEvents.cancel(player.getUUID()); }
 }

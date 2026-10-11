@@ -66,7 +66,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Static Dagger — `dagger_of_thunder`
 
 1. **Spark Shot — Active.** Fire a small electrical bolt that damages the first enemy it hits. It deals extra damage if that enemy is wet.
-2. [implement] **Live Wire — Active.** For eight seconds, enemies that hit you in melee receive two damage in return. Reflected damage cannot reflect again.
 3. [implement] **Quick Recharge — Passive.** A successful fully charged critical hit shortens your primary ability cooldown by one second. Can trigger once every two seconds.
 4. [implement] **Conductive Edge — Passive.** Deal 20% more melee damage to enemies standing in water or exposed to rain.
 5. [implement] **Static blade - active** The next swing will release an echo of the swing (4 blocks wide, half a block tall) traveling up to 20 blocks in the direction the player faced at that point. It pierces through all enemies on it's way, dealing the weapon's damage.

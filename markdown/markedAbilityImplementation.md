@@ -271,3 +271,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
 - All Electrium weapon types launch the wall-clipped aimed enemy within actual melee reach along the full look vector, including skyward aim. Rank I-IV velocity 1.1/1.3/1.5/1.7; instant cooldown 25/20/15/10 seconds. No added damage or teleportation; player targets receive synchronized motion.
 - Tested, reviewed, retested and reviewed again; build and all 134 required server tests passed.
+
+## Live Wire - completed
+
+- Weapons: Electrium dagger; all gemstone variants.
+- Ranks I-IV grant an eight-second reflection window. Successful enemy melee damage, including damage absorbed by hearts, reflects two indirect-magic damage without recursive reflection; lethal melee hits also earn reflection. Exact-stack/hotbar/dimension switching, expiry, death and logout clean up the state. Cooldown after ending: 40/35/30/25 seconds.
+- Tested, reviewed, retested and reviewed again; build and all 136 required server tests passed.
