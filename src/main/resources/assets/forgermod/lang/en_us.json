@@ -667,5 +667,10 @@
   "tooltips.forgermod.passive.echo_appetite.card": "Break sculk blocks to restore one hunger point.",
   "tooltips.forgermod.passive.resonance_crit.name": "Resonance Crit",
   "tooltips.forgermod.passive.resonance_crit": "Fully charged melee hits against rising, jumping enemies are critical hits, even while you stand on the ground.",
-  "tooltips.forgermod.passive.resonance_crit.card": "Fully charged hits critically strike jumping enemies."
+  "tooltips.forgermod.passive.resonance_crit.card": "Fully charged hits critically strike jumping enemies.",
+  "tooltips.forgermod.passive.aftershock.name": "Aftershock",
+  "tooltips.forgermod.passive.aftershock": "Each fully charged melee hit echoes for one damage point after one second. Echoes cannot trigger hit abilities or another echo; putting the weapon away cancels them.",
+  "tooltips.forgermod.passive.aftershock.card": "Charged melee hits echo for one damage after one second.",
+  "death.attack.forgermod.aftershock": "%1$s was silenced by an aftershock from %2$s",
+  "death.attack.forgermod.aftershock.player": "%1$s was silenced by an aftershock from %2$s"
 }

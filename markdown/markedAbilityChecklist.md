@@ -59,7 +59,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Death's Due**: Morsium axe
 - [x] **Echo Appetite**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [x] **Resonance Crit**: Pulsite dagger, Pulsite claymore
-- [ ] **Aftershock**: Pulsite dagger, Pulsite claymore, Pulsite axe
+- [x] **Aftershock**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [ ] **Ringing Steel**: Pulsite claymore
 - [ ] **Stone Song**: Pulsite claymore
 - [ ] **Challenge Roar**: Pulsite axe

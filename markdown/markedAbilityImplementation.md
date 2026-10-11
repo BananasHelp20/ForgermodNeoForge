@@ -493,3 +493,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Pulsite dagger, Pulsite claymore; all gemstone variants.
 - Fully charged melee hits against visible-class enemy targets rising in a jump become genuine critical hits, including grounded attackers. Requires airborne positive vertical movement; grounded, falling, swimming, lava, climbing and elytra targets do not qualify. Uses at least the vanilla 1.5 damage multiplier without lowering stronger critical modifiers. Runs before critical-hit listeners so existing charged-critical abilities see the critical. Tested real charged attacks across ten variants. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 185 required server tests passed.
+
+## Aftershock - completed
+
+- Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
+- Successful fully charged melee hits, including normal sweep victims, schedule one damage point after 20 ticks. A dedicated armor-bypassing damage type bypasses immunity frames without resetting them and cannot trigger melee-hit abilities or another echo. Normal absorption, resistance and player protection still apply. Exact stack/slot switching, dimension changes, death and logout cancel pending echoes; dead enemies are skipped. Tested all fifteen variants, actual timing, recent immunity, no recursion and invalid-hit/switch cases. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 187 required server tests passed.
