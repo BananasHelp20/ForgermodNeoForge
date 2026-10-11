@@ -209,3 +209,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Inanisium claymore; all gemstone variants.
 - Damage-free radial velocity push; rank I-IV radius 4/5/6/7 blocks, strength 0.6/0.8/1/1.2 and cooldown 30/25/20/15 seconds. Visible enemies only; blocks, allies and neutral entities are unaffected. No teleportation or damage.
 - Tested, reviewed, retested and reviewed again; build and all 122 required server tests passed.
+
+## Gravity Well - completed
+
+- Weapons: Inanisium axe; all gemstone variants.
+- Follows the explicit no-damage design: one velocity pull of visible enemies within six blocks, followed by a visual-only smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force, teleportation or damage.
+- Tested, reviewed, retested and reviewed again; build and all 123 required server tests passed.

@@ -44,7 +44,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Nullified Axe — `axe_of_the_void`
 
-1. [implement] **Gravity Well — Active.** Pull enemies within six blocks toward you with one burst of force and immediately do a smash attack when it is in reach. Does not teleport them or deal damage.
 2. **Void Mail — Passive.** Take 20% less damage from projectiles while holding the axe.
 
 ## Somnium

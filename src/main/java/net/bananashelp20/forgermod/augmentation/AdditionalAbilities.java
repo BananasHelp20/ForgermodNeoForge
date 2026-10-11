@@ -14,6 +14,7 @@ public final class AdditionalAbilities {
     public static final String BACKSTAB = "tooltips.forgermod.passive.backstab";
     public static final String VOID_GRIP = "tooltips.forgermod.passive.void_grip";
     public static final String VOID_PULSE = "tooltips.forgermod.ability.void_pulse";
+    public static final String GRAVITY_WELL = "tooltips.forgermod.ability.gravity_well";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -22,7 +23,8 @@ public final class AdditionalAbilities {
             new Definition(DISPLACE, true, 4, 800, 100, Set.of("Inanisium:dagger")),
             new Definition(BACKSTAB, false, 1, 0, 0, Set.of("Inanisium:dagger", "Somnium:dagger", "Electrium:dagger", "Taifunite:dagger", "Vulnusium:dagger", "Lush:dagger", "Morsium:dagger", "Pulsite:dagger")),
             new Definition(VOID_GRIP, false, 1, 0, 0, Set.of("Inanisium:dagger")),
-            new Definition(VOID_PULSE, true, 4, 600, 100, Set.of("Inanisium:claymore"))
+            new Definition(VOID_PULSE, true, 4, 600, 100, Set.of("Inanisium:claymore")),
+            new Definition(GRAVITY_WELL, true, 4, 800, 100, Set.of("Inanisium:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

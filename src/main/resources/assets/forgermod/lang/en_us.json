@@ -524,5 +524,8 @@
   "tooltips.forgermod.passive.void_grip.card": "Your melee hits produce 25% less knockback.",
   "tooltips.forgermod.ability.void_pulse.name": "Void Pulse",
   "tooltips.forgermod.ability.void_pulse": "Release a damage-free pulse that pushes visible enemies away. Radius: 4/5/6/7 blocks; knockback strength: 0.6/0.8/1/1.2. Cooldown: 30/25/20/15 seconds.",
-  "tooltips.forgermod.ability.void_pulse.card": "Push nearby enemies away without dealing damage."
+  "tooltips.forgermod.ability.void_pulse.card": "Push nearby enemies away without dealing damage.",
+  "tooltips.forgermod.ability.gravity_well.name": "Gravity Well",
+  "tooltips.forgermod.ability.gravity_well": "Pull visible enemies within six blocks toward you with one burst of velocity. A visual smash plays when a pulled enemy reaches melee range; it deals no damage. Pull strength: 0.6/0.7/0.8/0.9. Ends after arrival or two seconds; switching cancels. Cooldown after ending: 40/35/30/25 seconds.",
+  "tooltips.forgermod.ability.gravity_well.card": "Pull enemies within six blocks toward you; a damage-free smash plays on arrival."
 }
