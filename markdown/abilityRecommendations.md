@@ -133,18 +133,15 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Banish — Active.** Strike the aimed undead enemy within melee reach for twice your weapon damage. Has no effect on living targets.
 4. **Pale Blade — Passive.** Deal 15% more damage to invisible enemies.
-3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 
 ### Hollow Claymore — `hollow_claymore`
 
 1. **Grave Chill — Active.** Give the visible enemy you aim at Slowness IV for four seconds.
 2. **Soul Cleave — Active.** Your next melee hit gains two bonus damage for each other enemy near the victim, capped at eight bonus damage.
 4. **Grave Strength — Passive.** Weakness reduces your attack damage by only half its normal amount while holding the blade.
-3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 
 ### Ghost Axe — `hollow_axe`
 
-3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 4. **Undead Ward — Passive.** Take 15% less damage from undead enemies.
 
 ## Pulsite

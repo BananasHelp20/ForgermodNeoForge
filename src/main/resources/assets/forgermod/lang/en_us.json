@@ -658,5 +658,8 @@
   "tooltips.forgermod.ability.bone_guard.card": "Summon a friendly skeleton for 15 seconds.",
   "tooltips.forgermod.ability.skull_throw.name": "Skull Throw",
   "tooltips.forgermod.ability.skull_throw": "Fire a slow wither skull. Its first impact bursts for weapon damage and Wither I for 5 seconds against nearby enemies, without breaking blocks.",
-  "tooltips.forgermod.ability.skull_throw.card": "A slow skull bursts for weapon damage and brief Wither."
+  "tooltips.forgermod.ability.skull_throw.card": "A slow skull bursts for weapon damage and brief Wither.",
+  "tooltips.forgermod.passive.deaths_due.name": "Death's Due",
+  "tooltips.forgermod.passive.deaths_due": "Enemy kills grant 25% more experience, rounded down to whole points. Item drops are unchanged.",
+  "tooltips.forgermod.passive.deaths_due.card": "Enemy kills grant 25% more experience."
 }

@@ -475,3 +475,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Morsium axe; all gemstone variants.
 - Fires a slow blue wither skull, using vanilla dangerous-skull flight. First enemy or block impact deals current weapon damage to visible enemies within 2/2.5/3/3.5 blocks and applies Wither I for five seconds. No terrain damage, vanilla skull healing or extra vanilla impact damage. Caster and allies are excluded. Flight expires after five seconds or switching/death/logout; ending cooldown 50/40/30/20 seconds.
 - Tested, reviewed, retested and reviewed again; build and all 180 required server tests passed.
+
+## Death's Due - completed
+
+- Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
+- Learned passive increases the existing enemy XP award by 25 percent, rounding down to whole points and saturating safely at the integer limit. Item drops, neutral creatures, canceled awards and uncredited kills are unchanged. Tested all fifteen variants and actual zombie death/orb creation (five XP becomes six). Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 182 required server tests passed.
