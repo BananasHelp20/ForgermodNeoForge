@@ -50,7 +50,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Nightmare Dagger — `dreambound_dagger`
 
-3. [implement] **Just a Dream - Active** Teleport to your respawn point
 4. [implement] **Sleepwalker - passive** deal 10% more damage at night.
 
 ### Dreambound Claymore — `dreambound_claymore`
@@ -59,7 +58,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Dream Feast — Active.** Restore eight hunger points, equal to 4 food icons.
 3. **Rested Blade — Passive.** After sleeping through the night, deal 15% more melee damage until the next sunset.
 4. **Dream Catcher — Passive.** Negative potion effects applied to you while holding the blade last 20% less time.
-5. [implement] **Just a Dream - Active** Teleport to your respawn point
 
 ### Dreamweaver Axe — `dreambound_axe`
 
@@ -67,7 +65,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. **Wake-up Call — Active.** Remove Slowness and Weakness from yourself and nearby allies.
 3. [implement] **Daydreamer — Passive.** Gain Jump Boost I while holding the axe during daytime.
 4. [implement] **Pillow Armor — Passive.** Take 25% less fall damage while holding the axe.
-5. [implement] **Just a Dream - Active** Teleport to your respawn point
 
 ## Electrium
 

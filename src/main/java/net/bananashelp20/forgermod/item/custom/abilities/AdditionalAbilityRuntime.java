@@ -12,6 +12,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.DISPLACE.equals(id)) return DisplaceAbility.activate(player, stack);
         if (AdditionalAbilities.VOID_PULSE.equals(id)) return VoidPulseAbility.activate(player, stack);
         if (AdditionalAbilities.GRAVITY_WELL.equals(id)) return GravityWellEvents.activate(player, stack);
+        if (AdditionalAbilities.JUST_A_DREAM.equals(id)) return JustADreamAbility.activate(player, stack);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)

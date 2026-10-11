@@ -533,5 +533,8 @@
   "tooltips.forgermod.passive.lonely_dream.card": "Gain 5% attack speed for each enemy within ten blocks.",
   "tooltips.forgermod.passive.unfinished_dream.name": "Unfinished Dream",
   "tooltips.forgermod.passive.unfinished_dream": "Killing an enemy before it damages you heals one health point, equal to half a heart. Hits absorbed by absorption health still count. Maximum level: I.",
-  "tooltips.forgermod.passive.unfinished_dream.card": "Killing an enemy before it hits you heals half a heart."
+  "tooltips.forgermod.passive.unfinished_dream.card": "Killing an enemy before it hits you heals half a heart.",
+  "tooltips.forgermod.ability.just_a_dream.name": "Just a Dream",
+  "tooltips.forgermod.ability.just_a_dream": "Teleport safely to your respawn point, including across dimensions. Missing beds or anchors fall back to world spawn. Does not consume respawn-anchor charges. Mounted use is rejected. Cooldown: 60/50/40/30 seconds.",
+  "tooltips.forgermod.ability.just_a_dream.card": "Teleport safely to your respawn point, even in another dimension."
 }

@@ -227,3 +227,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium dagger, Somnium claymore, Somnium axe; all gemstone variants.
 - Rank-I passive heals exactly one HP on killing an enemy that has never damaged this wielder in the current session. Absorption-health hits count as damage. Tracks actual damage even before equipping; weak entity history is removed on victim death and player logout. Canceled deaths, neutral kills and unlearned weapons do not heal.
 - Tested, reviewed, retested and reviewed again; build and all 125 required server tests passed.
+
+## Just a Dream - completed
+
+- Weapons: Somnium dagger, Somnium claymore, Somnium axe; all gemstone variants.
+- Instant safe return using Minecraft 1.21.1 respawn resolution, including cross-dimension beds/anchors and vanilla world-spawn fallback. Loads destination body chunks, checks full collision/fluid/border/build-height safety, preserves anchor charges and clears fall distance/momentum. Mounted use rejected; rank I-IV cooldown 60/50/40/30 seconds.
+- Tested, reviewed, retested and reviewed again; build and all 127 required server tests passed.

@@ -570,3 +570,7 @@ Removed
 - Added Lonely Dream to Somnium dagger and all gemstone variants. Rank-I passive grants 5% attack speed per enemy within ten blocks, with no invented enemy-count cap. Updates every half-second and immediately on equipment change; removes only its own transient modifier on switching, death or logout. Allies and neutral entities do not count.
 
 - Added Unfinished Dream to Somnium dagger, Somnium claymore, Somnium axe and all gemstone variants. Rank-I passive heals exactly one HP on killing an enemy that has never damaged this wielder in the current session. Absorption-health hits count as damage. Tracks actual damage even before equipping; weak entity history is removed on victim death and player logout. Canceled deaths, neutral kills and unlearned weapons do not heal.
+
+- Added markdown/markedAbilityDesigns.md preserving the complete approved input for all forty marked ability names and their eighty-seven weapon-family assignments before completed entries are removed from recommendations.
+
+- Added Just a Dream to Somnium dagger, Somnium claymore, Somnium axe and all gemstone variants. Instant safe return using Minecraft 1.21.1 respawn resolution, including cross-dimension beds/anchors and vanilla world-spawn fallback. Loads destination body chunks, checks full collision/fluid/border/build-height safety, preserves anchor charges and clears fall distance/momentum. Mounted use rejected; rank I-IV cooldown 60/50/40/30 seconds.
