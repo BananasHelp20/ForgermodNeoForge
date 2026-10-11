@@ -379,3 +379,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite axe; all gemstone variants.
 - Arms the next successful melee hit for up to 30 seconds. After normal hit processing, smashes enemies within 3 blocks of the victim: secondary enemies take current weapon damage; the original victim gets knockback without double damage. Horizontal knockback strength 1.0/1.2/1.4/1.6 with a small lift respects resistance. Lethal hits still trigger the smash; walls, allies and the wielder are excluded. No terrain changes. Cooldown 40/35/30/25 seconds after hit or cancellation. Also fixed Upwind to consume its armed gust on lethal hits.
 - Tested, reviewed, retested and reviewed again; build and all 160 required server tests passed.
+
+## Blood Rush - completed
+
+- Weapons: Vulnusium dagger, Vulnusium claymore; all gemstone variants.
+- Spends exactly 2 real health points, preserving absorption, and grants Speed II for 10 seconds. Activation is refused at 2 HP or less even with absorption available; refused uses spend nothing and grant no effect. Vanilla potion merging preserves stronger effects. Cooldown 30/25/20/15 seconds starts on use.
+- Tested, reviewed, retested and reviewed again; build and all 161 required server tests passed.

@@ -96,7 +96,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Assassin Dagger — `curseblood_dagger`
 
-1. [implement] **Blood Rush — Active.** Spend two health points to gain Speed II for ten seconds. Cannot be used if that health cost would kill you.
 2. **Clotting Cut — Active.** Your next melee hit prevents the enemy from healing for eight seconds.
 3. **Fresh Blood — Passive.** Deal 20% more damage on a hit against an enemy at full health.
 4. [implement] **Final strike— Passive.** if the last hit enemy has less than 10% health, grants a damage bonus to that enemy.
@@ -112,7 +111,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 4. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 5. [implement] **Blood Sacrafice - active** sacrifice 50% of your health (including absorption health) and deal double damage for the next 20 seconds.
 6. [implement] **Final strike— Passive.** if the last hit enemy has less than 10% health, grants a damage bonus to that enemy.
-1. [implement] **Blood Rush — Active.** Spend two health points to gain Speed II for ten seconds. Cannot be used if that health cost would kill you.
 
 ### Woundmaker Axe — `curseblood_axe`
 

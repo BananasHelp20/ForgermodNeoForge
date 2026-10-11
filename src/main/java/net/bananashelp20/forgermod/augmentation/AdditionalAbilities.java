@@ -42,6 +42,7 @@ public final class AdditionalAbilities {
     public static final String HEADWIND = "tooltips.forgermod.passive.headwind";
     public static final String FEATHER_SHELTER = "tooltips.forgermod.ability.feather_shelter";
     public static final String POCKET_STORM = "tooltips.forgermod.ability.pocket_storm";
+    public static final String BLOOD_RUSH = "tooltips.forgermod.ability.blood_rush";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -78,7 +79,8 @@ public final class AdditionalAbilities {
             new Definition(VACUUM_BURST, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe")),
             new Definition(HEADWIND, false, 1, 0, 0, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe")),
             new Definition(FEATHER_SHELTER, true, 4, 1200, 200, Set.of("Taifunite:claymore", "Taifunite:axe")),
-            new Definition(POCKET_STORM, true, 4, 800, 100, Set.of("Taifunite:axe"))
+            new Definition(POCKET_STORM, true, 4, 800, 100, Set.of("Taifunite:axe")),
+            new Definition(BLOOD_RUSH, true, 4, 600, 100, Set.of("Vulnusium:dagger", "Vulnusium:claymore"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {
