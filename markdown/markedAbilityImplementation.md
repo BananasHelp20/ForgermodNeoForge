@@ -361,3 +361,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
 - One velocity gust pulls visible dropped items and experience orbs within 6/8/10/12 blocks toward the player at speed 0.9. No teleportation, immediate collection, pickup-delay changes or item consumption; normal ownership and pickup rules still apply. Solid blocks stop the pull. Cooldown 30/25/20/15 seconds starts on use.
 - Tested, reviewed, retested and reviewed again; build and all 157 required server tests passed.
+
+## Headwind - completed
+
+- Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
+- Learned passive halves only the ground-sprinting hunger exhaustion branch while the weapon is in the main hand. Jumping, swimming, generic exhaustion and offhand equipment retain vanilla costs. A required version-specific ServerPlayer mixin targets exactly the fourth exhaustion call in Minecraft 1.21.1 checkMovementStatistics; actual sprint, jump and swimming paths verified on NeoForge 21.1.93. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 158 required server tests passed.

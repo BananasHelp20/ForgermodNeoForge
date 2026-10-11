@@ -34,7 +34,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Upwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Windcharge**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Vacuum Burst**: Taifunite dagger, Taifunite claymore, Taifunite axe
-- [ ] **Headwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [x] **Headwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Feather Shelter**: Taifunite claymore, Taifunite axe
 - [ ] **Pocket Storm**: Taifunite axe
 - [ ] **Blood Rush**: Vulnusium dagger, Vulnusium claymore
@@ -42,3 +42,24 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [ ] **Blood Sacrafice**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [ ] **Scar Compass**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [ ] **Revengeful Exit**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
+
+## Newly marked entries found on reread (2026-10-11)
+
+- [ ] **Sunfed**: Lush dagger, Lush claymore, Lush axe
+- [ ] **photosythesis**: Lush dagger, Lush claymore, Lush axe
+- [ ] **Green Feast**: Lush dagger, Lush claymore, Lush axe
+- [ ] **Sapling Harvest**: Lush dagger, Lush claymore, Lush axe
+- [ ] **Compost**: Lush dagger, Lush claymore, Lush axe
+- [ ] **Lumberjack**: Lush axe
+- [ ] **Ghostwalk**: Morsium dagger, Morsium claymore, Morsium axe
+- [ ] **Soul Hunger**: Morsium dagger, Morsium claymore, Morsium axe
+- [ ] **Last Stand**: Morsium dagger, Morsium claymore, Morsium axe
+- [ ] **Bone Guard**: Morsium axe
+- [ ] **Skull Throw**: Morsium axe
+- [ ] **Death's Due**: Morsium axe
+- [ ] **Echo Appetite**: Pulsite dagger, Pulsite claymore, Pulsite axe
+- [ ] **Resonant Crit**: Pulsite dagger, Pulsite claymore
+- [ ] **Aftershock**: Pulsite dagger, Pulsite claymore, Pulsite axe
+- [ ] **Ringing Steel**: Pulsite claymore
+- [ ] **Stone Song**: Pulsite claymore
+- [ ] **Challenge Roar**: Pulsite axe

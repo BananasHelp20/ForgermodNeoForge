@@ -259,3 +259,111 @@ Snapshot of the marked descriptions at the beginning of the full implementation 
 7. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 4. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 8. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
+
+## Sunfed
+
+**Weapons:** Lush:dagger, Lush:claymore, Lush:axe
+
+2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
+
+## photosythesis
+
+**Weapons:** Lush:dagger, Lush:claymore, Lush:axe
+
+4. [implement] **photosythesis** slowly restore weapon durability during daytime.
+
+## Green Feast
+
+**Weapons:** Lush:dagger, Lush:claymore, Lush:axe
+
+1. [implement] **Green Feast — Active.** Consume one wheat from your inventory to restore two health points. Requires missing health.
+
+## Sapling Harvest
+
+**Weapons:** Lush:dagger, Lush:claymore, Lush:axe
+
+2. [implement] **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra random sapling.
+
+## Compost
+
+**Weapons:** Lush:dagger, Lush:claymore, Lush:axe
+
+4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
+
+## Lumberjack
+
+**Weapons:** Lush:axe
+
+3. [implement] **Lumberjack — Passive.** Breaking logs with this axe does not consume weapon durability.
+
+## Ghostwalk
+
+**Weapons:** Morsium:dagger, Morsium:claymore, Morsium:axe
+
+2. [implement] **Ghostwalk — Active.** Gain Invisibility for ten seconds. Attacking ends it; worn armor stays visible.
+
+## Soul Hunger
+
+**Weapons:** Morsium:dagger, Morsium:claymore, Morsium:axe
+
+3. [implement] **Soul Hunger — Passive.** Enemy kills grant two absorption health points, up to six from this passive.
+
+## Last Stand
+
+**Weapons:** Morsium:dagger, Morsium:claymore, Morsium:axe
+
+3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
+
+## Bone Guard
+
+**Weapons:** Morsium:axe
+
+1. [implement] **Bone Guard — Active.** Summon one temporary friendly skeleton for fifteen seconds. It shoots nearby enemies and drops no items or experience. Only one can exist per wielder.
+
+## Skull Throw
+
+**Weapons:** Morsium:axe
+
+2. [implement] **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
+
+## Death's Due
+
+**Weapons:** Morsium:axe
+
+3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
+
+## Echo Appetite
+
+**Weapons:** Pulsite:dagger, Pulsite:claymore, Pulsite:axe
+
+2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
+
+## Resonant Crit
+
+**Weapons:** Pulsite:dagger, Pulsite:claymore
+
+3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
+
+## Aftershock
+
+**Weapons:** Pulsite:dagger, Pulsite:claymore, Pulsite:axe
+
+4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
+
+## Ringing Steel
+
+**Weapons:** Pulsite:claymore
+
+2. [implement] **Ringing Steel — Active.** Your next melee hit also damages the victim's held weapon by fifteen durability points. Does not affect armor or shields.
+
+## Stone Song
+
+**Weapons:** Pulsite:claymore
+
+3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
+
+## Challenge Roar
+
+**Weapons:** Pulsite:axe
+
+2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.

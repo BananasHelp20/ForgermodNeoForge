@@ -601,5 +601,8 @@
   "tooltips.forgermod.ability.skybreaker.name": "Skybreaker",
   "tooltips.forgermod.ability.vacuum_burst.name": "Vacuum Burst",
   "tooltips.forgermod.ability.vacuum_burst": "Pull dropped items and experience orbs within 6/8/10/12 blocks toward you with one gust. Normal pickup rules still apply.",
-  "tooltips.forgermod.ability.vacuum_burst.card": "Pull nearby drops and experience toward you."
+  "tooltips.forgermod.ability.vacuum_burst.card": "Pull nearby drops and experience toward you.",
+  "tooltips.forgermod.passive.headwind.name": "Headwind",
+  "tooltips.forgermod.passive.headwind": "Sprinting uses half the normal hunger exhaustion while this weapon is held.",
+  "tooltips.forgermod.passive.headwind.card": "Halve hunger exhaustion from sprinting."
 }

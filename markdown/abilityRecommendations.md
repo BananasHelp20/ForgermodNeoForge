@@ -82,12 +82,10 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 3. **Air Bubble — Active.** Gain Water Breathing for thirty seconds and Dolphin's Grace for ten seconds.
 5. **Skimming Step — Passive.** Move 20% faster through shallow water while your head remains above the surface.
-5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
 
 ### Storming Claymore — `storming_claymore`
 
 4. [implement] **Feather Shelter — Active.** Give yourself and nearby allies Slow Falling for ten seconds.
-5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
 6. **Air Reserve — Passive.** Recover your air supply twice as quickly after coming out of water.
 
 ### Skybreaker Axe — `storming_axe`
@@ -95,7 +93,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Pocket Storm -active** The next hit will create an areal smash attack with great knockback to all affected enemies.
 5. **Sky Hunter — Passive.** Deal 20% more damage to phantoms, blazes and ghasts.
 6. **Windproof — Passive.** Take 30% less knockback while airborne.
-5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
 4. [implement] **Feather Shelter — Active.** Give yourself and nearby allies Slow Falling for ten seconds.
 
 ## Vulnusium

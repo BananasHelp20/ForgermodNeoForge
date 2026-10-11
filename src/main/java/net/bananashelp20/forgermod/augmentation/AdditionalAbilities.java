@@ -39,6 +39,7 @@ public final class AdditionalAbilities {
     public static final String UPWIND = "tooltips.forgermod.ability.upwind";
     public static final String WINDCHARGE = "tooltips.forgermod.ability.windcharge";
     public static final String VACUUM_BURST = "tooltips.forgermod.ability.vacuum_burst";
+    public static final String HEADWIND = "tooltips.forgermod.passive.headwind";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -72,7 +73,8 @@ public final class AdditionalAbilities {
             new Definition(SLIPSTREAM, false, 1, 0, 0, Set.of("Taifunite:dagger")),
             new Definition(UPWIND, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe")),
             new Definition(WINDCHARGE, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe")),
-            new Definition(VACUUM_BURST, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe"))
+            new Definition(VACUUM_BURST, true, 4, 600, 100, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe")),
+            new Definition(HEADWIND, false, 1, 0, 0, Set.of("Taifunite:dagger", "Taifunite:claymore", "Taifunite:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {
