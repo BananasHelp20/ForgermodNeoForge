@@ -470,7 +470,7 @@
   "augmentation.forgermod.material_hit": "Apply this material's effect when your weapon hits an enemy.",
   "augmentation.forgermod.rank": "%1$s %2$s",
   "augmentation.forgermod.cooldown": "Cooldown: %s seconds",
-  "augmentation.forgermod.core_hint": "Dual wield and axe slam are intrinsic. The material hit has its own augmentation rank, alongside two active and two unique passive slots.",
+  "augmentation.forgermod.core_hint": "Dual Wield and Vertical Strike are learned through augmentation. Material Hit has its own rank, alongside three active slots and five passive slots (two for daggers).",
   "augmentation.forgermod.passive_rank": "Current ability level: %s",
   "message.forgermod.ability.swapped": "Primary and secondary abilities swapped",
   "commands.forgermod.cooldown.usage": "Usage: /no-ability-cooldown <player or selector> <true|false>. For yourself: /no-ability-cooldown @s true",
@@ -681,5 +681,6 @@
   "tooltips.forgermod.passive.stone_song.card": "Holding this blade below Y=0 grants two armor points.",
   "tooltips.forgermod.ability.challenge_roar.name": "Challenge Roar",
   "tooltips.forgermod.ability.challenge_roar": "Roar to make visible hostile mobs within 6/8/10/12 blocks target you. Players, allies and neutral creatures are unaffected.",
-  "tooltips.forgermod.ability.challenge_roar.card": "Nearby visible hostile mobs turn their aggression toward you."
+  "tooltips.forgermod.ability.challenge_roar.card": "Nearby visible hostile mobs turn their aggression toward you.",
+  "key.forgermod.ability_tertiary": "Tertiary Weapon Ability"
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.util.RandomSource;
 import java.util.*;
 
-/** Learned abilities; the material hit has its own rank, beside two active/two unique passive slots. */
+/** Learned abilities; the material hit has its own rank, beside three active slots and weapon-specific passive limits. */
 public final class Augmentations {
     public record Ability(String id, boolean active, Component name) {
         public Ability(String id, boolean active) { this(id, active, Component.translatable(id + ".name")); }
@@ -35,7 +35,7 @@ public final class Augmentations {
         if (!eligible(stack)) return List.of();
         var canonical = canonical(stack);
         var abilities = new ArrayList<Ability>();
-        for (var slot : WeaponAbilitySlot.values()) {
+        for (var slot : WeaponAbilitySlot.nativeSlots()) {
             String key = canonical.abilityDescriptionKey(slot);
             if (key != null) abilities.add(new Ability(key, true));
         }
@@ -74,9 +74,9 @@ public final class Augmentations {
         Map<String, Boolean> types = new HashMap<>();
         for (var ability : pool(stack)) types.put(ability.id(), ability.active());
         for (String id : learned(stack).keySet()) {
-            if (!id.equals(MATERIAL_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < 2) result.add(id);
+            if (!id.equals(MATERIAL_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < limit(stack, active)) result.add(id);
         }
-        if (active && data(stack).getBoolean("swapped")) Collections.reverse(result);
+        if (active && data(stack).getBoolean("swapped") && result.size()>=2) Collections.swap(result,0,1);
         return List.copyOf(result);
     }
     public static int level(ItemStack stack, String id) {
@@ -87,13 +87,14 @@ public final class Augmentations {
     private static List<String> nativeIds(ItemStack stack) {
         List<String> result = new ArrayList<>();
         if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return result;
-        for (var slot : WeaponAbilitySlot.values()) {
+        for (var slot : WeaponAbilitySlot.nativeSlots()) {
             String key = weapon.abilityDescriptionKey(slot);
             if (key != null) result.add(key);
         }
         result.addAll(weapon.passiveDescriptionKeys());
         return result;
     }
+    public static int limit(ItemStack stack,boolean active) {return active?3:canonical(stack)!=null && canonical(stack).isDagger()?2:5;}
     public static boolean hasPassive(ItemStack stack, String id) { return ids(stack, false).contains(id); }
     public static boolean hasActive(ItemStack stack) { return !ids(stack, true).isEmpty(); }
     public static Component abilityName(ItemStack stack,String id,int rank) {
@@ -105,9 +106,13 @@ public final class Augmentations {
     public static int duration(ItemStack stack) { return (int)Math.min(Integer.MAX_VALUE, 100L + count(stack) * 20L); }
     public static List<Ability> available(ItemStack stack) {
         var result = new ArrayList<Ability>();
+        var learned = learned(stack);
+        int activeCount = ids(stack,true).size(), passiveCount = ids(stack,false).size();
         for (var ability : pool(stack)) {
-            int level = level(stack, ability.id());
-            if (level > 0 && level < RecommendedAbilities.maxRank(ability.id()) || level == 0 && (ability.id().equals(MATERIAL_HIT) || ids(stack, ability.active()).size() < 2)) result.add(ability);
+            int level = learned.getOrDefault(ability.id(),0);
+            int count = ability.active()?activeCount:passiveCount;
+            if (level > 0 && level < RecommendedAbilities.maxRank(ability.id())
+                    || level == 0 && (ability.id().equals(MATERIAL_HIT) || count < limit(stack,ability.active()))) result.add(ability);
         }
         return List.copyOf(result);
     }

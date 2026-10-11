@@ -207,8 +207,8 @@ public class AugmentationGameTests {
                 stack = Augmentations.apply(stack, offers.get(0).id());
                 test.assertTrue(!stack.isEmpty() && Augmentations.count(stack) == oldCount + 1, "Augment did not apply once");
                 test.assertTrue(Augmentations.duration(stack) == 100 + 20 * (oldCount + 1), "Cook scaling wrong");
-                test.assertTrue(Augmentations.ids(stack, true).size() <= 2 && Augmentations.ids(stack, false).size() <= 2, "Slot cap exceeded");
-                test.assertTrue(Augmentations.count(stack) <= 20, "Augmentation loop did not terminate");
+                test.assertTrue(Augmentations.ids(stack, true).size() <= 3 && Augmentations.ids(stack, false).size() <= Augmentations.limit(stack,false), "Slot cap exceeded");
+                test.assertTrue(Augmentations.count(stack) <= 16+4*Augmentations.limit(stack,false), "Augmentation loop did not terminate");
             }
             test.assertTrue(Augmentations.offers(stack, random).isEmpty(), "Maxed item still has choices");
             for (boolean active : new boolean[]{false, true}) for (String id : Augmentations.ids(stack, active)) {

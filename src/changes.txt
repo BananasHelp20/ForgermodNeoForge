@@ -674,3 +674,5 @@ Removed
 - Audited all 58 tracked marked abilities and revised weapon assignments; removed six verified re-added recommendations and corrected stale pending-status documentation. Added a registry-backed ability catalog check to verify all 135 fresh special weapons have no implicit augments or duplicate pooled abilities.
 
 - Refreshed in-game ability descriptions and all 148 weapon ability-name lists from the registry catalog; added scripts/update_ability_docs.py for reproducible updates.
+
+- Expanded learned active capacity to three with configurable tertiary key (default 3), independent simultaneous sessions/cooldowns and actual-key tooltips; non-dagger passive capacity increased to five, daggers remain two. Material Hit remains separate; two-ability swap preserves order when a third is learned.

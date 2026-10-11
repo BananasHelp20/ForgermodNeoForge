@@ -123,7 +123,7 @@ public class SwordItemWithEffect extends SwordItem {
                     Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,Augmentations.level(stack,id)),
                             WeaponTooltips.romanNumeral(Augmentations.level(stack, id)));
                     tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip", name,
-                            Component.keybind(slot == WeaponAbilitySlot.PRIMARY ? "key.forgermod.ability_primary" : "key.forgermod.ability_secondary")).withStyle(ChatFormatting.GRAY));
+                            Component.keybind(slot.keyTranslation())).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
                         tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
                         tooltip.add(Component.translatable("augmentation.forgermod.cooldown",

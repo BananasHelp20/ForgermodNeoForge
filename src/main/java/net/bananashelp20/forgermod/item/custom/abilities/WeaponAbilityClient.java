@@ -27,6 +27,10 @@ public final class WeaponAbilityClient {
             "key.forgermod.ability_secondary", KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_2, CATEGORY);
 
+    private static final KeyMapping TERTIARY = new KeyMapping(
+            "key.forgermod.ability_tertiary", KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_3, CATEGORY);
+
     private WeaponAbilityClient() {}
 
     @SubscribeEvent
@@ -44,20 +48,19 @@ public final class WeaponAbilityClient {
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Pre event) {
-        while (PRIMARY.consumeClick()) sendAbility(WeaponAbilitySlot.PRIMARY, PRIMARY, 0);
-        while (SECONDARY.consumeClick()) sendAbility(WeaponAbilitySlot.SECONDARY, SECONDARY, 1);
+        while (PRIMARY.consumeClick()) sendAbility(WeaponAbilitySlot.PRIMARY, PRIMARY);
+        while (SECONDARY.consumeClick()) sendAbility(WeaponAbilitySlot.SECONDARY, SECONDARY);
+        while (TERTIARY.consumeClick()) sendAbility(WeaponAbilitySlot.TERTIARY, TERTIARY);
     }
 
-    private static void sendAbility(WeaponAbilitySlot slot, KeyMapping binding, int hotbarSlot) {
+    private static void sendAbility(WeaponAbilitySlot slot, KeyMapping binding) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null
                 || !(minecraft.player.getMainHandItem().getItem() instanceof SwordItemWithEffect weapon)
                 || Augmentations.activeId(minecraft.player.getMainHandItem(), slot) == null) return;
-        // The default 1/2 bindings also select hotbar slots. Keep the weapon selected
-        // when its ability key still shares that binding with the vanilla hotbar key.
-        KeyMapping hotbarKey = minecraft.options.keyHotbarSlots[hotbarSlot];
-        if (binding.getKey().equals(hotbarKey.getKey())) {
-            while (hotbarKey.consumeClick()) { }
+        // Consume every matching hotbar binding, including user-remapped ability keys.
+        for (KeyMapping hotbarKey : minecraft.options.keyHotbarSlots) {
+            if (binding.getKey().equals(hotbarKey.getKey())) while (hotbarKey.consumeClick()) { }
         }
         PacketDistributor.sendToServer(new WeaponAbilityNetwork.UseAbilityPayload(
                 slot.ordinal(), minecraft.player.getInventory().selected,
@@ -72,6 +75,7 @@ public final class WeaponAbilityClient {
         public static void registerKeys(RegisterKeyMappingsEvent event) {
             event.register(PRIMARY);
             event.register(SECONDARY);
+            event.register(TERTIARY);
         }
     }
 }

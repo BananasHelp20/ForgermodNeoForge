@@ -12,7 +12,7 @@ final class TestWeapons {
         if (!Augmentations.eligible(stack)) return stack;
         var canonical = Augmentations.canonical(stack);
         stack = Augmentations.apply(stack, Augmentations.MATERIAL_HIT);
-        for (var slot : net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.values()) {
+        for (var slot : net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.nativeSlots()) {
             String id = canonical.abilityDescriptionKey(slot);
             if (id != null) stack = Augmentations.apply(stack, id);
         }

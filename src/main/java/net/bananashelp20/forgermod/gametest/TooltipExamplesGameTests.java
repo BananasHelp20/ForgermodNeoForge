@@ -60,6 +60,7 @@ public class TooltipExamplesGameTests {
             ItemStack maxed = TestWeapons.ready(item);
             var initial = Augmentations.learned(maxed);
             for (String id : initial.keySet()) for (int rank = 1; rank < 4; rank++) maxed = Augmentations.apply(maxed, id);
+            while(!Augmentations.available(maxed).isEmpty()) maxed=Augmentations.apply(maxed,Augmentations.available(maxed).getFirst().id());
             test.assertTrue(Augmentations.available(maxed).isEmpty(), "Morsium example not actually maxed");
             rows = tooltip(test, maxed);
             test.assertFalse(contains(rows, "tooltips.forgermod.can_augment") || contains(rows, "tooltips.forgermod.can_infuse"), "Maxed gem item has capability clutter");

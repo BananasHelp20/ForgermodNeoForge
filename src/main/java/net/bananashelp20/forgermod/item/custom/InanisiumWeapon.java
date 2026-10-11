@@ -67,6 +67,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         return switch (slot) {
             case PRIMARY -> stepThroughVoid(player);
             case SECONDARY -> suddenPresence(player);
+            case TERTIARY -> false;
         };
     }
 

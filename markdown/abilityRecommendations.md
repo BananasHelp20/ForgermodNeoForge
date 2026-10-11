@@ -4,7 +4,7 @@ This file contains **39 unapproved proposals**. All marked abilities are impleme
 
 Future entries marked `[implement]` require implementation. Unmarked entries are new ideas for your review; they are not approved or implemented. Each discarded unmarked proposal has one replacement, keeping its active or passive type. Any numbers in the new proposals are starting suggestions, not final balance decisions.
 
-Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade variants. A weapon can learn two active and two unique passive abilities, plus Material Hit separately. Dual Wield and the intrinsic axe slam remain separate. This list offers alternatives; it does not add every proposal to a weapon at once. Gemstones keep their existing bonuses. Rusty and Carbon Steel equipment remain outside this list.
+Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade variants. A weapon can learn three active abilities and five unique passives (two for daggers), plus Material Hit separately. Dual Wield and the intrinsic axe slam remain separate. This list offers alternatives; it does not add every proposal to a weapon at once. Gemstones keep their existing bonuses. Rusty and Carbon Steel equipment remain outside this list.
 
 ## Design rules for new proposals
 

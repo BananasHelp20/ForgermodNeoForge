@@ -1,6 +1,6 @@
 # Marked ability implementation record
 
-Only entries marked for implementation in abilityRecommendations.md are approved. Repeated entries share one implementation across their listed weapon families and gemstone variants. Abilities are learned through augmentation; each weapon retains two active and two unique passive slots, plus Material Hit separately. Missing balance values below were chosen with the user's permission.
+Only entries marked for implementation in abilityRecommendations.md are approved. Repeated entries share one implementation across their listed weapon families and gemstone variants. Abilities are learned through augmentation; each weapon retains three active and five unique passive slots (two passives for daggers), plus Material Hit separately. Missing balance values below were chosen with the user's permission.
 
 ## Quench Point — completed
 
