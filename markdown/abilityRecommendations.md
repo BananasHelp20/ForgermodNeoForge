@@ -89,7 +89,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Skybreaker Axe — `storming_axe`
 
-2. [implement] **Pocket Storm -active** The next hit will create an areal smash attack with great knockback to all affected enemies.
 5. **Sky Hunter — Passive.** Deal 20% more damage to phantoms, blazes and ghasts.
 6. **Windproof — Passive.** Take 30% less knockback while airborne.
 

@@ -36,7 +36,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Vacuum Burst**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Headwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Feather Shelter**: Taifunite claymore, Taifunite axe
-- [ ] **Pocket Storm**: Taifunite axe
+- [x] **Pocket Storm**: Taifunite axe
 - [ ] **Blood Rush**: Vulnusium dagger, Vulnusium claymore
 - [ ] **Final strike**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [ ] **Blood Sacrafice**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe

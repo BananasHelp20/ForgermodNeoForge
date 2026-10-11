@@ -27,6 +27,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.WINDCHARGE.equals(id)) return WindchargeEvents.activate(player,stack);
         if (AdditionalAbilities.VACUUM_BURST.equals(id)) return VacuumBurstAbility.activate(player,stack);
         if (AdditionalAbilities.FEATHER_SHELTER.equals(id)) return FeatherShelterAbility.activate(player,stack);
+        if (AdditionalAbilities.POCKET_STORM.equals(id)) return PocketStormEvents.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)
@@ -39,6 +40,7 @@ public final class AdditionalAbilityRuntime {
             || AdditionalAbilities.STUNNING_PRESENCE.equals(id) && StunningPresenceEvents.active(player)
             || AdditionalAbilities.CROSSWIND.equals(id) && CrosswindEvents.active(player)
             || AdditionalAbilities.UPWIND.equals(id) && UpwindEvents.active(player)
-            || AdditionalAbilities.WINDCHARGE.equals(id) && WindchargeEvents.active(player); }
-    public static void cancel(ServerPlayer player, String id) { if (AdditionalAbilities.WINDCHARGE.equals(id)) WindchargeEvents.cancel(player.getUUID()); if (AdditionalAbilities.UPWIND.equals(id)) UpwindEvents.cancel(player.getUUID()); if (AdditionalAbilities.CROSSWIND.equals(id)) CrosswindEvents.cancel(player.getUUID()); if (AdditionalAbilities.STUNNING_PRESENCE.equals(id)) StunningPresenceEvents.cancel(player.getUUID()); if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) DirectCurrentEvents.cancel(player.getUUID()); if (AdditionalAbilities.ALTERNATING_CURRENT.equals(id)) AlternatingCurrentEvents.cancel(player.getUUID()); if (AdditionalAbilities.STATIC_BLADE.equals(id)) StaticBladeEvents.cancel(player.getUUID()); if (AdditionalAbilities.LIVE_WIRE.equals(id)) LiveWireEvents.cancel(player.getUUID()); if (AdditionalAbilities.LULLABY.equals(id)) LullabyEvents.cancel(player.getUUID()); if (AdditionalAbilities.MAGMA_TOSS.equals(id)) MagmaTossEvents.cancel(player.getUUID()); if (AdditionalAbilities.GRAVITY_WELL.equals(id)) GravityWellEvents.cancel(player.getUUID()); }
+            || AdditionalAbilities.WINDCHARGE.equals(id) && WindchargeEvents.active(player)
+            || AdditionalAbilities.POCKET_STORM.equals(id) && PocketStormEvents.active(player); }
+    public static void cancel(ServerPlayer player, String id) { if (AdditionalAbilities.POCKET_STORM.equals(id)) PocketStormEvents.cancel(player.getUUID()); if (AdditionalAbilities.WINDCHARGE.equals(id)) WindchargeEvents.cancel(player.getUUID()); if (AdditionalAbilities.UPWIND.equals(id)) UpwindEvents.cancel(player.getUUID()); if (AdditionalAbilities.CROSSWIND.equals(id)) CrosswindEvents.cancel(player.getUUID()); if (AdditionalAbilities.STUNNING_PRESENCE.equals(id)) StunningPresenceEvents.cancel(player.getUUID()); if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) DirectCurrentEvents.cancel(player.getUUID()); if (AdditionalAbilities.ALTERNATING_CURRENT.equals(id)) AlternatingCurrentEvents.cancel(player.getUUID()); if (AdditionalAbilities.STATIC_BLADE.equals(id)) StaticBladeEvents.cancel(player.getUUID()); if (AdditionalAbilities.LIVE_WIRE.equals(id)) LiveWireEvents.cancel(player.getUUID()); if (AdditionalAbilities.LULLABY.equals(id)) LullabyEvents.cancel(player.getUUID()); if (AdditionalAbilities.MAGMA_TOSS.equals(id)) MagmaTossEvents.cancel(player.getUUID()); if (AdditionalAbilities.GRAVITY_WELL.equals(id)) GravityWellEvents.cancel(player.getUUID()); }
 }

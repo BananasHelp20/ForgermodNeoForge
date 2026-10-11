@@ -373,3 +373,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite claymore, Taifunite axe; all gemstone variants.
 - On use, gives the wielder and visible allied living entities Slow Falling for 10 seconds, with 4/6/8/10-block radius. Allies include teams, owned pets and cooperative players when PvP is disabled; corrected this shared ally check for Slipstream too. Enemies and targets behind walls are excluded. Vanilla effect merging preserves stronger pre-existing effects. Cooldown 60/50/40/30 seconds starts on use.
 - Tested, reviewed, retested and reviewed again; build and all 159 required server tests passed.
+
+## Pocket Storm - completed
+
+- Weapons: Taifunite axe; all gemstone variants.
+- Arms the next successful melee hit for up to 30 seconds. After normal hit processing, smashes enemies within 3 blocks of the victim: secondary enemies take current weapon damage; the original victim gets knockback without double damage. Horizontal knockback strength 1.0/1.2/1.4/1.6 with a small lift respects resistance. Lethal hits still trigger the smash; walls, allies and the wielder are excluded. No terrain changes. Cooldown 40/35/30/25 seconds after hit or cancellation. Also fixed Upwind to consume its armed gust on lethal hits.
+- Tested, reviewed, retested and reviewed again; build and all 160 required server tests passed.

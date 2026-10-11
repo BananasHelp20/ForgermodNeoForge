@@ -12,7 +12,10 @@ import net.minecraft.world.phys.HitResult;
 public final class WeaponAbilityTargets {
     private WeaponAbilityTargets() {}
     public static boolean enemy(ServerPlayer owner,LivingEntity target) {
-        return target!=owner && target.isAlive() && !target.isAlliedTo(owner) && (target instanceof Enemy
+        return target.isAlive() && hostileTo(owner,target);
+    }
+    public static boolean hostileTo(ServerPlayer owner,LivingEntity target) {
+        return target!=owner && !target.isAlliedTo(owner) && (target instanceof Enemy
                 || target instanceof Player player && owner.server.isPvpAllowed() && owner.canHarmPlayer(player)
                 || target instanceof Mob mob && mob.getTarget()==owner);
     }

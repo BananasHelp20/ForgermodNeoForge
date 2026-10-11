@@ -35,7 +35,7 @@ public final class UpwindEvents {
     @SubscribeEvent
     public static void landed(LivingDamageEvent.Post event) {
         if(!event.getSource().is(DamageTypes.PLAYER_ATTACK) || !(event.getSource().getEntity() instanceof ServerPlayer player) || !active(player)
-            || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0 || !WeaponAbilityTargets.enemy(player,event.getEntity())) return;
+            || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0 || !WeaponAbilityTargets.hostileTo(player,event.getEntity())) return;
         var gust=GUSTS.get(player.getUUID());if(gust.target!=null) return;gust.target=event.getEntity();gust.expires=player.level().getGameTime()+2;
     }
     @SubscribeEvent
