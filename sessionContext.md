@@ -510,3 +510,7 @@
 ## In-game ability description inventory
 
 - Added markdown/abilityDescriptions.md: 30 active abilities, 15 learnable passives, two intrinsic passives and nine material-hit effects, with exact English tooltip/card text and weapon assignments. Expanded material-hit descriptions for all 135 special weapon variants using current duration, gemstone and attack-speed rules. Verified completeness against native weapon methods, RecommendedAbilities constants and every named ability translation. Documentation only; gameplay unchanged.
+
+## Weapon ability name inventory
+
+- Added markdown/weaponAbilities.md with names only: every registered weapon name, weapon type and available implemented ability names. Includes 135 special base/gemstone variants and 13 ordinary weapons; intrinsic passives and material-hit names included. Unimplemented proposals excluded. Verified all 148 registrations, coverage of all 56 ability names and identical pools across each five-variant family. Documentation only.
