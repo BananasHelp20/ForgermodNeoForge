@@ -132,7 +132,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Deathwisper Dagger — `hollow_dagger`
 
 1. **Banish — Active.** Strike the aimed undead enemy within melee reach for twice your weapon damage. Has no effect on living targets.
-2. [implement] **Ghostwalk — Active.** Gain Invisibility for ten seconds. Attacking ends it; worn armor stays visible.
 3. [implement] **Soul Hunger — Passive.** Enemy kills grant two absorption health points, up to six from this passive.
 4. **Pale Blade — Passive.** Deal 15% more damage to invisible enemies.
 3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
@@ -143,7 +142,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. **Soul Cleave — Active.** Your next melee hit gains two bonus damage for each other enemy near the victim, capped at eight bonus damage.
 3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
 4. **Grave Strength — Passive.** Weakness reduces your attack damage by only half its normal amount while holding the blade.
-2. [implement] **Ghostwalk — Active.** Gain Invisibility for ten seconds. Attacking ends it; worn armor stays visible.
 3. [implement] **Soul Hunger — Passive.** Enemy kills grant two absorption health points, up to six from this passive.
 
 ### Ghost Axe — `hollow_axe`
@@ -152,7 +150,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 4. **Undead Ward — Passive.** Take 15% less damage from undead enemies.
-2. [implement] **Ghostwalk — Active.** Gain Invisibility for ten seconds. Attacking ends it; worn armor stays visible.
 3. [implement] **Soul Hunger — Passive.** Enemy kills grant two absorption health points, up to six from this passive.
 3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
 

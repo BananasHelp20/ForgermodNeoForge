@@ -17,7 +17,7 @@ public final class StaticBladeNetwork {
     }
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(SwingPayload.TYPE,SwingPayload.CODEC,(payload,context)->{
-            if(context.player() instanceof ServerPlayer player) StaticBladeEvents.release(player);
+            if(context.player() instanceof ServerPlayer player) {GhostwalkEvents.swing(player);StaticBladeEvents.release(player);}
         });
     }
 }

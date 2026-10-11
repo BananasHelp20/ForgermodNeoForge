@@ -17,7 +17,7 @@ public final class StaticBladeClient {
     public static void swing(InputEvent.InteractionKeyMappingTriggered event) {
         if(!event.isAttack() || event.isCanceled()) return;
         var minecraft=Minecraft.getInstance();
-        if(minecraft.player!=null && minecraft.screen==null && Augmentations.ids(minecraft.player.getMainHandItem(),true).contains(AdditionalAbilities.STATIC_BLADE))
+        if(minecraft.player!=null && minecraft.screen==null && (Augmentations.ids(minecraft.player.getMainHandItem(),true).contains(AdditionalAbilities.STATIC_BLADE) || Augmentations.ids(minecraft.player.getMainHandItem(),true).contains(AdditionalAbilities.GHOSTWALK)))
             PacketDistributor.sendToServer(new StaticBladeNetwork.SwingPayload());
     }
 }

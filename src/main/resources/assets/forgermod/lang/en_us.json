@@ -643,5 +643,8 @@
   "tooltips.forgermod.passive.compost.card": "Eat rotten flesh without its Hunger effect.",
   "tooltips.forgermod.passive.lumberjack.name": "Lumberjack",
   "tooltips.forgermod.passive.lumberjack": "Breaking logs with this axe does not consume weapon durability.",
-  "tooltips.forgermod.passive.lumberjack.card": "Mine logs without using weapon durability."
+  "tooltips.forgermod.passive.lumberjack.card": "Mine logs without using weapon durability.",
+  "tooltips.forgermod.ability.ghostwalk.name": "Ghostwalk",
+  "tooltips.forgermod.ability.ghostwalk": "Gain Invisibility for 10 seconds. Attacking ends it; worn armor stays visible.",
+  "tooltips.forgermod.ability.ghostwalk.card": "Become invisible for 10 seconds, until you attack."
 }

@@ -76,6 +76,7 @@ public class DualWieldNetwork {
         long last = LAST_ATTACK_TICK.getOrDefault(player.getUUID(), Long.MIN_VALUE);
         if (last != Long.MIN_VALUE && now - last < 3) return;
         LAST_ATTACK_TICK.put(player.getUUID(), now);
+        net.bananashelp20.forgermod.item.custom.abilities.GhostwalkEvents.swing(player);
 
         // An air swing still animates; it simply has no target to damage.
         // The attacking client already animates this swing. Send only one packet to observers.

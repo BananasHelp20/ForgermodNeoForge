@@ -51,7 +51,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Sapling Harvest**: Lush dagger, Lush claymore, Lush axe
 - [x] **Compost**: Lush dagger, Lush claymore, Lush axe
 - [x] **Lumberjack**: Lush axe
-- [ ] **Ghostwalk**: Morsium dagger, Morsium claymore, Morsium axe
+- [x] **Ghostwalk**: Morsium dagger, Morsium claymore, Morsium axe
 - [ ] **Soul Hunger**: Morsium dagger, Morsium claymore, Morsium axe
 - [ ] **Last Stand**: Morsium dagger, Morsium claymore, Morsium axe
 - [ ] **Bone Guard**: Morsium axe
