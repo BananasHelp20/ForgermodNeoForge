@@ -1,8 +1,8 @@
 # In-game weapon abilities
 
-The exact English descriptions currently used in the game, copied from `src/main/resources/assets/forgermod/lang/en_us.json`. This list includes 30 active abilities, 17 learnable passives, and nine material-hit effects. Unimplemented recommendations are excluded.
+English descriptions from the game language file and actual registered pools: 59 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
-Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Dual Wield and Vertical Strike are learned passives on special weapons, and one first-augmentation card always offers the relevant technique. Rusty Daggers and ordinary axes retain their built-in technique. Item descriptions appear when holding Shift; augmentation cards use the shorter descriptions shown separately below. Descriptions are reproduced as written, including their current balance values.
+Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
 ## Active abilities
 
@@ -17,6 +17,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Your next two hits apply Darkness and Weakness for 10 seconds.
+
+### Alternating Current
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> Arm a hit for up to 30 seconds. Hitting an enemy with another visible enemy within 20 blocks starts a one-minute link: the second enemy is stunned for 0.1 seconds immediately, then the stun alternates every second. Stuns add no damage. The link ends if targets die, separate by more than 20 blocks, or you switch weapons. Walls block pulses. Cooldown after ending: 120/100/80/60 seconds.
+
+**Augmentation card:**
+
+> Link two enemies within 20 blocks; a harmless stun alternates every second for one minute.
 
 ### Always the Gardeners
 
@@ -42,6 +54,54 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Lightning hits nearby enemies and builds Charge Attack.
 
+### Blood Rush
+
+**Weapons:** Assassin Dagger, Curseblood Claymore
+
+**Item tooltip:**
+
+> Spend 2 health points to gain Speed II for 10 seconds. Cannot be used if the cost would kill you.
+
+**Augmentation card:**
+
+> Spend 2 health points for 10 seconds of Speed II.
+
+### Blood Sacrafice
+
+**Weapons:** Assassin Dagger, Curseblood Claymore, Woundmaker Axe
+
+**Item tooltip:**
+
+> Sacrifice half your health and absorption to deal double weapon damage for 20 seconds. Switching weapons ends the effect.
+
+**Augmentation card:**
+
+> Sacrifice half your health and absorption for 20 seconds of double damage.
+
+### Bone Guard
+
+**Weapons:** Ghost Axe, Hollow Claymore
+
+**Item tooltip:**
+
+> Summon one friendly skeleton for 15 seconds. It shoots nearby enemies, drops no items or experience, and disappears when you put the weapon away.
+
+**Augmentation card:**
+
+> Summon a friendly skeleton for 15 seconds.
+
+### Challenge Roar
+
+**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+
+**Item tooltip:**
+
+> Roar to make visible hostile mobs within 6/8/10/12 blocks target you. Players, allies and neutral creatures are unaffected.
+
+**Augmentation card:**
+
+> Nearby visible hostile mobs turn their aggression toward you.
+
 ### Charge Attack
 
 **Weapons:** Static Dagger
@@ -65,6 +125,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Leave an ember decoy; hostile contact detonates and ignites it.
+
+### Crosswind
+
+**Weapons:** Dead Calm Dagger, Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> For two minutes, incoming projectiles are deflected sideways to miss you while preserving their speed. Your own shots are unaffected. Switching weapons cancels protection. Cooldown after ending: 180/160/140/120 seconds.
+
+**Augmentation card:**
+
+> Deflect incoming projectiles for two minutes.
 
 ### Crucible Hook
 
@@ -104,7 +176,7 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 ### Delusion
 
-**Weapons:** Nightmare Dagger, Dreambound Claymore, Dreamweaver Axe
+**Weapons:** Dreambound Claymore, Dreamweaver Axe, Nightmare Dagger
 
 **Item tooltip:**
 
@@ -114,9 +186,59 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Your next mob hit makes it forget aggression for 20 seconds.
 
+### Direct Current
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing a visible barrier deals two hearts of damage, at most once per half-second. Rank IV becomes Static Field: at three marks, all living entities inside their triangle take one damage per second. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
+
+**Augmentation card:**
+
+> Mark enemies to stun them and form damaging barriers. Rank IV adds a field that also hurts you and allies.
+
+**Rank IV name:** Static Field
+
+### Displace
+
+**Weapons:** Riftfang Dagger
+
+**Item tooltip:**
+
+> Swap places with the visible enemy under your crosshair within 10 blocks. Both bodies must fit in clear, loaded, dry destinations; mounted entities cannot swap. Cooldown: 40/35/30/25 seconds.
+
+**Augmentation card:**
+
+> Swap places with a visible aimed enemy within ten blocks if both destinations are clear.
+
+### Downdraft Bell
+
+**Weapons:** Dead Calm Dagger, Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> Force visible airborne enemies within 4/6/8/10 blocks downward once, with minimum downward velocity 0.8/1.0/1.2/1.4. Grounded and swimming enemies are unaffected. Adds no damage or teleportation and preserves horizontal momentum and existing fall distance. Cooldown: 30/25/20/15 seconds.
+
+**Augmentation card:**
+
+> Force airborne enemies downward once; grounded enemies are unaffected.
+
+### Dream Feast
+
+**Weapons:** Dreambound Claymore
+
+**Item tooltip:**
+
+> Restore eight hunger points (four food icons), capped at full hunger. Adds no saturation. Cooldown: 60/50/40/30 seconds.
+
+**Augmentation card:**
+
+> Restore four food icons.
+
 ### Echo Pin
 
-**Weapons:** Warden's Needle, Shrieking Claymore, Echoing Axe
+**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
 
 **Item tooltip:**
 
@@ -174,6 +296,30 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Distract enemies with an echo; strike the real target for a bonus.
 
+### Feather Shelter
+
+**Weapons:** Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> Grant yourself and allies within 4/6/8/10 blocks Slow Falling for 10 seconds.
+
+**Augmentation card:**
+
+> Give yourself and nearby allies 10 seconds of Slow Falling.
+
+### Flame Breath
+
+**Weapons:** Emberfang Dagger, Infernal Claymore, Molten Axe
+
+**Item tooltip:**
+
+> Breathe a 35-degree fire cone in your look direction, dealing current weapon damage and burning enemies for 3/4/5/6 seconds. Range: 4/5/6/7 blocks; cooldown: 30/25/20/15 seconds. Blocks stop the breath.
+
+**Augmentation card:**
+
+> Breathe a short fire cone, damaging and igniting enemies ahead.
+
 ### Flaming Combo
 
 **Weapons:** Emberfang Dagger
@@ -185,6 +331,54 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > For 10 seconds, each hit adds 1 second of burning.
+
+### Ghostwalk
+
+**Weapons:** Deathwisper Dagger, Ghost Axe, Hollow Claymore
+
+**Item tooltip:**
+
+> Gain Invisibility for 10 seconds. Attacking ends it; worn armor stays visible.
+
+**Augmentation card:**
+
+> Become invisible for 10 seconds, until you attack.
+
+### Gravity Well
+
+**Weapons:** Nullified Axe
+
+**Item tooltip:**
+
+> Pull visible enemies within six blocks toward you with one burst of velocity. A visual smash plays when a pulled enemy reaches melee range; it deals weapon damage. The pull itself deals no damage. Pull strength: 0.6/0.7/0.8/0.9. Ends after arrival or two seconds; switching cancels. Cooldown after ending: 40/35/30/25 seconds.
+
+**Augmentation card:**
+
+> Pull enemies within six blocks toward you; a weapon-damage smash plays on arrival.
+
+### Green Feast
+
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+
+**Item tooltip:**
+
+> Consume 1 wheat from your inventory to restore 2 health points. Requires missing health.
+
+**Augmentation card:**
+
+> Consume 1 wheat to heal 2 health points.
+
+### Just a Dream
+
+**Weapons:** Dreambound Claymore, Dreamweaver Axe, Nightmare Dagger
+
+**Item tooltip:**
+
+> Teleport safely to your respawn point, including across dimensions. Missing beds or anchors fall back to world spawn. Does not consume respawn-anchor charges. Mounted use is rejected. Cooldown: 60/50/40/30 seconds.
+
+**Augmentation card:**
+
+> Teleport safely to your respawn point, even in another dimension.
 
 ### Leech
 
@@ -198,6 +392,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Ten hits deal 10% more damage and heal up to 10 HP total.
 
+### Live Wire
+
+**Weapons:** Static Dagger
+
+**Item tooltip:**
+
+> For eight seconds, enemies that successfully hit you in melee receive two damage in return. Reflected damage cannot reflect again. Switching weapons cancels. Cooldown after ending: 40/35/30/25 seconds.
+
+**Augmentation card:**
+
+> For eight seconds, reflect two damage to melee attackers.
+
 ### Lucid Dreaming
 
 **Weapons:** Nightmare Dagger
@@ -210,6 +416,42 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Your next enemy kill grants Speed II and halves fall damage.
 
+### Lullaby
+
+**Weapons:** Dreambound Claymore
+
+**Item tooltip:**
+
+> Put the aimed enemy within 10/12/14/16 blocks to sleep for three seconds. Sleeping mobs cannot move or attack; damage wakes them immediately. Players instead receive Slowness II for three seconds. Switching cancels sleep. Cooldown: 40/35/30/25 seconds after sleep ends.
+
+**Augmentation card:**
+
+> Sleep an aimed mob for three seconds; damage wakes it. Players receive brief Slowness.
+
+### Magma Toss
+
+**Weapons:** Molten Axe
+
+**Item tooltip:**
+
+> Throw a molten rock that bursts on the first enemy or solid block, dealing current weapon damage and igniting nearby enemies. Radius: 2/2.5/3/3.5 blocks; burn: 3/4/5/6 seconds. Projectile lasts up to 3 seconds. Cooldown after ending: 35/30/25/20 seconds. Blocks stop blast damage; terrain and allies are safe.
+
+**Augmentation card:**
+
+> Throw a molten rock that bursts on impact, damaging and igniting nearby enemies.
+
+### Magnetic Throw
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> Launch the aimed enemy within melee reach along your look direction with velocity 1.1/1.3/1.5/1.7. Walls block targeting; adds no damage or teleportation. Cooldown: 25/20/15/10 seconds.
+
+**Augmentation card:**
+
+> Launch an enemy within melee reach along your look direction.
+
 ### Null Receipt
 
 **Weapons:** Nullified Axe
@@ -221,6 +463,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Store knockback from five hits; release it in a vertical slam.
+
+### Pocket Storm
+
+**Weapons:** Skybreaker Axe
+
+**Item tooltip:**
+
+> Your next melee hit smashes enemies within 3 blocks for weapon damage and strong knockback. The original victim receives knockback without a second damage hit.
+
+**Augmentation card:**
+
+> Arm a melee hit to create an area smash with strong knockback.
 
 ### Poisoned Vein
 
@@ -246,6 +500,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > While burning, your next hit ignites the target and heals 5 HP.
 
+### Ringing Steel
+
+**Weapons:** Shrieking Claymore
+
+**Item tooltip:**
+
+> Arm your next successful melee hit for up to 30 seconds. It also deals 15 durability damage to the victim's held weapon, respecting normal durability enchantments. Armor and shields are unaffected.
+
+**Augmentation card:**
+
+> Your next hit damages the enemy's held weapon by 15 durability.
+
 ### Rooting Roots
 
 **Weapons:** Leafcutter Dagger
@@ -257,6 +523,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Root and poison enemies within 10 blocks for 10 seconds.
+
+### Skull Throw
+
+**Weapons:** Ghost Axe
+
+**Item tooltip:**
+
+> Fire a slow wither skull. Its first impact bursts for weapon damage and Wither I for 5 seconds against nearby enemies, without breaking blocks.
+
+**Augmentation card:**
+
+> A slow skull bursts for weapon damage and brief Wither.
 
 ### Sonic Boom
 
@@ -281,6 +559,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Your next crit adds 15% of the target's maximum health as damage.
+
+### Static blade
+
+**Weapons:** Static Dagger
+
+**Item tooltip:**
+
+> Arm the next swing for up to 30 seconds. It releases a four-block-wide, half-block-high echo along your look direction at that swing, traveling 20 blocks and dealing current weapon damage once to each enemy. Solid blocks stop it. Switching cancels. Cooldown after ending: 40/35/30/25 seconds.
+
+**Augmentation card:**
+
+> Your next swing releases a wide piercing blade echo for 20 blocks; walls stop it.
 
 ### Stepping Through the Void
 
@@ -330,6 +620,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Chance to break one random armor piece on an aimed enemy.
 
+### Stunning Presence
+
+**Weapons:** Claymore of Thunder
+
+**Item tooltip:**
+
+> For 30 seconds, visible enemies within 4/6/8/10 blocks take one damage and are stunned for 0.3 seconds per pulse. Pulses occur every 2/1.65/1.35/1 seconds. Switching cancels. Cooldown after ending: 60/50/40/30 seconds.
+
+**Augmentation card:**
+
+> For 30 seconds, repeatedly damage and briefly stun nearby enemies.
+
 ### Sudden Presence
 
 **Weapons:** Riftfang Dagger
@@ -344,7 +646,7 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 ### Swing Attack
 
-**Weapons:** Molten Axe, Nullified Axe, Dreamweaver Axe, Voltage Axe, Skybreaker Axe, Woundmaker Axe, Verdant Axe, Ghost Axe, Echoing Axe
+**Weapons:** Dreamweaver Axe, Echoing Axe, Ghost Axe, Molten Axe, Nullified Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
 
 **Item tooltip:**
 
@@ -353,6 +655,56 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Strike every visible enemy in your melee range.
+
+### Upwind
+
+**Weapons:** Dead Calm Dagger, Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> Arm your next successful melee hit for up to 30 seconds. After normal hit knockback, add 0.6/0.8/1.0/1.2 knockback and launch the enemy upward at velocity 0.6/0.8/1.0/1.2, respecting knockback resistance. Adds no direct damage. Switching cancels. Cooldown after the hit: 30/25/20/15 seconds.
+
+**Augmentation card:**
+
+> Your next melee hit adds knockback and launches the enemy upward.
+
+### Vacuum Burst
+
+**Weapons:** Dead Calm Dagger, Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> Pull dropped items and experience orbs within 6/8/10/12 blocks toward you with one gust. Normal pickup rules still apply.
+
+**Augmentation card:**
+
+> Pull nearby drops and experience toward you.
+
+### Void Pulse
+
+**Weapons:** Claymore of the Void
+
+**Item tooltip:**
+
+> Release a damage-free pulse that pushes visible enemies away. Radius: 4/5/6/7 blocks; knockback strength: 0.6/0.8/1/1.2. Cooldown: 30/25/20/15 seconds.
+
+**Augmentation card:**
+
+> Push nearby enemies away without dealing damage.
+
+### Windcharge
+
+**Weapons:** Dead Calm Dagger, Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Axe rank IV becomes Skybreaker: falling hits or ground landings smash enemies within 2 blocks with weapon damage plus mace fall damage.
+
+**Augmentation card:**
+
+> Launch upward; axe rank IV gains a falling area smash.
+
+**Axe rank IV name:** Skybreaker
 
 ### Windy Dash
 
@@ -366,7 +718,31 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Launch yourself in the direction you look.
 
-## Learnable passive abilities
+## Passives
+
+### Aftershock
+
+**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+
+**Item tooltip:**
+
+> Each fully charged melee hit echoes for one damage point after one second. Echoes cannot trigger hit abilities or another echo; putting the weapon away cancels them.
+
+**Augmentation card:**
+
+> Charged melee hits echo for one damage after one second.
+
+### Backstab
+
+**Weapons:** Assassin Dagger, Dead Calm Dagger, Deathwisper Dagger, Leafcutter Dagger, Nightmare Dagger, Riftfang Dagger, Static Dagger, Warden's Needle
+
+**Item tooltip:**
+
+> Deal 20% more melee damage when striking an enemy from behind, within 60 degrees of directly behind it. Maximum level: I.
+
+**Augmentation card:**
+
+> Deal 20% more melee damage when striking an enemy from behind.
 
 ### Chain Lightning
 
@@ -380,6 +756,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Hits can arc between enemies for half weapon damage.
 
+### Charred Edge
+
+**Weapons:** Emberfang Dagger
+
+**Item tooltip:**
+
+> Deal 15% more melee damage to enemies with Fire Resistance. Maximum level: I.
+
+**Augmentation card:**
+
+> Deal 15% more melee damage to enemies with Fire Resistance.
+
 ### Cold Bellows
 
 **Weapons:** Infernal Claymore
@@ -392,6 +780,42 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Shield blocks ignite the attacking enemy or projectile shooter.
 
+### Compost
+
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+
+**Item tooltip:**
+
+> Eating rotten flesh while holding this weapon in either hand does not apply Hunger. Existing Hunger and other sources are unaffected.
+
+**Augmentation card:**
+
+> Eat rotten flesh without its Hunger effect.
+
+### Conductive Edge
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> Deal 20% more melee damage to enemies standing in water or exposed to rain.
+
+**Augmentation card:**
+
+> Deal 20% more melee damage to wet enemies.
+
+### Daydreamer
+
+**Weapons:** Dreamweaver Axe
+
+**Item tooltip:**
+
+> Gain Jump Boost I while holding this axe in your main hand during daytime. Ends when you put it away or night begins. Stronger potion effects are preserved.
+
+**Augmentation card:**
+
+> Gain Jump Boost I while holding the axe during daytime.
+
 ### Death March
 
 **Weapons:** Deathwisper Dagger
@@ -403,6 +827,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Deal more damage as the target loses health, up to double.
+
+### Death's Due
+
+**Weapons:** Deathwisper Dagger, Ghost Axe, Hollow Claymore
+
+**Item tooltip:**
+
+> Enemy kills grant 25% more experience, rounded down to whole points. Item drops are unchanged.
+
+**Augmentation card:**
+
+> Enemy kills grant 25% more experience.
 
 ### Distance Tax
 
@@ -428,6 +864,26 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Press Jump again in midair to jump a second time.
 
+### Dual Wield
+
+**Weapons:** Assassin Dagger, Dead Calm Dagger, Deathwisper Dagger, Emberfang Dagger, Leafcutter Dagger, Nightmare Dagger, Riftfang Dagger, Rusty Dagger, Static Dagger, Warden's Needle
+
+**Item tooltip:**
+
+> Daggers of the same material strike in both hands, including different gemstone variants; learned material hits apply their effect.
+
+### Echo Appetite
+
+**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+
+**Item tooltip:**
+
+> Breaking sculk, sculk veins, sensors, catalysts or shriekers restores one hunger point, without saturation.
+
+**Augmentation card:**
+
+> Break sculk blocks to restore one hunger point.
+
 ### Echo Salvage
 
 **Weapons:** Echoing Axe
@@ -451,6 +907,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Build attack speed with repeated hits on one enemy.
+
+### Final strike
+
+**Weapons:** Assassin Dagger, Curseblood Claymore, Woundmaker Axe
+
+**Item tooltip:**
+
+> Deal 50% more melee damage to your most recently hit enemy when it has less than 10% health.
+
+**Augmentation card:**
+
+> Deal 50% more damage to your last hit enemy below 10% health.
 
 ### Fire Resistance
 
@@ -476,6 +944,18 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Store flowers in nine slots. Right-click suitable terrain to plant them.
 
+### Headwind
+
+**Weapons:** Dead Calm Dagger, Skybreaker Axe, Storming Claymore
+
+**Item tooltip:**
+
+> Sprinting uses half the normal hunger exhaustion while this weapon is held.
+
+**Augmentation card:**
+
+> Halve hunger exhaustion from sprinting.
+
 ### Heating Up
 
 **Weapons:** Infernal Claymore
@@ -487,6 +967,66 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Store melee damage as heat; spend heat to ignite your attacks.
+
+### Heavy Current
+
+**Weapons:** Voltage Axe
+
+**Item tooltip:**
+
+> Deal 15% more melee damage to enemies wearing armor in all four normal armor slots.
+
+**Augmentation card:**
+
+> Deal 15% more melee damage to fully armored enemies.
+
+### Last Stand
+
+**Weapons:** Deathwisper Dagger, Ghost Axe, Hollow Claymore
+
+**Item tooltip:**
+
+> Once every 2 minutes, a fatal hit leaves you at 1 health point instead. Requires more than 1 health point before the hit.
+
+**Augmentation card:**
+
+> Survive a fatal hit at 1 HP, once every 2 minutes.
+
+### Lightning Rod
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> While holding this weapon, lightning cannot hurt or ignite you. Extra harmless strikes can occur under open sky without a storm (average once per minute). A strike grants five absorption hearts and Strength I for 30 seconds; repeated strikes replenish those five hearts without stacking. Putting the weapon away ends these buffs.
+
+**Augmentation card:**
+
+> Lightning is harmless and grants five absorption hearts plus Strength I; extra strikes need no storm.
+
+### Lonely Dream
+
+**Weapons:** Nightmare Dagger
+
+**Item tooltip:**
+
+> Gain 5% attack speed for each enemy within ten blocks while holding this weapon. The bonus updates as enemies enter or leave and ends when you switch weapons. Maximum level: I.
+
+**Augmentation card:**
+
+> Gain 5% attack speed for each enemy within ten blocks.
+
+### Lumberjack
+
+**Weapons:** Verdant Axe
+
+**Item tooltip:**
+
+> Breaking logs with this axe does not consume weapon durability.
+
+**Augmentation card:**
+
+> Mine logs without using weapon durability.
 
 ### Nether Born
 
@@ -502,7 +1042,7 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 ### Overwhelming Smash
 
-**Weapons:** Nullified Axe, Dreamweaver Axe, Voltage Axe, Skybreaker Axe, Woundmaker Axe, Verdant Axe, Ghost Axe, Echoing Axe
+**Weapons:** Dreamweaver Axe, Echoing Axe, Ghost Axe, Nullified Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
 
 **Item tooltip:**
 
@@ -511,6 +1051,30 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Break blocking shields and add 20% armor wear.
+
+### Photosynthesis
+
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+
+**Item tooltip:**
+
+> Restore 1 weapon durability every 15 seconds during daylight while this weapon is held.
+
+**Augmentation card:**
+
+> Slowly repair this weapon while holding it during daylight.
+
+### Pillow Armor
+
+**Weapons:** Dreamweaver Axe
+
+**Item tooltip:**
+
+> Take 25% less fall damage while holding this axe in your main hand.
+
+**Augmentation card:**
+
+> Take 25% less fall damage while holding the axe.
 
 ### Quench Point
 
@@ -524,6 +1088,30 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Quench a burning enemy; stored fire strengthens your next hit.
 
+### Quick Recharge
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> A successful fully charged critical hit shortens this weapon variant's primary ability cooldown by one second. Can trigger once every two seconds. Does not change the secondary cooldown.
+
+**Augmentation card:**
+
+> Charged critical hits shorten the primary cooldown by one second, once every two seconds.
+
+### Resonance Crit
+
+**Weapons:** Shrieking Claymore, Warden's Needle
+
+**Item tooltip:**
+
+> Fully charged melee hits against rising, jumping enemies are critical hits, even while you stand on the ground.
+
+**Augmentation card:**
+
+> Fully charged hits critically strike jumping enemies.
+
 ### Revenge
 
 **Weapons:** Deathwisper Dagger
@@ -536,9 +1124,138 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 
 > Deal 20% more damage to undead mobs.
 
+### Revengeful Exit
+
+**Weapons:** Assassin Dagger, Curseblood Claymore, Woundmaker Axe
+
+**Item tooltip:**
+
+> Dying to an enemy releases a blood explosion for weapon damage within 5 blocks, plus 5 times weapon damage to your killer. Does not destroy blocks.
+
+**Augmentation card:**
+
+> On death, damage nearby entities and deal 5 times weapon damage to your killer.
+
+### Sapling Harvest
+
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+
+**Item tooltip:**
+
+> Enemy kills have a 15% chance to drop 1 extra random sapling.
+
+**Augmentation card:**
+
+> Enemy kills may drop an extra sapling (15% chance).
+
+### Scar Compass
+
+**Weapons:** Assassin Dagger, Curseblood Claymore, Woundmaker Axe
+
+**Item tooltip:**
+
+> Your most recently hit enemy glows for 10 minutes, until you hit another enemy or stop holding this weapon.
+
+**Augmentation card:**
+
+> Mark your most recently hit enemy with a 10-minute glow.
+
+### Sleepwalker
+
+**Weapons:** Nightmare Dagger
+
+**Item tooltip:**
+
+> Deal 10% more melee damage at night in dimensions with a day-night cycle. Night is between world times 13000 and 23000; storms during daytime do not count. Maximum level: I.
+
+**Augmentation card:**
+
+> Deal 10% more melee damage at night.
+
+### Slipstream
+
+**Weapons:** Dead Calm Dagger
+
+**Item tooltip:**
+
+> While sprinting directly behind a moving ally within three blocks and in clear sight, gain 10% base movement speed. The bonus ends when you stop, overtake, turn away, lose sight, or put the dagger away. Does not stack.
+
+**Augmentation card:**
+
+> Sprint behind a moving ally to gain a small speed bonus.
+
+### Soul Hunger
+
+**Weapons:** Deathwisper Dagger, Ghost Axe, Hollow Claymore
+
+**Item tooltip:**
+
+> Enemy kills grant 2 absorption health points, capped at 6 from this passive. Putting the weapon away removes its remaining absorption.
+
+**Augmentation card:**
+
+> Enemy kills grant 2 absorption health, up to 6.
+
+### Stone Song
+
+**Weapons:** Shrieking Claymore
+
+**Item tooltip:**
+
+> Gain two armor points while holding this blade below Y=0.
+
+**Augmentation card:**
+
+> Holding this blade below Y=0 grants two armor points.
+
+### Sunfed
+
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+
+**Item tooltip:**
+
+> While holding this weapon outside in daylight, restore 1 hunger point every 15 seconds. Does not add saturation.
+
+**Augmentation card:**
+
+> Restore 1 hunger every 15 seconds outside in daylight.
+
+### Unfinished Dream
+
+**Weapons:** Dreambound Claymore, Dreamweaver Axe, Nightmare Dagger
+
+**Item tooltip:**
+
+> Killing an enemy before it damages you heals one health point, equal to half a heart. Hits absorbed by absorption health still count. Maximum level: I.
+
+**Augmentation card:**
+
+> Killing an enemy before it hits you heals half a heart.
+
+### Vertical Strike
+
+**Weapons:** Carbon Steel Axe, Dreamweaver Axe, Echoing Axe, Ghost Axe, Molten Axe, Nullified Axe, Rusty Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
+
+**Item tooltip:**
+
+> Every third attack within 10 seconds slams a 3×3 area ahead.
+Requires an empty offhand.
+
+### Void Grip
+
+**Weapons:** Riftfang Dagger
+
+**Item tooltip:**
+
+> Your melee hits produce 25% less knockback, keeping enemies within dagger reach. Maximum level: I.
+
+**Augmentation card:**
+
+> Your melee hits produce 25% less knockback.
+
 ### Warden Tone
 
-**Weapons:** Warden's Needle, Shrieking Claymore, Echoing Axe
+**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
 
 **Item tooltip:**
 
@@ -547,24 +1264,6 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Du
 **Augmentation card:**
 
 > Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you.
-
-### Dual Wield
-
-**Weapons:** Daggers; knives excluded.
-
-**Item tooltip:**
-
-> Daggers of the same material strike in both hands, including different gemstone variants; learned material hits apply their effect.
-
-### Vertical Strike
-
-**Weapons:** Axes.
-
-**Item tooltip:**
-
-> Every third attack within 10 seconds slams a 3×3 area ahead.
-> Requires an empty offhand.
-
 ## Material-hit effects
 
 These are learned separately through augmentation. Each material has one effect; the tooltip substitutes its name, effect strength and weapon-specific duration into the following in-game template:

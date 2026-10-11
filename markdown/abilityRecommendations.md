@@ -1,8 +1,8 @@
 # Special weapon ability recommendations
 
-This file contains **marked abilities awaiting implementation** and **39 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
+This file contains **39 unapproved proposals**. All marked abilities are implemented; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
 
-Entries marked `[implement]` retain your existing approval and descriptions. Unmarked entries are new ideas for your review; they are not approved or implemented. Each discarded unmarked proposal has one replacement, keeping its active or passive type. Any numbers in the new proposals are starting suggestions, not final balance decisions.
+Future entries marked `[implement]` require implementation. Unmarked entries are new ideas for your review; they are not approved or implemented. Each discarded unmarked proposal has one replacement, keeping its active or passive type. Any numbers in the new proposals are starting suggestions, not final balance decisions.
 
 Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade variants. A weapon can learn two active and two unique passive abilities, plus Material Hit separately. Dual Wield and the intrinsic axe slam remain separate. This list offers alternatives; it does not add every proposal to a weapon at once. Gemstones keep their existing bonuses. Rusty and Carbon Steel equipment remain outside this list.
 
@@ -20,22 +20,16 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Emberfang Dagger — `infernal_dagger`
 
-1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
-2. [implement] **Charred Edge — Passive.** Deal 15% more melee damage to enemies with Fire Resistance.
 
 ### Molten Axe — `infernal_axe`
 
-1. [implement] **Magma Toss — Active.** Throw a molten rock that bursts against the first enemy or block it hits, damaging and igniting nearby enemies without breaking terrain.
-1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
 
 ### Infernal Claymore
-1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
 
 ## Inanisium
 
 ### Riftfang Dagger — `dagger_of_the_void`
 
-1. [implement] **Displace — Active.** Swap places with the visible enemy you aim at within ten blocks, if both destinations are clear.
 
 ### Claymore of the Void — `claymore_of_the_void`
 

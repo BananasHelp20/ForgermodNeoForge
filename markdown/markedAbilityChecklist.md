@@ -54,12 +54,14 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Ghostwalk**: Morsium dagger, Morsium claymore, Morsium axe
 - [x] **Soul Hunger**: Morsium dagger, Morsium claymore, Morsium axe
 - [x] **Last Stand**: Morsium dagger, Morsium claymore, Morsium axe
-- [x] **Bone Guard**: Morsium axe
+- [x] **Bone Guard**: Morsium claymore, Morsium axe
 - [x] **Skull Throw**: Morsium axe
-- [x] **Death's Due**: Morsium axe
+- [x] **Death's Due**: Morsium dagger, Morsium claymore, Morsium axe
 - [x] **Echo Appetite**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [x] **Resonance Crit**: Pulsite dagger, Pulsite claymore
 - [x] **Aftershock**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [x] **Ringing Steel**: Pulsite claymore
 - [x] **Stone Song**: Pulsite claymore
-- [x] **Challenge Roar**: Pulsite axe
+- [x] **Challenge Roar**: Pulsite dagger, Pulsite claymore, Pulsite axe
+
+Final live-file audit: all 58 tracked names are complete, including revised weapon assignments. Six re-added marks for Flame Breath, Charred Edge, Magma Toss and Displace were verified against their implementations and removed. No implementation-marked recommendation remains.

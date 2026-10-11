@@ -10,9 +10,9 @@ Only entries marked for implementation in abilityRecommendations.md are approved
 - A hit can spend a previous charge and store fire from its new victim; unsuccessful or blocked hits do not spend it. Switching, death, logout and expiry clear stored fire.
 - Reviewed twice. Build/lightweight checks and 60 required server tests pass, including all five variants, one-time use, rejected hits, switch cleanup, cap and expiry.
 
-## Remaining marked abilities — pending
+## Completion status
 
-Lonely Dream; Unfinished Dream; Just a Dream; Sleepwalker; Static Blade; Lightning Rod; Alternating Current; Direct Current / Static Field; Stunning Presence; Downdraft Bell; Crosswind; Slipstream; Upwind; Windcharge / Skybreaker; Pocket Storm; Final Strike; Blood Sacrifice; Scar Compass; Revengeful Exit.
+All implementation-marked entries are complete. The final live-file audit also verified re-added marks and updated weapon assignments.
 
 Heating Up's corrected maximum-level behavior has been implemented; see its completed entry below.
 
