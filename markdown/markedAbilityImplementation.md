@@ -179,3 +179,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Ignisium dagger; all gemstone variants.
 - Rank-I passive adds exactly 15% melee damage against hostile enemies with Fire Resistance; fresh gear, neutral targets and secondary spell damage are excluded.
 - Tested, reviewed, retested and reviewed again; build and all 116 required server tests passed.
+
+## Magma Toss - completed
+
+- Weapons: Ignisium axe; all gemstone variants.
+- One real magma-cream rock projectile per wielder, bursts on first enemy or block for weapon damage; rank I-IV radius 2/2.5/3/3.5 blocks, burn 3/4/5/6 seconds and ending cooldown 35/30/25/20 seconds. Three-second lifetime; ignores neutral/allied entities; solid blocks stop blast damage. Switching/death/logout removes rock, no terrain edits.
+- Tested, reviewed, retested and reviewed again; build and all 118 required server tests passed.

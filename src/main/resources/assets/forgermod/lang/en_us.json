@@ -509,5 +509,8 @@
   "tooltips.forgermod.ability.flame_breath.card": "Breathe a short fire cone, damaging and igniting enemies ahead.",
   "tooltips.forgermod.passive.charred_edge.name": "Charred Edge",
   "tooltips.forgermod.passive.charred_edge": "Deal 15% more melee damage to enemies with Fire Resistance. Maximum level: I.",
-  "tooltips.forgermod.passive.charred_edge.card": "Deal 15% more melee damage to enemies with Fire Resistance."
+  "tooltips.forgermod.passive.charred_edge.card": "Deal 15% more melee damage to enemies with Fire Resistance.",
+  "tooltips.forgermod.ability.magma_toss.name": "Magma Toss",
+  "tooltips.forgermod.ability.magma_toss": "Throw a molten rock that bursts on the first enemy or solid block, dealing current weapon damage and igniting nearby enemies. Radius: 2/2.5/3/3.5 blocks; burn: 3/4/5/6 seconds. Projectile lasts up to 3 seconds. Cooldown after ending: 35/30/25/20 seconds. Blocks stop blast damage; terrain and allies are safe.",
+  "tooltips.forgermod.ability.magma_toss.card": "Throw a molten rock that bursts on impact, damaging and igniting nearby enemies."
 }

@@ -4,7 +4,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 
 - [x] **Flame Breath**: Ignisium dagger, Ignisium axe, Ignisium claymore
 - [x] **Charred Edge**: Ignisium dagger
-- [ ] **Magma Toss**: Ignisium axe
+- [x] **Magma Toss**: Ignisium axe
 - [ ] **Displace**: Inanisium dagger
 - [ ] **Backstab**: Inanisium dagger, Somnium dagger, Electrium dagger, Taifunite dagger, Vulnusium dagger, Lush dagger, Morsium dagger, Pulsite dagger
 - [ ] **Void Grip**: Inanisium dagger
