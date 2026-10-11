@@ -566,5 +566,8 @@
   "tooltips.forgermod.passive.conductive_edge.card": "Deal 20% more melee damage to wet enemies.",
   "tooltips.forgermod.ability.static_blade.name": "Static blade",
   "tooltips.forgermod.ability.static_blade": "Arm the next swing for up to 30 seconds. It releases a four-block-wide, half-block-high echo along your look direction at that swing, traveling 20 blocks and dealing current weapon damage once to each enemy. Solid blocks stop it. Switching cancels. Cooldown after ending: 40/35/30/25 seconds.",
-  "tooltips.forgermod.ability.static_blade.card": "Your next swing releases a wide piercing blade echo for 20 blocks; walls stop it."
+  "tooltips.forgermod.ability.static_blade.card": "Your next swing releases a wide piercing blade echo for 20 blocks; walls stop it.",
+  "tooltips.forgermod.passive.lightning_rod.name": "Lightning Rod",
+  "tooltips.forgermod.passive.lightning_rod": "While holding this weapon, lightning cannot hurt or ignite you. Extra harmless strikes can occur under open sky without a storm (average once per minute). A strike grants five absorption hearts and Strength I for 30 seconds; repeated strikes replenish those five hearts without stacking. Putting the weapon away ends these buffs.",
+  "tooltips.forgermod.passive.lightning_rod.card": "Lightning is harmless and grants five absorption hearts plus Strength I; extra strikes need no storm."
 }

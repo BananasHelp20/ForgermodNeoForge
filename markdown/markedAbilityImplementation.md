@@ -295,3 +295,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium dagger; all gemstone variants.
 - Next swing (air, block or enemy) launches a server-authoritative four-block-wide, half-block-high echo along the view direction captured on that swing. Travels one block per tick up to 20 blocks; full-width collision sampling stops at solid blocks, while enemies are pierced once each for current weapon damage. Arms for 30 seconds; released flight has its own deadline. Exact-stack switching/death/logout cancels; ranks reduce ending cooldown to 40/35/30/25 seconds. Uses particles and compact state without a ticking projectile entity.
 - Tested, reviewed, retested and reviewed again; build and all 139 required server tests passed.
+
+## Lightning Rod - completed
+
+- Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
+- Rank-I passive prevents actual lightning strikes from injuring or igniting the wielder. Under open sky, an additional cosmetic strike rolls once per second with 1/60 chance, independent of storms. Strikes add exactly 10 absorption HP and Strength I for 30 seconds; repeated flashes cannot stack hearts. Owned absorption consumption is tracked so switching/expiry preserves unrelated absorption and Strength, including stronger potion chains. Cosmetic server bolts expire without changing copper, powering rods, igniting blocks or damaging nearby entities.
+- Tested, reviewed, retested and reviewed again; build and all 140 required server tests passed.
