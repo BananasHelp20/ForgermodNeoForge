@@ -185,3 +185,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Ignisium axe; all gemstone variants.
 - One real magma-cream rock projectile per wielder, bursts on first enemy or block for weapon damage; rank I-IV radius 2/2.5/3/3.5 blocks, burn 3/4/5/6 seconds and ending cooldown 35/30/25/20 seconds. Three-second lifetime; ignores neutral/allied entities; solid blocks stop blast damage. Switching/death/logout removes rock, no terrain edits.
 - Tested, reviewed, retested and reviewed again; build and all 118 required server tests passed.
+
+## Displace - completed
+
+- Weapons: Inanisium dagger; all gemstone variants.
+- Swaps the aimed visible enemy within ten blocks only when both complete bodies fit in loaded, dry destinations; mounted entities are rejected. Preserves facing, resets fall distance and momentum, and rolls back the target if player teleport fails. Rank I-IV cooldown 40/35/30/25 seconds; rejected uses consume no cooldown.
+- Tested, reviewed, retested and reviewed again; build and all 119 required server tests passed.

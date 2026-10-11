@@ -556,3 +556,5 @@ Removed
 - Added Charred Edge to Ignisium dagger and all gemstone variants. Rank-I passive adds exactly 15% melee damage against hostile enemies with Fire Resistance; fresh gear, neutral targets and secondary spell damage are excluded.
 
 - Added Magma Toss to Ignisium axe and all gemstone variants. One real magma-cream rock projectile per wielder, bursts on first enemy or block for weapon damage; rank I-IV radius 2/2.5/3/3.5 blocks, burn 3/4/5/6 seconds and ending cooldown 35/30/25/20 seconds. Three-second lifetime; ignores neutral/allied entities; solid blocks stop blast damage. Switching/death/logout removes rock, no terrain edits.
+
+- Added Displace to Inanisium dagger and all gemstone variants. Swaps the aimed visible enemy within ten blocks only when both complete bodies fit in loaded, dry destinations; mounted entities are rejected. Preserves facing, resets fall distance and momentum, and rolls back the target if player teleport fails. Rank I-IV cooldown 40/35/30/25 seconds; rejected uses consume no cooldown.

@@ -1,6 +1,6 @@
 # Special weapon ability recommendations
 
-This file contains **marked abilities awaiting implementation** and **47 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
+This file contains **marked abilities awaiting implementation** and **41 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
 
 Entries marked `[implement]` retain your existing approval and descriptions. Unmarked entries are new ideas for your review; they are not approved or implemented. Each discarded unmarked proposal has one replacement, keeping its active or passive type. Any numbers in the new proposals are starting suggestions, not final balance decisions.
 
@@ -25,6 +25,7 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Molten Axe — `infernal_axe`
 
+1. [implement] **Magma Toss — Active.** Throw a molten rock that bursts against the first enemy or block it hits, damaging and igniting nearby enemies without breaking terrain.
 1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
 
 ### Infernal Claymore
@@ -34,7 +35,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Riftfang Dagger — `dagger_of_the_void`
 
-1. [implement] **Displace — Active.** Swap places with the visible enemy you aim at within ten blocks, if both destinations are clear.
 2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 3. [implement] **Void Grip — Passive.** Your melee hits produce 25% less knockback, keeping enemies within dagger reach.
 
@@ -244,8 +244,8 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Ghost Axe — `hollow_axe`
 
 1. [implement] **Bone Guard — Active.** Summon one temporary friendly skeleton for fifteen seconds. It shoots nearby enemies and drops no items or experience. Only one can exist per wielder.
-2. **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
-3. **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
+2. [implement] **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
+3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 4. **Undead Ward — Passive.** Take 15% less damage from undead enemies.
 2. [implement] **Ghostwalk — Active.** Gain Invisibility for ten seconds. Attacking ends it; worn armor stays visible.
 3. [implement] **Soul Hunger — Passive.** Enemy kills grant two absorption health points, up to six from this passive.
@@ -257,18 +257,21 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
-2. **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
-3. **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
+2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
+3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 
 ### Shrieking Claymore — `shrieking_claymore`
 
 1. **Dissonance — Active.** Your next melee hit removes one random positive potion effect from the enemy.
-2. **Ringing Steel — Active.** Your next melee hit also damages the victim's held weapon by fifteen durability points. Does not affect armor or shields.
-3. **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
+2. [implement] **Ringing Steel — Active.** Your next melee hit also damages the victim's held weapon by fifteen durability points. Does not affect armor or shields.
+3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
 4. **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
+2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
+3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 
 ### Echoing Axe — `shrieking_axe`
 
 1. **Rebound — Active.** Aim at a solid wall within three blocks to launch yourself away from its face with velocity.
 2. **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 3. **Bedrock Grip — Passive.** Take 50% less damage from falling anvils and dripstone while holding the axe.
+2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
