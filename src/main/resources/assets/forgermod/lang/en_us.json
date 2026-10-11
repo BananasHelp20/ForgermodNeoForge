@@ -652,5 +652,8 @@
   "tooltips.forgermod.passive.soul_hunger.card": "Enemy kills grant 2 absorption health, up to 6.",
   "tooltips.forgermod.passive.last_stand.name": "Last Stand",
   "tooltips.forgermod.passive.last_stand": "Once every 2 minutes, a fatal hit leaves you at 1 health point instead. Requires more than 1 health point before the hit.",
-  "tooltips.forgermod.passive.last_stand.card": "Survive a fatal hit at 1 HP, once every 2 minutes."
+  "tooltips.forgermod.passive.last_stand.card": "Survive a fatal hit at 1 HP, once every 2 minutes.",
+  "tooltips.forgermod.ability.bone_guard.name": "Bone Guard",
+  "tooltips.forgermod.ability.bone_guard": "Summon one friendly skeleton for 15 seconds. It shoots nearby enemies, drops no items or experience, and disappears when you put the weapon away.",
+  "tooltips.forgermod.ability.bone_guard.card": "Summon a friendly skeleton for 15 seconds."
 }

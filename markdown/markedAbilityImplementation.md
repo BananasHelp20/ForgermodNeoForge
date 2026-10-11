@@ -463,3 +463,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
 - Learned passive prevents one fatal hit above one HP, leaving exactly one real HP after normal absorption consumption. A persistent player-wide two-minute cooldown survives respawn and prevents variant swapping from bypassing it. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 176 required server tests passed.
+
+## Bone Guard - completed
+
+- Weapons: Morsium claymore, Morsium axe; all gemstone variants.
+- Summons one friendly vanilla-rendered skeleton for 15 seconds, with ordinary skeleton bow damage and rank-scaled 8/10/12/14-block targeting range. It shoots only visible enemies; arrows cannot hurt allies or be collected. Summon, gear and arrows cannot persist or yield loot/experience. Switching, expiry, death and logout remove the summon and its shots. Ending cooldown 60/50/40/30 seconds.
+- Tested, reviewed, retested and reviewed again; build and all 178 required server tests passed.

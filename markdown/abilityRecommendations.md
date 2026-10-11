@@ -141,11 +141,9 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. **Soul Cleave — Active.** Your next melee hit gains two bonus damage for each other enemy near the victim, capped at eight bonus damage.
 4. **Grave Strength — Passive.** Weakness reduces your attack damage by only half its normal amount while holding the blade.
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
-1. [implement] **Bone Guard — Active.** Summon one temporary friendly skeleton for fifteen seconds. It shoots nearby enemies and drops no items or experience. Only one can exist per wielder.
 
 ### Ghost Axe — `hollow_axe`
 
-1. [implement] **Bone Guard — Active.** Summon one temporary friendly skeleton for fifteen seconds. It shoots nearby enemies and drops no items or experience. Only one can exist per wielder.
 2. [implement] **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 4. **Undead Ward — Passive.** Take 15% less damage from undead enemies.
