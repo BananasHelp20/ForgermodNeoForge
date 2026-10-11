@@ -117,19 +117,16 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Bramble Shot — Active.** Fire a thorn that damages and briefly slows the first enemy it hits.
 3. **Leaf Cover — Passive.** Gain Resistance I while crouching inside leaves.
-4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 
 ### Overgrown Claymore — `overgrown_claymore`
 
 2. **Sap Shield — Active.** Gain four absorption health points for eight seconds. While that absorption remains, melee hits cannot knock you back.
 3. **Deep Roots — Passive.** Take 20% less melee damage while crouching on dirt, grass or moss.
-4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 
 ### Verdant Axe — `nature_axe`
 
 1. **Oakskin — Active.** Gain six armor points for ten seconds, but receive Slowness I for the first five seconds.
 3. [implement] **Lumberjack — Passive.** Breaking logs with this axe does not consume weapon durability.
-4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 
 ## Morsium
 

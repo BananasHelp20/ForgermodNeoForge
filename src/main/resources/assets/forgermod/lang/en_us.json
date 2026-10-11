@@ -637,5 +637,8 @@
   "tooltips.forgermod.ability.green_feast.card": "Consume 1 wheat to heal 2 health points.",
   "tooltips.forgermod.passive.sapling_harvest.name": "Sapling Harvest",
   "tooltips.forgermod.passive.sapling_harvest": "Enemy kills have a 15% chance to drop 1 extra random sapling.",
-  "tooltips.forgermod.passive.sapling_harvest.card": "Enemy kills may drop an extra sapling (15% chance)."
+  "tooltips.forgermod.passive.sapling_harvest.card": "Enemy kills may drop an extra sapling (15% chance).",
+  "tooltips.forgermod.passive.compost.name": "Compost",
+  "tooltips.forgermod.passive.compost": "Eating rotten flesh while holding this weapon in either hand does not apply Hunger. Existing Hunger and other sources are unaffected.",
+  "tooltips.forgermod.passive.compost.card": "Eat rotten flesh without its Hunger effect."
 }

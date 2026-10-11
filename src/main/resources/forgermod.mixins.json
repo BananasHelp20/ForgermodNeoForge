@@ -3,6 +3,11 @@
   "minVersion": "0.8",
   "package": "net.bananashelp20.forgermod.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": ["HeadwindMixin"],
-  "injectors": {"defaultRequire": 1}
+  "mixins": [
+    "HeadwindMixin",
+    "CompostMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

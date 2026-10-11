@@ -433,3 +433,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
 - Enemy kills while the learned weapon is held have exactly a 15% chance to add one random sapling to existing drops. Uses the actual saplings item tag, including applicable tagged mod/datapack items. Existing drops are preserved; canceled drops and disabled mob loot add nothing. Ordinary pickup rules apply. Both deterministic roll outcomes, all variants, loot preservation and rule/cancellation behavior tested. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 170 required server tests passed.
+
+## Compost - completed
+
+- Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
+- Prevents only Hunger from consuming rotten flesh while the learned weapon is held in either hand, allowing a main-hand food with an offhand axe without changing axe offhand-use restrictions. A required 1.21.1 food-completion mixin filters that food effect before application. Nutrition, saturation, consumption, other food effects, pre-existing Hunger and Hunger from other sources are preserved. Actual item finishUsingItem paths tested for all variants and both hands. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 171 required server tests passed.

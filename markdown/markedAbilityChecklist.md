@@ -49,7 +49,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **photosythesis**: Lush dagger, Lush claymore, Lush axe
 - [x] **Green Feast**: Lush dagger, Lush claymore, Lush axe
 - [x] **Sapling Harvest**: Lush dagger, Lush claymore, Lush axe
-- [ ] **Compost**: Lush dagger, Lush claymore, Lush axe
+- [x] **Compost**: Lush dagger, Lush claymore, Lush axe
 - [ ] **Lumberjack**: Lush axe
 - [ ] **Ghostwalk**: Morsium dagger, Morsium claymore, Morsium axe
 - [ ] **Soul Hunger**: Morsium dagger, Morsium claymore, Morsium axe
