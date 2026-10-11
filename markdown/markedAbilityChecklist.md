@@ -21,7 +21,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Magnetic Throw**: Electrium dagger, Electrium claymore, Electrium axe
 - [x] **Live Wire**: Electrium dagger
 - [x] **Quick Recharge**: Electrium dagger, Electrium claymore, Electrium axe
-- [ ] **Conductive Edge**: Electrium dagger, Electrium claymore, Electrium axe
+- [x] **Conductive Edge**: Electrium dagger, Electrium claymore, Electrium axe
 - [ ] **Static blade**: Electrium dagger
 - [ ] **Lightning Rod**: Electrium dagger, Electrium claymore, Electrium axe
 - [ ] **Alternating Current**: Electrium dagger, Electrium claymore, Electrium axe

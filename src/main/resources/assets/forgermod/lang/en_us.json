@@ -560,5 +560,8 @@
   "tooltips.forgermod.ability.live_wire.card": "For eight seconds, reflect two damage to melee attackers.",
   "tooltips.forgermod.passive.quick_recharge.name": "Quick Recharge",
   "tooltips.forgermod.passive.quick_recharge": "A successful fully charged critical hit shortens this weapon variant's primary ability cooldown by one second. Can trigger once every two seconds. Does not change the secondary cooldown.",
-  "tooltips.forgermod.passive.quick_recharge.card": "Charged critical hits shorten the primary cooldown by one second, once every two seconds."
+  "tooltips.forgermod.passive.quick_recharge.card": "Charged critical hits shorten the primary cooldown by one second, once every two seconds.",
+  "tooltips.forgermod.passive.conductive_edge.name": "Conductive Edge",
+  "tooltips.forgermod.passive.conductive_edge": "Deal 20% more melee damage to enemies standing in water or exposed to rain.",
+  "tooltips.forgermod.passive.conductive_edge.card": "Deal 20% more melee damage to wet enemies."
 }

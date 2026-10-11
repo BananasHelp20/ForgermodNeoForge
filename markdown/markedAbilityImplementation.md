@@ -283,3 +283,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
 - Rank-I passive uses the real charged-critical event followed by successful damage (including absorbed hits) to shorten only the currently assigned primary ability cooldown of the equipped variant by 20 ticks. Triggers at most once per 40 ticks, clamps readiness to the current tick, and preserves secondary and other variant entries. Failed, noncritical and uncharged hits cannot recharge; disabled cooldowns are unchanged.
 - Tested, reviewed, retested and reviewed again; build and all 137 required server tests passed.
+
+## Conductive Edge - completed
+
+- Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
+- Rank-I passive increases successful enemy melee damage by exactly 20 percent only while the target is in water or exposed to rain. Fresh weapons, dry or roof-sheltered enemies and spells receive no bonus. All 15 variants tested, with an actual Plains rain fixture and roof check.
+- Tested, reviewed, retested and reviewed again; build and all 138 required server tests passed.
