@@ -149,7 +149,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Warden's Needle — `shrieking_dagger`
 
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
-3. [implement] **Resonance Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
@@ -159,7 +158,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Ringing Steel — Active.** Your next melee hit also damages the victim's held weapon by fifteen durability points. Does not affect armor or shields.
 3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
-3. [implement] **Resonance Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
 ### Echoing Axe — `shrieking_axe`

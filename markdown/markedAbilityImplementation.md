@@ -487,3 +487,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
 - Completed sculk mining restores exactly one hunger point without saturation for all Pulsite variants. Includes sculk veins, both sensors, catalysts and shriekers; other blocks do not feed. Normal tool wear and block drops remain intact, and a final-durability break still earns its hunger point. Tested actual server block destruction, maximum hunger and all variants. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 184 required server tests passed.
+
+## Resonance Crit - completed
+
+- Weapons: Pulsite dagger, Pulsite claymore; all gemstone variants.
+- Fully charged melee hits against visible-class enemy targets rising in a jump become genuine critical hits, including grounded attackers. Requires airborne positive vertical movement; grounded, falling, swimming, lava, climbing and elytra targets do not qualify. Uses at least the vanilla 1.5 damage multiplier without lowering stronger critical modifiers. Runs before critical-hit listeners so existing charged-critical abilities see the critical. Tested real charged attacks across ten variants. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 185 required server tests passed.
