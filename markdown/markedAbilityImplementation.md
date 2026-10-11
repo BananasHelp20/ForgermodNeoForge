@@ -319,3 +319,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium claymore; all gemstone variants.
 - Ranks I-IV provide a 30-second aura with 4/6/8/10-block radius, one HP per pulse and six-tick stuns; pulses repeat every 40/33/27/20 ticks. Visible enemies only, including cancellation on switching, death and logout; ending cooldown 60/50/40/30 seconds. Shared locks enforce position before and after entity ticks, block melee damage emitted by frozen attackers, avoid redundant motion packets and preserve client camera rotation with relative rotation flags.
 - Tested, reviewed, retested and reviewed again; build and all 149 required server tests passed.
+
+## Heavy Current - completed
+
+- Weapons: Electrium axe; all gemstone variants.
+- Rank-I passive multiplies enemy melee damage by 1.15 before normal armor reduction, only when all four normal armor slots contain correctly matched ArmorItem pieces. Missing pieces, Elytra, fresh weapons and spell damage receive no bonus. Actual damage-event probes verify all five axe variants.
+- Tested, reviewed, retested and reviewed again; build and all 150 required server tests passed.

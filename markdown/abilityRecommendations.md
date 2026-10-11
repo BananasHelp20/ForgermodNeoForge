@@ -75,7 +75,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Thunderclap — Active.** Destroy hostile projectiles within six blocks with one electrical burst. Does not damage enemies or blocks.
 3. **Insulated Handle — Passive.** Take 25% less magic damage, including damage from Poison and Wither.
-4. [implement] **Heavy Current — Passive.** Deal 15% more melee damage to enemies wearing armor in all four normal armor slots.
 
 ## Taifunite
 

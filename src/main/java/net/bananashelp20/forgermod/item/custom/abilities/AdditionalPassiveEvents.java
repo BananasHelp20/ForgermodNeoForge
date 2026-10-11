@@ -13,6 +13,13 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class AdditionalPassiveEvents {
     private AdditionalPassiveEvents() {}
+    private static boolean fullyArmored(net.minecraft.world.entity.LivingEntity target) {
+        for(var slot:java.util.List.of(net.minecraft.world.entity.EquipmentSlot.HEAD,net.minecraft.world.entity.EquipmentSlot.CHEST,net.minecraft.world.entity.EquipmentSlot.LEGS,net.minecraft.world.entity.EquipmentSlot.FEET)) {
+            var stack=target.getItemBySlot(slot);
+            if(!(stack.getItem() instanceof net.minecraft.world.item.ArmorItem armor) || armor.getEquipmentSlot()!=slot) return false;
+        }
+        return true;
+    }
     @SubscribeEvent
     public static void onFallDamage(LivingIncomingDamageEvent event) {
         if(!event.isCanceled() && event.getAmount()>0 && event.getSource().is(DamageTypes.FALL)
@@ -26,6 +33,8 @@ public final class AdditionalPassiveEvents {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !player.isAlive() || player.isSpectator() || !WeaponAbilityTargets.enemy(player,event.getEntity())) return;
         var stack=player.getMainHandItem();
+        if(Augmentations.hasPassive(stack,AdditionalAbilities.HEAVY_CURRENT) && fullyArmored(event.getEntity()))
+            event.setAmount(event.getAmount()*1.15F);
         if(Augmentations.hasPassive(stack,AdditionalAbilities.CONDUCTIVE_EDGE) && event.getEntity().isInWaterOrRain())
             event.setAmount(event.getAmount()*1.2F);
         long time=Math.floorMod(player.level().getDayTime(),24000L);
