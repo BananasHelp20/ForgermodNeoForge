@@ -50,7 +50,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Nightmare Dagger — `dreambound_dagger`
 
-2. [implement] **Unfinished Dream — Passive.** Killing an enemy before it could hit you heals you half a heart.
 3. [implement] **Just a Dream - Active** Teleport to your respawn point
 4. [implement] **Sleepwalker - passive** deal 10% more damage at night.
 
@@ -61,7 +60,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. **Rested Blade — Passive.** After sleeping through the night, deal 15% more melee damage until the next sunset.
 4. **Dream Catcher — Passive.** Negative potion effects applied to you while holding the blade last 20% less time.
 5. [implement] **Just a Dream - Active** Teleport to your respawn point
-6. [implement] **Unfinished Dream — Passive.** Killing an enemy before it could hit you heals you half a heart.
 
 ### Dreamweaver Axe — `dreambound_axe`
 
@@ -70,7 +68,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. [implement] **Daydreamer — Passive.** Gain Jump Boost I while holding the axe during daytime.
 4. [implement] **Pillow Armor — Passive.** Take 25% less fall damage while holding the axe.
 5. [implement] **Just a Dream - Active** Teleport to your respawn point
-6. [implement] **Unfinished Dream — Passive.** Killing an enemy before it could hit you heals you half a heart.
 
 ## Electrium
 

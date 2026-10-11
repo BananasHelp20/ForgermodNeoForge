@@ -530,5 +530,8 @@
   "tooltips.forgermod.ability.gravity_well.card": "Pull enemies within six blocks toward you; a damage-free smash plays on arrival.",
   "tooltips.forgermod.passive.lonely_dream.name": "Lonely Dream",
   "tooltips.forgermod.passive.lonely_dream": "Gain 5% attack speed for each enemy within ten blocks while holding this weapon. The bonus updates as enemies enter or leave and ends when you switch weapons. Maximum level: I.",
-  "tooltips.forgermod.passive.lonely_dream.card": "Gain 5% attack speed for each enemy within ten blocks."
+  "tooltips.forgermod.passive.lonely_dream.card": "Gain 5% attack speed for each enemy within ten blocks.",
+  "tooltips.forgermod.passive.unfinished_dream.name": "Unfinished Dream",
+  "tooltips.forgermod.passive.unfinished_dream": "Killing an enemy before it damages you heals one health point, equal to half a heart. Hits absorbed by absorption health still count. Maximum level: I.",
+  "tooltips.forgermod.passive.unfinished_dream.card": "Killing an enemy before it hits you heals half a heart."
 }

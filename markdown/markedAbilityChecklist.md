@@ -11,7 +11,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Void Pulse**: Inanisium claymore
 - [x] **Gravity Well**: Inanisium axe
 - [x] **Lonely Dream**: Somnium dagger
-- [ ] **Unfinished Dream**: Somnium dagger, Somnium claymore, Somnium axe
+- [x] **Unfinished Dream**: Somnium dagger, Somnium claymore, Somnium axe
 - [ ] **Just a Dream**: Somnium dagger, Somnium claymore, Somnium axe
 - [ ] **Sleepwalker**: Somnium dagger
 - [ ] **Lullaby**: Somnium claymore

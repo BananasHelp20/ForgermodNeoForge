@@ -221,3 +221,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium dagger; all gemstone variants.
 - Rank-I passive grants 5% attack speed per enemy within ten blocks, with no invented enemy-count cap. Updates every half-second and immediately on equipment change; removes only its own transient modifier on switching, death or logout. Allies and neutral entities do not count.
 - Tested, reviewed, retested and reviewed again; build and all 124 required server tests passed.
+
+## Unfinished Dream - completed
+
+- Weapons: Somnium dagger, Somnium claymore, Somnium axe; all gemstone variants.
+- Rank-I passive heals exactly one HP on killing an enemy that has never damaged this wielder in the current session. Absorption-health hits count as damage. Tracks actual damage even before equipping; weak entity history is removed on victim death and player logout. Canceled deaths, neutral kills and unlearned weapons do not heal.
+- Tested, reviewed, retested and reviewed again; build and all 125 required server tests passed.
