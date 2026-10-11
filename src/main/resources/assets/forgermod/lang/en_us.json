@@ -649,5 +649,8 @@
   "tooltips.forgermod.ability.ghostwalk.card": "Become invisible for 10 seconds, until you attack.",
   "tooltips.forgermod.passive.soul_hunger.name": "Soul Hunger",
   "tooltips.forgermod.passive.soul_hunger": "Enemy kills grant 2 absorption health points, capped at 6 from this passive. Putting the weapon away removes its remaining absorption.",
-  "tooltips.forgermod.passive.soul_hunger.card": "Enemy kills grant 2 absorption health, up to 6."
+  "tooltips.forgermod.passive.soul_hunger.card": "Enemy kills grant 2 absorption health, up to 6.",
+  "tooltips.forgermod.passive.last_stand.name": "Last Stand",
+  "tooltips.forgermod.passive.last_stand": "Once every 2 minutes, a fatal hit leaves you at 1 health point instead. Requires more than 1 health point before the hit.",
+  "tooltips.forgermod.passive.last_stand.card": "Survive a fatal hit at 1 HP, once every 2 minutes."
 }

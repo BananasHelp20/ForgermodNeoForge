@@ -55,6 +55,7 @@ public final class AdditionalAbilities {
     public static final String LUMBERJACK = "tooltips.forgermod.passive.lumberjack";
     public static final String GHOSTWALK = "tooltips.forgermod.ability.ghostwalk";
     public static final String SOUL_HUNGER = "tooltips.forgermod.passive.soul_hunger";
+    public static final String LAST_STAND = "tooltips.forgermod.passive.last_stand";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -104,7 +105,8 @@ public final class AdditionalAbilities {
             new Definition(COMPOST, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
             new Definition(LUMBERJACK, false, 1, 0, 0, Set.of("Lush:axe")),
             new Definition(GHOSTWALK, true, 4, 600, 100, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe")),
-            new Definition(SOUL_HUNGER, false, 1, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe"))
+            new Definition(SOUL_HUNGER, false, 1, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe")),
+            new Definition(LAST_STAND, false, 1, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

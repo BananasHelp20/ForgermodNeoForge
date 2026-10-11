@@ -367,3 +367,10 @@ Snapshot of the marked descriptions at the beginning of the full implementation 
 **Weapons:** Pulsite:axe
 
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
+
+## Latest live-file corrections
+
+- Death's Due is marked for all three Morsium weapon types.
+- Bone Guard is marked for the Hollow Claymore as well as the Ghost Axe.
+- Challenge Roar is marked for all three Pulsite weapon types.
+- The critical passive is now named Resonance Crit; its approved behavior is unchanged.

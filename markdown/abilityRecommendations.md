@@ -133,14 +133,12 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Banish — Active.** Strike the aimed undead enemy within melee reach for twice your weapon damage. Has no effect on living targets.
 4. **Pale Blade — Passive.** Deal 15% more damage to invisible enemies.
-3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 
 ### Hollow Claymore — `hollow_claymore`
 
 1. **Grave Chill — Active.** Give the visible enemy you aim at Slowness IV for four seconds.
 2. **Soul Cleave — Active.** Your next melee hit gains two bonus damage for each other enemy near the victim, capped at eight bonus damage.
-3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
 4. **Grave Strength — Passive.** Weakness reduces your attack damage by only half its normal amount while holding the blade.
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 1. [implement] **Bone Guard — Active.** Summon one temporary friendly skeleton for fifteen seconds. It shoots nearby enemies and drops no items or experience. Only one can exist per wielder.
@@ -151,7 +149,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Skull Throw — Active.** Fire a slow wither skull that bursts on its first impact, damaging nearby enemies and applying brief Wither without changing terrain.
 3. [implement] **Death's Due — Passive.** Enemy kills grant 25% more experience, without changing their item drops.
 4. **Undead Ward — Passive.** Take 15% less damage from undead enemies.
-3. [implement] **Last Stand — Passive.** Once every two minutes, an otherwise fatal hit leaves you at one health point instead. (only when above 1hp)
 
 ## Pulsite
 
@@ -159,8 +156,9 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
 2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
-3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
+3. [implement] **Resonance Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
+2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
 ### Shrieking Claymore — `shrieking_claymore`
 
@@ -169,7 +167,8 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
 2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
-3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
+3. [implement] **Resonance Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
+2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
 ### Echoing Axe — `shrieking_axe`
 
