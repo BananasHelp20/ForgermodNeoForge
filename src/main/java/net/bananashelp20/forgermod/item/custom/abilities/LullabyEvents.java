@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class LullabyEvents {
-    private record Sleep(ItemStack stack,int selected,Mob mob,boolean noAi,boolean noGravity,LivingEntity target,Vec3 position,long expires) {}
+    private record Sleep(ItemStack stack,int selected,Mob mob,long expires) {}
     private static final Map<UUID,Sleep> SLEEP=new HashMap<>();
     private LullabyEvents() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
@@ -31,8 +31,8 @@ public final class LullabyEvents {
         if(target==null) return false;
         if(target instanceof Mob mob) {
             if(SLEEP.values().stream().anyMatch(s->s.mob()==mob)) return false;
-            SLEEP.put(player.getUUID(),new Sleep(stack,player.getInventory().selected,mob,mob.isNoAi(),mob.isNoGravity(),mob.getTarget(),mob.position(),player.level().getGameTime()+60));
-            mob.setTarget(null);mob.setNoAi(true);mob.setNoGravity(true);mob.setDeltaMovement(Vec3.ZERO);
+            SLEEP.put(player.getUUID(),new Sleep(stack,player.getInventory().selected,mob,player.level().getGameTime()+60));
+            WeaponControlLocks.acquire(mob,player.getUUID(),AdditionalAbilities.LULLABY,60);
         } else target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,60,1));
         player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.END_ROD,target.getX(),target.getEyeY()+.3,target.getZ(),8,.3,.2,.3,0);
         return true;
@@ -48,8 +48,7 @@ public final class LullabyEvents {
     }
     public static void cancel(UUID owner) {
         var sleep=SLEEP.remove(owner);if(sleep==null) return;
-        sleep.mob().setNoAi(sleep.noAi());sleep.mob().setNoGravity(sleep.noGravity());
-        if(sleep.mob().isAlive() && sleep.target()!=null && sleep.target().isAlive() && sleep.target().level()==sleep.mob().level()) sleep.mob().setTarget(sleep.target());
+        WeaponControlLocks.release(owner,AdditionalAbilities.LULLABY);
     }
     @SubscribeEvent
     public static void wake(LivingDamageEvent.Post event) {
@@ -59,7 +58,7 @@ public final class LullabyEvents {
     @SubscribeEvent
     public static void tick(PlayerTickEvent.Post event) {
         if(event.getEntity() instanceof ServerPlayer player && active(player)) {
-            var sleep=SLEEP.get(player.getUUID());sleep.mob().setDeltaMovement(Vec3.ZERO);sleep.mob().setPos(sleep.position());sleep.mob().setTarget(null);
+            // Shared server control locks maintain position and original flags.
         }
     }
     @SubscribeEvent

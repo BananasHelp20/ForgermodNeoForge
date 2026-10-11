@@ -66,14 +66,12 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Static Dagger — `dagger_of_thunder`
 
 1. **Spark Shot — Active.** Fire a small electrical bolt that damages the first enemy it hits. It deals extra damage if that enemy is wet.
-7. [implement] **Alternating Current — Active.** Hit an enemy, if there is another enemy within 20 blocks, a stun (dealing no damage, stunning for .1 second) travels between the 2 enemies (hit first enemy -> stun second enemy, wait 1 second, stun first enemy, wait 1 second, stun second enemy,...) for 1 minute
 8. [implement] **Direct Current - active** Hit 2 (up to 4(if more than 2, beginning a barrier at 2 with way more stunning time)) enemies (within 50 blocks distance from each other), stunning them for 20 seconds. During that time, there is an electrical barrier between them that deals 2 hearts damage when crossing. (last upgrade upgrades this ability to "Static Field" which creates a field at 3 marked entities additionally to the barriers between the enemies where all entities within that field are being dealt 1hp damage per second)
 
 ### Claymore of Thunder — `claymore_of_thunder`
 
 1. [implement] **Stunning Presence — Active.** All enemies in a radius of up to 10 blocks gradually get stunned every (level 1: 2 | max: 1) seconds (dealing half a heart per stun and stopping them for .3 seconds each stun) for 30 seconds
 2. **Thunder Guard — Active.** For eight seconds, block the next incoming hostile projectile and restore two health points. The protection ends after that projectile.
-3. [implement] **Alternating Current — Active.** Hit an enemy, if there is another enemy within 20 blocks, a stun (dealing no damage, stunning for .1 second) travels between the 2 enemies (hit first enemy -> stun second enemy, wait 1 second, stun first enemy, wait 1 second, stun second enemy,...) for 1 minute
 5. [implement] **Direct Current - active** Hit 2 (up to 4(if more than 2, beginning a barrier at 2 with way more stunning time)) enemies (within 50 blocks distance from each other), stunning them for 20 seconds. During that time, there is an electrical barrier between them that deals 2 hearts damage when crossing. (last upgrade upgrades this ability to "Static Field" which creates a field at 3 marked entities additionally to the barriers between the enemies where all entities within that field are being dealt 1hp damage per second)
 
 ### Voltage Axe — `axe_of_thunder`
@@ -81,7 +79,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 1. **Thunderclap — Active.** Destroy hostile projectiles within six blocks with one electrical burst. Does not damage enemies or blocks.
 3. **Insulated Handle — Passive.** Take 25% less magic damage, including damage from Poison and Wither.
 4. [implement] **Heavy Current — Passive.** Deal 15% more melee damage to enemies wearing armor in all four normal armor slots.
-6. [implement] **Alternating Current — Active.** Hit an enemy, if there is another enemy within 20 blocks, a stun (dealing no damage, stunning for .1 second) travels between the 2 enemies (hit first enemy -> stun second enemy, wait 1 second, stun first enemy, wait 1 second, stun second enemy,...) for 1 minute
 7. [implement] **Direct Current - active** Hit 2 (up to 4(if more than 2, beginning a barrier at 2 with way more stunning time)) enemies (within 50 blocks distance from each other), stunning them for 20 seconds. During that time, there is an electrical barrier between them that deals 2 hearts damage when crossing. (last upgrade upgrades this ability to "Static Field" which creates a field at 3 marked entities additionally to the barriers between the enemies where all entities within that field are being dealt 1hp damage per second)
 
 ## Taifunite

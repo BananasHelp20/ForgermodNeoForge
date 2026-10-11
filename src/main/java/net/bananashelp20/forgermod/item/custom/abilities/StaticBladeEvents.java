@@ -41,7 +41,7 @@ public final class StaticBladeEvents {
     }
     public static void cancel(UUID owner) {BLADES.remove(owner);}
     public static boolean release(ServerPlayer player) {
-        if(!active(player)) return false;var blade=BLADES.get(player.getUUID());if(blade.start!=null) return false;
+        if(WeaponControlLocks.frozen(player) || !active(player)) return false;var blade=BLADES.get(player.getUUID());if(blade.start!=null) return false;
         blade.expires=player.level().getGameTime()+21;
         blade.start=player.getEyePosition();blade.direction=player.getLookAngle();blade.right=blade.direction.cross(new Vec3(0,1,0));
         if(blade.right.lengthSqr()<.0001) blade.right=new Vec3(1,0,0);else blade.right=blade.right.normalize();

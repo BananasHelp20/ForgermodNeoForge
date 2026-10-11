@@ -66,7 +66,7 @@ public final class DoubleJumpNetwork {
 
     private static void handle(DoubleJumpPayload payload, IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer player) || player.onGround()
-                || player.isSpectator() || !player.isAlive()
+                || player.isSpectator() || !player.isAlive() || WeaponControlLocks.frozen(player)
                 || !Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.double_jump") || !STATE.consume(player.getUUID())) return;
         boost(player);
         // A full server motion packet overwrites the client's current sprint momentum.

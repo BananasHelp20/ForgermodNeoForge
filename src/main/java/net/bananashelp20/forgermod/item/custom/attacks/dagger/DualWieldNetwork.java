@@ -66,7 +66,7 @@ public class DualWieldNetwork {
     }
 
     private static void handleAttack(OffhandAttackPayload payload, IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer player)) return;
+        if (!(context.player() instanceof ServerPlayer player) || net.bananashelp20.forgermod.item.custom.abilities.WeaponControlLocks.frozen(player)) return;
 
         ItemStack mainhand = player.getMainHandItem();
         ItemStack offhand = player.getOffhandItem();

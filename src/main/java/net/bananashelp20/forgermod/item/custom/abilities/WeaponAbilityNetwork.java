@@ -70,7 +70,7 @@ public final class WeaponAbilityNetwork {
     }
 
     private static void handleSwap(SwapAbilitiesPayload payload, IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || !player.isAlive()) return;
+        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || !player.isAlive() || WeaponControlLocks.frozen(player)) return;
         ItemStack stack = player.getMainHandItem();
         if (payload.selectedSlot() != player.getInventory().selected || !payload.itemId().equals(itemId(stack))
                 || Augmentations.ids(stack, true).size() != 2) return;

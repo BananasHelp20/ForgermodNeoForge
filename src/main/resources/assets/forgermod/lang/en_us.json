@@ -569,5 +569,8 @@
   "tooltips.forgermod.ability.static_blade.card": "Your next swing releases a wide piercing blade echo for 20 blocks; walls stop it.",
   "tooltips.forgermod.passive.lightning_rod.name": "Lightning Rod",
   "tooltips.forgermod.passive.lightning_rod": "While holding this weapon, lightning cannot hurt or ignite you. Extra harmless strikes can occur under open sky without a storm (average once per minute). A strike grants five absorption hearts and Strength I for 30 seconds; repeated strikes replenish those five hearts without stacking. Putting the weapon away ends these buffs.",
-  "tooltips.forgermod.passive.lightning_rod.card": "Lightning is harmless and grants five absorption hearts plus Strength I; extra strikes need no storm."
+  "tooltips.forgermod.passive.lightning_rod.card": "Lightning is harmless and grants five absorption hearts plus Strength I; extra strikes need no storm.",
+  "tooltips.forgermod.ability.alternating_current.name": "Alternating Current",
+  "tooltips.forgermod.ability.alternating_current": "Arm a hit for up to 30 seconds. Hitting an enemy with another visible enemy within 20 blocks starts a one-minute link: the second enemy is stunned for 0.1 seconds immediately, then the stun alternates every second. Stuns add no damage. The link ends if targets die, separate by more than 20 blocks, or you switch weapons. Walls block pulses. Cooldown after ending: 120/100/80/60 seconds.",
+  "tooltips.forgermod.ability.alternating_current.card": "Link two enemies within 20 blocks; a harmless stun alternates every second for one minute."
 }

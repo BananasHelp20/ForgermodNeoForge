@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 public final class RecommendedAbilityRuntime {
     private RecommendedAbilityRuntime() {}
     public static boolean activate(ServerPlayer player,ItemStack stack,String id) {
-        if(!player.isAlive() || player.isSpectator() || stack!=player.getMainHandItem()
+        if(!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player) || stack!=player.getMainHandItem()
                 || !Augmentations.ids(stack,true).contains(id)) return false;
         if(RecommendedAbilities.EXPLOSION.equals(id)) {
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,40,3));

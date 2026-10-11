@@ -79,7 +79,7 @@ public final class AxeHeavyNetwork {
     }
 
     private static void handleAttack(AxeAttackPayload payload, IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator()) return;
+        if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || net.bananashelp20.forgermod.item.custom.abilities.WeaponControlLocks.frozen(player)) return;
         ItemStack stack = player.getMainHandItem();
         if (!AxeItems.canVerticalStrike(stack) || !player.getOffhandItem().isEmpty()) {
             COMBOS.remove(player.getUUID());
@@ -131,7 +131,7 @@ public final class AxeHeavyNetwork {
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if (!AxeItems.canVerticalStrike(player.getMainHandItem()) || !player.getOffhandItem().isEmpty()
-                || !player.isAlive() || player.isSpectator()) {
+                || !player.isAlive() || player.isSpectator() || net.bananashelp20.forgermod.item.custom.abilities.WeaponControlLocks.frozen(player)) {
             COMBOS.remove(player.getUUID());
             PENDING.remove(player.getUUID());
             return;
