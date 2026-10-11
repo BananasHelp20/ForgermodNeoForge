@@ -19,6 +19,7 @@ public final class AdditionalAbilities {
     public static final String UNFINISHED_DREAM = "tooltips.forgermod.passive.unfinished_dream";
     public static final String JUST_A_DREAM = "tooltips.forgermod.ability.just_a_dream";
     public static final String SLEEPWALKER = "tooltips.forgermod.passive.sleepwalker";
+    public static final String LULLABY = "tooltips.forgermod.ability.lullaby";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -32,7 +33,8 @@ public final class AdditionalAbilities {
             new Definition(LONELY_DREAM, false, 1, 0, 0, Set.of("Somnium:dagger")),
             new Definition(UNFINISHED_DREAM, false, 1, 0, 0, Set.of("Somnium:dagger", "Somnium:claymore", "Somnium:axe")),
             new Definition(JUST_A_DREAM, true, 4, 1200, 200, Set.of("Somnium:dagger", "Somnium:claymore", "Somnium:axe")),
-            new Definition(SLEEPWALKER, false, 1, 0, 0, Set.of("Somnium:dagger"))
+            new Definition(SLEEPWALKER, false, 1, 0, 0, Set.of("Somnium:dagger")),
+            new Definition(LULLABY, true, 4, 800, 100, Set.of("Somnium:claymore"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

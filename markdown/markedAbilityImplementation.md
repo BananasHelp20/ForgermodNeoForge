@@ -241,3 +241,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Tested, reviewed, retested and reviewed again; build and all 128 required server tests passed.
 
 - Gravity Well correction per user clarification: its single velocity pull deals no damage; the arrival smash now deals current weapon damage once and applies learned material effects.
+
+## Lullaby - completed
+
+- Weapons: Somnium claymore; all gemstone variants.
+- Rank I-IV targets 10/12/14/16 blocks with wall-clipped aiming. Mobs sleep for 60 ticks, wake on successful damage including absorbed hits, and recover original AI/gravity/target settings on expiry or cancellation. Players instead receive Slowness II for 60 ticks. Cooldown 40/35/30/25 seconds starts after sleep ends. Concurrent sleepers cannot overwrite one another.
+- Tested, reviewed, retested and reviewed again; build and all 130 required server tests passed.
