@@ -37,6 +37,40 @@ import java.lang.reflect.Proxy;
 @PrefixGameTestTemplate(false)
 public class AugmentationGameTests {
     @GameTest(template = "riftfang_test")
+    public static void firstDaggerAugmentationOffersButDoesNotGrantDualWield(GameTestHelper test) {
+        int checked = 0;
+        var player = test.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+        for (var entry : ModItems.ITEMS.getEntries()) {
+            var fresh = new ItemStack(entry.get());
+            if (!Augmentations.eligible(fresh) || !Augmentations.canonical(fresh).isDagger()) continue;
+            checked++;
+            player.setItemInHand(InteractionHand.MAIN_HAND, fresh);
+            player.setItemInHand(InteractionHand.OFF_HAND, fresh.copy());
+            test.assertFalse(net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player), "Fresh dagger dual wields");
+            for (int seed = 0; seed < 20; seed++) {
+                var offers = Augmentations.offers(fresh, RandomSource.create(seed));
+                test.assertTrue(offers.size() == 2 && offers.stream().filter(a -> a.id().equals(Augmentations.DUAL_WIELD)).count() == 1,
+                        "First offers must contain Dual Wield once");
+                var other = offers.stream().filter(a -> !a.id().equals(Augmentations.DUAL_WIELD)).findFirst().orElseThrow();
+                var result = Augmentations.apply(fresh, other.id());
+                test.assertTrue(Augmentations.learned(result).size() == 1 && Augmentations.level(result, other.id()) == 1,
+                        "First augmentation grants another ability");
+                player.setItemInHand(InteractionHand.MAIN_HAND, result);
+                test.assertFalse(net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player), "Different choice unlocks Dual Wield");
+                test.assertTrue(Augmentations.learned(fresh).isEmpty(), "Augmentation mutates original");
+            }
+            var learned = Augmentations.apply(fresh, Augmentations.DUAL_WIELD);
+            player.setItemInHand(InteractionHand.MAIN_HAND, learned);
+            test.assertTrue(net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player), "Learned main-hand Dual Wield does not work with matching fresh offhand");
+            test.assertTrue(Augmentations.learned(learned).size() == 1 && Augmentations.count(learned) == 1,
+                    "Learning Dual Wield grants another ability");
+            test.assertTrue(Augmentations.apply(learned, Augmentations.DUAL_WIELD).isEmpty(), "One-level technique can be upgraded");
+        }
+        test.assertTrue(checked == 45, "Skipped dagger variants");
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
     public static void withdrawnEntriesAreInertAndMaterialHitMigratesAcrossAllVariants(GameTestHelper test) {
         for (var entry : ModItems.ITEMS.getEntries()) {
             ItemStack stack = new ItemStack(entry.get());

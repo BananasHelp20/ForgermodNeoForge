@@ -546,3 +546,5 @@ Removed
 - Added markdown/abilityDescriptions.md listing all current in-game weapon abilities with verbatim English tooltip/card descriptions, weapon assignments and all 135 material-hit variant descriptions.
 
 - Added markdown/weaponAbilities.md listing weapon names, types and available ability names for all 148 registered weapons, including all 135 special gemstone variants.
+
+- Changed Dual Wield on special daggers to a learned rank-I passive; the first augmentation always offers it alongside a different choice, and only the selected ability is learned. Matching offhand daggers need not learn it; ordinary Rusty Dagger behavior is unchanged.

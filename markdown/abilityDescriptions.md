@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-The exact English descriptions currently used in the game, copied from `src/main/resources/assets/forgermod/lang/en_us.json`. This list includes 30 active abilities, 15 learnable passives, two intrinsic weapon passives, and nine material-hit effects. Unimplemented recommendations are excluded.
+The exact English descriptions currently used in the game, copied from `src/main/resources/assets/forgermod/lang/en_us.json`. This list includes 30 active abilities, 16 learnable passives, one intrinsic weapon passive, and nine material-hit effects. Unimplemented recommendations are excluded.
 
 Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear when holding Shift; augmentation cards use the shorter descriptions shown separately below. Descriptions are reproduced as written, including their current balance values.
 
@@ -548,8 +548,6 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. It
 
 > Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you.
 
-## Intrinsic weapon passives
-
 ### Dual Wield
 
 **Weapons:** Daggers; knives excluded.
@@ -557,6 +555,8 @@ Weapon assignments include the base, Ruby, Amber, Amethyst and Jade variants. It
 **Item tooltip:**
 
 > Daggers of the same material strike in both hands, including different gemstone variants; learned material hits apply their effect.
+
+## Intrinsic weapon passives
 
 ### Vertical Strike
 

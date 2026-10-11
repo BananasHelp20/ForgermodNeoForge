@@ -53,8 +53,8 @@ public class TooltipExamplesGameTests {
                 || contains(freshJade, "tooltips.forgermod.ability.shift_hint"), "Fresh Jade example has extra item text");
         ItemStack partial = Augmentations.apply(fresh, "tooltips.forgermod.ability.storing_anger");
         var rows = tooltip(test, partial);
-        test.assertTrue(contains(rows, "tooltips.forgermod.passive.dagger.name") && contains(rows, "tooltips.forgermod.passive.heading")
-                && contains(rows, "tooltips.forgermod.ability.heading") && contains(rows, "tooltips.forgermod.can_infuse"), "Partial example missing sections");
+        test.assertTrue(contains(rows, "tooltips.forgermod.ability.heading") && contains(rows, "tooltips.forgermod.can_infuse"), "Partial example missing sections");
+        test.assertFalse(contains(rows, "tooltips.forgermod.passive.heading"), "First active augmentation silently displays Dual Wield");
         test.assertFalse(contains(rows, "tooltips.forgermod.can_augment") || contains(rows, "tooltips.forgermod.ability.storing_anger"), "Partial example contains extra notice/expanded description");
         for (var item : new Item[]{ModItems.DEATHWISPER_DAGGER_AMBER.get(), ModItems.DEATHWISPER_DAGGER_JADE.get()}) {
             ItemStack maxed = TestWeapons.ready(item);

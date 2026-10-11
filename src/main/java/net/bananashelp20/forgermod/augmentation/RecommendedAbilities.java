@@ -71,7 +71,7 @@ public final class RecommendedAbilities {
         return List.of();
     }
     public static boolean active(String id) { return ECHO_PIN.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
-    public static int maxRank(String id) { return FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id) || WARDEN_TONE.equals(id)?1:4; }
+    public static int maxRank(String id) { return Augmentations.DUAL_WIELD.equals(id)?1:FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id) || WARDEN_TONE.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         if(ECHO_PIN.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(GARDENERS.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);

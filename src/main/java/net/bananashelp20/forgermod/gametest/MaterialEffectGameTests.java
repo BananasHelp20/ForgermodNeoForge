@@ -108,6 +108,8 @@ public class MaterialEffectGameTests {
             player.setNoGravity(true);
             player.setPos(test.getBounds().getCenter());
             equip(player, dagger);
+            player.setItemInHand(InteractionHand.MAIN_HAND, net.bananashelp20.forgermod.augmentation.Augmentations.apply(
+                    new ItemStack(dagger), net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD));
             player.setItemInHand(InteractionHand.OFF_HAND, TestWeapons.ready(dagger));
             Cow target = target(test, player.position().add(0, 0, 2));
             dagger.applyMaterialEffect(target);

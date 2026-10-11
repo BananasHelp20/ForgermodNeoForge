@@ -14,7 +14,11 @@ public final class DaggerItems {
     }
 
     public static boolean hasMatchingDaggers(Player player) {
-        return areMatchingDaggers(player.getMainHandItem(), player.getOffhandItem());
+        ItemStack mainhand = player.getMainHandItem();
+        return (!net.bananashelp20.forgermod.augmentation.Augmentations.eligible(mainhand)
+                || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(mainhand,
+                        net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD))
+                && areMatchingDaggers(mainhand, player.getOffhandItem());
     }
 
     public static boolean areMatchingDaggers(ItemStack mainhand, ItemStack offhand) {

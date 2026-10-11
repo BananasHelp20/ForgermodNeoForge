@@ -514,3 +514,10 @@
 ## Weapon ability name inventory
 
 - Added markdown/weaponAbilities.md with names only: every registered weapon name, weapon type and available implemented ability names. Includes 135 special base/gemstone variants and 13 ordinary weapons; intrinsic passives and material-hit names included. Unimplemented proposals excluded. Verified all 148 registrations, coverage of all 56 ability names and identical pools across each five-variant family. Documentation only.
+
+
+## Learned weapon techniques correction
+
+- User explicitly overrides intrinsic Dual Wield/Vertical Strike: special weapons must learn them; first augmentation guarantees that technique as one of two choices. Dual Wield changed first, with all-variant offer/one-choice/runtime regression. Next: Vertical Strike. These techniques use normal unique passive slots and have one rank. Ordinary unaugmentable gear retains existing mechanics.
+
+- Dual Wield reviewed and full build/server suite passed all 113 tests after updating the two previous automatic-Dual-Wield fixtures. First choices and selecting the alternative tested across all 45 variants and twenty random seeds each. Learned-only runtime shared between client/server; same-material fresh offhand works.

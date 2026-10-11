@@ -35,7 +35,11 @@ public class DaggerReviewGameTests {
             for (Item off : daggers) {
                 // Material classes are independent of the shared Tier used by the implementation.
                 boolean expected = main.getClass() == off.getClass();
-                player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(main));
+                ItemStack mainStack = new ItemStack(main);
+                if (net.bananashelp20.forgermod.augmentation.Augmentations.eligible(mainStack))
+                    mainStack = net.bananashelp20.forgermod.augmentation.Augmentations.apply(mainStack,
+                            net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD);
+                player.setItemInHand(InteractionHand.MAIN_HAND, mainStack);
                 player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(off));
                 test.assertTrue(DaggerItems.hasMatchingDaggers(player) == expected,
                         "Incorrect material pairing: " + main + " / " + off);
