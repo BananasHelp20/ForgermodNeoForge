@@ -506,5 +506,8 @@
   "tooltips.forgermod.passive.echo_salvage.card": "A missed vertical strike stores an echo. Your next successful vertical strike releases capped bonus damage.",
   "tooltips.forgermod.ability.flame_breath.name": "Flame Breath",
   "tooltips.forgermod.ability.flame_breath": "Breathe a 35-degree fire cone in your look direction, dealing current weapon damage and burning enemies for 3/4/5/6 seconds. Range: 4/5/6/7 blocks; cooldown: 30/25/20/15 seconds. Blocks stop the breath.",
-  "tooltips.forgermod.ability.flame_breath.card": "Breathe a short fire cone, damaging and igniting enemies ahead."
+  "tooltips.forgermod.ability.flame_breath.card": "Breathe a short fire cone, damaging and igniting enemies ahead.",
+  "tooltips.forgermod.passive.charred_edge.name": "Charred Edge",
+  "tooltips.forgermod.passive.charred_edge": "Deal 15% more melee damage to enemies with Fire Resistance. Maximum level: I.",
+  "tooltips.forgermod.passive.charred_edge.card": "Deal 15% more melee damage to enemies with Fire Resistance."
 }

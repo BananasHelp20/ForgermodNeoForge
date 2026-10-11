@@ -1,6 +1,6 @@
 # Special weapon ability recommendations
 
-This file contains **marked abilities awaiting implementation** and **53 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
+This file contains **marked abilities awaiting implementation** and **51 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
 
 Entries marked `[implement]` retain your existing approval and descriptions. Unmarked entries are new ideas for your review; they are not approved or implemented. Each discarded unmarked proposal has one replacement, keeping its active or passive type. Any numbers in the new proposals are starting suggestions, not final balance decisions.
 
@@ -20,13 +20,15 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Emberfang Dagger — `infernal_dagger`
 
-2. [implement] **Charred Edge — Passive.** Deal 15% more melee damage to enemies with Fire Resistance.
+1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
 
 ### Molten Axe — `infernal_axe`
 
 1. [implement] **Magma Toss — Active.** Throw a molten rock that bursts against the first enemy or block it hits, damaging and igniting nearby enemies without breaking terrain.
+1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
 
 ### Infernal Claymore
+1. [implement] **Flame Breath — Active.** Breathe a short cone of fire that burns enemies in front of you. Suggested range: four blocks.
 
 ## Inanisium
 
@@ -196,6 +198,7 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. **Leaf Cover — Passive.** Gain Resistance I while crouching inside leaves.
 4. [implement] **photosythesis** slowly restore weapon durability during daytime.
 1. [implement] **Green Feast — Active.** Consume one wheat from your inventory to restore two health points. Requires missing health.
+2. [implement] **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra random sapling.
 4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 
 ### Overgrown Claymore — `overgrown_claymore`
@@ -206,12 +209,13 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 4. [implement] **photosythesis** slowly restore weapon durability during daytime.
 2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
+2. [implement] **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra random sapling.
 
 ### Verdant Axe — `nature_axe`
 
 1. **Oakskin — Active.** Gain six armor points for ten seconds, but receive Slowness I for the first five seconds.
-2. **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra oak sapling.
-3. **Lumberjack — Passive.** Breaking logs with this axe does not consume weapon durability.
+2. [implement] **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra random sapling.
+3. [implement] **Lumberjack — Passive.** Breaking logs with this axe does not consume weapon durability.
 4. [implement] **photosythesis** slowly restore weapon durability during daytime.
 2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
 1. [implement] **Green Feast — Active.** Consume one wheat from your inventory to restore two health points. Requires missing health.

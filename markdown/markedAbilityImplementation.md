@@ -173,3 +173,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Ignisium dagger, Ignisium axe, Ignisium claymore; all gemstone variants.
 - Instant 35-degree fire cone, current weapon damage, rank I-IV range 4/5/6/7 blocks, burn 3/4/5/6 seconds and cooldown 30/25/20/15 seconds. Blocks and allies stop hits; no terrain edits or recursive melee triggers.
 - Tested, reviewed, retested and reviewed again; build and all 115 required server tests passed.
+
+## Charred Edge - completed
+
+- Weapons: Ignisium dagger; all gemstone variants.
+- Rank-I passive adds exactly 15% melee damage against hostile enemies with Fire Resistance; fresh gear, neutral targets and secondary spell damage are excluded.
+- Tested, reviewed, retested and reviewed again; build and all 116 required server tests passed.
