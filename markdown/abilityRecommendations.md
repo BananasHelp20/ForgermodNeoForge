@@ -82,7 +82,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 3. **Air Bubble — Active.** Gain Water Breathing for thirty seconds and Dolphin's Grace for ten seconds.
 5. **Skimming Step — Passive.** Move 20% faster through shallow water while your head remains above the surface.
-7. [implement] **Windcharge - active** launches the player 5 blocks in the air (last upgrade -> 20 blocks)
 4. [implement] **Vacuum Burst — Active.** Pull nearby dropped items and experience orbs toward you with one gust.
 5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
 
@@ -91,7 +90,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 4. [implement] **Feather Shelter — Active.** Give yourself and nearby allies Slow Falling for ten seconds.
 5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
 6. **Air Reserve — Passive.** Recover your air supply twice as quickly after coming out of water.
-7. [implement] **Windcharge - active** launches the player 5 blocks in the air (last upgrade -> 20 blocks)
 4. [implement] **Vacuum Burst — Active.** Pull nearby dropped items and experience orbs toward you with one gust.
 
 ### Skybreaker Axe — `storming_axe`
@@ -100,7 +98,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 4. [implement] **Vacuum Burst — Active.** Pull nearby dropped items and experience orbs toward you with one gust.
 5. **Sky Hunter — Passive.** Deal 20% more damage to phantoms, blazes and ghasts.
 6. **Windproof — Passive.** Take 30% less knockback while airborne.
-8. [implement] **Windcharge - active** launches the player 10 blocks in the air (last upgrade upgrades ability to "Skybreaker", launching the player 30 blocks in the air, making it able to do an arial mace attack hitting all enemies within 2 blocks of the hit (also when hitting the ground))
 5. [implement] **Headwind — Passive.** Sprinting uses half the normal hunger exhaustion while holding the blade.
 4. [implement] **Feather Shelter — Active.** Give yourself and nearby allies Slow Falling for ten seconds.
 

@@ -97,6 +97,7 @@ public final class Augmentations {
     public static boolean hasPassive(ItemStack stack, String id) { return ids(stack, false).contains(id); }
     public static boolean hasActive(ItemStack stack) { return !ids(stack, true).isEmpty(); }
     public static Component abilityName(ItemStack stack,String id,int rank) {
+        if(AdditionalAbilities.WINDCHARGE.equals(id) && rank>=4 && stack.getItem() instanceof net.bananashelp20.forgermod.item.custom.SwordItemWithEffect weapon && weapon.isAxe()) return Component.translatable("tooltips.forgermod.ability.skybreaker.name");
         if(AdditionalAbilities.DIRECT_CURRENT.equals(id) && rank>=4) return Component.translatable("tooltips.forgermod.ability.static_field.name");
         return pool(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
     }
