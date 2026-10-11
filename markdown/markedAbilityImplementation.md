@@ -155,3 +155,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - All fifteen Pulsite weapons. Aim at a visible enemy within 20/25/30/35 blocks to pin it for thirty seconds. Next loud game event (damage, entity action, shooting, impact, splash, explosion/fuse, instrument, block break/place) sends a vanilla moving vibration particle to the wielder and grants 2/3/4/5 seconds of Glowing. Walking and unrelated sources do not trigger it. Enemy may move out of sight before triggering; no damage or wall scan.
 - Exact-stack/hotbar, learned ID, living/same-level target, expiry and switching/logout guards; one pin per wielder and indexed targets. Cooldowns 30/25/20/15 seconds on trigger/cancel/expiry.
 - Reviewed/retested build and all 107 server tests passed: all variants, fresh rejection, real loud versus quiet/unrelated events, behind-wall reveal, one-time trigger, cooldown, initial walls, expiry and switching. Fixed existing distant Death Stare fixture to wait for its explicitly loaded corridor to become entity-ticking, above neighboring arenas; restores test-only chunk tickets.
+
+## Warden Tone - completed
+
+- All fifteen Pulsite weapons, single level. Suppresses owner-originated sculk game-event vibrations while the learned weapon is held, including owned projectile events. ENTITY_DAMAGE remains audible to vibration listeners; other entities/events remain untouched. No player invisibility, damage immunity, saved silent flag or global sound change.
+- Uses NeoForge VanillaGameEvent before broadcast, so sensors and vibration AI never receive muted events. No retained state or cooldown; switching immediately stops suppression.
+- Reviewed/retested build and all 109 server tests passed: every variant, unlearned/switch rejection, movement/action/block/projectile suppression, unrelated entity protection, damage exception and a real sculk sensor that ignores footsteps but activates from actual damage.

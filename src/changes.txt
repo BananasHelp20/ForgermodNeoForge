@@ -436,3 +436,5 @@ Removed
 - Added Grave Vault to all Lush weapons: persistent nine-slot flower inventory, crouch-use menu, normal terrain flower placement, server validation and weapon nesting protection.
 
 - Added Echo Pin to all Pulsite weapons: visible enemy mark, next-loud-event directional vibration pulse and brief outline, ranked targeting/reveal/cooldown and server cleanup.
+
+- Added Warden Tone to all Pulsite weapons: suppress held-wielder sculk vibrations and owned-projectile vibration events, preserving damage detection and other entities.

@@ -497,5 +497,8 @@
   "menu.forgermod.grave_vault": "Grave Vault",
   "tooltips.forgermod.ability.echo_pin.name": "Echo Pin",
   "tooltips.forgermod.ability.echo_pin": "Pin a visible enemy within 20/25/30/35 blocks for up to 30 seconds. Its next loud action sends a vibration pulse toward you and outlines its movement for 2/3/4/5 seconds, even out of sight. Quiet footsteps do not trigger it. Switching cancels the pin. Cooldown after ending: 30/25/20/15 seconds.",
-  "tooltips.forgermod.ability.echo_pin.card": "Mark an enemy. Its next loud action sends you a pulse and briefly reveals its movement."
+  "tooltips.forgermod.ability.echo_pin.card": "Mark an enemy. Its next loud action sends you a pulse and briefly reveals its movement.",
+  "tooltips.forgermod.passive.warden_tone.name": "Warden Tone",
+  "tooltips.forgermod.passive.warden_tone": "While holding this weapon, your actions and owned projectiles make no detectable sculk vibrations. Taking damage remains detectable. Other entities and sounds remain unaffected.",
+  "tooltips.forgermod.passive.warden_tone.card": "Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you."
 }

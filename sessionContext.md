@@ -490,3 +490,7 @@
 ## Echo Pin completed
 
 - Grave Vault pushed as bd4d88c. Echo Pin reviewed and all 107 server tests/build passed. All fifteen Pulsite weapons supported; vanilla vibration pulse and brief outline on next loud event even after losing sight. Distant Death Stare test now explicitly loads its isolated corridor and waits for entity-ticking status before adding its target. Next: Warden Tone, then Echo Salvage.
+
+## Warden Tone completed
+
+- Echo Pin pushed as 56170e5. Warden Tone reviewed; build and all 109 server tests passed twice, including a real sculk sensor and actual damage. Vibration suppression only, matching the user sensor clarification; no player silence/invisibility mutation. Last newly marked addition: rewritten Echo Salvage.
