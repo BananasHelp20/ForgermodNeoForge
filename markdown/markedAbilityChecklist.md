@@ -45,7 +45,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 
 ## Newly marked entries found on reread (2026-10-11)
 
-- [ ] **Sunfed**: Lush dagger, Lush claymore, Lush axe
+- [x] **Sunfed**: Lush dagger, Lush claymore, Lush axe
 - [ ] **photosythesis**: Lush dagger, Lush claymore, Lush axe
 - [ ] **Green Feast**: Lush dagger, Lush claymore, Lush axe
 - [ ] **Sapling Harvest**: Lush dagger, Lush claymore, Lush axe

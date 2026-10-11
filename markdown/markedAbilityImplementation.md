@@ -409,3 +409,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
 - Dying to a living enemy releases a five-block blood explosion for current weapon damage to nearby living entities, including neutral creatures, with walls blocking the area blast. The killer takes an additional five times weapon damage, even outside that radius; an in-radius killer takes six times in one hit so immunity frames cannot erase part of the effect. Normal PvP and armor rules apply. Environmental deaths and unlearned weapons do not trigger it. Blood particles and explosion sound without terrain damage. A recursion guard prevents death-burst chains. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 166 required server tests passed.
+
+## Sunfed - completed
+
+- Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
+- Learned main-hand passive restores exactly one hunger point after every 15 continuous seconds outdoors in Minecraft daylight, for all marked Lush weapon types. Uses the overhead motion-blocking heightmap rather than asynchronously updated skylight, and Minecraft isDay so darkness during thunderstorms does not qualify. No saturation, capped at 20 food. Roofs, night, full food, switching exact stack/slot, dimension changes, death or logout reset the interval. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 167 required server tests passed.

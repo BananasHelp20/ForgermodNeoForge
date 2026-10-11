@@ -116,7 +116,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Leafcutter Dagger — `nature_dagger`
 
 1. **Bramble Shot — Active.** Fire a thorn that damages and briefly slows the first enemy it hits.
-2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
 3. **Leaf Cover — Passive.** Gain Resistance I while crouching inside leaves.
 4. [implement] **photosythesis** slowly restore weapon durability during daytime.
 1. [implement] **Green Feast — Active.** Consume one wheat from your inventory to restore two health points. Requires missing health.
@@ -130,7 +129,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. **Deep Roots — Passive.** Take 20% less melee damage while crouching on dirt, grass or moss.
 4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 4. [implement] **photosythesis** slowly restore weapon durability during daytime.
-2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
 2. [implement] **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra random sapling.
 
 ### Verdant Axe — `nature_axe`
@@ -139,7 +137,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Sapling Harvest — Passive.** Enemy kills have a 15% chance to drop one extra random sapling.
 3. [implement] **Lumberjack — Passive.** Breaking logs with this axe does not consume weapon durability.
 4. [implement] **photosythesis** slowly restore weapon durability during daytime.
-2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
 1. [implement] **Green Feast — Active.** Consume one wheat from your inventory to restore two health points. Requires missing health.
 4. [implement] **Compost — Passive.** Eating rotten flesh while holding the blade does not give you Hunger.
 

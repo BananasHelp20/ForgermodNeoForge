@@ -625,5 +625,8 @@
   "tooltips.forgermod.passive.scar_compass.card": "Mark your most recently hit enemy with a 10-minute glow.",
   "tooltips.forgermod.passive.revengeful_exit.name": "Revengeful Exit",
   "tooltips.forgermod.passive.revengeful_exit": "Dying to an enemy releases a blood explosion for weapon damage within 5 blocks, plus 5 times weapon damage to your killer. Does not destroy blocks.",
-  "tooltips.forgermod.passive.revengeful_exit.card": "On death, damage nearby entities and deal 5 times weapon damage to your killer."
+  "tooltips.forgermod.passive.revengeful_exit.card": "On death, damage nearby entities and deal 5 times weapon damage to your killer.",
+  "tooltips.forgermod.passive.sunfed.name": "Sunfed",
+  "tooltips.forgermod.passive.sunfed": "While holding this weapon outside in daylight, restore 1 hunger point every 15 seconds. Does not add saturation.",
+  "tooltips.forgermod.passive.sunfed.card": "Restore 1 hunger every 15 seconds outside in daylight."
 }

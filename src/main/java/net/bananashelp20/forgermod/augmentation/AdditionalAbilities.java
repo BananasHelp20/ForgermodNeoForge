@@ -47,6 +47,7 @@ public final class AdditionalAbilities {
     public static final String BLOOD_SACRAFICE = "tooltips.forgermod.ability.blood_sacrafice";
     public static final String SCAR_COMPASS = "tooltips.forgermod.passive.scar_compass";
     public static final String REVENGEFUL_EXIT = "tooltips.forgermod.passive.revengeful_exit";
+    public static final String SUNFED = "tooltips.forgermod.passive.sunfed";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -88,7 +89,8 @@ public final class AdditionalAbilities {
             new Definition(FINAL_STRIKE, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(BLOOD_SACRAFICE, true, 4, 1200, 200, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(SCAR_COMPASS, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
-            new Definition(REVENGEFUL_EXIT, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe"))
+            new Definition(REVENGEFUL_EXIT, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
+            new Definition(SUNFED, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {
