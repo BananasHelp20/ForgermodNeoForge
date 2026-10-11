@@ -25,6 +25,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.CROSSWIND.equals(id)) return CrosswindEvents.activate(player,stack);
         if (AdditionalAbilities.UPWIND.equals(id)) return UpwindEvents.activate(player,stack);
         if (AdditionalAbilities.WINDCHARGE.equals(id)) return WindchargeEvents.activate(player,stack);
+        if (AdditionalAbilities.VACUUM_BURST.equals(id)) return VacuumBurstAbility.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)

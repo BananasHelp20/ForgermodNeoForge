@@ -598,5 +598,8 @@
   "tooltips.forgermod.ability.windcharge.name": "Windcharge",
   "tooltips.forgermod.ability.windcharge": "Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Axe rank IV becomes Skybreaker: falling hits or ground landings smash enemies within 2 blocks with weapon damage plus mace fall damage.",
   "tooltips.forgermod.ability.windcharge.card": "Launch upward; axe rank IV gains a falling area smash.",
-  "tooltips.forgermod.ability.skybreaker.name": "Skybreaker"
+  "tooltips.forgermod.ability.skybreaker.name": "Skybreaker",
+  "tooltips.forgermod.ability.vacuum_burst.name": "Vacuum Burst",
+  "tooltips.forgermod.ability.vacuum_burst": "Pull dropped items and experience orbs within 6/8/10/12 blocks toward you with one gust. Normal pickup rules still apply.",
+  "tooltips.forgermod.ability.vacuum_burst.card": "Pull nearby drops and experience toward you."
 }

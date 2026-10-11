@@ -33,7 +33,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Slipstream**: Taifunite dagger
 - [x] **Upwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Windcharge**: Taifunite dagger, Taifunite claymore, Taifunite axe
-- [ ] **Vacuum Burst**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [x] **Vacuum Burst**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Headwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Feather Shelter**: Taifunite claymore, Taifunite axe
 - [ ] **Pocket Storm**: Taifunite axe

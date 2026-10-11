@@ -355,3 +355,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
 - Vertical velocity launch preserves horizontal sprint motion: dagger/claymore heights 5/10/15/20 blocks, axes 10/16/23/30 (unobstructed normal gravity). Axe rank IV is titled Skybreaker and arms one falling melee or ground smash, radius 2, current weapon damage plus vanilla mace fall scaling; initial melee victim is not hit twice. Successful smash prevents its landing damage; lesser ranks retain normal fall rules. Flight cancels on switching, fluids, climbing, death or 10-second timeout. Cooldown 30/25/20/15 seconds, instant on ordinary launch and after Skybreaker flight ends.
 - Tested, reviewed, retested and reviewed again; build and all 156 required server tests passed.
+
+## Vacuum Burst - completed
+
+- Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
+- One velocity gust pulls visible dropped items and experience orbs within 6/8/10/12 blocks toward the player at speed 0.9. No teleportation, immediate collection, pickup-delay changes or item consumption; normal ownership and pickup rules still apply. Solid blocks stop the pull. Cooldown 30/25/20/15 seconds starts on use.
+- Tested, reviewed, retested and reviewed again; build and all 157 required server tests passed.
