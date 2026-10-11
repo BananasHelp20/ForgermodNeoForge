@@ -591,5 +591,8 @@
   "tooltips.forgermod.ability.crosswind.card": "Deflect incoming projectiles for two minutes.",
   "tooltips.forgermod.passive.slipstream.name": "Slipstream",
   "tooltips.forgermod.passive.slipstream": "While sprinting directly behind a moving ally within three blocks and in clear sight, gain 10% base movement speed. The bonus ends when you stop, overtake, turn away, lose sight, or put the dagger away. Does not stack.",
-  "tooltips.forgermod.passive.slipstream.card": "Sprint behind a moving ally to gain a small speed bonus."
+  "tooltips.forgermod.passive.slipstream.card": "Sprint behind a moving ally to gain a small speed bonus.",
+  "tooltips.forgermod.ability.upwind.name": "Upwind",
+  "tooltips.forgermod.ability.upwind": "Arm your next successful melee hit for up to 30 seconds. After normal hit knockback, add 0.6/0.8/1.0/1.2 knockback and launch the enemy upward at velocity 0.6/0.8/1.0/1.2, respecting knockback resistance. Adds no direct damage. Switching cancels. Cooldown after the hit: 30/25/20/15 seconds.",
+  "tooltips.forgermod.ability.upwind.card": "Your next melee hit adds knockback and launches the enemy upward."
 }

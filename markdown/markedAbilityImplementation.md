@@ -343,3 +343,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite dagger; all gemstone variants.
 - Rank-I passive grants a non-stacking 10 percent base movement-speed bonus while actually sprinting directly behind a moving ally within three blocks and clear sight. Position observations handle real player movement rather than relying on stale server velocity. Stopping, overtaking, turning away, blocked sight, switching, death and logout remove the owned modifier. Allied teams, owned pets and cooperative players are recognized.
 - Tested, reviewed, retested and reviewed again; build and all 154 required server tests passed.
+
+## Upwind - completed
+
+- Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
+- Arms the next successful melee hit for up to 30 seconds. After vanilla hit knockback, adds rank-scaled horizontal knockback and upward velocity 0.6/0.8/1.0/1.2, respecting knockback resistance. No added damage, teleportation or artificial fall damage. Misses, blocks and ability damage do not consume it. Exact stack switching cancels it. Cooldown 30/25/20/15 seconds after hit or cancellation.
+- Tested, reviewed, retested and reviewed again; build and all 155 required server tests passed.

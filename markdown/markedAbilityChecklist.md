@@ -31,7 +31,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Downdraft Bell**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Crosswind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [x] **Slipstream**: Taifunite dagger
-- [ ] **Upwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [x] **Upwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Windcharge**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Vacuum Burst**: Taifunite dagger, Taifunite claymore, Taifunite axe
 - [ ] **Headwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
