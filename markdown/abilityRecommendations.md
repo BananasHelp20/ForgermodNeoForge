@@ -50,7 +50,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Nightmare Dagger — `dreambound_dagger`
 
-1. [implement] **Lonely Dream — Passive.** + 5% attack speed for each enemy within 10 blocks radius.
 2. [implement] **Unfinished Dream — Passive.** Killing an enemy before it could hit you heals you half a heart.
 3. [implement] **Just a Dream - Active** Teleport to your respawn point
 4. [implement] **Sleepwalker - passive** deal 10% more damage at night.

@@ -527,5 +527,8 @@
   "tooltips.forgermod.ability.void_pulse.card": "Push nearby enemies away without dealing damage.",
   "tooltips.forgermod.ability.gravity_well.name": "Gravity Well",
   "tooltips.forgermod.ability.gravity_well": "Pull visible enemies within six blocks toward you with one burst of velocity. A visual smash plays when a pulled enemy reaches melee range; it deals no damage. Pull strength: 0.6/0.7/0.8/0.9. Ends after arrival or two seconds; switching cancels. Cooldown after ending: 40/35/30/25 seconds.",
-  "tooltips.forgermod.ability.gravity_well.card": "Pull enemies within six blocks toward you; a damage-free smash plays on arrival."
+  "tooltips.forgermod.ability.gravity_well.card": "Pull enemies within six blocks toward you; a damage-free smash plays on arrival.",
+  "tooltips.forgermod.passive.lonely_dream.name": "Lonely Dream",
+  "tooltips.forgermod.passive.lonely_dream": "Gain 5% attack speed for each enemy within ten blocks while holding this weapon. The bonus updates as enemies enter or leave and ends when you switch weapons. Maximum level: I.",
+  "tooltips.forgermod.passive.lonely_dream.card": "Gain 5% attack speed for each enemy within ten blocks."
 }

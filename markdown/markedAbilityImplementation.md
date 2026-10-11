@@ -215,3 +215,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Inanisium axe; all gemstone variants.
 - Follows the explicit no-damage design: one velocity pull of visible enemies within six blocks, followed by a visual-only smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force, teleportation or damage.
 - Tested, reviewed, retested and reviewed again; build and all 123 required server tests passed.
+
+## Lonely Dream - completed
+
+- Weapons: Somnium dagger; all gemstone variants.
+- Rank-I passive grants 5% attack speed per enemy within ten blocks, with no invented enemy-count cap. Updates every half-second and immediately on equipment change; removes only its own transient modifier on switching, death or logout. Allies and neutral entities do not count.
+- Tested, reviewed, retested and reviewed again; build and all 124 required server tests passed.

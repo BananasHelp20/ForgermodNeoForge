@@ -566,3 +566,5 @@ Removed
 - Added Void Pulse to Inanisium claymore and all gemstone variants. Damage-free radial velocity push; rank I-IV radius 4/5/6/7 blocks, strength 0.6/0.8/1/1.2 and cooldown 30/25/20/15 seconds. Visible enemies only; blocks, allies and neutral entities are unaffected. No teleportation or damage.
 
 - Added Gravity Well to Inanisium axe and all gemstone variants. Follows the explicit no-damage design: one velocity pull of visible enemies within six blocks, followed by a visual-only smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force, teleportation or damage.
+
+- Added Lonely Dream to Somnium dagger and all gemstone variants. Rank-I passive grants 5% attack speed per enemy within ten blocks, with no invented enemy-count cap. Updates every half-second and immediately on equipment change; removes only its own transient modifier on switching, death or logout. Allies and neutral entities do not count.
