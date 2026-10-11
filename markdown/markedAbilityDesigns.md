@@ -48,7 +48,7 @@ Snapshot of the marked descriptions at the beginning of the full implementation 
 
 **Weapons:** Inanisium:axe
 
-1. [implement] **Gravity Well — Active.** Pull enemies within six blocks toward you with one burst of force and immediately do a smash attack when it is in reach. Does not teleport them or deal damage.
+1. [implement] **Gravity Well — Active.** Pull enemies within six blocks toward you with one burst of force and immediately do a smash attack when it is in reach. Does not teleport them. User clarification: the pull deals no damage; the arrival smash deals weapon damage with a visual smash.
 
 ## Lonely Dream
 

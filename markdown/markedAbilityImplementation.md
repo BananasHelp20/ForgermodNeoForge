@@ -213,7 +213,7 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 ## Gravity Well - completed
 
 - Weapons: Inanisium axe; all gemstone variants.
-- Follows the explicit no-damage design: one velocity pull of visible enemies within six blocks, followed by a visual-only smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force, teleportation or damage.
+- Updated to the user clarification: one damage-free velocity pull of visible enemies within six blocks, followed by a weapon-damage smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force or teleportation; damage occurs only once on arrival.
 - Tested, reviewed, retested and reviewed again; build and all 123 required server tests passed.
 
 ## Lonely Dream - completed
@@ -239,3 +239,5 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium dagger; all gemstone variants.
 - Rank-I passive grants exactly 10% more melee damage during world times 13000-22999 in skylit dimensions. Daytime storms do not masquerade as night; unlearned gear and other weapon types receive no bonus. Day/night boundary tests preserve the original world clock.
 - Tested, reviewed, retested and reviewed again; build and all 128 required server tests passed.
+
+- Gravity Well correction per user clarification: its single velocity pull deals no damage; the arrival smash now deals current weapon damage once and applies learned material effects.

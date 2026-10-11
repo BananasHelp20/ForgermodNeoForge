@@ -54,6 +54,13 @@ public final class GravityWellEvents {
         pull.awaiting().removeIf(target->{
             if(!target.isAlive() || target.level()!=player.level() || !WeaponAbilityTargets.enemy(player,target) || !player.hasLineOfSight(target)) return true;
             if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return false;
+            int immunity=target.invulnerableTime;
+            target.invulnerableTime=0;
+            float damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
+            if(target.hurt(player.damageSources().playerAttack(player),damage)) {
+                var weapon=Augmentations.canonical(pull.stack());
+                if(weapon!=null) weapon.applyMaterialEffect(target,pull.stack());
+            } else target.invulnerableTime=immunity;
             player.swing(InteractionHand.MAIN_HAND);
             player.serverLevel().sendParticles(ParticleTypes.CLOUD,target.getX(),target.getY()+.2,target.getZ(),12,.5,.1,.5,.05);
             player.serverLevel().playSound(null,target.blockPosition(),SoundEvents.IRON_GOLEM_ATTACK,SoundSource.PLAYERS,.6F,.7F);
