@@ -23,6 +23,7 @@ public final class AdditionalAbilities {
     public static final String DREAM_FEAST = "tooltips.forgermod.ability.dream_feast";
     public static final String DAYDREAMER = "tooltips.forgermod.passive.daydreamer";
     public static final String PILLOW_ARMOR = "tooltips.forgermod.passive.pillow_armor";
+    public static final String MAGNETIC_THROW = "tooltips.forgermod.ability.magnetic_throw";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -40,7 +41,8 @@ public final class AdditionalAbilities {
             new Definition(LULLABY, true, 4, 800, 100, Set.of("Somnium:claymore")),
             new Definition(DREAM_FEAST, true, 4, 1200, 200, Set.of("Somnium:claymore")),
             new Definition(DAYDREAMER, false, 1, 0, 0, Set.of("Somnium:axe")),
-            new Definition(PILLOW_ARMOR, false, 1, 0, 0, Set.of("Somnium:axe"))
+            new Definition(PILLOW_ARMOR, false, 1, 0, 0, Set.of("Somnium:axe")),
+            new Definition(MAGNETIC_THROW, true, 4, 500, 100, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

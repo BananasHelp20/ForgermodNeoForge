@@ -265,3 +265,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Somnium axe; all gemstone variants.
 - Rank-I passive multiplies fall damage by 0.75 while the learned axe is held in the main hand. Real damage tests confirm the exact reduction, fresh/offhand rejection and unchanged non-fall damage.
 - Tested, reviewed, retested and reviewed again; build and all 133 required server tests passed.
+
+## Magnetic Throw - completed
+
+- Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
+- All Electrium weapon types launch the wall-clipped aimed enemy within actual melee reach along the full look vector, including skyward aim. Rank I-IV velocity 1.1/1.3/1.5/1.7; instant cooldown 25/20/15/10 seconds. No added damage or teleportation; player targets receive synchronized motion.
+- Tested, reviewed, retested and reviewed again; build and all 134 required server tests passed.

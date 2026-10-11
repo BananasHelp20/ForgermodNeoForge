@@ -65,7 +65,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Static Dagger — `dagger_of_thunder`
 
-2. [implement] **Magnetic Throw — Active.** Launch the aimed enemy within melee reach forward along your look direction. Uses velocity, without teleporting or adding damage.
 1. **Spark Shot — Active.** Fire a small electrical bolt that damages the first enemy it hits. It deals extra damage if that enemy is wet.
 2. [implement] **Live Wire — Active.** For eight seconds, enemies that hit you in melee receive two damage in return. Reflected damage cannot reflect again.
 3. [implement] **Quick Recharge — Passive.** A successful fully charged critical hit shortens your primary ability cooldown by one second. Can trigger once every two seconds.
@@ -77,7 +76,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Claymore of Thunder — `claymore_of_thunder`
 
-2. [implement] **Magnetic Throw — Active.** Launch the aimed enemy within melee reach forward along your look direction. Uses velocity, without teleporting or adding damage.
 1. [implement] **Stunning Presence — Active.** All enemies in a radius of up to 10 blocks gradually get stunned every (level 1: 2 | max: 1) seconds (dealing half a heart per stun and stopping them for .3 seconds each stun) for 30 seconds
 2. **Thunder Guard — Active.** For eight seconds, block the next incoming hostile projectile and restore two health points. The protection ends after that projectile.
 3. [implement] **Alternating Current — Active.** Hit an enemy, if there is another enemy within 20 blocks, a stun (dealing no damage, stunning for .1 second) travels between the 2 enemies (hit first enemy -> stun second enemy, wait 1 second, stun first enemy, wait 1 second, stun second enemy,...) for 1 minute
@@ -89,7 +87,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Voltage Axe — `axe_of_thunder`
 
 1. **Thunderclap — Active.** Destroy hostile projectiles within six blocks with one electrical burst. Does not damage enemies or blocks.
-2. [implement] **Magnetic Throw — Active.** Launch the aimed enemy within melee reach forward along your look direction. Uses velocity, without teleporting or adding damage.
 3. **Insulated Handle — Passive.** Take 25% less magic damage, including damage from Poison and Wither.
 4. [implement] **Heavy Current — Passive.** Deal 15% more melee damage to enemies wearing armor in all four normal armor slots.
 5. [implement] **Lightning Rod — Passive.** Getting struck by lightning happens more often (and without a thunderstorm having to be present) and doesn't deal damage. Gives the player 5 absorbtion hearts and strength 1.
