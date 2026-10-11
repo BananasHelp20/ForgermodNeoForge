@@ -634,5 +634,8 @@
   "tooltips.forgermod.passive.photosynthesis.card": "Slowly repair this weapon while holding it during daylight.",
   "tooltips.forgermod.ability.green_feast.name": "Green Feast",
   "tooltips.forgermod.ability.green_feast": "Consume 1 wheat from your inventory to restore 2 health points. Requires missing health.",
-  "tooltips.forgermod.ability.green_feast.card": "Consume 1 wheat to heal 2 health points."
+  "tooltips.forgermod.ability.green_feast.card": "Consume 1 wheat to heal 2 health points.",
+  "tooltips.forgermod.passive.sapling_harvest.name": "Sapling Harvest",
+  "tooltips.forgermod.passive.sapling_harvest": "Enemy kills have a 15% chance to drop 1 extra random sapling.",
+  "tooltips.forgermod.passive.sapling_harvest.card": "Enemy kills may drop an extra sapling (15% chance)."
 }

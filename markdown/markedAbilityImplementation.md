@@ -427,3 +427,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
 - Consumes exactly one wheat from ordinary inventory or offhand to heal 2 health points, capped at maximum health. Full health and missing wheat reject activation without spending ingredients or starting cooldown. Inventory changes synchronize normally; weapon data is preserved. Cooldown 20/15/10/5 seconds starts on use.
 - Tested, reviewed, retested and reviewed again; build and all 169 required server tests passed.
+
+## Sapling Harvest - completed
+
+- Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
+- Enemy kills while the learned weapon is held have exactly a 15% chance to add one random sapling to existing drops. Uses the actual saplings item tag, including applicable tagged mod/datapack items. Existing drops are preserved; canceled drops and disabled mob loot add nothing. Ordinary pickup rules apply. Both deterministic roll outcomes, all variants, loot preservation and rule/cancellation behavior tested. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 170 required server tests passed.
