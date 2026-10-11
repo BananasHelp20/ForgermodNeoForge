@@ -421,3 +421,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
 - Implemented the approved photosythesis entry as Photosynthesis in the UI. Chosen slow repair rate: one durability point after every 15 continuous seconds holding the learned weapon during Minecraft daylight, including indoors. Only the main-hand weapon repairs; damage cannot go below zero and augmentation/item data is preserved. Night, full durability, exact stack/slot switching, dimension changes, death and logout reset the interval. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 168 required server tests passed.
+
+## Green Feast - completed
+
+- Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
+- Consumes exactly one wheat from ordinary inventory or offhand to heal 2 health points, capped at maximum health. Full health and missing wheat reject activation without spending ingredients or starting cooldown. Inventory changes synchronize normally; weapon data is preserved. Cooldown 20/15/10/5 seconds starts on use.
+- Tested, reviewed, retested and reviewed again; build and all 169 required server tests passed.

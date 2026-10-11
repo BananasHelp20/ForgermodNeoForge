@@ -631,5 +631,8 @@
   "tooltips.forgermod.passive.sunfed.card": "Restore 1 hunger every 15 seconds outside in daylight.",
   "tooltips.forgermod.passive.photosynthesis.name": "Photosynthesis",
   "tooltips.forgermod.passive.photosynthesis": "Restore 1 weapon durability every 15 seconds during daylight while this weapon is held.",
-  "tooltips.forgermod.passive.photosynthesis.card": "Slowly repair this weapon while holding it during daylight."
+  "tooltips.forgermod.passive.photosynthesis.card": "Slowly repair this weapon while holding it during daylight.",
+  "tooltips.forgermod.ability.green_feast.name": "Green Feast",
+  "tooltips.forgermod.ability.green_feast": "Consume 1 wheat from your inventory to restore 2 health points. Requires missing health.",
+  "tooltips.forgermod.ability.green_feast.card": "Consume 1 wheat to heal 2 health points."
 }

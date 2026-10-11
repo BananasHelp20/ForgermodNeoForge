@@ -30,6 +30,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.POCKET_STORM.equals(id)) return PocketStormEvents.activate(player,stack);
         if (AdditionalAbilities.BLOOD_RUSH.equals(id)) return BloodRushAbility.activate(player);
         if (AdditionalAbilities.BLOOD_SACRAFICE.equals(id)) return BloodSacrificeEvents.activate(player,stack);
+        if (AdditionalAbilities.GREEN_FEAST.equals(id)) return GreenFeastAbility.activate(player);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)
