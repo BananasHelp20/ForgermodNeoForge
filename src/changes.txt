@@ -542,3 +542,5 @@ Removed
 - Removed already implemented Grave Vault entries from the active recommendation document; retained their implementation and history.
 - Removed already implemented Echo Pin entries from the active recommendation document; retained their implementation and history.
 - Removed already implemented Echo Salvage entries from the active recommendation document; retained their implementation and history.
+
+- Added markdown/abilityDescriptions.md listing all current in-game weapon abilities with verbatim English tooltip/card descriptions, weapon assignments and all 135 material-hit variant descriptions.

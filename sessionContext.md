@@ -506,3 +506,7 @@
 
 - User requested discarding every unmarked proposal, simpler replacement ideas, and removing implemented recommendations. Rewrote markdown/abilityRecommendations.md with 77 one-for-one replacements, preserving active/passive types and all 45 references to 19 marked pending abilities verbatim apart from numbering. Removed 50 implemented references covering 23 implemented abilities; history remains in markedAbilityImplementation.md.
 - New entries are unapproved proposals only; no gameplay code changed. Approved unfinished abilities remain marked. Introduction now distinguishes approval state accurately. Recorded every proposal addition/deletion in src/changes.txt.
+
+## In-game ability description inventory
+
+- Added markdown/abilityDescriptions.md: 30 active abilities, 15 learnable passives, two intrinsic passives and nine material-hit effects, with exact English tooltip/card text and weapon assignments. Expanded material-hit descriptions for all 135 special weapon variants using current duration, gemstone and attack-speed rules. Verified completeness against native weapon methods, RecommendedAbilities constants and every named ability translation. Documentation only; gameplay unchanged.
