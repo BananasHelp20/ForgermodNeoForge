@@ -403,3 +403,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
 - Successful melee hits mark the most recent living enemy with a 10-minute Glowing effect; a new enemy replaces the old mark. Shared ownership prevents one wielder removing another mark. Existing and externally applied Glowing effects retain their own timers and are restored when the last mark ends. Dispelled potions are not resurrected. Switching exact stack/slot, expiry, dimension travel, death, unloading or logout cleans ownership. No extra ticking entities; fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 164 required server tests passed.
+
+## Revengeful Exit - completed
+
+- Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
+- Dying to a living enemy releases a five-block blood explosion for current weapon damage to nearby living entities, including neutral creatures, with walls blocking the area blast. The killer takes an additional five times weapon damage, even outside that radius; an in-radius killer takes six times in one hit so immunity frames cannot erase part of the effect. Normal PvP and armor rules apply. Environmental deaths and unlearned weapons do not trigger it. Blood particles and explosion sound without terrain damage. A recursion guard prevents death-burst chains. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 166 required server tests passed.

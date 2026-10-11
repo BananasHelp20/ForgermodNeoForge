@@ -98,13 +98,11 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 2. **Clotting Cut — Active.** Your next melee hit prevents the enemy from healing for eight seconds.
 3. **Fresh Blood — Passive.** Deal 20% more damage on a hit against an enemy at full health.
-7. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 
 ### Curseblood Claymore — `curseblood_claymore`
 
 1. **Blood Guard — Active.** Spend two health points to gain six absorption health points for ten seconds. Cannot kill you or stack its own absorption.
 2. **Crimson Cleave — Active.** Arm your next melee hit. On landing, spend two health points to deal two additional damage to enemies near the victim. Cannot trigger if the health cost would kill you.
-4. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 
 ### Woundmaker Axe — `curseblood_axe`
 
@@ -112,7 +110,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. **Rupture — Active.** Your next melee hit removes up to eight absorption health points from its victim before normal damage is applied.
 3. **Blood Armor — Passive.** Take 15% less melee damage while below half health.
 4. **Hungry Blade — Passive.** Breaking an enemy shield or armor grants Strength I for five seconds.
-8. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 
 ## Overgrown / Lush
 

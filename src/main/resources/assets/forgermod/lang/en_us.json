@@ -622,5 +622,8 @@
   "tooltips.forgermod.ability.blood_sacrafice.card": "Sacrifice half your health and absorption for 20 seconds of double damage.",
   "tooltips.forgermod.passive.scar_compass.name": "Scar Compass",
   "tooltips.forgermod.passive.scar_compass": "Your most recently hit enemy glows for 10 minutes, until you hit another enemy or stop holding this weapon.",
-  "tooltips.forgermod.passive.scar_compass.card": "Mark your most recently hit enemy with a 10-minute glow."
+  "tooltips.forgermod.passive.scar_compass.card": "Mark your most recently hit enemy with a 10-minute glow.",
+  "tooltips.forgermod.passive.revengeful_exit.name": "Revengeful Exit",
+  "tooltips.forgermod.passive.revengeful_exit": "Dying to an enemy releases a blood explosion for weapon damage within 5 blocks, plus 5 times weapon damage to your killer. Does not destroy blocks.",
+  "tooltips.forgermod.passive.revengeful_exit.card": "On death, damage nearby entities and deal 5 times weapon damage to your killer."
 }
