@@ -52,6 +52,7 @@ public final class AdditionalAbilities {
     public static final String GREEN_FEAST = "tooltips.forgermod.ability.green_feast";
     public static final String SAPLING_HARVEST = "tooltips.forgermod.passive.sapling_harvest";
     public static final String COMPOST = "tooltips.forgermod.passive.compost";
+    public static final String LUMBERJACK = "tooltips.forgermod.passive.lumberjack";
     public record Definition(String id, boolean active, int maxRank, int cooldown, int cooldownStep, Set<String> weapons) {}
     public static final List<Definition> DEFINITIONS = List.of(
             new Definition(FLAME_BREATH, true, 4, 600, 100, Set.of("Ignisium:dagger", "Ignisium:claymore", "Ignisium:axe")),
@@ -98,7 +99,8 @@ public final class AdditionalAbilities {
             new Definition(PHOTOSYNTHESIS, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
             new Definition(GREEN_FEAST, true, 4, 400, 100, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
             new Definition(SAPLING_HARVEST, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
-            new Definition(COMPOST, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe"))
+            new Definition(COMPOST, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
+            new Definition(LUMBERJACK, false, 1, 0, 0, Set.of("Lush:axe"))
     );
     private AdditionalAbilities() {}
     public static Definition definition(String id) {

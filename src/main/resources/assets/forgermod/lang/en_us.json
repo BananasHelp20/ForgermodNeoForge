@@ -640,5 +640,8 @@
   "tooltips.forgermod.passive.sapling_harvest.card": "Enemy kills may drop an extra sapling (15% chance).",
   "tooltips.forgermod.passive.compost.name": "Compost",
   "tooltips.forgermod.passive.compost": "Eating rotten flesh while holding this weapon in either hand does not apply Hunger. Existing Hunger and other sources are unaffected.",
-  "tooltips.forgermod.passive.compost.card": "Eat rotten flesh without its Hunger effect."
+  "tooltips.forgermod.passive.compost.card": "Eat rotten flesh without its Hunger effect.",
+  "tooltips.forgermod.passive.lumberjack.name": "Lumberjack",
+  "tooltips.forgermod.passive.lumberjack": "Breaking logs with this axe does not consume weapon durability.",
+  "tooltips.forgermod.passive.lumberjack.card": "Mine logs without using weapon durability."
 }

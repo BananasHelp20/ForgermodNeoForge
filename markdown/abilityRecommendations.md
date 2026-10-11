@@ -126,7 +126,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Verdant Axe — `nature_axe`
 
 1. **Oakskin — Active.** Gain six armor points for ten seconds, but receive Slowness I for the first five seconds.
-3. [implement] **Lumberjack — Passive.** Breaking logs with this axe does not consume weapon durability.
 
 ## Morsium
 

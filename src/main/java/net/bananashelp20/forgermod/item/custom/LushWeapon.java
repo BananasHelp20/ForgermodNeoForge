@@ -52,6 +52,14 @@ public class LushWeapon extends SwordItemWithEffect {
         this.type = type;
     }
 
+    @Override
+    public boolean mineBlock(ItemStack stack, Level level, net.minecraft.world.level.block.state.BlockState state, net.minecraft.core.BlockPos pos, LivingEntity miner) {
+        if(isAxe() && state.is(net.minecraft.tags.BlockTags.LOGS)
+                && Augmentations.hasPassive(stack,net.bananashelp20.forgermod.augmentation.AdditionalAbilities.LUMBERJACK))
+            return stack.get(net.minecraft.core.component.DataComponents.TOOL)!=null;
+        return super.mineBlock(stack,level,state,pos,miner);
+    }
+
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         applyMaterialEffect(pTarget, pStack);
