@@ -140,7 +140,7 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ## Pulsite
 
-### Warden's Needle — `shrieking_dagger`
+### Resonance Dagger — `shrieking_dagger`
 
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
 

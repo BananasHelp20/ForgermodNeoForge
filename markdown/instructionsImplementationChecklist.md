@@ -13,6 +13,6 @@ Authority: instructions.md, reread after completing all 58 marked abilities on 2
 - [ ] Shorter slot-cover overlay transition.
 - [ ] Double Jump maximum rank becomes Windwalker; matching pair jump bonuses.
 - [ ] Enchantment heading and footer notices below enchantments, with spacing.
-- [ ] Five texture/material-based Pulsite dagger names presented; rename only after the user chooses.
+- [x] Five texture/material-based Pulsite dagger names presented; user chose Resonance Dagger; all five variants renamed, registry IDs preserved.
 
 Marked ability implementation is complete; records are in markedAbilityChecklist.md and markedAbilityImplementation.md.

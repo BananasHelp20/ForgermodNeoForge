@@ -92,7 +92,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Challenge Roar
 
-**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 
@@ -238,7 +238,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Echo Pin
 
-**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 
@@ -538,7 +538,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Sonic Boom
 
-**Weapons:** Warden's Needle
+**Weapons:** Resonance Dagger
 
 **Item tooltip:**
 
@@ -550,7 +550,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Sonically Charged Crit
 
-**Weapons:** Warden's Needle
+**Weapons:** Resonance Dagger
 
 **Item tooltip:**
 
@@ -722,7 +722,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Aftershock
 
-**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 
@@ -734,7 +734,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Backstab
 
-**Weapons:** Assassin Dagger, Dead Calm Dagger, Deathwisper Dagger, Leafcutter Dagger, Nightmare Dagger, Riftfang Dagger, Static Dagger, Warden's Needle
+**Weapons:** Assassin Dagger, Dead Calm Dagger, Deathwisper Dagger, Leafcutter Dagger, Nightmare Dagger, Resonance Dagger, Riftfang Dagger, Static Dagger
 
 **Item tooltip:**
 
@@ -866,7 +866,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Dual Wield
 
-**Weapons:** Assassin Dagger, Dead Calm Dagger, Deathwisper Dagger, Emberfang Dagger, Leafcutter Dagger, Nightmare Dagger, Riftfang Dagger, Rusty Dagger, Static Dagger, Warden's Needle
+**Weapons:** Assassin Dagger, Dead Calm Dagger, Deathwisper Dagger, Emberfang Dagger, Leafcutter Dagger, Nightmare Dagger, Resonance Dagger, Riftfang Dagger, Rusty Dagger, Static Dagger
 
 **Item tooltip:**
 
@@ -874,7 +874,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Echo Appetite
 
-**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 
@@ -1102,7 +1102,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Resonance Crit
 
-**Weapons:** Shrieking Claymore, Warden's Needle
+**Weapons:** Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 
@@ -1255,7 +1255,7 @@ Requires an empty offhand.
 
 ### Warden Tone
 
-**Weapons:** Echoing Axe, Shrieking Claymore, Warden's Needle
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 

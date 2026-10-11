@@ -134,11 +134,11 @@ Available ability names from the actual registered augmentation pools; gemstone 
 | Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
 | Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
 | Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Warden's Needle | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Warden's Needle | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Warden's Needle | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Warden's Needle | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Warden's Needle | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
 
 ## Somnium
 

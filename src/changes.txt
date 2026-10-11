@@ -676,3 +676,5 @@ Removed
 - Refreshed in-game ability descriptions and all 148 weapon ability-name lists from the registry catalog; added scripts/update_ability_docs.py for reproducible updates.
 
 - Expanded learned active capacity to three with configurable tertiary key (default 3), independent simultaneous sessions/cooldowns and actual-key tooltips; non-dagger passive capacity increased to five, daggers remain two. Material Hit remains separate; two-ability swap preserves order when a third is learned.
+
+- Renamed Warden's Needle and all four gemstone variants to Resonance Dagger, as chosen by the user. Existing shrieking_dagger registry IDs and saves remain compatible; weapon/ability catalogs use the new name.
