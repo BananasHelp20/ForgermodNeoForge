@@ -391,3 +391,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
 - Chosen fixed bonus: 50% extra melee damage to the most recently successfully hit enemy while it has strictly less than 10% maximum health. The first hit against a new enemy is not boosted; hitting another enemy replaces the target. Blocked hits and ability damage do not establish the melee target. Exact stack/slot switching, dimension changes, death and logout clear it. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 162 required server tests passed.
+
+## Blood Sacrafice - completed
+
+- Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
+- On activation halves real health and absorption independently, then doubles outgoing attributed weapon damage to non-allied targets for 20 seconds, including melee and weapon ability damage. Reusing the active stance spends no further health. Exact stack/slot switching, dimension change, expiry, death or logout ends it; no health refund. Cooldown 60/50/40/30 seconds begins when the stance ends. Fixed cost and duration; ranks improve cooldown.
+- Tested, reviewed, retested and reviewed again; build and all 163 required server tests passed.

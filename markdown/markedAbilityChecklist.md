@@ -39,7 +39,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Pocket Storm**: Taifunite axe
 - [x] **Blood Rush**: Vulnusium dagger, Vulnusium claymore
 - [x] **Final strike**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
-- [ ] **Blood Sacrafice**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
+- [x] **Blood Sacrafice**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [ ] **Scar Compass**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 - [ ] **Revengeful Exit**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
 

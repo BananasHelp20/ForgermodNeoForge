@@ -616,5 +616,8 @@
   "tooltips.forgermod.ability.blood_rush.card": "Spend 2 health points for 10 seconds of Speed II.",
   "tooltips.forgermod.passive.final_strike.name": "Final strike",
   "tooltips.forgermod.passive.final_strike": "Deal 50% more melee damage to your most recently hit enemy when it has less than 10% health.",
-  "tooltips.forgermod.passive.final_strike.card": "Deal 50% more damage to your last hit enemy below 10% health."
+  "tooltips.forgermod.passive.final_strike.card": "Deal 50% more damage to your last hit enemy below 10% health.",
+  "tooltips.forgermod.ability.blood_sacrafice.name": "Blood Sacrafice",
+  "tooltips.forgermod.ability.blood_sacrafice": "Sacrifice half your health and absorption to deal double weapon damage for 20 seconds. Switching weapons ends the effect.",
+  "tooltips.forgermod.ability.blood_sacrafice.card": "Sacrifice half your health and absorption for 20 seconds of double damage."
 }
