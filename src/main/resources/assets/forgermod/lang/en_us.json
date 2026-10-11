@@ -661,5 +661,8 @@
   "tooltips.forgermod.ability.skull_throw.card": "A slow skull bursts for weapon damage and brief Wither.",
   "tooltips.forgermod.passive.deaths_due.name": "Death's Due",
   "tooltips.forgermod.passive.deaths_due": "Enemy kills grant 25% more experience, rounded down to whole points. Item drops are unchanged.",
-  "tooltips.forgermod.passive.deaths_due.card": "Enemy kills grant 25% more experience."
+  "tooltips.forgermod.passive.deaths_due.card": "Enemy kills grant 25% more experience.",
+  "tooltips.forgermod.passive.echo_appetite.name": "Echo Appetite",
+  "tooltips.forgermod.passive.echo_appetite": "Breaking sculk, sculk veins, sensors, catalysts or shriekers restores one hunger point, without saturation.",
+  "tooltips.forgermod.passive.echo_appetite.card": "Break sculk blocks to restore one hunger point."
 }

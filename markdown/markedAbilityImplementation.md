@@ -481,3 +481,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
 - Learned passive increases the existing enemy XP award by 25 percent, rounding down to whole points and saturating safely at the integer limit. Item drops, neutral creatures, canceled awards and uncredited kills are unchanged. Tested all fifteen variants and actual zombie death/orb creation (five XP becomes six). Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 182 required server tests passed.
+
+## Echo Appetite - completed
+
+- Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
+- Completed sculk mining restores exactly one hunger point without saturation for all Pulsite variants. Includes sculk veins, both sensors, catalysts and shriekers; other blocks do not feed. Normal tool wear and block drops remain intact, and a final-durability break still earns its hunger point. Tested actual server block destruction, maximum hunger and all variants. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 184 required server tests passed.

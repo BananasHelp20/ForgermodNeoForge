@@ -44,6 +44,20 @@ public class PulsiteWeapon extends SwordItemWithEffect {
         this.type = type;
     }
 
+    @Override
+    public boolean mineBlock(ItemStack stack, net.minecraft.world.level.Level level, net.minecraft.world.level.block.state.BlockState state,
+                             net.minecraft.core.BlockPos pos, LivingEntity miner) {
+        boolean feeds = Augmentations.hasPassive(stack, net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ECHO_APPETITE)
+                && java.util.Set.of(net.minecraft.world.level.block.Blocks.SCULK, net.minecraft.world.level.block.Blocks.SCULK_VEIN,
+                    net.minecraft.world.level.block.Blocks.SCULK_SENSOR, net.minecraft.world.level.block.Blocks.CALIBRATED_SCULK_SENSOR,
+                    net.minecraft.world.level.block.Blocks.SCULK_CATALYST, net.minecraft.world.level.block.Blocks.SCULK_SHRIEKER).contains(state.getBlock());
+        boolean result = super.mineBlock(stack, level, state, pos, miner);
+        // Capture the learned passive before normal tool wear can break its final durability point.
+        if (feeds && !level.isClientSide && miner instanceof ServerPlayer player && player.isAlive() && !player.isSpectator())
+            player.getFoodData().eat(1, 0);
+        return result;
+    }
+
     public void axeAttack(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, EquipmentSlot.MAINHAND);
         applyMaterialEffect(pTarget, pStack);

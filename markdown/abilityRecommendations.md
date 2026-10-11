@@ -149,7 +149,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Warden's Needle — `shrieking_dagger`
 
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
-2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
 3. [implement] **Resonance Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
@@ -160,7 +159,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 2. [implement] **Ringing Steel — Active.** Your next melee hit also damages the victim's held weapon by fifteen durability points. Does not affect armor or shields.
 3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
-2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
 3. [implement] **Resonance Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
@@ -169,5 +167,4 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 1. **Rebound — Active.** Aim at a solid wall within three blocks to launch yourself away from its face with velocity.
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 3. **Bedrock Grip — Passive.** Take 50% less damage from falling anvils and dripstone while holding the axe.
-2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
 4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
