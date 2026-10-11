@@ -1,0 +1,44 @@
+# Marked ability completion checklist
+
+Every marked entry from the current recommendations is tracked here. Shared names are implemented for every listed weapon family and all five gemstone variants. Unmarked proposals are excluded.
+
+- [x] **Flame Breath**: Ignisium dagger, Ignisium axe, Ignisium claymore
+- [ ] **Charred Edge**: Ignisium dagger
+- [ ] **Magma Toss**: Ignisium axe
+- [ ] **Displace**: Inanisium dagger
+- [ ] **Backstab**: Inanisium dagger, Somnium dagger, Electrium dagger, Taifunite dagger, Vulnusium dagger, Lush dagger, Morsium dagger, Pulsite dagger
+- [ ] **Void Grip**: Inanisium dagger
+- [ ] **Void Pulse**: Inanisium claymore
+- [ ] **Gravity Well**: Inanisium axe
+- [ ] **Lonely Dream**: Somnium dagger
+- [ ] **Unfinished Dream**: Somnium dagger, Somnium claymore, Somnium axe
+- [ ] **Just a Dream**: Somnium dagger, Somnium claymore, Somnium axe
+- [ ] **Sleepwalker**: Somnium dagger
+- [ ] **Lullaby**: Somnium claymore
+- [ ] **Dream Feast**: Somnium claymore
+- [ ] **Daydreamer**: Somnium axe
+- [ ] **Pillow Armor**: Somnium axe
+- [ ] **Magnetic Throw**: Electrium dagger, Electrium claymore, Electrium axe
+- [ ] **Live Wire**: Electrium dagger
+- [ ] **Quick Recharge**: Electrium dagger, Electrium claymore, Electrium axe
+- [ ] **Conductive Edge**: Electrium dagger, Electrium claymore, Electrium axe
+- [ ] **Static blade**: Electrium dagger
+- [ ] **Lightning Rod**: Electrium dagger, Electrium claymore, Electrium axe
+- [ ] **Alternating Current**: Electrium dagger, Electrium claymore, Electrium axe
+- [ ] **Direct Current**: Electrium dagger, Electrium claymore, Electrium axe
+- [ ] **Stunning Presence**: Electrium claymore
+- [ ] **Heavy Current**: Electrium axe
+- [ ] **Downdraft Bell**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [ ] **Crosswind**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [ ] **Slipstream**: Taifunite dagger
+- [ ] **Upwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [ ] **Windcharge**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [ ] **Vacuum Burst**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [ ] **Headwind**: Taifunite dagger, Taifunite claymore, Taifunite axe
+- [ ] **Feather Shelter**: Taifunite claymore, Taifunite axe
+- [ ] **Pocket Storm**: Taifunite axe
+- [ ] **Blood Rush**: Vulnusium dagger, Vulnusium claymore
+- [ ] **Final strike**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
+- [ ] **Blood Sacrafice**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
+- [ ] **Scar Compass**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe
+- [ ] **Revengeful Exit**: Vulnusium dagger, Vulnusium claymore, Vulnusium axe

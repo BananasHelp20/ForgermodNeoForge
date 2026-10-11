@@ -167,3 +167,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Echoing Axe and four gemstone variants, following the rewritten marked description. Actual intrinsic vertical slam that hits solid terrain but misses living entities stores one echo for thirty seconds. Empty air and successful neutral hits cannot generate it. No stacking.
 - Next vertical strike successfully damaging an enemy releases the echo across its eligible enemy hits: half the weapon attack damage when stored, capped at 2/4/6/8 by rank. Normal armor/absorption mitigation applies. Rejected hits, ordinary melee and circular Swing Attack do not spend it; neutral targets get neither bonus nor consumption. Switching, expiry, death/logout clear state.
 - Reviewed/retested build and all 112 server tests passed: all five variants, fresh/air rejection, solid miss, cap/no stacking, rejected and ordinary hits, exact one-time real-slam bonus, circular-swing independence, neutral hit rules, damage below cap, switching and expiry.
+
+## Flame Breath - completed
+
+- Weapons: Ignisium dagger, Ignisium axe, Ignisium claymore; all gemstone variants.
+- Instant 35-degree fire cone, current weapon damage, rank I-IV range 4/5/6/7 blocks, burn 3/4/5/6 seconds and cooldown 30/25/20/15 seconds. Blocks and allies stop hits; no terrain edits or recursive melee triggers.
+- Tested, reviewed, retested and reviewed again; build and all 115 required server tests passed.

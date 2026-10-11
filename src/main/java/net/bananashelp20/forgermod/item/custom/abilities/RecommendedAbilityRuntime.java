@@ -31,10 +31,10 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.DELUSION.equals(id)) return DelusionEvents.activate(player,stack);
         if(RecommendedAbilities.GARDENERS.equals(id)) return GardenersEvents.activate(player,stack);
         if(RecommendedAbilities.ECHO_PIN.equals(id)) return EchoPinEvents.activate(player,stack);
-        return false;
+        return AdditionalAbilityRuntime.activate(player,stack,id);
     }
     public static boolean active(ServerPlayer player,String id) {
-        return RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
+        return AdditionalAbilityRuntime.active(player,id) || RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
                 || RecommendedAbilities.EXPLOSIVE_HITS.equals(id) && ExplosiveHitsEvents.active(player)
                 || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.active(player)
                 || RecommendedAbilities.NULL_RECEIPT.equals(id) && NullReceiptEvents.active(player)
@@ -44,6 +44,7 @@ public final class RecommendedAbilityRuntime {
                 || RecommendedAbilities.ECHO_PIN.equals(id) && EchoPinEvents.active(player);
     }
     public static void cancel(ServerPlayer player,String id) {
+        AdditionalAbilityRuntime.cancel(player,id);
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) ExplosiveHitsEvents.cancel(player.getUUID());
         if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) CrucibleHookEvents.cancel(player.getUUID());

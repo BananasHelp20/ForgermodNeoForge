@@ -550,3 +550,5 @@ Removed
 - Changed Dual Wield on special daggers to a learned rank-I passive; the first augmentation always offers it alongside a different choice, and only the selected ability is learned. Matching offhand daggers need not learn it; ordinary Rusty Dagger behavior is unchanged.
 
 - Changed Vertical Strike on special axes to a learned rank-I passive; first augmentation always offers it alongside a different choice. Unlearned axes cannot initiate the slam on either client or server, and switching to unlearned gear or occupying the offhand cancels pending slams. Ordinary unaugmentable axes retain their slam.
+
+- Added Flame Breath to Ignisium dagger, Ignisium axe, Ignisium claymore and all gemstone variants. Instant 35-degree fire cone, current weapon damage, rank I-IV range 4/5/6/7 blocks, burn 3/4/5/6 seconds and cooldown 30/25/20/15 seconds. Blocks and allies stop hits; no terrain edits or recursive melee triggers.

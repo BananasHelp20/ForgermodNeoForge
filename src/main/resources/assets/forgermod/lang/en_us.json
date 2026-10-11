@@ -503,5 +503,8 @@
   "tooltips.forgermod.passive.warden_tone.card": "Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you.",
   "tooltips.forgermod.passive.echo_salvage.name": "Echo Salvage",
   "tooltips.forgermod.passive.echo_salvage": "A vertical strike that misses living targets but strikes solid ground or a wall stores one echo for 30 seconds. Your next vertical strike that successfully hits an enemy consumes it, adding half your weapon damage, capped at 2/4/6/8 bonus damage. Echoes do not stack; ordinary attacks and circular swings do not consume them. Switching clears the echo.",
-  "tooltips.forgermod.passive.echo_salvage.card": "A missed vertical strike stores an echo. Your next successful vertical strike releases capped bonus damage."
+  "tooltips.forgermod.passive.echo_salvage.card": "A missed vertical strike stores an echo. Your next successful vertical strike releases capped bonus damage.",
+  "tooltips.forgermod.ability.flame_breath.name": "Flame Breath",
+  "tooltips.forgermod.ability.flame_breath": "Breathe a 35-degree fire cone in your look direction, dealing current weapon damage and burning enemies for 3/4/5/6 seconds. Range: 4/5/6/7 blocks; cooldown: 30/25/20/15 seconds. Blocks stop the breath.",
+  "tooltips.forgermod.ability.flame_breath.card": "Breathe a short fire cone, damaging and igniting enemies ahead."
 }
