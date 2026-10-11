@@ -8,7 +8,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Displace**: Inanisium dagger
 - [x] **Backstab**: Inanisium dagger, Somnium dagger, Electrium dagger, Taifunite dagger, Vulnusium dagger, Lush dagger, Morsium dagger, Pulsite dagger
 - [x] **Void Grip**: Inanisium dagger
-- [ ] **Void Pulse**: Inanisium claymore
+- [x] **Void Pulse**: Inanisium claymore
 - [ ] **Gravity Well**: Inanisium axe
 - [ ] **Lonely Dream**: Somnium dagger
 - [ ] **Unfinished Dream**: Somnium dagger, Somnium claymore, Somnium axe

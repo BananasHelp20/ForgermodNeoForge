@@ -521,5 +521,8 @@
   "tooltips.forgermod.passive.backstab.card": "Deal 20% more melee damage when striking an enemy from behind.",
   "tooltips.forgermod.passive.void_grip.name": "Void Grip",
   "tooltips.forgermod.passive.void_grip": "Your melee hits produce 25% less knockback, keeping enemies within dagger reach. Maximum level: I.",
-  "tooltips.forgermod.passive.void_grip.card": "Your melee hits produce 25% less knockback."
+  "tooltips.forgermod.passive.void_grip.card": "Your melee hits produce 25% less knockback.",
+  "tooltips.forgermod.ability.void_pulse.name": "Void Pulse",
+  "tooltips.forgermod.ability.void_pulse": "Release a damage-free pulse that pushes visible enemies away. Radius: 4/5/6/7 blocks; knockback strength: 0.6/0.8/1/1.2. Cooldown: 30/25/20/15 seconds.",
+  "tooltips.forgermod.ability.void_pulse.card": "Push nearby enemies away without dealing damage."
 }

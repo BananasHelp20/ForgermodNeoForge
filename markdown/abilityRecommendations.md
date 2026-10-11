@@ -39,7 +39,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Claymore of the Void — `claymore_of_the_void`
 
-1. [implement] **Void Pulse — Active.** Release a damage-free pulse that pushes all nearby enemies away from you.
 2. **Starless Guard — Active.** Gain Resistance II for five seconds.
 3. **Distant Edge — Passive.** Deal 15% more melee damage when the enemy is at least three blocks away, within your normal attack reach.
 

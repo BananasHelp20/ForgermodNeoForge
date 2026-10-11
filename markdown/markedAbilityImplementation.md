@@ -203,3 +203,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Inanisium dagger; all gemstone variants.
 - Rank-I passive reduces melee knockback strength by exactly 25% without changing damage. Damage-source context is limited to the current server tick and exact held stack; spells, unrelated damage and later impulses do not inherit the reduction.
 - Tested, reviewed, retested and reviewed again; build and all 121 required server tests passed.
+
+## Void Pulse - completed
+
+- Weapons: Inanisium claymore; all gemstone variants.
+- Damage-free radial velocity push; rank I-IV radius 4/5/6/7 blocks, strength 0.6/0.8/1/1.2 and cooldown 30/25/20/15 seconds. Visible enemies only; blocks, allies and neutral entities are unaffected. No teleportation or damage.
+- Tested, reviewed, retested and reviewed again; build and all 122 required server tests passed.
