@@ -515,5 +515,8 @@
   "tooltips.forgermod.ability.magma_toss.card": "Throw a molten rock that bursts on impact, damaging and igniting nearby enemies.",
   "tooltips.forgermod.ability.displace.name": "Displace",
   "tooltips.forgermod.ability.displace": "Swap places with the visible enemy under your crosshair within 10 blocks. Both bodies must fit in clear, loaded, dry destinations; mounted entities cannot swap. Cooldown: 40/35/30/25 seconds.",
-  "tooltips.forgermod.ability.displace.card": "Swap places with a visible aimed enemy within ten blocks if both destinations are clear."
+  "tooltips.forgermod.ability.displace.card": "Swap places with a visible aimed enemy within ten blocks if both destinations are clear.",
+  "tooltips.forgermod.passive.backstab.name": "Backstab",
+  "tooltips.forgermod.passive.backstab": "Deal 20% more melee damage when striking an enemy from behind, within 60 degrees of directly behind it. Maximum level: I.",
+  "tooltips.forgermod.passive.backstab.card": "Deal 20% more melee damage when striking an enemy from behind."
 }

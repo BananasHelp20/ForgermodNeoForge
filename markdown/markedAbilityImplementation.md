@@ -191,3 +191,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Inanisium dagger; all gemstone variants.
 - Swaps the aimed visible enemy within ten blocks only when both complete bodies fit in loaded, dry destinations; mounted entities are rejected. Preserves facing, resets fall distance and momentum, and rolls back the target if player teleport fails. Rank I-IV cooldown 40/35/30/25 seconds; rejected uses consume no cooldown.
 - Tested, reviewed, retested and reviewed again; build and all 119 required server tests passed.
+
+## Backstab - completed
+
+- Weapons: Inanisium dagger, Somnium dagger, Electrium dagger, Taifunite dagger, Vulnusium dagger, Lush dagger, Morsium dagger, Pulsite dagger; all gemstone variants.
+- Rank-I passive adds exactly 20% melee damage from the rear, within 60 degrees of directly behind the target. Target yaw determines facing even when looking vertically. Front/side hits, unlearned weapons, allies and secondary damage receive no bonus.
+- Tested, reviewed, retested and reviewed again; build and all 120 required server tests passed.

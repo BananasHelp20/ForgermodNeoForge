@@ -1,6 +1,6 @@
 # Special weapon ability recommendations
 
-This file contains **marked abilities awaiting implementation** and **41 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
+This file contains **marked abilities awaiting implementation** and **39 unapproved proposals**. Already implemented recommendations have been removed; their behavior and testing history are recorded in [markedAbilityImplementation.md](markedAbilityImplementation.md).
 
 Entries marked `[implement]` retain your existing approval and descriptions. Unmarked entries are new ideas for your review; they are not approved or implemented. Each discarded unmarked proposal has one replacement, keeping its active or passive type. Any numbers in the new proposals are starting suggestions, not final balance decisions.
 
@@ -35,7 +35,7 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Riftfang Dagger — `dagger_of_the_void`
 
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
+1. [implement] **Displace — Active.** Swap places with the visible enemy you aim at within ten blocks, if both destinations are clear.
 3. [implement] **Void Grip — Passive.** Your melee hits produce 25% less knockback, keeping enemies within dagger reach.
 
 ### Claymore of the Void — `claymore_of_the_void`
@@ -53,7 +53,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Nightmare Dagger — `dreambound_dagger`
 
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. [implement] **Lonely Dream — Passive.** + 5% attack speed for each enemy within 10 blocks radius.
 2. [implement] **Unfinished Dream — Passive.** Killing an enemy before it could hit you heals you half a heart.
 3. [implement] **Just a Dream - Active** Teleport to your respawn point
@@ -82,7 +81,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Static Dagger — `dagger_of_thunder`
 
 2. [implement] **Magnetic Throw — Active.** Launch the aimed enemy within melee reach forward along your look direction. Uses velocity, without teleporting or adding damage.
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. **Spark Shot — Active.** Fire a small electrical bolt that damages the first enemy it hits. It deals extra damage if that enemy is wet.
 2. [implement] **Live Wire — Active.** For eight seconds, enemies that hit you in melee receive two damage in return. Reflected damage cannot reflect again.
 3. [implement] **Quick Recharge — Passive.** A successful fully charged critical hit shortens your primary ability cooldown by one second. Can trigger once every two seconds.
@@ -119,7 +117,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Dead Calm Dagger — `storming_dagger`
 
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. [implement] **Downdraft Bell — Active.** Strike the air to force nearby airborne enemies downward once. It cancels ascent without teleporting or adding artificial fall damage; grounded enemies are unaffected.
 2. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 3. **Air Bubble — Active.** Gain Water Breathing for thirty seconds and Dolphin's Grace for ten seconds.
@@ -159,7 +156,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Assassin Dagger — `curseblood_dagger`
 
 1. [implement] **Blood Rush — Active.** Spend two health points to gain Speed II for ten seconds. Cannot be used if that health cost would kill you.
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 2. **Clotting Cut — Active.** Your next melee hit prevents the enemy from healing for eight seconds.
 3. **Fresh Blood — Passive.** Deal 20% more damage on a hit against an enemy at full health.
 4. [implement] **Final strike— Passive.** if the last hit enemy has less than 10% health, grants a damage bonus to that enemy.
@@ -192,7 +188,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Leafcutter Dagger — `nature_dagger`
 
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. **Bramble Shot — Active.** Fire a thorn that damages and briefly slows the first enemy it hits.
 2. [implement] **Sunfed — Passive.** Restore one hunger point every fifteen seconds while standing outside in daylight and holding the dagger. Does not add saturation.
 3. **Leaf Cover — Passive.** Gain Resistance I while crouching inside leaves.
@@ -225,7 +220,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Deathwisper Dagger — `hollow_dagger`
 
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. **Banish — Active.** Strike the aimed undead enemy within melee reach for twice your weapon damage. Has no effect on living targets.
 2. [implement] **Ghostwalk — Active.** Gain Invisibility for ten seconds. Attacking ends it; worn armor stays visible.
 3. [implement] **Soul Hunger — Passive.** Enemy kills grant two absorption health points, up to six from this passive.
@@ -255,23 +249,24 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Warden's Needle — `shrieking_dagger`
 
-2. [implement] **Backstab — Passive.** Deal 20% more damage when striking an enemy from behind.
 1. **Pressure Needle — Active.** Your next melee hit ignores half of the victim's armor. Shield blocking still works normally.
 2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
 3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
+4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
 
 ### Shrieking Claymore — `shrieking_claymore`
 
 1. **Dissonance — Active.** Your next melee hit removes one random positive potion effect from the enemy.
 2. [implement] **Ringing Steel — Active.** Your next melee hit also damages the victim's held weapon by fifteen durability points. Does not affect armor or shields.
 3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
-4. **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
+4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.
 2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
 3. [implement] **Resonant Crit — Passive.** Fully charged hits against jumping enemies count as critical hits even when you are standing on the ground.
 
 ### Echoing Axe — `shrieking_axe`
 
 1. **Rebound — Active.** Aim at a solid wall within three blocks to launch yourself away from its face with velocity.
-2. **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
+2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 3. **Bedrock Grip — Passive.** Take 50% less damage from falling anvils and dripstone while holding the axe.
 2. [implement] **Echo Appetite — Passive.** Breaking a sculk block restores one hunger point, without adding saturation.
+4. [implement] **Aftershock — Passive.** Each fully charged melee hit causes one extra point of damage one second later. Echo damage cannot trigger hit abilities or create another echo.

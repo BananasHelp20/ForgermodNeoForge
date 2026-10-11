@@ -21,5 +21,11 @@ public final class AdditionalPassiveEvents {
         var stack=player.getMainHandItem();
         if(Augmentations.hasPassive(stack,AdditionalAbilities.CHARRED_EDGE) && event.getEntity().hasEffect(MobEffects.FIRE_RESISTANCE))
             event.setAmount(event.getAmount()*1.15F);
+        if(Augmentations.hasPassive(stack,AdditionalAbilities.BACKSTAB)) {
+            var fromTarget=player.position().subtract(event.getEntity().position()).multiply(1,0,1);
+            var facing=net.minecraft.world.phys.Vec3.directionFromRotation(0,event.getEntity().getYRot());
+            if(fromTarget.lengthSqr()>.0001 && fromTarget.normalize().dot(facing)<-.5)
+                event.setAmount(event.getAmount()*1.2F);
+        }
     }
 }
