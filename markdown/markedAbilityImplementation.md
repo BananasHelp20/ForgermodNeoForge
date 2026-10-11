@@ -415,3 +415,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
 - Learned main-hand passive restores exactly one hunger point after every 15 continuous seconds outdoors in Minecraft daylight, for all marked Lush weapon types. Uses the overhead motion-blocking heightmap rather than asynchronously updated skylight, and Minecraft isDay so darkness during thunderstorms does not qualify. No saturation, capped at 20 food. Roofs, night, full food, switching exact stack/slot, dimension changes, death or logout reset the interval. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 167 required server tests passed.
+
+## photosythesis - completed
+
+- Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
+- Implemented the approved photosythesis entry as Photosynthesis in the UI. Chosen slow repair rate: one durability point after every 15 continuous seconds holding the learned weapon during Minecraft daylight, including indoors. Only the main-hand weapon repairs; damage cannot go below zero and augmentation/item data is preserved. Night, full durability, exact stack/slot switching, dimension changes, death and logout reset the interval. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 168 required server tests passed.
