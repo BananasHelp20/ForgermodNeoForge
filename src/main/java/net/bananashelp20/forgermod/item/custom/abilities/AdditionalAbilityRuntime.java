@@ -21,6 +21,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.ALTERNATING_CURRENT.equals(id)) return AlternatingCurrentEvents.activate(player,stack);
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return DirectCurrentEvents.activate(player,stack);
         if (AdditionalAbilities.STUNNING_PRESENCE.equals(id)) return StunningPresenceEvents.activate(player,stack);
+        if (AdditionalAbilities.DOWNDRAFT_BELL.equals(id)) return DowndraftBellAbility.activate(player,stack);
         return false;
     }
     public static boolean active(ServerPlayer player, String id) { return AdditionalAbilities.MAGMA_TOSS.equals(id) && MagmaTossEvents.active(player)

@@ -80,7 +80,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Dead Calm Dagger — `storming_dagger`
 
-1. [implement] **Downdraft Bell — Active.** Strike the air to force nearby airborne enemies downward once. It cancels ascent without teleporting or adding artificial fall damage; grounded enemies are unaffected.
 2. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 3. **Air Bubble — Active.** Gain Water Breathing for thirty seconds and Dolphin's Grace for ten seconds.
 4. [implement] **Slipstream — Passive.** Running immediately behind a moving allied entity gives a small movement benefit. You lose it when overtaking, stopping or breaking sight, so it supports formation travel rather than free speed.
@@ -92,7 +91,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Storming Claymore — `storming_claymore`
 
-1. [implement] **Downdraft Bell — Active.** Strike the air to force nearby airborne enemies downward once. It cancels ascent without teleporting or adding artificial fall damage; grounded enemies are unaffected.
 2. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 3. [implement] **Upwind — Active.** the next hit hits the enemy with extra knockback and launches it in the air
 4. [implement] **Feather Shelter — Active.** Give yourself and nearby allies Slow Falling for ten seconds.
@@ -105,7 +103,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. [implement] **Crosswind — Active.** Every Projectile being shot at you in the next 2 minutes is redirected to miss you.
 2. [implement] **Pocket Storm -active** The next hit will create an areal smash attack with great knockback to all affected enemies.
-3. [implement] **Downdraft Bell — Active.** Strike the air to force nearby airborne enemies downward once. It cancels ascent without teleporting or adding artificial fall damage; grounded enemies are unaffected.
 4. [implement] **Vacuum Burst — Active.** Pull nearby dropped items and experience orbs toward you with one gust.
 5. **Sky Hunter — Passive.** Deal 20% more damage to phantoms, blazes and ghasts.
 6. **Windproof — Passive.** Take 30% less knockback while airborne.

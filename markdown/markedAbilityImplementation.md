@@ -325,3 +325,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium axe; all gemstone variants.
 - Rank-I passive multiplies enemy melee damage by 1.15 before normal armor reduction, only when all four normal armor slots contain correctly matched ArmorItem pieces. Missing pieces, Elytra, fresh weapons and spell damage receive no bonus. Actual damage-event probes verify all five axe variants.
 - Tested, reviewed, retested and reviewed again; build and all 150 required server tests passed.
+
+## Downdraft Bell - completed
+
+- Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
+- All Taifunite weapon types force visible airborne enemies downward once within rank I-IV radius 4/6/8/10, preserving horizontal velocity, position, HP and existing fall distance. Minimum downward speed 0.8/1.0/1.2/1.4; already faster descents, grounded targets, swimming targets and neutral mobs are unchanged. Instant cooldown 30/25/20/15 seconds. A shared vertical-only client correction preserves actual sprint momentum and uses a native motion fallback for peers without that channel.
+- Tested, reviewed, retested and reviewed again; build and all 151 required server tests passed.
