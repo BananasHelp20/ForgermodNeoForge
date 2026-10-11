@@ -588,5 +588,8 @@
   "tooltips.forgermod.ability.downdraft_bell.card": "Force airborne enemies downward once; grounded enemies are unaffected.",
   "tooltips.forgermod.ability.crosswind.name": "Crosswind",
   "tooltips.forgermod.ability.crosswind": "For two minutes, incoming projectiles are deflected sideways to miss you while preserving their speed. Your own shots are unaffected. Switching weapons cancels protection. Cooldown after ending: 180/160/140/120 seconds.",
-  "tooltips.forgermod.ability.crosswind.card": "Deflect incoming projectiles for two minutes."
+  "tooltips.forgermod.ability.crosswind.card": "Deflect incoming projectiles for two minutes.",
+  "tooltips.forgermod.passive.slipstream.name": "Slipstream",
+  "tooltips.forgermod.passive.slipstream": "While sprinting directly behind a moving ally within three blocks and in clear sight, gain 10% base movement speed. The bonus ends when you stop, overtake, turn away, lose sight, or put the dagger away. Does not stack.",
+  "tooltips.forgermod.passive.slipstream.card": "Sprint behind a moving ally to gain a small speed bonus."
 }

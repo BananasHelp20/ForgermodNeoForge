@@ -337,3 +337,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
 - All Taifunite weapon types grant two minutes of projectile deflection. Before entity ticks, incoming projectiles within 12 blocks are steered sideways at their existing speed when their predicted path threatens the player; own shots are excluded. Impact-event fallback blocks last-moment and guided hits. Switching, dimension changes, death and logout end protection; already deflected flight keeps its physical momentum. Rank I-IV ending cooldown 180/160/140/120 seconds. Real arrow flight, owner filtering and cancellation tested.
 - Tested, reviewed, retested and reviewed again; build and all 153 required server tests passed.
+
+## Slipstream - completed
+
+- Weapons: Taifunite dagger; all gemstone variants.
+- Rank-I passive grants a non-stacking 10 percent base movement-speed bonus while actually sprinting directly behind a moving ally within three blocks and clear sight. Position observations handle real player movement rather than relying on stale server velocity. Stopping, overtaking, turning away, blocked sight, switching, death and logout remove the owned modifier. Allied teams, owned pets and cooperative players are recognized.
+- Tested, reviewed, retested and reviewed again; build and all 154 required server tests passed.

@@ -81,7 +81,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Dead Calm Dagger — `storming_dagger`
 
 3. **Air Bubble — Active.** Gain Water Breathing for thirty seconds and Dolphin's Grace for ten seconds.
-4. [implement] **Slipstream — Passive.** Running immediately behind a moving allied entity gives a small movement benefit. You lose it when overtaking, stopping or breaking sight, so it supports formation travel rather than free speed.
 5. **Skimming Step — Passive.** Move 20% faster through shallow water while your head remains above the surface.
 6. [implement] **Upwind — Active.** the next hit hits the enemy with extra knockback and launches it in the air
 7. [implement] **Windcharge - active** launches the player 5 blocks in the air (last upgrade -> 20 blocks)

@@ -16,6 +16,11 @@ public final class WeaponAbilityTargets {
                 || target instanceof Player player && owner.server.isPvpAllowed() && owner.canHarmPlayer(player)
                 || target instanceof Mob mob && mob.getTarget()==owner);
     }
+    public static boolean ally(ServerPlayer owner,LivingEntity target) {
+        return target!=owner && target.isAlive() && (target.isAlliedTo(owner) || owner.isAlliedTo(target)
+            || target instanceof net.minecraft.world.entity.TamableAnimal pet && pet.isOwnedBy(owner)
+            || target instanceof Player player && !owner.canHarmPlayer(player));
+    }
     public static LivingEntity aimedEnemy(ServerPlayer player,double range) {
         var start=player.getEyePosition(); var end=start.add(player.getLookAngle().scale(range));
         var wall=player.level().clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));
