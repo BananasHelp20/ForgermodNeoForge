@@ -154,7 +154,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Shrieking Claymore — `shrieking_claymore`
 
 1. **Dissonance — Active.** Your next melee hit removes one random positive potion effect from the enemy.
-3. [implement] **Stone Song — Passive.** Gain two armor points while holding the blade below Y=0.
 2. [implement] **Challenge Roar — Active.** Make nearby hostile mobs target you. Has no effect on players or allied mobs.
 
 ### Echoing Axe — `shrieking_axe`

@@ -61,5 +61,5 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Resonance Crit**: Pulsite dagger, Pulsite claymore
 - [x] **Aftershock**: Pulsite dagger, Pulsite claymore, Pulsite axe
 - [x] **Ringing Steel**: Pulsite claymore
-- [ ] **Stone Song**: Pulsite claymore
+- [x] **Stone Song**: Pulsite claymore
 - [ ] **Challenge Roar**: Pulsite axe
