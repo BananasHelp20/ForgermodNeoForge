@@ -277,3 +277,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Electrium dagger; all gemstone variants.
 - Ranks I-IV grant an eight-second reflection window. Successful enemy melee damage, including damage absorbed by hearts, reflects two indirect-magic damage without recursive reflection; lethal melee hits also earn reflection. Exact-stack/hotbar/dimension switching, expiry, death and logout clean up the state. Cooldown after ending: 40/35/30/25 seconds.
 - Tested, reviewed, retested and reviewed again; build and all 136 required server tests passed.
+
+## Quick Recharge - completed
+
+- Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
+- Rank-I passive uses the real charged-critical event followed by successful damage (including absorbed hits) to shorten only the currently assigned primary ability cooldown of the equipped variant by 20 ticks. Triggers at most once per 40 ticks, clamps readiness to the current tick, and preserves secondary and other variant entries. Failed, noncritical and uncharged hits cannot recharge; disabled cooldowns are unchanged.
+- Tested, reviewed, retested and reviewed again; build and all 137 required server tests passed.

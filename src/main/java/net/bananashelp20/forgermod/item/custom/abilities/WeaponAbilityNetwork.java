@@ -129,6 +129,15 @@ public final class WeaponAbilityNetwork {
         }
     }
 
+    public static boolean reducePrimaryCooldown(ServerPlayer player,ItemStack stack,int ticks) {
+        if(ticks<=0 || player.getData(WeaponCooldownAttachments.DISABLED) || Augmentations.activeId(stack,WeaponAbilitySlot.PRIMARY)==null) return false;
+        String key=cooldownKey(stack,WeaponAbilitySlot.PRIMARY);long now=player.level().getGameTime();
+        var cooldowns=player.getData(WeaponCooldownAttachments.COOLDOWNS);long ready=cooldowns.getOrDefault(key,0L);
+        if(ready<=now) return false;
+        var updated=new HashMap<>(cooldowns);updated.put(key,Math.max(now,ready-ticks));
+        player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.copyOf(updated));return true;
+    }
+
     private static String cooldownKey(ItemStack stack, WeaponAbilitySlot slot) {
         return cooldownKey(itemId(stack),Augmentations.sourceSlot(stack,slot),Augmentations.activeId(stack,slot));
     }

@@ -66,7 +66,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 ### Static Dagger — `dagger_of_thunder`
 
 1. **Spark Shot — Active.** Fire a small electrical bolt that damages the first enemy it hits. It deals extra damage if that enemy is wet.
-3. [implement] **Quick Recharge — Passive.** A successful fully charged critical hit shortens your primary ability cooldown by one second. Can trigger once every two seconds.
 4. [implement] **Conductive Edge — Passive.** Deal 20% more melee damage to enemies standing in water or exposed to rain.
 5. [implement] **Static blade - active** The next swing will release an echo of the swing (4 blocks wide, half a block tall) traveling up to 20 blocks in the direction the player faced at that point. It pierces through all enemies on it's way, dealing the weapon's damage.
 6. [implement] **Lightning Rod — Passive.** Getting struck by lightning happens more often (and without a thunderstorm having to be present) and doesn't deal damage. Gives the player 5 absorbtion hearts and strength 1.
@@ -80,7 +79,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. [implement] **Alternating Current — Active.** Hit an enemy, if there is another enemy within 20 blocks, a stun (dealing no damage, stunning for .1 second) travels between the 2 enemies (hit first enemy -> stun second enemy, wait 1 second, stun first enemy, wait 1 second, stun second enemy,...) for 1 minute
 4. [implement] **Lightning Rod — Passive.** Getting struck by lightning happens more often (and without a thunderstorm having to be present) and doesn't deal damage. Gives the player 5 absorbtion hearts and strength 1.
 5. [implement] **Direct Current - active** Hit 2 (up to 4(if more than 2, beginning a barrier at 2 with way more stunning time)) enemies (within 50 blocks distance from each other), stunning them for 20 seconds. During that time, there is an electrical barrier between them that deals 2 hearts damage when crossing. (last upgrade upgrades this ability to "Static Field" which creates a field at 3 marked entities additionally to the barriers between the enemies where all entities within that field are being dealt 1hp damage per second)
-3. [implement] **Quick Recharge — Passive.** A successful fully charged critical hit shortens your primary ability cooldown by one second. Can trigger once every two seconds.
 4. [implement] **Conductive Edge — Passive.** Deal 20% more melee damage to enemies standing in water or exposed to rain.
 
 ### Voltage Axe — `axe_of_thunder`
@@ -91,7 +89,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 5. [implement] **Lightning Rod — Passive.** Getting struck by lightning happens more often (and without a thunderstorm having to be present) and doesn't deal damage. Gives the player 5 absorbtion hearts and strength 1.
 6. [implement] **Alternating Current — Active.** Hit an enemy, if there is another enemy within 20 blocks, a stun (dealing no damage, stunning for .1 second) travels between the 2 enemies (hit first enemy -> stun second enemy, wait 1 second, stun first enemy, wait 1 second, stun second enemy,...) for 1 minute
 7. [implement] **Direct Current - active** Hit 2 (up to 4(if more than 2, beginning a barrier at 2 with way more stunning time)) enemies (within 50 blocks distance from each other), stunning them for 20 seconds. During that time, there is an electrical barrier between them that deals 2 hearts damage when crossing. (last upgrade upgrades this ability to "Static Field" which creates a field at 3 marked entities additionally to the barriers between the enemies where all entities within that field are being dealt 1hp damage per second)
-3. [implement] **Quick Recharge — Passive.** A successful fully charged critical hit shortens your primary ability cooldown by one second. Can trigger once every two seconds.
 4. [implement] **Conductive Edge — Passive.** Deal 20% more melee damage to enemies standing in water or exposed to rain.
 
 ## Taifunite

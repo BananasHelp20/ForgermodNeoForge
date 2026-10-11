@@ -557,5 +557,8 @@
   "tooltips.forgermod.ability.magnetic_throw.card": "Launch an enemy within melee reach along your look direction.",
   "tooltips.forgermod.ability.live_wire.name": "Live Wire",
   "tooltips.forgermod.ability.live_wire": "For eight seconds, enemies that successfully hit you in melee receive two damage in return. Reflected damage cannot reflect again. Switching weapons cancels. Cooldown after ending: 40/35/30/25 seconds.",
-  "tooltips.forgermod.ability.live_wire.card": "For eight seconds, reflect two damage to melee attackers."
+  "tooltips.forgermod.ability.live_wire.card": "For eight seconds, reflect two damage to melee attackers.",
+  "tooltips.forgermod.passive.quick_recharge.name": "Quick Recharge",
+  "tooltips.forgermod.passive.quick_recharge": "A successful fully charged critical hit shortens this weapon variant's primary ability cooldown by one second. Can trigger once every two seconds. Does not change the secondary cooldown.",
+  "tooltips.forgermod.passive.quick_recharge.card": "Charged critical hits shorten the primary cooldown by one second, once every two seconds."
 }

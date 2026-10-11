@@ -20,7 +20,7 @@ Every marked entry from the current recommendations is tracked here. Shared name
 - [x] **Pillow Armor**: Somnium axe
 - [x] **Magnetic Throw**: Electrium dagger, Electrium claymore, Electrium axe
 - [x] **Live Wire**: Electrium dagger
-- [ ] **Quick Recharge**: Electrium dagger, Electrium claymore, Electrium axe
+- [x] **Quick Recharge**: Electrium dagger, Electrium claymore, Electrium axe
 - [ ] **Conductive Edge**: Electrium dagger, Electrium claymore, Electrium axe
 - [ ] **Static blade**: Electrium dagger
 - [ ] **Lightning Rod**: Electrium dagger, Electrium claymore, Electrium axe
