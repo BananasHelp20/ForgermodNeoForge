@@ -501,3 +501,8 @@
 - Reread every marked line again: all five additions since the previous authoritative list are now implemented (Always the Gardeners, Grave Vault, Echo Pin, Warden Tone, rewritten Echo Salvage), plus finished the previously pending Delusion. Each tested, reviewed, retested and committed/pushed individually. No further new markings appeared during this work.
 - Earlier backlog remains explicitly listed in markdown/markedAbilityImplementation.md (twenty distinct abilities, starting Lonely Dream); do not claim every marked ability is complete. Latest request was to find and implement newly marked additions. Client visuals have not been manually playtested.
 - Preserve dirty instructions.md, abilityRecommendations.md, GUI/sapphire textures and user-staged codexAbilities.md deletion. Scheduled shutdown remains due 02:44 local on 2026-10-11; do not cancel unasked.
+
+## Recommendation refresh
+
+- User requested discarding every unmarked proposal, simpler replacement ideas, and removing implemented recommendations. Rewrote markdown/abilityRecommendations.md with 77 one-for-one replacements, preserving active/passive types and all 45 references to 19 marked pending abilities verbatim apart from numbering. Removed 50 implemented references covering 23 implemented abilities; history remains in markedAbilityImplementation.md.
+- New entries are unapproved proposals only; no gameplay code changed. Approved unfinished abilities remain marked. Introduction now distinguishes approval state accurately. Recorded every proposal addition/deletion in src/changes.txt.

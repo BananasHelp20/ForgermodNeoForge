@@ -440,3 +440,105 @@ Removed
 - Added Warden Tone to all Pulsite weapons: suppress held-wielder sculk vibrations and owned-projectile vibration events, preserving damage detection and other entities.
 
 - Added rewritten Echo Salvage to all Echoing Axes: missed solid-terrain vertical slam stores a non-stacking echo; next successful enemy vertical slam releases half weapon damage capped at 2/4/6/8, with thirty-second expiry and equipment cleanup.
+
+- Refreshed the recommendation document: kept approved pending descriptions, removed implemented entries, and replaced every unmarked proposal with a simpler unapproved Minecraft-style idea.
+- Replaced discarded unmarked recommendation Wick Thread with Flame Breath for infernal_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Ash Ledger with Charred Edge for infernal_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Slag Seal with Magma Toss for infernal_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Missing Beat with Displace for dagger_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Absent Footprint with Backstab for dagger_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Edge of Nothing with Void Grip for dagger_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Horizon Fold with Void Pulse for claymore_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Vacant Throne with Starless Guard for claymore_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Unwritten Reach with Distant Edge for claymore_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Anchor Sever with Gravity Well for axe_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Event Eraser with Void Mail for axe_of_the_void; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Curtain Call with Lullaby for dreambound_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Night's Bargain with Dream Feast for dreambound_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Recurring Scene with Rested Blade for dreambound_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Lucid Witness with Dream Catcher for dreambound_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Dream Nail with Drowsy Blow for dreambound_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Somnambulist's Map with Wake-up Call for dreambound_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Memory Splinter with Daydreamer for dreambound_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Quiet Room with Pillow Armor for dreambound_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Spark Switch with Spark Shot for dagger_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Grounding Needle with Live Wire for dagger_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Capacitor Parry with Quick Recharge for dagger_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Contact Resistance with Conductive Edge for dagger_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Faraday Crown with Thunder Guard for claymore_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Magnetic Census with Thunderclap for axe_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Circuit Breaker with Magnetic Throw for axe_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Induction Heel with Insulated Handle for axe_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Fault Tolerance with Heavy Current for axe_of_thunder; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Pocket Silence with Air Bubble for storming_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Weathercock with Skimming Step for storming_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Sailmaker with Feather Shelter for storming_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Tailwind Finish with Headwind for storming_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation High Ground Forecast with Air Reserve for storming_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Windward Wedge with Vacuum Burst for storming_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Vacuum Grip with Sky Hunter for storming_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Sky Tithe with Windproof for storming_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Suture Theft with Blood Rush for curseblood_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Pulse Intercept with Clotting Cut for curseblood_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Red Witness with Fresh Blood for curseblood_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Blood Escrow with Blood Guard for curseblood_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Anatomist's Verdict with Crimson Cleave for curseblood_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Hemorrhage Clock with Blood Pact for curseblood_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Triage Split with Rupture for curseblood_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Jagged Recovery with Blood Armor for curseblood_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Open Ledger with Hungry Blade for curseblood_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Pollen Address with Bramble Shot for nature_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Leaf Receipt with Sunfed for nature_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Patient Germination with Leaf Cover for nature_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Canopy Covenant with Green Feast for overgrown_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Mycelium Relay with Sap Shield for overgrown_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Undergrowth Memory with Deep Roots for overgrown_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Harvest Restraint with Compost for overgrown_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Branch Jury with Oakskin for nature_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Bark Accounting with Sapling Harvest for nature_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Coppice Rhythm with Lumberjack for nature_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Last Confession with Banish for hollow_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Grave Mute with Ghostwalk for hollow_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Pallbearer's Pace with Soul Hunger for hollow_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Bone Courtesy with Pale Blade for hollow_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Funeral Procession with Grave Chill for hollow_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Epitaph Seal with Soul Cleave for hollow_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Mourning Weight with Last Stand for hollow_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Unclaimed Name with Grave Strength for hollow_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Soul Rivet with Bone Guard for hollow_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Wake Toll with Skull Throw for hollow_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Grave Inventory with Death's Due for hollow_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Cold Handle with Undead Ward for hollow_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Whisper Exchange with Pressure Needle for shrieking_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Offbeat Cut with Echo Appetite for shrieking_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Soft Landing Signal with Resonant Crit for shrieking_dagger; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Resonance Lens with Dissonance for shrieking_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Counterchime with Ringing Steel for shrieking_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Room Tone with Stone Song for shrieking_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Broken Chorus with Aftershock for shrieking_claymore; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Fault Note with Rebound for shrieking_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Reverberation Cage with Challenge Roar for shrieking_axe; proposal only, no gameplay implementation.
+- Replaced discarded unmarked recommendation Tuning Scar with Bedrock Grip for shrieking_axe; proposal only, no gameplay implementation.
+- Removed already implemented Fire resistance entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Explosive hits entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Nether Born entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Death Stare entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Echoing Speed entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Warden Tone entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Quench Point entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Explosion entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Cinder Decoy entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Heating up entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Cold Bellows entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Crucible Hook entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Strong-arm entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Swing Attack entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Distance Tax entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Null Receipt entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Overwhelming Smash entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented False Awakening entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Delusion entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Always the Gardeners entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Grave Vault entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Echo Pin entries from the active recommendation document; retained their implementation and history.
+- Removed already implemented Echo Salvage entries from the active recommendation document; retained their implementation and history.
