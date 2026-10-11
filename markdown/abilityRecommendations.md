@@ -98,7 +98,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 2. **Clotting Cut — Active.** Your next melee hit prevents the enemy from healing for eight seconds.
 3. **Fresh Blood — Passive.** Deal 20% more damage on a hit against an enemy at full health.
-4. [implement] **Final strike— Passive.** if the last hit enemy has less than 10% health, grants a damage bonus to that enemy.
 5. [implement] **Blood Sacrafice - active** sacrifice 50% of your health (including absorption health) and deal double damage for the next 20 seconds.
 6. [implement] **Scar Compass — Passive.** The most recent enemy that's been hit, always has an 10-minute glow effect until the effect disapates, or you hit another enemy.
 7. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
@@ -110,7 +109,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. [implement] **Scar Compass — Passive.** The most recent enemy that's been hit, always has an 10-minute glow effect until the effect disapates, or you hit another enemy.
 4. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 5. [implement] **Blood Sacrafice - active** sacrifice 50% of your health (including absorption health) and deal double damage for the next 20 seconds.
-6. [implement] **Final strike— Passive.** if the last hit enemy has less than 10% health, grants a damage bonus to that enemy.
 
 ### Woundmaker Axe — `curseblood_axe`
 
@@ -119,7 +117,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 3. **Blood Armor — Passive.** Take 15% less melee damage while below half health.
 4. **Hungry Blade — Passive.** Breaking an enemy shield or armor grants Strength I for five seconds.
 5. [implement] **Blood Sacrafice - active** sacrifice 50% of your health (including absorption health) and deal double damage for the next 20 seconds.
-6. [implement] **Final strike— Passive.** if the last hit enemy has less than 10% health, grants a damage bonus to that enemy.
 7. [implement] **Scar Compass — Passive.** The most recent enemy that's been hit, always has an 10-minute glow effect until the effect disapates, or you hit another enemy.
 8. [implement] **Revengeful Exit — Passive.** When you die to an enemy, explode with an areal blood explosion (dealing weapon damage to all entities in a radius of 5 blocks) and damage the enemy that killed you 5 times your weapon damage.
 

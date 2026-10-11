@@ -613,5 +613,8 @@
   "tooltips.forgermod.ability.pocket_storm.card": "Arm a melee hit to create an area smash with strong knockback.",
   "tooltips.forgermod.ability.blood_rush.name": "Blood Rush",
   "tooltips.forgermod.ability.blood_rush": "Spend 2 health points to gain Speed II for 10 seconds. Cannot be used if the cost would kill you.",
-  "tooltips.forgermod.ability.blood_rush.card": "Spend 2 health points for 10 seconds of Speed II."
+  "tooltips.forgermod.ability.blood_rush.card": "Spend 2 health points for 10 seconds of Speed II.",
+  "tooltips.forgermod.passive.final_strike.name": "Final strike",
+  "tooltips.forgermod.passive.final_strike": "Deal 50% more melee damage to your most recently hit enemy when it has less than 10% health.",
+  "tooltips.forgermod.passive.final_strike.card": "Deal 50% more damage to your last hit enemy below 10% health."
 }

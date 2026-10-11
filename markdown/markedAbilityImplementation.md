@@ -385,3 +385,9 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Weapons: Vulnusium dagger, Vulnusium claymore; all gemstone variants.
 - Spends exactly 2 real health points, preserving absorption, and grants Speed II for 10 seconds. Activation is refused at 2 HP or less even with absorption available; refused uses spend nothing and grant no effect. Vanilla potion merging preserves stronger effects. Cooldown 30/25/20/15 seconds starts on use.
 - Tested, reviewed, retested and reviewed again; build and all 161 required server tests passed.
+
+## Final strike - completed
+
+- Weapons: Vulnusium dagger, Vulnusium claymore, Vulnusium axe; all gemstone variants.
+- Chosen fixed bonus: 50% extra melee damage to the most recently successfully hit enemy while it has strictly less than 10% maximum health. The first hit against a new enemy is not boosted; hitting another enemy replaces the target. Blocked hits and ability damage do not establish the melee target. Exact stack/slot switching, dimension changes, death and logout clear it. Fixed strength, maximum rank I.
+- Tested, reviewed, retested and reviewed again; build and all 162 required server tests passed.
