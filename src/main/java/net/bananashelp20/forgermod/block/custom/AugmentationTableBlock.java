@@ -19,8 +19,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class AugmentationTableBlock extends BaseEntityBlock {
     public static final MapCodec<AugmentationTableBlock> CODEC=simpleCodec(AugmentationTableBlock::new);
-    private static final VoxelShape SHAPE = Shapes.or(box(2, 0, 2, 14, 3, 14),
-            box(5, 3, 5, 11, 13, 11), box(0, 13, 0, 16, 16, 16));
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(0, 0, 0, 16, 2, 16), box(1, 2, 1, 15, 3, 15),
+            box(2, 3, 2, 14, 12, 14),
+            box(1, 3, 1, 3, 12, 3), box(13, 3, 1, 15, 12, 3),
+            box(1, 3, 13, 3, 12, 15), box(13, 3, 13, 15, 12, 15),
+            box(1, 12, 1, 15, 14, 15),
+            box(2, 14, 2, 14, 14.5, 14),
+            box(0.5, 14, 1, 3, 16, 15), box(13, 14, 1, 15.5, 16, 15),
+            box(3, 14, 13, 13, 16, 15.5), box(3, 14, 0.5, 13, 15, 2));
     public AugmentationTableBlock(Properties properties) { super(properties); }
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new AugmentationTableBlockEntity(pos,state); }

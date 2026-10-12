@@ -38,7 +38,8 @@
 
 ## Recent fixes and verification
 
-- The Augmentation Table now has a custom layered block model and four 32×32 stone, steel, and cyan pixel textures. Its top shows linked template, gear, and sapphire stations matching the GUI. The existing GUI files and `AugmentationTableBlockEntity` particle logic were not changed; `ParticleTypes.ENCHANT` still emits during the augmenting phases. Model bounds remain inside the block's existing collision shape. `gradlew.bat build` passes, but the new block has not been inspected in a live client yet.
+- The Augmentation Table's pedestal silhouette was replaced with a compact forge station: full-width footing, solid sapphire-core housing, reinforced corners, recessed work surface, raised steel jaws, and a backstop. Its collision shape matches the new model. Existing textures, GUI, and `ParticleTypes.ENCHANT` augmenting logic are unchanged. Live-client appearance remains to be checked.
+
 - Sudden Presence now searches multiple safe spots behind nearby hostiles, including uneven ground, and can try the next closest hostile if the nearest has no safe landing space (`9f94948`).
 - Dual wield follow-up retains the initial hit target through the 100 ms delay (`5b79b11`).
 - Each special weapon variant gets fresh `Item.Properties`; Amber weapons receive the intended attributes and other variants do not inherit Amber fire resistance (`b1d0de9`).

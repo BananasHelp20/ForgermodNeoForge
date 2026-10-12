@@ -149,6 +149,7 @@ Added
 - Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
+- Rebuilt the Augmentation Table's block model as a compact forge station with a full iron-and-stone footing, solid sapphire-core housing, reinforced corners, and a recessed work surface held by steel jaws and a backstop; updated its collision shape to match
 - Updated `sessionContext.md` with the Augmentation Table asset change and verification status
 - Rebuilt the Augmentation Table block model as a layered stone-and-steel pedestal with a raised three-station work surface matching the GUI's template, gear, and sapphire layout
 - Refreshed `sessionContext.md` with current repository state, implemented abilities, cooldown lifecycle, tests, and open design questions
