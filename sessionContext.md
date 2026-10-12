@@ -38,6 +38,7 @@
 
 ## Recent fixes and verification
 
+- Following user feedback that the forge-station model looked too futuristic, rebuilt the Augmentation Table as a one-block medieval magical forge altar with weathered stone, iron-bound corners, carved work marks, and a sapphire in a front arch. Repainted all four 32×32 block textures, updated model and matching collision shape. GUI and augmenting enchant particles remain untouched. Live-client appearance still needs review.
 - The Augmentation Table's pedestal silhouette was replaced with a compact forge station: full-width footing, solid sapphire-core housing, reinforced corners, recessed work surface, raised steel jaws, and a backstop. Its collision shape matches the new model. Existing textures, GUI, and `ParticleTypes.ENCHANT` augmenting logic are unchanged. Live-client appearance remains to be checked.
 
 - Sudden Presence now searches multiple safe spots behind nearby hostiles, including uneven ground, and can try the next closest hostile if the nearest has no safe landing space (`9f94948`).
