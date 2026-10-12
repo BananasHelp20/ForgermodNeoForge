@@ -1,4 +1,5 @@
 Added
+- Four original 32×32 pixel textures for the Augmentation Table: engraved work surface, steel rim, sapphire core, and stone base
 - Ancient Grave placement now checks the complete assembled city and selects a room position with three blocks of clearance from every vanilla piece
 - Ancient Grave worldgen regression tests cover 48 complete seeded city layouts, all center variants/rotations, unchanged vanilla pieces, and full sword stand placement
 - Ancient Grave uses the authored v2 structure as one mandatory room in each newly generated Ancient City start, preserving vanilla center variants and excluding degradation from the grave
@@ -148,6 +149,8 @@ Added
 - Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
+- Updated `sessionContext.md` with the Augmentation Table asset change and verification status
+- Rebuilt the Augmentation Table block model as a layered stone-and-steel pedestal with a raised three-station work surface matching the GUI's template, gear, and sapphire layout
 - Refreshed `sessionContext.md` with current repository state, implemented abilities, cooldown lifecycle, tests, and open design questions
 - Ability packets identify the selected hotbar slot and weapon item, so a delayed packet cannot activate a different weapon after a switch
 - Canceling Lucid Dreaming removes its Speed effect and restores a preexisting Speed effect when applicable
