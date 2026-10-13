@@ -26,17 +26,12 @@ public final class AugmentTemplateItem extends Item {
                 ? "tooltips.forgermod.super_augment_template.tooltip"
                 : "tooltips.forgermod.augment_template.tooltip").withStyle(ChatFormatting.GRAY));
         boolean expanded = WeaponTooltips.descriptionsVisible();
-        var actives = Augmentations.ids(stack, true);
         for (var entry : Augmentations.learned(stack).entrySet()) {
             String id = entry.getKey();
             Component name = Component.translatable("augmentation.forgermod.rank",
                     Augmentations.abilityName(stack, id, entry.getValue()),
                     WeaponTooltips.romanNumeral(entry.getValue()));
-            int slot = actives.indexOf(id);
-            tooltip.add(slot >= 0
-                    ? Component.translatable("tooltips.forgermod.ability.tooltip", name,
-                            Component.keybind(WeaponAbilitySlot.values()[slot].keyTranslation())).withStyle(ChatFormatting.LIGHT_PURPLE)
-                    : name.copy().withStyle(ChatFormatting.LIGHT_PURPLE));
+            tooltip.add(name.copy().withStyle(ChatFormatting.LIGHT_PURPLE));
             if (expanded) tooltip.add(Component.translatable(id.equals(Augmentations.MATERIAL_HIT)
                     ? "tooltips.forgermod.augment_template.material_hit" : id).withStyle(ChatFormatting.GRAY));
         }

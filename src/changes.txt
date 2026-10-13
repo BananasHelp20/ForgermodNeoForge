@@ -699,3 +699,5 @@ Removed
 - Added optional Create: Enchantment Industry 1.21.1 integration: matching normal or super Blaze Enchanters can fill Augment Templates; Blaze Forgers can apply and extract augments, and merge filled templates. Automated Forger insertion recognizes augment sources and templates.
 - Added targeted GameTests for Super Augment Template rank limits, smithing-data preservation and CEI machine processing. CEI mixins load only when CEI is installed.
 - Added Flaming Stomp to Ignisium axes and gemstone variants. The next axe attack triggers the vertical strike animation and affects a 5×5 area ahead, setting enemies ablaze for five seconds. It has a two-minute cooldown after use or cancellation.
+- Removed activation key labels from stored abilities on Augment Templates and Super Augment Templates; templates cannot activate weapon abilities.
+- Replaced both Augment Template textures with purple recolors of the corresponding Create: Enchantment Industry animated template sprites.
