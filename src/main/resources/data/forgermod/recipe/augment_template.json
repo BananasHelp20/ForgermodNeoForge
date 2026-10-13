@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["APA", "LTL", "APA"],
+  "key": {
+    "A": {"item": "minecraft:amethyst_shard"},
+    "P": {"item": "minecraft:paper"},
+    "L": {"item": "minecraft:lapis_lazuli"},
+    "T": {"item": "forgermod:gemstone_upgrade_template"}
+  },
+  "result": {"id": "forgermod:augment_template", "count": 1}
+}

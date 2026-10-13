@@ -44,7 +44,7 @@ public final class AugmentationTableMenu extends AbstractContainerMenu {
     public Augmentations.Ability offer(int button) {
         if(button<0 || button>1) return null;
         int index=data.get(3+button)-1;
-        var pool=Augmentations.pool(getSlot(phase()==AugmentationAnimation.COMPLETE?3:0).getItem());
+        var pool=Augmentations.catalog(getSlot(phase()==AugmentationAnimation.COMPLETE?3:0).getItem());
         if(index<0 || index>=pool.size()) return null;
         var ability=pool.get(index);var stack=getSlot(phase()==AugmentationAnimation.COMPLETE?3:0).getItem();
         return new Augmentations.Ability(ability.id(),ability.active(),Augmentations.abilityName(stack,ability.id(),offerRank(button)+1));
@@ -64,7 +64,7 @@ public final class AugmentationTableMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack,4,40,true)) return ItemStack.EMPTY;
         } else {
             if (phase()!=0) return ItemStack.EMPTY;
-            if(Augmentations.eligible(stack)) {
+            if(Augmentations.augmentable(stack)) {
                 if(!moveItemStackTo(stack,0,1,false)) return ItemStack.EMPTY;
             } else if(AugmentationTableBlockEntity.ingredient(stack)) {
                 // Merge matching stacks first, then use either empty side. Both side slots accept both ingredients.

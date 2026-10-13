@@ -35,7 +35,7 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
         }
         @Override public int getSlotLimit(int slot) { return slot==GEAR || slot==OUTPUT?1:64; }
         @Override public boolean isItemValid(int slot,ItemStack stack) {
-            return slot==GEAR?Augmentations.eligible(stack):(slot==TEMPLATE || slot==SAPPHIRE) && ingredient(stack);
+            return slot==GEAR?Augmentations.augmentable(stack):(slot==TEMPLATE || slot==SAPPHIRE) && ingredient(stack);
         }
         @Override public ItemStack insertItem(int slot,ItemStack stack,boolean simulate) {
             if(!internalMutation && (slot==OUTPUT || phase==AugmentationAnimation.COMPLETE
@@ -71,10 +71,10 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
     }
     private boolean inputsReady() {
         ItemStack gear=inventory.getStackInSlot(GEAR);
-        return gear.getCount()==1 && Augmentations.eligible(gear) && ingredientsReady() && inventory.getStackInSlot(OUTPUT).isEmpty();
+        return gear.getCount()==1 && Augmentations.augmentable(gear) && ingredientsReady() && inventory.getStackInSlot(OUTPUT).isEmpty();
     }
     private int offerIndex(String key) {
-        var pool=Augmentations.pool(inventory.getStackInSlot(phase==AugmentationAnimation.COMPLETE?OUTPUT:GEAR));
+        var pool=Augmentations.catalog(inventory.getStackInSlot(phase==AugmentationAnimation.COMPLETE?OUTPUT:GEAR));
         for(int i=0;i<pool.size();i++) if(pool.get(i).id().equals(key)) return i+1;
         return 0;
     }

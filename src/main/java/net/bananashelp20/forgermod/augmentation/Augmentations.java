@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.augmentation;
 
+import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
 import net.minecraft.core.component.DataComponents;
@@ -22,10 +23,14 @@ public final class Augmentations {
     public static final String MATERIAL_HIT = "augmentation.forgermod.material_hit";
     private static final String LEGACY_MATERIAL_HIT = "augmentation.forgermod.empowered_hit";
     private static final String DATA = "forgermod_augments";
+    private static List<Ability> cachedTemplatePool;
     private Augmentations() {}
 
     public static boolean eligible(ItemStack stack) {
         return stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect();
+    }
+    public static boolean augmentable(ItemStack stack) {
+        return eligible(stack) || stack.is(ModItems.AUGMENT_TEMPLATE.get());
     }
     public static SwordItemWithEffect canonical(ItemStack stack) {
         if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return null;
@@ -46,6 +51,20 @@ public final class Augmentations {
         abilities.add(new Ability(MATERIAL_HIT, false, canonical.materialAbilityName()));
         return List.copyOf(abilities);
     }
+    /** The template can roll any registered weapon ability without appearing as a weapon itself. */
+    public static List<Ability> catalog(ItemStack stack) {
+        return stack.is(ModItems.AUGMENT_TEMPLATE.get()) ? templatePool() : pool(stack);
+    }
+    private static List<Ability> templatePool() {
+        if (cachedTemplatePool != null) return cachedTemplatePool;
+        Map<String, Ability> all = new LinkedHashMap<>();
+        for (var entry : ModItems.ITEMS.getEntries()) {
+            ItemStack weapon = new ItemStack(entry.get());
+            if (eligible(weapon)) for (Ability ability : pool(weapon)) all.putIfAbsent(ability.id(), ability);
+        }
+        cachedTemplatePool = List.copyOf(all.values());
+        return cachedTemplatePool;
+    }
     private static CompoundTag data(ItemStack stack) {
         return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getCompound(DATA);
     }
@@ -59,7 +78,7 @@ public final class Augmentations {
         }
         if (saved.isEmpty()) return result;
         Set<String> valid = new HashSet<>();
-        for (var ability : pool(stack)) valid.add(ability.id());
+        for (var ability : catalog(stack)) valid.add(ability.id());
         for (Tag tag : saved) {
             CompoundTag row = (CompoundTag)tag;
             String id = migrateId(row.getString("id"));
@@ -69,10 +88,10 @@ public final class Augmentations {
         return result;
     }
     public static List<String> ids(ItemStack stack, boolean active) {
-        if (!eligible(stack)) return List.of();
+        if (!augmentable(stack)) return List.of();
         List<String> result = new ArrayList<>();
         Map<String, Boolean> types = new HashMap<>();
-        for (var ability : pool(stack)) types.put(ability.id(), ability.active());
+        for (var ability : catalog(stack)) types.put(ability.id(), ability.active());
         for (String id : learned(stack).keySet()) {
             if (!id.equals(MATERIAL_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < limit(stack, active)) result.add(id);
         }
@@ -98,9 +117,11 @@ public final class Augmentations {
     public static boolean hasPassive(ItemStack stack, String id) { return ids(stack, false).contains(id); }
     public static boolean hasActive(ItemStack stack) { return !ids(stack, true).isEmpty(); }
     public static Component abilityName(ItemStack stack,String id,int rank) {
+        if (MATERIAL_HIT.equals(id) && stack.is(ModItems.AUGMENT_TEMPLATE.get()))
+            return Component.translatable("augmentation.forgermod.material_hit.name");
         if(AdditionalAbilities.WINDCHARGE.equals(id) && rank>=4 && stack.getItem() instanceof net.bananashelp20.forgermod.item.custom.SwordItemWithEffect weapon && weapon.isAxe()) return Component.translatable("tooltips.forgermod.ability.skybreaker.name");
         if(AdditionalAbilities.DIRECT_CURRENT.equals(id) && rank>=4) return Component.translatable("tooltips.forgermod.ability.static_field.name");
-        return pool(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
+        return catalog(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
     }
     public static int count(ItemStack stack) { return Math.max(0, data(stack).getInt("count")); }
     public static int duration(ItemStack stack) { return (int)Math.min(Integer.MAX_VALUE, 100L + count(stack) * 20L); }
@@ -108,7 +129,7 @@ public final class Augmentations {
         var result = new ArrayList<Ability>();
         var learned = learned(stack);
         int activeCount = ids(stack,true).size(), passiveCount = ids(stack,false).size();
-        for (var ability : pool(stack)) {
+        for (var ability : catalog(stack)) {
             int level = learned.getOrDefault(ability.id(),0);
             int count = ability.active()?activeCount:passiveCount;
             if (level > 0 && level < RecommendedAbilities.maxRank(ability.id())
@@ -120,8 +141,9 @@ public final class Augmentations {
         var available = new ArrayList<>(available(stack));
         if (available.isEmpty()) return List.of();
         // A fresh dagger/axe always offers its weapon technique alongside a different choice.
-        String technique = canonical(stack).isDagger() ? DUAL_WIELD
-                : canonical(stack).isAxe() ? VERTICAL_STRIKE : null;
+        SwordItemWithEffect weapon = canonical(stack);
+        String technique = weapon == null ? null : weapon.isDagger() ? DUAL_WIELD
+                : weapon.isAxe() ? VERTICAL_STRIKE : null;
         Ability guaranteed = count(stack) == 0 && technique != null
                 ? available.stream().filter(a -> a.id().equals(technique)).findFirst().orElse(null) : null;
         var first = guaranteed != null ? guaranteed : available.get(random.nextInt(available.size()));
@@ -135,14 +157,85 @@ public final class Augmentations {
         ItemStack result = stack.copyWithCount(1);
         var learned = new LinkedHashMap<>(learned(stack));
         learned.put(id, level(stack, id) + 1);
+        write(result, learned, count(stack) + 1);
+        return result;
+    }
+    private static void write(ItemStack result, Map<String, Integer> learned, int count) {
         CompoundTag all = result.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        CompoundTag augments = data(stack).copy();
+        CompoundTag augments = data(result).copy();
         ListTag levels = new ListTag();
         learned.forEach((key, level) -> {
             CompoundTag row = new CompoundTag(); row.putString("id", key); row.putInt("level", level); levels.add(row);
         });
-        augments.put("levels", levels); augments.putInt("count", count(stack) + 1); augments.putInt("version", 2);
+        augments.put("levels", levels); augments.putInt("count", count); augments.putInt("version", 2);
         all.put(DATA, augments); result.set(DataComponents.CUSTOM_DATA, CustomData.of(all));
+    }
+    public record Replacement(String incoming, List<String> choices) {}
+
+    public static Replacement pendingReplacement(ItemStack left, ItemStack right, Map<String, String> replacements) {
+        return replacementPrompt(left, right, replacements, false);
+    }
+
+    /** Shows the next unresolved conflict, or the last choice so arrows can revise it. */
+    public static Replacement replacementPrompt(ItemStack left, ItemStack right,
+                                                 Map<String, String> replacements) {
+        return replacementPrompt(left, right, replacements, true);
+    }
+
+    private static Replacement replacementPrompt(ItemStack left, ItemStack right,
+                                                  Map<String, String> replacements, boolean includeResolved) {
+        if (!eligible(left) || !augmentable(right)) return null;
+        Map<String, Ability> compatible = new LinkedHashMap<>();
+        for (Ability ability : pool(left)) compatible.put(ability.id(), ability);
+        LinkedHashMap<String, Integer> merged = new LinkedHashMap<>(learned(left));
+        Replacement last = null;
+        for (var entry : learned(right).entrySet()) {
+            String id = entry.getKey();
+            Ability ability = compatible.get(id);
+            if (ability == null || merged.containsKey(id) || id.equals(MATERIAL_HIT)) continue;
+            List<String> occupied = merged.keySet().stream().filter(key -> !key.equals(MATERIAL_HIT)
+                    && compatible.containsKey(key) && compatible.get(key).active() == ability.active()).toList();
+            if (occupied.size() >= limit(left, ability.active())) {
+                last = new Replacement(id, occupied);
+                String chosen = replacements.get(id);
+                if (!occupied.contains(chosen)) return last;
+                merged.remove(chosen);
+            }
+            merged.put(id, entry.getValue());
+        }
+        return includeResolved ? last : null;
+    }
+
+    /** Merges supported abilities. A full category requires an explicit replacement choice. */
+    public static ItemStack merge(ItemStack left, ItemStack right) {
+        return merge(left, right, Map.of());
+    }
+    public static ItemStack merge(ItemStack left, ItemStack right, Map<String, String> replacements) {
+        if (!eligible(left) || !augmentable(right)) return ItemStack.EMPTY;
+        if (pendingReplacement(left, right, replacements) != null) return ItemStack.EMPTY;
+        Map<String, Ability> compatible = new LinkedHashMap<>();
+        for (Ability ability : pool(left)) compatible.put(ability.id(), ability);
+        LinkedHashMap<String, Integer> merged = new LinkedHashMap<>(learned(left));
+        boolean changed = false;
+        for (var entry : learned(right).entrySet()) {
+            String id = entry.getKey();
+            Ability ability = compatible.get(id);
+            if (ability == null) continue;
+            int current = merged.getOrDefault(id, 0);
+            int incoming = entry.getValue();
+            int rank = current == incoming ? Math.min(RecommendedAbilities.maxRank(id), current + 1) : Math.max(current, incoming);
+            if (rank <= current) continue;
+            if (current == 0 && !id.equals(MATERIAL_HIT)) {
+                long occupied = merged.keySet().stream().filter(key -> !key.equals(MATERIAL_HIT)
+                        && compatible.containsKey(key) && compatible.get(key).active() == ability.active()).count();
+                if (occupied >= limit(left, ability.active())) merged.remove(replacements.get(id));
+            }
+            merged.put(id, rank);
+            changed = true;
+        }
+        if (!changed) return ItemStack.EMPTY;
+        ItemStack result = left.copyWithCount(1);
+        write(result, merged, Math.max(count(left), merged.size()));
         return result;
     }
     public static String activeId(ItemStack stack, WeaponAbilitySlot slot) {

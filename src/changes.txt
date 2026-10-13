@@ -687,3 +687,7 @@ Removed
 - Expanded learned active capacity to three with configurable tertiary key (default 3), independent simultaneous sessions/cooldowns and actual-key tooltips; non-dagger passive capacity increased to five, daggers remain two. Material Hit remains separate; two-ability swap preserves order when a third is learned.
 
 - Renamed Warden's Needle and all four gemstone variants to Resonance Dagger, as chosen by the user. Existing shrieking_dagger registry IDs and saves remain compatible; weapon/ability catalogs use the new name.
+- Added craftable purple Augment Template. It can be augmented in the existing Augmentation Table slot, stores learned active and passive abilities and ranks, and displays stored descriptions and configured ability keys.
+- Added compatible ability and passive transfers from Augment Templates or other special weapons through an anvil. Matching ranks increase by one up to the ability maximum; higher ranks carry over. Unsupported abilities are skipped.
+- Added a small anvil replacement prompt controlled with left/right arrows. When a transfer exceeds a weapon's active or passive capacity, the player chooses which existing ability to replace before the anvil yields a result. Material Hit remains outside these slot limits.
+- Preserved same-weapon anvil durability repair, compatible enchantment merging, custom names, and prior-work costs while transferring augments.
