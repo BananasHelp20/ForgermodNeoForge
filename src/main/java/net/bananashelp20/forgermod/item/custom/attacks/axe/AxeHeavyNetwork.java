@@ -107,6 +107,12 @@ public final class AxeHeavyNetwork {
                     (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE), true, stack));
             return true;
         }
+        if (net.bananashelp20.forgermod.item.custom.abilities.EnderSwingAbility.consume(player, stack)) {
+            COMBOS.remove(id);
+            PENDING.remove(id);
+            net.bananashelp20.forgermod.item.custom.abilities.EnderSwingAbility.strike(player, stack);
+            return false;
+        }
         if (!AxeItems.canVerticalStrike(stack)) return false;
         Combo combo = COMBOS.get(id);
         if (combo == null || combo.axe() != stack.getItem()

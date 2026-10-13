@@ -9,7 +9,8 @@ public final class AxeItems {
 
     public static boolean canAttackPacket(ItemStack stack) {
         return canVerticalStrike(stack) || isAxe(stack) && net.bananashelp20.forgermod.augmentation.Augmentations.ids(stack, true)
-                .contains(net.bananashelp20.forgermod.augmentation.RecommendedAbilities.FLAMING_STOMP);
+                .stream().anyMatch(id -> id.equals(net.bananashelp20.forgermod.augmentation.RecommendedAbilities.FLAMING_STOMP)
+                        || id.equals(net.bananashelp20.forgermod.augmentation.RecommendedAbilities.ENDER_SWING));
     }
 
     public static boolean canVerticalStrike(ItemStack stack) {
