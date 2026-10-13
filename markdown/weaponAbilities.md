@@ -124,21 +124,21 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Pin, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Pin, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
 
 ## Somnium
 

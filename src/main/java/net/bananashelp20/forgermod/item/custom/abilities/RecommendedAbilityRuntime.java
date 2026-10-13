@@ -30,7 +30,7 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.FALSE_AWAKENING.equals(id)) return FalseAwakeningEvents.activate(player,stack);
         if(RecommendedAbilities.DELUSION.equals(id)) return DelusionEvents.activate(player,stack);
         if(RecommendedAbilities.GARDENERS.equals(id)) return GardenersEvents.activate(player,stack);
-        if(RecommendedAbilities.ECHO_PIN.equals(id)) return EchoPinEvents.activate(player,stack);
+        if(RecommendedAbilities.ECHO_HEARING.equals(id)) return EchoHearingAbility.activate(player,stack);
         return AdditionalAbilityRuntime.activate(player,stack,id);
     }
     public static boolean active(ServerPlayer player,String id) {
@@ -40,8 +40,7 @@ public final class RecommendedAbilityRuntime {
                 || RecommendedAbilities.NULL_RECEIPT.equals(id) && NullReceiptEvents.active(player)
                 || RecommendedAbilities.FALSE_AWAKENING.equals(id) && FalseAwakeningEvents.active(player)
                 || RecommendedAbilities.DELUSION.equals(id) && DelusionEvents.active(player)
-                || RecommendedAbilities.GARDENERS.equals(id) && GardenersEvents.active(player)
-                || RecommendedAbilities.ECHO_PIN.equals(id) && EchoPinEvents.active(player);
+                || RecommendedAbilities.GARDENERS.equals(id) && GardenersEvents.active(player);
     }
     public static void cancel(ServerPlayer player,String id) {
         AdditionalAbilityRuntime.cancel(player,id);
@@ -52,6 +51,5 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.FALSE_AWAKENING.equals(id)) FalseAwakeningEvents.cancel(player.getUUID());
         if(RecommendedAbilities.DELUSION.equals(id)) DelusionEvents.cancel(player.getUUID());
         if(RecommendedAbilities.GARDENERS.equals(id)) GardenersEvents.cancel(player.getUUID());
-        if(RecommendedAbilities.ECHO_PIN.equals(id)) EchoPinEvents.cancel(player.getUUID());
     }
 }

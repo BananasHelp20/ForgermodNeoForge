@@ -32,7 +32,8 @@ public final class RecommendedAbilities {
     public static final String DELUSION="tooltips.forgermod.ability.delusion";
     public static final String GARDENERS="tooltips.forgermod.ability.always_the_gardeners";
     public static final String GRAVE_VAULT="tooltips.forgermod.passive.grave_vault";
-    public static final String ECHO_PIN="tooltips.forgermod.ability.echo_pin";
+    // Keep the original translation/augmentation ID so existing weapon stacks and cooldowns remain compatible.
+    public static final String ECHO_HEARING="tooltips.forgermod.ability.echo_pin";
     public static final String WARDEN_TONE="tooltips.forgermod.passive.warden_tone";
     public static final String ECHO_SALVAGE="tooltips.forgermod.passive.echo_salvage";
     private RecommendedAbilities() {}
@@ -47,8 +48,8 @@ public final class RecommendedAbilities {
     }
     private static List<Augmentations.Ability> materialPool(ItemStack stack) {
         if(stack.getItem() instanceof PulsiteWeapon weapon) return weapon.isAxe()
-                ?List.of(new Augmentations.Ability(ECHO_PIN,true),new Augmentations.Ability(WARDEN_TONE,false),new Augmentations.Ability(ECHO_SALVAGE,false))
-                :List.of(new Augmentations.Ability(ECHO_PIN,true),new Augmentations.Ability(WARDEN_TONE,false));
+                ?List.of(new Augmentations.Ability(ECHO_HEARING,true),new Augmentations.Ability(WARDEN_TONE,false),new Augmentations.Ability(ECHO_SALVAGE,false))
+                :List.of(new Augmentations.Ability(ECHO_HEARING,true),new Augmentations.Ability(WARDEN_TONE,false));
         if(stack.getItem() instanceof LushWeapon) return List.of(new Augmentations.Ability(GARDENERS,true),new Augmentations.Ability(GRAVE_VAULT,false));
         if(stack.getItem() instanceof SomniumWeapon weapon)
             return weapon.isDagger()?List.of(new Augmentations.Ability(FALSE_AWAKENING,true),new Augmentations.Ability(DELUSION,true))
@@ -71,11 +72,11 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(CRUCIBLE_HOOK,true),new Augmentations.Ability(STRONG_ARM,true));
         return List.of();
     }
-    public static boolean active(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.active(); return ECHO_PIN.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
+    public static boolean active(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.active(); return ECHO_HEARING.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
     public static int maxRank(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.maxRank(); return Augmentations.DUAL_WIELD.equals(id) || Augmentations.VERTICAL_STRIKE.equals(id)?1:FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id) || WARDEN_TONE.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         var added=AdditionalAbilities.definition(id); if(added!=null) return added.cooldown()-added.cooldownStep()*(Math.clamp(rank,1,added.maxRank())-1);
-        if(ECHO_PIN.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
+        if(ECHO_HEARING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(GARDENERS.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(DELUSION.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         if(FALSE_AWAKENING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);

@@ -150,11 +150,11 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 - Dedicated synchronized menu/screen locks the bound weapon against pickup, shift-click, hotbar swap and offhand swap. Server requires exact equipped stack/hotbar and learned passive. Client allows the synchronized replacement of that stack after storage edits. Normal flower survival, collision, permissions, Adventure restrictions and NeoForge placement cancellation apply.
 - Reviewed/retested build and all 105 server tests passed: all variants, nine independent slots, persistence, flower-only input, extraction, weapon nesting prevention, number-key guard, switching, real valid/invalid-soil placement and Adventure exclusion. Client appearance has not been visually playtested.
 
-## Echo Pin - completed
+## Echo Hearing - completed
 
-- All fifteen Pulsite weapons. Aim at a visible enemy within 20/25/30/35 blocks to pin it for thirty seconds. Next loud game event (damage, entity action, shooting, impact, splash, explosion/fuse, instrument, block break/place) sends a vanilla moving vibration particle to the wielder and grants 2/3/4/5 seconds of Glowing. Walking and unrelated sources do not trigger it. Enemy may move out of sight before triggering; no damage or wall scan.
-- Exact-stack/hotbar, learned ID, living/same-level target, expiry and switching/logout guards; one pin per wielder and indexed targets. Cooldowns 30/25/20/15 seconds on trigger/cancel/expiry.
-- Reviewed/retested build and all 107 server tests passed: all variants, fresh rejection, real loud versus quiet/unrelated events, behind-wall reveal, one-time trigger, cooldown, initial walls, expiry and switching. Fixed existing distant Death Stare fixture to wait for its explicitly loaded corridor to become entity-ticking, above neighboring arenas; restores test-only chunk tickets.
+- Replaces the original Echo Pin behavior on all fifteen Pulsite weapons. Activating the learned ability immediately gives Glowing to every loaded entity within a 32/40/48/56-block sphere, including the wielder, other players, mobs and nonliving entities. Walls do not block it. The glow lasts 10/12/14/16 seconds; the 30/25/20/15-second cooldown begins on use.
+- The original augmentation ID remains `tooltips.forgermod.ability.echo_pin` so learned weapons and existing cooldowns remain compatible. Living entities receive the vanilla Glowing effect; nonliving entities receive a timed glowing tag, preserving tags that were already present and clearing owned tags on expiry or level exit. The former single-target loud-event listener and thirty-second pin state were removed.
+- Reviewed and retested with NeoForge 21.1.93: all 194 required server game tests and the build pass. Tests cover all fifteen weapon variants, both players, mobs, dropped items, a target behind a wall, rank I and IV radius/duration boundaries, cooldowns, timed cleanup, and pre-existing glow.
 
 ## Warden Tone - completed
 

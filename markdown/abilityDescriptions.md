@@ -236,17 +236,17 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 > Restore four food icons.
 
-### Echo Pin
+### Echo Hearing
 
 **Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 
-> Pin a visible enemy within 20/25/30/35 blocks for up to 30 seconds. Its next loud action sends a vibration pulse toward you and outlines its movement for 2/3/4/5 seconds, even out of sight. Quiet footsteps do not trigger it. Switching cancels the pin. Cooldown after ending: 30/25/20/15 seconds.
+> Reveal every nearby entity, including players, through walls within 32/40/48/56 blocks. Glowing lasts 10/12/14/16 seconds. Cooldown: 30/25/20/15 seconds.
 
 **Augmentation card:**
 
-> Mark an enemy. Its next loud action sends you a pulse and briefly reveals its movement.
+> Reveal all nearby entities, including players, through walls for 10/12/14/16 seconds.
 
 ### Explosion
 
