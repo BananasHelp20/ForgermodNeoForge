@@ -249,7 +249,8 @@ public class RegistryClass {
                 ModItems.ADVANCED_HANDLE.get(),
                 ModItems.ANCIENT_UPGRADE_TEMPLATE.get(),
                 ModItems.GEMSTONE_UPGRADE_TEMPLATE.get(),
-                ModItems.AUGMENT_TEMPLATE.get()
+                ModItems.AUGMENT_TEMPLATE.get(),
+                ModItems.SUPER_AUGMENT_TEMPLATE.get()
         };
     }
     public static ItemLike[] getMiscellaneousTabRegister() {

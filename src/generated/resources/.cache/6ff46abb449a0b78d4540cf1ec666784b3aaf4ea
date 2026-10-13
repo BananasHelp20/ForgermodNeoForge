@@ -1,8 +1,9 @@
-// 1.21.1	2026-10-10T17:06:41.6266303	Item Models: forgermod
+// 1.21.1	2026-10-13T14:51:12.174998	Item Models: forgermod
 6642fb43b1871f779df69a9257a0b1a2771aba62 assets/forgermod/models/item/advanced_handle.json
 a8b8f08cf4dc9abb721d7c62abdfd71d57be08f7 assets/forgermod/models/item/amber_gemstone.json
 4c3c88afba28f88938a3fb962267e28c610b678f assets/forgermod/models/item/amethyst_gemstone.json
 3c8acfe863804d523c355c20044405ede681087a assets/forgermod/models/item/ancient_upgrade_template.json
+e5cf1ae9108bb8df562b5a24cc2efee6bd8111fe assets/forgermod/models/item/augment_template.json
 b577fadcecbfae71c28e984ac28581d94f44069c assets/forgermod/models/item/carbon_steel_cross_guard.json
 adce9f179a9529bf049ba8cf2735b35bb6726088 assets/forgermod/models/item/carbon_steel_ingot.json
 7b526a20ad9e78ee2d90671b9277a6bd7f5f4dfd assets/forgermod/models/item/claymore.json
@@ -131,6 +132,7 @@ c56196d0cb58cf296ef404b5adcc4f4eea6a99da assets/forgermod/models/item/storming_c
 ccaa7cb9f1bf6bb9d6c85359fa58c537b1ce3235 assets/forgermod/models/item/storming_dagger_jade.json
 1be0d3f1cdb42a80b47f0faa57b17cb4b61eb5a3 assets/forgermod/models/item/storming_dagger_ruby.json
 a8ef826b07a7d35e024b88d323cdbf00967ab16a assets/forgermod/models/item/stumpfl_bat.json
+b25a8b974491bee42a1f9d0e05193e26b986fbed assets/forgermod/models/item/super_augment_template.json
 40cfa9ce07dc99330971825aa9da221eab827d88 assets/forgermod/models/item/taifunite_ingot.json
 0d46ab0810900b4c454a1ecbb83100341759b96c assets/forgermod/models/item/taifunite_shard.json
 b42b045b212ff9b82ee9df03a3d9881f867468b5 assets/forgermod/models/item/unrefined_carbon_steel.json

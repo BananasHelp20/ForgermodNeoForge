@@ -1,0 +1,11 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "net.bananashelp20.forgermod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "net.bananashelp20.forgermod.mixin.cei.CeiMixinPlugin",
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

@@ -50,6 +50,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.DEVELOPIUM_SHARD.get());
         basicItem(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get());
         basicItem(ModItems.AUGMENT_TEMPLATE.get());
+        basicItem(ModItems.SUPER_AUGMENT_TEMPLATE.get());
         basicItem(ModItems.JADE_GEMSTONE.get());
         basicItem(ModItems.SAPPHIRE_GEMSTONE.get());
 

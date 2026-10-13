@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": {"item": "forgermod:gemstone_upgrade_template"},
+  "base": {"item": "forgermod:augment_template"},
+  "addition": {"item": "minecraft:nether_star"},
+  "result": {"id": "forgermod:super_augment_template", "count": 1}
+}

@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.gametest;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AugmentAnvilEvents;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.bananashelp20.forgermod.block.ModBlocks;
 import net.bananashelp20.forgermod.block.entity.custom.AugmentationTableBlockEntity;
 import net.bananashelp20.forgermod.item.ModItems;
@@ -11,6 +12,9 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
+import net.minecraft.world.item.crafting.SmithingTransformRecipe;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
@@ -18,6 +22,47 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class AugmentTemplateGameTests {
+    @GameTest(template = "riftfang_test")
+    public static void smithingUpgradeKeepsStoredAbility(GameTestHelper test) {
+        ItemStack weapon = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
+        String id = Augmentations.pool(weapon).getFirst().id();
+        ItemStack filled = Augmentations.apply(new ItemStack(ModItems.AUGMENT_TEMPLATE.get()), id);
+        var holder = test.getLevel().getRecipeManager()
+                .byKey(ResourceLocation.fromNamespaceAndPath("forgermod", "super_augment_template")).orElseThrow();
+        test.assertTrue(holder.value() instanceof SmithingTransformRecipe, "Super template smithing recipe missing");
+        SmithingRecipeInput input = new SmithingRecipeInput(
+                new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()), filled, new ItemStack(Items.NETHER_STAR));
+        ItemStack result = ((SmithingTransformRecipe) holder.value()).assemble(input, test.getLevel().registryAccess());
+        test.assertTrue(Augmentations.isSuperTemplate(result) && Augmentations.level(result, id) == 1,
+                "Smithing upgrade discarded the stored ability");
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
+    public static void superTemplateCarriesOneRankAboveCap(GameTestHelper test) {
+        ItemStack weapon = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
+        String id = Augmentations.pool(weapon).stream()
+                .filter(a -> RecommendedAbilities.maxRank(a.id()) > 1).findFirst().orElseThrow().id();
+        int cap = RecommendedAbilities.maxRank(id);
+        ItemStack normal = new ItemStack(ModItems.AUGMENT_TEMPLATE.get());
+        ItemStack superTemplate = new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get());
+        for (int rank = 1; rank <= cap; rank++) {
+            normal = Augmentations.apply(normal, id);
+            superTemplate = Augmentations.apply(superTemplate, id);
+        }
+        test.assertTrue(Augmentations.apply(normal, id).isEmpty(), "Normal template exceeded the rank cap");
+        superTemplate = Augmentations.apply(superTemplate, id);
+        test.assertTrue(Augmentations.level(superTemplate, id) == cap + 1, "Super template did not reach its bonus rank");
+        ItemStack merged = Augmentations.merge(weapon, superTemplate);
+        test.assertTrue(Augmentations.level(merged, id) == cap + 1, "Super rank did not transfer to weapon");
+        test.assertTrue(Augmentations.extractFirst(merged, new ItemStack(ModItems.AUGMENT_TEMPLATE.get())) == null,
+                "Normal template extracted an over-cap rank");
+        var extraction = Augmentations.extractFirst(merged, new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get()));
+        test.assertTrue(extraction != null && Augmentations.level(extraction.template(), id) == cap + 1
+                && Augmentations.level(extraction.weapon(), id) == 0, "Super extraction lost or duplicated the rank");
+        test.succeed();
+    }
+
     @GameTest(template = "riftfang_test")
     public static void templateAcceptsTableOffersAndCompatibleAnvilTransfer(GameTestHelper test) {
         ItemStack blank = new ItemStack(ModItems.AUGMENT_TEMPLATE.get());

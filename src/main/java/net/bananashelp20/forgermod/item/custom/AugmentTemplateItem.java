@@ -10,11 +10,21 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public final class AugmentTemplateItem extends Item {
-    public AugmentTemplateItem(Properties properties) { super(properties); }
+    private final boolean superTemplate;
+    public AugmentTemplateItem(Properties properties, boolean superTemplate) {
+        super(properties);
+        this.superTemplate = superTemplate;
+    }
+    public boolean isSuperTemplate() { return superTemplate; }
+
+    @Override
+    public boolean isFoil(ItemStack stack) { return !Augmentations.learned(stack).isEmpty(); }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltips.forgermod.augment_template.tooltip").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(superTemplate
+                ? "tooltips.forgermod.super_augment_template.tooltip"
+                : "tooltips.forgermod.augment_template.tooltip").withStyle(ChatFormatting.GRAY));
         boolean expanded = WeaponTooltips.descriptionsVisible();
         var actives = Augmentations.ids(stack, true);
         for (var entry : Augmentations.learned(stack).entrySet()) {

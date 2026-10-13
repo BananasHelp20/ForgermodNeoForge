@@ -17,6 +17,10 @@ license="${mod_license}"
 [[mixins]]
 config="forgermod.mixins.json"
 
+[[mixins]]
+config="forgermod.cei.mixins.json"
+requiredMods=["create_enchantment_industry"]
+
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 

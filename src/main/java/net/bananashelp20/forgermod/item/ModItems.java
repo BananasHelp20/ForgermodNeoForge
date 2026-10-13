@@ -120,7 +120,9 @@ public class ModItems {
     public static final DeferredItem<Item> ANCIENT_UPGRADE_TEMPLATE = createItemWithDescription("ancient_upgrade_template", "tooltips.forgermod.ancient_upgrade_template.tooltip");
     public static final DeferredItem<Item> GEMSTONE_UPGRADE_TEMPLATE = createItemWithDescription("gemstone_upgrade_template", "tooltips.forgermod.gemstone_upgrade_template.tooltip");
     public static final DeferredItem<AugmentTemplateItem> AUGMENT_TEMPLATE = ITEMS.register("augment_template",
-            () -> new AugmentTemplateItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+            () -> new AugmentTemplateItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), false));
+    public static final DeferredItem<AugmentTemplateItem> SUPER_AUGMENT_TEMPLATE = ITEMS.register("super_augment_template",
+            () -> new AugmentTemplateItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), true));
 
     //special
     public static final DeferredItem<Item> INANISIUM_INGOT = createItemWithDescription("inanisium_ingot", "tooltips.forgermod.inanisium_ingot.tooltip");
