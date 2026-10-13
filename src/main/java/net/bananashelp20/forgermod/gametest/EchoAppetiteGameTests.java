@@ -3,12 +3,15 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
+import net.bananashelp20.forgermod.item.custom.abilities.EchoAppetiteEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.gametest.*;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class EchoAppetiteGameTests {
     @GameTest(template="riftfang_test")
@@ -38,5 +41,56 @@ public class EchoAppetiteGameTests {
             player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()),AdditionalAbilities.ECHO_APPETITE));
             test.assertTrue(player.gameMode.destroyBlock(pos),"Actual sculk break failed");test.assertTrue(player.getFoodData().getFoodLevel()==11 && test.getLevel().getBlockState(pos).isAir(),"Actual block destruction does not feed");
         }finally {player.server.getPlayerList().remove(player);}test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
+    public static void everyPulsiteVariantFeedsOnCreditedWardenKillsOnly(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        var warden=EntityType.WARDEN.create(test.getLevel());
+        var zombie=EntityType.ZOMBIE.create(test.getLevel());
+        int count=0;
+        try {for(var entry:ModItems.ITEMS.getEntries()) {
+            if(!(entry.get() instanceof PulsiteWeapon))continue;
+            count++;
+            var fresh=new ItemStack(entry.get());
+            var credited=new LivingDeathEvent(warden,player.damageSources().playerAttack(player));
+            player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
+            player.getFoodData().setFoodLevel(10);player.getFoodData().setSaturation(2);
+            EchoAppetiteEvents.onWardenDeath(credited);
+            test.assertTrue(player.getFoodData().getFoodLevel()==10,"Unlearned Warden kill feeds");
+            var learned=Augmentations.apply(fresh,AdditionalAbilities.ECHO_APPETITE);
+            player.setItemInHand(InteractionHand.MAIN_HAND,learned);
+            credited.setCanceled(true);EchoAppetiteEvents.onWardenDeath(credited);
+            test.assertTrue(player.getFoodData().getFoodLevel()==10,"Canceled Warden death feeds");
+            credited.setCanceled(false);
+            EchoAppetiteEvents.onWardenDeath(new LivingDeathEvent(zombie,player.damageSources().playerAttack(player)));
+            EchoAppetiteEvents.onWardenDeath(new LivingDeathEvent(warden,player.damageSources().generic()));
+            test.assertTrue(player.getFoodData().getFoodLevel()==10,"Wrong victim or uncredited death feeds");
+            EchoAppetiteEvents.onWardenDeath(credited);
+            test.assertTrue(player.getFoodData().getFoodLevel()==14 && player.getFoodData().getSaturationLevel()==2,
+                    "Warden kill should restore two drumsticks without saturation");
+            player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
+            EchoAppetiteEvents.onWardenDeath(credited);
+            test.assertTrue(player.getFoodData().getFoodLevel()==14,"Switching to an unlearned weapon still feeds");
+        }} finally {warden.discard();zombie.discard();player.server.getPlayerList().remove(player);}
+        test.assertTrue(count==15,"Skipped Pulsite variants");test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
+    public static void realWardenDeathFeedsAndCapsAtFullHunger(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        var warden=EntityType.WARDEN.create(test.getLevel());
+        warden.setNoAi(true);warden.setNoGravity(true);warden.setPos(player.getX()+2,player.getY(),player.getZ());
+        test.getLevel().addFreshEntity(warden);
+        try {
+            player.setItemInHand(InteractionHand.MAIN_HAND,
+                    Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()),AdditionalAbilities.ECHO_APPETITE));
+            player.getFoodData().setFoodLevel(18);player.getFoodData().setSaturation(2);
+            warden.setHealth(1);warden.hurt(player.damageSources().playerAttack(player),5);
+            test.assertFalse(warden.isAlive(),"Warden survived lethal player damage");
+            test.assertTrue(player.getFoodData().getFoodLevel()==20 && player.getFoodData().getSaturationLevel()==2,
+                    "Actual Warden death did not cap food without adding saturation");
+        } finally {warden.discard();player.server.getPlayerList().remove(player);}
+        test.succeed();
     }
 }

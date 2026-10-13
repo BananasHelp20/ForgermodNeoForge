@@ -485,8 +485,8 @@ Heating Up's corrected rank-IV behavior: extinguish the wielder's fire to gain h
 ## Echo Appetite - completed
 
 - Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
-- Completed sculk mining restores exactly one hunger point without saturation for all Pulsite variants. Includes sculk veins, both sensors, catalysts and shriekers; other blocks do not feed. Normal tool wear and block drops remain intact, and a final-durability break still earns its hunger point. Tested actual server block destruction, maximum hunger and all variants. Fixed strength, maximum rank I.
-- Tested, reviewed, retested and reviewed again; build and all 184 required server tests passed.
+- Completed sculk mining restores exactly one food point (half a drumstick) without saturation for all Pulsite variants. Includes sculk veins, both sensors, catalysts and shriekers; other blocks do not feed. Normal tool wear and block drops remain intact, and a final-durability break still earns its food point. A credited Warden kill while holding a learned Pulsite weapon restores four food points (two drumsticks), capped at full hunger, without saturation. Fixed strength, maximum rank I.
+- The Warden-kill extension was reviewed and tested on all fifteen Pulsite variants, with canceled and uncredited deaths excluded and a real Warden death confirming the hunger cap and unchanged saturation. After repairing an unrelated large-radius Echo Hearing test fixture, the build and all 197 required server tests passed.
 
 ## Resonance Crit - completed
 

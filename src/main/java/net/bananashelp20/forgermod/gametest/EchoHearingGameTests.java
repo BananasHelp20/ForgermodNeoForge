@@ -8,6 +8,7 @@ import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime;
 import net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,9 +22,26 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class EchoHearingGameTests {
+    private static Map<ChunkPos, Boolean> forceTargetChunks(GameTestHelper test, net.minecraft.core.BlockPos... positions) {
+        Map<ChunkPos, Boolean> previous = new HashMap<>();
+        for (var position : positions) {
+            ChunkPos chunk = new ChunkPos(position);
+            previous.putIfAbsent(chunk, test.getLevel().getForcedChunks().contains(chunk.toLong()));
+            test.getLevel().setChunkForced(chunk.x, chunk.z, true);
+        }
+        return previous;
+    }
+
+    private static void restoreTargetChunks(GameTestHelper test, Map<ChunkPos, Boolean> previous) {
+        previous.forEach((chunk, wasForced) -> test.getLevel().setChunkForced(chunk.x, chunk.z, wasForced));
+    }
+
     private static ServerPlayer player(GameTestHelper test) {
         ServerPlayer player = TestPlayers.survival(test);
         player.setInvulnerable(true);
@@ -32,7 +50,7 @@ public class EchoHearingGameTests {
         return player;
     }
 
-    @GameTest(template = "riftfang_test")
+    @GameTest(template = "riftfang_test", batch = "echo_hearing_variants")
     public static void allVariantsRevealEveryEntityAndStartIndependentCooldowns(GameTestHelper test) throws Exception {
         int count = 0;
         for (var item : BuiltInRegistries.ITEM) {
@@ -77,7 +95,7 @@ public class EchoHearingGameTests {
         test.succeed();
     }
 
-    @GameTest(template = "riftfang_test", timeoutTicks = 350)
+    @GameTest(template = "riftfang_test", batch = "echo_hearing_duration", timeoutTicks = 350)
     public static void rangeWallsDurationAndExistingGlow(GameTestHelper test) throws Exception {
         ServerPlayer wielder = player(test);
         var level = test.getLevel();
@@ -85,14 +103,11 @@ public class EchoHearingGameTests {
         inside.setNoAi(true);
         inside.setNoGravity(true);
         inside.setPos(wielder.getX() + 30, wielder.getY(), wielder.getZ());
-        level.getChunkAt(inside.blockPosition());
-        level.addFreshEntity(inside);
         var outside = EntityType.ZOMBIE.create(level);
         outside.setNoAi(true);
         outside.setNoGravity(true);
         outside.setPos(wielder.getX() + 34, wielder.getY(), wielder.getZ());
-        level.getChunkAt(outside.blockPosition());
-        level.addFreshEntity(outside);
+        var forced = forceTargetChunks(test, inside.blockPosition(), outside.blockPosition());
         var priorGlow = new ItemEntity(level, wielder.getX() + 2, wielder.getY(), wielder.getZ(), new ItemStack(Items.EMERALD));
         priorGlow.setNoGravity(true);
         priorGlow.setPickUpDelay(32767);
@@ -104,28 +119,32 @@ public class EchoHearingGameTests {
         level.addFreshEntity(drop);
         var wall = wielder.blockPosition().east(2).above();
         level.setBlockAndUpdate(wall, Blocks.STONE.defaultBlockState());
-        ItemStack learned = Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()), RecommendedAbilities.ECHO_HEARING);
-        wielder.setItemInHand(InteractionHand.MAIN_HAND, learned);
-        AbilityTestPackets.use(wielder, 0);
-        test.assertTrue(inside.getEffect(MobEffects.GLOWING).getDuration() == 200, "Thirty-block target behind wall was missed");
-        test.assertFalse(outside.hasEffect(MobEffects.GLOWING), "Target outside 32-block sphere was revealed");
-        test.assertTrue(priorGlow.isCurrentlyGlowing() && drop.isCurrentlyGlowing(), "Item glow missing");
-        wielder.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STICK));
-        test.runAfterDelay(190, () -> test.assertTrue(drop.isCurrentlyGlowing(), "Nonliving glow ended early on weapon switch"));
-        test.runAfterDelay(210, () -> {
-            test.assertFalse(inside.hasEffect(MobEffects.GLOWING), "Living glow lasted beyond ten seconds");
-            test.assertFalse(drop.isCurrentlyGlowing(), "Nonliving glow did not expire");
-            test.assertTrue(priorGlow.isCurrentlyGlowing(), "Existing glow was removed");
-            inside.discard();
-            outside.discard();
-            priorGlow.discard();
-            drop.discard();
-            level.getServer().getPlayerList().remove(wielder);
-            test.succeed();
-        });
+        test.startSequence().thenWaitUntil(() -> test.assertTrue(forced.keySet().stream().allMatch(chunk ->
+                level.isPositionEntityTicking(chunk.getWorldPosition())), "Waiting for range fixture chunks"))
+                .thenExecute(() -> { try {
+                    level.addFreshEntity(inside);
+                    level.addFreshEntity(outside);
+                    ItemStack learned = Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()), RecommendedAbilities.ECHO_HEARING);
+                    wielder.setItemInHand(InteractionHand.MAIN_HAND, learned);
+                    AbilityTestPackets.use(wielder, 0);
+                    test.assertTrue(inside.getEffect(MobEffects.GLOWING).getDuration() == 200, "Thirty-block target behind wall was missed");
+                    test.assertFalse(outside.hasEffect(MobEffects.GLOWING), "Target outside 32-block sphere was revealed");
+                    test.assertTrue(priorGlow.isCurrentlyGlowing() && drop.isCurrentlyGlowing(), "Item glow missing");
+                    wielder.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STICK));
+                    test.runAfterDelay(190, () -> test.assertTrue(drop.isCurrentlyGlowing(), "Nonliving glow ended early on weapon switch"));
+                    test.runAfterDelay(210, () -> {
+                        test.assertFalse(inside.hasEffect(MobEffects.GLOWING), "Living glow lasted beyond ten seconds");
+                        test.assertFalse(drop.isCurrentlyGlowing(), "Nonliving glow did not expire");
+                        test.assertTrue(priorGlow.isCurrentlyGlowing(), "Existing glow was removed");
+                        inside.discard(); outside.discard(); priorGlow.discard(); drop.discard();
+                        restoreTargetChunks(test, forced);
+                        level.getServer().getPlayerList().remove(wielder);
+                        test.succeed();
+                    });
+                } catch (Exception error) { throw new RuntimeException(error); } });
     }
 
-    @GameTest(template = "riftfang_test")
+    @GameTest(template = "riftfang_test", batch = "echo_hearing_rank_four", timeoutTicks = 150)
     public static void fourthRankReachesFullRadiusAndDuration(GameTestHelper test) throws Exception {
         ServerPlayer wielder = player(test);
         var level = test.getLevel();
@@ -133,15 +152,16 @@ public class EchoHearingGameTests {
         inside.setNoAi(true);
         inside.setNoGravity(true);
         inside.setPos(wielder.getX() + 54, wielder.getY(), wielder.getZ());
-        level.getChunkAt(inside.blockPosition());
-        level.addFreshEntity(inside);
         var outside = EntityType.ZOMBIE.create(level);
         outside.setNoAi(true);
         outside.setNoGravity(true);
         outside.setPos(wielder.getX() + 58, wielder.getY(), wielder.getZ());
-        level.getChunkAt(outside.blockPosition());
-        level.addFreshEntity(outside);
-        try {
+        var forced = forceTargetChunks(test, inside.blockPosition(), outside.blockPosition());
+        test.startSequence().thenWaitUntil(() -> test.assertTrue(forced.keySet().stream().allMatch(chunk ->
+                level.isPositionEntityTicking(chunk.getWorldPosition())), "Waiting for rank IV fixture chunks"))
+                .thenExecute(() -> { try {
+            level.addFreshEntity(inside);
+            level.addFreshEntity(outside);
             ItemStack learned = new ItemStack(ModItems.SHRIEKING_CLAYMORE.get());
             for (int rank = 1; rank <= 4; rank++) learned = Augmentations.apply(learned, RecommendedAbilities.ECHO_HEARING);
             test.assertTrue(Augmentations.level(learned, RecommendedAbilities.ECHO_HEARING) == 4, "Fourth rank was not learned");
@@ -152,11 +172,12 @@ public class EchoHearingGameTests {
             String key = BuiltInRegistries.ITEM.getKey(learned.getItem()) + ":" + RecommendedAbilities.ECHO_HEARING;
             test.assertTrue(wielder.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key, 0L)
                     == wielder.level().getGameTime() + 300, "Rank IV cooldown is not 15 seconds");
-        } finally {
+            test.succeed();
+        } catch (Exception error) { throw new RuntimeException(error); } finally {
             inside.discard();
             outside.discard();
+            restoreTargetChunks(test, forced);
             level.getServer().getPlayerList().remove(wielder);
-        }
-        test.succeed();
+        } });
     }
 }

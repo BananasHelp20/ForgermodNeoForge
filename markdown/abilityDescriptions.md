@@ -878,11 +878,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Breaking sculk, sculk veins, sensors, catalysts or shriekers restores one hunger point, without saturation.
+> Breaking sculk, sculk veins, sensors, catalysts or shriekers restores half a drumstick. Killing a Warden restores two drumsticks. Neither adds saturation.
 
 **Augmentation card:**
 
-> Break sculk blocks to restore one hunger point.
+> Break sculk blocks for half a drumstick; defeat a Warden for two drumsticks.
 
 ### Echo Salvage
 
