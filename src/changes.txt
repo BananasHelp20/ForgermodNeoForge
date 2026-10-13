@@ -149,6 +149,7 @@ Added
 - Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
 
 Changed
+- Increased Challenge Roar's rank-based radius from 6/8/10/12 to 16/20/24/28 blocks; it now taunts all hostile mobs in range through walls while excluding players, allies, passive mobs and neutral mobs, with its 30/25/20/15-second cooldown unchanged
 - Renamed Echo Pin to Echo Hearing while preserving its saved augmentation ID; activation now immediately reveals all nearby entities, including players and nonliving entities, through walls in a 32/40/48/56-block radius for 10/12/14/16 seconds; retained its independent 30/25/20/15-second cooldown and removed the single-target sound trigger
 - Reworked the Augmentation Table into a medieval magical forge altar: weathered masonry, dark iron bindings, carved template/anvil/gemstone marks, and a sapphire set in a stone arch; removed the bright blue panel design and raised machine-like rails, and matched its collision shape to the new model
 - Rebuilt the Augmentation Table's block model as a compact forge station with a full iron-and-stone footing, solid sapphire-core housing, reinforced corners, and a recessed work surface held by steel jaws and a backstop; updated its collision shape to match

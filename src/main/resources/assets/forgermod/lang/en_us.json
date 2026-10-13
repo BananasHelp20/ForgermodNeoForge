@@ -680,7 +680,7 @@
   "tooltips.forgermod.passive.stone_song": "Gain two armor points while holding this blade below Y=0.",
   "tooltips.forgermod.passive.stone_song.card": "Holding this blade below Y=0 grants two armor points.",
   "tooltips.forgermod.ability.challenge_roar.name": "Challenge Roar",
-  "tooltips.forgermod.ability.challenge_roar": "Roar to make visible hostile mobs within 6/8/10/12 blocks target you. Players, allies and neutral creatures are unaffected.",
-  "tooltips.forgermod.ability.challenge_roar.card": "Nearby visible hostile mobs turn their aggression toward you.",
+  "tooltips.forgermod.ability.challenge_roar": "Roar to make hostile mobs within 16/20/24/28 blocks target you, even through walls. Players, allies and neutral creatures are unaffected. Cooldown: 30/25/20/15 seconds.",
+  "tooltips.forgermod.ability.challenge_roar.card": "Hostile mobs within 16/20/24/28 blocks target you, even through walls.",
   "key.forgermod.ability_tertiary": "Tertiary Weapon Ability"
 }

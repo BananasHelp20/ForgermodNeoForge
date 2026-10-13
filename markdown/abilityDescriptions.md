@@ -96,11 +96,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Roar to make visible hostile mobs within 6/8/10/12 blocks target you. Players, allies and neutral creatures are unaffected.
+> Roar to make hostile mobs within 16/20/24/28 blocks target you, even through walls. Players, allies and neutral creatures are unaffected. Cooldown: 30/25/20/15 seconds.
 
 **Augmentation card:**
 
-> Nearby visible hostile mobs turn their aggression toward you.
+> Hostile mobs within 16/20/24/28 blocks target you, even through walls.
 
 ### Charge Attack
 
