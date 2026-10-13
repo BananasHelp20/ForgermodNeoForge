@@ -22,7 +22,7 @@ public final class AxeHeavyClient {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null
                 || !minecraft.player.getOffhandItem().isEmpty()
-                || !AxeItems.canVerticalStrike(minecraft.player.getMainHandItem())) return;
+                || !AxeItems.canAttackPacket(minecraft.player.getMainHandItem())) return;
         if (minecraft.hitResult != null && minecraft.hitResult.getType() == HitResult.Type.BLOCK) return;
 
         PacketDistributor.sendToServer(new AxeHeavyNetwork.AxeAttackPayload(0));

@@ -7,6 +7,11 @@ import net.minecraft.world.item.ItemStack;
 public final class AxeItems {
     private AxeItems() {}
 
+    public static boolean canAttackPacket(ItemStack stack) {
+        return canVerticalStrike(stack) || isAxe(stack) && net.bananashelp20.forgermod.augmentation.Augmentations.ids(stack, true)
+                .contains(net.bananashelp20.forgermod.augmentation.RecommendedAbilities.FLAMING_STOMP);
+    }
+
     public static boolean canVerticalStrike(ItemStack stack) {
         return isAxe(stack) && (!net.bananashelp20.forgermod.augmentation.Augmentations.eligible(stack)
                 || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(stack,
