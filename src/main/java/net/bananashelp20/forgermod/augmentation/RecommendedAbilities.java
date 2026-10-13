@@ -37,10 +37,13 @@ public final class RecommendedAbilities {
     public static final String WARDEN_TONE="tooltips.forgermod.passive.warden_tone";
     public static final String ECHO_SALVAGE="tooltips.forgermod.passive.echo_salvage";
     public static final String FLAMING_STOMP="tooltips.forgermod.ability.flaming_stomp";
+    public static final String FLAMEBORN="tooltips.forgermod.ability.flameborn";
     private RecommendedAbilities() {}
     public static List<Augmentations.Ability> pool(ItemStack stack) {
         var result=new ArrayList<>(materialPool(stack));
         result.addAll(AdditionalAbilities.pool(stack));
+        if(stack.getItem() instanceof IgnisiumWeapon)
+            result.add(new Augmentations.Ability(FLAMEBORN,true));
         if(stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect() && weapon.isAxe()) {
             result.add(new Augmentations.Ability(SWING_ATTACK,true));
             if(!(weapon instanceof IgnisiumWeapon)) result.add(new Augmentations.Ability(OVERWHELMING_SMASH,false));
@@ -74,8 +77,8 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(FLAMING_STOMP,true));
         return List.of();
     }
-    public static boolean active(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.active(); return FLAMING_STOMP.equals(id) || ECHO_HEARING.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
-    public static int maxRank(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.maxRank(); return Augmentations.DUAL_WIELD.equals(id) || Augmentations.VERTICAL_STRIKE.equals(id) || FLAMING_STOMP.equals(id)?1:FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id) || WARDEN_TONE.equals(id)?1:4; }
+    public static boolean active(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.active(); return FLAMEBORN.equals(id) || FLAMING_STOMP.equals(id) || ECHO_HEARING.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
+    public static int maxRank(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.maxRank(); return Augmentations.DUAL_WIELD.equals(id) || Augmentations.VERTICAL_STRIKE.equals(id) || FLAMING_STOMP.equals(id) || FLAMEBORN.equals(id)?1:FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id) || WARDEN_TONE.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         var added=AdditionalAbilities.definition(id); if(added!=null) return added.cooldown()-added.cooldownStep()*(Math.clamp(rank,1,added.maxRank())-1);
         if(ECHO_HEARING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
@@ -86,6 +89,7 @@ public final class RecommendedAbilities {
         if(DEATH_STARE.equals(id)) return 900-100*(Math.clamp(rank,1,4)-1);
         if(SWING_ATTACK.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(FLAMING_STOMP.equals(id)) return 2400;
+        if(FLAMEBORN.equals(id)) return 6000;
         if(STRONG_ARM.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(CRUCIBLE_HOOK.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         return EXPLOSION.equals(id)?1200-100*(Math.clamp(rank,1,4)-1):CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id)?900:0;

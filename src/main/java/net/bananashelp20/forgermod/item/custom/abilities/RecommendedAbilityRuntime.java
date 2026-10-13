@@ -28,6 +28,7 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.DEATH_STARE.equals(id)) return DeathStareAbility.activate(player,stack);
         if(RecommendedAbilities.NULL_RECEIPT.equals(id)) return NullReceiptEvents.activate(player,stack);
         if(RecommendedAbilities.FLAMING_STOMP.equals(id)) return FlamingStompAbility.arm(player,stack);
+        if(RecommendedAbilities.FLAMEBORN.equals(id)) return FlamebornAbility.activate(player,stack);
         if(RecommendedAbilities.FALSE_AWAKENING.equals(id)) return FalseAwakeningEvents.activate(player,stack);
         if(RecommendedAbilities.DELUSION.equals(id)) return DelusionEvents.activate(player,stack);
         if(RecommendedAbilities.GARDENERS.equals(id)) return GardenersEvents.activate(player,stack);
@@ -36,6 +37,7 @@ public final class RecommendedAbilityRuntime {
     }
     public static boolean active(ServerPlayer player,String id) {
         return AdditionalAbilityRuntime.active(player,id) || RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
+                || RecommendedAbilities.FLAMEBORN.equals(id) && FlamebornAbility.active(player)
                 || RecommendedAbilities.EXPLOSIVE_HITS.equals(id) && ExplosiveHitsEvents.active(player)
                 || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.active(player)
                 || RecommendedAbilities.NULL_RECEIPT.equals(id) && NullReceiptEvents.active(player)
@@ -46,6 +48,7 @@ public final class RecommendedAbilityRuntime {
     }
     public static void cancel(ServerPlayer player,String id) {
         AdditionalAbilityRuntime.cancel(player,id);
+        if(RecommendedAbilities.FLAMEBORN.equals(id)) FlamebornAbility.cancel(player);
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) ExplosiveHitsEvents.cancel(player.getUUID());
         if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) CrucibleHookEvents.cancel(player.getUUID());

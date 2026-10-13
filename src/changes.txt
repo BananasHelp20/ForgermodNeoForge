@@ -701,3 +701,4 @@ Removed
 - Added Flaming Stomp to Ignisium axes and gemstone variants. The next axe attack triggers the vertical strike animation and affects a 5×5 area ahead, setting enemies ablaze for five seconds. It has a two-minute cooldown after use or cancellation.
 - Removed activation key labels from stored abilities on Augment Templates and Super Augment Templates; templates cannot activate weapon abilities.
 - Replaced both Augment Template textures with purple recolors of the corresponding Create: Enchantment Industry animated template sprites.
+- Added Flameborn to Ignisium daggers, claymores, and axes, including gemstone variants. It grants up to 30 seconds of Fire Resistance and ignites the wielder and enemies within 10 blocks for five seconds (seven at super rank) with a visual explosion. Switching ends its protection; a five-minute cooldown starts when it ends.
