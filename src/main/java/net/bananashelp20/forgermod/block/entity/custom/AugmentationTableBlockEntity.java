@@ -99,8 +99,18 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
             legacyPaid=false; reset();
         }
         if(phase==AugmentationAnimation.COMPLETE) {
-            if(inventory.getStackInSlot(OUTPUT).isEmpty()) reset();
-            return;
+            ItemStack result=inventory.getStackInSlot(OUTPUT);
+            if(result.isEmpty()) { reset(); return; }
+            if(!inventory.getStackInSlot(GEAR).isEmpty() || !ingredientsReady()
+                    || Augmentations.available(result).isEmpty()) return;
+            // Feed the one finished stack back through the table. A result with no
+            // further legal upgrade or ingredient pair remains in the output slot.
+            internalMutation=true;
+            try {
+                inventory.setStackInSlot(OUTPUT,ItemStack.EMPTY);
+                inventory.setStackInSlot(GEAR,result);
+                reset();
+            } finally { internalMutation=false; }
         }
         if(!inputsReady()) { if(phase!=0) reset(); return; }
         var gear=inventory.getStackInSlot(GEAR);

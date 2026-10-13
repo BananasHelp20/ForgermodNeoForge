@@ -691,3 +691,5 @@ Removed
 - Added compatible ability and passive transfers from Augment Templates or other special weapons through an anvil. Matching ranks increase by one up to the ability maximum; higher ranks carry over. Unsupported abilities are skipped.
 - Added a small anvil replacement prompt controlled with left/right arrows. When a transfer exceeds a weapon's active or passive capacity, the player chooses which existing ability to replace before the anvil yields a result. Material Hit remains outside these slot limits.
 - Preserved same-weapon anvil durability repair, compatible enchantment merging, custom names, and prior-work costs while transferring augments.
+- Added automatic Augmentation Table repeat cycles after a choice when the same upgraded item has another legal upgrade and a gemstone template plus sapphire pair remains. The final result stays in the output slot when no further cycle is possible.
+- Kept the Augmentation Table's augment slot at one item and added a regression check for single-item insertion and repeated template upgrades.

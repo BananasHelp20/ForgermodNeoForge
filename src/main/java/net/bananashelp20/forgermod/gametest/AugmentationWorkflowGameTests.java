@@ -150,4 +150,41 @@ public class AugmentationWorkflowGameTests {
         test.assertTrue(weapons==1 && sapphires==3 && templates==3,"Breaking lost/duplicated pending inputs");
         test.succeed();
     }
+
+    @GameTest(template="riftfang_test")
+    public static void selectedItemRepeatsUntilIngredientsRunOutAndGearSlotStaysSingle(GameTestHelper test) {
+        var table=table(test);
+        ItemStack target=new ItemStack(ModItems.AUGMENT_TEMPLATE.get());
+        test.assertTrue(table.inventory.getSlotLimit(AugmentationTableBlockEntity.GEAR)==1,
+                "Augment slot accepts multiple items");
+        ItemStack extra=new ItemStack(ModItems.AUGMENT_TEMPLATE.get(),2);
+        ItemStack remainder=table.inventory.insertItem(AugmentationTableBlockEntity.GEAR,extra,false);
+        test.assertTrue(remainder.getCount()==1 && table.inventory.getStackInSlot(0).getCount()==1,
+                "Augment slot inserted more than one item");
+        table.inventory.setStackInSlot(1,new ItemStack(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get(),2));
+        table.inventory.setStackInSlot(2,new ItemStack(ModItems.SAPPHIRE_GEMSTONE.get(),2));
+        table.tick(); advance(table,AugmentationAnimation.CHOOSE);
+        String first=table.data.get(3)>0?Augmentations.catalog(target).get(table.data.get(3)-1).id():null;
+        test.assertTrue(first!=null && table.choose(0),"First selection failed");
+        test.assertTrue(table.data.get(0)==AugmentationAnimation.COMPLETE
+                && Augmentations.level(table.inventory.getStackInSlot(3),first)==1,"First output incorrect");
+        var saved=table.saveWithoutMetadata(test.getLevel().registryAccess());
+        table.loadWithComponents(saved,test.getLevel().registryAccess());
+        table.tick();
+        test.assertTrue(table.data.get(0)==AugmentationAnimation.ANALYZE
+                && table.inventory.getStackInSlot(0).getCount()==1
+                && table.inventory.getStackInSlot(3).isEmpty()
+                && Augmentations.level(table.inventory.getStackInSlot(0),first)==1,
+                "Completed template did not restart on the same stack");
+        advance(table,AugmentationAnimation.CHOOSE);
+        test.assertTrue(table.choose(1),"Second selection failed");
+        table.tick();
+        test.assertTrue(table.data.get(0)==AugmentationAnimation.COMPLETE
+                && table.inventory.getStackInSlot(0).isEmpty()
+                && table.inventory.getStackInSlot(3).getCount()==1
+                && table.inventory.getStackInSlot(1).isEmpty()
+                && table.inventory.getStackInSlot(2).isEmpty(),
+                "Last result did not remain retrievable after ingredients ran out");
+        test.succeed();
+    }
 }
