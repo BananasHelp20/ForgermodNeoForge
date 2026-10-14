@@ -50,11 +50,11 @@ public final class AxeHeavyNetwork {
 
     private AxeHeavyNetwork() {}
 
-    public record AxeAttackPayload(int unused) implements CustomPacketPayload {
+    public record AxeAttackPayload(int attackKind) implements CustomPacketPayload {
         public static final Type<AxeAttackPayload> TYPE = new Type<>(
                 ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "axe_attack"));
         public static final StreamCodec<RegistryFriendlyByteBuf, AxeAttackPayload> STREAM_CODEC =
-                StreamCodec.composite(ByteBufCodecs.VAR_INT, AxeAttackPayload::unused, AxeAttackPayload::new);
+                StreamCodec.composite(ByteBufCodecs.VAR_INT, AxeAttackPayload::attackKind, AxeAttackPayload::new);
 
         @Override
         public Type<? extends CustomPacketPayload> type() { return TYPE; }
@@ -85,7 +85,12 @@ public final class AxeHeavyNetwork {
 
     private static void handleAttack(AxeAttackPayload payload, IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || net.bananashelp20.forgermod.item.custom.abilities.WeaponControlLocks.frozen(player)) return;
-        if (queueAttack(player)) PacketDistributor.sendToPlayersTrackingEntityAndSelf(player,
+        if (payload.attackKind() < 0 || payload.attackKind() > 1) return;
+        boolean slam = queueAttack(player);
+        // Vanilla resets only the client ticker for a miss. Mirror that on the server,
+        // including weak misses, after sampling charge; entity hits reset themselves.
+        if (payload.attackKind() == 1) player.resetAttackStrengthTicker();
+        if (slam) PacketDistributor.sendToPlayersTrackingEntityAndSelf(player,
                 new SlamAnimationPayload(player.getId()));
     }
 
@@ -113,7 +118,8 @@ public final class AxeHeavyNetwork {
             net.bananashelp20.forgermod.item.custom.abilities.EnderSwingAbility.strike(player, stack);
             return false;
         }
-        if (!AxeItems.canVerticalStrike(stack)) return false;
+        // Sample before the following vanilla attack packet resets the attack ticker.
+        if (!AxeItems.canVerticalStrike(stack) || player.getAttackStrengthScale(0) < 1.0F) return false;
         Combo combo = COMBOS.get(id);
         if (combo == null || combo.axe() != stack.getItem()
                 || now - combo.firstTick() > COMBO_WINDOW_TICKS
@@ -121,14 +127,16 @@ public final class AxeHeavyNetwork {
             COMBOS.put(id, new Combo(stack.getItem(), now, now, 1));
             return false;
         }
-        // Ignore duplicate packets and swings too close together to be separate attacks.
-        if (now - combo.lastTick() < 3) return false;
-        if (combo.count() == 1) {
-            COMBOS.put(id, new Combo(stack.getItem(), combo.firstTick(), now, 2));
+        // Air swings do not reset the server's vanilla ticker; enforce a full recharge
+        // between accepted packets too, without weakening the following melee attack.
+        if (now - combo.lastTick() < Math.ceil(player.getCurrentItemAttackStrengthDelay())) return false;
+        if (combo.count() < 2) {
+            COMBOS.put(id, new Combo(stack.getItem(), combo.count() == 0 ? now : combo.firstTick(), now, combo.count() + 1));
             return false;
         }
 
-        COMBOS.remove(id);
+        // Keep the last accepted tick even after the third swing to reject duplicate packets.
+        COMBOS.put(id, new Combo(stack.getItem(), now, now, 0));
         BlockPos center = findGroundAhead(player);
         if (center == null) return false;
 

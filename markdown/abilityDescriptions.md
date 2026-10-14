@@ -1252,7 +1252,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Every third attack within 10 seconds slams a 3×3 area ahead.
+> Every third fully charged attack within 10 seconds slams a 3×3 area ahead. Partially charged attacks do not build smash charge.
 Requires an empty offhand.
 
 ### Void Grip

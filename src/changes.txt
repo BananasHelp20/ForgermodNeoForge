@@ -742,3 +742,5 @@ Removed
 - Added Void Pulse to Riftfang Dagger and Nullified Axe augmentation pools, including all four gemstone variants of each. All 15 Inanisium weapons can learn/use the same pulse with existing particle charge/burst, mob targeting, ranks and variant-specific cooldowns; fresh weapons do not gain it automatically.
 
 - Changed Gravity Well to steer enemies toward a fixed point two blocks ahead of the player at activation. Smash now requires arrival at that point and melee reach, instead of triggering on merely entering reach. Pull remains damage-free and respects collision; blocked pulls expire without damage.
+
+- Changed Vertical Strike charging: only fully recharged attacks count toward the third-attack smash. Weak attacks preserve existing progress; duplicate packets and air swings must wait the equipped axe's full recharge interval before counting. Counting does not reset or weaken the following vanilla melee attack.

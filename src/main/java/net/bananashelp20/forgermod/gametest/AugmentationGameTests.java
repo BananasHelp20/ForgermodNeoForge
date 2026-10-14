@@ -68,6 +68,7 @@ public class AugmentationGameTests {
             }
             var learned = Augmentations.apply(fresh, Augmentations.VERTICAL_STRIKE);
             player.setItemInHand(InteractionHand.MAIN_HAND, learned);
+            for (int tick = 0; tick < 100; tick++) player.doTick();
             handle.invoke(null, new net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.AxeAttackPayload(0), context);
             test.assertTrue(combos.containsKey(player.getUUID()), "Learned axe rejects slam packet");
             player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.STICK));

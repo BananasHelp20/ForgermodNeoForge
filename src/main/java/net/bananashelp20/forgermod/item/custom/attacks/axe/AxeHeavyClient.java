@@ -25,7 +25,8 @@ public final class AxeHeavyClient {
                 || !AxeItems.canAttackPacket(minecraft.player.getMainHandItem())) return;
         if (minecraft.hitResult != null && minecraft.hitResult.getType() == HitResult.Type.BLOCK) return;
 
-        PacketDistributor.sendToServer(new AxeHeavyNetwork.AxeAttackPayload(0));
+        int attackKind = minecraft.hitResult == null || minecraft.hitResult.getType() == HitResult.Type.MISS ? 1 : 0;
+        PacketDistributor.sendToServer(new AxeHeavyNetwork.AxeAttackPayload(attackKind));
     }
 
     @SubscribeEvent
