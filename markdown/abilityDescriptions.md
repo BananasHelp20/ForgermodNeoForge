@@ -36,7 +36,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm your next enemy kill for 60 seconds. It leaves a plant and a poison cloud for five minutes. Everyone in the cloud, including you and allies, receives Poison I for 20 seconds. Radius: 2/2.5/3/3.5 blocks. Switching cancels the garden. Cooldown after ending: 60/50/40/30 seconds.
+> Arm your next enemy kill for 60 seconds. It leaves a plant and a poison cloud for five minutes. Everyone in the cloud, including you and allies, receives Poison I for 20 seconds. Radius: 2/2.5/3/3.5 blocks. Placed gardens remain after switching; only unused arming is canceled. The next planted garden replaces the old one. Cooldown after ending: 60/50/40/30 seconds.
 
 **Augmentation card:**
 

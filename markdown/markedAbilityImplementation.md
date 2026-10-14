@@ -137,7 +137,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Always the Gardeners - completed
 
 - All fifteen Lush weapons. Next enemy kill within a sixty-second arming window leaves a vanilla-rendered azalea display and five-minute poison cloud. No terrain replacement or drops. One garden per wielder; poison affects everyone, including wielder, allies and neutral mobs, subject to vanilla effect immunity. Poison I lasts twenty seconds and refreshes while inside. Radius I-IV: 2/2.5/3/3.5 blocks.
-- Switching/death/logout cancels both entities; cooldown after ending: 60/50/40/30 seconds. Entities never save as orphans. Reviewed build and all 103 server tests passed: all variants, fresh/rejected kills, caster/neutral poison, exact duration/radius, neutral-kill exclusion, switching/cooldown and expiry. Updated maxed-gear regression to exhaust actual available offers.
+- Switching retains placed entities until expiry; death/logout/travel removes them. Unused arming cancels on switching; cooldown after ending: 60/50/40/30 seconds. Entities never save as orphans. Reviewed build and all 103 server tests passed: all variants, fresh/rejected kills, caster/neutral poison, exact duration/radius, neutral-kill exclusion, switching/cooldown and expiry. Updated maxed-gear regression to exhaust actual available offers.
 
 ## Grave Vault - completed
 

@@ -35,9 +35,10 @@ public class GardenersGameTests {
    test.assertTrue(player.getEffect(MobEffects.POISON)!=null && cow.getEffect(MobEffects.POISON)!=null,"Caster or neutral entity excluded");
    test.assertTrue(cow.getEffect(MobEffects.POISON).getDuration()==400,"Poison shortened by vanilla potion scaling");
    player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-   test.assertTrue(cloud.isRemoved() && plant.isRemoved() && !GardenersEvents.active(player),"Switch retains garden");
+   test.assertTrue(!cloud.isRemoved() && !plant.isRemoved() && !GardenersEvents.active(player),"Switch deletes placed garden");
    String key=BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.GARDENERS;
    test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+1200,"Switch misses cooldown");
+   cloud.tickCount=6000;cloud.tick();GardenersEvents.onTick(new PlayerTickEvent.Post(player));test.assertTrue(cloud.isRemoved() && plant.isRemoved(),"Detached garden outlives expiry");GardenersEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
    cow.discard(); mob.discard(); test.getLevel().getServer().getPlayerList().remove(player);
   }
   test.assertTrue(count==15,"Missing Lush variants"); test.succeed();
