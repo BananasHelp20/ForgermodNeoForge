@@ -666,7 +666,7 @@
   "tooltips.forgermod.ability.ghostwalk": "Become invisible for 10 seconds until attacking. At level IV, transforms into Jumpscare Horror I: your invisible opening attack deals double damage and breaks Ghostwalk. Super I-IV invisibility lasts 10/12/14/16 seconds.",
   "tooltips.forgermod.ability.ghostwalk.card": "Vanish until attacking. Super form doubles your invisible opening hit.",
   "tooltips.forgermod.passive.soul_hunger.name": "Soul Hunger",
-  "tooltips.forgermod.passive.soul_hunger": "Enemy kills grant 2 absorption health points, capped at 6 from this passive. Putting the weapon away removes its remaining absorption.",
+  "tooltips.forgermod.passive.soul_hunger": "Enemy kills grant one absorption heart, up to three earned hearts. Earned absorption stays when the weapon is put away and is consumed by damage. Only a held learned weapon earns more.",
   "tooltips.forgermod.passive.soul_hunger.card": "Enemy kills grant 2 absorption health, up to 6.",
   "tooltips.forgermod.passive.last_stand.name": "Last Stand",
   "tooltips.forgermod.passive.last_stand": "Once every 2 minutes, a fatal hit leaves you at 1 health point instead. Requires more than 1 health point before the hit.",

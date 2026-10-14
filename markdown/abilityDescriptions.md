@@ -1218,7 +1218,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Enemy kills grant 2 absorption health points, capped at 6 from this passive. Putting the weapon away removes its remaining absorption.
+> Enemy kills grant one absorption heart, up to three earned hearts. Earned absorption stays when the weapon is put away and is consumed by damage. Only a held learned weapon earns more.
 
 **Augmentation card:**
 

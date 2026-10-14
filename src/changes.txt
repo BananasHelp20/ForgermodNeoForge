@@ -762,3 +762,5 @@ Removed
 - Changed Grave Vault to Minecraft's normal one-row chest texture/layout (nine storage slots and player inventory). Added enemy-kill placement of one stored flower at the victim's standing block when normal soil, replacement and player permissions allow; invalid placement keeps the flower. Matching offhand dagger may supply the vault.
 
 - Added Ghostwalk super form Jumpscare Horror: original IV becomes super I, then upgrades through IV. Its invisible opening entity attack deals double damage and ends Ghostwalk; subsequent visible hits receive no bonus. Super invisibility lasts 10/12/14/16 seconds with existing 15-second ending cooldown. Fixed client entity-swing packet prematurely ending invisibility before hit handling; misses/blocks still reveal normally. Existing external invisibility preservation remains.
+
+- Buffed Soul Hunger: earned absorption and its capacity remain after switching, changing hotbar slot or unequipping. Absorbed damage still consumes it and the six-HP earned cap persists across reequipping; only held learned weapons can earn/refill hearts. Existing potion coexistence and death/logout/dimension cleanup remain.
