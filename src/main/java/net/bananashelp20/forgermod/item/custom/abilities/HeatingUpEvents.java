@@ -83,7 +83,7 @@ public final class HeatingUpEvents {
     public static void onTick(PlayerTickEvent.Pre event) {
         if(!(event.getEntity() instanceof ServerPlayer player)) return;
         Heat heat=heat(player,false);
-        if(Augmentations.level(player.getMainHandItem(),RecommendedAbilities.HEATING_UP)==4
+        if(Augmentations.level(player.getMainHandItem(),RecommendedAbilities.HEATING_UP)>0
                 && player.getRemainingFireTicks()>0) {
             if(heat==null) heat=heat(player,true);
             if(heat!=null && heat.amount<CAPACITY) {

@@ -720,3 +720,5 @@ Removed
 - Corrected Death's Due server-test XP accounting to include merged orb counts; gameplay XP awards are unchanged.
 
 - Cinder Decoy now explodes once whenever it disappears, including expiry, switching, death, logout and external removal. Vanilla explosion radius changed from a fixed 4 blocks to 2/3/4/5 at ranks I/II/III/IV, reducing low-rank reach/damage and increasing rank-IV reach/damage. Ignition follows the same radius. Owner and terrain remain unharmed; cooldown and target restoration are preserved. Explosions occur in the decoy's original dimension.
+
+- Promoted Heating Up's former rank-IV fire-absorption effect to its default learned effect at every rank, including the template bonus rank. Remaining fire becomes heat and is extinguished while capacity remains; full capacity still leaves the wielder burning. Heat cap/cost, melee charging, HUD, burn-duration upgrades and switching cleanup are preserved.

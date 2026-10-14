@@ -38,10 +38,37 @@ public class HeatingUpGameTests {
             first.clearFire(); first.invulnerableTime=0; first.hurt(player.damageSources().playerAttack(player),2);
             test.assertTrue(first.getRemainingFireTicks()<=0,"Separate same-tick attack bypasses heat cost");
             player.setRemainingFireTicks(100); HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
-            test.assertTrue(player.getRemainingFireTicks()==100,"Low-rank Heating Up extinguishes own fire");
+            test.assertTrue(player.getRemainingFireTicks()<=0 && HeatingUpEvents.storedHeat(player)==5,"Rank I does not absorb own fire as heat");
             player.clearFire(); player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY); HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
             test.getLevel().getServer().getPlayerList().remove(player);
         }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void allRanksAndVariantsAbsorbFireButFreshAndOffhandWeaponsDoNot(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        try {
+            for(Item item:new Item[]{ModItems.INFERNAL_CLAYMORE.get(),ModItems.INFERNAL_CLAYMORE_RUBY.get(),ModItems.INFERNAL_CLAYMORE_AMBER.get(),ModItems.INFERNAL_CLAYMORE_AMETHYST.get(),ModItems.INFERNAL_CLAYMORE_JADE.get()}) {
+                player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(item));player.setRemainingFireTicks(100);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+                test.assertTrue(player.getRemainingFireTicks()==100 && HeatingUpEvents.storedHeat(player)==0,"Fresh blade absorbs fire");
+                ItemStack stack=new ItemStack(item);
+                for(int rank=1;rank<=5;rank++) {
+                    if(rank<=4)stack=Augmentations.apply(stack,RecommendedAbilities.HEATING_UP);
+                    else {
+                        var template=new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get());for(int i=0;i<5;i++)template=Augmentations.apply(template,RecommendedAbilities.HEATING_UP);
+                        stack=Augmentations.merge(stack,template);
+                    }
+                    player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setRemainingFireTicks(100);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+                    test.assertTrue(HeatingUpEvents.storedHeat(player)==5 && player.getRemainingFireTicks()<=0,"Learned rank fails to absorb fire: "+rank);
+                    player.setRemainingFireTicks(1000);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+                    test.assertTrue(HeatingUpEvents.storedHeat(player)==20 && player.getRemainingFireTicks()<=0,"Fire exceeds heat cap");
+                    player.setRemainingFireTicks(100);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+                    test.assertTrue(player.getRemainingFireTicks()==100 && HeatingUpEvents.storedHeat(player)==20,"Full heat still absorbs fire");
+                    player.clearFire();player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);player.setItemInHand(InteractionHand.OFF_HAND,stack);player.setRemainingFireTicks(100);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+                    test.assertTrue(player.getRemainingFireTicks()==100 && HeatingUpEvents.storedHeat(player)==0,"Offhand grants Heating Up");player.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);player.clearFire();
+                }
+            }
+        } finally {HeatingUpEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
         test.succeed();
     }
     @GameTest(template="riftfang_test")
