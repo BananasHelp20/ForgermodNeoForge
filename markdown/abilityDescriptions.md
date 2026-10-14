@@ -232,11 +232,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Restore eight hunger points (four food icons), capped at full hunger. Adds no saturation. Cooldown: 60/50/40/30 seconds.
+> Instantly restore eight hunger points and eight saturation points. Can replenish saturation at full hunger; both cap normally.
 
 **Augmentation card:**
 
-> Restore four food icons.
+> Restore eight hunger and eight saturation points.
 
 ### Echo Hearing
 

@@ -246,7 +246,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Dream Feast - completed
 
 - Weapons: Somnium claymore; all gemstone variants.
-- Restores exactly eight hunger points (four food icons), capped at 20, without adding saturation; refuses activation when hunger is full. Ranks reduce the instant cooldown from 60 to 50/40/30 seconds.
+- Restores eight hunger points (four food icons) and eight saturation points via vanilla food handling, capped normally; allows full-hunger saturation recovery and rejects only when both are full. Ranks reduce the instant cooldown from 60 to 50/40/30 seconds.
 - Tested, reviewed, retested and reviewed again; build and all 131 required server tests passed.
 
 ## Daydreamer - completed

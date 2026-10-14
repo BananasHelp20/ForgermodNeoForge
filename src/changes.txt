@@ -770,3 +770,5 @@ Removed
 - Buffed False Awakening echo life to 30/35/40/45 seconds at I-IV (50 seconds at transferred rank V). Adjusted ending cooldown to 60/50/40/30 seconds. Existing damage payoff, line of sight, target restoration and switching/lifecycle cancellation remain.
 
 - Buffed Absolute Nightmare: from learned rank I, its next two successful hits now inflict Weakness IV and Darkness V for ten seconds (amplifiers3/4, duration200 ticks). Higher ranks retain the stronger baseline; hit count, cooldown and target-only debuffs unchanged.
+
+- Buffed Dream Feast to restore eight saturation points alongside eight hunger points via vanilla food handling. Can replenish saturation at full hunger; rejects full hunger plus full saturation. Existing instant cooldown and particle effect remain.
