@@ -66,7 +66,7 @@ public class AbilitySwapGameTests {
     @GameTest(template = "riftfang_test")
     public static void swapCancelsArmedAbilitiesWithoutBypassingCooldownOnOtherStacks(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
-        ItemStack stack = TestWeapons.ready(ModItems.EMBERFANG_DAGGER.get());
+        ItemStack stack = TestWeapons.ready(ModItems.DEATHWISPER_DAGGER.get());
         // Same variant, independently unswapped stack must share cooldown by ability identity.
         ItemStack another = stack.copy();
         player.setItemInHand(InteractionHand.MAIN_HAND, stack); player.setRemainingFireTicks(200);
@@ -76,8 +76,8 @@ public class AbilitySwapGameTests {
         swap(player);
         test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.PRIMARY) || runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Swap left armed effects running");
         var cooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS); long now = player.level().getGameTime();
-        test.assertTrue(cooldowns.get(WeaponCooldownKey.of(item(stack), WeaponAbilitySlot.PRIMARY)) == now + 600
-                && cooldowns.get(WeaponCooldownKey.of(item(stack), WeaponAbilitySlot.SECONDARY)) == now + 1000, "Cooldown did not follow ability identity");
+        test.assertTrue(cooldowns.get(WeaponCooldownKey.of(item(stack), WeaponAbilitySlot.PRIMARY)) == now + 1800
+                && cooldowns.get(WeaponCooldownKey.of(item(stack), WeaponAbilitySlot.SECONDARY)) == now + 1200, "Cooldown did not follow ability identity");
         use(player, 0); use(player, 1);
         test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.PRIMARY) || runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Swapping bypassed cooldown");
         player.setItemInHand(InteractionHand.MAIN_HAND, another); use(player, 0); use(player, 1);

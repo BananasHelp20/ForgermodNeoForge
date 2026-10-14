@@ -4,7 +4,6 @@ import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
-import net.bananashelp20.forgermod.item.custom.abilities.FlamingComboState;
 import net.bananashelp20.forgermod.item.custom.abilities.PyromaniacState;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -26,7 +25,6 @@ import java.util.List;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class IgnisiumWeapon extends SwordItemWithEffect {
-    private static final FlamingComboState FLAMING_COMBO = new FlamingComboState();
     private static final PyromaniacState PYROMANIAC = new PyromaniacState();
     public static Holder<MobEffect> effect = MobEffects.GLOWING;
     public static int durationInTicks = 2000;
@@ -59,42 +57,29 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
-        if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
-        if (!isDagger()) return false;
-        if (slot == WeaponAbilitySlot.PRIMARY) {
-            if (FLAMING_COMBO.isActive(player.getUUID(), player.level().getGameTime())) return false;
-            FLAMING_COMBO.activate(player.getUUID(), player.level().getGameTime());
-            return true;
-        }
-        return slot == WeaponAbilitySlot.SECONDARY
-                && PYROMANIAC.arm(player.getUUID(), player.getRemainingFireTicks() > 0);
+        return isDagger() && slot == WeaponAbilitySlot.SECONDARY
+                && Augmentations.ids(stack,true).contains("tooltips.forgermod.ability.pyromaniac")
+                && PYROMANIAC.arm(player.getUUID(),player.getRemainingFireTicks()>0);
     }
 
     @Override
     public int abilityCooldownTicks(WeaponAbilitySlot slot) {
-        if (!isDagger()) return 0;
-        return slot == WeaponAbilitySlot.PRIMARY ? 600 : 1000;
+        return isDagger() && slot == WeaponAbilitySlot.SECONDARY ? 1000 : 0;
     }
 
     @Override
     public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
-        return slot == WeaponAbilitySlot.PRIMARY
-                ? FLAMING_COMBO.isActive(player.getUUID(), player.level().getGameTime())
-                : PYROMANIAC.isArmed(player.getUUID());
+        return slot == WeaponAbilitySlot.SECONDARY && PYROMANIAC.isArmed(player.getUUID());
     }
 
     @Override
     public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
-        if (slot == WeaponAbilitySlot.PRIMARY) FLAMING_COMBO.clear(player.getUUID());
-        else PYROMANIAC.clear(player.getUUID());
+        if(slot == WeaponAbilitySlot.SECONDARY) PYROMANIAC.clear(player.getUUID());
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
-        if (!isDagger()) return null;
-        return slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.flaming_combo"
-                : "tooltips.forgermod.ability.pyromaniac";
+        return isDagger() && slot == WeaponAbilitySlot.SECONDARY ? "tooltips.forgermod.ability.pyromaniac" : null;
     }
 
     @Override
@@ -106,15 +91,10 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
                 target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(), 100));
             }
         }
-        if (target.isDeadOrDying() || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.flaming_combo")) return;
-        int before = target.getRemainingFireTicks();
-        int after = FLAMING_COMBO.fireTicksAfterHit(player.getUUID(), player.level().getGameTime(), before);
-        if (after != before) target.setRemainingFireTicks(after);
     }
 
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        FLAMING_COMBO.clear(event.getEntity().getUUID());
         PYROMANIAC.clear(event.getEntity().getUUID());
     }
 

@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 62 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 61 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
@@ -343,18 +343,6 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 **Augmentation card:**
 
 > Gain Fire Resistance and ignite yourself and nearby enemies in a fire burst.
-
-### Flaming Combo
-
-**Weapons:** Emberfang Dagger
-
-**Item tooltip:**
-
-> For 10 seconds, each dagger hit adds 1 second of burn (30-second cooldown)
-
-**Augmentation card:**
-
-> For 10 seconds, each hit adds 1 second of burning.
 
 ### Flaming Stomp
 

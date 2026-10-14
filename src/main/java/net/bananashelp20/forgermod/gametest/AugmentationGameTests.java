@@ -358,7 +358,7 @@ public class AugmentationGameTests {
     @GameTest(template = "riftfang_test")
     public static void brokenWeaponCancelsLearnedSecondaryAndBothCooldownsRemainIndependent(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
-        ItemStack stack = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
+        ItemStack stack = new ItemStack(ModItems.DEATHWISPER_DAGGER.get());
         var runtime = Augmentations.canonical(stack);
         String secondary = runtime.abilityDescriptionKey(WeaponAbilitySlot.SECONDARY);
         String primary = runtime.abilityDescriptionKey(WeaponAbilitySlot.PRIMARY);
@@ -374,8 +374,8 @@ public class AugmentationGameTests {
         test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.PRIMARY) || runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Broken weapon left an armed ability behind");
         var deadlines = player.getData(WeaponCooldownAttachments.COOLDOWNS);
         long now = player.level().getGameTime();
-        test.assertTrue(deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.SECONDARY)) == now + 1000
-                && deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.PRIMARY)) == now + 600, "Swapped learned slots lost independent cooldowns on break");
+        test.assertTrue(deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.SECONDARY)) == now + 1200
+                && deadlines.get(WeaponCooldownKey.of(item, WeaponAbilitySlot.PRIMARY)) == now + 1800, "Swapped learned slots lost independent cooldowns on break");
         test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
 
