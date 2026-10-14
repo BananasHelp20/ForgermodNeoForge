@@ -642,11 +642,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> For 30 seconds, visible enemies within 4/6/8/10 blocks take one damage and are stunned for 0.3 seconds per pulse. Pulses occur every 2/1.65/1.35/1 seconds. Switching cancels. Cooldown after ending: 60/50/40/30 seconds.
+> For 30 seconds, visible enemies within 10 blocks take one damage and are stunned for 0.5 seconds per pulse. Pulses occur every 2/1.65/1.35/1 seconds. A rotating electrical boundary and expanding pulse ripples show the area; higher levels add denser, faster sparks. Switching cancels. Cooldown after ending: 60/50/40/30 seconds.
 
 **Augmentation card:**
 
-> For 30 seconds, repeatedly damage and briefly stun nearby enemies.
+> For 30 seconds, pulse damage and 0.5-second stuns within a visible 10-block electrical aura.
 
 ### Sudden Presence
 

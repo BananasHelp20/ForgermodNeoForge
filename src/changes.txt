@@ -786,3 +786,5 @@ Removed
 - Buffed Alternating Current stun duration from 0.1 to 0.5 seconds (10 ticks) starting at level I, retained at higher levels. One-second pulse interval, no stun damage, link duration and cooldowns unchanged.
 
 - Reduced Lightning Rod level-I extra-strike chance to 1 in 600 per second (average once per ten minutes under open sky). Higher ranks retain 1 in 60 per second; natural lightning protection and buffs unchanged.
+
+- Buffed Stunning Presence radius to ten blocks from level I (all ranks) and stun duration to 0.5 seconds per pulse. Added rotating electrical boundary and expanding pulse ripples with rank-scaled density/speed, bounded particle emission every five ticks. Existing damage, pulse frequency, lifetime and cooldowns retained.
