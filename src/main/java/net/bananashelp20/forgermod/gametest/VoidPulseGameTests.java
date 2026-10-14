@@ -17,6 +17,22 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class VoidPulseGameTests {
     @GameTest(template="riftfang_test")
+    public static void allFifteenVariantsActivateThroughKeysAndKeepIndependentCooldowns(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);int count=0;
+        try {
+            for(var entry:ModItems.ITEMS.getEntries()) {
+                if(!(entry.get() instanceof InanisiumWeapon))continue;count++;
+                var stack=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.VOID_PULSE);test.assertFalse(stack.isEmpty(),"Dagger/axe refuses Void Pulse augmentation");player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                AbilityTestPackets.use(player,0);test.assertTrue(VoidPulseAbility.active(player),"Configured ability slot cannot dispatch Void Pulse");
+                player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.IRON_SWORD));WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+                String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+AdditionalAbilities.VOID_PULSE;
+                test.assertTrue(!VoidPulseAbility.active(player) && player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==player.level().getGameTime()+600,"Variant cooldown/cancellation wrong");
+            }
+            test.assertTrue(count==15,"Skipped Inanisium variants");
+        } finally {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void particleMotionContractsThenBurstsAndPacketKeepsItsPhase(GameTestHelper test) {
         var offset=new Vec3(7,2,-3);double distance=offset.length();
         for(int tick=1;tick<=10;tick++){var next=net.bananashelp20.forgermod.particle.VoidPulseMotion.inward(offset,tick/10.0);test.assertTrue(next.length()<distance,"Contraction moves away from player");distance=next.length();}
@@ -45,7 +61,7 @@ public class VoidPulseGameTests {
             long now=player.level().getGameTime(),ready=player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key);test.assertTrue(ready>=now+298 && ready<=now+300,"Release cooldown wrong");test.succeed();
         } finally {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));near.discard();far.discard();player.server.getPlayerList().remove(player);}});
     }
-    @GameTest(template="riftfang_test",timeoutTicks=160)
+    @GameTest(template="riftfang_test",timeoutTicks=240)
     public static void allVariantsChargeThenPushHostilePassiveAndResistantMobsWithoutDamage(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);
         for(int x=1;x<=18;x++)for(int y=5;y<=11;y++)for(int z=1;z<=18;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
@@ -54,7 +70,7 @@ public class VoidPulseGameTests {
         var mobs=java.util.List.<Mob>of(front,rear,neutral,resistant);for(var mob:mobs){mob.setNoAi(true);mob.setNoGravity(true);test.getLevel().addFreshEntity(mob);}
         var variants=new java.util.ArrayList<Item>();
         for(var entry:ModItems.ITEMS.getEntries()) {
-            var fresh=new ItemStack(entry.get());boolean eligible=entry.get() instanceof InanisiumWeapon w && !w.isDagger() && !w.isAxe();
+            var fresh=new ItemStack(entry.get());boolean eligible=entry.get() instanceof InanisiumWeapon;
             test.assertTrue(Augmentations.pool(fresh).stream().anyMatch(a->a.id().equals(AdditionalAbilities.VOID_PULSE))==eligible,"Wrong Void Pulse assignment");if(eligible)variants.add(entry.get());
         }
         Runnable cleanup=()->{VoidPulseAbility.cancel(player.getUUID());for(var mob:mobs)mob.discard();player.server.getPlayerList().remove(player);};
@@ -70,7 +86,7 @@ public class VoidPulseGameTests {
                     test.assertTrue(front.getHealth()==20 && rear.getHealth()==20 && neutral.getHealth()==10 && resistant.getHealth()==100,"Pulse deals damage");
                     if(index+1<variants.size())run(index+1);
                     else {
-                        test.assertTrue(variants.size()==5,"Skipped variants");front.setPos(point.add(0,0,3));front.setDeltaMovement(Vec3.ZERO);test.setBlock(new BlockPos(8,6,10),Blocks.STONE);VoidPulseAbility.activate(player,stack);
+                        test.assertTrue(variants.size()==15,"Skipped variants");front.setPos(point.add(0,0,3));front.setDeltaMovement(Vec3.ZERO);test.setBlock(new BlockPos(8,6,10),Blocks.STONE);VoidPulseAbility.activate(player,stack);
                         test.runAfterDelay(11,()->{try {VoidPulseAbility.active(player);test.assertTrue(front.getDeltaMovement().equals(Vec3.ZERO),"Push passes through wall");test.succeed();}finally {cleanup.run();}});
                     }
                 });

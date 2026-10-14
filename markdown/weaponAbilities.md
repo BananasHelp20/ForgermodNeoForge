@@ -46,21 +46,21 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike, Void Pulse |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike, Void Pulse |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike, Void Pulse |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike, Void Pulse |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
-| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip |
-| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip |
-| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip |
-| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip |
-| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip |
+| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip, Void Pulse |
+| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip, Void Pulse |
+| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip, Void Pulse |
+| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip, Void Pulse |
+| Riftfang Dagger | Dagger | Backstab, Blindness Hit, Death Stare, Displace, Dual Wield, Echoing Speed, Stepping Through the Void, Sudden Presence, Void Grip, Void Pulse |
 
 ## Overgrown / Lush
 

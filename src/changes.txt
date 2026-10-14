@@ -738,3 +738,5 @@ Removed
 - Void Pulse now pushes every visible mob, including passive/allied mobs and fully knockback-resistant mobs, using an outward physics impulse without damage or teleporting. Existing radius/strength and PvP-player protections remain. Added a half-second windup; cooldown now starts on release or cancellation, and switching/death/logout/dimension travel cancel an unfinished charge.
 
 - Fixed Stepping Through the Void camera snapping: its teleport packet now uses zero relative yaw/pitch offsets, preserving newer client mouse movement instead of forcing older server angles. Existing view-directed path, ranges, collision/world-border checks, fall reset, sounds and seven-second cooldown remain. Sudden Presence retains its intentional target-facing rotation.
+
+- Added Void Pulse to Riftfang Dagger and Nullified Axe augmentation pools, including all four gemstone variants of each. All 15 Inanisium weapons can learn/use the same pulse with existing particle charge/burst, mob targeting, ranks and variant-specific cooldowns; fresh weapons do not gain it automatically.

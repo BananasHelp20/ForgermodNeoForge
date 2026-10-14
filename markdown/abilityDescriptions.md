@@ -706,7 +706,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Void Pulse
 
-**Weapons:** Claymore of the Void
+**Weapons:** Claymore of the Void, Nullified Axe, Riftfang Dagger
 
 **Item tooltip:**
 

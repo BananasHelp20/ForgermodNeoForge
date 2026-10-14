@@ -73,7 +73,7 @@ public final class AdditionalAbilities {
             new Definition(DISPLACE, true, 4, 800, 100, Set.of("Inanisium:dagger")),
             new Definition(BACKSTAB, false, 1, 0, 0, Set.of("Inanisium:dagger", "Somnium:dagger", "Electrium:dagger", "Taifunite:dagger", "Vulnusium:dagger", "Lush:dagger", "Morsium:dagger", "Pulsite:dagger")),
             new Definition(VOID_GRIP, false, 1, 0, 0, Set.of("Inanisium:dagger")),
-            new Definition(VOID_PULSE, true, 4, 600, 100, Set.of("Inanisium:claymore")),
+            new Definition(VOID_PULSE, true, 4, 600, 100, Set.of("Inanisium:dagger", "Inanisium:claymore", "Inanisium:axe")),
             new Definition(GRAVITY_WELL, true, 4, 800, 100, Set.of("Inanisium:axe")),
             new Definition(LONELY_DREAM, false, 1, 0, 0, Set.of("Somnium:dagger")),
             new Definition(UNFINISHED_DREAM, false, 1, 0, 0, Set.of("Somnium:dagger", "Somnium:claymore", "Somnium:axe")),
