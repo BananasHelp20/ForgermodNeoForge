@@ -23,11 +23,12 @@ public final class SwingAttackAbility {
             else target.invulnerableTime=immunity;
             if(stack.isEmpty()) break;
         }
-        // Sparse circular sweep particles communicate the actual attack radius.
+        // Place the broad sweep sprites slightly inside the attack's outer edge.
+        double particleRadius=Math.max(0,range-.5);
         for(int point=0;point<16;point++) {
             double angle=point*Math.PI/8;
-            player.serverLevel().sendParticles(ParticleTypes.SWEEP_ATTACK,player.getX()+Math.cos(angle)*range,
-                    player.getY()+1,player.getZ()+Math.sin(angle)*range,1,0,0,0,0);
+            player.serverLevel().sendParticles(ParticleTypes.SWEEP_ATTACK,player.getX()+Math.cos(angle)*particleRadius,
+                    player.getY()+1,player.getZ()+Math.sin(angle)*particleRadius,1,0,0,0,0);
         }
         player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.PLAYER_ATTACK_SWEEP,SoundSource.PLAYERS,1,.8F);
         return true;
