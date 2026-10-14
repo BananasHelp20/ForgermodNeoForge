@@ -756,3 +756,5 @@ Removed
 - Added Lush Jungle, a one-rank passive for all fifteen Lush weapons: enemy kills apply vanilla bonemeal to the block directly beneath them when valid, without consuming inventory items or replacing unrelated terrain. Matching Dual Wield may provide it from either hand.
 
 - Buffed Sunfed to restore one saturation point alongside each hunger point every fifteen seconds in daytime open sky. It now replenishes saturation even at full hunger, capped at 20; other conditions/timer cleanup remain unchanged.
+
+- Buffed Green Feast: one wheat now heals two HP and restores two saturation points, capped at current hunger. Full-health use succeeds when saturation is missing; full health plus full saturation or missing wheat consumes nothing.

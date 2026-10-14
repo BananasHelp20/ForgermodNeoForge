@@ -386,11 +386,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Consume 1 wheat from your inventory to restore 2 health points. Requires missing health.
+> Consume one wheat to restore one heart and two saturation points, capped at current hunger. Can be used at full health when saturation is missing.
 
 **Augmentation card:**
 
-> Consume 1 wheat to heal 2 health points.
+> One wheat restores one heart and two saturation points.
 
 ### Just a Dream
 
