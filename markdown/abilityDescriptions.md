@@ -1000,7 +1000,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Store half of melee damage taken as heat, up to 20. Your current heat appears above the hotbar. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. At every level, remaining fire on you becomes heat and is extinguished unless capacity is already full. Switching clears heat.
+> Store half of melee damage taken as heat, up to 20. Stored heat is shown in this sword's tooltip. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. At every level, remaining fire on you becomes heat and is extinguished unless capacity is already full. Heat stays on this sword when switching weapons.
 
 **Augmentation card:**
 

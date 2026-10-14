@@ -53,10 +53,10 @@ public class HeatingUpGameTests {
                 test.assertTrue(player.getRemainingFireTicks()==100 && HeatingUpEvents.storedHeat(player)==0,"Fresh blade absorbs fire");
                 ItemStack stack=new ItemStack(item);
                 for(int rank=1;rank<=5;rank++) {
-                    if(rank<=4)stack=Augmentations.apply(stack,RecommendedAbilities.HEATING_UP);
+                    if(rank<=4) {stack=new ItemStack(item);for(int i=0;i<rank;i++)stack=Augmentations.apply(stack,RecommendedAbilities.HEATING_UP);}
                     else {
                         var template=new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get());for(int i=0;i<5;i++)template=Augmentations.apply(template,RecommendedAbilities.HEATING_UP);
-                        stack=Augmentations.merge(stack,template);
+                        stack=Augmentations.merge(new ItemStack(item),template);
                     }
                     player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setRemainingFireTicks(100);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
                     test.assertTrue(HeatingUpEvents.storedHeat(player)==5 && player.getRemainingFireTicks()<=0,"Learned rank fails to absorb fire: "+rank);
@@ -72,7 +72,34 @@ public class HeatingUpGameTests {
         test.succeed();
     }
     @GameTest(template="riftfang_test")
-    public static void rankFourAbsorbsFireUnlessFullAndSwitchClearsHeat(GameTestHelper test) {
+    public static void switchingSavingAndTooltipKeepHeatOnEachSword(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        var first=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.HEATING_UP);
+        var second=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.HEATING_UP);
+        try {
+            player.setItemInHand(InteractionHand.MAIN_HAND,first);player.setRemainingFireTicks(120);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+            player.setItemInHand(InteractionHand.MAIN_HAND,second);player.setRemainingFireTicks(60);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
+            test.assertTrue(HeatingUpEvents.storedHeat(first)==6 && HeatingUpEvents.storedHeat(second)==3,"Separate swords share or lose heat");
+            player.setItemInHand(InteractionHand.MAIN_HAND,first);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));test.assertTrue(HeatingUpEvents.storedHeat(player)==6,"Switching back loses heat");
+            HeatingUpEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
+            var restored=ItemStack.parse(test.getLevel().registryAccess(),first.save(test.getLevel().registryAccess())).orElseThrow();
+            test.assertTrue(HeatingUpEvents.storedHeat(restored)==6 && Augmentations.level(restored,RecommendedAbilities.HEATING_UP)==1,"Save/logout loses heat or ability data");
+            var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
+            ItemStack clientStack;
+            try {ItemStack.STREAM_CODEC.encode(buffer,restored);clientStack=ItemStack.STREAM_CODEC.decode(buffer);}
+            finally {buffer.release();}
+            test.assertTrue(HeatingUpEvents.storedHeat(clientStack)==6,"Vanilla inventory sync loses heat");
+            var tooltip=new java.util.ArrayList<net.minecraft.network.chat.Component>();clientStack.getItem().appendHoverText(clientStack,net.minecraft.world.item.Item.TooltipContext.of(test.getLevel()),tooltip,net.minecraft.world.item.TooltipFlag.NORMAL);
+            var heatLine=tooltip.stream().filter(c->c.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t && t.getKey().equals("tooltips.forgermod.passive.heating_up.heat")).findFirst().orElseThrow();
+            test.assertTrue(((net.minecraft.network.chat.contents.TranslatableContents)heatLine.getContents()).getArgs()[0].equals("6.0") && heatLine.getStyle().getColor().getValue()==net.minecraft.ChatFormatting.GRAY.getColor(),"Tooltip heat value/color wrong");
+            player.setItemInHand(InteractionHand.MAIN_HAND,restored);var victim=EntityType.COW.create(test.getLevel());victim.hurt(player.damageSources().playerAttack(player),2);
+            test.assertTrue(HeatingUpEvents.storedHeat(restored)==1 && victim.getRemainingFireTicks()==60 && HeatingUpEvents.storedHeat(second)==3,"Restored sword cannot spend heat independently");
+            var upgraded=Augmentations.apply(restored,RecommendedAbilities.HEATING_UP);test.assertTrue(HeatingUpEvents.storedHeat(upgraded)==1,"Augmentation loses saved heat");
+        } finally {HeatingUpEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void rankFourAbsorbsFireUnlessFullAndCopyRetainsHeat(GameTestHelper test) {
         var player=TestPlayers.survival(test); ItemStack stack=new ItemStack(ModItems.INFERNAL_CLAYMORE.get());
         for(int rank=0;rank<4;rank++) stack=Augmentations.apply(stack,RecommendedAbilities.HEATING_UP);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); player.setRemainingFireTicks(400);
@@ -85,7 +112,7 @@ public class HeatingUpGameTests {
         HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
         test.assertTrue(HeatingUpEvents.storedHeat(player)==20 && player.getRemainingFireTicks()<=0,"Burning is not absorbed once capacity becomes available");
         player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));
-        test.assertTrue(HeatingUpEvents.storedHeat(player)==0,"Switching to identical copy retains heat");
+        test.assertTrue(HeatingUpEvents.storedHeat(player)==20,"Item copy loses its stored heat");
         test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
 }

@@ -112,6 +112,11 @@ public class SwordItemWithEffect extends SwordItem {
                     if (expanded) {
                         tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
                     }
+                    if (net.bananashelp20.forgermod.augmentation.RecommendedAbilities.HEATING_UP.equals(id)) {
+                        tooltip.add(Component.translatable("tooltips.forgermod.passive.heating_up.heat",
+                                String.format(java.util.Locale.ROOT,"%.1f",net.bananashelp20.forgermod.item.custom.abilities.HeatingUpEvents.storedHeat(stack)))
+                                .withStyle(ChatFormatting.GRAY));
+                    }
                 }
             }
             if (!actives.isEmpty()) {
