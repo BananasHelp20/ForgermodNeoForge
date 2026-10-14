@@ -21,9 +21,9 @@ public final class SunfedEvents {
         if(!(event.getEntity() instanceof ServerPlayer player)) return;
         var stack=player.getMainHandItem();
         if(!player.isAlive() || player.isSpectator() || !Augmentations.hasPassive(stack,AdditionalAbilities.SUNFED) || !player.level().dimensionType().hasSkyLight()
-            || !player.level().isDay() || player.level().getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,player.blockPosition().getX(),player.blockPosition().getZ())>player.blockPosition().getY() || player.getFoodData().getFoodLevel()>=20) {end(player.getUUID());return;}
+            || !player.level().isDay() || player.level().getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,player.blockPosition().getX(),player.blockPosition().getZ())>player.blockPosition().getY() || player.getFoodData().getFoodLevel()>=20 && player.getFoodData().getSaturationLevel()>=20) {end(player.getUUID());return;}
         var meal=MEALS.get(player.getUUID());if(meal==null || meal.stack!=stack || meal.slot!=player.getInventory().selected || meal.level!=player.level()) {meal=new Meal(player);MEALS.put(player.getUUID(),meal);}
-        if(++meal.ticks>=300) {meal.ticks=0;player.getFoodData().setFoodLevel(Math.min(20,player.getFoodData().getFoodLevel()+1));}
+        if(++meal.ticks>=300) {meal.ticks=0;player.getFoodData().eat(1,.5F);}
     }
     public static void end(UUID owner) {MEALS.remove(owner);}
     @SubscribeEvent

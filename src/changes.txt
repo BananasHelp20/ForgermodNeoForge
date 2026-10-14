@@ -754,3 +754,5 @@ Removed
 - Always the Gardeners plants and poison clouds now persist after weapon switching until their original five-minute expiry. Switching still cancels unused arming and starts cooldown. Keep at most one placed garden per wielder; the next planted garden replaces it. Owner death/logout/dimension change and expired clouds remove detached plants.
 
 - Added Lush Jungle, a one-rank passive for all fifteen Lush weapons: enemy kills apply vanilla bonemeal to the block directly beneath them when valid, without consuming inventory items or replacing unrelated terrain. Matching Dual Wield may provide it from either hand.
+
+- Buffed Sunfed to restore one saturation point alongside each hunger point every fifteen seconds in daytime open sky. It now replenishes saturation even at full hunger, capped at 20; other conditions/timer cleanup remain unchanged.

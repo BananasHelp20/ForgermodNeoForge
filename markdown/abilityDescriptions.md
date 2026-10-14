@@ -1240,11 +1240,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> While holding this weapon outside in daylight, restore 1 hunger point every 15 seconds. Does not add saturation.
+> While outside under an open daytime sky, restore one hunger point and one saturation point every 15 seconds. Saturation can recover at full hunger; both cap at 20.
 
 **Augmentation card:**
 
-> Restore 1 hunger every 15 seconds outside in daylight.
+> Sunlight restores one hunger and one saturation point every 15 seconds.
 
 ### Unfinished Dream
 
