@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 60 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 60 active abilities, 47 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
@@ -1053,6 +1053,18 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 **Augmentation card:**
 
 > Mine logs without using weapon durability.
+
+### Lush Jungle
+
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+
+**Item tooltip:**
+
+> Killing an enemy bonemeals the block beneath it, if that block accepts bonemeal. No item cost or cooldown.
+
+**Augmentation card:**
+
+> Enemy kills bonemeal the block beneath them.
 
 ### Nether Born
 

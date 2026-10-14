@@ -66,21 +66,21 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
-| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
-| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
-| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
-| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
-| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Sapling Harvest, Sunfed |
-| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Sapling Harvest, Sunfed |
-| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Sapling Harvest, Sunfed |
-| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Sapling Harvest, Sunfed |
-| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Sapling Harvest, Sunfed |
-| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
-| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
-| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
-| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
-| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
+| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Lush Jungle, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
+| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Lush Jungle, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
+| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Lush Jungle, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
+| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Lush Jungle, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
+| Verdant Axe | Axe | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lumberjack, Lush Jungle, Overwhelming Smash, Photosynthesis, Sapling Harvest, Sunfed, Swing Attack, Vertical Strike |
+| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Sapling Harvest, Sunfed |
+| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Sapling Harvest, Sunfed |
+| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Sapling Harvest, Sunfed |
+| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Sapling Harvest, Sunfed |
+| Overgrown Claymore | Claymore | Always the Gardeners, Compost, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Sapling Harvest, Sunfed |
+| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
+| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
+| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
+| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
+| Leafcutter Dagger | Dagger | Always the Gardeners, Backstab, Compost, Dual Wield, Grave Vault, Green Feast, Hunger Hit, Lush Jungle, Photosynthesis, Poisoned Vein, Rooting Roots, Sapling Harvest, Sunfed |
 
 ## Morsium
 

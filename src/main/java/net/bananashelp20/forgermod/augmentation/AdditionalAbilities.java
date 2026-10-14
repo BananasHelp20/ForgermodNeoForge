@@ -48,6 +48,7 @@ public final class AdditionalAbilities {
     public static final String SCAR_COMPASS = "tooltips.forgermod.passive.scar_compass";
     public static final String REVENGEFUL_EXIT = "tooltips.forgermod.passive.revengeful_exit";
     public static final String SUNFED = "tooltips.forgermod.passive.sunfed";
+    public static final String LUSH_JUNGLE = "tooltips.forgermod.passive.lush_jungle";
     public static final String PHOTOSYNTHESIS = "tooltips.forgermod.passive.photosynthesis";
     public static final String GREEN_FEAST = "tooltips.forgermod.ability.green_feast";
     public static final String SAPLING_HARVEST = "tooltips.forgermod.passive.sapling_harvest";
@@ -108,6 +109,7 @@ public final class AdditionalAbilities {
             new Definition(SCAR_COMPASS, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(REVENGEFUL_EXIT, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(SUNFED, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
+            new Definition(LUSH_JUNGLE, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
             new Definition(PHOTOSYNTHESIS, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
             new Definition(GREEN_FEAST, true, 4, 400, 100, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
             new Definition(SAPLING_HARVEST, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),

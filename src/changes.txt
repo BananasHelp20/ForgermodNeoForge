@@ -752,3 +752,5 @@ Removed
 - Buffed Wither Hit base duration by five seconds (Vulnusium claymore 4 -> 9 seconds; Jade 5 -> 10). Retained speed-adjusted shorter dagger/longer axe durations and existing Jade amplifier bonus; applies from learned rank I.
 
 - Always the Gardeners plants and poison clouds now persist after weapon switching until their original five-minute expiry. Switching still cancels unused arming and starts cooldown. Keep at most one placed garden per wielder; the next planted garden replaces it. Owner death/logout/dimension change and expired clouds remove detached plants.
+
+- Added Lush Jungle, a one-rank passive for all fifteen Lush weapons: enemy kills apply vanilla bonemeal to the block directly beneath them when valid, without consuming inventory items or replacing unrelated terrain. Matching Dual Wield may provide it from either hand.
