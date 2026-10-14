@@ -732,3 +732,7 @@ Removed
 - Removed Quench Point from every Emberfang Dagger variant and augment-template catalog, including its extinguishing/fire-conversion event handler, obsolete gameplay tests and language/card keys. Retired saved rows are ignored and no longer occupy passive slots; other augments remain usable. Updated current ability catalogs and implementation record.
 
 - Pyromaniac now extinguishes the wielder on its armed successful hit and transfers the remaining fire duration to the target instead of applying a fixed five-second burn. Infinite burning transfers its persistent state; longer existing target fire is preserved and fire-immune targets are excluded. Healing remains 5 HP, capped normally, with the existing 50-second ending cooldown and single-use activation. If fire ends before the armed hit, healing remains but no fire is invented.
+
+- Replaced Void Pulse's inward-only portal ring with custom glowing violet particles: 64 motes contract and spiral toward the moving caster for 10 ticks, followed by a flash and 96 fast outward motes with an impact sound at the actual push. Particle lifetimes and counts are bounded; existing vanilla sprites are reused.
+
+- Void Pulse now pushes every visible mob, including passive/allied mobs and fully knockback-resistant mobs, using an outward physics impulse without damage or teleporting. Existing radius/strength and PvP-player protections remain. Added a half-second windup; cooldown now starts on release or cancellation, and switching/death/logout/dimension travel cancel an unfinished charge.

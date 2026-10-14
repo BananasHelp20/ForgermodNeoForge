@@ -710,11 +710,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Release a damage-free pulse that pushes visible enemies away. Radius: 4/5/6/7 blocks; knockback strength: 0.6/0.8/1/1.2. Cooldown: 30/25/20/15 seconds.
+> Draw violet particles inward for half a second, then release a fast outward burst that pushes all visible mobs away, including passive and knockback-resistant mobs, without damage. Radius: 4/5/6/7 blocks; push strength: 0.6/0.8/1/1.2. Switching cancels the charge. Cooldown after release or cancellation: 30/25/20/15 seconds.
 
 **Augmentation card:**
 
-> Push nearby enemies away without dealing damage.
+> Gather void energy, then burst outward to push nearby mobs without damage.
 
 ### Windcharge
 

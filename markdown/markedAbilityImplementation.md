@@ -202,7 +202,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Void Pulse - completed
 
 - Weapons: Inanisium claymore; all gemstone variants.
-- Damage-free radial velocity push; rank I-IV radius 4/5/6/7 blocks, strength 0.6/0.8/1/1.2 and cooldown 30/25/20/15 seconds. Visible enemies only; blocks, allies and neutral entities are unaffected. No teleportation or damage.
+- Damage-free radial velocity push; rank I-IV radius 4/5/6/7 blocks, strength 0.6/0.8/1/1.2 and cooldown 30/25/20/15 seconds. Visible mobs of every type are pushed, including passive/allied and knockback-resistant mobs; walls still block the push. Eligible PvP players retain the existing targeting rules. No teleportation or damage. A ten-tick inward particle charge precedes the fast outward burst and push; release or cancellation starts the cooldown.
 - Tested, reviewed, retested and reviewed again; build and all 122 required server tests passed.
 
 ## Gravity Well - completed
