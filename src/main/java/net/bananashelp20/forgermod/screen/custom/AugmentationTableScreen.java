@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.screen.custom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bananashelp20.forgermod.augmentation.AugmentationAnimation;
+import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.item.custom.WeaponTooltips;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -130,7 +131,7 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
                     Component name=offer.name();
                     var lines=new java.util.ArrayList<FormattedCharSequence>();
                     lines.add(name.getVisualOrderText());
-                    lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(menu.offerRank(i)+1))
+                    lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(Augmentations.displayRank(menu.getSlot(0).getItem(),offer.id(),menu.offerRank(i)+1)))
                             .withStyle(ChatFormatting.GRAY).getVisualOrderText());
                     lines.addAll(font.split(Component.translatable(offer.id()).withStyle(ChatFormatting.GRAY),180));
                     if(menu.phase()==AugmentationAnimation.COMPLETE) lines.add(Component.translatable(menu.selected()==i?

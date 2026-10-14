@@ -30,7 +30,7 @@ public final class AugmentTemplateItem extends Item {
             String id = entry.getKey();
             Component name = Component.translatable("augmentation.forgermod.rank",
                     Augmentations.abilityName(stack, id, entry.getValue()),
-                    WeaponTooltips.romanNumeral(entry.getValue()));
+                    WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,entry.getValue())));
             tooltip.add(name.copy().withStyle(ChatFormatting.LIGHT_PURPLE));
             if (expanded) tooltip.add(Component.translatable(id.equals(Augmentations.MATERIAL_HIT)
                     ? "tooltips.forgermod.augment_template.material_hit" : id).withStyle(ChatFormatting.GRAY));

@@ -58,6 +58,20 @@ public class DirectCurrentGameTests {
             finally {DirectCurrentEvents.cancel(player.getUUID());for(var mob:java.util.List.of(a,b,c,d)) mob.discard();neutral.discard();player.server.getPlayerList().remove(player);}
         });
     }
+    @GameTest(template="riftfang_test",timeoutTicks=100)
+    public static void superStaticFieldIVDealsUpgradedDamage(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin.add(1,0,1));
+        for(int x=7;x<=16;x++) for(int y=5;y<=8;y++) for(int z=7;z<=16;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        var a=zombie(test,origin);var b=zombie(test,origin.add(6,0,0));var c=zombie(test,origin.add(0,0,6));var d=zombie(test,origin.add(6,0,6));var neutral=EntityType.COW.create(test.getLevel());neutral.setNoAi(true);neutral.setNoGravity(true);neutral.setPos(origin.add(2,0,1));test.getLevel().addFreshEntity(neutral);
+        ItemStack stack=new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get());for(int i=0;i<7;i++) stack=Augmentations.apply(stack,AdditionalAbilities.DIRECT_CURRENT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var name=Augmentations.abilityName(stack,AdditionalAbilities.DIRECT_CURRENT,4);test.assertTrue(name.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals("tooltips.forgermod.ability.static_field.name"),"Rank IV is not named Static Field");
+        test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Static Field rejected");for(var mob:java.util.List.of(a,b,c,d)) mob.hurt(player.damageSources().playerAttack(player),1);
+        test.assertTrue(DirectCurrentEvents.marked(player)==4 && DirectCurrentEvents.remainingTicks(player)==400,"Rank IV does not support four marks");float health=neutral.getHealth();
+        test.runAfterDelay(20,()->{
+            try {DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-1.75f && player.getHealth()==18.25f,"Field damage wrong: neutral="+neutral.getHealth()+" expected="+(health-1)+" player="+player.getHealth()+" active="+DirectCurrentEvents.active(player)+" remaining="+DirectCurrentEvents.remainingTicks(player)+" playerPos="+player.position());DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-1.75f,"Field damages more than once per second");test.succeed();}
+            finally {DirectCurrentEvents.cancel(player.getUUID());for(var mob:java.util.List.of(a,b,c,d)) mob.discard();neutral.discard();player.server.getPlayerList().remove(player);}
+        });
+    }
     @GameTest(template="riftfang_test")
     public static void geometryRejectsNonCrossingsAndHeightAndDegenerateTriangles(GameTestHelper test) {
         Vec3 a=new Vec3(0,0,0),b=new Vec3(0,0,6),c=new Vec3(6,0,0);

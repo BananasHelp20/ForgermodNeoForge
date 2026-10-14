@@ -89,7 +89,7 @@ public final class DirectCurrentEvents {
             boolean crossed=false;
             for(var barrier:barriers) if(crosses(old,entity.position(),barrier.from(),barrier.to())) {crossed=true;break;}
             if(crossed && now>=circuit.shockReady.getOrDefault(id,0L)) {damage(player,entity,4);circuit.shockReady.put(id,now+10);}
-            if(fieldPulse && inside(entity.position(),circuit.anchors.get(0).position(),circuit.anchors.get(1).position(),circuit.anchors.get(2).position())) damage(player,entity,1);
+            if(fieldPulse && inside(entity.position(),circuit.anchors.get(0).position(),circuit.anchors.get(1).position(),circuit.anchors.get(2).position())) damage(player,entity,1+.25f*Math.max(0,circuit.rank-4));
             circuit.previous.put(id,entity.position());
         }
         circuit.previous.keySet().retainAll(seen);circuit.shockReady.keySet().retainAll(seen);if(fieldPulse) circuit.nextField=now+20;

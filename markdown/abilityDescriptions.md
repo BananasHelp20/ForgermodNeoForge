@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 59 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 62 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
@@ -96,11 +96,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Roar to make hostile mobs within 16/20/24/28 blocks target you, even through walls. Players, allies and neutral creatures are unaffected. Cooldown: 30/25/20/15 seconds.
+> Roar to make hostile mobs within 16/20/24/28 blocks target you, even through walls, and gain Strength I for 10 seconds. Players, allies and neutral creatures are unaffected by the taunt. Cooldown: 30/25/20/15 seconds.
 
 **Augmentation card:**
 
-> Hostile mobs within 16/20/24/28 blocks target you, even through walls.
+> Hostile mobs within 16/20/24/28 blocks target you, even through walls. Gain Strength I for 10 seconds.
 
 ### Charge Attack
 
@@ -192,7 +192,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing a visible barrier deals two hearts of damage, at most once per half-second. Rank IV becomes Static Field: at three marks, all living entities inside their triangle take one damage per second. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
+> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing a visible barrier deals two hearts of damage, at most once per half-second. Reaching rank IV becomes Static Field I, upgradeable through IV: at three marks, all living entities inside their triangle take 1/1.25/1.5/1.75 damage per second at super ranks I/II/III/IV. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
 
 **Augmentation card:**
 
@@ -242,11 +242,23 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Reveal every nearby entity, including players, through walls within 32/40/48/56 blocks. Glowing lasts 10/12/14/16 seconds. Cooldown: 30/25/20/15 seconds.
+> Listen for 10/12/14/16 seconds. Other entities making noise within 32/40/48/56 blocks glow for 2 seconds, even through walls, and send a vibration toward you. The range follows you. Cooldown after listening ends: 30/25/20/15 seconds.
 
 **Augmentation card:**
 
-> Reveal all nearby entities, including players, through walls for 10/12/14/16 seconds.
+> For 10/12/14/16 seconds, noisy entities within a moving 32/40/48/56-block radius glow for 2 seconds and send vibrations toward you.
+
+### Ender Swing
+
+**Weapons:** Nullified Axe
+
+**Item tooltip:**
+
+> Arm your next axe swing. It strikes enemies within 1 block for weapon damage (20% more at super rank) and lifts surviving targets 20 blocks if the entire path is clear. Switching cancels the swing. Cooldown after use or cancellation: 60 seconds.
+
+**Augmentation card:**
+
+> Your next close-range swing damages enemies and lifts them into the air.
 
 ### Explosion
 
@@ -254,11 +266,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Gain Resistance IV for 2 seconds and unleash a creeper-strength explosion. Your own explosion does not hurt or knock you back and does not destroy terrain. Cooldown: 60/55/50/45 seconds at levels I/II/III/IV.
+> Gain Resistance IV for 2 seconds and unleash a wide creeper-style explosion reaching about 8 blocks, with a cloud of blast and smoke particles. Your own explosion does not hurt or knock you back and does not destroy terrain. Cooldown: 60/55/50/45 seconds at levels I/II/III/IV.
 
 **Augmentation card:**
 
-> Gain Resistance IV, then explode without harming yourself.
+> Gain Resistance IV, then unleash a wide, terrain-safe explosion reaching about 8 blocks.
 
 ### Explosive Hits
 
@@ -266,7 +278,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next 10 successful melee hits create small blasts dealing 30% of your current weapon damage, without harming you or terrain. Radius: 1.5/2/2.5/3 blocks at levels I/II/III/IV. Cooldown: 45 seconds after the charges finish or are canceled by switching.
+> Your next 10 successful melee hits create blasts dealing 30% of your current weapon damage, without harming you or terrain. Radius: 3/4/5/6 blocks at levels I/II/III/IV (7 at super rank). Cooldown: 45 seconds after the charges finish or are canceled by switching.
 
 **Augmentation card:**
 
@@ -314,11 +326,23 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Breathe a 35-degree fire cone in your look direction, dealing current weapon damage and burning enemies for 3/4/5/6 seconds. Range: 4/5/6/7 blocks; cooldown: 30/25/20/15 seconds. Blocks stop the breath.
+> Breathe a 35-degree fire cone in your look direction, dealing current weapon damage and burning enemies for 3/4/5/6 seconds. Range: 7/8/9/10 blocks; cooldown: 30/25/20/15 seconds. Blocks stop the breath.
 
 **Augmentation card:**
 
-> Breathe a short fire cone, damaging and igniting enemies ahead.
+> Breathe a wide fire cone, damaging and igniting enemies ahead.
+
+### Flameborn
+
+**Weapons:** Emberfang Dagger, Infernal Claymore, Molten Axe
+
+**Item tooltip:**
+
+> Gain Fire Resistance for 30 seconds and unleash a visual fire burst. You and all enemies within 10 blocks burn for 5 seconds (7 seconds at super rank). Allies and terrain are unharmed. Switching ends your protection. Cooldown after ending: 5 minutes.
+
+**Augmentation card:**
+
+> Gain Fire Resistance and ignite yourself and nearby enemies in a fire burst.
 
 ### Flaming Combo
 
@@ -331,6 +355,18 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 **Augmentation card:**
 
 > For 10 seconds, each hit adds 1 second of burning.
+
+### Flaming Stomp
+
+**Weapons:** Molten Axe
+
+**Item tooltip:**
+
+> Arm your next axe attack to strike vertically. The 5×5 area ahead takes weapon damage, and enemies there burn for 5 seconds. Switching weapons cancels the strike. Cooldown after the strike or cancellation: 2 minutes.
+
+**Augmentation card:**
+
+> Your next axe attack becomes a fiery 5×5 vertical strike.
 
 ### Ghostwalk
 
@@ -962,7 +998,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Store half of melee damage taken as heat, up to 20. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. At level IV, remaining fire on you becomes heat and is extinguished unless capacity is already full. Switching clears heat.
+> Store half of melee damage taken as heat, up to 20. Your current heat appears above the hotbar. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. At level IV, remaining fire on you becomes heat and is extinguished unless capacity is already full. Switching clears heat.
 
 **Augmentation card:**
 

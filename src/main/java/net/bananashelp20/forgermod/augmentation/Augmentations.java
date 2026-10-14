@@ -40,7 +40,18 @@ public final class Augmentations {
         return stack.getItem() instanceof AugmentTemplateItem template && template.isSuperTemplate();
     }
     public static int maxRank(ItemStack stack, String id) {
-        return RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
+        return hasSuperForm(stack, id) ? 7 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
+    }
+    /** Stored ranks 4..7 are super ranks I..IV; the ID and occupied slot stay stable. */
+    public static String superName(ItemStack stack, String id) {
+        return AdditionalAbilities.DIRECT_CURRENT.equals(id) ? "tooltips.forgermod.ability.static_field.name" : null;
+    }
+    public static boolean hasSuperForm(ItemStack stack, String id) { return superName(stack,id) != null; }
+    public static int displayRank(ItemStack stack, String id, int rank) {
+        return hasSuperForm(stack,id) && rank >= 4 ? rank - 3 : rank;
+    }
+    private static int storedMax(ItemStack stack, String id) {
+        return hasSuperForm(stack,id) ? 7 : RecommendedAbilities.maxRank(id) + 1;
     }
     public static SwordItemWithEffect canonical(ItemStack stack) {
         if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return null;
@@ -93,7 +104,7 @@ public final class Augmentations {
             CompoundTag row = (CompoundTag)tag;
             String id = migrateId(row.getString("id"));
             int level = row.getInt("level");
-            if (valid.contains(id) && level >= 1 && level <= RecommendedAbilities.maxRank(id) + 1) result.put(id, level);
+            if (valid.contains(id) && level >= 1 && level <= storedMax(stack,id)) result.put(id, level);
         }
         return result;
     }
@@ -130,7 +141,7 @@ public final class Augmentations {
         if (MATERIAL_HIT.equals(id) && isTemplate(stack))
             return Component.translatable("augmentation.forgermod.material_hit.name");
         if(AdditionalAbilities.WINDCHARGE.equals(id) && rank>=4 && stack.getItem() instanceof net.bananashelp20.forgermod.item.custom.SwordItemWithEffect weapon && weapon.isAxe()) return Component.translatable("tooltips.forgermod.ability.skybreaker.name");
-        if(AdditionalAbilities.DIRECT_CURRENT.equals(id) && rank>=4) return Component.translatable("tooltips.forgermod.ability.static_field.name");
+        if(rank>=4 && hasSuperForm(stack,id)) return Component.translatable(superName(stack,id));
         return catalog(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
     }
     public static int count(ItemStack stack) { return Math.max(0, data(stack).getInt("count")); }
@@ -257,7 +268,7 @@ public final class Augmentations {
             if (ability == null) continue;
             int current = merged.getOrDefault(id, 0);
             int incoming = entry.getValue();
-            int allowed = RecommendedAbilities.maxRank(id)
+            int allowed = hasSuperForm(left,id) ? 7 : RecommendedAbilities.maxRank(id)
                     + (isSuperTemplate(right) || eligible(right) && incoming > RecommendedAbilities.maxRank(id) ? 1 : 0);
             int rank = current == incoming ? Math.min(allowed, current + 1) : Math.max(current, Math.min(incoming, allowed));
             if (rank <= current) continue;
