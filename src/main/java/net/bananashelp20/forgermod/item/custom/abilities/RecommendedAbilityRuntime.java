@@ -46,7 +46,8 @@ public final class RecommendedAbilityRuntime {
                 || RecommendedAbilities.FLAMING_STOMP.equals(id) && FlamingStompAbility.active(player)
                 || RecommendedAbilities.FALSE_AWAKENING.equals(id) && FalseAwakeningEvents.active(player)
                 || RecommendedAbilities.DELUSION.equals(id) && DelusionEvents.active(player)
-                || RecommendedAbilities.GARDENERS.equals(id) && GardenersEvents.active(player);
+                || RecommendedAbilities.GARDENERS.equals(id) && GardenersEvents.active(player)
+                || RecommendedAbilities.ECHO_HEARING.equals(id) && EchoHearingAbility.active(player);
     }
     public static void cancel(ServerPlayer player,String id) {
         AdditionalAbilityRuntime.cancel(player,id);
@@ -60,5 +61,6 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.FALSE_AWAKENING.equals(id)) FalseAwakeningEvents.cancel(player.getUUID());
         if(RecommendedAbilities.DELUSION.equals(id)) DelusionEvents.cancel(player.getUUID());
         if(RecommendedAbilities.GARDENERS.equals(id)) GardenersEvents.cancel(player.getUUID());
+        if(RecommendedAbilities.ECHO_HEARING.equals(id)) EchoHearingAbility.cancel(player.getUUID());
     }
 }
