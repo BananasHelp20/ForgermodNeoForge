@@ -22,6 +22,28 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class DeepWoundGameTests {
+    @GameTest(template="riftfang_test")
+    public static void actualLearnedCriticalAttacksDoubleDamageAndSlowAllFiveVariants(GameTestHelper test) throws Exception {
+        for(Item item:new Item[]{ModItems.ASSASSIN_DAGGER.get(),ModItems.ASSASSIN_DAGGER_RUBY.get(),ModItems.ASSASSIN_DAGGER_AMBER.get(),ModItems.ASSASSIN_DAGGER_AMETHYST.get(),ModItems.ASSASSIN_DAGGER_JADE.get()}) {
+            var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+            var stack=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(item),"tooltips.forgermod.ability.deep_wound");
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
+            var target=target(test,player);target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);
+            try {
+                AbilityTestPackets.use(player,0);test.assertTrue(weapon(player).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Packet did not arm Deep Wound");
+                player.setOnGround(false);player.fallDistance=1;player.setSprinting(false);
+                float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);player.attack(target);
+                var slow=target.getEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                test.assertTrue(Math.abs(target.getHealth()-(1000-damage*3))<.001,"Actual critical lacks doubled damage: "+target.getHealth()+" base="+damage);
+                test.assertTrue(slow!=null && slow.getDuration()==100 && slow.getAmplifier()==2,"Actual critical lacks Slowness III");
+                test.assertFalse(weapon(player).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Actual critical retains charge");
+            } finally {
+                net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
+                DaggerCriticalEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.server.getPlayerList().remove(player);
+            }
+        }
+        test.succeed();
+    }
     private static ServerPlayer player(GameTestHelper test, Item item) {
         ServerPlayer player = test.makeMockServerPlayerInLevel();
         player.setNoGravity(true);
