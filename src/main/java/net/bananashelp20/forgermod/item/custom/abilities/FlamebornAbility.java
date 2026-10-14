@@ -27,8 +27,11 @@ public final class FlamebornAbility {
 
     public static boolean activate(ServerPlayer player, ItemStack stack) {
         if (!(stack.getItem() instanceof IgnisiumWeapon)
-                || !Augmentations.ids(stack, true).contains(RecommendedAbilities.FLAMEBORN)
-                || ACTIVE.containsKey(player.getUUID())) return false;
+                || !Augmentations.ids(stack, true).contains(RecommendedAbilities.FLAMEBORN)) return false;
+        if (ACTIVE.containsKey(player.getUUID())) {
+            if (!player.getData(WeaponCooldownAttachments.DISABLED)) return false;
+            cancel(player);
+        }
         int burnTicks = Augmentations.level(stack, RecommendedAbilities.FLAMEBORN) > 1 ? 140 : 100;
         MobEffectInstance current = player.getEffect(MobEffects.FIRE_RESISTANCE);
         MobEffectInstance previous = current == null ? null : new MobEffectInstance(current);

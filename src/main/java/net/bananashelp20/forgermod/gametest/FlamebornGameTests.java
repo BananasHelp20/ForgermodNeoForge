@@ -99,4 +99,42 @@ public class FlamebornGameTests {
         near.discard();far.discard();ally.discard();cow.discard();test.getLevel().getServer().getPlayerList().remove(player);
         test.succeed();
     }
+
+    @GameTest(template="riftfang_test")
+    public static void cooldownBypassRestartsActiveFlamebornAndAllowsImmediateReuse(GameTestHelper test) throws Exception {
+        ServerPlayer player=TestPlayers.survival(test);
+        player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        ItemStack stack=Augmentations.apply(new ItemStack(ModItems.MOLTEN_AXE.get()),RecommendedAbilities.FLAMEBORN);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        Zombie target=zombie(test,player,4);
+        String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.FLAMEBORN;
+        try {
+            AbilityTestPackets.use(player,0);
+            test.assertTrue(target.getRemainingFireTicks()>0,"First Flameborn burst missed target");
+            target.clearFire();
+            AbilityTestPackets.use(player,0);
+            test.assertFalse(target.getRemainingFireTicks()>0,"Normal active Flameborn was restarted without bypass");
+
+            player.setData(WeaponCooldownAttachments.DISABLED,true);
+            AbilityTestPackets.use(player,0);
+            test.assertTrue(target.getRemainingFireTicks()>0 && RecommendedAbilityRuntime.active(player,RecommendedAbilities.FLAMEBORN),
+                    "Cooldown bypass did not restart active Flameborn");
+            test.assertFalse(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Bypass recorded a cooldown");
+
+            player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.STICK));
+            net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onPlayerTick(
+                    new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+            test.assertFalse(RecommendedAbilityRuntime.active(player,RecommendedAbilities.FLAMEBORN),"Switch kept Flameborn active");
+            test.assertFalse(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Switch recorded a cooldown despite bypass");
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            target.clearFire();
+            AbilityTestPackets.use(player,0);
+            test.assertTrue(target.getRemainingFireTicks()>0,"Cooldown bypass did not allow immediate reuse after switch");
+        } finally {
+            net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.cancel(player);
+            target.discard();
+            test.getLevel().getServer().getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
 }

@@ -672,3 +672,5 @@
 
 - Challenge Roar now grants Strength I for 10 seconds on activation, including rank IV. Its tooltip/card and changes list were updated. All 211 NeoForge 21.1.93 GameTests passed; committed and pushed as e070273.
 - Echo Hearing now listens for 10/12/14/16 seconds. On each NeoForge VanillaGameEvent from an entity within the listener's current 32/40/48/56-block radius, the source glows for two seconds and a VibrationParticleOption travels from it to the player. The activating player is excluded. The active session ends on expiry or item switch, then starts the rank cooldown. Nonliving glow tags expire separately. Tooltips, changes list and GameTests were updated; all 211 GameTests passed.
+
+- Flameborn cooldown-bypass fix: while the player's no-ability-cooldown attachment is true, recasting Flameborn cancels and restarts its active protection and fire burst. Normal active-state rejection remains when the bypass is false. A GameTest covers recasting, no recorded cooldown, switching, and immediate reuse; all 212 NeoForge 21.1.93 GameTests passed.

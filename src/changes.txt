@@ -705,3 +705,4 @@ Removed
 - Added Ender Swing to Inanisium axes and gemstone variants. The next attack sweeps a one-block radius for weapon damage (20% more at super rank) and lifts surviving enemies 20 blocks through clear space. Switching cancels it; cooldown after use or cancellation is 60 seconds.
 - Buffed Challenge Roar to grant the wielder Strength I for 10 seconds on activation.
 - Changed Echo Hearing into a 10/12/14/16-second listening ability with a radius that follows the wielder; other entities glow for two seconds whenever they emit a vibration nearby, with a visible vibration traveling from the entity to the wielder. The wielder no longer reveals themselves, and the cooldown starts when listening ends or is canceled.
+- Fixed Flameborn so the no-ability-cooldown command also allows restarting its active fire burst and protection without waiting for the previous 30-second effect to end.
