@@ -21,7 +21,7 @@ import java.util.*;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class WindchargeEvents {
-    private record Flight(ItemStack stack,int slot,ServerLevel level,long expires) {}
+    private record Flight(ItemStack stack,int slot,ServerLevel level,long expires,float bonusMultiplier) {}
     private static final Map<UUID,Flight> FLIGHTS=new HashMap<>();
     private static final Map<UUID,LivingEntity> STRIKES=new HashMap<>();
     private WindchargeEvents() {}
@@ -34,9 +34,9 @@ public final class WindchargeEvents {
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player) || player.isFallFlying() || player.isPassenger()) return false;
         int rank=Augmentations.level(stack,AdditionalAbilities.WINDCHARGE);boolean axe=stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe();
-        double height=axe?new int[]{10,16,23,30}[rank-1]:5*rank;
+        double height=axe?new int[]{10,16,23,30}[Math.clamp(rank,1,4)-1]:5*Math.clamp(rank,1,5);
         VerticalMotionNetwork.apply(player,launchVelocity(height),false,true);
-        if(axe && rank==4) FLIGHTS.put(player.getUUID(),new Flight(stack,player.getInventory().selected,player.serverLevel(),player.level().getGameTime()+200));
+        if(axe && rank>=4) FLIGHTS.put(player.getUUID(),new Flight(stack,player.getInventory().selected,player.serverLevel(),player.level().getGameTime()+200,1+.1f*Math.clamp(rank-4,0,3)));
         player.serverLevel().sendParticles(ParticleTypes.GUST,player.getX(),player.getY(),player.getZ(),8,.3,.2,.3,.02);return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -48,7 +48,7 @@ public final class WindchargeEvents {
     @SubscribeEvent
     public static void damage(LivingIncomingDamageEvent event) {
         if(event.getSource().is(DamageTypes.PLAYER_ATTACK) && event.getSource().getEntity() instanceof ServerPlayer owner && active(owner)
-            && owner.fallDistance>1.5 && !owner.isFallFlying() && WeaponAbilityTargets.enemy(owner,event.getEntity())) {STRIKES.put(owner.getUUID(),event.getEntity());event.setAmount(event.getAmount()+fallBonus(owner.fallDistance));}
+            && owner.fallDistance>1.5 && !owner.isFallFlying() && WeaponAbilityTargets.enemy(owner,event.getEntity())) {STRIKES.put(owner.getUUID(),event.getEntity());event.setAmount(event.getAmount()+fallBonus(owner.fallDistance)*FLIGHTS.get(owner.getUUID()).bonusMultiplier);}
     }
     @SubscribeEvent
     public static void hit(LivingDamageEvent.Post event) {
@@ -67,7 +67,8 @@ public final class WindchargeEvents {
         }
     }
     private static void smash(ServerPlayer player,Vec3 center,LivingEntity initial,float distance) {
-        cancel(player.getUUID());float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+fallBonus(distance);
+        float bonusMultiplier=FLIGHTS.get(player.getUUID()).bonusMultiplier;
+        cancel(player.getUUID());float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+fallBonus(distance)*bonusMultiplier;
         for(var target:player.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(center,center).inflate(2),e->e!=initial && WeaponAbilityTargets.enemy(player,e))) {
             if(target.position().distanceToSqr(center)>4 || !player.hasLineOfSight(target)) continue;
             target.hurt(player.damageSources().indirectMagic(player,player),damage);target.knockback(.8,center.x-target.getX(),center.z-target.getZ());

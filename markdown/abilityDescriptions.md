@@ -734,7 +734,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Axe rank IV becomes Skybreaker: falling hits or ground landings smash enemies within 2 blocks with weapon damage plus mace fall damage.
+> Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Axe rank IV becomes Skybreaker I, upgradeable through IV: falling hits or ground landings smash enemies within 2 blocks with weapon damage plus mace fall damage. Super II/III/IV increase the fall-damage bonus by 10%/20%/30%; launch height stays 30 blocks.
 
 **Augmentation card:**
 

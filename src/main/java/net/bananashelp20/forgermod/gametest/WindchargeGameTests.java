@@ -16,6 +16,19 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class WindchargeGameTests {
     @GameTest(template="riftfang_test")
+    public static void skybreakerSuperIVRetainsLaunchAndUpgradesFallStrike(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setPos(test.getBounds().getCenter());
+        var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.setPos(player.position().add(1,0,0));test.getLevel().addFreshEntity(mob);
+        try {
+            var stack=new ItemStack(ModItems.SKYBREAKER_AXE.get());for(int i=0;i<7;i++)stack=Augmentations.apply(stack,AdditionalAbilities.WINDCHARGE);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            test.assertTrue(WindchargeEvents.activate(player,stack) && WindchargeEvents.active(player),"Super IV flight missing");
+            test.assertTrue(Math.abs(player.getDeltaMovement().y-WindchargeEvents.launchVelocity(30))<.001,"Super IV changed launch height");
+            player.fallDistance=4;mob.hurt(player.damageSources().playerAttack(player),1);
+            test.assertTrue(Math.abs(mob.getHealth()-.8f)<.001 && !WindchargeEvents.active(player),"Super IV fall strike not upgraded or repeated");
+        } finally {WindchargeEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void launchesAllVariantsAndSkybreakerSmashesGroundOnce(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);int count=0;
         var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.setPos(origin.add(1,0,0));test.getLevel().addFreshEntity(mob);

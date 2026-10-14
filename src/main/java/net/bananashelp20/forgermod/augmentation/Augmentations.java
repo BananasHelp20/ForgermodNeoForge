@@ -44,7 +44,9 @@ public final class Augmentations {
     }
     /** Stored ranks 4..7 are super ranks I..IV; the ID and occupied slot stay stable. */
     public static String superName(ItemStack stack, String id) {
-        return AdditionalAbilities.DIRECT_CURRENT.equals(id) ? "tooltips.forgermod.ability.static_field.name" : null;
+        if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return "tooltips.forgermod.ability.static_field.name";
+        if (AdditionalAbilities.WINDCHARGE.equals(id) && (isTemplate(stack) || canonical(stack)!=null && canonical(stack).isAxe())) return "tooltips.forgermod.ability.skybreaker.name";
+        return null;
     }
     public static boolean hasSuperForm(ItemStack stack, String id) { return superName(stack,id) != null; }
     public static int displayRank(ItemStack stack, String id, int rank) {
@@ -140,7 +142,6 @@ public final class Augmentations {
     public static Component abilityName(ItemStack stack,String id,int rank) {
         if (MATERIAL_HIT.equals(id) && isTemplate(stack))
             return Component.translatable("augmentation.forgermod.material_hit.name");
-        if(AdditionalAbilities.WINDCHARGE.equals(id) && rank>=4 && stack.getItem() instanceof net.bananashelp20.forgermod.item.custom.SwordItemWithEffect weapon && weapon.isAxe()) return Component.translatable("tooltips.forgermod.ability.skybreaker.name");
         if(rank>=4 && hasSuperForm(stack,id)) return Component.translatable(superName(stack,id));
         return catalog(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
     }
