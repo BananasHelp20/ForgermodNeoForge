@@ -718,3 +718,5 @@ Removed
 - Double Jump transforms at original IV into Windwalker I, granting two air jumps and upgrading lift through super IV (0.55/0.60/0.65/0.70). Matching dagger pairs combine learned jump counts up to four with Dual Wield on either hand, including mixed gemstones. Server budgets reject extra jumps and clear on equipment/slot/dimension changes, landing, death/logout; accepted jumps preserve sprint momentum.
 
 - Corrected Death's Due server-test XP accounting to include merged orb counts; gameplay XP awards are unchanged.
+
+- Cinder Decoy now explodes once whenever it disappears, including expiry, switching, death, logout and external removal. Vanilla explosion radius changed from a fixed 4 blocks to 2/3/4/5 at ranks I/II/III/IV, reducing low-rank reach/damage and increasing rank-IV reach/damage. Ignition follows the same radius. Owner and terrain remain unharmed; cooldown and target restoration are preserved. Explosions occur in the decoy's original dimension.

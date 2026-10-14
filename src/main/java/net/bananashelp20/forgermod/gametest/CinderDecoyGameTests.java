@@ -105,16 +105,52 @@ public class CinderDecoyGameTests {
         test.assertTrue(decoy.isRemoved(),"Enemy contact did not trigger decoy");
         zombie.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
+    @GameTest(template="riftfang_test")
+    public static void allRanksAndVariantsHaveBoundedExplosionRadiusOnCancellation(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);
+        var pos=new net.minecraft.core.BlockPos(8,6,8);
+        for(int x=1;x<=16;x++)for(int y=5;y<=10;y++)for(int z=1;z<=16;z++)test.setBlock(new net.minecraft.core.BlockPos(x,y,z),net.minecraft.world.level.block.Blocks.AIR);
+        test.setBlock(pos.below(),net.minecraft.world.level.block.Blocks.STONE);
+        Vec3 origin=Vec3.atBottomCenterOf(test.absolutePos(pos));player.setPos(origin);
+        try {
+            for(Item item:new Item[]{ModItems.INFERNAL_CLAYMORE.get(),ModItems.INFERNAL_CLAYMORE_RUBY.get(),ModItems.INFERNAL_CLAYMORE_AMBER.get(),ModItems.INFERNAL_CLAYMORE_AMETHYST.get(),ModItems.INFERNAL_CLAYMORE_JADE.get()}) {
+                ItemStack stack=new ItemStack(item);
+                for(int rank=1;rank<=4;rank++) {
+                    stack=Augmentations.apply(stack,RecommendedAbilities.CINDER_DECOY);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                    var near=EntityType.ZOMBIE.create(test.getLevel());var far=EntityType.ZOMBIE.create(test.getLevel());
+                    double radius=rank+1;
+                    for(var mob:java.util.List.of(near,far)){mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);test.getLevel().addFreshEntity(mob);}
+                    near.setPos(origin.add(radius-.5,0,0));far.setPos(origin.add(radius+.75,0,0));
+                    try {
+                        test.assertTrue(CinderDecoyEvents.activate(player,stack),"Decoy activation rejected");var entity=decoy(test,player);
+                        player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);test.assertFalse(CinderDecoyEvents.active(player),"Switch does not end decoy");
+                        test.assertTrue(entity.isRemoved() && near.getHealth()<20 && near.getRemainingFireTicks()>0,"Switch does not explode/ignite inside rank radius");
+                        test.assertTrue(far.getHealth()==20 && far.getRemainingFireTicks()<=0,"Explosion exceeds rank radius: rank="+rank+" health="+far.getHealth()+" fire="+far.getRemainingFireTicks());
+                        float health=near.getHealth();near.invulnerableTime=0;CinderDecoyEvents.cancel(player.getUUID());CinderDecoyEvents.detonate(player.getUUID());test.assertTrue(near.getHealth()==health,"Decoy explodes twice");
+                        test.assertTrue(player.getHealth()==20,"Explosion harms owner");test.assertBlockPresent(net.minecraft.world.level.block.Blocks.STONE,pos.below());
+                    } finally {near.discard();far.discard();CinderDecoyEvents.cancel(player.getUUID());}
+                }
+            }
+        } finally {CinderDecoyEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
     @GameTest(template="riftfang_test",timeoutTicks=180)
-    public static void expirationRemovesDecoyWithoutExplosion(GameTestHelper test) throws Exception {
+    public static void expirationExplodesOnceAndStartsCooldown(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); use(player,0); var decoy=decoy(test,player);
+        var victim=EntityType.ZOMBIE.create(test.getLevel());victim.setNoAi(true);victim.setNoGravity(true);victim.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD,new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));victim.setPos(decoy.position().add(1,0,0));test.getLevel().addFreshEntity(victim);
+        test.runAfterDelay(119,()->{
+            test.assertTrue(victim.getHealth()==20 && !decoy.isRemoved(),"Decoy explodes before expiry");
+        });
         test.runAfterDelay(121,()->{
             WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             test.assertTrue(decoy.isRemoved(),"Expired decoy remains in world");
             test.assertFalse(RecommendedAbilityRuntime.active(player,RecommendedAbilities.CINDER_DECOY),"Expired decoy remains active");
-            test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
+            test.assertTrue(victim.getHealth()<20,"Expiry did not deal explosion damage");
+            String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.CINDER_DECOY;
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)>player.level().getGameTime(),"Expiry does not start cooldown");
+            victim.discard();test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
         });
     }
 }

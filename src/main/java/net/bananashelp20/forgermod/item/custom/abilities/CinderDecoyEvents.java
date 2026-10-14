@@ -67,25 +67,27 @@ public final class CinderDecoyEvents {
         }
         return true;
     }
+    /** Every disappearance uses this one-shot cleanup, including expiry and switching. */
     public static void cancel(UUID owner) {
         Decoy decoy=DECOYS.remove(owner); if(decoy==null) return;
+        var pos=decoy.entity().position();
+        // The owner may already have changed dimension. Explode where the decoy stood.
+        var level=(net.minecraft.server.level.ServerLevel)decoy.entity().level();
         for(Target target:decoy.targets().values()) if(target.mob().getTarget()==decoy.entity())
             target.mob().setTarget(target.previous()!=null && target.previous().isAlive() && !target.previous().isRemoved()
                     && target.previous().level()==target.mob().level()?target.previous():null);
         decoy.entity().discard();
-    }
-    public static void detonate(UUID owner) {
-        Decoy decoy=DECOYS.get(owner); if(decoy==null || !active(decoy.owner())) return;
-        var pos=decoy.entity().position(); var level=decoy.owner().serverLevel();
-        cancel(owner);
-        level.explode(decoy.owner(),pos.x,pos.y,pos.z,2,false,Level.ExplosionInteraction.NONE);
-        for(Mob enemy:level.getEntitiesOfClass(Mob.class,new net.minecraft.world.phys.AABB(pos,pos).inflate(4),
-                mob->mob instanceof Enemy && mob.isAlive() && !mob.isAlliedTo(decoy.owner()) && mob.distanceToSqr(pos)<=16))
+        double radius=1+Math.clamp(decoy.rank(),1,4);
+        // Vanilla explosion damage reaches twice its power; no block destruction or terrain fire.
+        level.explode(decoy.owner(),pos.x,pos.y,pos.z,(float)(radius/2),false,Level.ExplosionInteraction.NONE);
+        for(Mob enemy:level.getEntitiesOfClass(Mob.class,new net.minecraft.world.phys.AABB(pos,pos).inflate(radius),
+                mob->mob instanceof Enemy && mob.isAlive() && !mob.isAlliedTo(decoy.owner()) && mob.distanceToSqr(pos)<=radius*radius))
             if(level.clip(new net.minecraft.world.level.ClipContext(pos.add(0,1,0),enemy.getEyePosition(),
                     net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,decoy.owner()))
                     .getType()==net.minecraft.world.phys.HitResult.Type.MISS)
                 enemy.setRemainingFireTicks(Math.max(enemy.getRemainingFireTicks(),(2+decoy.rank())*20));
     }
+    public static void detonate(UUID owner) { cancel(owner); }
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;

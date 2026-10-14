@@ -120,11 +120,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Leave an ember silhouette that attracts nearby hostile mobs for 6/8/10/12 seconds. Hostile contact or attacks detonate it, damaging and igniting nearby enemies for 3/4/5/6 seconds. Cooldown: 45 seconds after it ends. Switching cancels the decoy.
+> Leave an ember silhouette that attracts nearby hostile mobs for 6/8/10/12 seconds. It explodes whenever it disappears, including hostile contact, attacks, expiry, switching, death or logout. Explosion radius: 2/3/4/5 blocks at levels I/II/III/IV; nearby enemies ignite for 3/4/5/6 seconds. You and terrain are unharmed. Cooldown: 45 seconds after it ends.
 
 **Augmentation card:**
 
-> Leave an ember decoy; hostile contact detonates and ignites it.
+> Leave an ember decoy; disappearance explodes within 2-5 blocks and ignites enemies.
 
 ### Crosswind
 
