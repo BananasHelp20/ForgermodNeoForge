@@ -34,4 +34,11 @@ public final class RootingRootsState {
     public void clearOwner(UUID owner) {
         roots.values().removeIf(root -> root.owner.equals(owner));
     }
+
+    public boolean rootedBy(UUID mob, UUID owner, long now) {
+        Root root = roots.get(mob);
+        return root != null && root.owner.equals(owner) && anchor(mob, now) != null;
+    }
+
+    public void clearTarget(UUID mob) { roots.remove(mob); }
 }

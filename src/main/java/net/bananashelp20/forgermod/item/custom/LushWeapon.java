@@ -6,6 +6,7 @@ import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
 import net.bananashelp20.forgermod.item.custom.abilities.RootingRootsState;
+import net.bananashelp20.forgermod.item.custom.abilities.RootingRootsVisuals;
 import net.bananashelp20.forgermod.item.custom.abilities.PoisonCloudState;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -92,6 +93,7 @@ public class LushWeapon extends SwordItemWithEffect {
         long now = player.level().getGameTime();
         for (Mob mob : targets) {
             ROOTS.root(player.getUUID(), mob.getUUID(), mob.getX(), mob.getZ(), now);
+            RootingRootsVisuals.grow(player.getUUID(), mob);
             mob.getNavigation().stop();
             mob.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 0));
             player.serverLevel().sendParticles(ParticleTypes.COMPOSTER,
@@ -115,7 +117,10 @@ public class LushWeapon extends SwordItemWithEffect {
 
     @Override
     public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
-        if (slot == WeaponAbilitySlot.PRIMARY) ROOTS.clearOwner(player.getUUID());
+        if (slot == WeaponAbilitySlot.PRIMARY) {
+            ROOTS.clearOwner(player.getUUID());
+            RootingRootsVisuals.retractOwner(player.getUUID());
+        }
         else CLOUDS.cancelPlayer(player.getUUID());
     }
 
@@ -129,6 +134,14 @@ public class LushWeapon extends SwordItemWithEffect {
 
     @SubscribeEvent
     public static void onHostileDeath(LivingDeathEvent event) {
+        if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer owner) {
+            ROOTS.clearOwner(owner.getUUID());
+            RootingRootsVisuals.retractOwner(owner.getUUID());
+        }
+        if (!event.isCanceled() && event.getEntity() instanceof Mob mob) {
+            ROOTS.clearTarget(mob.getUUID());
+            RootingRootsVisuals.retractTarget(mob.getUUID());
+        }
         if (!(event.getEntity() instanceof Mob mob) || !(mob instanceof Enemy)
                 || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
@@ -142,6 +155,7 @@ public class LushWeapon extends SwordItemWithEffect {
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         long now = level.getGameTime();
+        RootingRootsVisuals.tick(level, ROOTS);
         for (PoisonCloudState.Cloud cloud : CLOUDS.active(level.dimension(), now)) {
             if (now % 5 == 0) level.sendParticles(ParticleTypes.SPORE_BLOSSOM_AIR,
                     cloud.x(), cloud.y(), cloud.z(), 12, 1.5, 0.7, 1.5, 0.01);
@@ -157,7 +171,21 @@ public class LushWeapon extends SwordItemWithEffect {
 
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        ROOTS.clearOwner(event.getEntity().getUUID());
+        RootingRootsVisuals.retractOwner(event.getEntity().getUUID());
         CLOUDS.clearPlayer(event.getEntity().getUUID());
+    }
+
+    @SubscribeEvent
+    public static void onRootDimensionChange(net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent event) {
+        if (event.isCanceled()) return;
+        if (event.getEntity() instanceof Mob mob) {
+            ROOTS.clearTarget(mob.getUUID());
+            RootingRootsVisuals.retractTarget(mob.getUUID());
+        } else if (event.getEntity() instanceof ServerPlayer owner) {
+            ROOTS.clearOwner(owner.getUUID());
+            RootingRootsVisuals.retractOwner(owner.getUUID());
+        }
     }
 
     @SubscribeEvent

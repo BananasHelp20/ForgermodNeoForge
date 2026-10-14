@@ -534,11 +534,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Hold hostile mobs within 10 blocks in place and poison them for 10 seconds (1-minute cooldown)
+> Roots grow from the ground around hostile mobs within 10 blocks, holding them in place and poisoning them for 10 seconds. The roots retract when the hold ends. (1-minute cooldown)
 
 **Augmentation card:**
 
-> Root and poison enemies within 10 blocks for 10 seconds.
+> Animated roots emerge to bind and poison enemies within 10 blocks, then withdraw after 10 seconds.
 
 ### Skull Throw
 
