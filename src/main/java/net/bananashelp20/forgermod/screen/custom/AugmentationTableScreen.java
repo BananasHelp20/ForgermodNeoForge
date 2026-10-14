@@ -83,10 +83,12 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         int x=CARD_X[card],y=CARD_Y;
         boolean completed=menu.phase()==AugmentationAnimation.COMPLETE;
         boolean rejected=completed && menu.selected()!=card;
+        boolean superUpgrade=menu.offerRank(card)==3 && Augmentations.hasSuperForm(
+                menu.getSlot(completed?3:0).getItem(),offer.id());
         gui.blit(CARD_TEMPLATE,x,y,0,0,0,CARD_WIDTH,CARD_HEIGHT,CARD_WIDTH,CARD_HEIGHT);
         Component eyebrow=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.new":"augmentation.forgermod.card.upgrade");
         gui.pose().pushPose(); gui.pose().translate(x+3,y-4,0); gui.pose().scale(.5F,.5F,1);
-        gui.drawString(font,eyebrow,0,0,0xff586672,false); gui.pose().popPose();
+        gui.drawString(font,eyebrow,0,0,rejected?0xff666666:superUpgrade?0xffc58b12:0xff586672,false); gui.pose().popPose();
         // Fit and center the title in the template's upper white box, without a rank suffix.
         float scale=.5F;
         List<FormattedCharSequence> titleLines=font.split(offer.name(),(int)(37/scale));
@@ -100,13 +102,13 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.pose().scale(scale,scale,1);
         for(int row=0;row<titleLines.size();row++) {
             var line=titleLines.get(row);
-            gui.drawString(font,line,-font.width(line)/2,row*font.lineHeight,rejected?0xff666666:offer.active()?0xff244575:0xff006b7b,false);
+            gui.drawString(font,line,-font.width(line)/2,row*font.lineHeight,rejected?0xff666666:superUpgrade?0xffc58b12:offer.active()?0xff244575:0xff006b7b,false);
         }
         gui.pose().popPose();
         // Inset text one texture pixel from the white boxes; keep the lower heading one pixel lower.
         gui.pose().pushPose(); gui.pose().translate(x+3,y+14,0); gui.pose().scale(.5F,.5F,1);
         Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
-        gui.drawString(font,category,(74-font.width(category))/2,0,rejected?0xff666666:offer.active()?0xff2962d9:0xff00a9bd,false);
+        gui.drawString(font,category,(74-font.width(category))/2,0,rejected?0xff666666:superUpgrade?0xffc58b12:offer.active()?0xff2962d9:0xff00a9bd,false);
         Component description=Component.translatable(offer.id()+".card");
         if(!net.minecraft.client.resources.language.I18n.exists(offer.id()+".card")) description=Component.translatable(offer.id());
         var lines=font.split(description,74);
