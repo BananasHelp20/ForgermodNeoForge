@@ -707,3 +707,4 @@ Removed
 - Changed Echo Hearing into a 10/12/14/16-second listening ability with a radius that follows the wielder; other entities glow for two seconds whenever they emit a vibration nearby, with a visible vibration traveling from the entity to the wielder. The wielder no longer reveals themselves, and the cooldown starts when listening ends or is canceled.
 - Fixed Flameborn so the no-ability-cooldown command also allows restarting its active fire burst and protection without waiting for the previous 30-second effect to end.
 - Buffed Explosion from power 3 to power 4 (about 6 to 8 blocks of reach) and added a broad blast, dust, and smoke particle cloud. Blocks remain unaffected.
+- Added a Heat meter above the hotbar while wielding a weapon with Heating Up. It displays server-synced stored heat from 0 to 20 and clears when the weapon changes.

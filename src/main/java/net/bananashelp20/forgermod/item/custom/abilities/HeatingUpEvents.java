@@ -26,7 +26,12 @@ public final class HeatingUpEvents {
         Heat(ServerPlayer player) { stack=player.getMainHandItem(); selected=player.getInventory().selected; }
     }
     private static final Map<UUID,Heat> HEAT=new HashMap<>();
+    private static final Map<UUID,Float> LAST_SENT=new HashMap<>();
     private HeatingUpEvents() {}
+    private static void sync(ServerPlayer player,float amount) {
+        Float previous=LAST_SENT.put(player.getUUID(),amount);
+        if(previous==null || Float.compare(previous,amount)!=0) HeatingUpNetwork.send(player,amount);
+    }
     private static Heat heat(ServerPlayer player,boolean create) {
         Heat heat=HEAT.get(player.getUUID());
         if(!player.isAlive() || player.isSpectator() || !Augmentations.hasPassive(player.getMainHandItem(),RecommendedAbilities.HEATING_UP)) {
@@ -48,7 +53,10 @@ public final class HeatingUpEvents {
         if(event.getNewDamage()<=0 || !melee(event.getSource())) return;
         if(event.getEntity() instanceof ServerPlayer victim) {
             Heat heat=heat(victim,true);
-            if(heat!=null) heat.amount=Math.min(CAPACITY,heat.amount+event.getNewDamage()*.5F);
+            if(heat!=null) {
+                heat.amount=Math.min(CAPACITY,heat.amount+event.getNewDamage()*.5F);
+                sync(victim,heat.amount);
+            }
         }
         if(!(event.getSource().getEntity() instanceof ServerPlayer attacker) || event.getEntity()==attacker
                 || event.getEntity().isAlliedTo(attacker)) return;
@@ -58,6 +66,7 @@ public final class HeatingUpEvents {
         if(heat.ignitionTick!=now) {
             if(heat.amount<COST) return;
             heat.amount-=COST; heat.ignitionTick=now;
+            sync(attacker,heat.amount);
         }
         int rank=Augmentations.level(attacker.getMainHandItem(),RecommendedAbilities.HEATING_UP);
         if(!event.getEntity().isDeadOrDying()) event.getEntity().setRemainingFireTicks(
@@ -74,12 +83,19 @@ public final class HeatingUpEvents {
     public static void onTick(PlayerTickEvent.Pre event) {
         if(!(event.getEntity() instanceof ServerPlayer player)) return;
         Heat heat=heat(player,false);
-        if(Augmentations.level(player.getMainHandItem(),RecommendedAbilities.HEATING_UP)!=4
-                || player.getRemainingFireTicks()<=0) return;
-        if(heat==null) heat=heat(player,true);
-        if(heat==null || heat.amount>=CAPACITY) return;
-        heat.amount=Math.min(CAPACITY,heat.amount+player.getRemainingFireTicks()/20F); player.clearFire();
+        if(Augmentations.level(player.getMainHandItem(),RecommendedAbilities.HEATING_UP)==4
+                && player.getRemainingFireTicks()>0) {
+            if(heat==null) heat=heat(player,true);
+            if(heat!=null && heat.amount<CAPACITY) {
+                heat.amount=Math.min(CAPACITY,heat.amount+player.getRemainingFireTicks()/20F);
+                player.clearFire();
+            }
+        }
+        sync(player,heat==null?0:heat.amount);
     }
     @SubscribeEvent
-    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) { HEAT.remove(event.getEntity().getUUID()); }
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        HEAT.remove(event.getEntity().getUUID());
+        LAST_SENT.remove(event.getEntity().getUUID());
+    }
 }
