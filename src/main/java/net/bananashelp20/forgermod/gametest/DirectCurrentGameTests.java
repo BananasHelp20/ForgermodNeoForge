@@ -23,8 +23,34 @@ public class DirectCurrentGameTests {
     private static Zombie zombie(GameTestHelper test,Vec3 position) {
         var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD,new ItemStack(Blocks.CARVED_PUMPKIN));mob.setPos(position);test.getLevel().addFreshEntity(mob);return mob;
     }
+    @GameTest(template="riftfang_test",timeoutTicks=60)
+    public static void standingBodyContactRepeatsEveryHalfSecondAndWallsStopIt(GameTestHelper test) {
+        var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);
+        for(int x=7;x<=11;x++) for(int y=5;y<=12;y++) for(int z=8;z<=17;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        var a=zombie(test,origin.add(0,0,3));var b=zombie(test,origin.add(0,0,8));
+        var standing=zombie(test,origin.add(.4,0,5));var outside=zombie(test,origin.add(1.2,0,5));var above=zombie(test,origin.add(0,4,5));
+        var mobs=java.util.List.of(a,b,standing,outside,above);mobs.forEach(m->m.setNoAi(true));
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.DIRECT_CURRENT);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Stationary circuit rejected");
+        a.hurt(player.damageSources().playerAttack(player),1);b.hurt(player.damageSources().playerAttack(player),1);
+        DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+        test.assertTrue(standing.getHealth()==16 && outside.getHealth()==20 && above.getHealth()==20,"Stationary body intersection, width or height is wrong");
+        test.assertTrue(a.getHealth()==19 && b.getHealth()==19,"Stationary endpoint anchors take contact damage");
+        DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==16,"Same-tick contact bypasses damage guard");
+        test.runAfterDelay(9,()->{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==16,"Contact repeats before half a second");});
+        test.runAfterDelay(10,()->{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==12,"Standing in current does not repeat damage after half a second");});
+        test.runAfterDelay(20,()->{
+            try {
+                test.setBlock(new BlockPos(8,6,13),Blocks.STONE);DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+                test.assertTrue(standing.getHealth()==12,"Stationary current damages through an obstructing wall");
+                DirectCurrentEvents.cancel(player.getUUID());test.setBlock(new BlockPos(8,6,13),Blocks.AIR);
+                DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==12,"Canceled current still deals contact damage");test.succeed();
+            } finally {DirectCurrentEvents.cancel(player.getUUID());mobs.forEach(net.minecraft.world.entity.Entity::discard);player.server.getPlayerList().remove(player);}
+        });
+    }
     @GameTest(template="riftfang_test")
-    public static void allVariantsCreateTwoAnchorBarrierAndDamageOnlyOnCrossing(GameTestHelper test) {
+    public static void allVariantsCreateTwoAnchorBarrierAndPreserveCrossingDamage(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);
         for(int x=5;x<=11;x++) for(int y=5;y<=8;y++) for(int z=8;z<=25;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
         var a=zombie(test,origin.add(0,0,3));var b=zombie(test,origin.add(0,0,8));var c=zombie(test,origin.add(0,0,10));var crossing=zombie(test,origin.add(-1,0,5));int count=0;
@@ -46,9 +72,9 @@ public class DirectCurrentGameTests {
     }
     @GameTest(template="riftfang_test",timeoutTicks=100)
     public static void staticFieldHurtsEveryOccupantOncePerSecondAndSupportsFourAnchors(GameTestHelper test) {
-        var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin.add(1,0,1));
+        var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin.add(1,0,2.5));
         for(int x=7;x<=16;x++) for(int y=5;y<=8;y++) for(int z=7;z<=16;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
-        var a=zombie(test,origin);var b=zombie(test,origin.add(6,0,0));var c=zombie(test,origin.add(0,0,6));var d=zombie(test,origin.add(6,0,6));var neutral=EntityType.COW.create(test.getLevel());neutral.setNoAi(true);neutral.setNoGravity(true);neutral.setPos(origin.add(2,0,1));test.getLevel().addFreshEntity(neutral);
+        var a=zombie(test,origin);var b=zombie(test,origin.add(6,0,0));var c=zombie(test,origin.add(0,0,6));var d=zombie(test,origin.add(6,0,6));var neutral=EntityType.COW.create(test.getLevel());neutral.setNoAi(true);neutral.setNoGravity(true);neutral.setPos(origin.add(2.5,0,1));test.getLevel().addFreshEntity(neutral);
         ItemStack stack=new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get());for(int i=0;i<4;i++) stack=Augmentations.apply(stack,AdditionalAbilities.DIRECT_CURRENT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var name=Augmentations.abilityName(stack,AdditionalAbilities.DIRECT_CURRENT,4);test.assertTrue(name.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals("tooltips.forgermod.ability.static_field.name"),"Rank IV is not named Static Field");
         test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Static Field rejected");for(var mob:java.util.List.of(a,b,c,d)) mob.hurt(player.damageSources().playerAttack(player),1);
@@ -60,9 +86,9 @@ public class DirectCurrentGameTests {
     }
     @GameTest(template="riftfang_test",timeoutTicks=100)
     public static void superStaticFieldIVDealsUpgradedDamage(GameTestHelper test) {
-        var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin.add(1,0,1));
+        var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin.add(1,0,2.5));
         for(int x=7;x<=16;x++) for(int y=5;y<=8;y++) for(int z=7;z<=16;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
-        var a=zombie(test,origin);var b=zombie(test,origin.add(6,0,0));var c=zombie(test,origin.add(0,0,6));var d=zombie(test,origin.add(6,0,6));var neutral=EntityType.COW.create(test.getLevel());neutral.setNoAi(true);neutral.setNoGravity(true);neutral.setPos(origin.add(2,0,1));test.getLevel().addFreshEntity(neutral);
+        var a=zombie(test,origin);var b=zombie(test,origin.add(6,0,0));var c=zombie(test,origin.add(0,0,6));var d=zombie(test,origin.add(6,0,6));var neutral=EntityType.COW.create(test.getLevel());neutral.setNoAi(true);neutral.setNoGravity(true);neutral.setPos(origin.add(2.5,0,1));test.getLevel().addFreshEntity(neutral);
         ItemStack stack=new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get());for(int i=0;i<7;i++) stack=Augmentations.apply(stack,AdditionalAbilities.DIRECT_CURRENT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var name=Augmentations.abilityName(stack,AdditionalAbilities.DIRECT_CURRENT,4);test.assertTrue(name.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals("tooltips.forgermod.ability.static_field.name"),"Rank IV is not named Static Field");
         test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Static Field rejected");for(var mob:java.util.List.of(a,b,c,d)) mob.hurt(player.damageSources().playerAttack(player),1);

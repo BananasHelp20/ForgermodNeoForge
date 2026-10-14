@@ -194,7 +194,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing a visible barrier deals two hearts of damage, at most once per half-second. Reaching rank IV becomes Static Field I, upgradeable through IV: at three marks, all living entities inside their triangle take 1/1.25/1.5/1.75 damage per second at super ranks I/II/III/IV. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
+> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing or standing in a visible barrier deals two hearts of damage, at most once per half-second. Marked anchors are exempt from this contact damage. Reaching rank IV becomes Static Field I, upgradeable through IV: at three marks, all living entities inside their triangle take 1/1.25/1.5/1.75 damage per second at super ranks I/II/III/IV. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
 
 **Augmentation card:**
 

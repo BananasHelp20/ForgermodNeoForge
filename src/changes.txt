@@ -788,3 +788,5 @@ Removed
 - Reduced Lightning Rod level-I extra-strike chance to 1 in 600 per second (average once per ten minutes under open sky). Higher ranks retain 1 in 60 per second; natural lightning protection and buffs unchanged.
 
 - Buffed Stunning Presence radius to ten blocks from level I (all ranks) and stun duration to 0.5 seconds per pulse. Added rotating electrical boundary and expanding pulse ripples with rank-scaled density/speed, bounded particle emission every five ticks. Existing damage, pulse frequency, lifetime and cooldowns retained.
+
+- Buffed Direct Current barriers to deal four HP to living bodies remaining in the current, sharing the existing half-second per-entity guard with crossing damage. Uses body collision with a narrow electrical curtain; marked endpoints are excluded from stationary contact. Existing wall/height/expiry/switch rules and Static Field area damage remain.

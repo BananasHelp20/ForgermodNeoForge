@@ -69,6 +69,14 @@ public final class DirectCurrentEvents {
         if(Math.abs(side(a,b,c))<.01 || point.y<Math.min(a.y,Math.min(b.y,c.y))-.5 || point.y>Math.max(a.y,Math.max(b.y,c.y))+2.5) return false;
         double x=side(a,b,point),y=side(b,c,point),z=side(c,a,point);return !(x<-.000001 || y<-.000001 || z<-.000001) || !(x>.000001 || y>.000001 || z>.000001);
     }
+    /** A narrow electrical curtain intersects the entity's body, even without movement. */
+    private static boolean touching(LivingEntity entity,Barrier barrier) {
+        var a=barrier.from();var b=barrier.to();var body=entity.getBoundingBox();
+        if(body.maxY<Math.min(a.y,b.y)-.5 || body.minY>Math.max(a.y,b.y)+2.5) return false;
+        var horizontal=new AABB(body.minX-.15,-1,body.minZ-.15,body.maxX+.15,1,body.maxZ+.15);
+        var from=new Vec3(a.x,0,a.z);var to=new Vec3(b.x,0,b.z);
+        return horizontal.contains(from) || horizontal.contains(to) || horizontal.clip(from,to).isPresent();
+    }
     private static void damage(ServerPlayer player,LivingEntity target,float amount) {
         int immunity=target.invulnerableTime;target.invulnerableTime=0;
         try {target.hurt(target==player?player.damageSources().magic():player.damageSources().indirectMagic(player,player),amount);}finally {target.invulnerableTime=Math.max(immunity,target.invulnerableTime);}
@@ -86,9 +94,10 @@ public final class DirectCurrentEvents {
         boolean fieldPulse=field && now>=circuit.nextField;
         for(var entity:occupants) {
             var id=entity.getUUID();seen.add(id);var old=circuit.previous.getOrDefault(id,new Vec3(entity.xo,entity.yo,entity.zo));
-            boolean crossed=false;
-            for(var barrier:barriers) if(crosses(old,entity.position(),barrier.from(),barrier.to())) {crossed=true;break;}
-            if(crossed && now>=circuit.shockReady.getOrDefault(id,0L)) {damage(player,entity,4);circuit.shockReady.put(id,now+10);}
+            boolean contacted=false;
+            for(var barrier:barriers) if(crosses(old,entity.position(),barrier.from(),barrier.to())
+                || !circuit.anchors.contains(entity) && touching(entity,barrier)) {contacted=true;break;}
+            if(contacted && now>=circuit.shockReady.getOrDefault(id,0L)) {damage(player,entity,4);circuit.shockReady.put(id,now+10);}
             if(fieldPulse && inside(entity.position(),circuit.anchors.get(0).position(),circuit.anchors.get(1).position(),circuit.anchors.get(2).position())) damage(player,entity,1+.25f*Math.max(0,circuit.rank-4));
             circuit.previous.put(id,entity.position());
         }
