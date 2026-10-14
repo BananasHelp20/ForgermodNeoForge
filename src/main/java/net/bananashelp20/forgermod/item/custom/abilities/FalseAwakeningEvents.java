@@ -69,7 +69,7 @@ public final class FalseAwakeningEvents {
         echo.setItemSlot(EquipmentSlot.CHEST,armor(Items.LEATHER_CHESTPLATE)); echo.setItemSlot(EquipmentSlot.LEGS,armor(Items.LEATHER_LEGGINGS)); echo.setItemSlot(EquipmentSlot.FEET,armor(Items.LEATHER_BOOTS));
         if(!player.serverLevel().addFreshEntity(echo)) return false;
         int rank=Augmentations.level(stack,RecommendedAbilities.FALSE_AWAKENING);
-        var dream=new Dream(player,stack,player.getInventory().selected,real,echo,player.level().getGameTime()+60+20L*rank,rank,new HashMap<>());
+        var dream=new Dream(player,stack,player.getInventory().selected,real,echo,player.level().getGameTime()+600+100L*(rank-1),rank,new HashMap<>());
         DREAMS.put(player.getUUID(),dream); attract(dream); return true;
     }
     private static void attract(Dream dream) {

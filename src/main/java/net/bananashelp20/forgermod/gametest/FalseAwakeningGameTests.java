@@ -41,7 +41,7 @@ public class FalseAwakeningGameTests {
         test.assertTrue(echo instanceof DreamEchoEntity,"Unblocked activation fails");
         player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
         test.assertTrue(echo.isRemoved() && real.getTarget()==player && !FalseAwakeningEvents.active(player),"Switch leaves echo/AI state");
-        test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+600,"Switch fails to start cooldown");
+        test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+1200,"Switch fails to start cooldown");
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.FALSE_AWAKENING);
         var lethalEcho=real.getTarget(); real.setHealth(1); real.hurt(player.damageSources().playerAttack(player),10);
@@ -89,21 +89,26 @@ public class FalseAwakeningGameTests {
             test.assertTrue(real.getHealth()==977.5F,"Bonus applies twice");
             WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             String key=BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.FALSE_AWAKENING;
-            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+300,"Ending dream fails to start rank-IV cooldown");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+600,"Ending dream fails to start rank-IV cooldown");
             real.discard(); nearby.discard(); test.getLevel().getServer().getPlayerList().remove(player);
         }
         test.succeed();
     }
-    @GameTest(template="riftfang_test",timeoutTicks=120)
+    @GameTest(template="riftfang_test",timeoutTicks=40)
     public static void expiryRemovesEchoAndRestoresPreviousTarget(GameTestHelper test) throws Exception {
         var player=player(test); var stack=Augmentations.apply(new ItemStack(ModItems.NIGHTMARE_DAGGER.get()),RecommendedAbilities.FALSE_AWAKENING);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); var real=enemy(test,player,0,4); real.setTarget(player); AbilityTestPackets.use(player,0);
         var echo=real.getTarget(); test.assertTrue(echo instanceof DreamEchoEntity,"No expiry-test echo");
-        test.runAfterDelay(81,()->{
+        var field=FalseAwakeningEvents.class.getDeclaredField("DREAMS");field.setAccessible(true);@SuppressWarnings("unchecked") var dreams=(java.util.Map<java.util.UUID,Object>)field.get(null);var dream=dreams.get(player.getUUID());
+        var expiry=dream.getClass().getDeclaredMethod("expires");expiry.setAccessible(true);test.assertTrue((Long)expiry.invoke(dream)==player.level().getGameTime()+600,"Level I echo duration is not 30 seconds");
+        var parts=dream.getClass().getRecordComponents();var types=new Class<?>[parts.length];var values=new Object[parts.length];
+        for(int i=0;i<parts.length;i++){types[i]=parts[i].getType();var accessor=parts[i].getAccessor();accessor.setAccessible(true);values[i]=parts[i].getName().equals("expires")?player.level().getGameTime()+10:accessor.invoke(dream);}
+        var constructor=dream.getClass().getDeclaredConstructor(types);constructor.setAccessible(true);dreams.put(player.getUUID(),constructor.newInstance(values));
+        test.runAfterDelay(11,()->{
             FalseAwakeningEvents.onTick(new PlayerTickEvent.Post(player)); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             test.assertTrue(!FalseAwakeningEvents.active(player) && echo.isRemoved() && real.getTarget()==player,"Expired echo/AI state remains");
             String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.FALSE_AWAKENING;
-            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+600,"Expiry fails to start full cooldown");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+1200,"Expiry fails to start full cooldown");
             real.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
         });
     }

@@ -121,7 +121,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 
 - Weapons: Nightmare Dagger and all four gemstone variants. Aim at an enemy within twenty blocks to mark its real silhouette and create a shadowless violet humanoid echo beside it. Sparse silhouette outlines alternate between real and echo; real rendering/shadow remains unchanged. The echo uses a matching head where possible.
 - Visible hostile/aggro mobs within eight blocks briefly target the echo instead of the wielder. Previous valid targets restore afterward. Your next successful real-target melee hit deals 10/15/20/25% extra damage and ends the dream; rejected hits and echo hits do not consume it.
-- Rank I-IV durations: 4/5/6/7 seconds; ending/cancellation cooldowns: 30/25/20/15 seconds. Only one echo per wielder, no save/loot/item interaction; switching, dimension change, death/logout, target loss/range or expiry remove it.
+- Rank I-IV durations: 30/35/40/45 seconds; ending/cancellation cooldowns: 60/50/40/30 seconds. Only one echo per wielder, no save/loot/item interaction; switching, dimension change, death/logout, target loss/range or expiry remove it.
 - Reviewed build/lightweight/server checks passed all 99 required tests: all variants, fresh rejection, AI distraction/restoration, equipment protection, one-time exact bonus, rejected hit, expiry/cooldown, wall rejection, switching, lethal hit and actual logout. Client appearance still needs in-game visual review.
 
 ## Delusion - completed

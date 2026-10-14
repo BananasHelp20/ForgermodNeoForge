@@ -82,7 +82,7 @@ public final class RecommendedAbilities {
         if(ECHO_HEARING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(GARDENERS.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(DELUSION.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
-        if(FALSE_AWAKENING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
+        if(FALSE_AWAKENING.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(NULL_RECEIPT.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);
         if(DEATH_STARE.equals(id)) return 900-100*(Math.clamp(rank,1,4)-1);
         if(SWING_ATTACK.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);

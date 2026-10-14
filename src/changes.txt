@@ -766,3 +766,5 @@ Removed
 - Buffed Soul Hunger: earned absorption and its capacity remain after switching, changing hotbar slot or unequipping. Absorbed damage still consumes it and the six-HP earned cap persists across reequipping; only held learned weapons can earn/refill hearts. Existing potion coexistence and death/logout/dimension cleanup remain.
 
 - Buffed Bone Guard to a one-minute summon that survives weapon switching, with normal ending/switch cooldown and one group per owner. Added Necromancer named super form at original IV, upgrading through super IV: groups of 2/3/5/7 allies; maximum is one bogged, one stray, two skeletons, three wither skeletons. All groups live one minute, cannot harm owner/friendly golems, are mutually neutral with friendly golems, and yield no loot/XP or collectible arrows. Guard types use correct vanilla classes/renderers; cleanup on expiry/death/logout/travel remains.
+
+- Buffed False Awakening echo life to 30/35/40/45 seconds at I-IV (50 seconds at transferred rank V). Adjusted ending cooldown to 60/50/40/30 seconds. Existing damage payoff, line of sight, target restoration and switching/lifecycle cancellation remain.

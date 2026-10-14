@@ -304,7 +304,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Mark an aimed enemy within 20 blocks with alternating real/echo silhouettes. A shadowless violet echo distracts visible hostile mobs within 8 blocks. Your next successful melee hit on the real target deals 10/15/20/25% more damage and ends the dream. Duration: 4/5/6/7 seconds; cooldown: 30/25/20/15 seconds.
+> Mark an aimed enemy within 20 blocks with alternating real/echo silhouettes. A shadowless violet echo distracts visible hostile mobs within 8 blocks. Your next successful melee hit on the real target deals 10/15/20/25% more damage and ends the dream. Duration: 30/35/40/45 seconds; cooldown after ending: 60/50/40/30 seconds.
 
 **Augmentation card:**
 
