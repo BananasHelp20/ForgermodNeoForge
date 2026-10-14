@@ -49,7 +49,7 @@ public class AbilityRemovalGameTests {
             AbilityTestPackets.use(player,0);var weapon=Augmentations.canonical(stack);
             test.assertFalse(weapon.isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Removed native source activates");test.assertTrue(weapon.isAbilityActive(player,WeaponAbilitySlot.SECONDARY),"Remaining Pyromaniac cannot activate");
             var victim=EntityType.COW.create(test.getLevel());weapon.onDaggerHit(victim,player);weapon.onDaggerHit(victim,player);
-            test.assertTrue(player.getHealth()==15 && victim.getRemainingFireTicks()==100,"Remaining hit effect changed or retired combo still stacks burn");
+            test.assertTrue(player.getHealth()==15 && victim.getRemainingFireTicks()==200 && player.getRemainingFireTicks()<=0,"Remaining hit effect changed or retired combo still stacks burn");
             WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem())+":SECONDARY";
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==player.level().getGameTime()+1000,"Remaining cooldown was renumbered");

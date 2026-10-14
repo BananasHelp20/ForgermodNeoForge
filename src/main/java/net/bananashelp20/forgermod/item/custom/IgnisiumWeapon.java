@@ -86,9 +86,13 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
         if (Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.pyromaniac") && PYROMANIAC.consume(player.getUUID())) {
+            int fireTicks=Math.max(0,player.getRemainingFireTicks());
+            boolean infinite=net.bananashelp20.forgermod.item.custom.abilities.InfiniteBurnEvents.active(player);
+            player.clearFire();
             player.heal(5.0F);
-            if (!target.isDeadOrDying()) {
-                target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(), 100));
+            if (!target.isDeadOrDying() && !target.fireImmune() && fireTicks>0) {
+                if(infinite) net.bananashelp20.forgermod.item.custom.abilities.InfiniteBurnEvents.ignite(target);
+                else target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(),fireTicks));
             }
         }
     }

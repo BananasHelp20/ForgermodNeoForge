@@ -518,11 +518,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> While burning, arm your next dagger hit to ignite the target for 5 seconds and heal 5 HP (50-second cooldown)
+> While burning, arm your next successful dagger hit to extinguish yourself, transfer your remaining fire to the target and heal 5 HP. Infinite burning transfers too; a longer existing target burn is preserved. If your fire ends before the hit, you still heal but transfer no fire. Cooldown: 50 seconds after the hit or cancellation.
 
 **Augmentation card:**
 
-> While burning, your next hit ignites the target and heals 5 HP.
+> While burning, arm a hit to transfer your fire, extinguish yourself and heal 5 HP.
 
 ### Ringing Steel
 
