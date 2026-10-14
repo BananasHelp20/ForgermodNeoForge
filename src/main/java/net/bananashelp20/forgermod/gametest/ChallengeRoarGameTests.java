@@ -10,6 +10,7 @@ import net.minecraft.gametest.framework.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
@@ -33,6 +34,8 @@ public class ChallengeRoarGameTests {
             for(var mob:mobs)mob.setTarget(null);neutral.setTarget(otherPlayer);piglin.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);warden.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
             player.setItemInHand(InteractionHand.MAIN_HAND,fresh);test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.CHALLENGE_ROAR),"Fresh weapon taunts");
             var stack=Augmentations.apply(fresh,AdditionalAbilities.CHALLENGE_ROAR);player.setItemInHand(InteractionHand.MAIN_HAND,stack);test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.CHALLENGE_ROAR),"Roar rejected");
+            var strength=player.getEffect(MobEffects.DAMAGE_BOOST);
+            test.assertTrue(strength!=null && strength.getAmplifier()==0 && strength.getDuration()==200,"Roar did not grant Strength I for ten seconds");
             test.assertTrue(visible.getTarget()==player && hidden.getTarget()==player && nearEdge.getTarget()==player && piglin.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null)==player && piglin.getBrain().getMemory(MemoryModuleType.ANGRY_AT).orElse(null).equals(player.getUUID()) && warden.getTarget()==player,"Ordinary, hidden, distant-in-range or brain-driven mob ignores taunt");
             test.assertTrue(outside.getTarget()==null && cow.getTarget()==null && pet.getTarget()==null && neutral.getTarget()==otherPlayer,"Roar affects out-of-range, passive, neutral or allied mob");
             visible.setTarget(cow);WeaponControlLocks.acquire(visible,player.getUUID(),"taunt-test",20);
@@ -58,6 +61,8 @@ public class ChallengeRoarGameTests {
             test.assertTrue(Augmentations.level(stack,AdditionalAbilities.CHALLENGE_ROAR)==4,"Fourth rank was not learned");
             player.setItemInHand(InteractionHand.MAIN_HAND,stack);
             AbilityTestPackets.use(player,0);
+            var strength=player.getEffect(MobEffects.DAMAGE_BOOST);
+            test.assertTrue(strength!=null && strength.getAmplifier()==0 && strength.getDuration()==200,"Rank IV roar did not grant Strength I for ten seconds");
             test.assertTrue(inside.getTarget()==player && outside.getTarget()==null,"Rank IV range is not 28 blocks");
             String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+AdditionalAbilities.CHALLENGE_ROAR;
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)

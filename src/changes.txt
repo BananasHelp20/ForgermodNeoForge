@@ -703,3 +703,4 @@ Removed
 - Replaced both Augment Template textures with purple recolors of the corresponding Create: Enchantment Industry animated template sprites.
 - Added Flameborn to Ignisium daggers, claymores, and axes, including gemstone variants. It grants up to 30 seconds of Fire Resistance and ignites the wielder and enemies within 10 blocks for five seconds (seven at super rank) with a visual explosion. Switching ends its protection; a five-minute cooldown starts when it ends.
 - Added Ender Swing to Inanisium axes and gemstone variants. The next attack sweeps a one-block radius for weapon damage (20% more at super rank) and lifts surviving enemies 20 blocks through clear space. Switching cancels it; cooldown after use or cancellation is 60 seconds.
+- Buffed Challenge Roar to grant the wielder Strength I for 10 seconds on activation.

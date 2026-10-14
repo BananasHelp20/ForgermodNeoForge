@@ -8,6 +8,8 @@ import net.minecraft.world.entity.monster.warden.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 public final class ChallengeRoarAbility {
     private ChallengeRoarAbility() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
@@ -26,6 +28,7 @@ public final class ChallengeRoarAbility {
                 brain.eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);brain.setMemory(MemoryModuleType.ATTACK_TARGET,player);
             }
         }
+        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0));
         player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,player.getX(),player.getY()+1,player.getZ(),1,0,0,0,0);
         player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.WARDEN_ROAR,player.getSoundSource(),.7F,1.2F);
         return true;
