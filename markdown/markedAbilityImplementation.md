@@ -47,6 +47,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 - Store half of actual melee damage taken, capped at 20 heat. Spend five heat per successful attack to ignite all affected targets, including sweeps, for 3/4/5/6 seconds at ranks I-IV.
 - At every learned rank, remaining fire on the wielder becomes heat (one heat per burn second) and is extinguished if capacity remains. Full capacity leaves the wielder burning. Heat is saved on the sword and persists across switching and saves/logout. Only sweep-payment bookkeeping resets; stored heat is shown as a gray tooltip extension rather than a HUD overlay.
 - Ranged damage does not fill heat; canceled/failed hits do not spend it. Sweeping targets share one payment, while distinct same-tick attacks pay separately.
+- Fire Aspect on the Heating Up sword makes its heat-funded ignition permanent until extinguished. Requires a successful paid hit; ordinary Fire Aspect without Heating Up or enough heat remains timed. Burn persistence survives saving and preserves vanilla damage cadence; water, explicit extinguishing and fire-immune targets are respected.
 - Reviewed build/lightweight/server checks passed all 70 required tests, including all five variants, actual survival damage, sweep cost, separate-attack isolation, projectile exclusion, burn absorption/full capacity and exact-stack switching cleanup.
 
 ## Fire Resistance - completed

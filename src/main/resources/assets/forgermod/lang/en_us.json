@@ -39,7 +39,7 @@
   "tooltips.forgermod.passive.fire_resistance": "Gain infinite Fire Resistance while holding this weapon in your main hand. Level II also works in the offhand and is the maximum level. Weapon protection ends when neither hand qualifies; other Fire Resistance effects keep their normal duration.",
   "tooltips.forgermod.passive.fire_resistance.card": "Fire Resistance while held; level II also protects from offhand.",
   "tooltips.forgermod.passive.heating_up.name": "Heating Up",
-  "tooltips.forgermod.passive.heating_up": "Store half of melee damage taken as heat, up to 20. Stored heat is shown in this sword's tooltip. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. At every level, remaining fire on you becomes heat and is extinguished unless capacity is already full. Heat stays on this sword when switching weapons.",
+  "tooltips.forgermod.passive.heating_up": "Store half of melee damage taken as heat, up to 20. Stored heat is shown in this sword's tooltip. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. With Fire Aspect on this sword, that heat-funded attack burns indefinitely until extinguished. At every level, remaining fire on you becomes heat and is extinguished unless capacity is already full. Heat stays on this sword when switching weapons.",
   "tooltips.forgermod.passive.heating_up.card": "Absorb your fire and store melee damage as heat; spend heat to ignite attacks.",
   "tooltips.forgermod.passive.heating_up.heat": "Heat: %s / 20",
   "tooltips.forgermod.passive.cold_bellows.name": "Cold Bellows",

@@ -76,8 +76,13 @@ public final class HeatingUpEvents {
             store(heat.stack,storedHeat(heat.stack)-COST); heat.ignitionTick=now;
         }
         int rank=Augmentations.level(attacker.getMainHandItem(),RecommendedAbilities.HEATING_UP);
-        if(!event.getEntity().isDeadOrDying()) event.getEntity().setRemainingFireTicks(
-                Math.max(event.getEntity().getRemainingFireTicks(),(2+rank)*20));
+        if(!event.getEntity().isDeadOrDying()) {
+            var fireAspect=attacker.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                    .getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FIRE_ASPECT);
+            if(net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(fireAspect,heat.stack)>0)
+                InfiniteBurnEvents.ignite(event.getEntity());
+            else event.getEntity().setRemainingFireTicks(Math.max(event.getEntity().getRemainingFireTicks(),(2+rank)*20));
+        }
     }
     @SubscribeEvent
     public static void onAttack(AttackEntityEvent event) {
