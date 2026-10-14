@@ -19,6 +19,31 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class CrosswindGameTests {
     @GameTest(template="riftfang_test")
+    public static void randomizedDeflectionsStaySidewaysAndAwayForHorizontalVerticalAndSlantedShots(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8))));
+        var stack=Augmentations.apply(new ItemStack(ModItems.DEAD_CALM_DAGGER.get()),AdditionalAbilities.CROSSWIND);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var arrow=EntityType.ARROW.create(test.getLevel());test.getLevel().addFreshEntity(arrow);player.getRandom().setSeed(42);
+        try {
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.CROSSWIND),"Random deflection activation rejected");
+            boolean left=false,right=false;
+            for(var direction:java.util.List.of(new Vec3(0,0,-1),new Vec3(0,-1,0),new Vec3(.5,-.2,-1).normalize())) {
+                var variations=new java.util.HashSet<Vec3>();
+                for(int shot=0;shot<64;shot++) {
+                    var start=player.getBoundingBox().getCenter().subtract(direction.scale(5));arrow.setPos(start);arrow.setDeltaMovement(direction.scale(2));
+                    test.assertTrue(CrosswindEvents.incoming(player,arrow),"Random shot fixture does not approach player");CrosswindEvents.advance(player);
+                    var next=arrow.getDeltaMovement();variations.add(next);
+                    test.assertTrue(Math.abs(next.length()-2)<.00001 && arrow.position().equals(start),"Random deflection changes speed or position");
+                    test.assertTrue(!CrosswindEvents.incoming(player,arrow) && next.dot(direction)<0,"Random direction still approaches player");
+                    var sideways=new Vec3(direction.z,0,-direction.x);if(sideways.lengthSqr()<.0001) sideways=new Vec3(1,0,0);else sideways=sideways.normalize();
+                    test.assertTrue(Math.abs(next.dot(sideways))>1.6,"Random deflection loses its predominantly sideways direction");
+                    if(direction.y==0) {left|=next.x<0;right|=next.x>0;}
+                }
+                test.assertTrue(variations.size()>30,"Deflection does not vary randomly");
+            }
+            test.assertTrue(left && right,"Head-on arrows always deflect to the same side");test.succeed();
+        } finally {CrosswindEvents.cancel(player.getUUID());arrow.discard();player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template="riftfang_test")
     public static void allVariantsDeflectIncomingArrowsPreservingSpeedAndOwnShots(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);var shooter=EntityType.ZOMBIE.create(test.getLevel());var arrow=EntityType.ARROW.create(test.getLevel());test.getLevel().addFreshEntity(arrow);int count=0;
         try {

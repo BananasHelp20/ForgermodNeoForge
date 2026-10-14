@@ -794,3 +794,5 @@ Removed
 - Buffed Static Blade to stop only when its full sampled width/height is blocked, allowing center/offset one-block holes and partial obstructions. Matching dual-wield pairs release a second independent echo on the paired offhand swing even with an unaugmented offhand, each hitting enemies once. One pending echo per activation, exact-stack/pair validation, bounded offhand window, shared ending cooldown and main-switch cancellation retained.
 
 - Buffed Ringing Steel to remain armed indefinitely while equipped instead of expiring after thirty seconds. The next successful enemy melee hit consumes it; switching cancels it. Existing lifecycle cleanup, durability effect and ending cooldowns retained.
+
+- Changed Crosswind projectile deflection to randomized predominantly sideways directions, adding bounded vertical tilt and backward bias while choosing an outward-safe side. Preserves speed, projectile position, own-shot exclusion, duration, switching and cooldowns.

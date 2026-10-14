@@ -38,8 +38,16 @@ public final class CrosswindEvents {
     private static void deflect(ServerPlayer player,Projectile projectile) {
         var motion=projectile.getDeltaMovement();double speed=Math.max(.3,motion.length());
         var side=new Vec3(motion.z,0,-motion.x);if(side.lengthSqr()<.0001) side=new Vec3(1,0,0);else side=side.normalize();
-        if(projectile.position().subtract(player.position()).dot(side)<0) side=side.scale(-1);
-        double y=Math.max(-speed*.5,Math.min(speed*.5,motion.y));var next=side.scale(Math.sqrt(speed*speed-y*y)).add(0,y,0);
+        var random=player.getRandom();if(random.nextBoolean()) side=side.scale(-1);
+        var away=projectile.position().subtract(player.getBoundingBox().getCenter());
+        if(away.dot(side)<-.000001) side=side.scale(-1);
+        var forward=motion.lengthSqr()>.000001?motion.normalize():away.normalize().scale(-1);
+        if(forward.lengthSqr()<.000001) forward=new Vec3(0,0,1);
+        var up=side.cross(forward).normalize();
+        var lateral=side.add(forward.scale(-(.2+random.nextDouble()*.3)));
+        var lift=up.scale((random.nextDouble()*2-1)*.35);
+        if(lateral.add(lift).dot(away)<0) lift=lift.scale(-1);
+        var next=lateral.add(lift).normalize().scale(speed);
         projectile.setDeltaMovement(next);projectile.hasImpulse=true;
         player.serverLevel().getChunkSource().broadcastAndSend(projectile,new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(projectile));
         player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.CLOUD,projectile.getX(),projectile.getY(),projectile.getZ(),4,.2,.2,.2,.04);

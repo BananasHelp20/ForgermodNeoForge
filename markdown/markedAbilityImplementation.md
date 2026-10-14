@@ -330,7 +330,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Crosswind - completed
 
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
-- All Taifunite weapon types grant two minutes of projectile deflection. Before entity ticks, incoming projectiles within 12 blocks are steered sideways at their existing speed when their predicted path threatens the player; own shots are excluded. Impact-event fallback blocks last-moment and guided hits. Switching, dimension changes, death and logout end protection; already deflected flight keeps its physical momentum. Rank I-IV ending cooldown 180/160/140/120 seconds. Real arrow flight, owner filtering and cancellation tested.
+- All Taifunite weapon types grant two minutes of projectile deflection. Before entity ticks, incoming projectiles within 12 blocks are steered in randomized predominantly sideways directions at their existing speed when their predicted path threatens the player; bounded vertical tilt/backward bias and outward-side selection keep them moving away; own shots are excluded. Impact-event fallback blocks last-moment and guided hits. Switching, dimension changes, death and logout end protection; already deflected flight keeps its physical momentum. Rank I-IV ending cooldown 180/160/140/120 seconds. Real arrow flight, owner filtering and cancellation tested.
 - Tested, reviewed, retested and reviewed again; build and all 153 required server tests passed.
 
 ## Slipstream - completed

@@ -134,7 +134,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> For two minutes, incoming projectiles are deflected sideways to miss you while preserving their speed. Your own shots are unaffected. Switching weapons cancels protection. Cooldown after ending: 180/160/140/120 seconds.
+> For two minutes, incoming projectiles are deflected in varied sideways directions with a random tilt, steering away from you while preserving their speed. Your own shots are unaffected. Switching weapons cancels protection. Cooldown after ending: 180/160/140/120 seconds.
 
 **Augmentation card:**
 
