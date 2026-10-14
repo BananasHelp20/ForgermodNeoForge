@@ -768,3 +768,5 @@ Removed
 - Buffed Bone Guard to a one-minute summon that survives weapon switching, with normal ending/switch cooldown and one group per owner. Added Necromancer named super form at original IV, upgrading through super IV: groups of 2/3/5/7 allies; maximum is one bogged, one stray, two skeletons, three wither skeletons. All groups live one minute, cannot harm owner/friendly golems, are mutually neutral with friendly golems, and yield no loot/XP or collectible arrows. Guard types use correct vanilla classes/renderers; cleanup on expiry/death/logout/travel remains.
 
 - Buffed False Awakening echo life to 30/35/40/45 seconds at I-IV (50 seconds at transferred rank V). Adjusted ending cooldown to 60/50/40/30 seconds. Existing damage payoff, line of sight, target restoration and switching/lifecycle cancellation remain.
+
+- Buffed Absolute Nightmare: from learned rank I, its next two successful hits now inflict Weakness IV and Darkness V for ten seconds (amplifiers3/4, duration200 ticks). Higher ranks retain the stronger baseline; hit count, cooldown and target-only debuffs unchanged.

@@ -70,8 +70,8 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
         if (Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.absolute_nightmare") && NIGHTMARE.consumeHit(player.getUUID()) && !target.isDeadOrDying()) {
-            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0));
-            target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
+            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 4));
+            target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 3));
         }
     }
 
