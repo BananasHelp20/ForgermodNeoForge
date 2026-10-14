@@ -141,7 +141,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 
 ## Grave Vault - completed
 
-- All fifteen Lush weapons, single level. Crouch-right-click opens nine flower slots; normal terrain right-click places the first stored flower that can grow there. Each slot holds a normal stack. Item storage persists through vanilla stack save/load and augmentation; no cooldown or free intrinsic grant.
+- All fifteen Lush weapons, single level. Crouch-right-click opens a vanilla one-row chest interface with nine flower slots; enemy kills place a stored flower above the victim support block if possible, and normal terrain right-click places the first stored flower that can grow there. Each slot holds a normal stack. Item storage persists through vanilla stack save/load and augmentation; no cooldown or free intrinsic grant.
 - Dedicated synchronized menu/screen locks the bound weapon against pickup, shift-click, hotbar swap and offhand swap. Server requires exact equipped stack/hotbar and learned passive. Client allows the synchronized replacement of that stack after storage edits. Normal flower survival, collision, permissions, Adventure restrictions and NeoForge placement cancellation apply.
 - Reviewed/retested build and all 105 server tests passed: all variants, nine independent slots, persistence, flower-only input, extraction, weapon nesting prevention, number-key guard, switching, real valid/invalid-soil placement and Adventure exclusion. Client appearance has not been visually playtested.
 

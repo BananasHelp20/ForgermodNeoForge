@@ -952,11 +952,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Crouch-right-click to open nine flower storage slots inside this weapon. Right-click terrain to place the first flower that can grow there. Stored flowers persist on this weapon; normal placement rules and permissions apply.
+> Store flowers in nine slots in this weapon. Sneak-right-click to open a one-row chest interface. Enemy kills plant one stored flower where the victim stood when placement is valid. Right-click a block to place a flower manually.
 
 **Augmentation card:**
 
-> Store flowers in nine slots. Right-click suitable terrain to plant them.
+> A nine-slot flower vault; enemy kills plant a stored flower at the victim.
 
 ### Headwind
 

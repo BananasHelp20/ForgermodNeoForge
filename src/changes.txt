@@ -758,3 +758,5 @@ Removed
 - Buffed Sunfed to restore one saturation point alongside each hunger point every fifteen seconds in daytime open sky. It now replenishes saturation even at full hunger, capped at 20; other conditions/timer cleanup remain unchanged.
 
 - Buffed Green Feast: one wheat now heals two HP and restores two saturation points, capped at current hunger. Full-health use succeeds when saturation is missing; full health plus full saturation or missing wheat consumes nothing.
+
+- Changed Grave Vault to Minecraft's normal one-row chest texture/layout (nine storage slots and player inventory). Added enemy-kill placement of one stored flower at the victim's standing block when normal soil, replacement and player permissions allow; invalid placement keeps the flower. Matching offhand dagger may supply the vault.

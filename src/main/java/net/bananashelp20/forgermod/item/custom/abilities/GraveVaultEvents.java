@@ -60,4 +60,26 @@ public final class GraveVaultEvents {
    if(result.consumesAction()) { write(weapon,storage,player.registryAccess()); event.setCanceled(true); event.setCancellationResult(result); return; }
   }
  }
+ @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
+ public static void onKill(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+  if(event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
+    || event.getEntity().level()!=player.level()
+    || !WeaponAbilityTargets.hostileTo(player,event.getEntity()))return;
+  var weapon=player.getMainHandItem();var hand=InteractionHand.MAIN_HAND;
+  if(!learned(weapon)) {
+   if(!net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player) || !learned(player.getOffhandItem()))return;
+   weapon=player.getOffhandItem();hand=InteractionHand.OFF_HAND;
+  }
+  var storage=read(weapon,player.registryAccess());var ground=event.getEntity().getOnPos();var destination=ground.above();
+  var hit=new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(ground).add(0,.5,0),net.minecraft.core.Direction.UP,ground,false);
+  for(int i=0;i<9;i++) {
+   var flower=storage.getItem(i);if(flower.isEmpty())continue;
+   var context=new UseOnContext(player,hand,hit) {@Override public ItemStack getItemInHand(){return flower;}};
+   var placement=new net.minecraft.world.item.context.BlockPlaceContext(context);
+   if(!placement.getClickedPos().equals(destination) || !player.level().mayInteract(player,destination)
+     || !player.mayUseItemAt(destination,placement.getClickedFace(),flower))continue;
+   if(flower.useOn(context).consumesAction()) {write(weapon,storage,player.registryAccess());return;}
+  }
+ }
+
 }

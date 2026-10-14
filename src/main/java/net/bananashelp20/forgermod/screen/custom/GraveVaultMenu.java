@@ -15,9 +15,9 @@ public final class GraveVaultMenu extends AbstractContainerMenu {
   weapon=selected>=0 && selected<9?inventory.getItem(selected):ItemStack.EMPTY;
   storage=GraveVaultEvents.read(weapon,owner.registryAccess());
   storage.addListener(ignored->{ if(!owner.level().isClientSide && stillValid(owner)) GraveVaultEvents.write(weapon,storage,owner.registryAccess()); });
-  for(int i=0;i<9;i++) addSlot(new Slot(storage,i,8+i*18,25) { @Override public boolean mayPlace(ItemStack stack) { return GraveVaultEvents.flower(stack); } });
-  for(int row=0;row<3;row++) for(int col=0;col<9;col++) addSlot(new Slot(inventory,9+row*9+col,8+col*18,56+row*18));
-  for(int col=0;col<9;col++) { final int slot=col; addSlot(new Slot(inventory,col,8+col*18,114) {
+  for(int i=0;i<9;i++) addSlot(new Slot(storage,i,8+i*18,18) { @Override public boolean mayPlace(ItemStack stack) { return GraveVaultEvents.flower(stack); } });
+  for(int row=0;row<3;row++) for(int col=0;col<9;col++) addSlot(new Slot(inventory,9+row*9+col,8+col*18,49+row*18));
+  for(int col=0;col<9;col++) { final int slot=col; addSlot(new Slot(inventory,col,8+col*18,107) {
    @Override public boolean mayPickup(Player player) { return slot!=GraveVaultMenu.this.selected; }
    @Override public boolean mayPlace(ItemStack stack) { return slot!=GraveVaultMenu.this.selected; }
   }); }
