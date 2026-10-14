@@ -498,7 +498,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Ringing Steel - completed
 
 - Weapons: Pulsite claymore; all gemstone variants.
-- Arms one successful enemy melee hit for up to 30 seconds. Damages one held sword, axe, bow, crossbow, trident or mace by 15 durability using normal enchantment rules, checking the offhand if the main hand has no weapon. Armor, shields and nonweapon tools are excluded; a hit without a weapon still consumes the strike. Spell/blocked hits do not consume it. Switching, expiry, dimension changes, death and logout cancel it. Ending cooldown 30/25/20/15 seconds; ranks improve cooldown only. Tested five variants, weapon breakage, offhand fallback and excluded equipment.
+- Arms one successful enemy melee hit indefinitely while the same weapon remains equipped. Damages one held sword, axe, bow, crossbow, trident or mace by 15 durability using normal enchantment rules, checking the offhand if the main hand has no weapon. Armor, shields and nonweapon tools are excluded; a hit without a weapon still consumes the strike. Spell/blocked hits do not consume it. Switching, dimension changes, death and logout cancel it; elapsed time does not. Ending cooldown 30/25/20/15 seconds; ranks improve cooldown only. Tested five variants, weapon breakage, offhand fallback and excluded equipment.
 - Tested, reviewed, retested and reviewed again; build and all 188 required server tests passed.
 
 ## Stone Song - completed

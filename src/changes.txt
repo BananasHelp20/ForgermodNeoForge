@@ -792,3 +792,5 @@ Removed
 - Buffed Direct Current barriers to deal four HP to living bodies remaining in the current, sharing the existing half-second per-entity guard with crossing damage. Uses body collision with a narrow electrical curtain; marked endpoints are excluded from stationary contact. Existing wall/height/expiry/switch rules and Static Field area damage remain.
 
 - Buffed Static Blade to stop only when its full sampled width/height is blocked, allowing center/offset one-block holes and partial obstructions. Matching dual-wield pairs release a second independent echo on the paired offhand swing even with an unaugmented offhand, each hitting enemies once. One pending echo per activation, exact-stack/pair validation, bounded offhand window, shared ending cooldown and main-switch cancellation retained.
+
+- Buffed Ringing Steel to remain armed indefinitely while equipped instead of expiring after thirty seconds. The next successful enemy melee hit consumes it; switching cancels it. Existing lifecycle cleanup, durability effect and ending cooldowns retained.

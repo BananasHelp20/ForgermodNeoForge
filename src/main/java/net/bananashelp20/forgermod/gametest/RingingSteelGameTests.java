@@ -12,6 +12,39 @@ import net.minecraft.world.item.*;
 import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class RingingSteelGameTests {
+    @GameTest(template="riftfang_test",timeoutTicks=650)
+    public static void allVariantsStayArmedBeyondThirtySecondsAndCooldownStartsOnlyOnUseOrSwitch(GameTestHelper test) throws Exception {
+        var players=new java.util.ArrayList<net.minecraft.server.level.ServerPlayer>();
+        for(var entry:ModItems.ITEMS.getEntries()) if(entry.get() instanceof PulsiteWeapon weapon && !weapon.isAxe() && !weapon.isDagger()) {
+            for(int outcome=0;outcome<2;outcome++) {
+                var player=TestPlayers.survival(test);players.add(player);player.setNoGravity(true);
+                player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.RINGING_STEEL));
+                AbilityTestPackets.use(player,0);test.assertTrue(RingingSteelEvents.active(player),"Cannot arm timed Ringing Steel through ability key");
+            }
+        }
+        test.assertTrue(players.size()==10,"Skipped timed Ringing Steel variants/outcomes");
+        test.runAfterDelay(601,()->{
+            try {
+                for(int i=0;i<players.size();i++) {
+                    var player=players.get(i);RingingSteelEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
+                    WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+                    test.assertTrue(RingingSteelEvents.active(player),"Unused Ringing Steel expired after thirty seconds");
+                    test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(),"Armed strike starts cooldown without use or switch");
+                    var stack=player.getMainHandItem();
+                    String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+AdditionalAbilities.RINGING_STEEL;
+                    if(i%2==0) {
+                        var mob=EntityType.ZOMBIE.create(test.getLevel());var sword=new ItemStack(Items.IRON_SWORD);mob.setItemSlot(EquipmentSlot.MAINHAND,sword);
+                        try {mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(sword.getDamageValue()==15,"Long-armed strike loses its durability effect");}
+                        finally {mob.discard();}
+                    } else player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());
+                    WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+                    test.assertFalse(RingingSteelEvents.active(player),"Used/switched strike remains armed");
+                    test.assertTrue(java.util.Objects.equals(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key),player.level().getGameTime()+600),"Ending cooldown does not start on actual use/switch");
+                }
+                test.succeed();
+            } finally {for(var player:players) {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));RingingSteelEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}}
+        });
+    }
     @GameTest(template="riftfang_test")
     public static void fiveClaymoresDamageOnlyOneHeldWeaponOnNextMeleeHit(GameTestHelper test) {
         var player=TestPlayers.survival(test);var mob=EntityType.ZOMBIE.create(test.getLevel());mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);mob.setHealth(1000);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);int count=0;

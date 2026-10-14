@@ -522,7 +522,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm your next successful melee hit for up to 30 seconds. It also deals 15 durability damage to the victim's held weapon, respecting normal durability enchantments. Armor and shields are unaffected.
+> Arm your next successful melee hit until used or the weapon is switched. It also deals 15 durability damage to the victim's held weapon, respecting normal durability enchantments. Armor and shields are unaffected.
 
 **Augmentation card:**
 

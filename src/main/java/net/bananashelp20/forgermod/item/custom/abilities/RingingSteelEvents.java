@@ -14,17 +14,17 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.*;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class RingingSteelEvents {
-    private record Ring(ItemStack stack,int slot,ServerLevel level,long expires) {}
+    private record Ring(ItemStack stack,int slot,ServerLevel level) {}
     private static final Map<UUID,Ring> RINGS=new HashMap<>();
     private RingingSteelEvents() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player))return false;
-        RINGS.put(player.getUUID(),new Ring(stack,player.getInventory().selected,player.serverLevel(),player.level().getGameTime()+600));return true;
+        RINGS.put(player.getUUID(),new Ring(stack,player.getInventory().selected,player.serverLevel()));return true;
     }
     public static boolean active(ServerPlayer player) {
         var ring=RINGS.get(player.getUUID());if(ring==null)return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=ring.stack() || player.getInventory().selected!=ring.slot()
-                || player.serverLevel()!=ring.level() || player.level().getGameTime()>=ring.expires()
+                || player.serverLevel()!=ring.level()
                 || !Augmentations.ids(ring.stack(),true).contains(AdditionalAbilities.RINGING_STEEL)) {cancel(player.getUUID());return false;}
         return true;
     }
