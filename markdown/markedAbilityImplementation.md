@@ -462,8 +462,8 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Bone Guard - completed
 
 - Weapons: Morsium claymore, Morsium axe; all gemstone variants.
-- Summons one friendly vanilla-rendered skeleton for 15 seconds, with ordinary skeleton bow damage and rank-scaled 8/10/12/14-block targeting range. It shoots only visible enemies; arrows cannot hurt allies or be collected. Summon, gear and arrows cannot persist or yield loot/experience. Switching, expiry, death and logout remove the summon and its shots. Ending cooldown 60/50/40/30 seconds.
-- Tested, reviewed, retested and reviewed again; build and all 178 required server tests passed.
+- Summons one friendly vanilla-rendered skeleton for 60 seconds, with ordinary skeleton bow damage and rank-scaled 8/10/12/14-block targeting range. It shoots only visible enemies; arrows cannot hurt allies or be collected. Summon, gear and arrows cannot persist or yield loot/experience. Weapon switching retains summons; lifecycle cleanup, expiry, death and logout remove the summon and its shots. Ending cooldown 60/50/40/30 seconds. Original IV becomes Necromancer I, with 2/3/5/7 allies at super I-IV; max composition is bogged1, stray1, skeleton2, wither skeleton3. Friendly golems remain mutually neutral; all groups last one minute.
+- Updated implementation passed two reviewed full builds with all 244 server tests, including all types, super ranks, arrow safety and persistence/expiry.
 
 ## Skull Throw - completed
 

@@ -86,16 +86,16 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
-| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
-| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
-| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
-| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
-| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Soul Hunger, Weakness Hit |
-| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Soul Hunger, Weakness Hit |
-| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Soul Hunger, Weakness Hit |
-| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Soul Hunger, Weakness Hit |
-| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Soul Hunger, Weakness Hit |
+| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
+| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
+| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
+| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
+| Ghost Axe | Axe | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Overwhelming Smash, Skull Throw, Soul Hunger, Swing Attack, Vertical Strike, Weakness Hit |
+| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Soul Hunger, Weakness Hit |
+| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Soul Hunger, Weakness Hit |
+| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Soul Hunger, Weakness Hit |
+| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Soul Hunger, Weakness Hit |
+| Hollow Claymore | Claymore | Bone Guard, Death's Due, Ghostwalk, Jumpscare Horror, Last Stand, Necromancer, Soul Hunger, Weakness Hit |
 | Deathwisper Dagger | Dagger | Backstab, Death March, Death's Due, Dual Wield, Ghostwalk, Jumpscare Horror, Last Stand, Revenge, Soul Hunger, Storing Anger, Strengthened Bones, Weakness Hit |
 | Deathwisper Dagger | Dagger | Backstab, Death March, Death's Due, Dual Wield, Ghostwalk, Jumpscare Horror, Last Stand, Revenge, Soul Hunger, Storing Anger, Strengthened Bones, Weakness Hit |
 | Deathwisper Dagger | Dagger | Backstab, Death March, Death's Due, Dual Wield, Ghostwalk, Jumpscare Horror, Last Stand, Revenge, Soul Hunger, Storing Anger, Strengthened Bones, Weakness Hit |

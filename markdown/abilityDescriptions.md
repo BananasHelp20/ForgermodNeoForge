@@ -84,11 +84,13 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Summon one friendly skeleton for 15 seconds. It shoots nearby enemies, drops no items or experience, and disappears when you put the weapon away.
+> Summon a friendly skeleton for one minute, even after switching weapons. Original IV becomes Necromancer I. Super I/II/III/IV summon 2/3/5/7 allies; super IV includes one bogged, one stray, two skeletons and three wither skeletons. Friendly iron golems and your summons remain neutral to each other.
 
 **Augmentation card:**
 
-> Summon a friendly skeleton for 15 seconds.
+> Friendly skeletons stay one minute after switching. Super form summons a group.
+
+**Super I-IV name (transforms at original IV):** Necromancer
 
 ### Challenge Roar
 

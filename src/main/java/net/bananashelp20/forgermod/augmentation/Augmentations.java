@@ -45,6 +45,7 @@ public final class Augmentations {
     }
     /** Stored ranks 4..7 are super ranks I..IV; the ID and occupied slot stay stable. */
     public static String superName(ItemStack stack, String id) {
+        if (AdditionalAbilities.BONE_GUARD.equals(id)) return "tooltips.forgermod.ability.necromancer.name";
         if (AdditionalAbilities.GHOSTWALK.equals(id)) return "tooltips.forgermod.ability.jumpscare_horror.name";
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return "tooltips.forgermod.ability.static_field.name";
         if (AdditionalAbilities.WINDCHARGE.equals(id) && (isTemplate(stack) || canonical(stack)!=null && canonical(stack).isAxe())) return "tooltips.forgermod.ability.skybreaker.name";
