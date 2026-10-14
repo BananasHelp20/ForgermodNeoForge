@@ -12,11 +12,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next two successful dagger hits inflict Weakness IV and Darkness V on the target for ten seconds, starting at level I.
+> Your next two successful dagger hits inflict Weakness IV and Darkness V on the target for five seconds at level I, or ten seconds at higher levels.
 
 **Augmentation card:**
 
-> Two hits inflict Weakness IV and Darkness V for ten seconds.
+> Two hits inflict Weakness IV and Darkness V: 5 seconds at I, 10 seconds above I.
 
 ### Alternating Current
 

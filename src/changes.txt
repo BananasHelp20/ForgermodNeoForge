@@ -780,3 +780,5 @@ Removed
 - Fixed Grave Vault kill placement while its UI is open: consume from live menu storage, synchronize slot counts and persist the same inventory, preventing later clicks from restoring a spent flower. Added kill-then-shift-extraction duplication regression.
 
 - Updated implementation/handoff documentation to match the completed passive, saturation, persistence, new ability, UI and super-augment changes, with chosen values and Deep Wound trigger clarification recorded.
+
+- Reduced Absolute Nightmare level-I Weakness IV and Darkness V duration from ten to five seconds (100 ticks). Higher levels keep ten seconds; two-hit charge, strengths and cooldowns unchanged.
