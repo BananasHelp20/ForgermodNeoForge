@@ -46,7 +46,7 @@ public final class AlternatingCurrentEvents {
     }
     private static void pulse(ServerPlayer player,Link link,LivingEntity target) {
         if(!link.first.hasLineOfSight(link.second)) return;
-        WeaponControlLocks.acquire(target,player.getUUID(),AdditionalAbilities.ALTERNATING_CURRENT,2);
+        WeaponControlLocks.acquire(target,player.getUUID(),AdditionalAbilities.ALTERNATING_CURRENT,10);
         var from=link.first.getEyePosition();var delta=link.second.getEyePosition().subtract(from);int count=Math.min(32,Math.max(2,(int)(delta.length()*2)));
         for(int i=0;i<=count;i++) {var p=from.add(delta.scale((double)i/count));player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,p.x,p.y,p.z,1,0,0,0,.01);}
     }

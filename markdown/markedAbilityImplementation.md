@@ -300,7 +300,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Alternating Current - completed
 
 - Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
-- Arms for 30 seconds. A successful melee hit links its living enemy to the nearest visible enemy within 20 blocks for one minute; the second is stunned for two ticks immediately, then the harmless stun alternates every 20 ticks. Walls block pulses; death, separation beyond 20 blocks, switching and logout cancel. Rank I-IV ending cooldown 120/100/80/60 seconds. Shared sleep/stun leases preserve original AI, gravity and targets through overlaps and dimension travel; Lullaby uses the same locks. Stunned players cannot start melee, active abilities, echo releases, dual attacks, vertical strikes or double jumps; camera direction is preserved.
+- Arms for 30 seconds. A successful melee hit links its living enemy to the nearest visible enemy within 20 blocks for one minute; the second is stunned for ten ticks (0.5 seconds) immediately, then the harmless stun alternates every 20 ticks. Walls block pulses; death, separation beyond 20 blocks, switching and logout cancel. Rank I-IV ending cooldown 120/100/80/60 seconds. Shared sleep/stun leases preserve original AI, gravity and targets through overlaps and dimension travel; Lullaby uses the same locks. Stunned players cannot start melee, active abilities, echo releases, dual attacks, vertical strikes or double jumps; camera direction is preserved.
 - Tested, reviewed, retested and reviewed again; build and all 144 required server tests passed.
 
 ## Direct Current - completed

@@ -24,11 +24,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm a hit for up to 30 seconds. Hitting an enemy with another visible enemy within 20 blocks starts a one-minute link: the second enemy is stunned for 0.1 seconds immediately, then the stun alternates every second. Stuns add no damage. The link ends if targets die, separate by more than 20 blocks, or you switch weapons. Walls block pulses. Cooldown after ending: 120/100/80/60 seconds.
+> Arm a hit for up to 30 seconds. Hitting an enemy with another visible enemy within 20 blocks starts a one-minute link: the second enemy is stunned for 0.5 seconds immediately, then the stun alternates every second. Stuns add no damage. The link ends if targets die, separate by more than 20 blocks, or you switch weapons. Walls block pulses. Cooldown after ending: 120/100/80/60 seconds.
 
 **Augmentation card:**
 
-> Link two enemies within 20 blocks; a harmless stun alternates every second for one minute.
+> Link two enemies within 20 blocks; harmless 0.5-second stuns alternate every second for one minute.
 
 ### Always the Gardeners
 

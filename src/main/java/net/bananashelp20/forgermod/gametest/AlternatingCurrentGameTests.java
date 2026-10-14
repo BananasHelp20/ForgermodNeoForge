@@ -40,15 +40,18 @@ public class AlternatingCurrentGameTests {
         test.assertTrue(count==15,"Skipped Alternating Current variants");test.succeed();
     }
     @GameTest(template="riftfang_test",timeoutTicks=100)
-    public static void pulsesAlternateAtOneSecondIntervalsAndExpireAfterTwoTicks(GameTestHelper test) {
+    public static void pulsesAlternateAtOneSecondIntervalsAndExpireAfterTenTicks(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);
         for(int y=5;y<=8;y++) for(int z=8;z<=24;z++) test.setBlock(new BlockPos(8,y,z),Blocks.AIR);
         var first=EntityType.ZOMBIE.create(test.getLevel());var second=EntityType.ZOMBIE.create(test.getLevel());
         for(var mob:java.util.List.of(first,second)) {mob.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD,new ItemStack(Blocks.CARVED_PUMPKIN));mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);test.getLevel().addFreshEntity(mob);}
         first.setPos(origin.add(0,0,5));second.setPos(origin.add(0,0,10));var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.ALTERNATING_CURRENT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.ALTERNATING_CURRENT),"Timed link rejected");first.hurt(player.damageSources().playerAttack(player),1);
-        test.runAfterDelay(2,()->test.assertFalse(WeaponControlLocks.frozen(second),"Stun lasts more than 0.1 seconds"));
+        test.runAfterDelay(9,()->test.assertTrue(WeaponControlLocks.frozen(second) && second.isNoAi(),"Level-I stun ends before 0.5 seconds"));
+        test.runAfterDelay(10,()->test.assertFalse(WeaponControlLocks.frozen(second) || second.isNoAi(),"Stun lasts more than 0.5 seconds or leaves stale AI"));
         test.runAfterDelay(20,()->{AlternatingCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(WeaponControlLocks.frozen(first) && !WeaponControlLocks.frozen(second),"First one-second pulse does not switch to initial enemy");});
+        test.runAfterDelay(29,()->test.assertTrue(WeaponControlLocks.frozen(first),"Alternating pulse ends before 0.5 seconds"));
+        test.runAfterDelay(30,()->test.assertFalse(WeaponControlLocks.frozen(first) || first.isNoAi(),"Alternating pulse does not restore AI after 0.5 seconds"));
         test.runAfterDelay(40,()->{
             try {AlternatingCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(WeaponControlLocks.frozen(second) && !WeaponControlLocks.frozen(first),"Second pulse fails to alternate back");test.assertTrue(second.getHealth()==20,"Alternating pulses deal damage");test.succeed();}
             finally {AlternatingCurrentEvents.cancel(player.getUUID());first.discard();second.discard();player.server.getPlayerList().remove(player);}
