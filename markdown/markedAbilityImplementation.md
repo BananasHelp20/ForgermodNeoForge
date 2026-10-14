@@ -208,7 +208,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Gravity Well - completed
 
 - Weapons: Inanisium axe; all gemstone variants.
-- Updated to the user clarification: one damage-free velocity pull of visible enemies within six blocks, followed by a weapon-damage smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force or teleportation; damage occurs only once on arrival.
+- Updated to the user clarification: a sustained damage-free physics pull of visible enemies within six blocks to a fixed point two blocks ahead of the caster at activation, followed by a weapon-damage smash only on arrival within melee reach. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; collision-aware steering without teleportation; damage occurs only once on arrival. Turning or moving does not shift the captured destination; blocked pulls end without a remote smash.
 - Tested, reviewed, retested and reviewed again; build and all 123 required server tests passed.
 
 ## Lonely Dream - completed
@@ -235,7 +235,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 - Rank-I passive grants exactly 10% more melee damage during world times 13000-22999 in skylit dimensions. Daytime storms do not masquerade as night; unlearned gear and other weapon types receive no bonus. Day/night boundary tests preserve the original world clock.
 - Tested, reviewed, retested and reviewed again; build and all 128 required server tests passed.
 
-- Gravity Well correction per user clarification: its single velocity pull deals no damage; the arrival smash now deals current weapon damage once and applies learned material effects.
+- Gravity Well correction per user clarification: its physics pull deals no damage and targets a captured point two blocks ahead; only arrival at that point within melee reach triggers current weapon damage once and learned material effects.
 
 ## Lullaby - completed
 

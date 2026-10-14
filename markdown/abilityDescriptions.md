@@ -374,11 +374,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Pull visible enemies within six blocks toward you with one burst of velocity. A visual smash plays when a pulled enemy reaches melee range; it deals weapon damage. The pull itself deals no damage. Pull strength: 0.6/0.7/0.8/0.9. Ends after arrival or two seconds; switching cancels. Cooldown after ending: 40/35/30/25 seconds.
+> Pull visible enemies within six blocks to a fixed point two blocks ahead of you. Only after reaching that point within melee range does the smash deal weapon damage. The pull itself deals no damage. Pull speed: 0.6/0.7/0.8/0.9. Ends after arrival or two seconds; switching cancels. Cooldown after ending: 40/35/30/25 seconds.
 
 **Augmentation card:**
 
-> Pull enemies within six blocks toward you; a weapon-damage smash plays on arrival.
+> Pull enemies to a fixed point two blocks ahead; smash for weapon damage only on arrival within reach.
 
 ### Green Feast
 

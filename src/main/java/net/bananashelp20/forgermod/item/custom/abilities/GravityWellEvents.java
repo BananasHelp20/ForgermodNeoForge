@@ -22,27 +22,28 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class GravityWellEvents {
-    private record Pull(ItemStack stack,int selected,long expires,Set<LivingEntity> awaiting) {}
+    private record Pull(ItemStack stack,int selected,long expires,net.minecraft.server.level.ServerLevel level,
+                        net.minecraft.world.phys.Vec3 destination,double speed,Set<LivingEntity> awaiting) {}
     private static final Map<UUID,Pull> PULLS=new HashMap<>();
     private GravityWellEvents() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player)) return false;
+        int rank=Augmentations.level(stack,AdditionalAbilities.GRAVITY_WELL);
+        if(rank<=0) return false;
         var targets=player.level().getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(6),
                 e->WeaponAbilityTargets.enemy(player,e) && player.distanceToSqr(e)<=36 && player.hasLineOfSight(e));
         if(targets.isEmpty()) return false;
-        int rank=Augmentations.level(stack,AdditionalAbilities.GRAVITY_WELL);
-        for(var target:targets) {
-            var direction=player.position().subtract(target.position());
-            if(direction.lengthSqr()>.01) target.setDeltaMovement(direction.normalize().scale(.5+.1*rank));
-            target.hasImpulse=true;
-            if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
-        }
-        PULLS.put(player.getUUID(),new Pull(stack,player.getInventory().selected,player.level().getGameTime()+40,new HashSet<>(targets)));
+        // Capture the point once: turning or moving must not drag the destination around.
+        var forward=net.minecraft.world.phys.Vec3.directionFromRotation(0,player.getYRot());
+        var destination=player.position().add(forward.scale(2));
+        PULLS.put(player.getUUID(),new Pull(stack,player.getInventory().selected,player.level().getGameTime()+40,
+                player.serverLevel(),destination,.5+.1*rank,new HashSet<>(targets)));
         advance(player);return true;
     }
     public static boolean active(ServerPlayer player) {
         var pull=PULLS.get(player.getUUID());if(pull==null) return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=pull.stack()
+                || player.level()!=pull.level()
                 || player.getInventory().selected!=pull.selected() || player.level().getGameTime()>=pull.expires()
                 || !Augmentations.ids(pull.stack(),true).contains(AdditionalAbilities.GRAVITY_WELL)) {cancel(player.getUUID());return false;}
         return true;
@@ -53,6 +54,17 @@ public final class GravityWellEvents {
         var pull=PULLS.get(player.getUUID());
         pull.awaiting().removeIf(target->{
             if(!target.isAlive() || target.level()!=player.level() || !WeaponAbilityTargets.enemy(player,target) || !player.hasLineOfSight(target)) return true;
+            var remaining=pull.destination().subtract(target.position());
+            if(remaining.lengthSqr()>.16) {
+                // Continue steering under ordinary collision physics, without overshooting the point.
+                target.setDeltaMovement(remaining.normalize().scale(Math.min(pull.speed(),remaining.length())));
+                target.hasImpulse=true;
+                if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
+                return false;
+            }
+            target.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+            target.hasImpulse=true;
+            if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
             if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return false;
             int immunity=target.invulnerableTime;
             target.invulnerableTime=0;
