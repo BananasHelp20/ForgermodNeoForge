@@ -1352,11 +1352,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Wither II for 2.15 seconds | On hit: Wither II for 4.00 seconds | On hit: Wither II for 7.10 seconds |
-| Ruby | On hit: Wither II for 2.15 seconds | On hit: Wither II for 4.00 seconds | On hit: Wither II for 7.10 seconds |
-| Amber | On hit: Wither II for 2.15 seconds | On hit: Wither II for 4.00 seconds | On hit: Wither II for 7.10 seconds |
-| Amethyst | On hit: Wither II for 2.35 seconds | On hit: Wither II for 4.00 seconds | On hit: Wither II for 6.15 seconds |
-| Jade | On hit: Wither III for 2.65 seconds | On hit: Wither III for 5.00 seconds | On hit: Wither III for 8.90 seconds |
+| None (base) | On hit: Wither II for 4.80 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 16.00 seconds |
+| Ruby | On hit: Wither II for 4.80 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 16.00 seconds |
+| Amber | On hit: Wither II for 4.80 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 16.00 seconds |
+| Amethyst | On hit: Wither II for 5.30 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 13.85 seconds |
+| Jade | On hit: Wither III for 5.35 seconds | On hit: Wither III for 10.00 seconds | On hit: Wither III for 17.80 seconds |
 
 ### Hunger Hit (Overgrown / Lush)
 

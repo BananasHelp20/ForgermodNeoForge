@@ -31,7 +31,7 @@ import java.util.List;
 public class VulnusiumWeapon extends SwordItemWithEffect {
     private static final DeepWoundState DEEP_WOUND = new DeepWoundState();
     public static Holder<MobEffect> effect = MobEffects.WITHER;
-    public static int durationInTicks = 80;
+    public static int durationInTicks = 180;
     public static int effectAmplifier = 1;
     public String gemstone;
     public String type;

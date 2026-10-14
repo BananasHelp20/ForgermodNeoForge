@@ -64,6 +64,23 @@ public class MaterialEffectGameTests {
         return new MobEffectInstance(target.getActiveEffects().iterator().next());
     }
 
+    @GameTest(template="riftfang_test")
+    public static void rankOneWitherUsesNineSecondBaseAndPreservesWeaponScaling(GameTestHelper test) {
+        var target=target(test,test.getBounds().getCenter());int count=0;
+        try {for(var weapon:weapons()) {
+            if(!(weapon instanceof net.bananashelp20.forgermod.item.custom.VulnusiumWeapon))continue;count++;
+            var stack=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(weapon),net.bananashelp20.forgermod.augmentation.Augmentations.MATERIAL_HIT);
+            target.removeAllEffects();weapon.applyMaterialEffect(target,stack);
+            int base=180+("jade".equals(weapon.gemstoneName())?20:0);
+            String type=weapon.isAxe()?"axe":weapon.isDagger()?"dagger":"claymore";
+            int duration=net.bananashelp20.forgermod.item.ModSpecialRegistry.materialEffectDuration(base,weapon.gemstoneName(),type);
+            var wither=target.getEffect(net.minecraft.world.effect.MobEffects.WITHER);
+            test.assertTrue(wither!=null && wither.getDuration()==duration,"Rank-I Wither duration wrong");
+            if(!weapon.isAxe() && !weapon.isDagger())test.assertTrue(wither.getDuration()==base,"Claymore Wither did not gain five seconds");
+        }} finally {target.discard();}
+        test.assertTrue(count==15,"Skipped Wither variants");test.succeed();
+    }
+
     @GameTest(template = "riftfang_test")
     public static void everyMaterialAndGemstoneUsesSpeedAdjustedClaymoreEffect(GameTestHelper test) {
         Player player = test.makeMockPlayer(GameType.CREATIVE);

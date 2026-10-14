@@ -748,3 +748,5 @@ Removed
 - Added real Deep Wound ability-packet and vanilla critical-attack regression checks for all five Assassin Dagger variants, verifying doubled critical damage and five seconds of Slowness III on the target.
 
 - Converted Leech into an always-on learned Assassin Dagger passive, preserving its saved augment ID/ranks. Removed 10% damage bonus, activation/cooldown, ten-hit charges and total healing budget. Heals 10/12/14/16% of actual damage at I-IV (18% at transferred rank V); a valid same-material Dual Wield pair can provide it from either hand without stacking. Removed obsolete LeechState and its test.
+
+- Buffed Wither Hit base duration by five seconds (Vulnusium claymore 4 -> 9 seconds; Jade 5 -> 10). Retained speed-adjusted shorter dagger/longer axe durations and existing Jade amplifier bonus; applies from learned rank I.
