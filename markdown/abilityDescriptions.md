@@ -220,11 +220,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Force visible airborne enemies within 4/6/8/10 blocks downward once, with minimum downward velocity 0.8/1.0/1.2/1.4. Grounded and swimming enemies are unaffected. Adds no damage or teleportation and preserves horizontal momentum and existing fall distance. Cooldown: 30/25/20/15 seconds.
+> Force all airborne mobs above you downward for ten seconds, within a horizontal radius of 4/6/8/10 blocks and with no height limit. Downward speed is at least 2/2.2/2.4/2.6 blocks per tick, countering flying AI until they land. Grounded and swimming mobs are not selected. Uses normal collision and falling, preserves horizontal momentum, and adds no direct damage or teleportation. Switching cancels. Cooldown after ending: 30/25/20/15 seconds.
 
 **Augmentation card:**
 
-> Force airborne enemies downward once; grounded enemies are unaffected.
+> Pull airborne mobs above you to the ground for ten seconds, regardless of height.
 
 ### Dream Feast
 

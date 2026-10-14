@@ -324,8 +324,9 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Downdraft Bell - completed
 
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
-- All Taifunite weapon types force visible airborne enemies downward once within rank I-IV radius 4/6/8/10, preserving horizontal velocity, position, HP and existing fall distance. Minimum downward speed 0.8/1.0/1.2/1.4; already faster descents, grounded targets, swimming targets and neutral mobs are unchanged. Instant cooldown 30/25/20/15 seconds. A shared vertical-only client correction preserves actual sprint momentum and uses a native motion fallback for peers without that channel.
-- Tested, reviewed, retested and reviewed again; build and all 151 required server tests passed.
+- Selects all airborne mobs above the caster within a horizontal radius of 4/6/8/10 blocks, including passive mobs, with no height cap or line-of-sight requirement. Grounded/swimming mobs and players are not selected. Ten-second force uses minimum downward speed 2/2.2/2.4/2.6 blocks per tick, retains faster falling/horizontal momentum, and counters flying AI with missing-descent correction through native Entity.move collision. Ground blocks stop movement; ordinary fall damage remains possible, with no direct damage or teleportation. Target selection occurs on activation; moving mobs remain affected until the duration ends. Overlapping casters use the strongest active force; frozen control-lock targets wait until unfrozen. Switching, death, logout/dimension change and augment removal cancel. Ending cooldown 30/25/20/15 seconds. Cached mob-to-owner leases avoid scanning a whole vertical column each tick. Natural distance despawning is suppressed only during the effect, without permanent persistence flags; Peaceful cleanup and explicit external despawn decisions remain intact.
+- Regression checks cover all fifteen variants, high/passive targets, normal collision grounding of no-gravity flyers, height beyond build limit, horizontal bounds, flying-AI override, switch cancellation, ten-second expiry and ending cooldown.
+
 
 ## Crosswind - completed
 
