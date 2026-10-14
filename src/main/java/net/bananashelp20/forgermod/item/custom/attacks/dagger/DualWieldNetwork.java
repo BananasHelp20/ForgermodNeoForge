@@ -76,7 +76,6 @@ public class DualWieldNetwork {
         long last = LAST_ATTACK_TICK.getOrDefault(player.getUUID(), Long.MIN_VALUE);
         if (last != Long.MIN_VALUE && now - last < 3) return;
         LAST_ATTACK_TICK.put(player.getUUID(), now);
-        net.bananashelp20.forgermod.item.custom.abilities.GhostwalkEvents.swing(player);
 
         // An air swing still animates; it simply has no target to damage.
         // The attacking client already animates this swing. Send only one packet to observers.
@@ -88,9 +87,11 @@ public class DualWieldNetwork {
                 || entity == player || player.distanceToSqr(entity) > (reach + 0.5) * (reach + 0.5)
                 || !player.hasLineOfSight(entity) || player.getLastHurtMob() != target
                 || player.tickCount - player.getLastHurtMobTimestamp() > 10) {
+            net.bananashelp20.forgermod.item.custom.abilities.GhostwalkEvents.swing(player);
             return;
         }
 
+        net.bananashelp20.forgermod.item.custom.abilities.GhostwalkEvents.prepareAttack(player, target);
         int previousInvulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
         float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);

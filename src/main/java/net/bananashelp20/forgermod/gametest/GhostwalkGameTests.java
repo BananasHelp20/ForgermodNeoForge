@@ -14,6 +14,25 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class GhostwalkGameTests {
     @GameTest(template="riftfang_test")
+    public static void superOpeningDelayedOffhandHitAlsoDoublesDamage(GameTestHelper test) throws Exception {
+        var network=net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork.class;
+        var contextType=net.neoforged.neoforge.network.handling.IPayloadContext.class;
+        var method=network.getDeclaredMethod("handleAttack",net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork.OffhandAttackPayload.class,contextType);method.setAccessible(true);
+        for(var item:new net.minecraft.world.item.Item[]{ModItems.DEATHWISPER_DAGGER.get(),ModItems.DEATHWISPER_DAGGER_RUBY.get(),ModItems.DEATHWISPER_DAGGER_AMBER.get(),ModItems.DEATHWISPER_DAGGER_AMETHYST.get(),ModItems.DEATHWISPER_DAGGER_JADE.get()}) {
+            var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());var stack=Augmentations.apply(new ItemStack(item),Augmentations.DUAL_WIELD);
+            for(int rank=0;rank<4;rank++)stack=Augmentations.apply(stack,AdditionalAbilities.GHOSTWALK);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setItemInHand(InteractionHand.OFF_HAND,new ItemStack(item==ModItems.DEATHWISPER_DAGGER_RUBY.get()?ModItems.DEATHWISPER_DAGGER.get():ModItems.DEATHWISPER_DAGGER_RUBY.get()));
+            for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;
+            var target=net.minecraft.world.entity.EntityType.COW.create(test.getLevel());target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);target.setNoAi(true);target.setNoGravity(true);target.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(target);
+            try {
+                player.attack(target);test.assertTrue(GhostwalkEvents.activate(player,stack),"Cannot vanish between paired swings");float health=target.getHealth(),damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
+                var context=(net.neoforged.neoforge.network.handling.IPayloadContext)java.lang.reflect.Proxy.newProxyInstance(contextType.getClassLoader(),new Class<?>[]{contextType},(proxy,m,args)->{if(m.getName().equals("player"))return player;throw new UnsupportedOperationException(m.getName());});
+                method.invoke(null,new net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork.OffhandAttackPayload(target.getId()),context);
+                test.assertTrue(Math.abs(target.getHealth()-(health-damage*2))<.01 && !GhostwalkEvents.active(player) && !player.hasEffect(MobEffects.INVISIBILITY),"Invisible offhand hit fails to double and reveal");
+            }finally {GhostwalkEvents.logout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.server.getPlayerList().remove(player);}
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void fifteenWeaponsTransformAndDoubleExactlyOneRealInvisibleHit(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());int count=0;
         var target=net.minecraft.world.entity.EntityType.COW.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);target.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(target);

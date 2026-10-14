@@ -40,11 +40,14 @@ public final class GhostwalkEvents {
     public static void swing(ServerPlayer player) {if(!WeaponControlLocks.frozen(player) && active(player)) cancel(player.getUUID());}
     @SubscribeEvent
     public static void attack(AttackEntityEvent event) {
-        if(event.isCanceled() || !(event.getEntity() instanceof ServerPlayer player) || WeaponControlLocks.frozen(player))return;
+        if(!event.isCanceled() && event.getEntity() instanceof ServerPlayer player)prepareAttack(player,event.getTarget());
+    }
+    public static void prepareAttack(ServerPlayer player,net.minecraft.world.entity.Entity target) {
+        if(WeaponControlLocks.frozen(player))return;
         HITS.remove(player.getUUID());
         if(active(player) && Augmentations.level(player.getMainHandItem(),AdditionalAbilities.GHOSTWALK)>=4
-                && event.getTarget() instanceof net.minecraft.world.entity.LivingEntity)
-            HITS.put(player.getUUID(),new InvisibleHit(event.getTarget().getId(),player.level().getGameTime(),player.getMainHandItem()));
+                && target instanceof net.minecraft.world.entity.LivingEntity)
+            HITS.put(player.getUUID(),new InvisibleHit(target.getId(),player.level().getGameTime(),player.getMainHandItem()));
         swing(player);
     }
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
