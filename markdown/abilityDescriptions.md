@@ -1028,7 +1028,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> While holding this weapon, lightning cannot hurt or ignite you. Extra harmless strikes can occur under open sky without a storm (average once per minute). A strike grants five absorption hearts and Strength I for 30 seconds; repeated strikes replenish those five hearts without stacking. Putting the weapon away ends these buffs.
+> While holding this weapon, lightning cannot hurt or ignite you. Extra harmless strikes can occur under open sky without a storm (level I: average once per ten minutes; higher levels: once per minute). A strike grants five absorption hearts and Strength I for 30 seconds; repeated strikes replenish those five hearts without stacking. Putting the weapon away ends these buffs.
 
 **Augmentation card:**
 

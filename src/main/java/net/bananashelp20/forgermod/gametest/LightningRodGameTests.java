@@ -21,6 +21,46 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class LightningRodGameTests {
     @GameTest(template="riftfang_test")
+    public static void levelOneUsesTenMinuteAverageAndHigherRanksKeepTheirRate(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8))));
+        for(int y=5;y<test.getLevel().getMaxBuildHeight()-test.absolutePos(BlockPos.ZERO).getY();y++) test.setBlock(new BlockPos(8,y,8),Blocks.AIR);
+        long successful=0,oldRateOnly=0;
+        for(long seed=1;successful==0 || oldRateOnly==0;seed++) {
+            if(net.minecraft.util.RandomSource.create(seed).nextInt(600)==0) successful=seed;
+            else if(net.minecraft.util.RandomSource.create(seed).nextInt(60)==0) oldRateOnly=seed;
+        }
+        int count=0;
+        try {
+            for(var entry:ModItems.ITEMS.getEntries()) {
+                if(!(entry.get() instanceof ElectriumWeapon)) continue;
+                count++;
+                var stack=new ItemStack(entry.get());
+                for(int rank=1;rank<=2;rank++) {
+                    if(rank==1) stack=Augmentations.apply(stack,AdditionalAbilities.LIGHTNING_ROD);
+                    else {
+                        var template=new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get());
+                        for(int i=0;i<2;i++) template=Augmentations.apply(template,AdditionalAbilities.LIGHTNING_ROD);
+                        stack=Augmentations.merge(stack,template);
+                    }
+                    test.assertTrue(Augmentations.level(stack,AdditionalAbilities.LIGHTNING_ROD)==rank,"Strike-rate fixture failed to learn rank "+rank);
+                    player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                    for(long seed:new long[]{oldRateOnly,successful}) {
+                        LightningRodEvents.end(player);
+                        player.tickCount=20;
+                        player.getRandom().setSeed(seed);
+                        LightningRodEvents.tick(new PlayerTickEvent.Post(player));
+                        var bolts=test.getLevel().getEntitiesOfClass(net.minecraft.world.entity.LightningBolt.class,player.getBoundingBox().inflate(2));
+                        boolean expected=net.minecraft.util.RandomSource.create(seed).nextInt(rank==1?600:60)==0;
+                        test.assertTrue(bolts.size()==(expected?1:0),"Wrong extra-strike probability at Lightning Rod rank "+rank);
+                        bolts.forEach(net.minecraft.world.entity.Entity::discard);
+                    }
+                }
+            }
+            test.assertTrue(count==15,"Skipped Lightning Rod strike-rate variants");test.succeed();
+        } finally {LightningRodEvents.end(player);player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template="riftfang_test")
     public static void allVariantsGrantExactlyFiveHeartsAndPreserveOtherBuffs(GameTestHelper test) {
         var player=TestPlayers.survival(test);var bolt=EntityType.LIGHTNING_BOLT.create(test.getLevel());int count=0;
         try {

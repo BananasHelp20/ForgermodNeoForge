@@ -784,3 +784,5 @@ Removed
 - Reduced Absolute Nightmare level-I Weakness IV and Darkness V duration from ten to five seconds (100 ticks). Higher levels keep ten seconds; two-hit charge, strengths and cooldowns unchanged.
 
 - Buffed Alternating Current stun duration from 0.1 to 0.5 seconds (10 ticks) starting at level I, retained at higher levels. One-second pulse interval, no stun damage, link duration and cooldowns unchanged.
+
+- Reduced Lightning Rod level-I extra-strike chance to 1 in 600 per second (average once per ten minutes under open sky). Higher ranks retain 1 in 60 per second; natural lightning protection and buffs unchanged.

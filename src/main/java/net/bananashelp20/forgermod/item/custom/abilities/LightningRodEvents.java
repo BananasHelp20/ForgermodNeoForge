@@ -95,7 +95,10 @@ public final class LightningRodEvents {
                 if(grant.previous!=null && !grant.previous.tick(player,()->{})) grant.previous=null;
             }
         }
-        if(eligible(player) && player.tickCount%20==0 && player.getRandom().nextInt(60)==0) extraStrike(player);
+        if(eligible(player) && player.tickCount%20==0) {
+            int seconds = Augmentations.level(player.getMainHandItem(),AdditionalAbilities.LIGHTNING_ROD)==1 ? 600 : 60;
+            if(player.getRandom().nextInt(seconds)==0) extraStrike(player);
+        }
     }
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {if(event.getEntity() instanceof ServerPlayer player) end(player);}

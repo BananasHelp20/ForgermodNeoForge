@@ -294,7 +294,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Lightning Rod - completed
 
 - Weapons: Electrium dagger, Electrium claymore, Electrium axe; all gemstone variants.
-- Rank-I passive prevents actual lightning strikes from injuring or igniting the wielder. Under open sky, an additional cosmetic strike rolls once per second with 1/60 chance, independent of storms. Strikes add exactly 10 absorption HP and Strength I for 30 seconds; repeated flashes cannot stack hearts. Owned absorption consumption is tracked so switching/expiry preserves unrelated absorption and Strength, including stronger potion chains. Cosmetic server bolts expire without changing copper, powering rods, igniting blocks or damaging nearby entities.
+- Rank-I passive prevents actual lightning strikes from injuring or igniting the wielder. Under open sky, an additional cosmetic strike rolls once per second with 1/600 chance at level I (ten-minute average), and the existing 1/60 chance at higher levels, independent of storms. Strikes add exactly 10 absorption HP and Strength I for 30 seconds; repeated flashes cannot stack hearts. Owned absorption consumption is tracked so switching/expiry preserves unrelated absorption and Strength, including stronger potion chains. Cosmetic server bolts expire without changing copper, powering rods, igniting blocks or damaging nearby entities.
 - Tested, reviewed, retested and reviewed again; build and all 140 required server tests passed.
 
 ## Alternating Current - completed
