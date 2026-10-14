@@ -772,3 +772,5 @@ Removed
 - Buffed Absolute Nightmare: from learned rank I, its next two successful hits now inflict Weakness IV and Darkness V for ten seconds (amplifiers3/4, duration200 ticks). Higher ranks retain the stronger baseline; hit count, cooldown and target-only debuffs unchanged.
 
 - Buffed Dream Feast to restore eight saturation points alongside eight hunger points via vanilla food handling. Can replenish saturation at full hunger; rejects full hunger plus full saturation. Existing instant cooldown and particle effect remain.
+
+- Fixed Lush Jungle to ignore enemy deaths in a different dimension from the wielder, preventing delayed remote kills from fertilizing unrelated current-dimension blocks. Added a paired remote/local regression.

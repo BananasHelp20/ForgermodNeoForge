@@ -14,6 +14,19 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class LushJungleGameTests {
  @GameTest(template="riftfang_test")
+ public static void remoteDimensionDeathCannotFertilizeCurrentDimension(GameTestHelper test) {
+  var player=TestPlayers.survival(test);player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.apply(new ItemStack(ModItems.OVERGROWN_CLAYMORE.get()),AdditionalAbilities.LUSH_JUNGLE));
+  var pos=test.absolutePos(new BlockPos(8,5,8));test.getLevel().setBlockAndUpdate(pos.below(2),Blocks.FARMLAND.defaultBlockState());test.getLevel().setBlockAndUpdate(pos.below(),Blocks.WHEAT.defaultBlockState());
+  var nether=player.server.getLevel(net.minecraft.world.level.Level.NETHER);test.assertTrue(nether!=null,"Nether unavailable");var remote=EntityType.ZOMBIE.create(nether);remote.setPos(Vec3.atBottomCenterOf(pos));var local=EntityType.ZOMBIE.create(test.getLevel());local.setPos(Vec3.atBottomCenterOf(pos));
+  try {
+   net.bananashelp20.forgermod.item.custom.abilities.LushJungleEvents.kill(new net.neoforged.neoforge.event.entity.living.LivingDeathEvent(remote,player.damageSources().playerAttack(player)));
+   test.assertTrue(test.getLevel().getBlockState(pos.below()).getValue(CropBlock.AGE)==0,"Remote kill changes current dimension crop");
+   net.bananashelp20.forgermod.item.custom.abilities.LushJungleEvents.kill(new net.neoforged.neoforge.event.entity.living.LivingDeathEvent(local,player.damageSources().playerAttack(player)));
+   test.assertTrue(test.getLevel().getBlockState(pos.below()).getValue(CropBlock.AGE)>0,"Local kill no longer fertilizes");
+  }finally {remote.discard();local.discard();player.server.getPlayerList().remove(player);}
+  test.succeed();
+ }
+ @GameTest(template="riftfang_test")
  public static void fifteenVariantsBonemealBeneathEnemyKillOnly(GameTestHelper test) {
   var player=TestPlayers.survival(test);player.setNoGravity(true);var pos=test.absolutePos(new BlockPos(8,5,8));player.setPos(Vec3.atBottomCenterOf(pos.north(2)));int count=0;
   try {for(var entry:ModItems.ITEMS.getEntries()) {

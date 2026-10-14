@@ -13,6 +13,7 @@ public final class LushJungleEvents {
  @SubscribeEvent(priority=EventPriority.LOWEST)
  public static void kill(LivingDeathEvent event) {
   if(event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
+    || event.getEntity().level()!=player.level()
     || !WeaponAbilityTargets.hostileTo(player,event.getEntity()))return;
   if(!Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.LUSH_JUNGLE)
     && !(DaggerItems.hasMatchingDaggers(player) && Augmentations.hasPassive(player.getOffhandItem(),AdditionalAbilities.LUSH_JUNGLE)))return;
