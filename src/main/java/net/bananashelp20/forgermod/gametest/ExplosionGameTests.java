@@ -77,4 +77,33 @@ public class ExplosionGameTests {
             test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
         });
     }
+
+    @GameTest(template="riftfang_test")
+    public static void widerBlastReachesSevenBlocksWithoutDamagingTerrain(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        for(int x=1;x<=10;x++) for(int y=0;y<=2;y++)
+            test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,0),Blocks.AIR.defaultBlockState());
+        var stone=player.blockPosition().west(2);
+        test.getLevel().setBlockAndUpdate(stone,Blocks.STONE.defaultBlockState());
+        var inside=EntityType.COW.create(test.getLevel()); var outside=EntityType.COW.create(test.getLevel());
+        for(var cow:new net.minecraft.world.entity.animal.Cow[]{inside,outside}) {
+            cow.setNoAi(true); cow.setNoGravity(true);
+            cow.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200); cow.setHealth(200);
+        }
+        inside.setPos(player.getX()+7,player.getY(),player.getZ());
+        outside.setPos(player.getX()+9,player.getY(),player.getZ());
+        test.getLevel().getChunkAt(inside.blockPosition()); test.getLevel().getChunkAt(outside.blockPosition());
+        test.getLevel().addFreshEntity(inside); test.getLevel().addFreshEntity(outside);
+        try {
+            ItemStack stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.EXPLOSION);
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            use(player);
+            test.assertTrue(inside.getHealth()<200,"Wider explosion missed target seven blocks away");
+            test.assertTrue(outside.getHealth()==200,"Explosion reached target nine blocks away");
+            test.assertTrue(test.getLevel().getBlockState(stone).is(Blocks.STONE),"Wider explosion damaged terrain");
+        } finally {
+            inside.discard(); outside.discard(); test.getLevel().getServer().getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
 }
