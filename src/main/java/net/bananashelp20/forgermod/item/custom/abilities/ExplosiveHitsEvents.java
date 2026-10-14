@@ -50,10 +50,12 @@ public final class ExplosiveHitsEvents {
         Charges charges=CHARGES.get(player.getUUID());
         if(--charges.hits==0) cancel(player.getUUID());
         var center=event.getEntity().getBoundingBox().getCenter();
-        double radius=1+.5*Augmentations.level(charges.stack,RecommendedAbilities.EXPLOSIVE_HITS);
+        double radius=2+Augmentations.level(charges.stack,RecommendedAbilities.EXPLOSIVE_HITS);
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*.3F;
         var level=player.serverLevel();
-        level.sendParticles(ParticleTypes.EXPLOSION,center.x,center.y,center.z,1,0,0,0,0);
+        level.sendParticles(ParticleTypes.EXPLOSION,center.x,center.y,center.z,6,radius*.4,radius*.2,radius*.4,0);
+        level.sendParticles(ParticleTypes.POOF,center.x,center.y,center.z,20,radius*.55,radius*.3,radius*.55,.05);
+        level.sendParticles(ParticleTypes.LARGE_SMOKE,center.x,center.y,center.z,10,radius*.45,radius*.25,radius*.45,.02);
         level.playSound(null,center.x,center.y,center.z,SoundEvents.GENERIC_EXPLODE,SoundSource.PLAYERS,.5F,1.2F);
         for(LivingEntity target:level.getEntitiesOfClass(LivingEntity.class,event.getEntity().getBoundingBox().inflate(radius),
                 target->target!=player && target.isAlive() && !target.isAlliedTo(player)

@@ -13,12 +13,47 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class ExplosiveHitsGameTests {
+    @GameTest(template="riftfang_test")
+    public static void widerRankFourBlastReachesSixBlocksButNotBeyond(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
+        ItemStack stack=new ItemStack(ModItems.INFERNAL_CLAYMORE.get());
+        for(int rank=0;rank<4;rank++) stack=Augmentations.apply(stack,RecommendedAbilities.EXPLOSIVE_HITS);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var victim=EntityType.COW.create(test.getLevel());
+        var inside=EntityType.COW.create(test.getLevel());
+        var outside=EntityType.COW.create(test.getLevel());
+        for(var cow:new net.minecraft.world.entity.animal.Cow[]{victim,inside,outside}) {
+            cow.setNoAi(true); cow.setNoGravity(true);
+            cow.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200); cow.setHealth(200);
+        }
+        victim.setPos(player.position().add(0,0,2));
+        inside.setPos(victim.position().add(5.5,0,0));
+        outside.setPos(victim.position().add(6.5,0,0));
+        for(int x=1;x<=7;x++) for(int y=0;y<=2;y++)
+            test.getLevel().setBlockAndUpdate(victim.blockPosition().offset(x,y,0),Blocks.AIR.defaultBlockState());
+        test.getLevel().getChunkAt(inside.blockPosition()); test.getLevel().getChunkAt(outside.blockPosition());
+        test.getLevel().addFreshEntity(victim);
+        test.getLevel().addFreshEntity(inside);
+        test.getLevel().addFreshEntity(outside);
+        try {
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.EXPLOSIVE_HITS),"Explosive Hits does not arm");
+            victim.hurt(player.damageSources().playerAttack(player),2);
+            test.assertTrue(inside.getHealth()<200,"Rank IV blast missed a target 5.5 blocks away");
+            test.assertTrue(outside.getHealth()==200,"Rank IV blast hit a target 6.5 blocks away");
+        } finally {
+            victim.discard(); inside.discard(); outside.discard();
+            test.getLevel().getServer().getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
+
     @GameTest(template="riftfang_test")
     public static void rankFourBlastStopsAtWallsAndFinishingStartsCooldown(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
