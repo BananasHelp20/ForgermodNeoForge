@@ -70,7 +70,9 @@ public final class GraveVaultEvents {
    if(!net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player) || !learned(player.getOffhandItem()))return;
    weapon=player.getOffhandItem();hand=InteractionHand.OFF_HAND;
   }
-  var storage=read(weapon,player.registryAccess());var ground=event.getEntity().getOnPos();var destination=ground.above();
+  var storage=hand==InteractionHand.MAIN_HAND && player.containerMenu instanceof GraveVaultMenu menu && menu.stillValid(player)
+    ? menu.storage : read(weapon,player.registryAccess());
+  var ground=event.getEntity().getOnPos();var destination=ground.above();
   var hit=new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(ground).add(0,.5,0),net.minecraft.core.Direction.UP,ground,false);
   for(int i=0;i<9;i++) {
    var flower=storage.getItem(i);if(flower.isEmpty())continue;
@@ -78,7 +80,7 @@ public final class GraveVaultEvents {
    var placement=new net.minecraft.world.item.context.BlockPlaceContext(context);
    if(!placement.getClickedPos().equals(destination) || !player.level().mayInteract(player,destination)
      || !player.mayUseItemAt(destination,placement.getClickedFace(),flower))continue;
-   if(flower.useOn(context).consumesAction()) {write(weapon,storage,player.registryAccess());return;}
+   if(flower.useOn(context).consumesAction()) {storage.setChanged();write(weapon,storage,player.registryAccess());player.containerMenu.broadcastChanges();return;}
   }
  }
 

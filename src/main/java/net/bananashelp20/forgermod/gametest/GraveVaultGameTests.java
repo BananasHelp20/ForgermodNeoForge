@@ -18,6 +18,17 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class GraveVaultGameTests {
  @GameTest(template="riftfang_test")
+ public static void killWhileVaultOpenUpdatesLiveSlotsWithoutDuplicatingFlower(GameTestHelper test) {
+  var player=TestPlayers.survival(test);player.setNoGravity(true);var stack=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.OVERGROWN_CLAYMORE.get()),RecommendedAbilities.GRAVE_VAULT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+  var storage=new SimpleContainer(9);storage.setItem(0,new ItemStack(Items.POPPY,2));GraveVaultEvents.write(stack,storage,player.registryAccess());var menu=new GraveVaultMenu(1,player.getInventory(),player.getInventory().selected);player.containerMenu=menu;
+  var pos=test.absolutePos(new BlockPos(8,5,8));test.getLevel().setBlockAndUpdate(pos.below(),Blocks.DIRT.defaultBlockState());test.getLevel().setBlockAndUpdate(pos,Blocks.AIR.defaultBlockState());
+  try {
+   kill(test,player,pos,true);test.assertTrue(menu.storage.getItem(0).getCount()==1 && GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).getCount()==1,"Open menu retains flower already planted by kill");
+   menu.quickMoveStack(player,0);test.assertTrue(menu.storage.getItem(0).isEmpty() && GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).isEmpty() && player.getInventory().countItem(Items.POPPY)==1,"Live-menu extraction duplicates spent flower");
+  }finally {player.containerMenu=player.inventoryMenu;player.server.getPlayerList().remove(player);}
+  test.succeed();
+ }
+ @GameTest(template="riftfang_test")
  public static void fifteenVariantsPlantAtEnemyDeathWithoutWastingFlowers(GameTestHelper test) {
   var player=TestPlayers.survival(test);player.setNoGravity(true);var pos=test.absolutePos(new BlockPos(8,5,8));player.setPos(Vec3.atBottomCenterOf(pos.north(2)));int count=0;
   try {for(var item:BuiltInRegistries.ITEM)if(item instanceof LushWeapon) {
