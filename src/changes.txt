@@ -760,3 +760,5 @@ Removed
 - Buffed Green Feast: one wheat now heals two HP and restores two saturation points, capped at current hunger. Full-health use succeeds when saturation is missing; full health plus full saturation or missing wheat consumes nothing.
 
 - Changed Grave Vault to Minecraft's normal one-row chest texture/layout (nine storage slots and player inventory). Added enemy-kill placement of one stored flower at the victim's standing block when normal soil, replacement and player permissions allow; invalid placement keeps the flower. Matching offhand dagger may supply the vault.
+
+- Added Ghostwalk super form Jumpscare Horror: original IV becomes super I, then upgrades through IV. Its invisible opening entity attack deals double damage and ends Ghostwalk; subsequent visible hits receive no bonus. Super invisibility lasts 10/12/14/16 seconds with existing 15-second ending cooldown. Fixed client entity-swing packet prematurely ending invisibility before hit handling; misses/blocks still reveal normally. Existing external invisibility preservation remains.

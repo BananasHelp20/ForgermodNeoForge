@@ -34,6 +34,8 @@ def aliases(ability, row):
         result.append(lang["tooltips.forgermod.ability.skybreaker.name"])
     if ability["id"] == "tooltips.forgermod.passive.double_jump":
         result.append(lang["tooltips.forgermod.passive.windwalker.name"])
+    if ability["id"] == "tooltips.forgermod.ability.ghostwalk":
+        result.append(lang["tooltips.forgermod.ability.jumpscare_horror.name"])
     return result
 
 
@@ -80,6 +82,9 @@ for is_active, heading in ((True, "Active abilities"), (False, "Passives")):
             lines += ["**Super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.ability.static_field.name"], ""]
         if id == "tooltips.forgermod.ability.windcharge":
             lines += ["**Axe super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.ability.skybreaker.name"], ""]
+
+        if id == "tooltips.forgermod.ability.ghostwalk":
+            lines += ["**Super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.ability.jumpscare_horror.name"], ""]
 
         if id == "tooltips.forgermod.passive.double_jump":
             lines += ["**Super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.passive.windwalker.name"], ""]

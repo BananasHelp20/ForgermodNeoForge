@@ -14,6 +14,27 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class GhostwalkGameTests {
     @GameTest(template="riftfang_test")
+    public static void fifteenWeaponsTransformAndDoubleExactlyOneRealInvisibleHit(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());int count=0;
+        var target=net.minecraft.world.entity.EntityType.COW.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);target.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(target);
+        try {for(var entry:ModItems.ITEMS.getEntries())if(entry.get() instanceof MorsiumWeapon) {
+            count++;var stack=new ItemStack(entry.get());
+            for(int rank=1;rank<=7;rank++) {
+                stack=Augmentations.apply(stack,AdditionalAbilities.GHOSTWALK);test.assertFalse(stack.isEmpty(),"Super form cannot upgrade");player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);
+                target.setHealth(1000);target.invulnerableTime=0;target.removeAllEffects();
+                test.assertTrue(GhostwalkEvents.activate(player,stack),"Ghost form will not activate");
+                test.assertTrue(player.getEffect(MobEffects.INVISIBILITY).getDuration()==200+40*Math.max(0,rank-4),"Super duration progression wrong");
+                float damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);player.attack(target);
+                test.assertTrue(Math.abs(target.getHealth()-(1000-damage*(rank>=4?2:1)))<.01,"Invisible hit multiplier wrong at rank "+rank);
+                test.assertFalse(player.hasEffect(MobEffects.INVISIBILITY) || GhostwalkEvents.active(player),"Invisible attack does not reveal player");
+                for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);target.invulnerableTime=0;float health=target.getHealth();player.attack(target);test.assertTrue(Math.abs(target.getHealth()-(health-damage))<.01,"Visible second hit retains double damage");
+                if(rank>=4)test.assertTrue(Augmentations.displayRank(stack,AdditionalAbilities.GHOSTWALK,rank)==rank-3 && Augmentations.abilityName(stack,AdditionalAbilities.GHOSTWALK,rank).getString().equals("Jumpscare Horror"),"Super name/rank wrong");
+            }
+            test.assertTrue(Augmentations.apply(stack,AdditionalAbilities.GHOSTWALK).isEmpty(),"Super IV accepts fifth level");
+        }}finally {GhostwalkEvents.logout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.server.getPlayerList().remove(player);}
+        test.assertTrue(count==15,"Skipped Morsium variants");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void fifteenVariantsEndOnAirSwingAndPreserveExternalInvisibility(GameTestHelper test) {
         var player=TestPlayers.survival(test);int count=0;
         try {for(var entry:ModItems.ITEMS.getEntries()) {

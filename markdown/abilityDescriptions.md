@@ -362,11 +362,13 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Gain Invisibility for 10 seconds. Attacking ends it; worn armor stays visible.
+> Become invisible for 10 seconds until attacking. At level IV, transforms into Jumpscare Horror I: your invisible opening attack deals double damage and breaks Ghostwalk. Super I-IV invisibility lasts 10/12/14/16 seconds.
 
 **Augmentation card:**
 
-> Become invisible for 10 seconds, until you attack.
+> Vanish until attacking. Super form doubles your invisible opening hit.
+
+**Super I-IV name (transforms at original IV):** Jumpscare Horror
 
 ### Gravity Well
 

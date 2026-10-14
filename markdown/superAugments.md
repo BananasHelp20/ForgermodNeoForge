@@ -15,3 +15,7 @@ Available on all Skybreaker Axe variants; dagger/claymore Windcharge does not tr
 Available on all Dead Calm Dagger variants. Base I-III grant one air jump; super I-IV grant two. Vertical lift is 0.55 / 0.60 / 0.65 / 0.70 at super I-IV. These additional lift values were chosen conservatively under the user's permission to fill missing progression values. Horizontal sprint momentum is preserved by acknowledging only the vertical lift. The server grants a fixed jump budget after a normal jump and clears it on landing, equipment/slot changes, dimension changes, death or logout.
 
 A same-material dagger pair with Dual Wield learned on either dagger combines jump counts: Double Jump + Double Jump = two air jumps; Windwalker + Double Jump = three; Windwalker + Windwalker = four. Mixed gemstones are allowed. Offhand jumps and lift bonuses require that valid pair.
+
+## Jumpscare Horror (Ghostwalk)
+
+Available on all fifteen Morsium weapons. Original IV becomes super I and upgrades through IV under the same ID/slot. The attack which breaks owned Ghostwalk invisibility deals twice its incoming damage, once; visible attacks, air swings and unrelated invisibility do not store another damage bonus. Super I-IV invisibility lasts 10 / 12 / 14 / 16 seconds; ending cooldown remains 15 seconds. Duration progression was chosen under permission to fill missing upgrade values. Normal and Super Augment Templates retain all seven steps and stop at super IV.

@@ -444,7 +444,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Ghostwalk - completed
 
 - Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
-- Grants vanilla Invisibility for ten seconds; worn armor remains visible. Valid entity attacks, block attacks, air swings and dagger offhand swings end it, including misses. Existing and independently applied invisibility retain their own durations and are restored when the owned effect ends; dispelling does not resurrect removed potions. Natural potion expiry is distinguished from dispelling, including expiry-order edge cases. Exact stack/slot switching, dimension travel, death or logout cancels it. Cooldown 30/25/20/15 seconds begins when Ghostwalk ends. Reuses the validated swing packet; no ticking marker entities.
+- Grants vanilla Invisibility for ten seconds; worn armor remains visible. Original IV transforms to Jumpscare Horror I; super I-IV invisibility lasts 10/12/14/16 seconds and the opening entity attack doubles incoming damage once. Valid entity attacks, block attacks, air swings and dagger offhand swings end it, including misses. Existing and independently applied invisibility retain their own durations and are restored when the owned effect ends; dispelling does not resurrect removed potions. Natural potion expiry is distinguished from dispelling, including expiry-order edge cases. Exact stack/slot switching, dimension travel, death or logout cancels it. Cooldown 30/25/20/15 seconds begins when Ghostwalk ends. Reuses the validated swing packet; no ticking marker entities.
 - Tested, reviewed, retested and reviewed again; build and all 174 required server tests passed.
 
 ## Soul Hunger - completed
