@@ -35,7 +35,7 @@ public class DeathsDueGameTests {
         var zombie=EntityType.ZOMBIE.create(test.getLevel());zombie.setNoAi(true);zombie.setNoGravity(true);zombie.setPos(point.add(0,0,2));test.getLevel().addFreshEntity(zombie);
         try {player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.apply(new ItemStack(ModItems.HOLLOW_CLAYMORE.get()),AdditionalAbilities.DEATHS_DUE));
             zombie.hurt(player.damageSources().playerAttack(player),100);
-            int value=player.level().getEntitiesOfClass(net.minecraft.world.entity.ExperienceOrb.class,zombie.getBoundingBox().inflate(2)).stream().mapToInt(net.minecraft.world.entity.ExperienceOrb::getValue).sum();
+            int value=player.level().getEntitiesOfClass(net.minecraft.world.entity.ExperienceOrb.class,zombie.getBoundingBox().inflate(2)).stream().mapToInt(orb -> orb.getValue()*orb.saveWithoutId(new net.minecraft.nbt.CompoundTag()).getInt("Count")).sum();
             test.assertTrue(value==6,"Actual XP award not boosted: "+value);
         }finally {zombie.discard();player.server.getPlayerList().remove(player);}test.succeed();
     }

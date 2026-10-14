@@ -198,7 +198,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 > Mark enemies to stun them and form damaging barriers. Rank IV adds a field that also hurts you and allies.
 
-**Rank IV name:** Static Field
+**Super I-IV name (transforms at original IV):** Static Field
 
 ### Displace
 
@@ -740,7 +740,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 > Launch upward; axe rank IV gains a falling area smash.
 
-**Axe rank IV name:** Skybreaker
+**Axe super I-IV name (transforms at original IV):** Skybreaker
 
 ### Windy Dash
 
@@ -894,11 +894,13 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Press Jump again in midair after a normal jump to leap once more
+> Press Jump again in midair after a normal jump for one air jump. Reaching rank IV becomes Windwalker I, granting two air jumps. Super II/III/IV increase vertical lift from 0.55 to 0.60/0.65/0.70, preserving sprint momentum. Matching daggers with Dual Wield on either hand combine their learned jump counts (up to four); landing or switching resets the budget.
 
 **Augmentation card:**
 
-> Press Jump again in midair to jump a second time.
+> One air jump. At IV, becomes Windwalker I with two air jumps; upgrade through IV for stronger lift.
+
+**Super I-IV name (transforms at original IV):** Windwalker
 
 ### Dual Wield
 

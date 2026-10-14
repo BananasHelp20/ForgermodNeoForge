@@ -11,7 +11,7 @@ Authority: instructions.md, reread after completing all 58 marked abilities on 2
 - [x] Five passive slots for non-daggers; daggers keep two.
 - [ ] Augmentation table block design; retain enchanting particles.
 - [ ] Shorter slot-cover overlay transition.
-- [ ] Double Jump maximum rank becomes Windwalker; matching pair jump bonuses.
+- [x] Double Jump maximum rank becomes Windwalker; matching pair jump bonuses.
 - [ ] Enchantment heading and footer notices below enchantments, with spacing.
 - [x] Five texture/material-based Pulsite dagger names presented; user chose Resonance Dagger; all five variants renamed, registry IDs preserved.
 

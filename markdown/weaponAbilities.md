@@ -26,31 +26,31 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
-| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
-| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
-| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
-| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
-| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Glowing Hit, Heating Up, Nether Born |
-| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Glowing Hit, Heating Up, Nether Born |
-| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Glowing Hit, Heating Up, Nether Born |
-| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Glowing Hit, Heating Up, Nether Born |
-| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Glowing Hit, Heating Up, Nether Born |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
+| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Flameborn, Flaming Stomp, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
+| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Flameborn, Flaming Stomp, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
+| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Flameborn, Flaming Stomp, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
+| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Flameborn, Flaming Stomp, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
+| Molten Axe | Axe | Crucible Hook, Fire Resistance, Flame Breath, Flameborn, Flaming Stomp, Glowing Hit, Magma Toss, Nether Born, Strong-arm, Swing Attack, Vertical Strike |
+| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
+| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
+| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
+| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
+| Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Flaming Combo, Glowing Hit, Pyromaniac, Quench Point |
 
 ## Inanisium
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Nullified Axe | Axe | Blindness Hit, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
-| Nullified Axe | Axe | Blindness Hit, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
+| Nullified Axe | Axe | Blindness Hit, Ender Swing, Gravity Well, Null Receipt, Overwhelming Smash, Swing Attack, Vertical Strike |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
 | Claymore of the Void | Claymore | Blindness Hit, Distance Tax, Void Pulse |
@@ -174,11 +174,11 @@ Available ability names from the actual registered augmentation pools; gemstone 
 | Storming Claymore | Claymore | Crosswind, Downdraft Bell, Feather Shelter, Headwind, Levitation Hit, Upwind, Vacuum Burst, Windcharge |
 | Storming Claymore | Claymore | Crosswind, Downdraft Bell, Feather Shelter, Headwind, Levitation Hit, Upwind, Vacuum Burst, Windcharge |
 | Storming Claymore | Claymore | Crosswind, Downdraft Bell, Feather Shelter, Headwind, Levitation Hit, Upwind, Vacuum Burst, Windcharge |
-| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windy Dash |
-| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windy Dash |
-| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windy Dash |
-| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windy Dash |
-| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windy Dash |
+| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windwalker, Windy Dash |
+| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windwalker, Windy Dash |
+| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windwalker, Windy Dash |
+| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windwalker, Windy Dash |
+| Dead Calm Dagger | Dagger | Backstab, Crosswind, Double Jump, Downdraft Bell, Dual Wield, Eye of the Storm, Headwind, Levitation Hit, Slipstream, Upwind, Vacuum Burst, Windcharge, Windwalker, Windy Dash |
 
 ## Vulnusium
 

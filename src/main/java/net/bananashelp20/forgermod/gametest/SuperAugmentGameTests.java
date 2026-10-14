@@ -24,6 +24,10 @@ public class SuperAugmentGameTests {
         test.assertTrue(Augmentations.merge(merged,extracted.template()).isEmpty(),"Equal super IV ranks exceed cap");
     }
     @GameTest(template="riftfang_test")
+    public static void windwalkerProgressionAndTemplateRoundTrip(GameTestHelper test) {
+        progression(test,new ItemStack(ModItems.DEAD_CALM_DAGGER.get()),Augmentations.DOUBLE_JUMP,"tooltips.forgermod.passive.windwalker.name");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void skybreakerProgressionAndTemplateRoundTrip(GameTestHelper test) {
         progression(test,new ItemStack(ModItems.SKYBREAKER_AXE.get()),AdditionalAbilities.WINDCHARGE,"tooltips.forgermod.ability.skybreaker.name");
         test.assertTrue(Augmentations.maxRank(new ItemStack(ModItems.STORMING_CLAYMORE.get()),AdditionalAbilities.WINDCHARGE)==4,"Claymore gets axe super progression");

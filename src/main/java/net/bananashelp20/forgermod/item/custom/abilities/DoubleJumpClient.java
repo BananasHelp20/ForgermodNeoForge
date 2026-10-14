@@ -27,7 +27,7 @@ public final class DoubleJumpClient {
         }
         boolean jumpDown = minecraft.options.keyJump.isDown();
         boolean grounded = minecraft.player.onGround();
-        boolean taifuniteDagger = Augmentations.hasPassive(minecraft.player.getMainHandItem(), "tooltips.forgermod.passive.double_jump");
+        boolean taifuniteDagger = DoubleJumpNetwork.airJumps(minecraft.player)>0;
         if (!taifuniteDagger || minecraft.screen != null) {
             jumpedFromGround = false;
         } else if (grounded && !jumpDown) {
@@ -36,7 +36,7 @@ public final class DoubleJumpClient {
             if (grounded || wasGrounded) jumpedFromGround = true;
             else if (jumpedFromGround) {
                 PacketDistributor.sendToServer(new DoubleJumpNetwork.DoubleJumpPayload());
-                jumpedFromGround = false;
+                // Further presses are validated against the server-owned jump budget.
             }
         }
         wasJumpDown = jumpDown;

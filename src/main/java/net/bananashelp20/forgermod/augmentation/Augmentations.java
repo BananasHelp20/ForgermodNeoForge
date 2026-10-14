@@ -21,6 +21,7 @@ public final class Augmentations {
     }
     public static final String VERTICAL_STRIKE = "tooltips.forgermod.passive.axe";
     public static final String DUAL_WIELD = "tooltips.forgermod.passive.dagger";
+    public static final String DOUBLE_JUMP = "tooltips.forgermod.passive.double_jump";
     public static final String MATERIAL_HIT = "augmentation.forgermod.material_hit";
     private static final String LEGACY_MATERIAL_HIT = "augmentation.forgermod.empowered_hit";
     private static final String DATA = "forgermod_augments";
@@ -46,6 +47,7 @@ public final class Augmentations {
     public static String superName(ItemStack stack, String id) {
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return "tooltips.forgermod.ability.static_field.name";
         if (AdditionalAbilities.WINDCHARGE.equals(id) && (isTemplate(stack) || canonical(stack)!=null && canonical(stack).isAxe())) return "tooltips.forgermod.ability.skybreaker.name";
+        if (DOUBLE_JUMP.equals(id)) return "tooltips.forgermod.passive.windwalker.name";
         return null;
     }
     public static boolean hasSuperForm(ItemStack stack, String id) { return superName(stack,id) != null; }

@@ -32,6 +32,8 @@ def aliases(ability, row):
         result.append(lang["tooltips.forgermod.ability.static_field.name"])
     if ability["id"] == "tooltips.forgermod.ability.windcharge" and row["type"] == "Axe":
         result.append(lang["tooltips.forgermod.ability.skybreaker.name"])
+    if ability["id"] == "tooltips.forgermod.passive.double_jump":
+        result.append(lang["tooltips.forgermod.passive.windwalker.name"])
     return result
 
 
@@ -75,9 +77,12 @@ for is_active, heading in ((True, "Active abilities"), (False, "Passives")):
         if id + ".card" in lang:
             lines += ["**Augmentation card:**", "", "> " + lang[id + ".card"], ""]
         if id == "tooltips.forgermod.ability.direct_current":
-            lines += ["**Rank IV name:** " + lang["tooltips.forgermod.ability.static_field.name"], ""]
+            lines += ["**Super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.ability.static_field.name"], ""]
         if id == "tooltips.forgermod.ability.windcharge":
-            lines += ["**Axe rank IV name:** " + lang["tooltips.forgermod.ability.skybreaker.name"], ""]
+            lines += ["**Axe super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.ability.skybreaker.name"], ""]
+
+        if id == "tooltips.forgermod.passive.double_jump":
+            lines += ["**Super I-IV name (transforms at original IV):** " + lang["tooltips.forgermod.passive.windwalker.name"], ""]
 
 # Material duration/amplifier tables are unchanged by the new abilities.
 path = ROOT / "markdown/abilityDescriptions.md"

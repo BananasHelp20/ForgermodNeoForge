@@ -714,3 +714,7 @@ Removed
 - Added named super-augment progression and rank display: Direct Current transforms at IV into Static Field I and upgrades to IV, increasing field pulse damage from 1 to 1.75 HP. Preserves saved rank-IV effects, one-slot identity, template extraction and anvil transfer; super IV is the cap.
 
 - Axe Windcharge now transforms into Skybreaker I at the original rank IV and upgrades through super IV. The 30-block launch and area smash remain; super II/III/IV increase mace fall bonus 10/20/30 percent. Fixed high-rank array indexing; dagger/claymore Windcharge does not gain Skybreaker.
+
+- Double Jump transforms at original IV into Windwalker I, granting two air jumps and upgrading lift through super IV (0.55/0.60/0.65/0.70). Matching dagger pairs combine learned jump counts up to four with Dual Wield on either hand, including mixed gemstones. Server budgets reject extra jumps and clear on equipment/slot/dimension changes, landing, death/logout; accepted jumps preserve sprint momentum.
+
+- Corrected Death's Due server-test XP accounting to include merged orb counts; gameplay XP awards are unchanged.

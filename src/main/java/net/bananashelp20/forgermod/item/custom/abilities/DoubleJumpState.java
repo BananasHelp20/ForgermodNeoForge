@@ -1,22 +1,15 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
-
-/** One extra jump is available after a normal jump, until landing. */
+/** Server-owned air jump budget, granted only by a normal jump and cleared on landing. */
 public final class DoubleJumpState {
-    private final Set<UUID> ready = new HashSet<>();
-
-    public void normalJump(UUID player) {
-        ready.add(player);
-    }
-
+    private final Map<UUID,Integer> remaining = new HashMap<>();
+    public void normalJump(UUID player) { normalJump(player,1); }
+    public void normalJump(UUID player,int count) { remaining.put(player,Math.clamp(count,0,4)); }
     public boolean consume(UUID player) {
-        return ready.remove(player);
+        int count=remaining.getOrDefault(player,0);if(count<=0)return false;
+        if(count==1)remaining.remove(player);else remaining.put(player,count-1);return true;
     }
-
-    public void clear(UUID player) {
-        ready.remove(player);
-    }
+    public void clear(UUID player) { remaining.remove(player); }
 }

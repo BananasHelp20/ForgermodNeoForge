@@ -29,7 +29,7 @@ public class AbilityCatalogGameTests {
                 var ids=new java.util.HashSet<String>();
                 for(var ability:Augmentations.pool(stack)) {
                     test.assertTrue(ids.add(ability.id()),"Duplicate pooled ability: "+ability.id());
-                    var a=new JsonObject();a.addProperty("id",ability.id());a.addProperty("active",ability.active());a.addProperty("maxRank",RecommendedAbilities.maxRank(ability.id()));
+                    var a=new JsonObject();a.addProperty("id",ability.id());a.addProperty("active",ability.active());a.addProperty("maxRank",Augmentations.maxRank(stack,ability.id()));
                     a.add("name",JsonParser.parseString(Component.Serializer.toJson(ability.name(),test.getLevel().registryAccess())));
                     abilities.add(a);
                 }

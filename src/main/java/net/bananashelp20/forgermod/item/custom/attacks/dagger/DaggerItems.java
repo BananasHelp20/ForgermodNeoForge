@@ -17,6 +17,8 @@ public final class DaggerItems {
         ItemStack mainhand = player.getMainHandItem();
         return (!net.bananashelp20.forgermod.augmentation.Augmentations.eligible(mainhand)
                 || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(mainhand,
+                        net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD)
+                || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(player.getOffhandItem(),
                         net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD))
                 && areMatchingDaggers(mainhand, player.getOffhandItem());
     }
