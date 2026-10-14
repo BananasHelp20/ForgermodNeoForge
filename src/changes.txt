@@ -746,3 +746,5 @@ Removed
 - Changed Vertical Strike charging: only fully recharged attacks count toward the third-attack smash. Weak attacks preserve existing progress; duplicate packets and air swings must wait the equipped axe's full recharge interval before counting. Counting does not reset or weaken the following vanilla melee attack.
 - Moved Swing Attack sweep particles half a block inward from the attack radius.
 - Added real Deep Wound ability-packet and vanilla critical-attack regression checks for all five Assassin Dagger variants, verifying doubled critical damage and five seconds of Slowness III on the target.
+
+- Converted Leech into an always-on learned Assassin Dagger passive, preserving its saved augment ID/ranks. Removed 10% damage bonus, activation/cooldown, ten-hit charges and total healing budget. Heals 10/12/14/16% of actual damage at I-IV (18% at transferred rank V); a valid same-material Dual Wield pair can provide it from either hand without stacking. Removed obsolete LeechState and its test.

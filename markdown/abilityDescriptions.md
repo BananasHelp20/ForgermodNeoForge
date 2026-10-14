@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 61 active abilities, 45 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 60 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
@@ -403,18 +403,6 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 **Augmentation card:**
 
 > Teleport safely to your respawn point, even in another dimension.
-
-### Leech
-
-**Weapons:** Assassin Dagger
-
-**Item tooltip:**
-
-> Your next 10 dagger hits deal 10% more normal damage and heal you from that bonus, restoring at most 10 HP in total (15-second cooldown)
-
-**Augmentation card:**
-
-> Ten hits deal 10% more damage and heal up to 10 HP total.
 
 ### Live Wire
 
@@ -1017,6 +1005,18 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 **Augmentation card:**
 
 > Survive a fatal hit at 1 HP, once every 2 minutes.
+
+### Leech
+
+**Weapons:** Assassin Dagger
+
+**Item tooltip:**
+
+> Always heal from 10/12/14/16% of damage dealt while wielding this dagger. No bonus damage, activation, hit limit or cooldown. One matching dual-wield dagger may provide the passive.
+
+**Augmentation card:**
+
+> Always heal from damage dealt; no bonus damage or cooldown.
 
 ### Lightning Rod
 

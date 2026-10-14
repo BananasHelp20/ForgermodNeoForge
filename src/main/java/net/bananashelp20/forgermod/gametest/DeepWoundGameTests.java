@@ -91,7 +91,7 @@ public class DeepWoundGameTests {
             test.assertFalse(player.hasEffect(MobEffects.MOVEMENT_SLOWDOWN), "Deep Wound slowed the attacker");
             test.assertFalse(weapon(player).isAbilityActive(player, WeaponAbilitySlot.PRIMARY), "Charge was not consumed");
             test.assertTrue(weapon(player).abilityCooldownTicks(WeaponAbilitySlot.PRIMARY) == 600
-                    && weapon(player).abilityCooldownTicks(WeaponAbilitySlot.SECONDARY) == 300, "Cooldowns changed");
+                    && weapon(player).abilityCooldownTicks(WeaponAbilitySlot.SECONDARY) == 0, "Cooldowns changed");
             Cow second = target(test, player);
             test.assertTrue(hit(test, player, second, true).getDamageMultiplier() == 1.5f, "Second critical retained double damage");
             test.assertFalse(second.hasEffect(MobEffects.MOVEMENT_SLOWDOWN), "Second critical reused the slow charge");
