@@ -22,6 +22,44 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class FlameBreathGameTests {
     @GameTest(template="riftfang_test")
+    public static void extendedRangeRespectsRankOneAndRankFourBoundaries(GameTestHelper test) {
+        var player=TestPlayers.survival(test); player.setNoGravity(true);
+        player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8))));
+        player.setYRot(0); player.setXRot(0);
+        for(int z=1;z<=12;z++) for(int y=0;y<=3;y++)
+            test.getLevel().setBlockAndUpdate(player.blockPosition().offset(0,y,z),Blocks.AIR.defaultBlockState());
+        var inside=EntityType.ZOMBIE.create(test.getLevel());
+        var outside=EntityType.ZOMBIE.create(test.getLevel());
+        for(var zombie:new net.minecraft.world.entity.monster.Zombie[]{inside,outside}) {
+            zombie.setNoAi(true); zombie.setNoGravity(true);
+            zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200); zombie.setHealth(200);
+        }
+        inside.setPos(player.position().add(0,0,6.5));
+        outside.setPos(player.position().add(0,0,7.5));
+        test.getLevel().getChunkAt(inside.blockPosition()); test.getLevel().getChunkAt(outside.blockPosition());
+        test.getLevel().addFreshEntity(inside); test.getLevel().addFreshEntity(outside);
+        try {
+            var rankOne=Augmentations.apply(new ItemStack(ModItems.EMBERFANG_DAGGER.get()),AdditionalAbilities.FLAME_BREATH);
+            player.setItemInHand(InteractionHand.MAIN_HAND,rankOne);
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,rankOne,AdditionalAbilities.FLAME_BREATH),"Rank I Flame Breath rejected");
+            test.assertTrue(inside.getHealth()<200,"Rank I breath missed a target 6.5 blocks ahead");
+            test.assertTrue(outside.getHealth()==200,"Rank I breath reached a target 7.5 blocks ahead");
+
+            inside.setPos(player.position().add(0,0,9.5)); inside.setHealth(200); inside.invulnerableTime=0;
+            outside.setPos(player.position().add(0,0,10.5));
+            ItemStack rankFour=new ItemStack(ModItems.EMBERFANG_DAGGER_RUBY.get());
+            for(int rank=0;rank<4;rank++) rankFour=Augmentations.apply(rankFour,AdditionalAbilities.FLAME_BREATH);
+            player.setItemInHand(InteractionHand.MAIN_HAND,rankFour);
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,rankFour,AdditionalAbilities.FLAME_BREATH),"Rank IV Flame Breath rejected");
+            test.assertTrue(inside.getHealth()<200,"Rank IV breath missed a target 9.5 blocks ahead");
+            test.assertTrue(outside.getHealth()==200,"Rank IV breath reached a target 10.5 blocks ahead");
+        } finally {
+            inside.discard(); outside.discard(); player.server.getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
     public static void coneAllVariantsFreshRejectionAndWalls(GameTestHelper test) {
         var player=TestPlayers.survival(test); player.setNoGravity(true);
         var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
