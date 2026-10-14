@@ -80,6 +80,7 @@ public class DualWieldNetwork {
         // An air swing still animates; it simply has no target to damage.
         // The attacking client already animates this swing. Send only one packet to observers.
         PacketDistributor.sendToPlayersTrackingEntity(player, new OffhandSwingPayload(player.getId()));
+        net.bananashelp20.forgermod.item.custom.abilities.StaticBladeEvents.releaseOffhand(player);
 
         Entity entity = player.level().getEntity(payload.targetId());
         double reach = 4.5;

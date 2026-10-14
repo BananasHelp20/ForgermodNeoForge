@@ -288,7 +288,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Static blade - completed
 
 - Weapons: Electrium dagger; all gemstone variants.
-- Next swing (air, block or enemy) launches a server-authoritative four-block-wide, half-block-high echo along the view direction captured on that swing. Travels one block per tick up to 20 blocks; full-width collision sampling stops at solid blocks, while enemies are pierced once each for current weapon damage. Arms for 30 seconds; released flight has its own deadline. Exact-stack switching/death/logout cancels; ranks reduce ending cooldown to 40/35/30/25 seconds. Uses particles and compact state without a ticking projectile entity.
+- Next swing (air, block or enemy) launches a server-authoritative four-block-wide, half-block-high echo along the view direction captured on that swing. Travels one block per tick up to 20 blocks; collision sampling stops only when the entire width/height is blocked, passing through center/offset one-block holes and partial walls. Matching dual-wield offhand swings add one independent echo even without Static Blade on that dagger; enemies are pierced once per echo for current weapon damage. Arms for 30 seconds; released flight has its own deadline. A single exact-pair offhand echo may release within ten ticks of the main swing; waiting for that swing survives an early main-echo wall hit, and both flights share one ending cooldown. Exact-stack switching/death/logout cancels; ranks reduce ending cooldown to 40/35/30/25 seconds. Uses particles and compact state without a ticking projectile entity.
 - Tested, reviewed, retested and reviewed again; build and all 139 required server tests passed.
 
 ## Lightning Rod - completed

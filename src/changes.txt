@@ -790,3 +790,5 @@ Removed
 - Buffed Stunning Presence radius to ten blocks from level I (all ranks) and stun duration to 0.5 seconds per pulse. Added rotating electrical boundary and expanding pulse ripples with rank-scaled density/speed, bounded particle emission every five ticks. Existing damage, pulse frequency, lifetime and cooldowns retained.
 
 - Buffed Direct Current barriers to deal four HP to living bodies remaining in the current, sharing the existing half-second per-entity guard with crossing damage. Uses body collision with a narrow electrical curtain; marked endpoints are excluded from stationary contact. Existing wall/height/expiry/switch rules and Static Field area damage remain.
+
+- Buffed Static Blade to stop only when its full sampled width/height is blocked, allowing center/offset one-block holes and partial obstructions. Matching dual-wield pairs release a second independent echo on the paired offhand swing even with an unaugmented offhand, each hitting enemies once. One pending echo per activation, exact-stack/pair validation, bounded offhand window, shared ending cooldown and main-switch cancellation retained.

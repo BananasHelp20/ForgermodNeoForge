@@ -582,11 +582,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm the next swing for up to 30 seconds. It releases a four-block-wide, half-block-high echo along your look direction at that swing, traveling 20 blocks and dealing current weapon damage once to each enemy. Solid blocks stop it. Switching cancels. Cooldown after ending: 40/35/30/25 seconds.
+> Arm the next swing for up to 30 seconds. It releases a four-block-wide, half-block-high echo along your look direction at that swing, traveling 20 blocks and dealing current weapon damage once to each enemy per echo. Only a fully blocked four-block-wide cross-section stops it; a one-block hole lets it through. Dual wielding matching daggers sends a second echo with the paired offhand swing, even without Static Blade on that dagger. Switching cancels. Cooldown after ending: 40/35/30/25 seconds.
 
 **Augmentation card:**
 
-> Your next swing releases a wide piercing blade echo for 20 blocks; walls stop it.
+> Release a wide piercing echo for 20 blocks through wall openings; matching dual wield adds an offhand echo.
 
 ### Stepping Through the Void
 
