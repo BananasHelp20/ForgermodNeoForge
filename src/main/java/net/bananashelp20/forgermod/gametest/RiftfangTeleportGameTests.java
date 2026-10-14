@@ -27,13 +27,18 @@ import java.util.UUID;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class RiftfangTeleportGameTests {
+    private static final class RecordingConnection extends Connection {
+        final java.util.List<net.minecraft.network.protocol.Packet<?>> packets=new java.util.ArrayList<>();
+        RecordingConnection(){super(PacketFlow.SERVERBOUND);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){packets.add(packet);}
+    }
     private static final BlockPos START = new BlockPos(8, 3, 8);
 
     private static ServerPlayer player(GameTestHelper test, Item main, Item off, float pitch) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), "riftfang-test");
         ServerPlayer player = new ServerPlayer(test.getLevel().getServer(), test.getLevel(), profile, ClientInformation.createDefault());
         // Real listener applies absolute teleports; FakePlayer's listener discards them.
-        new ServerGamePacketListenerImpl(test.getLevel().getServer(), new Connection(PacketFlow.SERVERBOUND),
+        new ServerGamePacketListenerImpl(test.getLevel().getServer(), new RecordingConnection(),
                 player, CommonListenerCookie.createInitial(profile, false));
         player.setPos(Vec3.atBottomCenterOf(test.absolutePos(START)));
         player.setYRot(0);
@@ -62,6 +67,22 @@ public class RiftfangTeleportGameTests {
         test.assertTrue(test.getLevel().noCollision(player, player.getBoundingBox()), "Teleported into solid blocks");
     }
 
+    @GameTest(template="riftfang_test")
+    public static void voidStepPacketLeavesClientMouseLookFree(GameTestHelper test) {
+        for(int x=1;x<=19;x++)for(int y=3;y<=17;y++)for(int z=1;z<=19;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        for(Item item:new Item[]{ModItems.RIFTFANG_DAGGER.get(),ModItems.RIFTFANG_DAGGER_RUBY.get(),ModItems.RIFTFANG_DAGGER_AMBER.get(),ModItems.RIFTFANG_DAGGER_AMETHYST.get(),ModItems.RIFTFANG_DAGGER_JADE.get()}) {
+            var player=player(test,item,null,-55);player.setYRot(23);Vec3 start=player.position();var look=player.getLookAngle();
+            test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Step did not activate");
+            test.assertTrue(player.position().distanceTo(start.add(look.scale(10)))<.001 && player.getYRot()==23 && player.getXRot()==-55,"Server teleport changes direction, range or rotation");
+            var connection=(RecordingConnection)player.connection.getConnection();
+            var packet=connection.packets.stream().filter(p->p instanceof net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket).map(p->(net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket)p).findFirst().orElseThrow();
+            test.assertTrue(packet.getRelativeArguments().equals(java.util.Set.of(net.minecraft.world.entity.RelativeMovement.Y_ROT,net.minecraft.world.entity.RelativeMovement.X_ROT)) && packet.getYRot()==0 && packet.getXRot()==0,"Teleport forces absolute camera rotation instead of preserving in-flight mouse input");
+            // Minecraft adds these relative offsets to the client's current look, which can be newer than the server's.
+            float newerYaw=127,newerPitch=-31;
+            test.assertTrue(newerYaw+packet.getYRot()==127 && newerPitch+packet.getXRot()==-31,"Late teleport packet discards newer mouse look");
+        }
+        test.succeed();
+    }
     @GameTest(template = "riftfang_test")
     public static void upwardAndDiagonalLook(GameTestHelper test) {
         expectDistance(test, player(test, ModItems.RIFTFANG_DAGGER.get(), null, -90), 10);

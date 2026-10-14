@@ -89,7 +89,9 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         if (clearSteps < 2) return false;
 
         Vec3 destination = start.add(direction.scale(clearSteps * VoidStepPath.STEP_DISTANCE));
-        return teleportWithSound(player, destination, player.getYRot(), player.getXRot());
+        // Zero relative rotation preserves mouse look updated while the teleport packet is in flight.
+        return teleportWithSound(player, destination, player.getYRot(), player.getXRot(),
+                Set.of(net.minecraft.world.entity.RelativeMovement.Y_ROT,net.minecraft.world.entity.RelativeMovement.X_ROT));
     }
 
     private static boolean loadedBox(ServerLevel level, AABB box) {
@@ -140,9 +142,14 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     }
 
     private static boolean teleportWithSound(ServerPlayer player, Vec3 destination, float yaw, float pitch) {
+        return teleportWithSound(player,destination,yaw,pitch,Set.of());
+    }
+
+    private static boolean teleportWithSound(ServerPlayer player, Vec3 destination, float yaw, float pitch,
+                                             Set<net.minecraft.world.entity.RelativeMovement> relative) {
         BlockPos departure = player.blockPosition();
         if (!player.teleportTo(player.serverLevel(), destination.x, destination.y, destination.z,
-                Set.of(), yaw, pitch)) return false;
+                relative, yaw, pitch)) return false;
         player.fallDistance = 0;
         player.serverLevel().playSound(null, departure, SoundEvents.ENDERMAN_TELEPORT,
                 SoundSource.PLAYERS, 0.7F, 1.2F);
