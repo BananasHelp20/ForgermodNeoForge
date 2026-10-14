@@ -62,6 +62,12 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     }
 
     @Override
+    public float getAttackDamageBonus(net.minecraft.world.entity.Entity target,float damage,net.minecraft.world.damagesource.DamageSource source) {
+        return super.getAttackDamageBonus(target,damage,source)
+            + net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.attackBonus(target,source);
+    }
+
+    @Override
     public boolean activateAbility(ServerPlayer player, ItemStack stack, WeaponAbilitySlot slot) {
         if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive()) return false;

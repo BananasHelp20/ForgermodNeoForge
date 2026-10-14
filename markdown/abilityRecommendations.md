@@ -152,3 +152,8 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 1. **Rebound — Active.** Aim at a solid wall within three blocks to launch yourself away from its face with velocity.
 3. **Bedrock Grip — Passive.** Take 50% less damage from falling anvils and dripstone while holding the axe.
+
+
+
+Pflanzen einistön
+Java hü <paralell> Website
