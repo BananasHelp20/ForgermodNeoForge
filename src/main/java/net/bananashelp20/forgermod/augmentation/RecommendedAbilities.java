@@ -12,7 +12,6 @@ import java.util.List;
 
 /** User-marked recommendations become learnable only after their implementation is complete. */
 public final class RecommendedAbilities {
-    public static final String QUENCH_POINT="tooltips.forgermod.passive.quench_point";
     public static final String EXPLOSION="tooltips.forgermod.ability.explosion";
     public static final String CINDER_DECOY="tooltips.forgermod.ability.cinder_decoy";
     public static final String COLD_BELLOWS="tooltips.forgermod.passive.cold_bellows";
@@ -65,8 +64,6 @@ public final class RecommendedAbilities {
             return List.of(new Augmentations.Ability(DISTANCE_TAX,false));
         if(stack.getItem() instanceof InanisiumWeapon weapon && weapon.isAxe())
             return List.of(new Augmentations.Ability(NULL_RECEIPT,true),new Augmentations.Ability(ENDER_SWING,true));
-        if(stack.getItem() instanceof IgnisiumWeapon weapon && weapon.isDagger())
-            return List.of(new Augmentations.Ability(QUENCH_POINT,false));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
             return List.of(new Augmentations.Ability(EXPLOSION,true),new Augmentations.Ability(CINDER_DECOY,true),
                     new Augmentations.Ability(EXPLOSIVE_HITS,true),

@@ -2,13 +2,7 @@
 
 Only entries marked for implementation in abilityRecommendations.md are approved. Repeated entries share one implementation across their listed weapon families and gemstone variants. Abilities are learned through augmentation; each weapon retains three active and five unique passive slots (two passives for daggers), plus Material Hit separately. Missing balance values below were chosen with the user's permission.
 
-## Quench Point — completed
-
-- Weapons: Emberfang Dagger, including Ruby, Amber, Amethyst and Jade.
-- Successful melee hits extinguish a burning victim. Up to ten seconds of remaining fire become a stored bonus for the next successful hit within ten seconds.
-- Ranks I–IV convert each second into 0.5, 0.75, 1 and 1.25 damage respectively (caps 5, 7.5, 10 and 12.5).
-- A hit can spend a previous charge and store fire from its new victim; unsuccessful or blocked hits do not spend it. Switching, death, logout and expiry clear stored fire.
-- Reviewed twice. Build/lightweight checks and 60 required server tests pass, including all five variants, one-time use, rejected hits, switch cleanup, cap and expiry.
+Quench Point was removed at the user's request on 2026-10-14; retired saved entries are ignored.
 
 ## Completion status
 

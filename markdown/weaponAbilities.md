@@ -36,11 +36,11 @@ Available ability names from the actual registered augmentation pools; gemstone 
 | Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
 | Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
 | Infernal Claymore | Claymore | Cinder Decoy, Cold Bellows, Explosion, Explosive Hits, Fire Resistance, Flame Breath, Flameborn, Glowing Hit, Heating Up, Nether Born |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac, Quench Point |
-| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac, Quench Point |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac |
+| Emberfang Dagger | Dagger | Charred Edge, Dual Wield, Flame Breath, Flameborn, Glowing Hit, Pyromaniac |
 
 ## Inanisium
 

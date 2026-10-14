@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 61 active abilities, 46 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 61 active abilities, 45 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
@@ -1101,18 +1101,6 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 **Augmentation card:**
 
 > Take 25% less fall damage while holding the axe.
-
-### Quench Point
-
-**Weapons:** Emberfang Dagger
-
-**Item tooltip:**
-
-> Successful melee hits extinguish burning enemies and store up to 10 seconds of their remaining fire for the next successful hit within 10 seconds. Each second adds 0.5/0.75/1/1.25 damage at levels I/II/III/IV. Switching weapons clears stored fire.
-
-**Augmentation card:**
-
-> Quench a burning enemy; stored fire strengthens your next hit.
 
 ### Quick Recharge
 
