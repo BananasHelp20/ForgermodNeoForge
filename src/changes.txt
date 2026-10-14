@@ -778,3 +778,5 @@ Removed
 - Fixed Jumpscare Horror to capture and double a valid delayed offhand opening hit when invisibility was activated between paired dagger swings. Invalid/air offhand swings still reveal without storing a damage bonus. Added real main-hit/activation/offhand-packet checks across all five Morsium dagger variants with mixed gemstones.
 
 - Fixed Grave Vault kill placement while its UI is open: consume from live menu storage, synchronize slot counts and persist the same inventory, preventing later clicks from restoring a spent flower. Added kill-then-shift-extraction duplication regression.
+
+- Updated implementation/handoff documentation to match the completed passive, saturation, persistence, new ability, UI and super-augment changes, with chosen values and Deep Wound trigger clarification recorded.

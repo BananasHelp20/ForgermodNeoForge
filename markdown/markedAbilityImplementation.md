@@ -408,7 +408,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Sunfed - completed
 
 - Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
-- Learned main-hand passive restores exactly one hunger point after every 15 continuous seconds outdoors in Minecraft daylight, for all marked Lush weapon types. Uses the overhead motion-blocking heightmap rather than asynchronously updated skylight, and Minecraft isDay so darkness during thunderstorms does not qualify. No saturation, capped at 20 food. Roofs, night, full food, switching exact stack/slot, dimension changes, death or logout reset the interval. Fixed strength, maximum rank I.
+- Learned main-hand passive restores exactly one hunger point after every 15 continuous seconds outdoors in Minecraft daylight, for all marked Lush weapon types. Uses the overhead motion-blocking heightmap rather than asynchronously updated skylight, and Minecraft isDay so darkness during thunderstorms does not qualify. Adds one saturation point too, using vanilla food caps; full food can recover saturation. Roofs, night, full food plus full saturation, switching exact stack/slot, dimension changes, death or logout reset the interval. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 167 required server tests passed.
 
 ## photosythesis - completed
@@ -420,7 +420,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Green Feast - completed
 
 - Weapons: Lush dagger, Lush claymore, Lush axe; all gemstone variants.
-- Consumes exactly one wheat from ordinary inventory or offhand to heal 2 health points, capped at maximum health. Full health and missing wheat reject activation without spending ingredients or starting cooldown. Inventory changes synchronize normally; weapon data is preserved. Cooldown 20/15/10/5 seconds starts on use.
+- Consumes exactly one wheat from ordinary inventory or offhand to heal 2 health points and restore 2 saturation points, capped at maximum health/current food. Full health plus full saturation, or missing wheat, reject activation without spending ingredients or starting cooldown. Inventory changes synchronize normally; weapon data is preserved. Cooldown 20/15/10/5 seconds starts on use.
 - Tested, reviewed, retested and reviewed again; build and all 169 required server tests passed.
 
 ## Sapling Harvest - completed
@@ -450,7 +450,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Soul Hunger - completed
 
 - Weapons: Morsium dagger, Morsium claymore, Morsium axe; all gemstone variants.
-- Each valid enemy kill adds two absorption health points, up to six owned by this passive. A separate transient capacity and consumed-health ledger keep the cap independent of existing absorption. Absorbed damage spends the owned portion first; later kills replenish it. Absorption potions and refreshes coexist without overwriting the passive or being removed on switching. The remaining owned health and capacity clear on exact stack/slot switching, dimension travel, death or logout. Canceled deaths and fresh weapons grant nothing. No artificial expiry; hearts last until consumed or the weapon is put away. Fixed strength, maximum rank I.
+- Each valid enemy kill adds two absorption health points, up to six owned by this passive. A separate transient capacity and consumed-health ledger keep the cap independent of existing absorption. Absorbed damage spends the owned portion first; later kills replenish it. Absorption potions and refreshes coexist without overwriting the passive or being removed on switching. Remaining earned health and capacity persist through weapon/hotbar switching, and clear on dimension travel, death or logout. Canceled deaths and fresh weapons grant nothing. No artificial expiry; hearts last until consumed, including while the weapon is put away. Only held learned weapons earn/refill them. Fixed strength, maximum rank I.
 - Tested, reviewed, retested and reviewed again; build and all 175 required server tests passed.
 
 ## Last Stand - completed
@@ -512,3 +512,13 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 - Weapons: Pulsite dagger, Pulsite claymore, Pulsite axe; all gemstone variants.
 - An instant visible roar makes hostile mobs within 16/20/24/28 blocks target the wielder, including those behind walls. Supports ordinary target AI, brain attack/anger memories and wardens; players, allies, passive and neutral creatures are excluded. A taunt applied during a stun is retained when the stun releases without canceling immobilization. Normal AI handles later aggression; brain anger memories last thirty seconds. No damage or terrain changes. Instant cooldown 30/25/20/15 seconds. Tests cover all fifteen variants, wardens, piglins, walls, rank I and IV range, pets, neutral mobs and stun overlap.
 - Revised range and hostile-only targeting tested and reviewed; the build and all 195 required server tests passed, including the new rank IV boundary test.
+
+## Direct weapon updates - 2026-10-14
+
+- Leech is now an always-on learned Assassin Dagger passive, retaining saved ID/ranks and freeing the active slot. Heals 10/12/14/16 percent of actual player-attack damage at I-IV, without extra damage, hit count, total healing budget, activation or cooldown. A matching Dual Wield pair can supply it from either hand; highest rank wins without stacking. Rank V transferred from a Super Augment Template heals 18 percent.
+- Wither Hit base duration gained five seconds: claymore 9 seconds, Jade claymore 10. Previously requested attack-speed adjustment remains, so dagger/axe durations derive from that new base; exact values are in abilityDescriptions.md.
+- Lush Jungle is a one-rank passive for all fifteen Lush weapons. An enemy kill bonemeals its directly-beneath block when vanilla bonemeal and player permissions allow. No item cost or cooldown; no cross-dimension block changes. Matching dagger pairs can supply it from either hand.
+- Absolute Nightmare applies Weakness IV and Darkness V for ten seconds from learned level I, on the original two successful hits. Higher ranks retain that baseline and prior cooldown progression.
+- Grave Vault uses vanilla one-row chest visuals and coordinates. Enemy kills place one stored flower above the victim support block, respecting normal flower placement and permissions, including fractional farmland height. Failed placement consumes nothing; an open menu shares live storage to prevent stale slots/duplication.
+- Deep Wound was tested through actual ability-key activation and vanilla critical attacks across all five variants. Doubled critical damage and Slowness III for five seconds on the target work. The prior critical-only trigger is unchanged; a pending optional question asks whether standing fully charged hits should also trigger it. No runtime failure was reproduced.
+- Final code review included delayed Jumpscare Horror offhand opening hits, Grave Vault live-menu storage, and Lush Jungle remote-dimension kills. Latest two full reviewed builds passed all 248 server tests. UI/particle appearance has not been visually inspected in a client.
