@@ -3,19 +3,16 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "minecraft:coal_block"
-    },
-    "B": {
-      "item": "minecraft:diamond"
+      "item": "minecraft:charcoal"
     },
     "C": {
       "item": "forgermod:steel_ingot"
     }
   },
   "pattern": [
-    "BAA",
+    "AAA",
     "ACA",
-    "AAB"
+    "AAA"
   ],
   "result": {
     "count": 1,

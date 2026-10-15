@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.EntityType;
@@ -54,11 +55,12 @@ public final class LightningRodEvents {
         if(!eligible(player)) return false;var grant=GRANTS.get(player.getUUID());long now=player.level().getGameTime();
         if(grant!=null && (grant.stack!=player.getMainHandItem() || grant.selected!=player.getInventory().selected || now>=grant.expires)) {end(player);grant=null;}
         if(grant==null) {grant=new Grant(player);GRANTS.put(player.getUUID(),grant);}
-        if(now-grant.lastStrike<20) return true;grant.lastStrike=now;grant.expires=now+600;
+        if(now-grant.lastStrike<20) return true;grant.lastStrike=now;grant.expires=now+JadeAugments.duration(grant.stack,AdditionalAbilities.LIGHTNING_ROD,600);
         var attribute=player.getAttribute(Attributes.MAX_ABSORPTION);
         if(!attribute.hasModifier(ABSORPTION)) attribute.addTransientModifier(new AttributeModifier(ABSORPTION,10,AttributeModifier.Operation.ADD_VALUE));
         grant.remaining=Math.min(grant.remaining,player.getAbsorptionAmount());player.setAbsorptionAmount(player.getAbsorptionAmount()+10-grant.remaining);grant.remaining=10;
-        add(player,new MobEffectInstance(MobEffects.DAMAGE_BOOST,600,0));grant.owned=player.getEffect(MobEffects.DAMAGE_BOOST);return true;
+        add(player,JadeAugments.reinforce(grant.stack,AdditionalAbilities.LIGHTNING_ROD,
+                new MobEffectInstance(MobEffects.DAMAGE_BOOST,600,0)));grant.owned=player.getEffect(MobEffects.DAMAGE_BOOST);return true;
     }
     public static boolean extraStrike(ServerPlayer player) {
         if(!eligible(player) || !player.level().dimensionType().hasSkyLight() || !player.level().canSeeSky(player.blockPosition())

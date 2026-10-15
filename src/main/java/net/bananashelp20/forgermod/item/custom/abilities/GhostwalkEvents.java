@@ -15,7 +15,7 @@ public final class GhostwalkEvents {
     private static final class Ghost {
         final ServerPlayer player;final ItemStack stack;final int slot;final ServerLevel level;final long expires;MobEffectInstance previous,owned;boolean expiredNaturally;
         final int duration;
-        Ghost(ServerPlayer player,ItemStack stack) {this.player=player;this.stack=stack;slot=player.getInventory().selected;level=player.serverLevel();duration=200+40*Math.max(0,Augmentations.level(stack,AdditionalAbilities.GHOSTWALK)-4);expires=level.getGameTime()+duration;previous=copy(player.getEffect(MobEffects.INVISIBILITY));}
+        Ghost(ServerPlayer player,ItemStack stack) {this.player=player;this.stack=stack;slot=player.getInventory().selected;level=player.serverLevel();duration=JadeAugments.duration(stack,AdditionalAbilities.GHOSTWALK,200+40*Math.max(0,Augmentations.level(stack,AdditionalAbilities.GHOSTWALK)-4));expires=level.getGameTime()+duration;previous=copy(player.getEffect(MobEffects.INVISIBILITY));}
     }
     private static final Map<UUID,Ghost> GHOSTS=new HashMap<>();
     private static final Set<UUID> INTERNAL=new HashSet<>();
@@ -25,7 +25,7 @@ public final class GhostwalkEvents {
     private static MobEffectInstance copy(MobEffectInstance effect) {return effect==null?null:MobEffectInstance.load((net.minecraft.nbt.CompoundTag)effect.save());}
     private static void add(ServerPlayer player,MobEffectInstance effect) {INTERNAL.add(player.getUUID());try {player.addEffect(effect);} finally {INTERNAL.remove(player.getUUID());}}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
-        if(active(player)) return false;var ghost=new Ghost(player,stack);GHOSTS.put(player.getUUID(),ghost);player.removeEffect(MobEffects.INVISIBILITY);add(player,new MobEffectInstance(MobEffects.INVISIBILITY,ghost.duration,0));ghost.owned=player.getEffect(MobEffects.INVISIBILITY);
+        if(active(player)) return false;var ghost=new Ghost(player,stack);GHOSTS.put(player.getUUID(),ghost);player.removeEffect(MobEffects.INVISIBILITY);add(player,new MobEffectInstance(MobEffects.INVISIBILITY,ghost.duration,JadeAugments.amplifier(stack,AdditionalAbilities.GHOSTWALK,0)));ghost.owned=player.getEffect(MobEffects.INVISIBILITY);
         if(ghost.owned==null) {cancel(player.getUUID());return false;}return true;
     }
     public static boolean active(ServerPlayer player) {

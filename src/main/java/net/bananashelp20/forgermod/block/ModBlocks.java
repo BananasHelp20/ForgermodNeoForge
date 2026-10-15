@@ -83,6 +83,13 @@ public class ModBlocks {
     public static final DeferredBlock<Block> TAIFUNITE_BLOCK = createSimpleBlock("taifunite_block", 45f, 50, SoundType.METAL);
 
     //ores
+    public static final DeferredBlock<Block> METEORIC_IRON_STONE_ORE = createSimpleBlock("meteoric_iron_stone_ore", 3.0f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> METEORIC_IRON_END_ORE = createSimpleBlock("meteoric_iron_end_ore", 3.0f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> TITANIUM_STONE_ORE = createSimpleBlock("titanium_stone_ore", 3.0f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> TITANIUM_DEEPSLATE_ORE = createSimpleBlock("titanium_deepslate_ore", 4.5f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> TUNGSTEN_STONE_ORE = createSimpleBlock("tungsten_stone_ore", 3.0f, 6, SoundType.STONE);
+    public static final DeferredBlock<Block> TUNGSTEN_DEEPSLATE_ORE = createSimpleBlock("tungsten_deepslate_ore", 4.5f, 6, SoundType.DEEPSLATE);
+    public static final DeferredBlock<Block> DOLOMITE_STONE_ORE = createSimpleBlock("dolomite_stone_ore", 2.5f, 6, SoundType.STONE);
     public static final DeferredBlock<Block> JADE_END_ORE = createSimpleBlock("jade_end_ore",3.0f, 9, SoundType.STONE);
     public static final DeferredBlock<Block> JADE_NETHER_ORE = createSimpleBlock("jade_nether_ore",3.0f, 3, SoundType.NETHER_ORE);
     public static final DeferredBlock<Block> JADE_STONE_ORE = createSimpleBlock("jade_stone_ore",1.5f, 6, SoundType.STONE);

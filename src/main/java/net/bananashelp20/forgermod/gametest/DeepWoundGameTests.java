@@ -35,7 +35,8 @@ public class DeepWoundGameTests {
                 float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);player.attack(target);
                 var slow=target.getEffect(MobEffects.MOVEMENT_SLOWDOWN);
                 test.assertTrue(Math.abs(target.getHealth()-(1000-damage*3))<.001,"Actual critical lacks doubled damage: "+target.getHealth()+" base="+damage);
-                test.assertTrue(slow!=null && slow.getDuration()==100 && slow.getAmplifier()==2,"Actual critical lacks Slowness III");
+                int jade=net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack)?1:0;
+                test.assertTrue(slow!=null && slow.getDuration()==100+20*jade && slow.getAmplifier()==2+jade,"Actual critical lacks expected Slowness");
                 test.assertFalse(weapon(player).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Actual critical retains charge");
             } finally {
                 net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
@@ -86,7 +87,8 @@ public class DeepWoundGameTests {
             test.assertFalse(player.hasEffect(MobEffects.MOVEMENT_SLOWDOWN), "Activating slowed the attacker");
             CriticalHitEvent event = hit(test, player, target, true);
             var slow = target.getEffect(MobEffects.MOVEMENT_SLOWDOWN);
-            test.assertTrue(slow != null && slow.getDuration() == 100 && slow.getAmplifier() == 2, "Target did not receive five seconds of Slowness III");
+            int jade=net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(player.getMainHandItem())?1:0;
+            test.assertTrue(slow != null && slow.getDuration() == 100+20*jade && slow.getAmplifier() == 2+jade, "Target received the wrong Slowness level or duration");
             test.assertTrue(event.getDamageMultiplier() == 3 && target.getHealth() == 70, "Deep Wound lost doubled critical damage");
             test.assertFalse(player.hasEffect(MobEffects.MOVEMENT_SLOWDOWN), "Deep Wound slowed the attacker");
             test.assertFalse(weapon(player).isAbilityActive(player, WeaponAbilitySlot.PRIMARY), "Charge was not consumed");

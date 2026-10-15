@@ -9,6 +9,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import static net.bananashelp20.forgermod.item.ModSpecialRegistry.*;
@@ -146,6 +148,14 @@ public class ModItems {
     public static final DeferredItem<Item> HANDLE = createItemWithDescription("handle", "tooltips.forgermod.handle.tooltip");
     public static final DeferredItem<Item> ADVANCED_HANDLE = createItemWithDescription("advanced_handle", "tooltips.forgermod.advanced_handle.tooltip");
     public static final DeferredItem<Item> RAW_METEORIC_IRON = createItem("raw_meteoric_iron");
+    public static final DeferredItem<Item> RAW_TITANIUM = createItem("raw_titanium");
+    public static final DeferredItem<Item> RAW_TUNGSTEN = createItem("raw_tungsten");
+    public static final DeferredItem<Item> DOLOMITE = createItem("dolomite");
+    public static final DeferredItem<Item> MAGNESIUM = createItem("magnesium");
+    public static final DeferredItem<Item> TITANIUM_SPONGE = createItem("titanium_sponge");
+    public static final DeferredItem<Item> TUNGSTEN_POWDER = createItem("tungsten_powder");
+    public static final DeferredItem<Item> REINFORCED_IRON_BILLET = createItem("reinforced_iron_billet");
+    public static final DeferredItem<Item> DAMASK_BILLET = createItem("damask_billet");
 
     //refined/reinforced metals or end products
     public static final DeferredItem<Item> DAMASK_INGOT = createItem("damask_ingot");
@@ -350,6 +360,54 @@ public class ModItems {
     public static final DeferredItem<SwordItem> LEAFCUTTER_DAGGER_AMBER = createSpecialSwordItem("overgrown_dagger_amber",() -> new LushWeapon("amber", "dagger"));
     public static final DeferredItem<SwordItem> LEAFCUTTER_DAGGER_AMETHYST = createSpecialSwordItem("overgrown_dagger_amethyst",() -> new LushWeapon("amethyst", "dagger"));
     public static final DeferredItem<SwordItem> LEAFCUTTER_DAGGER_JADE = createSpecialSwordItem("overgrown_dagger_jade",() -> new LushWeapon("jade", "dagger"));
+
+    public record ToolSet(DeferredItem<PickaxeItem> pickaxe, DeferredItem<AxeItem> axe,
+                          DeferredItem<HoeItem> hoe, DeferredItem<SwordItem> sword,
+                          Supplier<? extends net.minecraft.world.level.ItemLike> material) {}
+
+    private static ToolSet toolSet(String name, Tier tier, Supplier<? extends net.minecraft.world.level.ItemLike> material,
+                                   DeferredItem<SwordItem> existingSword) {
+        DeferredItem<PickaxeItem> pickaxe = ITEMS.register(name + "_pickaxe", () -> new PickaxeItem(tier,
+                new Item.Properties().attributes(PickaxeItem.createAttributes(tier, 1, -2.8f))));
+        DeferredItem<AxeItem> axe = ITEMS.register(name + "_axe", () -> new AxeItem(tier,
+                new Item.Properties().attributes(AxeItem.createAttributes(tier, 6, -3.0f))) {
+            @Override
+            public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+                WeaponTooltips.ordinaryPassives(stack, tooltip, WeaponTooltips.descriptionsVisible());
+                super.appendHoverText(stack, context, tooltip, flag);
+            }
+        });
+        DeferredItem<HoeItem> hoe = ITEMS.register(name + "_hoe", () -> new HoeItem(tier,
+                new Item.Properties().attributes(HoeItem.createAttributes(tier, -2, -1.0f))));
+        DeferredItem<SwordItem> sword = existingSword == null
+                ? createSwordItem(name + "_sword", tier, 3, "meteoric_iron".equals(name) ? 1.65f : 1.6f)
+                : existingSword;
+        return new ToolSet(pickaxe, axe, hoe, sword, material);
+    }
+
+    private static Map<String, ToolSet> createToolSets() {
+        Map<String, ToolSet> sets = new LinkedHashMap<>();
+        sets.put("scrap", toolSet("scrap", ModToolTiers.SCRAP, SCRAP_INGOT, SCRAP_SWORD));
+        sets.put("meteoric_iron", toolSet("meteoric_iron", ModToolTiers.METEORIC_IRON, METEORIC_IRON_INGOT, null));
+        sets.put("reinforced_iron", toolSet("reinforced_iron", ModToolTiers.REINFORCED_IRON, REINFORCED_IRON_INGOT, REINFORCED_IRON_SWORD));
+        sets.put("steel", toolSet("steel", ModToolTiers.STEEL, STEEL_INGOT, STEEL_SWORD));
+        sets.put("damask", toolSet("damask", ModToolTiers.DAMASK, DAMASK_INGOT, DAMASK_SWORD));
+        sets.put("titanium", toolSet("titanium", ModToolTiers.TITANIUM, TITANIUM_INGOT, null));
+        sets.put("tungsten", toolSet("tungsten", ModToolTiers.TUNGSTEN, TUNGSTEN_INGOT, null));
+        sets.put("carbon_steel", toolSet("carbon_steel", ModToolTiers.CARBON_STEEL, CARBON_STEEL_INGOT, null));
+        sets.put("inanisium", toolSet("inanisium", ModToolTiers.INANISIUM, INANISIUM_INGOT, null));
+        sets.put("ignisium", toolSet("ignisium", ModToolTiers.IGNISIUM, IGNISIUM_INGOT, null));
+        sets.put("morsium", toolSet("morsium", ModToolTiers.MORSIUM, MORSIUM_INGOT, null));
+        sets.put("somnium", toolSet("somnium", ModToolTiers.SOMNIUM, SOMNIUM_INGOT, null));
+        sets.put("vulnusium", toolSet("vulnusium", ModToolTiers.VULNUSIUM, VULNUSIUM_INGOT, null));
+        sets.put("lush", toolSet("lush", ModToolTiers.LUSH, LUSH_INGOT, null));
+        sets.put("pulsite", toolSet("pulsite", ModToolTiers.PULSITE, PULSITE_INGOT, null));
+        sets.put("electrium", toolSet("electrium", ModToolTiers.ELECTRIUM, ELECTRIUM_INGOT, null));
+        sets.put("taifunite", toolSet("taifunite", ModToolTiers.TAIFUNITE, TAIFUNITE_INGOT, null));
+        return java.util.Collections.unmodifiableMap(sets);
+    }
+
+    public static final Map<String, ToolSet> TOOL_SETS = createToolSets();
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

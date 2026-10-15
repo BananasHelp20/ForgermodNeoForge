@@ -21,7 +21,8 @@ public class BloodRushGameTests {
             player.setHealth(20);player.removeEffect(MobEffects.MOVEMENT_SPEED);player.setItemInHand(InteractionHand.MAIN_HAND,fresh);test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.BLOOD_RUSH),"Fresh weapon grants Rush");
             player.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.ABSORPTION,200,0));player.setAbsorptionAmount(4);
             var stack=Augmentations.apply(fresh,AdditionalAbilities.BLOOD_RUSH);player.setItemInHand(InteractionHand.MAIN_HAND,stack);test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.BLOOD_RUSH),"Rush refused");
-            test.assertTrue(player.getHealth()==18 && player.getAbsorptionAmount()==4 && player.getEffect(MobEffects.MOVEMENT_SPEED).getAmplifier()==1 && player.getEffect(MobEffects.MOVEMENT_SPEED).getDuration()==200,"Cost or Speed II duration wrong");
+            int jade=JadeAugments.isJade(stack)?1:0;
+            test.assertTrue(player.getHealth()==18 && player.getAbsorptionAmount()==4 && player.getEffect(MobEffects.MOVEMENT_SPEED).getAmplifier()==1+jade && player.getEffect(MobEffects.MOVEMENT_SPEED).getDuration()==200+20*jade,"Cost or Speed duration wrong");
             player.setHealth(2);player.removeEffect(MobEffects.MOVEMENT_SPEED);test.assertFalse(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.BLOOD_RUSH),"Lethal cost permitted");test.assertTrue(player.getHealth()==2 && !player.hasEffect(MobEffects.MOVEMENT_SPEED),"Rejected use changes health or speed");
         }} finally {player.setHealth(20);player.server.getPlayerList().remove(player);}
         test.assertTrue(count==10,"Skipped variants");test.succeed();

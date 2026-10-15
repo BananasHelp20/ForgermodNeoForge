@@ -92,6 +92,13 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
                 .apply(CopyBlockState.copyState(ModBlocks.ANCIENT_SWORD_STAND.get()).copy(AncientSwordStandBlock.FULL)));
 
         //ores
+        add(ModBlocks.METEORIC_IRON_STONE_ORE.get(), createOreDrop(ModBlocks.METEORIC_IRON_STONE_ORE.get(), ModItems.RAW_METEORIC_IRON.get()));
+        add(ModBlocks.METEORIC_IRON_END_ORE.get(), createOreDrop(ModBlocks.METEORIC_IRON_END_ORE.get(), ModItems.RAW_METEORIC_IRON.get()));
+        add(ModBlocks.TITANIUM_STONE_ORE.get(), createOreDrop(ModBlocks.TITANIUM_STONE_ORE.get(), ModItems.RAW_TITANIUM.get()));
+        add(ModBlocks.TITANIUM_DEEPSLATE_ORE.get(), createOreDrop(ModBlocks.TITANIUM_DEEPSLATE_ORE.get(), ModItems.RAW_TITANIUM.get()));
+        add(ModBlocks.TUNGSTEN_STONE_ORE.get(), createOreDrop(ModBlocks.TUNGSTEN_STONE_ORE.get(), ModItems.RAW_TUNGSTEN.get()));
+        add(ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get(), createOreDrop(ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get(), ModItems.RAW_TUNGSTEN.get()));
+        add(ModBlocks.DOLOMITE_STONE_ORE.get(), createOreDrop(ModBlocks.DOLOMITE_STONE_ORE.get(), ModItems.DOLOMITE.get()));
         dropOther(ModBlocks.RUBY_END_ORE.get(), ModItems.RUBY_GEMSTONE.get());
         dropOther(ModBlocks.RUBY_NETHER_ORE.get(), ModItems.RUBY_GEMSTONE.get());
         dropOther(ModBlocks.RUBY_STONE_ORE.get(), ModItems.RUBY_GEMSTONE.get());

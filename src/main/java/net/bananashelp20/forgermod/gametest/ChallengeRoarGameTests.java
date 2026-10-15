@@ -32,10 +32,12 @@ public class ChallengeRoarGameTests {
             var fresh=new ItemStack(entry.get());boolean eligible=entry.get() instanceof PulsiteWeapon;
             test.assertTrue(Augmentations.pool(fresh).stream().anyMatch(a->a.id().equals(AdditionalAbilities.CHALLENGE_ROAR))==eligible,"Wrong Challenge Roar pool");if(!eligible)continue;count++;
             for(var mob:mobs)mob.setTarget(null);neutral.setTarget(otherPlayer);piglin.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);warden.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
+            player.removeEffect(MobEffects.DAMAGE_BOOST);
             player.setItemInHand(InteractionHand.MAIN_HAND,fresh);test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.CHALLENGE_ROAR),"Fresh weapon taunts");
             var stack=Augmentations.apply(fresh,AdditionalAbilities.CHALLENGE_ROAR);player.setItemInHand(InteractionHand.MAIN_HAND,stack);test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.CHALLENGE_ROAR),"Roar rejected");
             var strength=player.getEffect(MobEffects.DAMAGE_BOOST);
-            test.assertTrue(strength!=null && strength.getAmplifier()==0 && strength.getDuration()==200,"Roar did not grant Strength I for ten seconds");
+            int jade=JadeAugments.isJade(stack)?1:0;
+            test.assertTrue(strength!=null && strength.getAmplifier()==jade && strength.getDuration()==200+20*jade,"Roar granted the wrong Strength level or duration");
             test.assertTrue(visible.getTarget()==player && hidden.getTarget()==player && nearEdge.getTarget()==player && piglin.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null)==player && piglin.getBrain().getMemory(MemoryModuleType.ANGRY_AT).orElse(null).equals(player.getUUID()) && warden.getTarget()==player,"Ordinary, hidden, distant-in-range or brain-driven mob ignores taunt");
             test.assertTrue(outside.getTarget()==null && cow.getTarget()==null && pet.getTarget()==null && neutral.getTarget()==otherPlayer,"Roar affects out-of-range, passive, neutral or allied mob");
             visible.setTarget(cow);WeaponControlLocks.acquire(visible,player.getUUID(),"taunt-test",20);

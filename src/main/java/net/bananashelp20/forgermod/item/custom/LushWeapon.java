@@ -95,7 +95,9 @@ public class LushWeapon extends SwordItemWithEffect {
             ROOTS.root(player.getUUID(), mob.getUUID(), mob.getX(), mob.getZ(), now);
             RootingRootsVisuals.grow(player.getUUID(), mob);
             mob.getNavigation().stop();
-            mob.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 0));
+            mob.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(stack,
+                    "tooltips.forgermod.ability.rooting_roots",
+                    new MobEffectInstance(MobEffects.POISON, 200, 0)));
             player.serverLevel().sendParticles(ParticleTypes.COMPOSTER,
                     mob.getX(), mob.getY() + 0.2, mob.getZ(), 12, 0.4, 0.1, 0.4, 0.03);
         }
@@ -148,7 +150,9 @@ public class LushWeapon extends SwordItemWithEffect {
                 || !(player.getMainHandItem().getItem() instanceof LushWeapon weapon)
                 || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.poisoned_vein")) return;
         CLOUDS.createOnKill(player.getUUID(), mob.level().dimension(),
-                mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), mob.level().getGameTime());
+                mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), mob.level().getGameTime(),
+                net.bananashelp20.forgermod.augmentation.JadeAugments.bonus(player.getMainHandItem(),
+                        "tooltips.forgermod.ability.poisoned_vein") > 0);
     }
 
     @SubscribeEvent
@@ -164,7 +168,8 @@ public class LushWeapon extends SwordItemWithEffect {
             for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area)) {
                 if (!target.isAlive()
                         || target.distanceToSqr(cloud.x(), cloud.y(), cloud.z()) > 9) continue;
-                target.addEffect(new MobEffectInstance(MobEffects.POISON, 600, 0));
+                target.addEffect(new MobEffectInstance(MobEffects.POISON,
+                        cloud.jade() ? 620 : 600, cloud.jade() ? 1 : 0));
             }
         }
     }

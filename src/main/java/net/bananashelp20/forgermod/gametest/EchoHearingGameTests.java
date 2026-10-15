@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.gametest;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
@@ -72,7 +73,7 @@ public class EchoHearingGameTests {
                         || mob.hasEffect(MobEffects.GLOWING) || drop.isCurrentlyGlowing(), "Activation revealed a silent entity");
                 noise(test, GameEvent.STEP, mob);
                 test.assertTrue(mob.getEffect(MobEffects.GLOWING) != null
-                        && mob.getEffect(MobEffects.GLOWING).getDuration() == 40, "Noisy mob did not glow for two seconds");
+                        && mob.getEffect(MobEffects.GLOWING).getDuration() == 40+(JadeAugments.isJade(learned)?20:0), "Noisy mob received the wrong glowing duration");
                 noise(test, GameEvent.STEP, otherPlayer);
                 test.assertTrue(otherPlayer.hasEffect(MobEffects.GLOWING), "Noisy other player was excluded");
                 noise(test, GameEvent.STEP, wielder);

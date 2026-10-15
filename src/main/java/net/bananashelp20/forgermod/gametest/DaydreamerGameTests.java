@@ -26,7 +26,8 @@ public class DaydreamerGameTests {
                 if(!eligible) continue;count++;player.setItemInHand(InteractionHand.MAIN_HAND,fresh);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
                 test.assertFalse(player.hasEffect(MobEffects.JUMP),"Fresh axe gives Jump Boost");
                 var stack=Augmentations.apply(fresh,AdditionalAbilities.DAYDREAMER);player.setItemInHand(InteractionHand.MAIN_HAND,stack);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
-                test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==0 && player.getEffect(MobEffects.JUMP).isInfiniteDuration(),"Missing daytime Jump Boost I");
+                int expectedAmplifier=JadeAugments.isJade(stack)?1:0;
+                test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==expectedAmplifier && player.getEffect(MobEffects.JUMP).isInfiniteDuration(),"Missing daytime Jump Boost");
                 test.getLevel().setDayTime(13000);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));test.assertFalse(player.hasEffect(MobEffects.JUMP),"Night retains Jump Boost");test.getLevel().setDayTime(6000);
                 player.addEffect(new MobEffectInstance(MobEffects.JUMP,200,0));DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
                 player.addEffect(new MobEffectInstance(MobEffects.JUMP,100,2));DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));

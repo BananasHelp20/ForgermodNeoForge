@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,7 +70,8 @@ public final class SkullThrowEvents {
             var obstruction=player.level().clip(new ClipContext(point,target.getBoundingBox().getCenter(),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));
             if(obstruction.getType()!=HitResult.Type.MISS) continue;
             if(target.hurt(player.damageSources().indirectMagic(player,player),flight.damage()))
-                target.addEffect(new MobEffectInstance(MobEffects.WITHER,100,0),player);
+                target.addEffect(JadeAugments.reinforce(flight.stack(),AdditionalAbilities.SKULL_THROW,
+                        new MobEffectInstance(MobEffects.WITHER,100,0)),player);
         }
         player.serverLevel().sendParticles(ParticleTypes.SOUL,point.x,point.y,point.z,45,radius*.4,radius*.4,radius*.4,.06);
         player.serverLevel().sendParticles(ParticleTypes.EXPLOSION,point.x,point.y,point.z,1,0,0,0,0);

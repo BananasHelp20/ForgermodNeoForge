@@ -58,7 +58,8 @@ public final class GardenersEvents {
   var pos=victim.position(); g.plant=new Plant(g.level); g.plant.setPos(pos.x-.5,pos.y,pos.z-.5);
   g.cloud=new PoisonCloud(g.level,pos.x,pos.y,pos.z); g.cloud.setOwner(player); g.cloud.setWaitTime(0); g.cloud.setDuration(6000);
   g.cloud.setRadius(2F+.5F*(Augmentations.level(g.stack,RecommendedAbilities.GARDENERS)-1)); g.cloud.setRadiusOnUse(0); g.cloud.setRadiusPerTick(0);
-  g.cloud.setDurationOnUse(0); g.cloud.addEffect(new MobEffectInstance(MobEffects.POISON,400,0));
+  g.cloud.setDurationOnUse(0); g.cloud.addEffect(JadeAugments.reinforce(g.stack,RecommendedAbilities.GARDENERS,
+          new MobEffectInstance(MobEffects.POISON,400,0)));
   g.expires=g.level.getGameTime()+6000;
   g.level.addFreshEntity(g.plant); g.level.addFreshEntity(g.cloud);
  }

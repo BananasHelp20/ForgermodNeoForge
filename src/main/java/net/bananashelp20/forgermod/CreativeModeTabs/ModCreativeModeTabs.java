@@ -1,6 +1,8 @@
 package net.bananashelp20.forgermod.CreativeModeTabs;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.ModItems;
+import net.bananashelp20.forgermod.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -34,6 +36,18 @@ public class ModCreativeModeTabs {
                         for (int i = 0; i < ingredientTabRegister.length; i++) {
                             output.accept(ingredientTabRegister[i]);
                         }
+                        output.accept(ModItems.RAW_METEORIC_IRON.get());
+                        output.accept(ModItems.METEORIC_IRON_INGOT.get());
+                        output.accept(ModItems.RAW_TITANIUM.get());
+                        output.accept(ModItems.TITANIUM_INGOT.get());
+                        output.accept(ModItems.RAW_TUNGSTEN.get());
+                        output.accept(ModItems.TUNGSTEN_INGOT.get());
+                        output.accept(ModItems.DOLOMITE.get());
+                        output.accept(ModItems.MAGNESIUM.get());
+                        output.accept(ModItems.TITANIUM_SPONGE.get());
+                        output.accept(ModItems.TUNGSTEN_POWDER.get());
+                        output.accept(ModItems.REINFORCED_IRON_BILLET.get());
+                        output.accept(ModItems.DAMASK_BILLET.get());
                     }).build());
 
     public static final Supplier<CreativeModeTab> FORGER_MOD_WEAPONS_TAB = CREATIVE_MODE_TABS.register("forger_mod_weapons_tab",
@@ -44,6 +58,15 @@ public class ModCreativeModeTabs {
                         ItemLike[] register = RegistryClass.getWeaponTabRegister();
                         for (int i = 0; i < register.length; i++) {
                             if (!isGemstoneVariant(register[i])) output.accept(register[i]);
+                        }
+                        for (var entry : ModItems.TOOL_SETS.entrySet()) {
+                            var set = entry.getValue();
+                            output.accept(set.pickaxe().get());
+                            output.accept(set.axe().get());
+                            output.accept(set.hoe().get());
+                            if (!java.util.Set.of("scrap", "reinforced_iron", "steel", "damask").contains(entry.getKey())) {
+                                output.accept(set.sword().get());
+                            }
                         }
                     }).build()
     );
@@ -81,6 +104,13 @@ public class ModCreativeModeTabs {
                         for (int i = 0; i < register.length; i++) {
                             if (!isGemstoneVariant(register[i])) output.accept(register[i]);
                         }
+                        output.accept(ModBlocks.METEORIC_IRON_STONE_ORE.get());
+                        output.accept(ModBlocks.METEORIC_IRON_END_ORE.get());
+                        output.accept(ModBlocks.TITANIUM_STONE_ORE.get());
+                        output.accept(ModBlocks.TITANIUM_DEEPSLATE_ORE.get());
+                        output.accept(ModBlocks.TUNGSTEN_STONE_ORE.get());
+                        output.accept(ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get());
+                        output.accept(ModBlocks.DOLOMITE_STONE_ORE.get());
                     }).build()
     );
 }

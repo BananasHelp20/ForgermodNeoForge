@@ -69,7 +69,7 @@ public class WeaponAttackSpeedGameTests {
         double rustyDagger = equip(player, ModItems.RUSTY_DAGGER.get());
         test.assertTrue(rustyAxe < rustyClaymore && rustyClaymore < rustyDagger, "Rusty weapons do not follow axe < claymore < dagger");
         test.assertTrue(Math.abs(axe - .9) < .00001 && Math.abs(rustyAxe - .6) < .00001, "Ordinary axes did not receive usable speeds");
-        test.assertTrue(Math.abs(equip(player, ModItems.STEEL_SWORD.get()) - 1.6) < .00001, "Ordinary sword speed changed");
+        test.assertTrue(Math.abs(equip(player, ModItems.STEEL_SWORD.get()) - 1.75) < .00001, "Steel sword speed changed");
         test.assertTrue(Math.abs(equip(player, ModItems.STUMPFL_BAT.get()) - 3) < .00001, "Creative bat speed changed");
         test.succeed();
     }

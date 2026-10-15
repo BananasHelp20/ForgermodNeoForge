@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.block.entity.custom;
 import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.screen.custom.InfusionTableMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -209,7 +210,9 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     private boolean isValidRecipe(Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN
         if (recipeOutputs.length == recipeInputs.length) {
             for (int i = 0; i < recipeInputs.length; i++) {
-                if (itemHandler.getStackInSlot(GEMSTONE_SLOT).is(recipeInputs[i][0]) && itemHandler.getStackInSlot(TEMPLATE_SLOT).is(recipeInputs[i][2]) && itemHandler.getStackInSlot(GEAR_SLOT).is(recipeInputs[i][1])) {
+                if (itemHandler.getStackInSlot(GEMSTONE_SLOT).is(recipeInputs[i][0]) && itemHandler.getStackInSlot(TEMPLATE_SLOT).is(recipeInputs[i][2]) && itemHandler.getStackInSlot(GEAR_SLOT).is(recipeInputs[i][1])
+                        && (recipeInputs[i][0] != ModItems.JADE_GEMSTONE.get()
+                        || JadeAugments.canInfuse(itemHandler.getStackInSlot(GEAR_SLOT)))) {
                     recipeUsed = i;
                     return true;
                 }

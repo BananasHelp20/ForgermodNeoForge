@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -62,7 +63,9 @@ public final class WeaponFireResistanceEvents {
             grant=new Grant(current); GRANTS.put(player.getUUID(),grant);
         }
         if(current==null || !current.isInfiniteDuration()) {
-            add(player,new MobEffectInstance(MobEffects.FIRE_RESISTANCE,-1,current==null?0:current.getAmplifier(),false,false,true));
+            ItemStack source=held(player.getMainHandItem(),1)?player.getMainHandItem():player.getOffhandItem();
+            add(player,JadeAugments.reinforce(source,RecommendedAbilities.FIRE_RESISTANCE,
+                    new MobEffectInstance(MobEffects.FIRE_RESISTANCE,-1,current==null?0:current.getAmplifier(),false,false,true)));
             grant.owned=player.getEffect(MobEffects.FIRE_RESISTANCE);
         }
         // Track independently acquired effects while our infinite grant masks their ordinary timer.

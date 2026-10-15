@@ -53,7 +53,7 @@ public class AxeChargedStrikeGameTests {
     private static void clear(ServerPlayer player) {AxeHeavyNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));}
 
     @GameTest(template="riftfang_test")
-    public static void allFortySevenAxesRequireFullChargeForEveryComboStep(GameTestHelper test) throws Exception {
+    public static void allAxesRequireFullChargeForEveryComboStep(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
         player.setPos(origin);player.setNoGravity(true);player.setYRot(0);player.setXRot(0);
         test.setBlock(new BlockPos(8,4,10),Blocks.STONE);int checked=0;
@@ -79,7 +79,7 @@ public class AxeChargedStrikeGameTests {
                 test.assertTrue(count(player)==0,"Third swing retains charged progress");swing(player);test.assertTrue(count(player)==0,"Duplicate third packet charges next combo");
             }
         } finally {clear(player);player.server.getPlayerList().remove(player);}
-        test.assertTrue(checked==47,"Skipped axe variants: "+checked);test.succeed();
+        test.assertTrue(checked==47+ModItems.TOOL_SETS.size(),"Skipped axe variants: "+checked);test.succeed();
     }
 
     @GameTest(template="riftfang_test")

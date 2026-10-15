@@ -28,7 +28,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.VACUUM_BURST.equals(id)) return VacuumBurstAbility.activate(player,stack);
         if (AdditionalAbilities.FEATHER_SHELTER.equals(id)) return FeatherShelterAbility.activate(player,stack);
         if (AdditionalAbilities.POCKET_STORM.equals(id)) return PocketStormEvents.activate(player,stack);
-        if (AdditionalAbilities.BLOOD_RUSH.equals(id)) return BloodRushAbility.activate(player);
+        if (AdditionalAbilities.BLOOD_RUSH.equals(id)) return BloodRushAbility.activate(player,stack);
         if (AdditionalAbilities.BLOOD_SACRAFICE.equals(id)) return BloodSacrificeEvents.activate(player,stack);
         if (AdditionalAbilities.GREEN_FEAST.equals(id)) return GreenFeastAbility.activate(player);
         if (AdditionalAbilities.GHOSTWALK.equals(id)) return GhostwalkEvents.activate(player,stack);

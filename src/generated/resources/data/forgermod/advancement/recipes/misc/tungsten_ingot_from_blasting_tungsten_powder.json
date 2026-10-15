@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "forgermod:tungsten_ingot_from_blasting_tungsten_powder"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tungsten_powder": {
+      "conditions": {
+        "items": [
+          {
+            "items": "forgermod:tungsten_powder"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tungsten_powder"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "forgermod:tungsten_ingot_from_blasting_tungsten_powder"
+    ]
+  }
+}

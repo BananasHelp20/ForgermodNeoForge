@@ -40,14 +40,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     protected static final List<ItemLike> DAMASK_SMELTABLES = List.of(
-            ModItems.SCRAP_INGOT.get(),
+            ModItems.DAMASK_BILLET.get(),
             ModItems.DAMASK_SWORD.get(),
             ModItems.DAMASK_KNIFE.get(),
             ModItems.HANDLE.get()
     );
 
     protected static final List<ItemLike> REINFORCED_IRON_SMELTABLES = List.of(
-            ModItems.SCRAP_IRON_INGOT.get(),
+            ModItems.REINFORCED_IRON_BILLET.get(),
             ModItems.REINFORCED_IRON_SWORD.get()
     );
 
@@ -67,9 +67,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     );
 
     protected static final List<ItemLike> TITANIUM_SMELTABLES = List.of(
+            ModItems.TITANIUM_SPONGE.get()
     );
 
     protected static final List<ItemLike> TUNGSTEN_SMELTABLES = List.of(
+            ModItems.TUNGSTEN_POWDER.get()
     );
 
     protected static final List<ItemLike> METEORIC_IRON_SMELTABLES = List.of(
@@ -117,20 +119,49 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         shapedRecipes(pRecipeOutput);
         shapelessRecipes(pRecipeOutput);
         smeltingAndBlastingRecipes(pRecipeOutput);
+        toolRecipes(pRecipeOutput);
+    }
+
+    private static void toolRecipes(RecipeOutput output) {
+        for (var entry : ModItems.TOOL_SETS.entrySet()) {
+            var set = entry.getValue();
+            ItemLike material = set.material().get();
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, set.pickaxe().get())
+                    .pattern("MMM").pattern(" S ").pattern(" S ")
+                    .define('M', material).define('S', Items.STICK)
+                    .unlockedBy(getHasName(material), has(material)).save(output);
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, set.axe().get())
+                    .pattern("MM").pattern("MS").pattern(" S")
+                    .define('M', material).define('S', Items.STICK)
+                    .unlockedBy(getHasName(material), has(material)).save(output);
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, set.hoe().get())
+                    .pattern("MM").pattern(" S").pattern(" S")
+                    .define('M', material).define('S', Items.STICK)
+                    .unlockedBy(getHasName(material), has(material)).save(output);
+            if (set.sword().getId().getPath().endsWith("_sword")
+                    && !List.of("reinforced_iron", "steel", "damask").contains(entry.getKey())) {
+                ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, set.sword().get())
+                        .pattern("M").pattern("M").pattern("S")
+                        .define('M', material).define('S', Items.STICK)
+                        .unlockedBy(getHasName(material), has(material)).save(output);
+            }
+        }
     }
 
     private static void smeltingAndBlastingRecipes(RecipeOutput output) {
-        oreSmelting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 0.5f, 200, "damask_ingot");
         oreBlasting(output, DAMASK_SMELTABLES, RecipeCategory.MISC, ModItems.DAMASK_INGOT.get(), 1f, 100, "damask_ingot");
 
-        oreSmelting(output, METEORIC_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.METEORIC_IRON_INGOT.get(), 0.5f, 250, "damask_ingot");
-        oreBlasting(output, METEORIC_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.METEORIC_IRON_INGOT.get(), 3f, 150, "damask_ingot");
+        oreSmelting(output, METEORIC_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.METEORIC_IRON_INGOT.get(), 0.5f, 250, "meteoric_iron_ingot");
+        oreBlasting(output, METEORIC_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.METEORIC_IRON_INGOT.get(), 0.5f, 125, "meteoric_iron_ingot");
 
         oreBlasting(output, CARBON_STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.CARBON_STEEL_INGOT.get(), 1f, 100, "carbon_steel_ingot");
         oreBlasting(output, STEEL_SMELTABLES, RecipeCategory.MISC, ModItems.STEEL_INGOT.get(), 1f, 100, "steel_ingot");
 
-        oreSmelting(output, REINFORCED_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 0.5f, 200, "reinforced_iron_ingot");
         oreBlasting(output, REINFORCED_IRON_SMELTABLES, RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT.get(), 1f, 100, "reinforced_iron_ingot");
+        oreBlasting(output, TITANIUM_SMELTABLES, RecipeCategory.MISC, ModItems.TITANIUM_INGOT.get(), 1f, 150, "titanium_ingot");
+        oreBlasting(output, TUNGSTEN_SMELTABLES, RecipeCategory.MISC, ModItems.TUNGSTEN_INGOT.get(), 1f, 150, "tungsten_ingot");
+        oreSmelting(output, List.of(ModItems.DOLOMITE.get()), RecipeCategory.MISC, ModItems.MAGNESIUM.get(), 0.3f, 200, "magnesium");
+        oreBlasting(output, List.of(ModItems.DOLOMITE.get()), RecipeCategory.MISC, ModItems.MAGNESIUM.get(), 0.3f, 100, "magnesium");
 
         oreSmelting(output, JADE_SMELTABLES, RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
         oreBlasting(output, JADE_SMELTABLES, RecipeCategory.MISC, ModItems.JADE_GEMSTONE.get(), 2f, 100, "jade_gemstone");
@@ -151,23 +182,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     private static void shapedRecipes(RecipeOutput output) {
         //weapons
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.REINFORCED_IRON_SWORD.get())
-                .pattern(" D ")
-                .pattern("CAC")
-                .pattern(" D ")
-                .define('A', ModItems.SCRAP_IRON_SWORD.get())
-                .define('C', Items.IRON_INGOT)
+                .pattern("D")
+                .pattern("D")
+                .pattern("S")
+                .define('S', Items.STICK)
                 .define('D', ModItems.REINFORCED_IRON_INGOT.get())
                 .unlockedBy(getHasName(ModItems.REINFORCED_IRON_INGOT.get()), has(ModItems.REINFORCED_IRON_INGOT.get())).save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SCRAP_IRON_SWORD.get())
-                .pattern(" B ")
-                .pattern("CAC")
-                .pattern(" B ")
-                .define('A', Items.IRON_SWORD)
-                .define('C', Items.COPPER_INGOT)
-                .define('B', ModItems.SCRAP_IRON_INGOT.get())
-                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
-                .unlockedBy(getHasName(ModItems.SCRAP_IRON_INGOT.get()), has(ModItems.SCRAP_IRON_INGOT.get())).save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DAMASK_SWORD.get())
                 .pattern("A")
@@ -270,29 +290,41 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         //ingredients
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNREFINED_CARBON_STEEL.get())
-                .pattern("BAA")
+                .pattern("AAA")
                 .pattern("ACA")
-                .pattern("AAB")
-                .define('A', Items.COAL_BLOCK)
-                .define('B', Items.DIAMOND)
+                .pattern("AAA")
+                .define('A', Items.CHARCOAL)
                 .define('C', ModItems.STEEL_INGOT.get())
-                .unlockedBy(getHasName(ModItems.UNREFINED_STEEL.get()), has(ModItems.UNREFINED_STEEL.get()))
-                .unlockedBy(getHasName(Items.DIAMOND), has(Items.DIAMOND))
-                .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
+                .unlockedBy(getHasName(ModItems.STEEL_INGOT.get()), has(ModItems.STEEL_INGOT.get()))
                 .save(output, ForgerMod.MOD_ID + ":unrefined_carbon_steel_from_primal_crafting");
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNREFINED_STEEL.get())
                 .pattern("ABA")
-                .pattern("BCB")
-                .pattern("ABA")
                 .define('A', Items.IRON_INGOT)
-                .define('B', Items.COAL_BLOCK)
-                .define('C', Items.NETHERITE_SCRAP)
-                .unlockedBy(getHasName(Items.NETHERITE_SCRAP), has(Items.NETHERITE_SCRAP))
+                .define('B', Items.CHARCOAL)
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
-                .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
-                .unlockedBy(getHasName(Items.COAL), has(Items.COAL))
                 .save(output, ForgerMod.MOD_ID + ":unrefined_steel_from_primal_crafting");
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.REINFORCED_IRON_BILLET.get())
+                .pattern("IMI")
+                .define('I', Items.IRON_INGOT)
+                .define('M', ModItems.METEORIC_IRON_INGOT.get())
+                .unlockedBy(getHasName(ModItems.METEORIC_IRON_INGOT.get()), has(ModItems.METEORIC_IRON_INGOT.get())).save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DAMASK_BILLET.get())
+                .pattern("SIS")
+                .pattern("ISI")
+                .define('S', ModItems.STEEL_INGOT.get())
+                .define('I', Items.IRON_INGOT)
+                .unlockedBy(getHasName(ModItems.STEEL_INGOT.get()), has(ModItems.STEEL_INGOT.get())).save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TITANIUM_SPONGE.get())
+                .requires(ModItems.RAW_TITANIUM.get()).requires(ModItems.MAGNESIUM.get())
+                .unlockedBy(getHasName(ModItems.RAW_TITANIUM.get()), has(ModItems.RAW_TITANIUM.get())).save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TUNGSTEN_POWDER.get())
+                .requires(ModItems.RAW_TUNGSTEN.get()).requires(Items.CHARCOAL)
+                .unlockedBy(getHasName(ModItems.RAW_TUNGSTEN.get()), has(ModItems.RAW_TUNGSTEN.get())).save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SCRAP_INGOT.get())
                 .pattern("ABA")
@@ -438,12 +470,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', ModItems.SCRAP_INGOT.get())
                 .unlockedBy(getHasName(ModItems.SCRAP_INGOT.get()), has(ModItems.SCRAP_INGOT.get())).save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SCRAP_IRON_BLOCK.get())
-                .pattern("AAA")
-                .pattern("AAA")
-                .pattern("AAA")
-                .define('A', ModItems.SCRAP_IRON_INGOT.get())
-                .unlockedBy(getHasName(ModItems.SCRAP_IRON_INGOT.get()), has(ModItems.SCRAP_IRON_INGOT.get())).save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.INANISIUM_BLOCK.get())
                 .pattern("AAA")
@@ -553,9 +579,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(ModBlocks.PULSITE_BLOCK.get())
                 .unlockedBy(getHasName(ModBlocks.PULSITE_BLOCK.get()), has(ModBlocks.PULSITE_BLOCK.get())).save(output);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SCRAP_IRON_INGOT.get(), 9)
-                .requires(ModBlocks.SCRAP_IRON_BLOCK.get())
-                .unlockedBy(getHasName(ModBlocks.SCRAP_IRON_BLOCK.get()), has(ModBlocks.SCRAP_IRON_BLOCK.get())).save(output, ForgerMod.MOD_ID + ":damask_scrap_iron_ingot_from_block_to_item_crafting");
 
     }
 }

@@ -1,5 +1,10 @@
 {
   "values": [
+    "forgermod:meteoric_iron_stone_ore",
+    "forgermod:meteoric_iron_end_ore",
+    "forgermod:dolomite_stone_ore",
+    "forgermod:reinforced_iron_block",
+    "forgermod:steel_block",
     "forgermod:scrap_block",
     "forgermod:scrap_iron_block",
     "forgermod:ancient_sword_stand"

@@ -139,7 +139,9 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
             target.hasImpulse = true;
             target.hurtMarked = true;
             if (now % 10 == 0 && target instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 15, 0));
+                living.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(
+                        player.getMainHandItem(), "tooltips.forgermod.ability.eye_of_the_storm",
+                        new MobEffectInstance(MobEffects.LEVITATION, 15, 0)));
             }
             if (now % 5 == 0) player.serverLevel().sendParticles(ParticleTypes.CLOUD,
                     target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),

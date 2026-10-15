@@ -24,8 +24,9 @@ public class AbsoluteNightmareGameTests {
     for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;
     var victim=EntityType.COW.create(test.getLevel());victim.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);victim.setHealth(1000);victim.setNoAi(true);victim.setNoGravity(true);victim.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(victim);
     try {player.attack(victim);var weak=victim.getEffect(MobEffects.WEAKNESS);var dark=victim.getEffect(MobEffects.DARKNESS);
-     int duration=rank==1?100:200;
-     if(hit<2)test.assertTrue(weak!=null && weak.getAmplifier()==3 && weak.getDuration()==duration && dark!=null && dark.getAmplifier()==4 && dark.getDuration()==duration,"Nightmare effects are not Weakness IV/Darkness V for the correct rank duration");
+     int jade=net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack)?1:0;
+     int duration=(rank==1?100:200)+20*jade;
+     if(hit<2)test.assertTrue(weak!=null && weak.getAmplifier()==3+jade && weak.getDuration()==duration && dark!=null && dark.getAmplifier()==4+jade && dark.getDuration()==duration,"Nightmare effects have the wrong strength or duration");
      else test.assertTrue(weak==null && dark==null,"Third hit reuses Nightmare");
      test.assertTrue(!player.hasEffect(MobEffects.WEAKNESS) && !player.hasEffect(MobEffects.DARKNESS),"Nightmare debuffs attacker");
     }finally {victim.discard();}

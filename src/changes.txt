@@ -1,817 +1,162 @@
-Added
-- Echo Appetite now restores four food points (two drumsticks) without saturation when the wielder kills a Warden while holding a Pulsite weapon that has learned the passive; sculk mining continues to restore one food point (half a drumstick) per block
-- Four original 32×32 pixel textures for the Augmentation Table: engraved work surface, steel rim, sapphire core, and stone base
-- Ancient Grave placement now checks the complete assembled city and selects a room position with three blocks of clearance from every vanilla piece
-- Ancient Grave worldgen regression tests cover 48 complete seeded city layouts, all center variants/rotations, unchanged vanilla pieces, and full sword stand placement
-- Ancient Grave uses the authored v2 structure as one mandatory room in each newly generated Ancient City start, preserving vanilla center variants and excluding degradation from the grave
-- Ancient Grave packaging tool preserves the authored template and creates its city-room offset plus worldgen pool resources
-- Operator command /no-ability-cooldown <target> <true|false> persistently toggles cooldown bypass and clears existing deadlines on enable
-- Wardens Needle and all gemstone variants now use the authored wardens_needle textures
-- Carbon Steel Knife now has a translated name and description
-- Dual-wield animation waits for the main-hand swing and sends only one offhand animation to observers
-- Material passives now use effect-specific Hit names and Roman numeral strengths; Shift hint reads [Hold Shift] for more item information with blue key text
-- Sonic Boom now pierces all damageable entities except item drops in a three-block-wide beam, including passive mobs; only center-ray collision stops the blast
-- Charge Attack discharge now adds a large electrical explosion burst of explosion, flash, electric-spark, and end-rod particles alongside its lightning damage
-- Charge Attack state tests cover the five-percent damage ramp from the first hit through the twentieth hit and reset after discharge
-- Charge Attack lightning hits use the same ramp and advance its hit counter, including Chain Lightning and Area Discharge
-- Area Discharge regression coverage verifies every hostile in the five-block radius takes half current weapon damage and successful lightning hits advance Charge Attack
-- Chain Lightning now recursively chains from each enemy to the nearest unvisited hostile within 10 blocks, with up to 10 links and a separate 50% continuation roll per link
-- Chain Lightning tests cover ordered unvisited targets, ten-block per-link radius, no repeat targets, and removing the old two-target cap; the server implementation applies a 50% continuation roll and ten-link cap
-- Eye of the Storm regression tests cover hostile/passive mobs, players, item drops, experience orbs, arrows, range exclusion, caster exclusion, and motion synchronization
-- Double Jump now acknowledges the server-approved lift without overwriting the client horizontal velocity, retaining sprint momentum and the existing one-extra-jump validation
-- Double Jump regression tests cover stale server horizontal motion, sprint/velocity preservation, fall-distance reset, and rejected repeated air jumps
-- Lucid Dreaming kill-trigger regression tests cover nonlethal/passive exclusions, thirty-second Speed II, fifteen-second fall-protection expiry, cancellation, and blocked mid-effect rearming
-- Leech now multiplies normal dagger hit damage by 1.1 and heals from the damage bonus within a shared ten-HP activation budget; successful damaging hits consume the existing ten-hit charge
-- Deep Wound server tests cover every gemstone variant, critical-only one-time activation, doubled critical damage, target-only slowness, and unchanged primary/secondary cooldowns
-- Tooltip regression tests check collapsed and expanded views across all 135 material weapons and ordinary axes/Rusty Dagger, including dynamic keybind components, named passives, colors, and description visibility
-- Material-effect on-hit descriptions move out of claymore lore into Shift-gated passives and show actual scaled duration and strength, including gemstones
-- All active/passive names and descriptions use light gray; ordinary axes and Rusty Dagger use the same Shift-gated passive layout
-- Every passive has a separate name, including Dual Wield, Vertical Strike, Material Effect, Chain Lightning, Double Jump, Death March, and Revenge
-- Active and passive ability descriptions now appear only while holding Shift; names and configured ability keys remain visible, with a light-gray Shift hint
-- Rooting Roots server regression checks cover targets within the expanded radius, exactly at ten blocks, beyond ten blocks, and retained root/poison behavior
-- Material effect durations use the corresponding gemstone claymore duration multiplied by claymore attack speed divided by weapon attack speed, rounded to the nearest tick; Jade strength/extra duration and Amethyst speed are included
-- Material-effect tests cover all 135 material weapons, all 45 offhand daggers, and all 45 axe slam variants against their corresponding claymore effect and actual attack speeds
-- All nine material axes now apply their claymore material effect on ordinary hits and successful slam hits, including every gemstone variant
-- Poisoned Vein cloud regression tests cover the owner, other players, hostile and passive mobs, range limits, refreshed 30-second Poison I, and poison persisting after leaving, cloud expiry, or cancellation
-- Pulsite Dagger Sonic Boom now fires an instant 50-block straight piercing blast in the full view direction; every intersecting hostile mob or permitted enemy player takes twice the equipped attack-damage attribute
-- Sonic Boom uses Warden sonic rings visible across the full 50-block trail, sound, damage type, and knockback; block collision shapes stop its damage and visual trail, and unloaded terrain truncates the beam
-- Six dedicated-server Sonic Boom tests cover piercing/range/aim, solid and glass walls, slab collision shapes and water, all gemstone damage variants, primary independence, and immediate independent cooldowns
-- Riftfang's Stepping Through the Void follows the full view direction, including upward/downward and diagonal air teleports, while checking the entire player body against obstacles, loaded chunks, world border, and build-height limits
-- Riftfang teleport tests cover 10/20-block ranges, all 25 gemstone pairings, look pitch, walls/ceilings, blocked paths, height limits, and unchanged secondary cooldown
-- Weapon speed settings now use positive final attacks per second, converted centrally to Minecraft's attack-speed modifier; zero, negative, and nonfinite configured speeds are rejected
-- Dedicated-server tests equip every registered weapon and verify positive attack speed and actual attack recharge, type/gemstone speed ordering, and invalid-speed rejection
-- Amethyst gemstone tooltips now correctly describe the existing +0.4 attack-speed bonus instead of +4
-- Dedicated-server regression checks cover every dagger material/variant pairing, knife exclusions, and ability tooltip layout with keybind components on all 45 special dagger variants
-- Ability tooltips now show a light-gray "Abilities:" heading, then each ability name and configured key above its separate description
-- Refined Ancient Sword Stand's four/five cached collision boxes using the 162-box detailed shape export: broad lower/upper body envelopes now cover forward ribs and feet without per-detail collision geometry
-- Shared claymore item-model parent preserves 20x20 artwork proportions with 25% larger first-person, third-person, dropped-item, item-frame, and head display scales for all 47 claymores and gemstone variants; inventory icons retain their slot-fitting size
-- Ancient Sword Stand uses the supplied Blockbench model, atlas texture, and 1.75-second opening animation, with cached full/empty poses and animation frames
-- Right-clicking a full Ancient Sword Stand awards exactly one Rusty Claymore on the server and permanently empties the stand; a full inventory drops the reward
-- Ancient Sword Stand collision/selection uses four broad cached boxes (five while full), correctly rotated around the block center for all four facings
-- Ancient Sword Stand drops itself with its full/empty state preserved, so breaking and replacing an empty stand cannot refill it
-- Ancient Sword Stand opening timestamp is saved and synchronized; unloading/reloading resumes or finishes the opening without awarding another sword
-- Blockbench stand exporter with resource consistency checking and four dedicated-server GameTests for rewards, inventory overflow, break/replacement, shapes, and animation persistence
-- Inanisium Axe (Axe of the Void) 3D item model using the supplied Blockbench geometry and texture, including Ruby, Amber, Amethyst, and Jade variants
-- Dependency-free Blockbench Bedrock-to-OBJ exporter with resource consistency checking (`tools/export_void_axe.py`)
-- Inventory, first-person, third-person, dropped-item, item-frame, and head display transforms for the Inanisium Axe model
-- `AGENTS.md` with the project's NeoForge 1.21.1, changelog, ability workflow, and weapon behavior rules
-- Updated `sessionContext.md` with per-weapon cooldowns and active-ability cancellation behavior
-- Server-side tracking for ongoing primary and secondary abilities on the currently equipped weapon stack
-- Tests for independent weapon/ability cooldown keys and cancellation of rooted enemies and poison clouds
-- Updated `sessionContext.md` with the NeoForge 1.21.1 ability audit, fixes, verification, and current handoff state
-- Rusty Knife
-- Rusty Axe
-- Carbon Steel Knife
-- Carbon Steel Axe
-- Vulnusium Axe
-- Electrium Axe
-- Ignisium Axe
-- Inanisium Axe
-- Lush Axe
-- Morsium Axe
-- Pulsite Axe
-- Somnium Axe
-- Taifunite Axe
-- Vulnusium Knife
-- Electrium Knife
-- Ignisium Knife
-- Inanisium Knife
-- Lush Knife
-- Morsium Knife
-- Pulsite Knife
-- Somnium Knife
-- Taifunite Knife
-- Vulnusium Knife
-
-- Titanium Ingot
-- Meteoric Iron Ingot
-- Raw Meteoric Iron
-- Tungsten Ingot
-- Alexandrite Gemstone
-- Dual-wield attacks for matching daggers (knives excluded), including an offhand swing after the main-hand swing
-- Axe heavy attack: the third attack within 10 seconds slams a 3x3 area ahead
-- First-person vertical swing animation, particles, and sound for the axe heavy attack
-- Configurable primary and secondary weapon ability keybindings, defaulting to 1 and 2
-- Server-side primary and secondary ability hooks for special-material daggers, claymores, and axes
-- Names and lore for special-material daggers and axes
-- Dynamic ability keybinding and passive descriptions in weapon tooltips
-- Axe offhand restriction: moves offhand items to inventory or drops any remainder when an axe is held
-- `sessionContext.md` handoff for the weapon work and NeoForge 1.21.1 requirements
-- Ignisium dagger primary ability, Flaming Combo, with a 10-second active window and 30-second cooldown
-- Flaming Combo state test covering burn stacking, active-window boundaries, player isolation, and logout cleanup
-- Ignisium dagger secondary ability, Pyromaniac, with a 50-second cooldown
-- Pyromaniac state test covering activation, one-hit consumption, player isolation, and logout cleanup
-- Inanisium dagger primary ability, Stepping Through the Void: teleport up to 5 blocks forward, with a 5-second cooldown
-- Void Step path test covering full range, obstacles, and blocked starts
-- Inanisium dagger secondary ability, Sudden Presence: teleport behind the nearest hostile mob within 20 blocks, with a 2-minute cooldown
-- Sudden Presence placement test covering facing direction and zero-vector rejection
-- Somnium dagger primary ability, Absolute Nightmare: the next 2 dagger hits inflict Darkness I and Weakness I for 10 seconds, with a 20-second cooldown
-- Critical-hit tracking for later dagger abilities and a test for Absolute Nightmare's two-hit charge
-- Somnium dagger secondary ability, Lucid Dreaming: the next enemy hit grants Speed II and halves fall damage for 5 seconds, with a 15-second cooldown
-- Lucid Dreaming state test covering one-hit use, duration boundaries, player isolation, and logout cleanup
-- Electrium dagger primary ability, Area Discharge: strike hostile mobs within 5 blocks with lightning for 5 damage each, with a 5-minute cooldown
-- Area Discharge target-selection test covering hostile filtering and the five-block boundary
-- Electrium dagger secondary ability, Charge Attack: 20 mob hits build charge and the 21st deals 20 extra lightning damage, with a 2-minute cooldown
-- Charge Attack state test covering the 21-hit sequence, player isolation, rearming, and logout cleanup
-- Electrium dagger passive, Chain Lightning: hits arc to the two closest other hostile mobs within 10 blocks for 5 damage each
-- Chain Lightning target-selection test covering proximity, range, hostile filtering, and the two-target limit
-- Material-specific passive descriptions in weapon tooltips above gemstone infusion
-- Taifunite dagger primary ability, Eye of the Storm: whirl and levitate hostile mobs within 10 blocks for 5 seconds, with a 1-minute cooldown
-- Eye of the Storm state test covering duration, player isolation, reactivation, and logout cleanup
-- Taifunite dagger secondary ability, Windy Dash: move up to 6 blocks forward in six collision-checked steps, with a 5-second cooldown
-- Windy Dash state test covering six impulses, reactivation, player isolation, and logout cleanup
-- Taifunite dagger passive, Double Jump: one additional midair jump after a normal jump, triggered by a second Jump key press
-- Server-validated Double Jump payload and state test covering the single extra jump, player isolation, and cleanup
-- Vulnusium dagger primary ability, Deep Wound: next successful critical hit doubles damage and inflicts Slowness I for 2 seconds, with a 30-second cooldown
-- Deep Wound state test covering arming, single-hit consumption, player isolation, and logout cleanup
-- Vulnusium dagger secondary ability, Leech: next 10 dagger hits drain up to 10% of target maximum health and heal by health actually drained, with a 15-second cooldown
-- Leech state test covering ten charges, player isolation, rearming, and logout cleanup
-- Overgrown dagger primary ability, Rooting Roots: hold hostile mobs within 5 blocks in place and poison them for 10 seconds, with a 1-minute cooldown
-- Rooting Roots state test covering ten-second anchors, reapplication, expiry, and cleanup
-- Overgrown dagger secondary ability, Poisoned Vein: next melee kill of a hostile mob creates a 3-block poison cloud for 5 seconds that excludes the attacker, with a 45-second cooldown
-- Poisoned Vein state test covering arming, cloud duration, dimension isolation, player isolation, and logout cleanup
-- Morsium dagger primary ability, Strengthened Bones: next melee kill of a hostile mob grants 10 seconds of invulnerability, with a 90-second cooldown
-- Strengthened Bones state test covering arming, kill activation, duration, player isolation, and logout cleanup
-- Morsium dagger secondary ability, Storing Anger: suppress and store outgoing damage for 10 seconds, then add it to the next dagger hit, with a 1-minute cooldown
-- Storing Anger state test covering timing, accumulated damage, single release, player isolation, and logout cleanup
-- Morsium dagger passive, Death March: melee damage scales with target missing health up to double damage
-- Death March multiplier test covering full, half, zero, and invalid health values
-- Morsium dagger passive, Revenge: 20% more melee damage against undead mobs
-- Revenge multiplier test covering undead and non-undead targets
-- Weapon tooltip support for multiple material-specific passives
-- Pulsite dagger primary ability, Sonically Charged Crit: next critical hit adds 15% of target maximum health as damage and releases sonic boom particles, with a 30-second cooldown
-- Sonic critical state and damage test, plus non-consuming critical-hit matching for the damage event
-- Pulsite dagger secondary ability, Sonic Boom: next 6 successful dagger hits gain 4 blocks of reach, with a 45-second cooldown
-- Sonic Boom state test covering six hits, player isolation, rearming, and logout cleanup
-- Matching offhand Pulsite dagger attacks respect the extended entity reach while Sonic Boom is active
-- Gradle test task now runs every lightweight ability test main class, allowing the full ability suite to be checked with one command
-- Persistent player ability cooldowns that survive logout, world reload, and respawn
-- Cooldown key test covering material, weapon type, and ability slot separation
-- Updated `sessionContext.md` with implemented dagger abilities, verification, and current handoff state
-
-Changed
-- Isolated Echo Hearing's large-radius server game tests into separate batches and waited for distant fixture chunks to become entity-ticking before spawning test targets, preventing cross-test glowing and missed distant entities
-- Increased Challenge Roar's rank-based radius from 6/8/10/12 to 16/20/24/28 blocks; it now taunts all hostile mobs in range through walls while excluding players, allies, passive mobs and neutral mobs, with its 30/25/20/15-second cooldown unchanged
-- Renamed Echo Pin to Echo Hearing while preserving its saved augmentation ID; activation now immediately reveals all nearby entities, including players and nonliving entities, through walls in a 32/40/48/56-block radius for 10/12/14/16 seconds; retained its independent 30/25/20/15-second cooldown and removed the single-target sound trigger
-- Reworked the Augmentation Table into a medieval magical forge altar: weathered masonry, dark iron bindings, carved template/anvil/gemstone marks, and a sapphire set in a stone arch; removed the bright blue panel design and raised machine-like rails, and matched its collision shape to the new model
-- Rebuilt the Augmentation Table's block model as a compact forge station with a full iron-and-stone footing, solid sapphire-core housing, reinforced corners, and a recessed work surface held by steel jaws and a backstop; updated its collision shape to match
-- Updated `sessionContext.md` with the Augmentation Table asset change and verification status
-- Rebuilt the Augmentation Table block model as a layered stone-and-steel pedestal with a raised three-station work surface matching the GUI's template, gear, and sapphire layout
-- Refreshed `sessionContext.md` with current repository state, implemented abilities, cooldown lifecycle, tests, and open design questions
-- Ability packets identify the selected hotbar slot and weapon item, so a delayed packet cannot activate a different weapon after a switch
-- Canceling Lucid Dreaming removes its Speed effect and restores a preexisting Speed effect when applicable
-- Flaming Combo and Rooting Roots cannot be reactivated while their effects are still active
-- Ability cooldowns are keyed by the registered weapon item and ability slot, so gemstone variants and primary/secondary abilities have independent deadlines
-- Ongoing abilities start their full cooldown when they finish or when switching away from the exact equipped stack cancels them; instant abilities start cooldown on use
-- Multiple abilities on the same equipped weapon can remain active together and are canceled independently when their states end
-- Taifunite's double-jump charge clears when its dagger is unequipped
-- Every special weapon variant now receives independent item properties, preventing Amber fire resistance from carrying over to later registered variants
-- Offhand dagger follow-up retains the original target and validates the recent main-hand hit, so knockback or camera movement during the 100 ms delay does not turn a hit into an air swing
-- Sudden Presence searches nearby safe landing positions behind hostile mobs, including uneven ground and the next nearest mob if the closest has no safe landing spot
-- Ability keys report remaining cooldown or failed activation in the actionbar
-fixed shardium Ore not dropping random items.
-fixed sword effects
-- Special-material daggers now apply their material effect on main-hand and offhand hits
-- Special-material claymore effects use per-item duration and amplifier values, so Jade bonuses do not affect other weapons
-- Special-material axes now lose durability on successful hits
-- Offhand item, block, and entity interactions are blocked while holding an axe
-- Weapon ability cooldowns are tracked per weapon and ability slot
-- Weapon ability cooldowns use a persistent NeoForge player attachment instead of a logout-cleared server map
-- Sonic Boom charges are spent on dagger air swings as well as successful hits, matching its six-attack description
-- Inanisium Sudden Presence uses the 1.21.1 server chunk-cache check instead of deprecated `hasChunkAt(BlockPos)`
-- Java compilation reports precise deprecated API usages with `-Xlint:deprecation`
-- Absolute Nightmare now uses two charged dagger hits instead of a repeating critical-hit toggle
-- Electrium weapons now use Electrium attributes instead of Lush attributes
-
-Buffed
-- Area Discharge cooldown decreases from five minutes to 30 seconds
-- Area Discharge now deals half the current weapon damage to every hostile in range instead of a fixed five damage, and its lightning hits count toward Charge Attack
-- Chain Lightning chained targets now take half the equipped weapon damage and can continue through up to 10 enemies instead of stopping at two chained targets
-- Eye of the Storm now whirls every living and nonliving entity within ten blocks except its caster, including players, passive mobs, items, experience orbs, and projectiles; living targets also receive levitation
-- Lucid Dreaming now grants Speed II for thirty seconds and halves fall damage for fifteen seconds after the armed enemy kill; secondary cooldown remains fifteen seconds
-- Deep Wound charged critical hits now inflict Slowness III for five seconds on the target instead of Slowness I for two seconds; doubled critical damage is retained
-- Rooting Roots radius increases from five to ten blocks; effect duration and cooldown remain unchanged
-- Special axes now give longer material effects than claymores, with ordinary variants lasting about 1.78 times as long
-- Poisoned Vein clouds now apply 30 seconds of Poison I instead of two seconds, refreshed while entities remain inside
-- Sonic Boom replaces four extra blocks of melee reach with up to 50 blocks of piercing range and twice equipped attack damage per enemy
-- Riftfang Dagger primary teleport increases from 5 to 10 blocks; equipping a second Riftfang Dagger of any gemstone variant in the offhand doubles its range to 20 blocks
-- Carbon Steel Axe now attacks at 0.9/s and Rusty Axe at 0.6/s, fixing their zero/negative attack speed and permanently stalled attack recharge
-- Special-material daggers now attack at 3.0/s (3.4/s with Amethyst), correctly handling the registered "dagger" type and making them faster than claymores
-- Daggers can dual wield across gemstone variants of the same material; different materials and knives remain excluded
-- Amber special weapons now receive their intended attack damage and speed attributes
-- All axes gain the 3x3 heavy attack passive
-- Special-material daggers gain their material effect on hit alongside dual wielding
-- Flaming Combo adds 1 second of burn for each successful Ignisium dagger hit during its active window
-- Pyromaniac arms one dagger hit while the player is burning; that hit ignites the target for 5 seconds and restores 5 HP
-
-Debuffed
-- Charge Attack now starts at five percent bonus damage and increases by five percentage points per successful hit, reaching one hundred percent on the twentieth hit before the discharge hit
-- Lucid Dreaming now requires an enemy dagger kill instead of any enemy hit to consume its armed charge
-- Leech no longer deals ten percent of target maximum health as a second damage instance and cannot restore more than ten HP per activation
-- Special daggers now give shorter material effects than claymores, with ordinary variants lasting about 0.53 times as long
-- Poisoned Vein cloud owner immunity is removed: the creator is poisoned along with anyone else inside the cloud
-- Sonic Boom is now one aimed blast instead of six enhanced melee attacks; its existing 45-second cooldown starts immediately on firing, including a miss
-- Riftfang Dagger primary teleport cooldown increases from 5 to 7 seconds, including when dual wielding
-- Special-material axes now attack at 0.9/s (1.3/s with Amethyst), correcting the inverted speed adjustment that previously made them faster than claymores
-- Non-Amber special weapons no longer inherit Amber's fire resistance through shared item properties
-- Holding any axe disables the offhand and moves its item to inventory or drops it if inventory is full
-
-Removed
-- Stumpfl Bat is excluded from the creative weapons menu
-- Removed the fixed-offset Ancient Grave city-start pool from new generation; retained its legacy padded template for saved-city compatibility
-- Gemstone weapon variants are hidden from creative tabs while remaining available through upgrades and commands
-- Ancient Sword Stand's unconditional Rusty Claymore breaking drop and incorrectly offset, repeatedly rebuilt collision shapes
-- Absolute Nightmare's earlier repeating critical-hit toggle
-
-Deleted
-- Removed Sonic Boom's six-hit extra-reach state, melee reach modifier, air-swing packet and consumers, old armed message, and obsolete six-hit state test
-
-
-
-Added
-- Sapphire Gemstone, crafted from one diamond and four lapis lazuli, for augmentation rather than gemstone infusion
-- Craftable Augmentation Table with a model, pickaxe mining tag, self drop, saved inventory, menu, loading animation and two random server-validated choices
-- Special-material weapon augmentation pools use their material's existing active/unique passive abilities; existing native abilities occupy slots, while material on-hit properties, dual wield and axe slam remain intrinsic
-- Augmentation consumes one Sapphire Gemstone and one Gemstone Upgrade Template per attempt; cooking lasts five seconds plus one second per completed augmentation
-- Item-local augmentation ranks and counts survive saves and gemstone infusion; names, enchantments, durability and other item component patches are preserved
-- Two active and two passive ability limits, rank IV cap, locked cooking/choice inputs, persistent offers, replay protection and no ingredient consumption for fully augmented items
-- Empowered Hit passive extends the item's material effect duration by 25% per rank, up to 100% at IV
-- Guarded passive reduces incoming damage while holding the item by 5% per rank, up to 20% at IV
-- Learned claymore and axe actives work with configurable ability keys and independent per-variant slot cooldowns; armed abilities complete on melee hits and cancel safely on switching or breaking
-- Expanded augmented-item tooltips show Roman numeral ranks, configured keys, passive upgrade effects and actual cooldowns
-
-Buffed
-- Each active ability upgrade reduces its cooldown by 15% of the base cooldown, reaching a 45% reduction at IV
-- Each Chain Lightning upgrade adds 25% of base chained damage, reaching a 75% bonus at IV
-- Each Double Jump upgrade adds 0.05 upward velocity while retaining horizontal momentum, reaching 0.70 at IV
-- Each Death March or Revenge upgrade adds 25% of its base bonus damage, reaching a 75% larger bonus at IV
-
-Changed
-- Windy Dash now sets launch velocity to 1.2 blocks per tick along the full look direction, including upward/downward aim; normal movement, drag, gravity and collisions determine travel distance
-- Windy Dash synchronizes launch velocity immediately to the player client and starts its five-second base cooldown on use; augmentation cooldown reductions still apply
-Removed
-- Removed Windy Dash repeated one-block teleports, six-step distance state and obsolete movement-state test
-
-Added
-- Shift+Alt+S swaps exactly two learned main-hand active abilities; offhand is ignored and order persists through augmentation, saving and gemstone infusion
-- Ability cooldowns follow material ability identity within each registered variant, so swapping slots or switching to an unswapped stack cannot reset/bypass cooldowns; swapping cancels ongoing abilities and starts their cooldowns
-- Explicit legacy migration preserves native abilities and learned ranks on already-augmented saved items
-- Material-hit augmentation choices use the actual effect name, such as Weakness Hit; the material hit has its own I-IV progression alongside two unique passive and two active slots, matching the written maxed Deathwisper example
-- Axe area-slam hits trigger the learned material's on-hit ability handling as well as the learned material effect
-
-Changed
-- Infusion slots accept only compatible gemstones, the Gemstone Upgrade Template and items with an infusion recipe; direct placement, shift-click routing and item handlers enforce the same rules
-- Forge and Infusion output slots reject input while allowing extraction and internally crafted outputs
-- Forge template slot accepts mod upgrade templates and vanilla/modded SmithingTemplateItem templates; template shift-clicks route exclusively to that slot
-- Augmentation screen now uses a standard 176-pixel Minecraft-style gray beveled panel, inset slots, aligned inventory, two stacked choice buttons, loading bar and empty-slot labels on hover
-- Weapon tooltips follow the written fresh/partial/maxed layouts: capability notices on fresh gear, purple Passives/Active Abilities headings, Roman ranks, configured ability keys, light-gray Shift-only descriptions and a final blue Hold Shift hint
-- Amber shows orange Amber and fire resistance; Jade shows green Jade and its amplifier/duration bonuses; Ruby and Amethyst show their actual names, colors and bonuses
-
-Debuffed
-- Fresh special-material weapons no longer receive active abilities, unique passives or material on-hit effects automatically; those abilities must first be learned through augmentation
-- Fresh Curseblood Claymore no longer gains its material-associated one-HP kill heal before the material hit is learned
-- Material-hit rank I unlocks the base effect; each of its three upgrades adds 25% of base duration, reaching a 75% duration bonus at IV rather than the previous Empowered Hit's 100% bonus
-
-Removed
-- Removed unlearned abilities, empty gemstone brackets and augmentation-count/debug explanations from normal weapon tooltips
-- Removed the augmentation screen's wide dark-blue panel styling and the obsolete native-only tooltip implementation
-
-2026-10-10 — Withdraw unapproved Codex abilities for manual review
-Added
-- Added markdown/codexAbilities.md recording Guarded, Empowered Hit, copied dagger pools and invented rank bonuses, with their former behavior and withdrawal scope
-- Added markdown/abilityRecommendations.md with 108 distinct proposals: four for each of 27 special dagger/claymore/axe families, covering base and gemstone variants; none implemented
-- Added saved-choice recovery: obsolete augmentation offers reroll without extra payment; if no legal upgrade remains, unlock the retained weapon and refund the spent template and sapphire
-- Added migration/removal regression tests across all 135 special variants and persisted table choices
-Removed
-- Removed Guarded from every ability pool and deleted its incoming-damage handler and descriptions; saved Guarded ranks are inert
-- Removed copied dagger active/unique-passive assignments from special claymores and axes; their approved material Hit learning and intrinsic axe slam remain
-- Removed invented rank scaling descriptions and generic Empowered Hit branding
-Debuffed
-- Removed Empowered Hit's extra material-effect duration; all learned material Hit ranks now use approved base durations, including existing weapon-type and gemstone adjustments
-- Removed invented active rank cooldown reductions; I-IV use the approved base cooldown independently for each slot/variant
-- Removed invented Chain Lightning rank damage bonuses; approved half-current-weapon damage and Charge Attack interaction remain
-- Removed invented Death March/Revenge rank bonus multipliers; restored their original approved damage formulas
-- Removed invented Double Jump rank lift bonuses; lift is 0.55 with approved horizontal momentum preservation
-Changed
-- Saved empowered_hit ranks migrate to material_hit without deleting weapon components or historical augmentation counts; I-IV progression remains pending user-defined rank bonuses
-- Approved dagger abilities, learned-only fresh weapons, configurable key labels, swapping, table mechanics and gemstone bonuses remain
-
-- Added the user-authored sapphire_gemstone.png texture to the mod assets
-- Replaced the Sapphire Gemstone's placeholder lapis texture with forgermod:item/sapphire_gemstone
-- Added Sapphire Gemstone item-model generation so future data generation retains the authored texture
-- Reordered special-weapon tooltips to show gemstone name and bonuses before capability notices, with a blank separator, matching the corrected fresh Jade-infused Deathwisper example
-- Extended existing tooltip regression coverage to check the fresh Jade example's exact order, spacing, green colors and absence of unlearned ability/infusion/fire-resistance text
-
-2026-10-10 — Authored Augmentation Table GUI and reversible selection workflow
-Added
-- Integrated the user's five authored GUI PNGs without editing their pixels; middle weapon slot and inventory align with the 176x166 panel
-- Added four sequential whole-pixel overlay reveals at relative front speeds 1x, 2x, 3x and 1x: first/second inward from both ends, third/fourth outward from the middle
-- Added generated learn/upgrade cards inside the authored boxes, with target rank, short descriptions, hover highlighting/full-description tooltips, and selected/disabled completion styling
-- Added persisted overlay phase/progress, offer ranks and selected card, plus recovery for old tables that previously spent ingredients upfront
-- Added server regressions for cancellation at every phase, both ingredient orders, normal/shift pickup, covered-slot locks, exact spending, save/reload, legacy refunds and block-breaking drops; added pixel timing and actual PNG hole-alignment checks
-Changed
-- Both side slots accept Sapphire Gemstone or Gemstone Upgrade Template; crafting requires exactly one ingredient type in each, in either order
-- Ingredients remain in the table throughout analysis and selection; choosing one card consumes exactly one sapphire and one template and augments the weapon once
-- Removing the unfinished weapon cancels immediately, resets all overlays and unlocks both unchanged ingredient stacks
-- Covered side slots stop rendering items/hover effects and reject extraction/insertion after overlay two completes; unfinished weapon remains removable
-- Completed weapon appears in the same middle slot; selected/unselected cards remain until taking it resets the GUI and unlocks leftover ingredients
-- Removed developer-design wording from the material Hit card's player-facing description
-Removed
-- Removed the old code-drawn panel/loading bar and wide selection buttons, replacing them with the authored GUI and generated cards
-- Removed start-of-cooking consumption and the old weapon lock that prevented cancellation
-- Removed the duplicate hand-authored Sapphire model; the generated model now supplies the same texture reference without resource-copy conflicts
-
-2026-10-10 — Sapphire resource-copy guard and cooldown command discovery
-- Added a narrowly scoped resource exclusion for a stale main-resource Sapphire item model; the generated model is authoritative and other duplicate resources still fail normally
-- Made /no-ability-cooldown visible in chat without operator permission, showing usage when entered alone instead of reporting an unknown command
-- Added an explicit cheats/operator-level-2 error before any cooldown changes for unauthorized players; operator behavior and saved cooldown bypass remain unchanged
-- Extended command regression coverage for discoverability, usage help, explicit permission failure and unchanged authorized true/false behavior
-- Added an explicit @s command branch so self-targeting reports the cheats/operator requirement before vanilla rejects unauthorized selectors
-- Fixed Augmentation GUI overlay depth: revealed overlays and cards now cover slot item icons, stack counts and decorations, while transparent weapon holes and floating cursor items retain their intended visibility
-
-2026-10-10 - Authored ability card template
-- Added the user's unchanged ability_cards/template.png to augmentation selection cards, replacing the generic code-drawn card backgrounds
-- Centered ability titles without levels in the upper white box, with fitting dark blue/cyan text and adaptive text sizing
-- Added small right-aligned New/Upgrade eyebrows above the title boxes
-- Added blue Ability or cyan Passive Effect headings at the top of the lower white box, followed by light-gray compact ability descriptions
-- Retained hover highlighting, selected/rejected visuals and full hover descriptions; resulting levels now appear separately in hover details
-- Reduced the table heading size during card selection to leave room for the eyebrows
-- Corrected the stale Chain Lightning hover description to match the existing 50% chaining chance, up to ten links and half-current-weapon-damage behavior
-
-2026-10-10 - Symmetric analyze overlay reveal
-- Fixed the first augmentation overlay's one-pixel front offset by centering both inward reveals on the weapon opening instead of the odd texture width
-- Preserved the extra outer right texture column, whole-pixel animation, existing stage timing and transparent-slot alignment
-- Added regression checks for symmetric fronts, no reveal at zero progress, complete coverage and the preserved outer column across supported analysis durations
-
-2026-10-10 - Ability card text styling
-- Moved the New/Upgrade eyebrows to the left edge above each ability card's title box
-- Removed the dark shadow from card descriptions and adjusted their neutral gray color for softer, readable text on the white template
-
-2026-10-10 - Ability card text padding
-- Added one-pixel inner padding to both white card boxes, narrowing title fitting and description wrapping to keep text off the edges
-- Moved the lower Ability/Passive Effect heading down one pixel and inset its description one pixel horizontally and vertically
-- Aligned the left eyebrow with the padded text; description wording and colors are unchanged
-
-2026-10-10 - Ability card selection visuals
-- Removed ability card hover borders and green selected-card borders; the chosen card retains the normal authored template appearance
-- Retained the other card's disabled text/tint after selection until the augmented weapon is taken and the table resets
-
-2026-10-10 - Augmentation enchanting particle duration
-- Extended enchanting particle emission through all four overlays and the ability-card selection phase, stopping when augmentation completes or is canceled
-- Kept the existing particle count and appearance, with emission every ten world ticks so particles continue while selection progress is stationary
-
-2026-10-11 - Marked ability 1: Quench Point
-- Added learnable Quench Point exclusively to Emberfang Dagger and all four gemstone variants; fresh weapons and legacy native-ability migration do not gain it automatically
-- Successful player melee hits extinguish an already-burning victim and store fire damage for the next successful hit; unsuccessful hits retain the charge and secondary damage cannot recurse
-- Chosen balance: store at most ten seconds of remaining fire, worth 0.5/0.75/1/1.25 damage per second at ranks I/II/III/IV; stored fire expires after ten seconds and clears on switching, death or logout
-- Added full tooltip and compact augmentation card descriptions, while retaining the two learned passive-slot limit
-- Added server regressions for all gemstone variants, real damage, extinguishing, one-time use, rejected hits, switching, rank-IV cap and timed expiry
-
-2026-10-11 - Marked ability 2: Explosion
-- Added learnable Explosion to Infernal Claymore and all four gemstone variants: creeper-strength power-three explosion, Resistance IV for two seconds, no self-damage/knockback and no terrain destruction
-- Chosen rank progression: cooldowns of 60/55/50/45 seconds, beginning immediately on use; explosion power and Resistance remain as specified at all ranks
-- Added identity-based dispatch for new learned actives through configured keys, with persisted per-weapon-variant cooldowns that follow the ability through primary/secondary swaps
-- Added full tooltip/card descriptions and server tests for all five variants, unlearned rejection, enemy damage, low-health survival, terrain preservation, replay rejection, independent variant cooldowns and timed Resistance expiry
-
-2026-10-11 - Marked ability 3: Cinder Decoy
-- Added learnable Cinder Decoy on all five Infernal Claymores: temporary ember-colored humanoid silhouette attracts visible hostile AI within ten blocks
-- Hostile contact, melee damage or hostile projectile impact detonates a power-two explosion and ignites nearby unobstructed enemies; owner and terrain are protected
-- Chosen rank balance: silhouette lasts 6/8/10/12 seconds, ignition lasts 3/4/5/6 seconds, cooldown is 45 seconds after detonation, expiry or cancellation
-- Decoys cannot be looted, player-damaged or saved as permanent equipment; switching, death, logout, removal and dimension changes clean up the entity and restore appropriate previous mob targets
-- Added regressions for all variants, targeting/restoration, detonation, owner protection, equipment safety, contact, genuine hostile arrow collision, expiry, logout and independent primary/secondary behavior with Explosion
-
-2026-10-11 - Marked ability 4: Cold Bellows
-- Added learnable Cold Bellows on all five Infernal Claymores: successful shield blocks ignite the attacking enemy or projectile shooter for 3/4/5/6 seconds at ranks I-IV
-- Canceled blocks, non-blocking attacks, zero blocked damage, unused shields, allied sources and unlearned weapons do not trigger ignition
-- Added all-variant block-event checks and a real rank-IV raised-shield damage-pipeline regression
-- Added a survival-mode combat test player because Minecraft's default GameTest server player hardcodes creative mode; strengthened Explosion and Cinder Decoy safety regressions with survival players
-
-2026-10-11 - Marked ability 5: Heating Up
-- Added learnable Heating Up on all five Infernal Claymores: half of actual melee damage taken becomes heat, capped at 20
-- A successful melee attack spends five heat once to ignite its affected targets, including sweeping hits, for 3/4/5/6 seconds at ranks I-IV; separate attacks cannot share a payment
-- Implemented the corrected rank-IV behavior: remaining fire on the wielder fills available heat at one heat per remaining burn second and is extinguished; full capacity leaves the wielder burning
-- Switching stacks/hotbar slots, death or logout clears stored heat; ranged damage does not provide melee heat
-- Added all-variant survival combat regressions, sweeping/payment checks, same-tick attack isolation, projectile exclusion, rank-IV burn absorption, capacity and switching cleanup
-
-2026-10-11 - Marked ability 6: Fire Resistance
-- Added learnable Fire Resistance to all five Infernal Claymores and all five Molten Axes: infinite held protection from the main hand at rank I and either hand at rank II
-- Enforced rank II as this passive's maximum in augmentation learning, offers and saved-rank validation; other abilities retain their rank-IV cap
-- Weapon-granted protection ends on loss of qualifying equipment, death or logout; independently acquired effects, hidden potion chains and potions added while protected retain their normal timers
-- Milk/effect removal does not resurrect previously cured potions; the held passive resumes while qualifying equipment remains
-- Added survival server regressions for all ten variants, hand requirements, upgrade cap, actual fire damage, equipment removal, potion preservation, hidden-effect expiry, curing and logout
-
-2026-10-11 - Marked ability 7: Explosive Hits
-- Added active, learnable Explosive Hits to all five Infernal Claymores: exactly ten successful melee hits create small blasts dealing 30% of current weapon attack damage
-- Blasts include the directly hit victim, ignore the wielder and allies, stop at solid obstruction and never alter terrain; secondary explosion damage cannot recursively trigger melee abilities
-- Chosen rank balance: blast radii 1.5/2/2.5/3 blocks, with a 45-second cooldown after ten charges finish or switching cancels them
-- Failed hits do not consume charges; armed charges cannot be restarted, and exact-stack/hotbar/death/logout validation cleans up state
-- Added all-variant survival tests for exact damage and charge count, non-recursion, no eleventh blast, owner safety, failed hits, switching, rank-IV radius/obstruction, primary victim damage and packet-handler cooldown enforcement
-
-2026-10-11 - Marked ability 8: Nether Born
-- Added learnable Nether Born to all ten Infernal Claymore/Molten Axe variants: exactly 20% more melee and weapon-explosion damage while the wielder is in the Nether
-- Chosen progression: a single-level passive, preserving the specified fixed 20% bonus without charging for identical upgrades
-- Other dimensions, unlearned weapons and unrelated projectile damage do not receive this bonus
-- Added all-ten-variant damage-pipeline tests using the actual Nether level, exact melee/explosion bonus, Overworld exclusion, fresh-weapon rejection and the single-level cap
-
-2026-10-11 - Marked ability 9: Crucible Hook
-- Added learnable Crucible Hook to all five Molten Axes: acquire an unobstructed aimed enemy within 20 blocks, pull it with velocity and automatically smash it upon entering melee range
-- Chosen rank balance: smash damage 1.25/1.5/1.75/2 times current weapon damage, ignition 3/4/5/6 seconds and cooldown 40/35/30/25 seconds
-- Hook does not teleport or ignore solid walls; it expires after two seconds and cancels on switching, death, lost sight, target loss, dimension change or excessive separation
-- Successful smash applies normal weapon durability/material-hit handling; appropriate hostile mobs and permitted PvP targets are supported
-- Added all-variant real-physics pull/smash tests, exact rank-IV damage/ignition/durability, obstructed activation rejection, no failed-use cooldown and switch cancellation/full cooldown checks
-
-- Added learnable Strong-arm to all Molten Axe variants: one random armor piece can break on an aimed melee enemy, 30/55/80/100% chance and 60/50/40/30-second cooldown; invalid armorless targets do not consume the ability.
-
-- Added learnable Swing Attack to all 45 special axes: circular current-weapon-damage hit within current melee range, blocking walls and excluding allies/neutral targets; rank cooldowns 30/25/20/15 seconds.
-
-- Added learnable Death Stare to all five Riftfang Daggers: crosshair teleport beside a mob at 30/60/120/any loaded visible blocks, with 45/40/35/30-second cooldown; rejects walls, unsafe landing and mounted use.
-
-- Added learnable Echoing Speed to all Riftfang Daggers: each successful same-enemy melee hit adds 5% temporary attack speed, capped at 20/30/40/50%; different targets reset buildup and switching, eight-second inactivity, target death or logout clears it.
-
-- Added learnable Distance Tax to all Void Claymores: ten-second enemy mark pays 0.5/0.75/1/1.25 damage per separation block, capped at 40; same-target hits retain deadline, other targets replace it and switching/logout cancel it.
-
-- Added learnable Null Receipt to all Nullified Axes: suppress knockback for five damaging hits (including absorption), record force up to five, release it in the next vertical axe slam; thirty-second duration and 40/35/30/25-second ending/cancellation cooldown.
-
-- Added single-level Overwhelming Smash to the 40 marked non-Ignisium axes: break successfully blocking shields and add exactly 20% armor wear with fractional carry; mobs receive the bonus using vanilla wear baseline, health damage is unchanged.
-
-- Added learnable False Awakening to all Nightmare Daggers: alternating real/echo silhouette markers, shadowless violet echo distracting visible hostile AI within eight blocks, one real-hit 10/15/20/25% bonus, 4/5/6/7-second duration and 30/25/20/15-second ending cooldown.
-
-- Added learnable Delusion to all Somnium weapons: next-hit twenty-second mob aggression suppression; ranked cooldowns and server-side cleanup.
-
-- Added learnable Delusion to all Somnium weapons: next-hit twenty-second mob aggression suppression; ranked cooldowns and server-side cleanup.
-
-- Added Always the Gardeners to all Lush weapons: next enemy kill creates a five-minute temporary plant and twenty-second Poison I cloud affecting all living entities; ranked radius and cooldown.
-
-- Added Grave Vault to all Lush weapons: persistent nine-slot flower inventory, crouch-use menu, normal terrain flower placement, server validation and weapon nesting protection.
-
-- Added Echo Pin to all Pulsite weapons: visible enemy mark, next-loud-event directional vibration pulse and brief outline, ranked targeting/reveal/cooldown and server cleanup.
-
-- Added Warden Tone to all Pulsite weapons: suppress held-wielder sculk vibrations and owned-projectile vibration events, preserving damage detection and other entities.
-
-- Added rewritten Echo Salvage to all Echoing Axes: missed solid-terrain vertical slam stores a non-stacking echo; next successful enemy vertical slam releases half weapon damage capped at 2/4/6/8, with thirty-second expiry and equipment cleanup.
-
-- Refreshed the recommendation document: kept approved pending descriptions, removed implemented entries, and replaced every unmarked proposal with a simpler unapproved Minecraft-style idea.
-- Replaced discarded unmarked recommendation Wick Thread with Flame Breath for infernal_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Ash Ledger with Charred Edge for infernal_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Slag Seal with Magma Toss for infernal_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Missing Beat with Displace for dagger_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Absent Footprint with Backstab for dagger_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Edge of Nothing with Void Grip for dagger_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Horizon Fold with Void Pulse for claymore_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Vacant Throne with Starless Guard for claymore_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Unwritten Reach with Distant Edge for claymore_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Anchor Sever with Gravity Well for axe_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Event Eraser with Void Mail for axe_of_the_void; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Curtain Call with Lullaby for dreambound_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Night's Bargain with Dream Feast for dreambound_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Recurring Scene with Rested Blade for dreambound_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Lucid Witness with Dream Catcher for dreambound_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Dream Nail with Drowsy Blow for dreambound_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Somnambulist's Map with Wake-up Call for dreambound_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Memory Splinter with Daydreamer for dreambound_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Quiet Room with Pillow Armor for dreambound_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Spark Switch with Spark Shot for dagger_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Grounding Needle with Live Wire for dagger_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Capacitor Parry with Quick Recharge for dagger_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Contact Resistance with Conductive Edge for dagger_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Faraday Crown with Thunder Guard for claymore_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Magnetic Census with Thunderclap for axe_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Circuit Breaker with Magnetic Throw for axe_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Induction Heel with Insulated Handle for axe_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Fault Tolerance with Heavy Current for axe_of_thunder; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Pocket Silence with Air Bubble for storming_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Weathercock with Skimming Step for storming_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Sailmaker with Feather Shelter for storming_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Tailwind Finish with Headwind for storming_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation High Ground Forecast with Air Reserve for storming_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Windward Wedge with Vacuum Burst for storming_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Vacuum Grip with Sky Hunter for storming_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Sky Tithe with Windproof for storming_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Suture Theft with Blood Rush for curseblood_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Pulse Intercept with Clotting Cut for curseblood_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Red Witness with Fresh Blood for curseblood_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Blood Escrow with Blood Guard for curseblood_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Anatomist's Verdict with Crimson Cleave for curseblood_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Hemorrhage Clock with Blood Pact for curseblood_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Triage Split with Rupture for curseblood_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Jagged Recovery with Blood Armor for curseblood_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Open Ledger with Hungry Blade for curseblood_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Pollen Address with Bramble Shot for nature_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Leaf Receipt with Sunfed for nature_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Patient Germination with Leaf Cover for nature_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Canopy Covenant with Green Feast for overgrown_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Mycelium Relay with Sap Shield for overgrown_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Undergrowth Memory with Deep Roots for overgrown_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Harvest Restraint with Compost for overgrown_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Branch Jury with Oakskin for nature_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Bark Accounting with Sapling Harvest for nature_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Coppice Rhythm with Lumberjack for nature_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Last Confession with Banish for hollow_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Grave Mute with Ghostwalk for hollow_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Pallbearer's Pace with Soul Hunger for hollow_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Bone Courtesy with Pale Blade for hollow_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Funeral Procession with Grave Chill for hollow_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Epitaph Seal with Soul Cleave for hollow_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Mourning Weight with Last Stand for hollow_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Unclaimed Name with Grave Strength for hollow_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Soul Rivet with Bone Guard for hollow_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Wake Toll with Skull Throw for hollow_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Grave Inventory with Death's Due for hollow_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Cold Handle with Undead Ward for hollow_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Whisper Exchange with Pressure Needle for shrieking_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Offbeat Cut with Echo Appetite for shrieking_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Soft Landing Signal with Resonant Crit for shrieking_dagger; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Resonance Lens with Dissonance for shrieking_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Counterchime with Ringing Steel for shrieking_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Room Tone with Stone Song for shrieking_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Broken Chorus with Aftershock for shrieking_claymore; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Fault Note with Rebound for shrieking_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Reverberation Cage with Challenge Roar for shrieking_axe; proposal only, no gameplay implementation.
-- Replaced discarded unmarked recommendation Tuning Scar with Bedrock Grip for shrieking_axe; proposal only, no gameplay implementation.
-- Removed already implemented Fire resistance entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Explosive hits entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Nether Born entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Death Stare entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Echoing Speed entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Warden Tone entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Quench Point entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Explosion entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Cinder Decoy entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Heating up entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Cold Bellows entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Crucible Hook entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Strong-arm entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Swing Attack entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Distance Tax entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Null Receipt entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Overwhelming Smash entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented False Awakening entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Delusion entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Always the Gardeners entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Grave Vault entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Echo Pin entries from the active recommendation document; retained their implementation and history.
-- Removed already implemented Echo Salvage entries from the active recommendation document; retained their implementation and history.
-
-- Added markdown/abilityDescriptions.md listing all current in-game weapon abilities with verbatim English tooltip/card descriptions, weapon assignments and all 135 material-hit variant descriptions.
-
-- Added markdown/weaponAbilities.md listing weapon names, types and available ability names for all 148 registered weapons, including all 135 special gemstone variants.
-
-- Changed Dual Wield on special daggers to a learned rank-I passive; the first augmentation always offers it alongside a different choice, and only the selected ability is learned. Matching offhand daggers need not learn it; ordinary Rusty Dagger behavior is unchanged.
-
-- Changed Vertical Strike on special axes to a learned rank-I passive; first augmentation always offers it alongside a different choice. Unlearned axes cannot initiate the slam on either client or server, and switching to unlearned gear or occupying the offhand cancels pending slams. Ordinary unaugmentable axes retain their slam.
-
-- Added Flame Breath to Ignisium dagger, Ignisium axe, Ignisium claymore and all gemstone variants. Instant 35-degree fire cone, current weapon damage, rank I-IV range 4/5/6/7 blocks, burn 3/4/5/6 seconds and cooldown 30/25/20/15 seconds. Blocks and allies stop hits; no terrain edits or recursive melee triggers.
-
-- Added Charred Edge to Ignisium dagger and all gemstone variants. Rank-I passive adds exactly 15% melee damage against hostile enemies with Fire Resistance; fresh gear, neutral targets and secondary spell damage are excluded.
-
-- Added Magma Toss to Ignisium axe and all gemstone variants. One real magma-cream rock projectile per wielder, bursts on first enemy or block for weapon damage; rank I-IV radius 2/2.5/3/3.5 blocks, burn 3/4/5/6 seconds and ending cooldown 35/30/25/20 seconds. Three-second lifetime; ignores neutral/allied entities; solid blocks stop blast damage. Switching/death/logout removes rock, no terrain edits.
-
-- Added Displace to Inanisium dagger and all gemstone variants. Swaps the aimed visible enemy within ten blocks only when both complete bodies fit in loaded, dry destinations; mounted entities are rejected. Preserves facing, resets fall distance and momentum, and rolls back the target if player teleport fails. Rank I-IV cooldown 40/35/30/25 seconds; rejected uses consume no cooldown.
-
-- Added Backstab to Inanisium dagger, Somnium dagger, Electrium dagger, Taifunite dagger, Vulnusium dagger, Lush dagger, Morsium dagger, Pulsite dagger and all gemstone variants. Rank-I passive adds exactly 20% melee damage from the rear, within 60 degrees of directly behind the target. Target yaw determines facing even when looking vertically. Front/side hits, unlearned weapons, allies and secondary damage receive no bonus.
-
-- Added Void Grip to Inanisium dagger and all gemstone variants. Rank-I passive reduces melee knockback strength by exactly 25% without changing damage. Damage-source context is limited to the current server tick and exact held stack; spells, unrelated damage and later impulses do not inherit the reduction.
-
-- Added Void Pulse to Inanisium claymore and all gemstone variants. Damage-free radial velocity push; rank I-IV radius 4/5/6/7 blocks, strength 0.6/0.8/1/1.2 and cooldown 30/25/20/15 seconds. Visible enemies only; blocks, allies and neutral entities are unaffected. No teleportation or damage.
-
-- Added Gravity Well to Inanisium axe and all gemstone variants. Follows the explicit no-damage design: one velocity pull of visible enemies within six blocks, followed by a visual-only smash on reaching melee range. Rank I-IV strength 0.6/0.7/0.8/0.9 and ending cooldown 40/35/30/25 seconds. Two-second state, exact-stack switching/death/logout cancellation; no repeated force, teleportation or damage.
-
-- Added Lonely Dream to Somnium dagger and all gemstone variants. Rank-I passive grants 5% attack speed per enemy within ten blocks, with no invented enemy-count cap. Updates every half-second and immediately on equipment change; removes only its own transient modifier on switching, death or logout. Allies and neutral entities do not count.
-
-- Added Unfinished Dream to Somnium dagger, Somnium claymore, Somnium axe and all gemstone variants. Rank-I passive heals exactly one HP on killing an enemy that has never damaged this wielder in the current session. Absorption-health hits count as damage. Tracks actual damage even before equipping; weak entity history is removed on victim death and player logout. Canceled deaths, neutral kills and unlearned weapons do not heal.
-
-- Added markdown/markedAbilityDesigns.md preserving the complete approved input for all forty marked ability names and their eighty-seven weapon-family assignments before completed entries are removed from recommendations.
-
-- Added Just a Dream to Somnium dagger, Somnium claymore, Somnium axe and all gemstone variants. Instant safe return using Minecraft 1.21.1 respawn resolution, including cross-dimension beds/anchors and vanilla world-spawn fallback. Loads destination body chunks, checks full collision/fluid/border/build-height safety, preserves anchor charges and clears fall distance/momentum. Mounted use rejected; rank I-IV cooldown 60/50/40/30 seconds.
-
-- Added Sleepwalker to Somnium dagger and all gemstone variants. Rank-I passive grants exactly 10% more melee damage during world times 13000-22999 in skylit dimensions. Daytime storms do not masquerade as night; unlearned gear and other weapon types receive no bonus. Day/night boundary tests preserve the original world clock.
-
-- Gravity Well correction per user clarification: its single velocity pull deals no damage; the arrival smash now deals current weapon damage once and applies learned material effects.
-
-- Added Lullaby to Somnium claymore and all gemstone variants. Rank I-IV targets 10/12/14/16 blocks with wall-clipped aiming. Mobs sleep for 60 ticks, wake on successful damage including absorbed hits, and recover original AI/gravity/target settings on expiry or cancellation. Players instead receive Slowness II for 60 ticks. Cooldown 40/35/30/25 seconds starts after sleep ends. Concurrent sleepers cannot overwrite one another.
-
-- Added Dream Feast to Somnium claymore and all gemstone variants. Restores exactly eight hunger points (four food icons), capped at 20, without adding saturation; refuses activation when hunger is full. Ranks reduce the instant cooldown from 60 to 50/40/30 seconds.
-
-- Added Daydreamer to Somnium axe and all gemstone variants. Rank-I passive grants Jump Boost I only while the learned axe is held in the main hand during daylight (world times 0-12999 and 23000-23999 in skylit dimensions). Night, putting it away, death and logout remove the owned grant. Previous and newly acquired potion effects, including stronger Jump Boost and hidden effect chains, retain their remaining durations.
-
-- Added Pillow Armor to Somnium axe and all gemstone variants. Rank-I passive multiplies fall damage by 0.75 while the learned axe is held in the main hand. Real damage tests confirm the exact reduction, fresh/offhand rejection and unchanged non-fall damage.
-
-- Added Magnetic Throw to Electrium dagger, Electrium claymore, Electrium axe and all gemstone variants. All Electrium weapon types launch the wall-clipped aimed enemy within actual melee reach along the full look vector, including skyward aim. Rank I-IV velocity 1.1/1.3/1.5/1.7; instant cooldown 25/20/15/10 seconds. No added damage or teleportation; player targets receive synchronized motion.
-
-- Added Live Wire to Electrium dagger and all gemstone variants. Ranks I-IV grant an eight-second reflection window. Successful enemy melee damage, including damage absorbed by hearts, reflects two indirect-magic damage without recursive reflection; lethal melee hits also earn reflection. Exact-stack/hotbar/dimension switching, expiry, death and logout clean up the state. Cooldown after ending: 40/35/30/25 seconds.
-
-- Added Quick Recharge to Electrium dagger, Electrium claymore, Electrium axe and all gemstone variants. Rank-I passive uses the real charged-critical event followed by successful damage (including absorbed hits) to shorten only the currently assigned primary ability cooldown of the equipped variant by 20 ticks. Triggers at most once per 40 ticks, clamps readiness to the current tick, and preserves secondary and other variant entries. Failed, noncritical and uncharged hits cannot recharge; disabled cooldowns are unchanged.
-
-- Added Conductive Edge to Electrium dagger, Electrium claymore, Electrium axe and all gemstone variants. Rank-I passive increases successful enemy melee damage by exactly 20 percent only while the target is in water or exposed to rain. Fresh weapons, dry or roof-sheltered enemies and spells receive no bonus. All 15 variants tested, with an actual Plains rain fixture and roof check.
-
-- Added Static blade to Electrium dagger and all gemstone variants. Next swing (air, block or enemy) launches a server-authoritative four-block-wide, half-block-high echo along the view direction captured on that swing. Travels one block per tick up to 20 blocks; full-width collision sampling stops at solid blocks, while enemies are pierced once each for current weapon damage. Arms for 30 seconds; released flight has its own deadline. Exact-stack switching/death/logout cancels; ranks reduce ending cooldown to 40/35/30/25 seconds. Uses particles and compact state without a ticking projectile entity.
-
-- Added Lightning Rod to Electrium dagger, Electrium claymore, Electrium axe and all gemstone variants. Rank-I passive prevents actual lightning strikes from injuring or igniting the wielder. Under open sky, an additional cosmetic strike rolls once per second with 1/60 chance, independent of storms. Strikes add exactly 10 absorption HP and Strength I for 30 seconds; repeated flashes cannot stack hearts. Owned absorption consumption is tracked so switching/expiry preserves unrelated absorption and Strength, including stronger potion chains. Cosmetic server bolts expire without changing copper, powering rods, igniting blocks or damaging nearby entities.
-
-- Added Alternating Current to Electrium dagger, Electrium claymore, Electrium axe and all gemstone variants. Arms for 30 seconds. A successful melee hit links its living enemy to the nearest visible enemy within 20 blocks for one minute; the second is stunned for two ticks immediately, then the harmless stun alternates every 20 ticks. Walls block pulses; death, separation beyond 20 blocks, switching and logout cancel. Rank I-IV ending cooldown 120/100/80/60 seconds. Shared sleep/stun leases preserve original AI, gravity and targets through overlaps and dimension travel; Lullaby uses the same locks. Stunned players cannot start melee, active abilities, echo releases, dual attacks, vertical strikes or double jumps; camera direction is preserved.
-
-- Added Direct Current to Electrium dagger, Electrium claymore, Electrium axe and all gemstone variants. Ranks I-IV allow 2/3/4/4 melee-marked enemies, each within 50 blocks of every other anchor. Two marks start 20-second stuns and visible barriers; additional marks refresh that duration. Crossing a barrier deals 4 HP with a 10-tick per-entity guard, including fast dashes. Rank IV is named Static Field in item tooltips and upgrade cards: three visible anchors form a triangular field dealing 1 HP per second to all living occupants, including neutral creatures and the caster; other players retain normal PvP protection. Walls block barrier/field formation. Exact-stack switching, death, range separation and expiry release stuns. Ending cooldown 120/100/80/60 seconds. Visibility is checked once per pair per tick and particle counts are bounded.
-
-- Added Stunning Presence to Electrium claymore and all gemstone variants. Ranks I-IV provide a 30-second aura with 4/6/8/10-block radius, one HP per pulse and six-tick stuns; pulses repeat every 40/33/27/20 ticks. Visible enemies only, including cancellation on switching, death and logout; ending cooldown 60/50/40/30 seconds. Shared locks enforce position before and after entity ticks, block melee damage emitted by frozen attackers, avoid redundant motion packets and preserve client camera rotation with relative rotation flags.
-
-- Added Heavy Current to Electrium axe and all gemstone variants. Rank-I passive multiplies enemy melee damage by 1.15 before normal armor reduction, only when all four normal armor slots contain correctly matched ArmorItem pieces. Missing pieces, Elytra, fresh weapons and spell damage receive no bonus. Actual damage-event probes verify all five axe variants.
-
-- Added Downdraft Bell to Taifunite dagger, Taifunite claymore, Taifunite axe and all gemstone variants. All Taifunite weapon types force visible airborne enemies downward once within rank I-IV radius 4/6/8/10, preserving horizontal velocity, position, HP and existing fall distance. Minimum downward speed 0.8/1.0/1.2/1.4; already faster descents, grounded targets, swimming targets and neutral mobs are unchanged. Instant cooldown 30/25/20/15 seconds. A shared vertical-only client correction preserves actual sprint momentum and uses a native motion fallback for peers without that channel.
-
-- Added Crosswind to Taifunite dagger, Taifunite claymore, Taifunite axe and all gemstone variants. All Taifunite weapon types grant two minutes of projectile deflection. Before entity ticks, incoming projectiles within 12 blocks are steered sideways at their existing speed when their predicted path threatens the player; own shots are excluded. Impact-event fallback blocks last-moment and guided hits. Switching, dimension changes, death and logout end protection; already deflected flight keeps its physical momentum. Rank I-IV ending cooldown 180/160/140/120 seconds. Real arrow flight, owner filtering and cancellation tested.
-
-- Added Slipstream to Taifunite dagger and all gemstone variants. Rank-I passive grants a non-stacking 10 percent base movement-speed bonus while actually sprinting directly behind a moving ally within three blocks and clear sight. Position observations handle real player movement rather than relying on stale server velocity. Stopping, overtaking, turning away, blocked sight, switching, death and logout remove the owned modifier. Allied teams, owned pets and cooperative players are recognized.
-
-- Added Upwind to Taifunite dagger, Taifunite claymore, Taifunite axe and all gemstone variants. Arms the next successful melee hit for up to 30 seconds. After vanilla hit knockback, adds rank-scaled horizontal knockback and upward velocity 0.6/0.8/1.0/1.2, respecting knockback resistance. No added damage, teleportation or artificial fall damage. Misses, blocks and ability damage do not consume it. Exact stack switching cancels it. Cooldown 30/25/20/15 seconds after hit or cancellation.
-
-- Added Windcharge to Taifunite dagger, Taifunite claymore, Taifunite axe and all gemstone variants. Vertical velocity launch preserves horizontal sprint motion: dagger/claymore heights 5/10/15/20 blocks, axes 10/16/23/30 (unobstructed normal gravity). Axe rank IV is titled Skybreaker and arms one falling melee or ground smash, radius 2, current weapon damage plus vanilla mace fall scaling; initial melee victim is not hit twice. Successful smash prevents its landing damage; lesser ranks retain normal fall rules. Flight cancels on switching, fluids, climbing, death or 10-second timeout. Cooldown 30/25/20/15 seconds, instant on ordinary launch and after Skybreaker flight ends.
-
-- Added Vacuum Burst to Taifunite dagger, Taifunite claymore, Taifunite axe and all gemstone variants. One velocity gust pulls visible dropped items and experience orbs within 6/8/10/12 blocks toward the player at speed 0.9. No teleportation, immediate collection, pickup-delay changes or item consumption; normal ownership and pickup rules still apply. Solid blocks stop the pull. Cooldown 30/25/20/15 seconds starts on use.
-
-- Added Headwind to Taifunite dagger, Taifunite claymore, Taifunite axe and all gemstone variants. Learned passive halves only the ground-sprinting hunger exhaustion branch while the weapon is in the main hand. Jumping, swimming, generic exhaustion and offhand equipment retain vanilla costs. A required version-specific ServerPlayer mixin targets exactly the fourth exhaustion call in Minecraft 1.21.1 checkMovementStatistics; actual sprint, jump and swimming paths verified on NeoForge 21.1.93. Fixed strength, maximum rank I.
-
-- Added Feather Shelter to Taifunite claymore, Taifunite axe and all gemstone variants. On use, gives the wielder and visible allied living entities Slow Falling for 10 seconds, with 4/6/8/10-block radius. Allies include teams, owned pets and cooperative players when PvP is disabled; corrected this shared ally check for Slipstream too. Enemies and targets behind walls are excluded. Vanilla effect merging preserves stronger pre-existing effects. Cooldown 60/50/40/30 seconds starts on use.
-
-- Added Pocket Storm to Taifunite axe and all gemstone variants. Arms the next successful melee hit for up to 30 seconds. After normal hit processing, smashes enemies within 3 blocks of the victim: secondary enemies take current weapon damage; the original victim gets knockback without double damage. Horizontal knockback strength 1.0/1.2/1.4/1.6 with a small lift respects resistance. Lethal hits still trigger the smash; walls, allies and the wielder are excluded. No terrain changes. Cooldown 40/35/30/25 seconds after hit or cancellation. Also fixed Upwind to consume its armed gust on lethal hits.
-
-- Added Blood Rush to Vulnusium dagger, Vulnusium claymore and all gemstone variants. Spends exactly 2 real health points, preserving absorption, and grants Speed II for 10 seconds. Activation is refused at 2 HP or less even with absorption available; refused uses spend nothing and grant no effect. Vanilla potion merging preserves stronger effects. Cooldown 30/25/20/15 seconds starts on use.
-
-- Added Final strike to Vulnusium dagger, Vulnusium claymore, Vulnusium axe and all gemstone variants. Chosen fixed bonus: 50% extra melee damage to the most recently successfully hit enemy while it has strictly less than 10% maximum health. The first hit against a new enemy is not boosted; hitting another enemy replaces the target. Blocked hits and ability damage do not establish the melee target. Exact stack/slot switching, dimension changes, death and logout clear it. Fixed strength, maximum rank I.
-
-- Added Blood Sacrafice to Vulnusium dagger, Vulnusium claymore, Vulnusium axe and all gemstone variants. On activation halves real health and absorption independently, then doubles outgoing attributed weapon damage to non-allied targets for 20 seconds, including melee and weapon ability damage. Reusing the active stance spends no further health. Exact stack/slot switching, dimension change, expiry, death or logout ends it; no health refund. Cooldown 60/50/40/30 seconds begins when the stance ends. Fixed cost and duration; ranks improve cooldown.
-
-- Added Scar Compass to Vulnusium dagger, Vulnusium claymore, Vulnusium axe and all gemstone variants. Successful melee hits mark the most recent living enemy with a 10-minute Glowing effect; a new enemy replaces the old mark. Shared ownership prevents one wielder removing another mark. Existing and externally applied Glowing effects retain their own timers and are restored when the last mark ends. Dispelled potions are not resurrected. Switching exact stack/slot, expiry, dimension travel, death, unloading or logout cleans ownership. No extra ticking entities; fixed strength, maximum rank I.
-
-- Added Revengeful Exit to Vulnusium dagger, Vulnusium claymore, Vulnusium axe and all gemstone variants. Dying to a living enemy releases a five-block blood explosion for current weapon damage to nearby living entities, including neutral creatures, with walls blocking the area blast. The killer takes an additional five times weapon damage, even outside that radius; an in-radius killer takes six times in one hit so immunity frames cannot erase part of the effect. Normal PvP and armor rules apply. Environmental deaths and unlearned weapons do not trigger it. Blood particles and explosion sound without terrain damage. A recursion guard prevents death-burst chains. Fixed strength, maximum rank I.
-
-- Added Sunfed to Lush dagger, Lush claymore, Lush axe and all gemstone variants. Learned main-hand passive restores exactly one hunger point after every 15 continuous seconds outdoors in Minecraft daylight, for all marked Lush weapon types. Uses the overhead motion-blocking heightmap rather than asynchronously updated skylight, and Minecraft isDay so darkness during thunderstorms does not qualify. No saturation, capped at 20 food. Roofs, night, full food, switching exact stack/slot, dimension changes, death or logout reset the interval. Fixed strength, maximum rank I.
-
-- Added photosythesis to Lush dagger, Lush claymore, Lush axe and all gemstone variants. Implemented the approved photosythesis entry as Photosynthesis in the UI. Chosen slow repair rate: one durability point after every 15 continuous seconds holding the learned weapon during Minecraft daylight, including indoors. Only the main-hand weapon repairs; damage cannot go below zero and augmentation/item data is preserved. Night, full durability, exact stack/slot switching, dimension changes, death and logout reset the interval. Fixed strength, maximum rank I.
-
-- Added Green Feast to Lush dagger, Lush claymore, Lush axe and all gemstone variants. Consumes exactly one wheat from ordinary inventory or offhand to heal 2 health points, capped at maximum health. Full health and missing wheat reject activation without spending ingredients or starting cooldown. Inventory changes synchronize normally; weapon data is preserved. Cooldown 20/15/10/5 seconds starts on use.
-
-- Added Sapling Harvest to Lush dagger, Lush claymore, Lush axe and all gemstone variants. Enemy kills while the learned weapon is held have exactly a 15% chance to add one random sapling to existing drops. Uses the actual saplings item tag, including applicable tagged mod/datapack items. Existing drops are preserved; canceled drops and disabled mob loot add nothing. Ordinary pickup rules apply. Both deterministic roll outcomes, all variants, loot preservation and rule/cancellation behavior tested. Fixed strength, maximum rank I.
-
-- Added Compost to Lush dagger, Lush claymore, Lush axe and all gemstone variants. Prevents only Hunger from consuming rotten flesh while the learned weapon is held in either hand, allowing a main-hand food with an offhand axe without changing axe offhand-use restrictions. A required 1.21.1 food-completion mixin filters that food effect before application. Nutrition, saturation, consumption, other food effects, pre-existing Hunger and Hunger from other sources are preserved. Actual item finishUsingItem paths tested for all variants and both hands. Fixed strength, maximum rank I.
-
-- Added Lumberjack to Lush axe and all gemstone variants. Learned Verdant Axes mine blocks in the logs tag without durability loss, including stripped logs and nether stems. The normal tool-use/statistic result is retained. Other block mining and melee combat still cost normal durability, and unaugmented axes receive no benefit. Tested every axe variant and logs at the final durability point. Fixed strength, maximum rank I.
-
-- Added Ghostwalk to Morsium dagger, Morsium claymore, Morsium axe and all gemstone variants. Grants vanilla Invisibility for ten seconds; worn armor remains visible. Valid entity attacks, block attacks, air swings and dagger offhand swings end it, including misses. Existing and independently applied invisibility retain their own durations and are restored when the owned effect ends; dispelling does not resurrect removed potions. Natural potion expiry is distinguished from dispelling, including expiry-order edge cases. Exact stack/slot switching, dimension travel, death or logout cancels it. Cooldown 30/25/20/15 seconds begins when Ghostwalk ends. Reuses the validated swing packet; no ticking marker entities.
-
-- Added Soul Hunger to Morsium dagger, Morsium claymore, Morsium axe and all gemstone variants. Each valid enemy kill adds two absorption health points, up to six owned by this passive. A separate transient capacity and consumed-health ledger keep the cap independent of existing absorption. Absorbed damage spends the owned portion first; later kills replenish it. Absorption potions and refreshes coexist without overwriting the passive or being removed on switching. The remaining owned health and capacity clear on exact stack/slot switching, dimension travel, death or logout. Canceled deaths and fresh weapons grant nothing. No artificial expiry; hearts last until consumed or the weapon is put away. Fixed strength, maximum rank I.
-
-- Added Last Stand to Morsium dagger, Morsium claymore, Morsium axe and all gemstone variants. Learned passive prevents one fatal hit above one HP, leaving exactly one real HP after normal absorption consumption. A persistent player-wide two-minute cooldown survives respawn and prevents variant swapping from bypassing it. Fixed strength, maximum rank I.
-
-- Added Bone Guard to Morsium claymore, Morsium axe and all gemstone variants. Summons one friendly vanilla-rendered skeleton for 15 seconds, with ordinary skeleton bow damage and rank-scaled 8/10/12/14-block targeting range. It shoots only visible enemies; arrows cannot hurt allies or be collected. Summon, gear and arrows cannot persist or yield loot/experience. Switching, expiry, death and logout remove the summon and its shots. Ending cooldown 60/50/40/30 seconds.
-
-- Added Skull Throw to Morsium axe and all gemstone variants. Fires a slow blue wither skull, using vanilla dangerous-skull flight. First enemy or block impact deals current weapon damage to visible enemies within 2/2.5/3/3.5 blocks and applies Wither I for five seconds. No terrain damage, vanilla skull healing or extra vanilla impact damage. Caster and allies are excluded. Flight expires after five seconds or switching/death/logout; ending cooldown 50/40/30/20 seconds.
-
-- Added Death's Due to Morsium dagger, Morsium claymore, Morsium axe and all gemstone variants. Learned passive increases the existing enemy XP award by 25 percent, rounding down to whole points and saturating safely at the integer limit. Item drops, neutral creatures, canceled awards and uncredited kills are unchanged. Tested all fifteen variants and actual zombie death/orb creation (five XP becomes six). Fixed strength, maximum rank I.
-
-- Added Echo Appetite to Pulsite dagger, Pulsite claymore, Pulsite axe and all gemstone variants. Completed sculk mining restores exactly one hunger point without saturation for all Pulsite variants. Includes sculk veins, both sensors, catalysts and shriekers; other blocks do not feed. Normal tool wear and block drops remain intact, and a final-durability break still earns its hunger point. Tested actual server block destruction, maximum hunger and all variants. Fixed strength, maximum rank I.
-
-- Added Resonance Crit to Pulsite dagger, Pulsite claymore and all gemstone variants. Fully charged melee hits against visible-class enemy targets rising in a jump become genuine critical hits, including grounded attackers. Requires airborne positive vertical movement; grounded, falling, swimming, lava, climbing and elytra targets do not qualify. Uses at least the vanilla 1.5 damage multiplier without lowering stronger critical modifiers. Runs before critical-hit listeners so existing charged-critical abilities see the critical. Tested real charged attacks across ten variants. Fixed strength, maximum rank I.
-
-- Added Aftershock to Pulsite dagger, Pulsite claymore, Pulsite axe and all gemstone variants. Successful fully charged melee hits, including normal sweep victims, schedule one damage point after 20 ticks. A dedicated armor-bypassing damage type bypasses immunity frames without resetting them and cannot trigger melee-hit abilities or another echo. Normal absorption, resistance and player protection still apply. Exact stack/slot switching, dimension changes, death and logout cancel pending echoes; dead enemies are skipped. Tested all fifteen variants, actual timing, recent immunity, no recursion and invalid-hit/switch cases. Fixed strength, maximum rank I.
-
-- Added Ringing Steel to Pulsite claymore and all gemstone variants. Arms one successful enemy melee hit for up to 30 seconds. Damages one held sword, axe, bow, crossbow, trident or mace by 15 durability using normal enchantment rules, checking the offhand if the main hand has no weapon. Armor, shields and nonweapon tools are excluded; a hit without a weapon still consumes the strike. Spell/blocked hits do not consume it. Switching, expiry, dimension changes, death and logout cancel it. Ending cooldown 30/25/20/15 seconds; ranks improve cooldown only. Tested five variants, weapon breakage, offhand fallback and excluded equipment.
-
-- Added Stone Song to Pulsite claymore and all gemstone variants. Learned main-hand blade grants exactly two additional armor points only below Y=0. Uses one synchronized transient modifier, so repeated ticks cannot stack it and it is not saved permanently. Unequipping, moving to Y=0 or above, death, logout and dimension travel remove it. Offhand blades and fresh weapons grant no armor. Tested all five variants and the fractional negative-Y boundary. Fixed strength, maximum rank I.
-
-- Added Challenge Roar to Pulsite dagger, Pulsite claymore, Pulsite axe and all gemstone variants. An instant visible roar makes hostile mobs within 6/8/10/12 blocks target the wielder. Supports ordinary target AI, brain attack/anger memories, neutral-mob anger and wardens; players, allies, neutral creatures and enemies behind walls are excluded. A taunt applied during a stun is retained when the stun releases without canceling immobilization. Normal AI handles later aggression; ordinary anger memories last thirty seconds. No damage or terrain changes. Instant cooldown 30/25/20/15 seconds. Tested all fifteen variants, wardens, piglins, walls, range, pets and stun overlap.
-
-- Audited all 58 tracked marked abilities and revised weapon assignments; removed six verified re-added recommendations and corrected stale pending-status documentation. Added a registry-backed ability catalog check to verify all 135 fresh special weapons have no implicit augments or duplicate pooled abilities.
-
-- Refreshed in-game ability descriptions and all 148 weapon ability-name lists from the registry catalog; added scripts/update_ability_docs.py for reproducible updates.
-
-- Expanded learned active capacity to three with configurable tertiary key (default 3), independent simultaneous sessions/cooldowns and actual-key tooltips; non-dagger passive capacity increased to five, daggers remain two. Material Hit remains separate; two-ability swap preserves order when a third is learned.
-
-- Renamed Warden's Needle and all four gemstone variants to Resonance Dagger, as chosen by the user. Existing shrieking_dagger registry IDs and saves remain compatible; weapon/ability catalogs use the new name.
-- Added craftable purple Augment Template. It can be augmented in the existing Augmentation Table slot, stores learned active and passive abilities and ranks, and displays stored descriptions and configured ability keys.
-- Added compatible ability and passive transfers from Augment Templates or other special weapons through an anvil. Matching ranks increase by one up to the ability maximum; higher ranks carry over. Unsupported abilities are skipped.
-- Added a small anvil replacement prompt controlled with left/right arrows. When a transfer exceeds a weapon's active or passive capacity, the player chooses which existing ability to replace before the anvil yields a result. Material Hit remains outside these slot limits.
-- Preserved same-weapon anvil durability repair, compatible enchantment merging, custom names, and prior-work costs while transferring augments.
-- Added automatic Augmentation Table repeat cycles after a choice when the same upgraded item has another legal upgrade and a gemstone template plus sapphire pair remains. The final result stays in the output slot when no further cycle is possible.
-- Kept the Augmentation Table's augment slot at one item and added a regression check for single-item insertion and repeated template upgrades.
-- Replaced the Augment Template icon with an original animated purple pixel-art template styled to sit beside Create: Enchantment Industry's enchanting templates. Filled Augment Templates now glint.
-- Added a Super Augment Template with a brighter animated purple texture, item tooltip, creative-tab entry, generated model and smithing upgrade recipe. Smithing a filled normal template preserves its stored abilities and ranks.
-- Buffed Super Augment Templates to store and transfer one ability rank above its ordinary cap; over-cap ranks persist on weapons and through weapon-to-weapon merging. Normal templates cannot extract an over-cap rank.
-- Added optional Create: Enchantment Industry 1.21.1 integration: matching normal or super Blaze Enchanters can fill Augment Templates; Blaze Forgers can apply and extract augments, and merge filled templates. Automated Forger insertion recognizes augment sources and templates.
-- Added targeted GameTests for Super Augment Template rank limits, smithing-data preservation and CEI machine processing. CEI mixins load only when CEI is installed.
-- Added Flaming Stomp to Ignisium axes and gemstone variants. The next axe attack triggers the vertical strike animation and affects a 5×5 area ahead, setting enemies ablaze for five seconds. It has a two-minute cooldown after use or cancellation.
-- Removed activation key labels from stored abilities on Augment Templates and Super Augment Templates; templates cannot activate weapon abilities.
-- Replaced both Augment Template textures with purple recolors of the corresponding Create: Enchantment Industry animated template sprites.
-- Added Flameborn to Ignisium daggers, claymores, and axes, including gemstone variants. It grants up to 30 seconds of Fire Resistance and ignites the wielder and enemies within 10 blocks for five seconds (seven at super rank) with a visual explosion. Switching ends its protection; a five-minute cooldown starts when it ends.
-- Added Ender Swing to Inanisium axes and gemstone variants. The next attack sweeps a one-block radius for weapon damage (20% more at super rank) and lifts surviving enemies 20 blocks through clear space. Switching cancels it; cooldown after use or cancellation is 60 seconds.
-- Buffed Challenge Roar to grant the wielder Strength I for 10 seconds on activation.
-- Changed Echo Hearing into a 10/12/14/16-second listening ability with a radius that follows the wielder; other entities glow for two seconds whenever they emit a vibration nearby, with a visible vibration traveling from the entity to the wielder. The wielder no longer reveals themselves, and the cooldown starts when listening ends or is canceled.
-- Fixed Flameborn so the no-ability-cooldown command also allows restarting its active fire burst and protection without waiting for the previous 30-second effect to end.
-- Buffed Explosion from power 3 to power 4 (about 6 to 8 blocks of reach) and added a broad blast, dust, and smoke particle cloud. Blocks remain unaffected.
-- Added a Heat meter above the hotbar while wielding a weapon with Heating Up. It displays server-synced stored heat from 0 to 20 and clears when the weapon changes.
-- Buffed Explosive Hits blast radius from 1.5/2/2.5/3 to 3/4/5/6 blocks at ranks I-IV (7 at super rank) and increased each hit's visible blast to 6 explosion, 20 dust, and 10 smoke particles.
-- Buffed Flame Breath range from 4/5/6/7 to 7/8/9/10 blocks at ranks I-IV, with flame particles spread through the full visible cone up to its range and stopped by solid blocks.
-
-- Added named super-augment progression and rank display: Direct Current transforms at IV into Static Field I and upgrades to IV, increasing field pulse damage from 1 to 1.75 HP. Preserves saved rank-IV effects, one-slot identity, template extraction and anvil transfer; super IV is the cap.
-
-- Axe Windcharge now transforms into Skybreaker I at the original rank IV and upgrades through super IV. The 30-block launch and area smash remain; super II/III/IV increase mace fall bonus 10/20/30 percent. Fixed high-rank array indexing; dagger/claymore Windcharge does not gain Skybreaker.
-
-- Double Jump transforms at original IV into Windwalker I, granting two air jumps and upgrading lift through super IV (0.55/0.60/0.65/0.70). Matching dagger pairs combine learned jump counts up to four with Dual Wield on either hand, including mixed gemstones. Server budgets reject extra jumps and clear on equipment/slot/dimension changes, landing, death/logout; accepted jumps preserve sprint momentum.
-
-- Corrected Death's Due server-test XP accounting to include merged orb counts; gameplay XP awards are unchanged.
-
-- Cinder Decoy now explodes once whenever it disappears, including expiry, switching, death, logout and external removal. Vanilla explosion radius changed from a fixed 4 blocks to 2/3/4/5 at ranks I/II/III/IV, reducing low-rank reach/damage and increasing rank-IV reach/damage. Ignition follows the same radius. Owner and terrain remain unharmed; cooldown and target restoration are preserved. Explosions occur in the decoy's original dimension.
-
-- Promoted Heating Up's former rank-IV fire-absorption effect to its default learned effect at every rank, including the template bonus rank. Remaining fire becomes heat and is extinguished while capacity remains; full capacity still leaves the wielder burning. Heat cap/cost, melee charging, HUD, burn-duration upgrades and switching cleanup are preserved.
-
-- Heating Up heat is now stored persistently on each sword rather than the wielder, retaining independent values through switching, inventory storage, saving/logout and augmentation. Added a gray Heat: x / 20 tooltip extension visible without Shift; removed the heat HUD overlay, its client state/logout listener and dedicated network payload/registration. Vanilla item-component synchronization carries heat to clients; sweep payment and heat cap/cost remain unchanged.
-
-- Fire Aspect on a Heating Up sword now upgrades heat-funded ignition to infinite burning until extinguished, at any learned rank. Preserves five-heat payment, one payment per sweep and ordinary timed Fire Aspect when prerequisites fail. Added saved burn state and phase-preserving refresh to maintain normal fire damage cadence; a fire-setter mixin removes the state immediately on extinguishing, including water and Quench Point. Fire-immune targets are excluded.
-
-- Removed Flaming Combo from every Emberfang Dagger variant and augment-template catalog, its active window/burn-stacking runtime, localization/card text and obsolete state test. Saved retired entries are ignored and no longer occupy active slots. Pyromaniac retains its native secondary source and existing cooldown; two-ability swap/break regressions now use two surviving Morsium abilities.
-
-- Removed Quench Point from every Emberfang Dagger variant and augment-template catalog, including its extinguishing/fire-conversion event handler, obsolete gameplay tests and language/card keys. Retired saved rows are ignored and no longer occupy passive slots; other augments remain usable. Updated current ability catalogs and implementation record.
-
-- Pyromaniac now extinguishes the wielder on its armed successful hit and transfers the remaining fire duration to the target instead of applying a fixed five-second burn. Infinite burning transfers its persistent state; longer existing target fire is preserved and fire-immune targets are excluded. Healing remains 5 HP, capped normally, with the existing 50-second ending cooldown and single-use activation. If fire ends before the armed hit, healing remains but no fire is invented.
-
-- Replaced Void Pulse's inward-only portal ring with custom glowing violet particles: 64 motes contract and spiral toward the moving caster for 10 ticks, followed by a flash and 96 fast outward motes with an impact sound at the actual push. Particle lifetimes and counts are bounded; existing vanilla sprites are reused.
-
-- Void Pulse now pushes every visible mob, including passive/allied mobs and fully knockback-resistant mobs, using an outward physics impulse without damage or teleporting. Existing radius/strength and PvP-player protections remain. Added a half-second windup; cooldown now starts on release or cancellation, and switching/death/logout/dimension travel cancel an unfinished charge.
-
-- Fixed Stepping Through the Void camera snapping: its teleport packet now uses zero relative yaw/pitch offsets, preserving newer client mouse movement instead of forcing older server angles. Existing view-directed path, ranges, collision/world-border checks, fall reset, sounds and seven-second cooldown remain. Sudden Presence retains its intentional target-facing rotation.
-
-- Added Void Pulse to Riftfang Dagger and Nullified Axe augmentation pools, including all four gemstone variants of each. All 15 Inanisium weapons can learn/use the same pulse with existing particle charge/burst, mob targeting, ranks and variant-specific cooldowns; fresh weapons do not gain it automatically.
-
-- Changed Gravity Well to steer enemies toward a fixed point two blocks ahead of the player at activation. Smash now requires arrival at that point and melee reach, instead of triggering on merely entering reach. Pull remains damage-free and respects collision; blocked pulls expire without damage.
-
-- Changed Vertical Strike charging: only fully recharged attacks count toward the third-attack smash. Weak attacks preserve existing progress; duplicate packets and air swings must wait the equipped axe's full recharge interval before counting. Counting does not reset or weaken the following vanilla melee attack.
-- Moved Swing Attack sweep particles half a block inward from the attack radius.
-- Added real Deep Wound ability-packet and vanilla critical-attack regression checks for all five Assassin Dagger variants, verifying doubled critical damage and five seconds of Slowness III on the target.
-
-- Converted Leech into an always-on learned Assassin Dagger passive, preserving its saved augment ID/ranks. Removed 10% damage bonus, activation/cooldown, ten-hit charges and total healing budget. Heals 10/12/14/16% of actual damage at I-IV (18% at transferred rank V); a valid same-material Dual Wield pair can provide it from either hand without stacking. Removed obsolete LeechState and its test.
-
-- Buffed Wither Hit base duration by five seconds (Vulnusium claymore 4 -> 9 seconds; Jade 5 -> 10). Retained speed-adjusted shorter dagger/longer axe durations and existing Jade amplifier bonus; applies from learned rank I.
-
-- Always the Gardeners plants and poison clouds now persist after weapon switching until their original five-minute expiry. Switching still cancels unused arming and starts cooldown. Keep at most one placed garden per wielder; the next planted garden replaces it. Owner death/logout/dimension change and expired clouds remove detached plants.
-
-- Added Lush Jungle, a one-rank passive for all fifteen Lush weapons: enemy kills apply vanilla bonemeal to the block directly beneath them when valid, without consuming inventory items or replacing unrelated terrain. Matching Dual Wield may provide it from either hand.
-
-- Buffed Sunfed to restore one saturation point alongside each hunger point every fifteen seconds in daytime open sky. It now replenishes saturation even at full hunger, capped at 20; other conditions/timer cleanup remain unchanged.
-
-- Buffed Green Feast: one wheat now heals two HP and restores two saturation points, capped at current hunger. Full-health use succeeds when saturation is missing; full health plus full saturation or missing wheat consumes nothing.
-
-- Changed Grave Vault to Minecraft's normal one-row chest texture/layout (nine storage slots and player inventory). Added enemy-kill placement of one stored flower at the victim's standing block when normal soil, replacement and player permissions allow; invalid placement keeps the flower. Matching offhand dagger may supply the vault.
-
-- Added Ghostwalk super form Jumpscare Horror: original IV becomes super I, then upgrades through IV. Its invisible opening entity attack deals double damage and ends Ghostwalk; subsequent visible hits receive no bonus. Super invisibility lasts 10/12/14/16 seconds with existing 15-second ending cooldown. Fixed client entity-swing packet prematurely ending invisibility before hit handling; misses/blocks still reveal normally. Existing external invisibility preservation remains.
-
-- Buffed Soul Hunger: earned absorption and its capacity remain after switching, changing hotbar slot or unequipping. Absorbed damage still consumes it and the six-HP earned cap persists across reequipping; only held learned weapons can earn/refill hearts. Existing potion coexistence and death/logout/dimension cleanup remain.
-
-- Buffed Bone Guard to a one-minute summon that survives weapon switching, with normal ending/switch cooldown and one group per owner. Added Necromancer named super form at original IV, upgrading through super IV: groups of 2/3/5/7 allies; maximum is one bogged, one stray, two skeletons, three wither skeletons. All groups live one minute, cannot harm owner/friendly golems, are mutually neutral with friendly golems, and yield no loot/XP or collectible arrows. Guard types use correct vanilla classes/renderers; cleanup on expiry/death/logout/travel remains.
-
-- Buffed False Awakening echo life to 30/35/40/45 seconds at I-IV (50 seconds at transferred rank V). Adjusted ending cooldown to 60/50/40/30 seconds. Existing damage payoff, line of sight, target restoration and switching/lifecycle cancellation remain.
-
-- Buffed Absolute Nightmare: from learned rank I, its next two successful hits now inflict Weakness IV and Darkness V for ten seconds (amplifiers3/4, duration200 ticks). Higher ranks retain the stronger baseline; hit count, cooldown and target-only debuffs unchanged.
-
-- Buffed Dream Feast to restore eight saturation points alongside eight hunger points via vanilla food handling. Can replenish saturation at full hunger; rejects full hunger plus full saturation. Existing instant cooldown and particle effect remain.
-
-- Fixed Lush Jungle to ignore enemy deaths in a different dimension from the wielder, preventing delayed remote kills from fertilizing unrelated current-dimension blocks. Added a paired remote/local regression.
-
-- Fixed Jumpscare Horror to capture and double a valid delayed offhand opening hit when invisibility was activated between paired dagger swings. Invalid/air offhand swings still reveal without storing a damage bonus. Added real main-hit/activation/offhand-packet checks across all five Morsium dagger variants with mixed gemstones.
-
-- Fixed Grave Vault kill placement while its UI is open: consume from live menu storage, synchronize slot counts and persist the same inventory, preventing later clicks from restoring a spent flower. Added kill-then-shift-extraction duplication regression.
-
-- Updated implementation/handoff documentation to match the completed passive, saturation, persistence, new ability, UI and super-augment changes, with chosen values and Deep Wound trigger clarification recorded.
-
-- Reduced Absolute Nightmare level-I Weakness IV and Darkness V duration from ten to five seconds (100 ticks). Higher levels keep ten seconds; two-hit charge, strengths and cooldowns unchanged.
-
-- Buffed Alternating Current stun duration from 0.1 to 0.5 seconds (10 ticks) starting at level I, retained at higher levels. One-second pulse interval, no stun damage, link duration and cooldowns unchanged.
-
-- Reduced Lightning Rod level-I extra-strike chance to 1 in 600 per second (average once per ten minutes under open sky). Higher ranks retain 1 in 60 per second; natural lightning protection and buffs unchanged.
-
-- Buffed Stunning Presence radius to ten blocks from level I (all ranks) and stun duration to 0.5 seconds per pulse. Added rotating electrical boundary and expanding pulse ripples with rank-scaled density/speed, bounded particle emission every five ticks. Existing damage, pulse frequency, lifetime and cooldowns retained.
-
-- Buffed Direct Current barriers to deal four HP to living bodies remaining in the current, sharing the existing half-second per-entity guard with crossing damage. Uses body collision with a narrow electrical curtain; marked endpoints are excluded from stationary contact. Existing wall/height/expiry/switch rules and Static Field area damage remain.
-
-- Buffed Static Blade to stop only when its full sampled width/height is blocked, allowing center/offset one-block holes and partial obstructions. Matching dual-wield pairs release a second independent echo on the paired offhand swing even with an unaugmented offhand, each hitting enemies once. One pending echo per activation, exact-stack/pair validation, bounded offhand window, shared ending cooldown and main-switch cancellation retained.
-
-- Buffed Ringing Steel to remain armed indefinitely while equipped instead of expiring after thirty seconds. The next successful enemy melee hit consumes it; switching cancels it. Existing lifecycle cleanup, durability effect and ending cooldowns retained.
-
-- Changed Crosswind projectile deflection to randomized predominantly sideways directions, adding bounded vertical tilt and backward bias while choosing an outward-safe side. Preserves speed, projectile position, own-shot exclusion, duration, switching and cooldowns.
-
-- Reworked Downdraft Bell from a one-shot short spherical enemy push into ten seconds of sustained descent for all airborne mobs above the player, including passive/flying/no-gravity mobs, with no height cap and existing 4/6/8/10-block horizontal radius. Chose minimum downward speed 2/2.2/2.4/2.6 blocks per tick to ground mobs 200 blocks high within the effect. Collision-based missing-descent correction counters flying AI, preserves horizontal momentum and ordinary falling, adds no direct damage, and cancels on switching/lifecycle. Cooldown now begins when the sustained effect ends.
-- Prevented natural distance despawning only during active Downdraft Bell so high-altitude targets survive the trip; no permanent persistence flag and Peaceful cleanup unchanged.
-
-- Added animated Rooting Roots bindings: three slim mangrove-root display models grow from real ground around each rooted mob over ten ticks, remain through the existing hold, and retract over ten ticks when it expires or is canceled. No terrain changes, collisions, saves or loot; at most three live plus three retracting models per target. Death, logout and dimension-change cleanup releases root state and retracts visuals. Existing range, poison, horizontal anchoring and cooldown unchanged.
-
-- Colored augmentation-card title, Upgrade eyebrow and category golden-yellow for the upgrade that transforms an ordinary augment into its named super form (stored III to IV/super I). Descriptions stay gray and rejected cards remain disabled gray; later super-rank upgrades keep ordinary category colors.
-
-- Reworked Skybreaker into a mace-style aerial strike plus guaranteed landing smash: first falling hit receives pre-critical vanilla mace fall bonus and native mace hit sound/particles/motion; it no longer consumes the pending ground impact. Landing affects all visible enemies within five blocks, with current weapon damage plus full-descent mace scaling, native heavy smash dust/sound, outward clouds, knockback and swing. Tracked descent survives vanilla mace fall-counter reset; ground-contact fallback handles suppressed fall events. Landing is one-shot, prevents owner fall damage, respects armor/targets/walls, and retains existing launch/super multipliers/ending cooldown and switch cleanup.
-
-- Added markdown/latest-promt-thoughts.md with Skybreaker design rationale, implementation checkpoint, successful test evidence and outstanding review/fall-immunity work after the user stopped implementation.
-- Added a Skybreaker regression check that a successful falling axe strike still produces a second damaging ground smash and prevents landing fall damage after the mace resets the fall counter.
-- Added one-landing fall-damage protection to ordinary Windcharge launches on Taifunite daggers, claymores and lower-rank axes. Protection ends after impact, switching away, invalid flight conditions or timeout; Skybreaker's existing impact protection remains.
-- Added operator command `/augment <targets> <augment> [level]` for setting an exact compatible augment rank on living targets' main-hand special weapons or Augment Templates, with ability-name completion, per-item rank/slot validation and `/enchant`-style feedback.
-
-- Shortened and clarified all 107 detailed augment tooltips in `en_us.json`, preserving gameplay effects, ranks, ranges, durations and cooldowns while removing implementation details and repeated exceptions.
-- Clarified 18 Augmentation Table card descriptions and corrected their grammar and wording.
-
-- Fixed Windcharge and Skybreaker impact protection so the activating player takes no fall damage from the landing, including when a fall damage event arrives after the ground-contact fallback. The protection still ends after that impact or when switching weapons.
+# Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
+
+## Added
+- Added daggers for all special materials
+- Added axes for all special materials
+- Added matching-dagger dual wielding: a main-hand swing triggers a visible offhand follow-up about 100 ms later, including air swings. The follow-up retains the target of a successful main-hand hit. Different gemstones of the same material can be paired; knives cannot.
+- Added the axe Vertical Strike: a fully charged third attack within ten seconds slams a 3×3 area ahead with a vertical animation. Holding an axe moves an offhand item into inventory or drops it if inventory is full.
+- Added Augmentations: Abilities and Passive effects that all special weapons can hold. Weapons can have up to 3 abilities.
+- Added the Augmentation Table for augmenting.
+- Added Sapphire Gemstone. It is used in the augmentation table.
+- Added the Augment Template and Super Augment Template based on "Create: Enchantment Industry" templates. Templates store transferable ability and passives; super templates can carry one rank beyond an ability's ordinary cap.
+- Added optional "Create: Enchantment Industry" support: Blaze Enchanters can fill matching templates and Blaze Forgers can apply, extract, and merge augments when that mod is installed.
+- Added the operator commands /augment and /no-ability-cooldown.
+- Added Ignisium ability: Pyromaniac
+- Added Ignisium ability: Charred Edge
+- Added Ignisium ability: Flame Breath
+- Added Ignisium ability: Flameborn
+- Added Ignisium ability: Fire Resistance
+- Added Ignisium ability: Nether Born
+- Added Ignisium ability: Cinder Decoy
+- Added Ignisium ability: Cold Bellows
+- Added Ignisium ability: Explosion
+- Added Ignisium ability: Explosive Hits
+- Added Ignisium ability: Heating Up
+- Added Ignisium ability: Crucible Hook
+- Added Ignisium ability: Flaming Stomp
+- Added Ignisium ability: Magma Toss
+- Added Ignisium ability: Strong-arm
+- Added general axe ability: Swing Attack
+- Added Inanisium ability: Stepping Through the Void
+- Added Inanisium ability: Sudden Presence
+- Added Inanisium ability: Death Stare
+- Added Inanisium ability: Displace
+- Added Inanisium ability: Echoing Speed
+- Added Inanisium ability: Void Grip
+- Added Inanisium ability: Void Pulse
+- Added Inanisium ability: Distance Tax
+- Added Inanisium ability: Ender Swing
+- Added Inanisium ability: Gravity Well
+- Added Inanisium ability: Null Receipt
+- Added Somnium ability: Absolute Nightmare
+- Added Somnium ability: Lucid Dreaming
+- Added Somnium ability: False Awakening
+- Added Somnium ability: Lonely Dream
+- Added Somnium ability: Sleepwalker
+- Added Somnium ability: Delusion
+- Added Somnium ability: Just a Dream
+- Added Somnium ability: Unfinished Dream
+- Added Somnium ability: Lullaby
+- Added Somnium ability: Dream Feast
+- Added Somnium ability: Daydreamer
+- Added Somnium ability: Pillow Armor
+- Added Electrium ability: Area Discharge
+- Added Electrium ability: Charge Attack
+- Added Electrium ability: Chain Lightning
+- Added Electrium ability: Live Wire
+- Added Electrium ability: Static Blade
+- Added Electrium ability: Magnetic Throw
+- Added Electrium ability: Quick Recharge
+- Added Electrium ability: Conductive Edge
+- Added Electrium ability: Lightning Rod
+- Added Electrium ability: Alternating Current
+- Added Electrium ability: Direct Current
+- Added Electrium ability: Stunning Presence
+- Added Electrium ability: Heavy Current
+- Added Taifunite ability: Eye of the Storm
+- Added Taifunite ability: Windy Dash
+- Added Taifunite ability: Double Jump
+- Added Taifunite ability: Slipstream
+- Added Taifunite ability: Crosswind
+- Added Taifunite ability: Downdraft Bell
+- Added Taifunite ability: Upwind
+- Added Taifunite ability: Windcharge
+- Added Taifunite ability: Vacuum Burst
+- Added Taifunite ability: Headwind
+- Added Taifunite ability: Feather Shelter
+- Added Taifunite ability: Pocket Storm
+- Added Vulnusium ability: Deep Wound
+- Added Vulnusium ability: Leech
+- Added Vulnusium ability: Blood Rush
+- Added Vulnusium ability: Blood Sacrifice
+- Added Vulnusium ability: Final Strike
+- Added Vulnusium ability: Revengeful Exit
+- Added Vulnusium ability: Scar Compass
+- Added Lush ability: Rooting Roots
+- Added Lush ability: Poisoned Vein
+- Added Lush ability: Always the Gardeners
+- Added Lush ability: Compost
+- Added Lush ability: Grave Vault
+- Added Lush ability: Green Feast
+- Added Lush ability: Lush Jungle
+- Added Lush ability: Photosynthesis
+- Added Lush ability: Sapling Harvest
+- Added Lush ability: Sunfed
+- Added Lush ability: Lumberjack
+- Added Morsium ability: Strengthened Bones
+- Added Morsium ability: Storing Anger
+- Added Morsium ability: Death March
+- Added Morsium ability: Revenge
+- Added Morsium ability: Ghostwalk
+- Added Morsium ability: Soul Hunger
+- Added Morsium ability: Last Stand
+- Added Morsium ability: Bone Guard
+- Added Morsium ability: Skull Throw
+- Added Morsium ability: Death's Due
+- Added Pulsite ability: Sonically Charged Crit
+- Added Pulsite ability: Sonic Boom
+- Added Pulsite ability: Echo Appetite
+- Added Pulsite ability: Echo Hearing
+- Added Pulsite ability: Warden Tone
+- Added Pulsite ability: Aftershock
+- Added Pulsite ability: Resonance Crit
+- Added Pulsite ability: Ringing Steel
+- Added Pulsite ability: Stone Song
+- Added Pulsite ability: Challenge Roar
+- Added Pulsite ability: Echo Salvage
+- Added general dagger abilty: Backstab
+- Added general axe ability: Overwhelming Smash
+- Some Abilities can be upgraded to super augments:
+  - Direct Current -> Static Field
+  - Windcharge -> Skybreaker
+  - Double jump -> Windwalker
+  - Nightmare -> Jumpscare Horror
+  - Bone Guard -> Necromancer
+- Added the Ancient Grave as a room in Ancient Cities being the source of rusty weapons.
+- Added rusty Axe
+- Added rusty Dagger
+- Added meteoric iron ore
+- Added meteoric iron
+- Added titanium
+- Added tungsten
+- Added Raw Titanium
+- Added Raw Tungsten
+- Added Magnesium
+- Added Titanium Sponge
+- Added Tungsten Powder
+- Added Reinforced Iron Billets
+- Added Damask Billets.
+- Added material-processing recipes for meteoric iron, reinforced iron, steel, damask, titanium, tungsten, and carbon steel.
+- Added pickaxes, axes, hoes, and swords for the different metal types.
+
+## Changed
+- Jade gemstone infusion now requires a learned augment that applies a status effect to the user or a target. Jade strengthens each such augment's effects by one level and one second.
+- Redesigned the reinforced iron ingot, sword, and block textures.
+- Enlarged claymore display models outside the inventory.
+- Rebalanced durability, mining speed, attack damage, and mining requirements for mod-metal-made swords/claymores/knifes.
+- Reinforced Iron now uses meteoric iron in its recipe; damask and carbon steel use their new intermediate materials.
+- Existing gemstone claymores now use their intended effect durations, strengths, and attack attributes.
+- Reduced Scrap, Meteoric Iron, Reinforced Iron, and Steel tool damage bonuses to Iron level. Their swords now deal 6 damage, below Diamond's 7.
+- Reduced the Damask tool damage bonus by 1, affecting its sword, knife, pickaxe, axe, and hoe; Damask swords now deal 8 damage.
+- Reduced Steel pickaxe durability from 1750 to 1200 and mining speed from 9 to 7.5, placing both below Diamond.
+- Increased Damask, Titanium, Tungsten, and Carbon Steel mining speeds to 9, 10, 11, and 12.
+- Increased Scrap Sword attack speed from 1.4 to 1.6, Reinforced Iron Sword from 1.2 to 1.7, and Steel Sword from 1.6 to 1.75 attacks per second; Meteoric Iron Sword now attacks at 1.65 per second.
+
+## Fixed
+- Fixed Shardium ore drops and special claymore material effects
+
+## Removed
+- Removed Scrap Iron crafting and conversion recipes; Scrap Iron items are command-only.
+- Removed direct Scrap Ingot-to-Damask and Scrap Iron Ingot-to-Reinforced Iron conversions in favor of the new processing chains.
+- Removed Shardium ore smelting and blasting recipes; Shardium now uses its corrected random ore drops.
+- Removed gemstone weapon variants and Stumpfl's Bat from creative tabs.

@@ -37,6 +37,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
     private static final NightmareHitState NIGHTMARE = new NightmareHitState();
     private static final LucidDreamingState LUCID = new LucidDreamingState();
     private static final Map<UUID, MobEffectInstance> PREVIOUS_SPEED = new HashMap<>();
+    private static final Map<UUID, Integer> LUCID_SPEED_AMPLIFIER = new HashMap<>();
     public static Holder<MobEffect> effect = MobEffects.CONFUSION;
     public static int durationInTicks = 200;
     public static int effectAmplifier = 4;
@@ -71,8 +72,13 @@ public class SomniumWeapon extends SwordItemWithEffect {
         if (!(attacker instanceof ServerPlayer player)) return;
         if (Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.absolute_nightmare") && NIGHTMARE.consumeHit(player.getUUID()) && !target.isDeadOrDying()) {
             int duration=Augmentations.level(player.getMainHandItem(),"tooltips.forgermod.ability.absolute_nightmare")==1?100:200;
-            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, duration, 4));
-            target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, duration, 3));
+            var stack=player.getMainHandItem();
+            target.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(stack,
+                    "tooltips.forgermod.ability.absolute_nightmare",
+                    new MobEffectInstance(MobEffects.DARKNESS, duration, 4)));
+            target.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(stack,
+                    "tooltips.forgermod.ability.absolute_nightmare",
+                    new MobEffectInstance(MobEffects.WEAKNESS, duration, 3)));
         }
     }
 
@@ -85,7 +91,11 @@ public class SomniumWeapon extends SwordItemWithEffect {
                 || !LUCID.consumeKill(player.getUUID(), player.level().getGameTime())) return;
         MobEffectInstance previous = player.getEffect(MobEffects.MOVEMENT_SPEED);
         if (previous != null) PREVIOUS_SPEED.put(player.getUUID(), new MobEffectInstance(previous));
-        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 1));
+        MobEffectInstance speed = net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(player.getMainHandItem(),
+                "tooltips.forgermod.ability.lucid_dreaming",
+                new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 1));
+        LUCID_SPEED_AMPLIFIER.put(player.getUUID(), speed.getAmplifier());
+        player.addEffect(speed);
     }
 
     @Override
@@ -121,7 +131,10 @@ public class SomniumWeapon extends SwordItemWithEffect {
     public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
         if (slot == WeaponAbilitySlot.PRIMARY) return NIGHTMARE.isArmed(player.getUUID());
         boolean active = LUCID.isActive(player.getUUID(), player.level().getGameTime());
-        if (!active) PREVIOUS_SPEED.remove(player.getUUID());
+        if (!active) {
+            PREVIOUS_SPEED.remove(player.getUUID());
+            LUCID_SPEED_AMPLIFIER.remove(player.getUUID());
+        }
         return active;
     }
 
@@ -132,12 +145,14 @@ public class SomniumWeapon extends SwordItemWithEffect {
             if (LUCID.reducesFallDamage(player.getUUID(), player.level().getGameTime())) {
                 MobEffectInstance current = player.getEffect(MobEffects.MOVEMENT_SPEED);
                 MobEffectInstance previous = PREVIOUS_SPEED.remove(player.getUUID());
-                if (current != null && current.getAmplifier() == 1 && current.getDuration() <= 600) {
+                int amplifier = LUCID_SPEED_AMPLIFIER.getOrDefault(player.getUUID(), 1);
+                if (current != null && current.getAmplifier() == amplifier && current.getDuration() <= 620) {
                     player.removeEffect(MobEffects.MOVEMENT_SPEED);
                     if (previous != null) player.addEffect(previous);
                 }
             }
             PREVIOUS_SPEED.remove(player.getUUID());
+            LUCID_SPEED_AMPLIFIER.remove(player.getUUID());
             LUCID.clear(player.getUUID());
         }
     }
@@ -155,6 +170,7 @@ public class SomniumWeapon extends SwordItemWithEffect {
         NIGHTMARE.clear(event.getEntity().getUUID());
         LUCID.clear(event.getEntity().getUUID());
         PREVIOUS_SPEED.remove(event.getEntity().getUUID());
+        LUCID_SPEED_AMPLIFIER.remove(event.getEntity().getUUID());
     }
 
     @Override

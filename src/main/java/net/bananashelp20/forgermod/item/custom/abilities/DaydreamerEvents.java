@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -64,7 +65,8 @@ public final class DaydreamerEvents {
             grant=new Grant(current); GRANTS.put(player.getUUID(),grant);
         }
         if(current==null || current.getAmplifier()==0 && !current.isInfiniteDuration()) {
-            add(player,new MobEffectInstance(MobEffects.JUMP,-1,0,false,false,true));
+            add(player,JadeAugments.reinforce(player.getMainHandItem(),AdditionalAbilities.DAYDREAMER,
+                    new MobEffectInstance(MobEffects.JUMP,-1,0,false,false,true)));
             grant.owned=player.getEffect(MobEffects.JUMP);
         }
         // Track independently acquired effects while our infinite grant masks their ordinary timer.

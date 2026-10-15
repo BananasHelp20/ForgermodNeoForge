@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "forgermod:meteoric_iron_ingot"
+    }
+  },
+  "pattern": [
+    "IMI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:reinforced_iron_billet"
+  }
+}

@@ -28,6 +28,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import java.util.List;
 
 public class ModConfiguredFeatures {
+    public static final ResourceKey<ConfiguredFeature<?,?>> METEORIC_OVERWORLD = registerKey("meteoric_iron_overworld");
+    public static final ResourceKey<ConfiguredFeature<?,?>> METEORIC_END = registerKey("meteoric_iron_end");
+    public static final ResourceKey<ConfiguredFeature<?,?>> TITANIUM_ORE = registerKey("titanium_ore");
+    public static final ResourceKey<ConfiguredFeature<?,?>> TUNGSTEN_ORE = registerKey("tungsten_ore");
+    public static final ResourceKey<ConfiguredFeature<?,?>> DOLOMITE_ORE = registerKey("dolomite_ore");
     public static final ResourceKey<ConfiguredFeature<?,?>> OVERWORLD_JADE_ORE_KEY = registerKey("jade_ore");
     public static final ResourceKey<ConfiguredFeature<?,?>> NETHER_JADE_ORE_KEY = registerKey("nether_jade_ore");
     public static final ResourceKey<ConfiguredFeature<?,?>> END_JADE_ORE_KEY = registerKey("end_jade_ore");
@@ -53,6 +58,18 @@ public class ModConfiguredFeatures {
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         RuleTest netherrackReplaceables = new BlockMatchTest(Blocks.NETHERRACK);
         RuleTest endReplaceables = new BlockMatchTest(Blocks.END_STONE);
+        register(context, METEORIC_OVERWORLD, Feature.ORE, new OreConfiguration(stoneReplaceables,
+                ModBlocks.METEORIC_IRON_STONE_ORE.get().defaultBlockState(), 3));
+        register(context, METEORIC_END, Feature.ORE, new OreConfiguration(endReplaceables,
+                ModBlocks.METEORIC_IRON_END_ORE.get().defaultBlockState(), 5));
+        register(context, TITANIUM_ORE, Feature.ORE, new OreConfiguration(List.of(
+                OreConfiguration.target(stoneReplaceables, ModBlocks.TITANIUM_STONE_ORE.get().defaultBlockState()),
+                OreConfiguration.target(deepslateReplaceables, ModBlocks.TITANIUM_DEEPSLATE_ORE.get().defaultBlockState())), 5));
+        register(context, TUNGSTEN_ORE, Feature.ORE, new OreConfiguration(List.of(
+                OreConfiguration.target(stoneReplaceables, ModBlocks.TUNGSTEN_STONE_ORE.get().defaultBlockState()),
+                OreConfiguration.target(deepslateReplaceables, ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get().defaultBlockState())), 4));
+        register(context, DOLOMITE_ORE, Feature.ORE, new OreConfiguration(stoneReplaceables,
+                ModBlocks.DOLOMITE_STONE_ORE.get().defaultBlockState(), 8));
         RuleTest obsidianReplaceables = new BlockMatchTest(Blocks.OBSIDIAN);
 
         List<OreConfiguration.TargetBlockState> overworldJadeOres = List.of(

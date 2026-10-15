@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.3,
+  "group": "magnesium",
+  "ingredient": {
+    "item": "forgermod:dolomite"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:magnesium"
+  }
+}

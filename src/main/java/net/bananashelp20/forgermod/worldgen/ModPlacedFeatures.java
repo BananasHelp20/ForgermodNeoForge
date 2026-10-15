@@ -15,6 +15,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import java.util.List;
 
 public class ModPlacedFeatures {
+    public static final ResourceKey<PlacedFeature> METEORIC_OVERWORLD = registerKey("meteoric_iron_overworld_placed");
+    public static final ResourceKey<PlacedFeature> METEORIC_END = registerKey("meteoric_iron_end_placed");
+    public static final ResourceKey<PlacedFeature> TITANIUM_ORE = registerKey("titanium_ore_placed");
+    public static final ResourceKey<PlacedFeature> TUNGSTEN_ORE = registerKey("tungsten_ore_placed");
+    public static final ResourceKey<PlacedFeature> DOLOMITE_ORE = registerKey("dolomite_ore_placed");
     public static final ResourceKey<PlacedFeature> JADE_ORE_PLACED_KEY = registerKey("jade_ore_placed");
     public static final ResourceKey<PlacedFeature> NETHER_JADE_ORE_PLACED_KEY = registerKey("nether_jade_ore_placed");
     public static final ResourceKey<PlacedFeature> END_JADE_ORE_PLACED_KEY = registerKey("end_jade_ore_placed");
@@ -37,6 +42,16 @@ public class ModPlacedFeatures {
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         var configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+        register(context, METEORIC_OVERWORLD, configuredFeatures.getOrThrow(ModConfiguredFeatures.METEORIC_OVERWORLD),
+                ModOrePlacement.rareOrePlacement(5, HeightRangePlacement.uniform(VerticalAnchor.absolute(64), VerticalAnchor.absolute(192))));
+        register(context, METEORIC_END, configuredFeatures.getOrThrow(ModConfiguredFeatures.METEORIC_END),
+                ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(80))));
+        register(context, TITANIUM_ORE, configuredFeatures.getOrThrow(ModConfiguredFeatures.TITANIUM_ORE),
+                ModOrePlacement.commonOrePlacement(2, HeightRangePlacement.triangle(VerticalAnchor.absolute(-48), VerticalAnchor.absolute(32))));
+        register(context, TUNGSTEN_ORE, configuredFeatures.getOrThrow(ModConfiguredFeatures.TUNGSTEN_ORE),
+                ModOrePlacement.rareOrePlacement(3, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
+        register(context, DOLOMITE_ORE, configuredFeatures.getOrThrow(ModConfiguredFeatures.DOLOMITE_ORE),
+                ModOrePlacement.commonOrePlacement(3, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(96))));
 
         register(context, JADE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_JADE_ORE_KEY),
                 ModOrePlacement.commonOrePlacement(1, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(120))));

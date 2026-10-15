@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.gametest;
 
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
@@ -50,7 +51,8 @@ public class ExplosionGameTests {
             use(player);
             test.assertTrue(player.isAlive() && player.getHealth()==1 && player.getDeltaMovement().lengthSqr()==0,"Explosion harms or pushes its wielder");
             var resistance=player.getEffect(MobEffects.DAMAGE_RESISTANCE);
-            test.assertTrue(resistance!=null && resistance.getAmplifier()==3 && resistance.getDuration()==40,"Resistance IV duration wrong");
+            int jade=JadeAugments.isJade(stack)?1:0;
+            test.assertTrue(resistance!=null && resistance.getAmplifier()==3+jade && resistance.getDuration()==40+20*jade,"Resistance level or duration wrong");
             test.assertTrue(cow.getHealth()<200,"Explosion deals no enemy damage");
             test.assertTrue(test.getLevel().getBlockState(stone).is(Blocks.STONE),"Explosion destroys terrain");
             long now=player.level().getGameTime();

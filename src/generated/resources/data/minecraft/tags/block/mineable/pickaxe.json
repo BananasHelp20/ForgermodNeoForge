@@ -1,6 +1,13 @@
 {
   "values": [
     "forgermod:augmentation_table",
+    "forgermod:meteoric_iron_stone_ore",
+    "forgermod:meteoric_iron_end_ore",
+    "forgermod:titanium_stone_ore",
+    "forgermod:titanium_deepslate_ore",
+    "forgermod:tungsten_stone_ore",
+    "forgermod:tungsten_deepslate_ore",
+    "forgermod:dolomite_stone_ore",
     "forgermod:damask_block",
     "forgermod:inanisium_block",
     "forgermod:ignisium_block",

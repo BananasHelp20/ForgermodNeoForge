@@ -20,6 +20,16 @@ public class ModItemTagProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
 
+        for (var entry : ModItems.TOOL_SETS.entrySet()) {
+            var set = entry.getValue();
+            tag(ItemTags.PICKAXES).add(set.pickaxe().get());
+            tag(ItemTags.AXES).add(set.axe().get());
+            tag(ItemTags.HOES).add(set.hoe().get());
+            if (!java.util.Set.of("scrap", "reinforced_iron", "steel", "damask").contains(entry.getKey())) {
+                tag(ItemTags.SWORDS).add(set.sword().get());
+            }
+        }
+
         tag(ItemTags.SWORDS)
                 // base variants
                 .add(ModItems.OVERGROWN_CLAYMORE.get())

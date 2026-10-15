@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#minecraft:incorrect_for_iron_tool",
+    "#forgermod:needs_steel_tool",
+    "#forgermod:needs_titanium_tool",
+    "#forgermod:needs_carbon_steel_tool"
+  ]
+}

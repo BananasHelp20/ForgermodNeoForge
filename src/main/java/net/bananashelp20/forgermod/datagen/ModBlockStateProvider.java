@@ -37,6 +37,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.DEVELOPIUM_BLOCK);
 
         //ores
+        blockWithItem(ModBlocks.METEORIC_IRON_STONE_ORE);
+        blockWithItem(ModBlocks.METEORIC_IRON_END_ORE);
+        blockWithItem(ModBlocks.TITANIUM_STONE_ORE);
+        blockWithItem(ModBlocks.TITANIUM_DEEPSLATE_ORE);
+        blockWithItem(ModBlocks.TUNGSTEN_STONE_ORE);
+        blockWithItem(ModBlocks.TUNGSTEN_DEEPSLATE_ORE);
+        blockWithItem(ModBlocks.DOLOMITE_STONE_ORE);
         blockWithItem(ModBlocks.JADE_NETHER_ORE);
         blockWithItem(ModBlocks.JADE_END_ORE);
         blockWithItem(ModBlocks.JADE_STONE_ORE);

@@ -16,7 +16,28 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        for (var set : ModItems.TOOL_SETS.values()) {
+            handheldItem(set.pickaxe());
+            handheldItem(set.axe());
+            handheldItem(set.hoe());
+            String material = set.sword().getId().getPath();
+            if (!java.util.Set.of("scrap_sword", "reinforced_iron_sword", "steel_sword", "damask_sword").contains(material)) {
+                handheldItem(set.sword());
+            }
+        }
         //ingredients
+        basicItem(ModItems.RAW_METEORIC_IRON.get());
+        basicItem(ModItems.METEORIC_IRON_INGOT.get());
+        basicItem(ModItems.RAW_TITANIUM.get());
+        basicItem(ModItems.TITANIUM_INGOT.get());
+        basicItem(ModItems.RAW_TUNGSTEN.get());
+        basicItem(ModItems.TUNGSTEN_INGOT.get());
+        basicItem(ModItems.DOLOMITE.get());
+        basicItem(ModItems.MAGNESIUM.get());
+        basicItem(ModItems.TITANIUM_SPONGE.get());
+        basicItem(ModItems.TUNGSTEN_POWDER.get());
+        basicItem(ModItems.REINFORCED_IRON_BILLET.get());
+        basicItem(ModItems.DAMASK_BILLET.get());
         basicItem(ModItems.MORSIUM_SHARD.get());
         basicItem(ModItems.IGNISIUM_SHARD.get());
         basicItem(ModItems.INANISIUM_SHARD.get());

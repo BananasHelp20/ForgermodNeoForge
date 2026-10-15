@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "forgermod:raw_titanium"
+    },
+    {
+      "item": "forgermod:magnesium"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:titanium_sponge"
+  }
+}

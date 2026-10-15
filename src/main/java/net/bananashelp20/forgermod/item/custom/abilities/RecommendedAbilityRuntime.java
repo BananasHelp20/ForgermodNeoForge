@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +17,8 @@ public final class RecommendedAbilityRuntime {
         if(!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player) || stack!=player.getMainHandItem()
                 || !Augmentations.ids(stack,true).contains(id)) return false;
         if(RecommendedAbilities.EXPLOSION.equals(id)) {
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,40,3));
+            player.addEffect(JadeAugments.reinforce(stack, id,
+                    new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,40,3)));
             // Vanilla excludes the causing entity from explosion damage/knockback.
             player.level().explode(player,player.getX(),player.getY(),player.getZ(),4,false,Level.ExplosionInteraction.NONE);
             var level=player.serverLevel();

@@ -30,13 +30,13 @@ public class ModSpecialRegistry {
     public static final int SCRAP_IRON_SWORD_DAMAGE = 3;
     public static final float SCRAP_IRON_SWORD_SPEED = 1.4f;
     public static final int REINFORCED_IRON_SWORD_DAMAGE = 3;
-    public static final float REINFOCED_IRON_SWORD_SPEED = 1.2f;
+    public static final float REINFOCED_IRON_SWORD_SPEED = 1.7f;
     public static final int SCRAP_SWORD_DAMAGE = 3;
-    public static final float SCRAP_SWORD_SPEED = 1.4f;
+    public static final float SCRAP_SWORD_SPEED = 1.6f;
     public static final int DAMASK_SWORD_DAMAGE = 3;
     public static final float DAMASK_SWORD_SPEED = 1.6f;
     public static final int STEEL_SWORD_DAMAGE = 3;
-    public static final float STEEL_SWORD_SPEED = 1.6f;
+    public static final float STEEL_SWORD_SPEED = 1.75f;
 
     public static final float SPECIAL_AXE_SPEED = 0.9f;
     public static final float SPECIAL_CLAYMORE_SPEED = 1.6f;

@@ -6,15 +6,10 @@
       "item": "minecraft:iron_ingot"
     },
     "B": {
-      "item": "minecraft:coal_block"
-    },
-    "C": {
-      "item": "minecraft:netherite_scrap"
+      "item": "minecraft:charcoal"
     }
   },
   "pattern": [
-    "ABA",
-    "BCB",
     "ABA"
   ],
   "result": {

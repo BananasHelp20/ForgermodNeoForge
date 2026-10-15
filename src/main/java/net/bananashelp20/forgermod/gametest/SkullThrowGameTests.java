@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.gametest;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.MorsiumWeapon;
 import net.bananashelp20.forgermod.item.custom.abilities.SkullThrowEvents;
@@ -68,7 +69,7 @@ public class SkullThrowGameTests {
                 target.invulnerableTime=0;target.removeEffect(net.minecraft.world.effect.MobEffects.WITHER);float before=target.getHealth(),owner=player.getHealth();
                 var event=new ProjectileImpactEvent(rock,new EntityHitResult(target,target.getBoundingBox().getCenter()));SkullThrowEvents.impact(event);
                 test.assertTrue(event.isCanceled() && !rock.isAlive() && !SkullThrowEvents.active(player),"Impact does not end rock");
-                test.assertTrue(Math.abs(before-target.getHealth()-player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.001 && target.hasEffect(net.minecraft.world.effect.MobEffects.WITHER) && target.getEffect(net.minecraft.world.effect.MobEffects.WITHER).getDuration()==100,"Impact damage/fire wrong");
+                test.assertTrue(Math.abs(before-target.getHealth()-player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.001 && target.hasEffect(net.minecraft.world.effect.MobEffects.WITHER) && target.getEffect(net.minecraft.world.effect.MobEffects.WITHER).getDuration()==100+(JadeAugments.isJade(stack)?20:0),"Impact damage or Wither duration wrong");
                 test.assertTrue(player.getHealth()==owner,"Magma blast damages caster");
                 test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.SKULL_THROW),"Cannot start next direct-runtime test");
                 player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(SkullThrowEvents.active(player),"Switch does not cancel rock");

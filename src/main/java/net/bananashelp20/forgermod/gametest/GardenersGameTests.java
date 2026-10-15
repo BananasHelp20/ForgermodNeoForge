@@ -33,7 +33,7 @@ public class GardenersGameTests {
    var cow=EntityType.COW.create(test.getLevel()); cow.setNoAi(true); cow.setPos(player.position()); test.getLevel().addFreshEntity(cow);
    for(int tick=0;tick<5;tick++) cloud.tick();
    test.assertTrue(player.getEffect(MobEffects.POISON)!=null && cow.getEffect(MobEffects.POISON)!=null,"Caster or neutral entity excluded");
-   test.assertTrue(cow.getEffect(MobEffects.POISON).getDuration()==400,"Poison shortened by vanilla potion scaling");
+   test.assertTrue(cow.getEffect(MobEffects.POISON).getDuration()==400+(JadeAugments.isJade(stack)?20:0),"Poison duration wrong");
    player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
    test.assertTrue(!cloud.isRemoved() && !plant.isRemoved() && !GardenersEvents.active(player),"Switch deletes placed garden");
    String key=BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.GARDENERS;

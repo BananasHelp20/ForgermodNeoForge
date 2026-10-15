@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 150,
+  "experience": 1.0,
+  "group": "tungsten_ingot",
+  "ingredient": {
+    "item": "forgermod:tungsten_powder"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:tungsten_ingot"
+  }
+}

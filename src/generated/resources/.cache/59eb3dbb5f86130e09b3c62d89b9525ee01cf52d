@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-09T22:27:48.9829536	Loot Tables
+// 1.21.1	2026-10-15T10:06:00.8200545	Loot Tables
 90ca4bef35a074345574bd1bd80974a7b12a687c data/forgermod/loot_table/blocks/amber_deepslate_ore.json
 3dc356ddb6af4128e514863f70e36aff004e6051 data/forgermod/loot_table/blocks/amber_end_ore.json
 e65408b4da2abe55f9a32925e6b61216eddb1b49 data/forgermod/loot_table/blocks/amber_nether_ore.json
@@ -14,6 +14,7 @@ bcb050067ade2cb56f5b639f472aa138a145ec86 data/forgermod/loot_table/blocks/amethy
 79c96364238d118b33205b7bf15c13970f8a3c62 data/forgermod/loot_table/blocks/carbon_steel_block.json
 ce3794d7b517c6872d66eae1502e9d8a9d63b98f data/forgermod/loot_table/blocks/damask_block.json
 60cf7bda934f9ab1b35eaa1548c7102afb9e8e21 data/forgermod/loot_table/blocks/developium_block.json
+71f1a025532be6c28b0ea78e19679908ee6981fb data/forgermod/loot_table/blocks/dolomite_stone_ore.json
 a8e048e1c9c87acab74ecc7ad8b40522b34dde5c data/forgermod/loot_table/blocks/electrium_block.json
 33a140e88ae6032b47d841a649df0985f3dffe42 data/forgermod/loot_table/blocks/forge.json
 e41c5ede3adfed9ed8ae00e519376d4dfa7aa856 data/forgermod/loot_table/blocks/ignisium_block.json
@@ -24,6 +25,8 @@ fc4b53256fa7929fc6a6e80818dd025b99b03185 data/forgermod/loot_table/blocks/infusi
 93bd28dbfde3fd7401ff41ef2966563f706ceca5 data/forgermod/loot_table/blocks/jade_nether_ore.json
 1ca90babebf0131d26c53b5dd17b04ef2837dbf5 data/forgermod/loot_table/blocks/jade_obsidian_ore.json
 119070549c0ae39ca5dabad42ccdd8b02963e29a data/forgermod/loot_table/blocks/jade_stone_ore.json
+9267407b8b5e0f6076ed0988690d67694cb62bb2 data/forgermod/loot_table/blocks/meteoric_iron_end_ore.json
+42fae93a162b3cac605620b41c3a869898c0137d data/forgermod/loot_table/blocks/meteoric_iron_stone_ore.json
 8dd7cc56f4f7fcb1d5d55488ab560f70ee911533 data/forgermod/loot_table/blocks/morsium_block.json
 e4f087303dc16ca3b9f1abfc9ee1d3b93fc4bf47 data/forgermod/loot_table/blocks/overgrown_block.json
 10396d6fdb7d46abe51ce929f7db923b9d021e06 data/forgermod/loot_table/blocks/pulsite_block.json
@@ -38,4 +41,8 @@ ba53ab0a4f0c8ac891921759ad7eae819815b333 data/forgermod/loot_table/blocks/scrap_
 a59ee45ecd02be93c80f057c0222bc5a3dd83d5a data/forgermod/loot_table/blocks/somnium_block.json
 eb911237c605535743de037dc76080983e707ba6 data/forgermod/loot_table/blocks/steel_block.json
 d2f8c7ece6b1bebe139dabab9f9a49185ea65782 data/forgermod/loot_table/blocks/taifunite_block.json
+9eba3a8eaabe99710ca62d87e5c7ad1cf51a6456 data/forgermod/loot_table/blocks/titanium_deepslate_ore.json
+5393d7612fb73088b5b31808bd1b9087e81512bd data/forgermod/loot_table/blocks/titanium_stone_ore.json
+cfb26f71e8747dfa84577efec9656c084e6f31a2 data/forgermod/loot_table/blocks/tungsten_deepslate_ore.json
+34be97896ccfe9a315a5648f115feed87acf132f data/forgermod/loot_table/blocks/tungsten_stone_ore.json
 bd01ced55b4b3f5d8e670bbad97cb76f3ec630fc data/forgermod/loot_table/blocks/vulnusium_block.json

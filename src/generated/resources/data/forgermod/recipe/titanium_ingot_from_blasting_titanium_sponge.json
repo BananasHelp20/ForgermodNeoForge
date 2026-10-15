@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 150,
+  "experience": 1.0,
+  "group": "titanium_ingot",
+  "ingredient": {
+    "item": "forgermod:titanium_sponge"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgermod:titanium_ingot"
+  }
+}

@@ -21,19 +21,58 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        tag(ModTags.Blocks.INCORRECT_FOR_SCRAP_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_STEEL_TOOL).addTag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_SCRAP_IRON_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_STEEL_TOOL).addTag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_METEORIC_IRON_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_STEEL_TOOL).addTag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_REINFORCED_IRON_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_STEEL_TOOL).addTag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
         tag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
-                .addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
-                .remove(ModTags.Blocks.NEEDS_STEEL_TOOL)
-//                .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL) //boah ka ob des geht wos was i
-        ;
+                .addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
+
+        tag(ModTags.Blocks.INCORRECT_FOR_DAMASK_TOOL).addTag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_TITANIUM_TOOL).addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_TUNGSTEN_TOOL).addTag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL);
 
         tag(ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL)
-                .addTag(ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL)
-                .remove(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
-        ;
+                .addTag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL);
+
+        tag(ModTags.Blocks.INCORRECT_FOR_INANISIUM_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_IGNISIUM_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_MORSIUM_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_SOMNIUM_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_VULNUSIUM_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_LUSH_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_PULSITE_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_ELECTRIUM_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_TAIFUNITE_TOOL);
+        tag(ModTags.Blocks.INCORRECT_FOR_DEVELOPIUM_TOOL);
+
+        tag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
+                .add(ModBlocks.TUNGSTEN_STONE_ORE.get(), ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get())
+                .add(ModBlocks.CARBON_STEEL_BLOCK.get())
+                .add(ModBlocks.INANISIUM_BLOCK.get(), ModBlocks.IGNISIUM_BLOCK.get(), ModBlocks.OVERGROWN_BLOCK.get())
+                .add(ModBlocks.VULNUSIUM_BLOCK.get(), ModBlocks.SOMNIUM_BLOCK.get(), ModBlocks.MORSIUM_BLOCK.get())
+                .add(ModBlocks.ELECTRIUM_BLOCK.get(), ModBlocks.TAIFUNITE_BLOCK.get(), ModBlocks.DEVELOPIUM_BLOCK.get());
 
         //generate TAGS!
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AUGMENTATION_TABLE.get())
+                .add(ModBlocks.METEORIC_IRON_STONE_ORE.get())
+                .add(ModBlocks.METEORIC_IRON_END_ORE.get())
+                .add(ModBlocks.TITANIUM_STONE_ORE.get())
+                .add(ModBlocks.TITANIUM_DEEPSLATE_ORE.get())
+                .add(ModBlocks.TUNGSTEN_STONE_ORE.get())
+                .add(ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get())
+                .add(ModBlocks.DOLOMITE_STONE_ORE.get())
                 .add(ModBlocks.DAMASK_BLOCK.get())
                 .add(ModBlocks.INANISIUM_BLOCK.get())
                 .add(ModBlocks.IGNISIUM_BLOCK.get())
@@ -96,15 +135,20 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         ;
 
         tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(ModBlocks.METEORIC_IRON_STONE_ORE.get())
+                .add(ModBlocks.METEORIC_IRON_END_ORE.get())
+                .add(ModBlocks.DOLOMITE_STONE_ORE.get())
+                .add(ModBlocks.REINFORCED_IRON_BLOCK.get())
+                .add(ModBlocks.STEEL_BLOCK.get())
                 .add(ModBlocks.SCRAP_BLOCK.get())
                 .add(ModBlocks.SCRAP_IRON_BLOCK.get())
                 .add(ModBlocks.ANCIENT_SWORD_STAND.get())
         ;
 
         tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(ModBlocks.TITANIUM_STONE_ORE.get())
+                .add(ModBlocks.TITANIUM_DEEPSLATE_ORE.get())
                 .add(ModBlocks.DAMASK_BLOCK.get())
-                .add(ModBlocks.REINFORCED_IRON_BLOCK.get())
-                .add(ModBlocks.STEEL_BLOCK.get())
                 .add(ModBlocks.JADE_STONE_ORE.get())
                 .add(ModBlocks.JADE_END_ORE.get())
                 .add(ModBlocks.JADE_NETHER_ORE.get())
@@ -133,10 +177,13 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         ;
 
         tag(ModTags.Blocks.NEEDS_STEEL_TOOL)
-                .add(ModBlocks.CARBON_STEEL_BLOCK.get())
         ;
 
+        tag(ModTags.Blocks.NEEDS_TITANIUM_TOOL)
+                .add(ModBlocks.TUNGSTEN_STONE_ORE.get(), ModBlocks.TUNGSTEN_DEEPSLATE_ORE.get());
+
         tag(ModTags.Blocks.NEEDS_CARBON_STEEL_TOOL)
+                .add(ModBlocks.CARBON_STEEL_BLOCK.get())
                 .add(ModBlocks.INANISIUM_BLOCK.get())
                 .add(ModBlocks.IGNISIUM_BLOCK.get())
                 .add(ModBlocks.OVERGROWN_BLOCK.get())

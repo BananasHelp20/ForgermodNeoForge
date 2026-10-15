@@ -84,7 +84,9 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
                 && Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.deep_wound")
                 && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
                 && DEEP_WOUND.consume(player.getUUID()) && !target.isDeadOrDying()) {
-            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
+            target.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(
+                    player.getMainHandItem(), "tooltips.forgermod.ability.deep_wound",
+                    new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2)));
         }
     }
 

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /** Armed kills place five-second clouds in their source dimension. */
 public final class PoisonCloudState<D> {
-    public record Cloud(UUID owner, double x, double y, double z, long endTick) {}
+    public record Cloud(UUID owner, double x, double y, double z, long endTick, boolean jade) {}
     private final Set<UUID> armed = new HashSet<>();
     private final Map<D, List<Cloud>> clouds = new HashMap<>();
 
@@ -19,9 +19,13 @@ public final class PoisonCloudState<D> {
     }
 
     public boolean createOnKill(UUID player, D dimension, double x, double y, double z, long now) {
+        return createOnKill(player, dimension, x, y, z, now, false);
+    }
+
+    public boolean createOnKill(UUID player, D dimension, double x, double y, double z, long now, boolean jade) {
         if (!armed.remove(player)) return false;
         clouds.computeIfAbsent(dimension, unused -> new ArrayList<>())
-                .add(new Cloud(player, x, y, z, now + 100));
+                .add(new Cloud(player, x, y, z, now + 100, jade));
         return true;
     }
 

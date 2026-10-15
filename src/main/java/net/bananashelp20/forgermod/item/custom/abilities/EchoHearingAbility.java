@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.core.particles.VibrationParticleOption;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -74,14 +75,16 @@ public final class EchoHearingAbility {
                     || listener.getInventory().selected != state.slot()
                     || listener.distanceToSqr(noisy) > (double) state.radius() * state.radius()) continue;
 
+            int glowTicks=JadeAugments.duration(state.stack(),RecommendedAbilities.ECHO_HEARING,40);
             if (noisy instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 40, 0));
+                living.addEffect(JadeAugments.reinforce(state.stack(),RecommendedAbilities.ECHO_HEARING,
+                        new MobEffectInstance(MobEffects.GLOWING, 40, 0)));
             } else {
                 Glow previous = NONLIVING_GLOWS.get(noisy);
-                if (previous != null) NONLIVING_GLOWS.put(noisy, new Glow(level, level.getGameTime() + 40));
+                if (previous != null) NONLIVING_GLOWS.put(noisy, new Glow(level, level.getGameTime() + glowTicks));
                 else if (!noisy.isCurrentlyGlowing()) {
                     noisy.setGlowingTag(true);
-                    NONLIVING_GLOWS.put(noisy, new Glow(level, level.getGameTime() + 40));
+                    NONLIVING_GLOWS.put(noisy, new Glow(level, level.getGameTime() + glowTicks));
                 }
             }
             int travelTicks = Math.clamp((int) Math.ceil(listener.distanceTo(noisy) / 2.0), 5, 30);

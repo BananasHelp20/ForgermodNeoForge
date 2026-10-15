@@ -13,8 +13,8 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_DAMASK_TOOL = createTag("needs_damask_tool");
         public static final TagKey<Block> INCORRECT_FOR_DAMASK_TOOL = createTag("incorrect_for_damask_tool");
 
-        public static final TagKey<Block> NEEDS_REINFORCED_IRON_TOOL = createTag("needs_damask_infused_iron_tool");
-        public static final TagKey<Block> INCORRECT_FOR_REINFORCED_IRON_TOOL = createTag("incorrect_for_damask_infused_iron_tool");
+        public static final TagKey<Block> NEEDS_REINFORCED_IRON_TOOL = createTag("needs_reinforced_iron_tool");
+        public static final TagKey<Block> INCORRECT_FOR_REINFORCED_IRON_TOOL = createTag("incorrect_for_reinforced_iron_tool");
 
         public static final TagKey<Block> NEEDS_INANISIUM_TOOL = createTag("needs_inanisium_tool");
         public static final TagKey<Block> INCORRECT_FOR_INANISIUM_TOOL = createTag("incorrect_for_inanisium_tool");
@@ -46,8 +46,8 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_STEEL_TOOL = createTag("needs_steel_tool");
         public static final TagKey<Block> INCORRECT_FOR_STEEL_TOOL = createTag("incorrect_for_steel_tool");
 
-        public static final TagKey<Block> NEEDS_ELECTRIUM_TOOL = createTag("needs_steel_tool");
-        public static final TagKey<Block> INCORRECT_FOR_ELECTRIUM_TOOL = createTag("incorrect_for_steel_tool");
+        public static final TagKey<Block> NEEDS_ELECTRIUM_TOOL = createTag("needs_electrium_tool");
+        public static final TagKey<Block> INCORRECT_FOR_ELECTRIUM_TOOL = createTag("incorrect_for_electrium_tool");
 
         public static final TagKey<Block> NEEDS_LUSH_TOOL = createTag("needs_lush_tool");
         public static final TagKey<Block> INCORRECT_FOR_LUSH_TOOL = createTag("incorrect_for_lush_tool");

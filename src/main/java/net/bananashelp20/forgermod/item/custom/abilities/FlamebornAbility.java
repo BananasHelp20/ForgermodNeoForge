@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.item.custom.IgnisiumWeapon;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public final class FlamebornAbility {
     private static final double RADIUS = 10.0;
     private record Active(ServerLevel level, long start, long expires, MobEffectInstance previous,
-                          boolean appliedResistance, int previousFireTicks) {}
+                          boolean appliedResistance, int previousFireTicks, int amplifier) {}
     private static final Map<UUID, Active> ACTIVE = new HashMap<>();
     private FlamebornAbility() {}
 
@@ -35,12 +36,15 @@ public final class FlamebornAbility {
         int burnTicks = Augmentations.level(stack, RecommendedAbilities.FLAMEBORN) > 1 ? 140 : 100;
         MobEffectInstance current = player.getEffect(MobEffects.FIRE_RESISTANCE);
         MobEffectInstance previous = current == null ? null : new MobEffectInstance(current);
-        boolean applied = player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 600));
+        int duration=JadeAugments.duration(stack,RecommendedAbilities.FLAMEBORN,600);
+        boolean applied = player.addEffect(JadeAugments.reinforce(stack,RecommendedAbilities.FLAMEBORN,
+                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,600)));
         int previousFireTicks = player.getRemainingFireTicks();
         player.setRemainingFireTicks(Math.max(player.getRemainingFireTicks(), burnTicks));
         long now = player.level().getGameTime();
-        ACTIVE.put(player.getUUID(), new Active(player.serverLevel(), now, now + 600,
-                previous, applied, previousFireTicks));
+        ACTIVE.put(player.getUUID(), new Active(player.serverLevel(), now, now + duration,
+                previous, applied, previousFireTicks,
+                JadeAugments.amplifier(stack,RecommendedAbilities.FLAMEBORN,0)));
         for (LivingEntity target : player.serverLevel().getEntitiesOfClass(LivingEntity.class,
                 player.getBoundingBox().inflate(RADIUS),
                 entity -> WeaponAbilityTargets.enemy(player, entity) && player.distanceToSqr(entity) <= RADIUS * RADIUS)) {
@@ -74,10 +78,12 @@ public final class FlamebornAbility {
     public static void cancel(ServerPlayer player) {
         Active state = ACTIVE.remove(player.getUUID());
         if (state == null) return;
-        int elapsed = (int)Math.min(600, Math.max(0, player.level().getGameTime() - state.start()));
+        int duration=(int)(state.expires()-state.start());
+        int elapsed = (int)Math.min(duration, Math.max(0, player.level().getGameTime() - state.start()));
         if (state.appliedResistance()) {
             MobEffectInstance current = player.getEffect(MobEffects.FIRE_RESISTANCE);
-            if (current != null && current.getAmplifier() == 0 && current.getDuration() <= 602 - elapsed) {
+            if (current != null && current.getAmplifier() == state.amplifier()
+                    && current.getDuration() <= duration + 2 - elapsed) {
                 player.removeEffect(MobEffects.FIRE_RESISTANCE);
                 if (state.previous() != null && state.previous().getDuration() > elapsed)
                     player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,

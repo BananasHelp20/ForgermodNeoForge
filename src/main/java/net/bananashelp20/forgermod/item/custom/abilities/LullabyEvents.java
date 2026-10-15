@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,9 +32,11 @@ public final class LullabyEvents {
         if(target==null) return false;
         if(target instanceof Mob mob) {
             if(SLEEP.values().stream().anyMatch(s->s.mob()==mob)) return false;
-            SLEEP.put(player.getUUID(),new Sleep(stack,player.getInventory().selected,mob,player.level().getGameTime()+60));
-            WeaponControlLocks.acquire(mob,player.getUUID(),AdditionalAbilities.LULLABY,60);
-        } else target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,60,1));
+            int duration=JadeAugments.duration(stack,AdditionalAbilities.LULLABY,60);
+            SLEEP.put(player.getUUID(),new Sleep(stack,player.getInventory().selected,mob,player.level().getGameTime()+duration));
+            WeaponControlLocks.acquire(mob,player.getUUID(),AdditionalAbilities.LULLABY,duration);
+        } else target.addEffect(JadeAugments.reinforce(stack,AdditionalAbilities.LULLABY,
+                new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,60,1)));
         player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.END_ROD,target.getX(),target.getEyeY()+.3,target.getZ(),8,.3,.2,.3,0);
         return true;
     }

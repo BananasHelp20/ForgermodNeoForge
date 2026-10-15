@@ -14,54 +14,54 @@ public class ModToolTiers {
 
     public static final Tier SCRAP = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_SCRAP_TOOL,
-            350, 6.5f, 3, 12,
+            350, 6.5f, 2, 12,
             () -> Ingredient.of(ModItems.SCRAP_INGOT.get())
             );
 
     public static final Tier REINFORCED_IRON = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_REINFORCED_IRON_TOOL,
-            500, 7f, 4, 12,
+            600, 7f, 2, 12,
             () -> Ingredient.of(ModItems.REINFORCED_IRON_INGOT.get()));
 
     public static final Tier DAMASK = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_DAMASK_TOOL,
-            1200, 8.5f, 5, 14,
+            1800, 9f, 4, 14,
             () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
     );
 
     public static final Tier TITANIUM = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_TITANIUM_TOOL,
-            1200, 8.5f, 5, 14,
-            () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
+            2100, 10f, 5, 14,
+            () -> Ingredient.of(ModItems.TITANIUM_INGOT.get())
     );
 
     public static final Tier METEORIC_IRON = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_METEORIC_IRON_TOOL,
-            1200, 8.5f, 5, 14,
-            () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
+            400, 6.5f, 2, 12,
+            () -> Ingredient.of(ModItems.METEORIC_IRON_INGOT.get())
     );
 
     public static final Tier TUNGSTEN = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_TUNGSTEN_TOOL,
-            1200, 8.5f, 5, 14,
-            () -> Ingredient.of(ModItems.DAMASK_INGOT.get())
+            2400, 11f, 6, 16,
+            () -> Ingredient.of(ModItems.TUNGSTEN_INGOT.get())
     );
 
     public static final Tier DEVELOPIUM = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_DEVELOPIUM_TOOL,
-            1750, 9f, 6, 16,
+            850, 7.5f, 4, 14,
             () -> Ingredient.of(ModItems.DEVELOPIUM_INGOT.get())
             );
 
     public static final Tier STEEL = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_STEEL_TOOL,
-            1750, 9f, 6, 16,
+            1200, 7.5f, 2, 16,
             () -> Ingredient.of(ModItems.STEEL_INGOT.get())
             );
 
     public static final Tier CARBON_STEEL = new SimpleTier(
             ModTags.Blocks.INCORRECT_FOR_CARBON_STEEL_TOOL,
-            2500, 11f, 7, 18,
+            2800, 12f, 7, 18,
             () -> Ingredient.of(ModItems.CARBON_STEEL_INGOT.get())
             );
 

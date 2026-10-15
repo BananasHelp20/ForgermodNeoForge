@@ -29,7 +29,11 @@ public final class ScarCompassEvents {
     private static void add(LivingEntity target,MobEffectInstance effect) {INTERNAL.add(target);try {target.addEffect(effect);} finally {INTERNAL.remove(target);}}
     private static void refresh(LivingEntity target,Glow glow) {
         long until=glow.owners.values().stream().mapToLong(Long::longValue).max().orElse(target.level().getGameTime());
-        target.removeEffect(MobEffects.GLOWING);add(target,new MobEffectInstance(MobEffects.GLOWING,(int)Math.max(1,until-target.level().getGameTime()),0,false,false,true));glow.owned=target.getEffect(MobEffects.GLOWING);
+        int amplifier=glow.owners.keySet().stream().anyMatch(owner -> {
+            Mark mark=MARKS.get(owner);
+            return mark!=null && JadeAugments.bonus(mark.stack(),AdditionalAbilities.SCAR_COMPASS)>0;
+        }) ? 1 : 0;
+        target.removeEffect(MobEffects.GLOWING);add(target,new MobEffectInstance(MobEffects.GLOWING,(int)Math.max(1,until-target.level().getGameTime()),amplifier,false,false,true));glow.owned=target.getEffect(MobEffects.GLOWING);
     }
     public static void end(UUID owner) {
         var mark=MARKS.remove(owner);if(mark==null) return;var glow=GLOWS.get(mark.target);if(glow==null) return;glow.owners.remove(owner);
@@ -45,7 +49,8 @@ public final class ScarCompassEvents {
         var previous=MARKS.get(player.getUUID());var target=event.getEntity();
         if(previous!=null && (previous.target!=target || previous.stack!=player.getMainHandItem() || previous.slot!=player.getInventory().selected)) end(player.getUUID());
         var oldGlow=GLOWS.get(target);if(oldGlow!=null && target.getEffect(MobEffects.GLOWING)!=oldGlow.owned) {for(var owner:oldGlow.owners.keySet()) MARKS.remove(owner);GLOWS.remove(target);}
-        var glow=GLOWS.computeIfAbsent(target,Glow::new);long expires=player.level().getGameTime()+12000;
+        var glow=GLOWS.computeIfAbsent(target,Glow::new);long expires=player.level().getGameTime()
+                +JadeAugments.duration(player.getMainHandItem(),AdditionalAbilities.SCAR_COMPASS,12000);
         glow.owners.put(player.getUUID(),expires);MARKS.put(player.getUUID(),new Mark(player.getMainHandItem(),player.getInventory().selected,player.serverLevel(),target,expires));refresh(target,glow);
     }
     @SubscribeEvent
