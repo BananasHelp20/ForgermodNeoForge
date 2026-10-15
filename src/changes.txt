@@ -160,5 +160,3 @@
 - Removed direct Scrap Ingot-to-Damask and Scrap Iron Ingot-to-Reinforced Iron conversions in favor of the new processing chains.
 - Removed Shardium ore smelting and blasting recipes; Shardium now uses its corrected random ore drops.
 - Removed gemstone weapon variants and Stumpfl's Bat from creative tabs.
-
-- Restricted ordinary tool sets to Tungsten, Titanium, Damask, Carbon Steel, Steel, Reinforced Iron, Meteoric Iron and Scrap. Removed the 36 extra supreme-material ordinary pickaxes/axes/hoes/swords, their translations/textures and generated recipes/models/advancements/tag entries; updated authoring scripts to prevent regeneration. Existing special ability weapons and material progression remain unchanged.
