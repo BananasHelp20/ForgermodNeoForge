@@ -810,3 +810,8 @@ Removed
 - Added a Skybreaker regression check that a successful falling axe strike still produces a second damaging ground smash and prevents landing fall damage after the mace resets the fall counter.
 - Added one-landing fall-damage protection to ordinary Windcharge launches on Taifunite daggers, claymores and lower-rank axes. Protection ends after impact, switching away, invalid flight conditions or timeout; Skybreaker's existing impact protection remains.
 - Added operator command `/augment <targets> <augment> [level]` for setting an exact compatible augment rank on living targets' main-hand special weapons or Augment Templates, with ability-name completion, per-item rank/slot validation and `/enchant`-style feedback.
+
+- Shortened and clarified all 107 detailed augment tooltips in `en_us.json`, preserving gameplay effects, ranks, ranges, durations and cooldowns while removing implementation details and repeated exceptions.
+- Clarified 18 Augmentation Table card descriptions and corrected their grammar and wording.
+
+- Fixed Windcharge and Skybreaker impact protection so the activating player takes no fall damage from the landing, including when a fall damage event arrives after the ground-contact fallback. The protection still ends after that impact or when switching weapons.

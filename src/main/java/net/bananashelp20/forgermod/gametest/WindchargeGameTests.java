@@ -29,6 +29,12 @@ public class WindchargeGameTests {
                 test.assertTrue(player.getHealth()<20,"Windcharge protected a second unrelated fall");
                 player.setHealth(20);player.invulnerableTime=0;
                 test.assertTrue(WindchargeEvents.activate(player,stack),"Ordinary Windcharge could not relaunch");
+                player.hurt(player.damageSources().fall(),8);
+                test.assertTrue(player.getHealth()==20,"Direct fall damage bypassed Windcharge landing protection");
+                player.hurt(player.damageSources().fall(),8);
+                test.assertTrue(player.getHealth()<20,"Windcharge protected a second direct fall");
+                player.setHealth(20);player.invulnerableTime=0;
+                test.assertTrue(WindchargeEvents.activate(player,stack),"Ordinary Windcharge could not relaunch after direct fall");
                 player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());
                 player.causeFallDamage(8,1,player.damageSources().fall());
                 test.assertTrue(player.getHealth()<20,"Changing the held stack kept landing protection");
@@ -84,7 +90,10 @@ public class WindchargeGameTests {
             player.resetFallDistance();player.setOnGround(true);player.setDeltaMovement(Vec3.ZERO);
             float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+WindchargeEvents.fallBonus(12);
             WindchargeEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
-            test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01 && !WindchargeEvents.active(player),"Ground contact fails when vanilla fall distance is reset");test.succeed();
+            test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01 && !WindchargeEvents.active(player),"Ground contact fails when vanilla fall distance is reset");
+            player.hurt(player.damageSources().fall(),8);
+            test.assertTrue(player.getHealth()==20,"Ground-contact fallback cleared fall protection before impact damage");
+            test.succeed();
         } finally {WindchargeEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
     }
     @GameTest(template="riftfang_test")
@@ -98,6 +107,10 @@ public class WindchargeGameTests {
             player.fallDistance=4;player.setOnGround(false);player.setSprinting(false);player.setDeltaMovement(0,-1,0);float expected=((float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+14*1.3f)*1.5f;player.attack(mob);
             test.assertTrue(Math.abs(mob.getHealth()-(1000-expected))<.01 && WindchargeEvents.active(player),"Super IV mace critical scaling or pending landing is wrong");
             WindchargeEvents.landing(new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,4,1));test.assertFalse(WindchargeEvents.active(player),"Super IV landing remains active");
+            player.setHealth(20);player.invulnerableTime=0;test.assertTrue(WindchargeEvents.activate(player,stack),"Super IV could not relaunch");
+            player.setOnGround(false);player.setDeltaMovement(0,-1,0);player.fallDistance=10;
+            player.hurt(player.damageSources().fall(),8);
+            test.assertTrue(player.getHealth()==20 && !WindchargeEvents.active(player),"Direct Skybreaker impact hurt its owner");
         } finally {WindchargeEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
         test.succeed();
     }
