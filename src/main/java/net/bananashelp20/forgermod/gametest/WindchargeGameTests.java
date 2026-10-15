@@ -100,7 +100,12 @@ public class WindchargeGameTests {
                         test.assertTrue(fall.getDamageMultiplier()==0 && mob.getHealth()<1000 && !WindchargeEvents.active(player),"Ground smash fails or hurts owner");float health=mob.getHealth();WindchargeEvents.landing(new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,4,1));test.assertTrue(mob.getHealth()==health,"Ground smash repeats");
                         for(int tick=0;tick<60;tick++)player.doTick();player.setPos(origin);mob.setPos(origin.add(1,0,0));WindchargeEvents.activate(player,stack);player.fallDistance=4;player.setOnGround(false);player.setSprinting(false);player.setDeltaMovement(0,-1,0);mob.setHealth(1000);mob.invulnerableTime=0;float expectedStrike=((float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+14)*1.5f;player.attack(mob);
                         test.assertTrue(Math.abs(mob.getHealth()-(1000-expectedStrike))<.01 && WindchargeEvents.active(player) && player.fallDistance==0,"Real falling strike does not match mace scaling or consumes landing");
-                        WindchargeEvents.landing(new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,0,1));test.assertFalse(WindchargeEvents.active(player),"Reset vanilla fall counter prevents pending landing smash");
+                        float beforeLanding=mob.getHealth();
+                        var landing=new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,0,1);
+                        WindchargeEvents.landing(landing);
+                        float expectedLanding=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+WindchargeEvents.fallBonus(4);
+                        test.assertTrue(Math.abs(mob.getHealth()-(beforeLanding-expectedLanding))<.01 && landing.getDamageMultiplier()==0
+                                && !WindchargeEvents.active(player),"Direct hit prevents the later landing smash or fall protection");
                         WindchargeEvents.activate(player,stack);player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(WindchargeEvents.active(player),"Switch keeps smash");
                     }
                 }

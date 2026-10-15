@@ -27,6 +27,6 @@ Launch upward, fall onto an enemy with mace-style damage and feedback, then prod
 
 - Initial full run failed because the new test packet recorder lacked its embedded network channel; corrected the fixture.
 - The corrected full build passed all 261 required GameTests (build/skybreaker-mace-impact-corrected.log).
-- Work was stopped at the user's request before the final review and required second successful full test pass. This commit is a checkpoint, not a declaration that the feature is fully reviewed.
+- Resumed review confirmed the direct strike uses Minecraft 1.21.1's mace hit handler for native sound, smash event, knockback and fall protection. A new regression check verifies that a direct falling hit still leads to a second damaging landing smash and zero landing fall damage, even after the mace resets the fall counter. The second full build passed all 261 required GameTests (`build/skybreaker-final-review.log`). Skybreaker review is complete.
 - In-game appearance has not been previewed.
-- The queued request in latestPromts.md also asks for fall-damage immunity from ordinary Windcharge and Skybreaker impacts. Skybreaker landing currently suppresses fall damage; ordinary Windcharge still needs an explicit audit and implementation if necessary. No further implementation was done after the stop request.
+- The queued request in latestPromts.md also asks for fall-damage immunity from ordinary Windcharge and Skybreaker impacts. Skybreaker landing suppresses fall damage; ordinary Windcharge still needs an explicit audit and implementation.
