@@ -33,8 +33,23 @@ public final class WindchargeEvents {
             fall=Math.max(fall,Math.max(player.fallDistance,(float)Math.max(0,peakY-player.getY())));
         }
     }
+    private static final class LandingGuard {
+        final ItemStack stack;final int slot;final ServerLevel level;final long expires;
+        boolean airborne;
+        LandingGuard(ServerPlayer player,ItemStack stack) {
+            this.stack=stack;slot=player.getInventory().selected;level=player.serverLevel();expires=level.getGameTime()+200;
+        }
+        boolean valid(ServerPlayer player) {
+            return player.isAlive() && !player.isSpectator() && player.getMainHandItem()==stack
+                && player.getInventory().selected==slot && player.serverLevel()==level
+                && level.getGameTime()<expires && !player.isInWaterOrBubble() && !player.isInLava()
+                && !player.onClimbable() && !player.isFallFlying() && !player.isPassenger()
+                && Augmentations.ids(stack,true).contains(AdditionalAbilities.WINDCHARGE);
+        }
+    }
     private record Strike(LivingEntity target,float distance,long tick) {}
     private static final Map<UUID,Flight> FLIGHTS=new HashMap<>();
+    private static final Map<UUID,LandingGuard> LANDING_GUARDS=new HashMap<>();
     private static final Map<UUID,Strike> STRIKES=new HashMap<>();
     private WindchargeEvents() {}
     public static double launchVelocity(double height) {
@@ -49,6 +64,7 @@ public final class WindchargeEvents {
         double height=axe?new int[]{10,16,23,30}[Math.clamp(rank,1,4)-1]:5*Math.clamp(rank,1,5);
         VerticalMotionNetwork.apply(player,launchVelocity(height),false,true);
         if(axe && rank>=4) FLIGHTS.put(player.getUUID(),new Flight(player,stack,rank));
+        else LANDING_GUARDS.put(player.getUUID(),new LandingGuard(player,stack));
         player.serverLevel().sendParticles(ParticleTypes.GUST,player.getX(),player.getY(),player.getZ(),8,.3,.2,.3,.02);return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -56,7 +72,7 @@ public final class WindchargeEvents {
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=flight.stack || player.getInventory().selected!=flight.slot || player.serverLevel()!=flight.level
             || player.level().getGameTime()>=flight.expires || !Augmentations.ids(flight.stack,true).contains(AdditionalAbilities.WINDCHARGE)) {cancel(player.getUUID());return false;}return true;
     }
-    public static void cancel(UUID id) {FLIGHTS.remove(id);STRIKES.remove(id);}
+    public static void cancel(UUID id) {FLIGHTS.remove(id);LANDING_GUARDS.remove(id);STRIKES.remove(id);}
     public static float attackBonus(net.minecraft.world.entity.Entity target,net.minecraft.world.damagesource.DamageSource source) {
         if(!(source.getEntity() instanceof ServerPlayer owner) || !source.is(DamageTypes.PLAYER_ATTACK) || !active(owner)
             || FLIGHTS.get(owner.getUUID()).directHit || owner.fallDistance<=1.5 || owner.getDeltaMovement().y>0
@@ -78,7 +94,12 @@ public final class WindchargeEvents {
     }
     @SubscribeEvent
     public static void landing(LivingFallEvent event) {
-        if(event.getEntity() instanceof ServerPlayer player && active(player)) {
+        if(!(event.getEntity() instanceof ServerPlayer player)) return;
+        var guard=LANDING_GUARDS.remove(player.getUUID());
+        if(guard!=null && guard.valid(player)) {
+            event.setDamageMultiplier(0);player.resetFallDistance();
+        }
+        if(active(player)) {
             var flight=FLIGHTS.get(player.getUUID());flight.sample(player);float distance=Math.max(event.getDistance(),flight.fall);
             if(distance>1.5 && !player.isFallFlying()) {smash(player,distance);event.setDamageMultiplier(0);player.resetFallDistance();}
             else cancel(player.getUUID());
@@ -108,7 +129,16 @@ public final class WindchargeEvents {
     }
     @SubscribeEvent
     public static void tick(PlayerTickEvent.Post event) {
-        if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;
+        if(!(event.getEntity() instanceof ServerPlayer player)) return;
+        var guard=LANDING_GUARDS.get(player.getUUID());
+        if(guard!=null) {
+            if(!guard.valid(player)) LANDING_GUARDS.remove(player.getUUID());
+            else {
+                guard.airborne|=!player.onGround();
+                if(guard.airborne && player.onGround()) LANDING_GUARDS.remove(player.getUUID());
+            }
+        }
+        if(!active(player)) return;
         var flight=FLIGHTS.get(player.getUUID());flight.sample(player);
         if(player.isInWaterOrBubble() || player.isInLava() || player.onClimbable() || player.isFallFlying() || player.isPassenger()) {cancel(player.getUUID());return;}
         // The mace's impulse safety can suppress/shorten LivingFallEvent: still smash on actual contact.

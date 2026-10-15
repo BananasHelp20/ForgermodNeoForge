@@ -15,6 +15,29 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class WindchargeGameTests {
+    @GameTest(template="riftfang_test")
+    public static void ordinaryLaunchPreventsOneRealFallAndSwitchEndsProtection(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        try {
+            for(var item:java.util.List.of(ModItems.DEAD_CALM_DAGGER.get(),ModItems.STORMING_CLAYMORE.get(),ModItems.SKYBREAKER_AXE.get())) {
+                var stack=Augmentations.apply(new ItemStack(item),AdditionalAbilities.WINDCHARGE);
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setHealth(20);player.invulnerableTime=0;
+                test.assertTrue(WindchargeEvents.activate(player,stack),"Ordinary Windcharge launch rejected");
+                player.causeFallDamage(8,1,player.damageSources().fall());
+                test.assertTrue(player.getHealth()==20,"Windcharge landing dealt fall damage");
+                player.causeFallDamage(8,1,player.damageSources().fall());
+                test.assertTrue(player.getHealth()<20,"Windcharge protected a second unrelated fall");
+                player.setHealth(20);player.invulnerableTime=0;
+                test.assertTrue(WindchargeEvents.activate(player,stack),"Ordinary Windcharge could not relaunch");
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());
+                player.causeFallDamage(8,1,player.damageSources().fall());
+                test.assertTrue(player.getHealth()<20,"Changing the held stack kept landing protection");
+                WindchargeEvents.cancel(player.getUUID());
+            }
+        } finally {WindchargeEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+
     private static final class RecordingConnection extends net.minecraft.network.Connection {
         final java.util.List<net.minecraft.network.protocol.Packet<?>> packets=new java.util.ArrayList<>();
         RecordingConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);}
@@ -107,6 +130,13 @@ public class WindchargeGameTests {
                         test.assertTrue(Math.abs(mob.getHealth()-(beforeLanding-expectedLanding))<.01 && landing.getDamageMultiplier()==0
                                 && !WindchargeEvents.active(player),"Direct hit prevents the later landing smash or fall protection");
                         WindchargeEvents.activate(player,stack);player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(WindchargeEvents.active(player),"Switch keeps smash");
+                    } else {
+                        var fall=new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,12,1);
+                        WindchargeEvents.landing(fall);
+                        test.assertTrue(fall.getDamageMultiplier()==0,"Ordinary Windcharge leaves fall damage enabled");
+                        var second=new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,12,1);
+                        WindchargeEvents.landing(second);
+                        test.assertTrue(second.getDamageMultiplier()==1,"Ordinary Windcharge protects more than one landing");
                     }
                 }
             }

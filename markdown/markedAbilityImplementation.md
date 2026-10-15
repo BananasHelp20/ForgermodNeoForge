@@ -349,7 +349,7 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 ## Windcharge - completed
 
 - Weapons: Taifunite dagger, Taifunite claymore, Taifunite axe; all gemstone variants.
-- Vertical velocity launch preserves horizontal sprint motion: dagger/claymore heights 5/10/15/20 blocks, axes 10/16/23/30 (unobstructed normal gravity). Axe rank IV is titled Skybreaker and arms one falling melee or ground smash, radius 2, current weapon damage plus vanilla mace fall scaling; initial melee victim is not hit twice. Successful smash prevents its landing damage; lesser ranks retain normal fall rules. Flight cancels on switching, fluids, climbing, death or 10-second timeout. Cooldown 30/25/20/15 seconds, instant on ordinary launch and after Skybreaker flight ends.
+- Vertical velocity launch preserves horizontal sprint motion: dagger/claymore heights 5/10/15/20 blocks, axes 10/16/23/30 (unobstructed normal gravity). The first landing after any Windcharge launch prevents fall damage while the weapon stays equipped. Axe rank IV is titled Skybreaker: its first successful falling hit gains native mace feedback and fall bonus, then its ground impact damages visible enemies within five blocks whether the swing hit or missed. The direct victim can also take the later area impact if still in range. Skybreaker flight cancels on switching, fluids, climbing, death or 10-second timeout. Cooldown 30/25/20/15 seconds, instant on ordinary launch and after Skybreaker flight ends.
 - Tested, reviewed, retested and reviewed again; build and all 156 required server tests passed.
 
 ## Vacuum Burst - completed
