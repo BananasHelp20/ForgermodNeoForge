@@ -186,6 +186,19 @@ public final class Augmentations {
         write(result, learned, count(stack) + 1);
         return result;
     }
+    /** Set an exact command rank without consuming an Augmentation Table upgrade. */
+    public static ItemStack setLevel(ItemStack stack, String id, int rank) {
+        if (!augmentable(stack) || rank < 1 || rank > maxRank(stack, id)) return ItemStack.EMPTY;
+        Ability ability = catalog(stack).stream().filter(candidate -> candidate.id().equals(id)).findFirst().orElse(null);
+        if (ability == null) return ItemStack.EMPTY;
+        var learned = new LinkedHashMap<>(learned(stack));
+        if (!learned.containsKey(id) && !id.equals(MATERIAL_HIT)
+                && ids(stack, ability.active()).size() >= limit(stack, ability.active())) return ItemStack.EMPTY;
+        learned.put(id, rank);
+        ItemStack result = stack.copy();
+        write(result, learned, count(stack));
+        return result;
+    }
     public record Extraction(ItemStack weapon, ItemStack template) {}
 
     /** Move the first learned augment to a blank template; no implicit weapon technique is removed. */

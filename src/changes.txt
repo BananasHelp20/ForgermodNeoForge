@@ -809,3 +809,4 @@ Removed
 - Added markdown/latest-promt-thoughts.md with Skybreaker design rationale, implementation checkpoint, successful test evidence and outstanding review/fall-immunity work after the user stopped implementation.
 - Added a Skybreaker regression check that a successful falling axe strike still produces a second damaging ground smash and prevents landing fall damage after the mace resets the fall counter.
 - Added one-landing fall-damage protection to ordinary Windcharge launches on Taifunite daggers, claymores and lower-rank axes. Protection ends after impact, switching away, invalid flight conditions or timeout; Skybreaker's existing impact protection remains.
+- Added operator command `/augment <targets> <augment> [level]` for setting an exact compatible augment rank on living targets' main-hand special weapons or Augment Templates, with ability-name completion, per-item rank/slot validation and `/enchant`-style feedback.
