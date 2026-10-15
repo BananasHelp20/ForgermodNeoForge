@@ -1,5 +1,5 @@
-// 1.21.1	2026-10-15T11:01:10.2806745	Tags for minecraft:item mod id forgermod
-df99ceee6e9b4f14ace1bf252203036dc16b9dce data/minecraft/tags/item/axes.json
-b1ff7ca293c7b6cc7a4a48170520bdda39c88163 data/minecraft/tags/item/hoes.json
-7dbeeccba8915510629a43d3775949267ba9c289 data/minecraft/tags/item/pickaxes.json
-7998bfa5de2f700db89fcfcc4c7ae3d84cb2e11a data/minecraft/tags/item/swords.json
+// 1.21.1	2026-10-15T15:12:06.7046925	Tags for minecraft:item mod id forgermod
+7b4c6dd7d66b75d845105ddcbe2896bd24d97605 data/minecraft/tags/item/axes.json
+e5357800a2f402af6aab502cfc64205933697c28 data/minecraft/tags/item/hoes.json
+5e40bf03865d42c4b59bf12a92dd79943fc8ddd6 data/minecraft/tags/item/pickaxes.json
+28f3a9fdf0886611ca1d475a0833d0d6cbb9fbd2 data/minecraft/tags/item/swords.json

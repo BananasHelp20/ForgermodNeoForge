@@ -7,15 +7,6 @@
     "forgermod:damask_pickaxe",
     "forgermod:titanium_pickaxe",
     "forgermod:tungsten_pickaxe",
-    "forgermod:carbon_steel_pickaxe",
-    "forgermod:inanisium_pickaxe",
-    "forgermod:ignisium_pickaxe",
-    "forgermod:morsium_pickaxe",
-    "forgermod:somnium_pickaxe",
-    "forgermod:vulnusium_pickaxe",
-    "forgermod:lush_pickaxe",
-    "forgermod:pulsite_pickaxe",
-    "forgermod:electrium_pickaxe",
-    "forgermod:taifunite_pickaxe"
+    "forgermod:carbon_steel_pickaxe"
   ]
 }

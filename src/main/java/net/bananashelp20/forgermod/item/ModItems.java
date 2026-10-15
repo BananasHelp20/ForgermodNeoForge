@@ -395,15 +395,6 @@ public class ModItems {
         sets.put("titanium", toolSet("titanium", ModToolTiers.TITANIUM, TITANIUM_INGOT, null));
         sets.put("tungsten", toolSet("tungsten", ModToolTiers.TUNGSTEN, TUNGSTEN_INGOT, null));
         sets.put("carbon_steel", toolSet("carbon_steel", ModToolTiers.CARBON_STEEL, CARBON_STEEL_INGOT, null));
-        sets.put("inanisium", toolSet("inanisium", ModToolTiers.INANISIUM, INANISIUM_INGOT, null));
-        sets.put("ignisium", toolSet("ignisium", ModToolTiers.IGNISIUM, IGNISIUM_INGOT, null));
-        sets.put("morsium", toolSet("morsium", ModToolTiers.MORSIUM, MORSIUM_INGOT, null));
-        sets.put("somnium", toolSet("somnium", ModToolTiers.SOMNIUM, SOMNIUM_INGOT, null));
-        sets.put("vulnusium", toolSet("vulnusium", ModToolTiers.VULNUSIUM, VULNUSIUM_INGOT, null));
-        sets.put("lush", toolSet("lush", ModToolTiers.LUSH, LUSH_INGOT, null));
-        sets.put("pulsite", toolSet("pulsite", ModToolTiers.PULSITE, PULSITE_INGOT, null));
-        sets.put("electrium", toolSet("electrium", ModToolTiers.ELECTRIUM, ELECTRIUM_INGOT, null));
-        sets.put("taifunite", toolSet("taifunite", ModToolTiers.TAIFUNITE, TAIFUNITE_INGOT, null));
         return java.util.Collections.unmodifiableMap(sets);
     }
 

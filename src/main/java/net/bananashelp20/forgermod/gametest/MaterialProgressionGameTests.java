@@ -37,6 +37,15 @@ public class MaterialProgressionGameTests {
 
     @GameTest(template = "empty")
     public static void miningOrderAndOreRequirements(GameTestHelper test) {
+        test.assertTrue(ModItems.TOOL_SETS.keySet().equals(java.util.Set.of("scrap", "meteoric_iron", "reinforced_iron", "steel", "damask", "titanium", "tungsten", "carbon_steel")),
+                "Ordinary tool sets must contain exactly the eight approved metals");
+        for (String supreme : java.util.List.of("inanisium", "ignisium", "morsium", "somnium", "vulnusium", "lush", "pulsite", "electrium", "taifunite")) {
+            for (String type : java.util.List.of("pickaxe", "axe", "hoe", "sword")) {
+                test.assertFalse(net.minecraft.core.registries.BuiltInRegistries.ITEM.containsKey(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, supreme + "_" + type)),
+                        "Unapproved supreme-material ordinary tool remains registered: " + supreme + "_" + type);
+            }
+        }
+
         test.assertTrue(!canHarvest(Items.STONE_PICKAXE, ModBlocks.METEORIC_IRON_STONE_ORE.get()),
                 "Stone unexpectedly harvests meteoric ore");
         test.assertTrue(canHarvest(Items.IRON_PICKAXE, ModBlocks.METEORIC_IRON_STONE_ORE.get()),
@@ -69,7 +78,7 @@ public class MaterialProgressionGameTests {
     @GameTest(template = "empty")
     public static void swordAndPickaxeStatsFollowProgression(GameTestHelper test) {
         String[] materials = {"scrap", "meteoric_iron", "reinforced_iron", "steel",
-                "damask", "titanium", "tungsten", "carbon_steel", "inanisium"};
+                "damask", "titanium", "tungsten", "carbon_steel"};
         Player player = test.makeMockPlayer(GameType.CREATIVE);
         double previousDamage = swordDamage(player, Items.IRON_SWORD);
         double previousDps = previousDamage * player.getAttributeValue(Attributes.ATTACK_SPEED);

@@ -7,15 +7,6 @@
     "forgermod:damask_axe",
     "forgermod:titanium_axe",
     "forgermod:tungsten_axe",
-    "forgermod:carbon_steel_axe",
-    "forgermod:inanisium_axe",
-    "forgermod:ignisium_axe",
-    "forgermod:morsium_axe",
-    "forgermod:somnium_axe",
-    "forgermod:vulnusium_axe",
-    "forgermod:lush_axe",
-    "forgermod:pulsite_axe",
-    "forgermod:electrium_axe",
-    "forgermod:taifunite_axe"
+    "forgermod:carbon_steel_axe"
   ]
 }

@@ -7,15 +7,6 @@
     "forgermod:damask_hoe",
     "forgermod:titanium_hoe",
     "forgermod:tungsten_hoe",
-    "forgermod:carbon_steel_hoe",
-    "forgermod:inanisium_hoe",
-    "forgermod:ignisium_hoe",
-    "forgermod:morsium_hoe",
-    "forgermod:somnium_hoe",
-    "forgermod:vulnusium_hoe",
-    "forgermod:lush_hoe",
-    "forgermod:pulsite_hoe",
-    "forgermod:electrium_hoe",
-    "forgermod:taifunite_hoe"
+    "forgermod:carbon_steel_hoe"
   ]
 }

@@ -17,15 +17,6 @@ names = {
     "damask": "Damask",
     "steel": "Steel",
     "scrap": "Scrap",
-    "inanisium": "Inanisium",
-    "ignisium": "Ignisium",
-    "morsium": "Morsium",
-    "somnium": "Somnium",
-    "vulnusium": "Vulnusium",
-    "lush": "Lush",
-    "pulsite": "Pulsite",
-    "electrium": "Electrium",
-    "taifunite": "Taifunite",
 }
 entries = {}
 for material, display in names.items():

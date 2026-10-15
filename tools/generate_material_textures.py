@@ -20,15 +20,6 @@ PALETTES = {
     "titanium": ("#47535a", "#abb7b2", "#f0e9cb"),
     "tungsten": ("#292e38", "#78818e", "#c1b5a5"),
     "carbon_steel": ("#202a30", "#687c7d", "#c5d4c9"),
-    "inanisium": ("#252041", "#7664ad", "#dac8ff"),
-    "ignisium": ("#5b251d", "#d56732", "#ffce6d"),
-    "morsium": ("#303b39", "#829e8e", "#d3e4c8"),
-    "somnium": ("#3c2d58", "#9775bc", "#e1c3ef"),
-    "vulnusium": ("#531d34", "#b94d69", "#f5a9ac"),
-    "lush": ("#22412c", "#61a75d", "#c4df83"),
-    "pulsite": ("#153f46", "#47a3a0", "#a8e5da"),
-    "electrium": ("#594a21", "#d5b64c", "#fff1a7"),
-    "taifunite": ("#304d5e", "#74bac8", "#e3f6e7"),
 }
 
 
