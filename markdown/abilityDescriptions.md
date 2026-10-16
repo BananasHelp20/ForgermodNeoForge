@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 60 active abilities, 47 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 60 active abilities, 48 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
 
@@ -1013,6 +1013,18 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 **Augmentation card:**
 
 > Deal 15% more melee damage to fully armored enemies.
+
+### Homesick
+
+**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+
+**Item tooltip:**
+
+> While standing on sculk, gain Speed II and Strength I for 3 seconds, refreshed while you remain there. A sculk-particle aura surrounds you.
+
+**Augmentation card:**
+
+> Standing on sculk refreshes Speed II and Strength I for 3 seconds and creates a sculk aura.
 
 ### Last Stand
 

@@ -21,6 +21,7 @@ public final class JadeAugments {
             AdditionalAbilities.FEATHER_SHELTER,
             AdditionalAbilities.GHOSTWALK,
             AdditionalAbilities.LIGHTNING_ROD,
+            AdditionalAbilities.HOMESICK,
             AdditionalAbilities.LULLABY,
             AdditionalAbilities.SCAR_COMPASS,
             AdditionalAbilities.SKULL_THROW,
