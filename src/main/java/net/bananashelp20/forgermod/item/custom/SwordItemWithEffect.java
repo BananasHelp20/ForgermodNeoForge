@@ -136,7 +136,7 @@ public class SwordItemWithEffect extends SwordItem {
                     }
                 }
             }
-            if (expanded && actives.size() == 2) tooltip.add(Component.translatable("tooltips.forgermod.ability.swap_hint").withStyle(ChatFormatting.GRAY));
+            if (expanded && actives.size() >= 2) tooltip.add(Component.translatable("tooltips.forgermod.ability.swap_hint").withStyle(ChatFormatting.GRAY));
         }
         tooltip.add(Component.empty());
         boolean hasGemstone = !"no_gemstone".equals(gemstone);

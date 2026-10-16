@@ -10,3 +10,10 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - MaterialProgressionGameTests asserts the exact approved set and absence of all 36 retired registry IDs; its stat progression stops at Carbon Steel rather than the removed ordinary Inanisium set.
 - Validation: runData succeeded; build plus all 269 required GameTests passed (build/approved-metal-tools-only.log). Static resource/script checks passed. The built forgermod-0.2.0.jar contains no retired assets and includes all 32 approved models and recipes.
 - This checkout initially had no sessionContext.md; this file records the current change without recreating older session history. Prior work is recorded in Git and src/changes.txt.
+
+## Three-slot ability rotation
+
+- The existing Shift+Alt+S shortcut now rotates displayed active assignments left: A/B/C -> B/C/A -> C/A/B -> A/B/C. Two abilities still swap; fewer than two do nothing. The shortcut itself is unchanged.
+- Explicit active order is saved separately from learning order. Legacy swapped stacks remain readable; upgrades, gemstone infusion and save/load preserve assignments. Extraction still takes the first learned augment; relearning appends it after surviving assignments.
+- Client, server and expanded tooltip support three-ability cycling. Configured ability keys remain displayed, and cancelling armed sessions before rotation preserves cooldowns by ability identity.
+- Validation: build and all 271 required GameTests passed in build/three-ability-rotation-resumed.log. Added packet-level three-cycle persistence and cooldown tests; final review run is recorded in build/three-ability-rotation-reviewed.log.

@@ -73,7 +73,7 @@ public final class WeaponAbilityNetwork {
         if (!(context.player() instanceof ServerPlayer player) || player.isSpectator() || !player.isAlive() || WeaponControlLocks.frozen(player)) return;
         ItemStack stack = player.getMainHandItem();
         if (payload.selectedSlot() != player.getInventory().selected || !payload.itemId().equals(itemId(stack))
-                || Augmentations.ids(stack, true).size() != 2) return;
+                || Augmentations.ids(stack, true).size() < 2) return;
         updateSession(player);
         EquippedSession session = ACTIVE.get(player.getUUID());
         if (session != null) cancelSession(player, session);

@@ -40,7 +40,7 @@ public final class WeaponAbilityClient {
                 != (GLFW.GLFW_MOD_SHIFT | GLFW.GLFW_MOD_ALT)) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null
-                || Augmentations.ids(minecraft.player.getMainHandItem(), true).size() != 2) return;
+                || Augmentations.ids(minecraft.player.getMainHandItem(), true).size() < 2) return;
         PacketDistributor.sendToServer(new WeaponAbilityNetwork.SwapAbilitiesPayload(
                 minecraft.player.getInventory().selected,
                 BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString()));

@@ -48,7 +48,7 @@ public class ExpandedAbilitySlotsGameTests {
             test.assertTrue(cds.get(item+":"+AdditionalAbilities.GHOSTWALK)==now+600 && cds.get(item+":"+AdditionalAbilities.BONE_GUARD)==now+1200 && cds.get(item+":"+AdditionalAbilities.SKULL_THROW)==now+1000,"Independent third-slot cooldown lost on switch");
             var swapped=Augmentations.apply(Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.GHOSTWALK),AdditionalAbilities.BONE_GUARD);Augmentations.swapActives(swapped);swapped=Augmentations.apply(swapped,AdditionalAbilities.SKULL_THROW);
             test.assertTrue(Augmentations.activeId(swapped,WeaponAbilitySlot.PRIMARY).equals(AdditionalAbilities.BONE_GUARD) && Augmentations.activeId(swapped,WeaponAbilitySlot.SECONDARY).equals(AdditionalAbilities.GHOSTWALK) && Augmentations.activeId(swapped,WeaponAbilitySlot.TERTIARY).equals(AdditionalAbilities.SKULL_THROW),"Learning third reverses old swapped order");
-            test.assertFalse(Augmentations.swapActives(swapped),"Two-ability-only swap accepts three abilities");
+            test.assertTrue(Augmentations.swapActives(swapped) && Augmentations.ids(swapped,true).equals(java.util.List.of(AdditionalAbilities.GHOSTWALK,AdditionalAbilities.SKULL_THROW,AdditionalAbilities.BONE_GUARD)),"Three-ability cycle does not rotate the displayed order");
         } finally {WeaponAbilityNetwork.onLogout(new PlayerEvent.PlayerLoggedOutEvent(player));GhostwalkEvents.cancel(player.getUUID());BoneGuardEvents.cancel(player.getUUID());SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
         test.succeed();
     }

@@ -160,3 +160,4 @@
 - Removed direct Scrap Ingot-to-Damask and Scrap Iron Ingot-to-Reinforced Iron conversions in favor of the new processing chains.
 - Removed Shardium ore smelting and blasting recipes; Shardium now uses its corrected random ore drops.
 - Removed gemstone weapon variants and Stumpfl's Bat from creative tabs.
+- Expanded the existing Shift+Alt+S ability-order shortcut to cycle all three learned actives left (A/B/C -> B/C/A -> C/A/B -> A/B/C), retaining two-ability swapping. Saved explicit ability order preserves legacy swapped items, upgrades, infusion and extraction without changing ranks, augment counts or passives. Updated the three-slot shortcut hint and message; active-session cancellation and per-ability cooldown identity remain intact.

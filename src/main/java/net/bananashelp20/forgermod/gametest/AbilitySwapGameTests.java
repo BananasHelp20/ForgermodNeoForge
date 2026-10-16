@@ -22,6 +22,58 @@ import java.lang.reflect.Proxy;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class AbilitySwapGameTests {
+    @GameTest(template = "riftfang_test")
+    public static void threeAbilitiesCycleThroughPacketsAndKeepOrderAcrossUpgradeInfusionAndExtraction(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);
+        var ids=java.util.List.of(net.bananashelp20.forgermod.augmentation.AdditionalAbilities.STATIC_BLADE,
+                net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ALTERNATING_CURRENT,
+                net.bananashelp20.forgermod.augmentation.AdditionalAbilities.DIRECT_CURRENT);
+        var stack=new ItemStack(ModItems.STATIC_DAGGER.get());for(var id:ids)stack=Augmentations.apply(stack,id);
+        stack=Augmentations.apply(stack,Augmentations.DUAL_WIELD);
+        var off=new ItemStack(ModItems.STATIC_DAGGER_JADE.get());player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setItemInHand(InteractionHand.OFF_HAND,off);
+        var offData=off.getComponentsPatch();var passives=Augmentations.ids(stack,false);int count=Augmentations.count(stack);
+        try {
+            for(int cycle=1;cycle<=3;cycle++) {
+                swap(player);
+                test.assertTrue(Augmentations.ids(stack,true).equals(java.util.List.of(ids.get(cycle%3),ids.get((cycle+1)%3),ids.get((cycle+2)%3))),"Wrong three-ability rotation at step "+cycle);
+                test.assertTrue(Augmentations.count(stack)==count && Augmentations.ids(stack,false).equals(passives) && off.getComponentsPatch().equals(offData),"Rotation changes augments, passives or offhand");
+            }
+            swap(player);swap(player); // C,A,B
+            stack=Augmentations.apply(stack,ids.get(1));
+            var infused=new ItemStack(ModItems.STATIC_DAGGER_AMBER,1,stack.getComponentsPatch());
+            var saved=ItemStack.parseOptional(test.getLevel().registryAccess(),(net.minecraft.nbt.CompoundTag)infused.save(test.getLevel().registryAccess()));
+            test.assertTrue(Augmentations.ids(saved,true).equals(java.util.List.of(ids.get(2),ids.get(0),ids.get(1))) && Augmentations.level(saved,ids.get(1))==2,"Upgrade, infusion or saving loses three-slot order");
+            var extracted=Augmentations.extractFirst(saved,new ItemStack(ModItems.AUGMENT_TEMPLATE.get()));
+            test.assertTrue(extracted!=null && Augmentations.level(extracted.template(),ids.get(0))==1,"Rotation changes which augment was learned first");
+            var relearned=Augmentations.apply(extracted.weapon(),ids.get(0));
+            test.assertTrue(Augmentations.ids(relearned,true).equals(java.util.List.of(ids.get(2),ids.get(1),ids.get(0))),"Relearning an extracted ability does not append after surviving assignments");
+            var legacy=stack.copy();var data=legacy.get(DataComponents.CUSTOM_DATA).copyTag();var augments=data.getCompound("forgermod_augments");augments.remove("active_order");augments.putBoolean("swapped",true);legacy.set(DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.of(data));
+            test.assertTrue(Augmentations.ids(legacy,true).equals(java.util.List.of(ids.get(1),ids.get(0),ids.get(2))),"Legacy swapped order not preserved");
+            Augmentations.swapActives(legacy);test.assertTrue(Augmentations.ids(legacy,true).equals(java.util.List.of(ids.get(0),ids.get(2),ids.get(1))),"Legacy order does not migrate into a left rotation");
+            test.succeed();
+        } finally {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template = "riftfang_test")
+    public static void rotatingThreeArmedAbilitiesKeepsCooldownsOnEveryKeyAndOtherStacks(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);
+        var ids=java.util.List.of(net.bananashelp20.forgermod.augmentation.AdditionalAbilities.STATIC_BLADE,
+                net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ALTERNATING_CURRENT,
+                net.bananashelp20.forgermod.augmentation.AdditionalAbilities.DIRECT_CURRENT);
+        var stack=new ItemStack(ModItems.STATIC_DAGGER.get());for(var id:ids)stack=Augmentations.apply(stack,id);var original=stack.copy();player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        try {
+            for(int slot=0;slot<3;slot++)use(player,slot);
+            test.assertTrue(ids.stream().allMatch(id->net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,id)),"Three armed fixtures not active");
+            long now=player.level().getGameTime();
+            for(int rotation=0;rotation<3;rotation++) {
+                swap(player);for(int slot=0;slot<3;slot++)use(player,slot);
+                test.assertFalse(ids.stream().anyMatch(id->net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,id)),"Rotation leaves armed effects or bypasses cooldown");
+                var cooldowns=player.getData(WeaponCooldownAttachments.COOLDOWNS);
+                for(int i=0;i<3;i++)test.assertTrue(java.util.Objects.equals(cooldowns.get(item(stack)+":"+ids.get(i)),now+(i==0?800:2400)),"Cooldown no longer follows rotated ability identity");
+            }
+            player.setItemInHand(InteractionHand.MAIN_HAND,original);for(int slot=0;slot<3;slot++)use(player,slot);
+            test.assertFalse(ids.stream().anyMatch(id->net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,id)),"Unrotated stack bypasses cooldowns");test.succeed();
+        } finally {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
+    }
     private static IPayloadContext context(ServerPlayer player) {
         return (IPayloadContext)Proxy.newProxyInstance(IPayloadContext.class.getClassLoader(), new Class<?>[]{IPayloadContext.class},
                 (proxy, method, args) -> method.getName().equals("player") ? player : null);

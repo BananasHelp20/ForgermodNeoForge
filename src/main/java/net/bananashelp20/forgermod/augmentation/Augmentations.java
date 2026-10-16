@@ -122,7 +122,15 @@ public final class Augmentations {
         for (String id : learned(stack).keySet()) {
             if (!id.equals(MATERIAL_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < limit(stack, active)) result.add(id);
         }
-        if (active && data(stack).getBoolean("swapped") && result.size()>=2) Collections.swap(result,0,1);
+        if (active && data(stack).contains("active_order", Tag.TAG_LIST)) {
+            List<String> ordered = new ArrayList<>();
+            for (Tag tag : data(stack).getList("active_order", Tag.TAG_STRING)) {
+                String id = migrateId(tag.getAsString());
+                if (result.contains(id) && !ordered.contains(id)) ordered.add(id);
+            }
+            for (String id : result) if (!ordered.contains(id)) ordered.add(id);
+            result = ordered;
+        } else if (active && data(stack).getBoolean("swapped") && result.size()>=2) Collections.swap(result,0,1);
         return List.copyOf(result);
     }
     public static int level(ItemStack stack, String id) {
@@ -231,6 +239,13 @@ public final class Augmentations {
             CompoundTag row = new CompoundTag(); row.putString("id", key); row.putInt("level", level); levels.add(row);
         });
         augments.put("levels", levels); augments.putInt("count", count); augments.putInt("version", 2);
+        if (augments.contains("active_order", Tag.TAG_LIST)) {
+            ListTag order = new ListTag();
+            for (Tag tag : augments.getList("active_order", Tag.TAG_STRING)) {
+                if (learned.containsKey(migrateId(tag.getAsString()))) order.add(tag.copy());
+            }
+            augments.put("active_order", order);
+        }
         all.put(DATA, augments); result.set(DataComponents.CUSTOM_DATA, CustomData.of(all));
     }
     public record Replacement(String incoming, List<String> choices) {}
@@ -309,7 +324,9 @@ public final class Augmentations {
     }
 
     public static boolean swapActives(ItemStack stack) {
-        if (ids(stack, true).size() != 2) return false;
+        var order = new ArrayList<>(ids(stack, true));
+        if (order.size() < 2) return false;
+        Collections.rotate(order, -1);
         CompoundTag all = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         CompoundTag augments = data(stack).copy();
         // Persist legacy implicit abilities before changing format/version.
@@ -318,7 +335,9 @@ public final class Augmentations {
             CompoundTag row = new CompoundTag(); row.putString("id", id); row.putInt("level", rank); levels.add(row);
         });
         augments.put("levels", levels); augments.putInt("version", 2);
-        augments.putBoolean("swapped", !augments.getBoolean("swapped"));
+        ListTag savedOrder = new ListTag();
+        for (String id : order) savedOrder.add(net.minecraft.nbt.StringTag.valueOf(id));
+        augments.put("active_order", savedOrder);augments.remove("swapped");
         all.put(DATA, augments);
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(all));
         return true;
