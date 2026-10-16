@@ -70,3 +70,10 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Both Skybreaker's falling-hit bonus and landing smash now target all living mobs, including passive animals, neutral golems and tamed/allied mobs. The wielder stays excluded; player/PvP targeting retains its existing rules.
 - Radius, sight/wall checks, damage scaling, knockback and fall protection are unchanged. Updated Windcharge/Skybreaker descriptions.
 - Validation: build and all 275 required GameTests passed in build/skybreaker-all-mobs.log; review run is recorded in build/skybreaker-all-mobs-reviewed.log. The all-five-axe/rank landing test now checks damage to a cow, owned wolf and player-created iron golem alongside hostile mobs, radius and wall exclusions. The real super-IV falling-hit test now uses a passive cow.
+
+## Bone Guard / Necromancer enemy targeting
+
+- Hostile mobs now receive a normal nearest-guard target goal, with line-of-sight/range checks and bounded scan intervals. It selects tracked living reinforcements, avoids adding goals to the guards themselves, and does not alter friendly iron-golem targeting.
+- Guard arrows retain their player owner for kill/loot/ability credit and now carry the actual shooter's UUID. Successful ranged or melee hits point the victim at that reinforcement. Because vanilla stamps revenge memory after LivingDamageEvent.Post, a server-only pre-AI correction records the actual guard before the next AI tick.
+- Pending corrections are cleared on newer damage, entity removal and summon cancellation; existing summon lifetime, weapon-switch persistence, owner/ally protection, golem neutrality and loot restrictions remain intact.
+- Validation: build and all 277 required GameTests passed in build/bone-guard-enemy-targeting-verified.log; final review run is recorded in build/bone-guard-enemy-targeting-reviewed.log. New tests exercise proactive zombie/skeleton/spider targeting and ranged/melee retaliation for all seven max-Necromancer reinforcements while retaining player-owned arrows. Existing all-variant friendly-golem, owner protection and cleanup tests pass.

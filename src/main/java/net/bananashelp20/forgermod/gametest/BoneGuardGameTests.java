@@ -87,4 +87,51 @@ public class BoneGuardGameTests {
         }}finally {BoneGuardEvents.cancel(player.getUUID());golem.discard();enemy.discard();player.server.getPlayerList().remove(player);}
         test.assertTrue(count==10,"Skipped Bone Guard variants");test.succeed();
     }
+    @GameTest(template="riftfang_test")
+    public static void hostileTargetGoalsAcquireGuardsWithoutBeingHitFirst(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);
+        var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);
+        for(int x=3;x<=15;x++)for(int y=5;y<=9;y++)for(int z=3;z<=15;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        var stack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.BONE_GUARD);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var enemies=new java.util.ArrayList<Mob>();
+        try {
+            test.assertTrue(BoneGuardEvents.activate(player,stack),"Guard did not spawn");
+            for(var type:java.util.List.of(EntityType.ZOMBIE,EntityType.SKELETON,EntityType.SPIDER)) {
+                var mob=type.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(point.add(5,0,0));test.getLevel().addFreshEntity(mob);enemies.add(mob);
+                mob.getRandom().setSeed(73);
+                for(int tick=0;tick<200 && !(mob.getTarget() instanceof BoneGuardEvents.FriendlyGuard);tick++)mob.targetSelector.tick();
+                test.assertTrue(mob.getTarget() instanceof BoneGuardEvents.FriendlyGuard,"Hostile AI ignores nearby reinforcement: "+type);
+            }
+        } finally {BoneGuardEvents.cancel(player.getUUID());enemies.forEach(Entity::discard);player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void allReinforcementsDrawRetaliationWhileArrowsKeepPlayerCredit(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);
+        for(int x=3;x<=15;x++)for(int y=5;y<=9;y++)for(int z=3;z<=15;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        var stack=Augmentations.setLevel(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.BONE_GUARD,7);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var enemy=EntityType.SKELETON.create(test.getLevel());enemy.setNoAi(true);enemy.setNoGravity(true);enemy.setPos(point.add(5,0,0));enemy.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);enemy.setHealth(1000);test.getLevel().addFreshEntity(enemy);
+        try {
+            test.assertTrue(BoneGuardEvents.activate(player,stack),"Necromancer did not spawn");
+            var guards=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),m->m instanceof BoneGuardEvents.FriendlyGuard);
+            test.assertTrue(guards.size()==7,"Missing reinforcement types");
+            for(var guard:guards) {
+                enemy.setTarget(player);enemy.invulnerableTime=0;
+                if(guard instanceof net.minecraft.world.entity.monster.WitherSkeleton)guard.doHurtTarget(enemy);
+                else {
+                    ((net.minecraft.world.entity.monster.AbstractSkeleton)guard).performRangedAttack(enemy,1);
+                    var arrows=player.level().getEntitiesOfClass(AbstractArrow.class,guard.getBoundingBox().inflate(2),a->a.getOwner()==player && !a.isRemoved());
+                    test.assertTrue(arrows.size()==1,"Reinforcement arrow not found");var arrow=arrows.getFirst();
+                    try {enemy.hurt(player.damageSources().arrow(arrow,player),2);test.assertTrue(arrow.getOwner()==player,"Arrow loses player kill credit");}finally {arrow.discard();}
+                }
+                test.assertTrue(enemy.getTarget()==guard,"Damage does not immediately target its actual reinforcement attacker: "+guard.getType());
+                BoneGuardEvents.retaliationTick(new net.neoforged.neoforge.event.tick.EntityTickEvent.Pre(enemy));
+                test.assertTrue(enemy.getTarget()==guard && enemy.getLastHurtByMob()==guard,"Vanilla damage bookkeeping still points revenge at the player: "+guard.getType());
+                enemy.targetSelector.tick();
+                test.assertTrue(enemy.getTarget() instanceof BoneGuardEvents.FriendlyGuard,"Enemy AI abandons reinforcement combat: "+guard.getType()+" target="+enemy.getTarget());
+            }
+        } finally {BoneGuardEvents.cancel(player.getUUID());enemy.discard();player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+
 }
