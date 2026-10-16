@@ -31,3 +31,10 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - A matching dual-wield pair shares Pyromaniac from either hand without stacking. Rejected hits and hits while not burning do nothing; switching to another weapon removes the passive benefit. Extinguishing also clears infinite burning through the existing fire hook.
 - Removed the obsolete armed-state class/test, updated tooltip/card text and markdown/abilityDescriptions.md, and adjusted old active-source/tooltip tests to use current ability categories.
 - Validation: build and all 271 required GameTests passed in build/pyromaniac-passive-corrected.log; review run is recorded in build/pyromaniac-passive-reviewed.log. Coverage includes actual attacks, all five gemstone variants/ranks, repeat ignition without cooldown, healing cap, invalid hits, old saved assignments and shared offhand passives.
+
+## Heating Up replacement
+
+- Heating Up remains a learned Infernal Claymore passive with the same ID/rank, but now cancels non-lava fire damage and heals 1 HP every 40/35/30/25 burning ticks at ranks I-IV (existing super-template rank V: 20 ticks). Chosen conservative healing values are documented in the in-game description and markdown/abilityDescriptions.md.
+- Neither protection nor healing applies while in lava; lava damage is always excluded from protection. Healing requires the equipped main-hand passive and positive remaining fire ticks, does not extinguish fire, and stops/reset progress on unequipping, extinguishing, full health or entering lava.
+- Removed the old heat accumulation/spending, automatic extinguishing, attack ignition, Fire Aspect infinite-burn conversion and heat tooltip. Existing heat custom data is ignored; the general InfiniteBurnEvents helper remains for other effects.
+- Validation: build and all 271 required GameTests passed in build/heating-up-fire-healing.log; review run is recorded in build/heating-up-fire-healing-reviewed.log. Tests cover all variants/ranks, actual fire/lava damage, lava immersion, recovery timing and cap, equipment changes, old saved stacks and ordinary Fire Aspect behavior.

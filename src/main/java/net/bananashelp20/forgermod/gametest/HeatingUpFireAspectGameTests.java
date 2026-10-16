@@ -17,25 +17,16 @@ import net.neoforged.neoforge.event.tick.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class HeatingUpFireAspectGameTests {
     @GameTest(template="riftfang_test")
-    public static void allVariantsNeedHeatAndFireAspectForInfiniteBurn(GameTestHelper test) {
+    public static void heatingUpNoLongerConvertsFireAspectIntoInfiniteBurn(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
-        var target=EntityType.ZOMBIE.create(test.getLevel());target.setNoGravity(true);target.setNoAi(true);target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);target.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.CARVED_PUMPKIN));target.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(target);
+        var target=EntityType.ZOMBIE.create(test.getLevel());target.setNoGravity(true);target.setNoAi(true);target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);target.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.CARVED_PUMPKIN));test.getLevel().addFreshEntity(target);
         var fireAspect=player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FIRE_ASPECT);
         try {
             for(var item:java.util.List.of(ModItems.INFERNAL_CLAYMORE.get(),ModItems.INFERNAL_CLAYMORE_RUBY.get(),ModItems.INFERNAL_CLAYMORE_AMBER.get(),ModItems.INFERNAL_CLAYMORE_AMETHYST.get(),ModItems.INFERNAL_CLAYMORE_JADE.get())) {
-                for(int mode=0;mode<4;mode++) {
-                    ItemStack stack=new ItemStack(item);if(mode!=0)stack=Augmentations.apply(stack,RecommendedAbilities.HEATING_UP);if(mode!=1)stack.enchant(fireAspect,1);
-                    target.clearFire();target.invulnerableTime=0;player.setItemInHand(InteractionHand.MAIN_HAND,stack);
-                    if(mode==1 || mode==3){player.setRemainingFireTicks(100);HeatingUpEvents.onTick(new PlayerTickEvent.Pre(player));}
-                    for(int tick=0;tick<60;tick++)player.doTick();
-                    target.setPos(player.position().add(0,0,2));player.attack(target);
-                    test.assertTrue(InfiniteBurnEvents.active(target)==(mode==3),"Wrong infinite burn prerequisites: "+mode);
-                    if(mode==3)test.assertTrue(HeatingUpEvents.storedHeat(stack)==0 && target.getRemainingFireTicks()>=30000,"Permanent attack fails to pay heat or ignite");
-                    else test.assertTrue(target.getRemainingFireTicks()>0 && target.getRemainingFireTicks()<30000,"Ordinary ignition became infinite");
-                }
+                var stack=Augmentations.apply(new ItemStack(item),RecommendedAbilities.HEATING_UP);stack.enchant(fireAspect,1);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                for(int tick=0;tick<60;tick++)player.doTick();target.clearFire();target.invulnerableTime=0;target.setPos(player.position().add(0,0,2));player.attack(target);
+                test.assertTrue(target.getRemainingFireTicks()>0 && target.getRemainingFireTicks()<30000 && !InfiniteBurnEvents.active(target),"Heating Up still changes ordinary Fire Aspect burning");
             }
-            // Explicit extinguishing must end the marker even if a finite fire starts in the same tick.
-            target.clearFire();target.setRemainingFireTicks(60);InfiniteBurnEvents.tick(new EntityTickEvent.Post(target));test.assertFalse(InfiniteBurnEvents.active(target),"Extinguished burn resurrects after finite reignition");
         } finally {target.discard();HeatingUpEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
         test.succeed();
     }

@@ -980,13 +980,15 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Weapons:** Infernal Claymore
 
+**Type:** Passive
+
 **Item tooltip:**
 
-> Store half of melee damage taken as heat, up to 20. Stored heat is shown in this sword's tooltip. A successful attack spends 5 heat to ignite its affected enemies for 3/4/5/6 seconds. With Fire Aspect on this sword, that heat-funded attack burns indefinitely until extinguished. At every level, remaining fire on you becomes heat and is extinguished unless capacity is already full. Heat stays on this sword when switching weapons.
+> Fire damage is prevented. While burning, restore 1 HP every 2/1.75/1.5/1.25 seconds (rank V: 1 second). Neither protection nor healing works in lava; lava damage is never prevented.
 
 **Augmentation card:**
 
-> Absorb your fire and store melee damage as heat; spend heat to ignite attacks.
+> Prevent fire damage and slowly heal while burning. Does not work in lava.
 
 ### Heavy Current
 
