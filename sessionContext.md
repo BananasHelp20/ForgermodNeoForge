@@ -85,3 +85,12 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Added a real-ticking Necromancer IV group-versus-one-zombie test that observes all four skeleton/bogged/stray archers spawning arrows through their bow AI. Also fixed a cached vanilla AI selection occasionally reverting retaliation to the credited player; actual player hits can still replace that revenge memory.
 - Validation: build and all 278 required GameTests passed in build/necromancer-iv-arrow-crash-fixed.log; final review run is recorded in build/necromancer-iv-arrow-crash-reviewed.log. Checked the built jar's helper and stray call-site descriptors match.
 - Fully close and relaunch Minecraft before retesting. Reloading the world alone cannot replace Java classes already loaded in that game process.
+
+## Bone Guard / Necromancer level lineups (supersedes earlier counts)
+
+- Bone Guard I: one bow skeleton; II: two bow skeletons; III: one bogged and one skeleton, both with bows.
+- Necromancer I: one stone-sword wither skeleton, one bogged and one stray with bows. II: two stone-sword wither skeletons plus bogged/stray. III: bogged, stray and skeleton with bows plus two stone-sword wither skeletons.
+- Necromancer IV: six reinforcements: Power II bow bogged, Power II bow stray, Flame bow skeleton, diamond-sword wither skeleton, Flame bow wither skeleton, and iron-sword skeleton. Gear updates use vanilla AbstractSkeleton goal reassessment so both mixed roles work.
+- One-minute lifetime, weapon-switch persistence, owner/ally and golem protection, retaliation, noncollectible arrows and no equipment loot are preserved. Arrow helper remains at its original two-argument signature.
+- Updated in-game tooltip/card and the complete lineup table in markdown/abilityDescriptions.md. The all-variant/rank test verifies exact mob types and gear/enchantments; real group combat checks four bow users and both sword users, plus burning arrows from Flame bows.
+- Validation: build and all 278 required GameTests passed in build/bone-guard-level-lineups.log; final review run is recorded in build/bone-guard-level-lineups-reviewed.log. Restart Minecraft to load the changed lineup implementation.

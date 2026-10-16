@@ -29,13 +29,27 @@ public final class BoneGuardEvents {
   if(active(player))return false;
   int rank=Augmentations.level(stack,AdditionalAbilities.BONE_GUARD);if(rank<=0)return false;
   var mobs=new ArrayList<Mob>();
-  if(rank<4)mobs.add(new GuardSkeleton(player.level(),player));
-  else {
-   mobs.add(new GuardSkeleton(player.level(),player));
-   if(rank>=5)mobs.add(new GuardSkeleton(player.level(),player));
-   if(rank>=6)mobs.add(new GuardBogged(player.level(),player));
-   if(rank>=7)mobs.add(new GuardStray(player.level(),player));
-   for(int i=0;i<(rank>=7?3:rank>=6?2:1);i++)mobs.add(new GuardWitherSkeleton(player.level(),player));
+  switch(rank) {
+   case 1 -> mobs.add(new GuardSkeleton(player.level(),player));
+   case 2 -> {mobs.add(new GuardSkeleton(player.level(),player));mobs.add(new GuardSkeleton(player.level(),player));}
+   case 3 -> {mobs.add(new GuardBogged(player.level(),player));mobs.add(new GuardSkeleton(player.level(),player));}
+   case 4,5 -> {
+    for(int i=0;i<rank-3;i++)mobs.add(new GuardWitherSkeleton(player.level(),player));
+    mobs.add(new GuardBogged(player.level(),player));mobs.add(new GuardStray(player.level(),player));
+   }
+   case 6 -> {
+    mobs.add(new GuardBogged(player.level(),player));mobs.add(new GuardStray(player.level(),player));mobs.add(new GuardSkeleton(player.level(),player));
+    mobs.add(new GuardWitherSkeleton(player.level(),player));mobs.add(new GuardWitherSkeleton(player.level(),player));
+   }
+   case 7 -> {
+    mobs.add(enchantedBow(new GuardBogged(player.level(),player),net.minecraft.world.item.enchantment.Enchantments.POWER,2));
+    mobs.add(enchantedBow(new GuardStray(player.level(),player),net.minecraft.world.item.enchantment.Enchantments.POWER,2));
+    mobs.add(enchantedBow(new GuardSkeleton(player.level(),player),net.minecraft.world.item.enchantment.Enchantments.FLAME,1));
+    mobs.add(equip(new GuardWitherSkeleton(player.level(),player),Items.DIAMOND_SWORD));
+    mobs.add(enchantedBow(equip(new GuardWitherSkeleton(player.level(),player),Items.BOW),net.minecraft.world.item.enchantment.Enchantments.FLAME,1));
+    mobs.add(equip(new GuardSkeleton(player.level(),player),Items.IRON_SWORD));
+   }
+   default -> {return false;}
   }
   var spawned=new ArrayList<Mob>();
   for(var mob:mobs) {
@@ -135,6 +149,13 @@ public final class BoneGuardEvents {
  @SubscribeEvent public static void travel(net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent event) {cancel(event.getEntity().getUUID());}
  private static void configure(AbstractSkeleton mob,boolean melee) {
   mob.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(melee?Items.STONE_SWORD:Items.BOW));mob.setPersistenceRequired();
+ }
+ private static AbstractSkeleton equip(AbstractSkeleton mob,Item weapon) {
+  // AbstractSkeleton.setItemSlot reassesses its bow/melee goals, including wither skeletons.
+  mob.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(weapon));return mob;
+ }
+ private static AbstractSkeleton enchantedBow(AbstractSkeleton mob,net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.Enchantment> enchantment,int rank) {
+  mob.getMainHandItem().enchant(mob.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(enchantment),rank);return mob;
  }
  private static boolean allied(ServerPlayer owner,Entity target) {return target==owner || target instanceof FriendlyGuard || target.isAlliedTo(owner) || target instanceof IronGolem golem && !WeaponAbilityTargets.hostileTo(owner,golem);}
  private static AbstractArrow ownArrow(AbstractArrow arrow,ServerPlayer owner) {

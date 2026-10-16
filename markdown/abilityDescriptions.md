@@ -84,13 +84,25 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Summon a friendly skeleton for one minute, even after switching weapons. Original IV becomes Necromancer I. Super I/II/III/IV summon 2/3/5/7 allies; super IV includes one bogged, one stray, two skeletons and three wither skeletons. Friendly iron golems and your summons remain neutral to each other.
+> Bone Guard I/II/III summon 1/2/2 allies. Rank IV unlocks Necromancer: 3/4/5/6 allies at super I/II/III/IV. Higher ranks mix skeletons, bogged, strays and wither skeletons. Necromancer IV equips Power II/Flame bows and diamond/iron swords. Allies last 1 minute and remain after switching weapons.
 
 **Augmentation card:**
 
-> Friendly skeletons stay one minute after switching. Super form summons a group.
+> Summon reinforcements for 1 minute. Upgrades change their lineup and equipment.
 
 **Super I-IV name (transforms at original IV):** Necromancer
+
+| Augment level | Reinforcements |
+| --- | --- |
+| Bone Guard I | 1 skeleton with a bow |
+| Bone Guard II | 2 skeletons with bows |
+| Bone Guard III | 1 bogged with a bow and 1 skeleton with a bow |
+| Necromancer I | 1 wither skeleton with a stone sword, 1 bogged with a bow, 1 stray with a bow |
+| Necromancer II | 2 wither skeletons with stone swords, 1 bogged with a bow, 1 stray with a bow |
+| Necromancer III | 1 bogged with a bow, 1 stray with a bow, 1 skeleton with a bow, 2 wither skeletons with stone swords |
+| Necromancer IV | 1 bogged with a Power II bow, 1 stray with a Power II bow, 1 skeleton with a Flame bow, 1 wither skeleton with a diamond sword, 1 wither skeleton with a Flame bow, 1 skeleton with an iron sword |
+
+Friendly iron golems and reinforcements remain neutral to each other. Reinforcements remain temporary and do not drop their equipment.
 
 ### Challenge Roar
 

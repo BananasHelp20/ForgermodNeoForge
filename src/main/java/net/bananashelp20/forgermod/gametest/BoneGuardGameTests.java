@@ -17,6 +17,27 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class BoneGuardGameTests {
+    private static void assertLineup(GameTestHelper test,java.util.List<Mob> mobs,int rank) {
+        int[][] expected={{1,0,0,0},{2,0,0,0},{1,1,0,0},{0,1,1,1},{0,1,1,2},{1,1,1,2},{2,1,1,2}};
+        var types=java.util.List.of(EntityType.SKELETON,EntityType.BOGGED,EntityType.STRAY,EntityType.WITHER_SKELETON);
+        int total=0;for(int i=0;i<4;i++){var type=types.get(i);int count=expected[rank-1][i];total+=count;test.assertTrue(mobs.stream().filter(m->m.getType()==type).count()==count,"Wrong "+type+" count at rank "+rank);}
+        test.assertTrue(mobs.size()==total,"Extra reinforcements at rank "+rank);
+        var registry=test.getLevel().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+        var power=registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.POWER);var flame=registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FLAME);
+        for(var mob:mobs) {
+            var weapon=mob.getMainHandItem();boolean wither=mob.getType()==EntityType.WITHER_SKELETON;
+            if(rank<7)test.assertTrue(weapon.is(wither?Items.STONE_SWORD:Items.BOW) && !weapon.isEnchanted(),"Wrong standard equipment at rank "+rank);
+            else {
+                boolean powered=mob.getType()==EntityType.BOGGED || mob.getType()==EntityType.STRAY;
+                int p=net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(power,weapon),f=net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(flame,weapon);
+                if(powered)test.assertTrue(weapon.is(Items.BOW) && p==2 && f==0,"Bogged/stray lack Power II bows");
+                else if(weapon.is(Items.BOW))test.assertTrue(p==0 && f==1,"Skeleton/wither bow lacks Flame");
+                else test.assertTrue(weapon.is(wither?Items.DIAMOND_SWORD:Items.IRON_SWORD) && !weapon.isEnchanted(),"Wrong melee reinforcement sword");
+            }
+        }
+        if(rank==7)for(var type:java.util.List.of(EntityType.SKELETON,EntityType.WITHER_SKELETON))
+            test.assertTrue(mobs.stream().filter(m->m.getType()==type && m.getMainHandItem().is(Items.BOW)).count()==1,"Missing mixed bow/melee role for "+type);
+    }
     @GameTest(template="riftfang_test")
     public static void allTenVariantsSummonOneFriendlyLootlessArcher(GameTestHelper test) {
         var player=TestPlayers.survival(test);var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);
@@ -57,7 +78,7 @@ public class BoneGuardGameTests {
         test.runAfterDelay(11,()->{try {test.assertFalse(BoneGuardEvents.active(player),"Expired persistent guard remains");test.succeed();}finally {BoneGuardEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}});
     }
     @GameTest(template="riftfang_test")
-    public static void tenVariantsTransformToSevenFriendlySkeletonsAtSuperIV(GameTestHelper test) {
+    public static void tenVariantsUseExactLineupsAndEquipmentAtEveryRank(GameTestHelper test) {
         var player=TestPlayers.survival(test);var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);player.setNoGravity(true);
         for(int x=3;x<=14;x++)for(int y=5;y<=9;y++)for(int z=3;z<=14;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
         var golem=EntityType.IRON_GOLEM.create(test.getLevel());golem.setNoAi(true);golem.setNoGravity(true);golem.setPos(point.add(0,0,5));test.getLevel().addFreshEntity(golem);
@@ -68,19 +89,19 @@ public class BoneGuardGameTests {
             for(int rank=1;rank<=7;rank++) {
                 stack=Augmentations.apply(stack,AdditionalAbilities.BONE_GUARD);player.setItemInHand(InteractionHand.MAIN_HAND,stack);test.assertTrue(BoneGuardEvents.activate(player,stack),"Guard group cannot activate");
                 var mobs=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),m->m instanceof BoneGuardEvents.FriendlyGuard);
-                int expected=rank<4?1:rank==4?2:rank==5?3:rank==6?5:7;test.assertTrue(mobs.size()==expected,"Wrong super group count");
+                assertLineup(test,mobs,rank);
                 for(var mob:mobs) {test.assertFalse(mob.canAttack(player) || mob.canAttack(golem),"Guard attacks owner/friendly golem");golem.setTarget(mob);test.assertTrue(golem.getTarget()==null,"Friendly golem targets guard");mob.setTarget(golem);test.assertTrue(mob.getTarget()==null,"Guard targets friendly golem");test.assertFalse(mob.shouldBeSaved(),"Temporary guard saves");}
                 if(rank>=4)test.assertTrue(Augmentations.displayRank(stack,AdditionalAbilities.BONE_GUARD,rank)==rank-3 && Augmentations.abilityName(stack,AdditionalAbilities.BONE_GUARD,rank).getString().equals("Necromancer"),"Necromancer name/rank wrong");
                 if(rank==7)for(var mob:mobs) {
                     if(mob instanceof BoneGuardEvents.GuardBogged bogged)test.assertFalse(bogged.readyForShearing(),"Temporary bogged can farm mushrooms");
-                    if(mob instanceof net.minecraft.world.entity.monster.AbstractSkeleton archer && !(mob instanceof net.minecraft.world.entity.monster.WitherSkeleton)) {
+                    if(mob instanceof net.minecraft.world.entity.monster.AbstractSkeleton archer && mob.getMainHandItem().is(Items.BOW)) {
                         archer.performRangedAttack(enemy,1);
                         var arrows=player.level().getEntitiesOfClass(AbstractArrow.class,mob.getBoundingBox().inflate(2),a->a.getOwner()==player && !a.isRemoved());
                         test.assertTrue(arrows.size()==1 && arrows.getFirst().pickup==AbstractArrow.Pickup.DISALLOWED,"Necromancer archer arrow ownership/pickup wrong");
                         var hit=new ProjectileImpactEvent(arrows.getFirst(),new EntityHitResult(golem));BoneGuardEvents.impact(hit);test.assertTrue(hit.isCanceled() && arrows.getFirst().isRemoved(),"Necromancer arrow hurts friendly golem");
                     }
                 }
-                if(rank==7)test.assertTrue(mobs.stream().filter(m->m.getType()==EntityType.BOGGED).count()==1 && mobs.stream().filter(m->m.getType()==EntityType.STRAY).count()==1 && mobs.stream().filter(m->m.getType()==EntityType.SKELETON).count()==2 && mobs.stream().filter(m->m.getType()==EntityType.WITHER_SKELETON).count()==3,"Super IV composition wrong");
+                if(rank==7)test.assertTrue(mobs.stream().filter(m->m.getType()==EntityType.BOGGED).count()==1 && mobs.stream().filter(m->m.getType()==EntityType.STRAY).count()==1 && mobs.stream().filter(m->m.getType()==EntityType.SKELETON).count()==2 && mobs.stream().filter(m->m.getType()==EntityType.WITHER_SKELETON).count()==2,"Super IV composition wrong");
                 BoneGuardEvents.cancel(player.getUUID());
             }
             test.assertTrue(Augmentations.apply(stack,AdditionalAbilities.BONE_GUARD).isEmpty(),"Necromancer exceeds IV");
@@ -114,10 +135,10 @@ public class BoneGuardGameTests {
         try {
             test.assertTrue(BoneGuardEvents.activate(player,stack),"Necromancer did not spawn");
             var guards=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),m->m instanceof BoneGuardEvents.FriendlyGuard);
-            test.assertTrue(guards.size()==7,"Missing reinforcement types");
+            test.assertTrue(guards.size()==6,"Missing reinforcement types");
             for(var guard:guards) {
                 enemy.setTarget(player);enemy.invulnerableTime=0;
-                if(guard instanceof net.minecraft.world.entity.monster.WitherSkeleton)guard.doHurtTarget(enemy);
+                if(!guard.getMainHandItem().is(Items.BOW))guard.doHurtTarget(enemy);
                 else {
                     ((net.minecraft.world.entity.monster.AbstractSkeleton)guard).performRangedAttack(enemy,1);
                     var arrows=player.level().getEntitiesOfClass(AbstractArrow.class,guard.getBoundingBox().inflate(2),a->a.getOwner()==player && !a.isRemoved());
@@ -137,8 +158,8 @@ public class BoneGuardGameTests {
         test.succeed();
     }
 
-    @GameTest(template="riftfang_test",timeoutTicks=120)
-    public static void necromancerIVGroupFiresThroughRealBowAIAtOneZombie(GameTestHelper test) {
+    @GameTest(template="riftfang_test",timeoutTicks=160)
+    public static void necromancerIVGroupUsesRealBowAndMeleeAIAtOneZombie(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);player.setNoGravity(true);
         var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);
         for(int x=3;x<=20;x++)for(int z=3;z<=20;z++) {
@@ -150,21 +171,28 @@ public class BoneGuardGameTests {
         zombie.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(100000);zombie.setHealth(100000);
         zombie.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
         zombie.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.CARVED_PUMPKIN));test.getLevel().addFreshEntity(zombie);
-        var fired=new java.util.HashSet<java.util.UUID>();
+        var fired=new java.util.HashSet<java.util.UUID>();var flaming=new java.util.HashSet<java.util.UUID>();var struck=new java.util.HashSet<java.util.UUID>();
         java.util.function.Consumer<net.neoforged.neoforge.event.entity.EntityJoinLevelEvent> listener=event->{
-            if(event.getEntity() instanceof AbstractArrow arrow && arrow.getOwner()==player && arrow.getPersistentData().hasUUID("forgermod_bone_guard_shooter"))
-                fired.add(arrow.getPersistentData().getUUID("forgermod_bone_guard_shooter"));
+            if(event.getEntity() instanceof AbstractArrow arrow && arrow.getOwner()==player && arrow.getPersistentData().hasUUID("forgermod_bone_guard_shooter")) {
+                var shooter=arrow.getPersistentData().getUUID("forgermod_bone_guard_shooter");fired.add(shooter);if(arrow.isOnFire())flaming.add(shooter);
+            }
         };
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(listener);
+        java.util.function.Consumer<net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post> meleeListener=event->{
+            if(event.getEntity()==zombie && event.getSource().getEntity() instanceof Mob guard && guard instanceof BoneGuardEvents.FriendlyGuard && event.getNewDamage()>0)struck.add(guard.getUUID());
+        };
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(listener);net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(meleeListener);
         test.assertTrue(BoneGuardEvents.activate(player,stack),"Necromancer IV group failed to spawn");
         BoneGuardEvents.tick(new PlayerTickEvent.Pre(player));
-        var archers=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),mob->mob instanceof BoneGuardEvents.FriendlyGuard && !(mob instanceof net.minecraft.world.entity.monster.WitherSkeleton));
-        test.runAfterDelay(80,()->{
+        var archers=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),mob->mob instanceof BoneGuardEvents.FriendlyGuard && mob.getMainHandItem().is(Items.BOW));
+        var melee=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),mob->mob instanceof BoneGuardEvents.FriendlyGuard && !mob.getMainHandItem().is(Items.BOW));
+        test.runAfterDelay(120,()->{
             try {
-                test.assertTrue(archers.size()==4 && archers.stream().allMatch(mob->fired.contains(mob.getUUID())),"Not all skeleton, bogged and stray bow AIs fired at the zombie: "+fired.size());
+                test.assertTrue(archers.size()==4 && archers.stream().allMatch(mob->fired.contains(mob.getUUID())),"Not all skeleton, bogged, stray and wither-skeleton bow AIs fired at the zombie: "+fired.size());
+                test.assertTrue(archers.stream().filter(mob->mob.getType()==EntityType.SKELETON || mob.getType()==EntityType.WITHER_SKELETON).allMatch(mob->flaming.contains(mob.getUUID())),"Flame bows did not shoot burning arrows");
+                test.assertTrue(melee.size()==2 && melee.stream().allMatch(mob->struck.contains(mob.getUUID())),"Iron/diamond sword reinforcements did not use real melee AI: "+struck.size());
                 test.succeed();
             } finally {
-                net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(listener);BoneGuardEvents.cancel(player.getUUID());zombie.discard();player.server.getPlayerList().remove(player);
+                net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(meleeListener);net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(listener);BoneGuardEvents.cancel(player.getUUID());zombie.discard();player.server.getPlayerList().remove(player);
             }
         });
     }
