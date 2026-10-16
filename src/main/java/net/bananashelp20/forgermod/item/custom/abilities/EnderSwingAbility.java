@@ -14,41 +14,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
-/** Arms one close-range swing and lifts victims only through a clear vertical column. */
+/** Immediately swings at close enemies and lifts victims through a clear vertical column. */
 public final class EnderSwingAbility {
-    private static final Map<UUID, ItemStack> ARMED = new HashMap<>();
     private static final double RADIUS = 1.0;
     private static final int LIFT = 20;
     private EnderSwingAbility() {}
 
-    public static boolean arm(ServerPlayer player, ItemStack stack) {
-        if (!(stack.getItem() instanceof InanisiumWeapon weapon) || !weapon.isAxe()
-                || !player.getOffhandItem().isEmpty() || ARMED.containsKey(player.getUUID())
+    public static boolean activate(ServerPlayer player, ItemStack stack) {
+        if (!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player)
+                || stack != player.getMainHandItem()
+                || !(stack.getItem() instanceof InanisiumWeapon weapon) || !weapon.isAxe()
+                || !player.getOffhandItem().isEmpty()
                 || !Augmentations.ids(stack, true).contains(RecommendedAbilities.ENDER_SWING)) return false;
-        ARMED.put(player.getUUID(), stack);
+        strike(player, stack);
         return true;
     }
 
-    public static boolean active(ServerPlayer player) {
-        return ARMED.containsKey(player.getUUID());
-    }
-
-    public static boolean consume(ServerPlayer player, ItemStack stack) {
-        if (ARMED.get(player.getUUID()) != stack) return false;
-        ARMED.remove(player.getUUID());
-        return true;
-    }
-
-    public static void cancel(UUID player) {
-        ARMED.remove(player);
-    }
-
-    public static void strike(ServerPlayer player, ItemStack stack) {
+    private static void strike(ServerPlayer player, ItemStack stack) {
         float damage = (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         if (Augmentations.level(stack, RecommendedAbilities.ENDER_SWING) > 1) damage *= 1.2f;
         player.swing(InteractionHand.MAIN_HAND);

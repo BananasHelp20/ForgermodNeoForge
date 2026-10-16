@@ -8,7 +8,6 @@ import net.bananashelp20.forgermod.item.custom.InanisiumWeapon;
 import net.bananashelp20.forgermod.item.custom.abilities.EnderSwingAbility;
 import net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork;
 import net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments;
-import net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
@@ -55,7 +54,7 @@ public class EnderSwingGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void nextAttackHitsOnlyNearbyEnemiesAndLiftsThroughClearSpace(GameTestHelper test) throws Exception {
+    public static void activationImmediatelyHitsOnlyNearbyEnemiesAndLiftsThroughClearSpace(GameTestHelper test) throws Exception {
         ServerPlayer player=TestPlayers.survival(test);
         player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         BlockPos feet=player.blockPosition();
@@ -63,7 +62,7 @@ public class EnderSwingGameTests {
             test.getLevel().setBlockAndUpdate(feet.offset(x,y,z),Blocks.AIR.defaultBlockState());
         ItemStack fresh=new ItemStack(ModItems.NULLIFIED_AXE.get());
         player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
-        test.assertFalse(EnderSwingAbility.arm(player,fresh),"Fresh axe arms Ender Swing");
+        test.assertFalse(EnderSwingAbility.activate(player,fresh),"Fresh axe activates Ender Swing");
         ItemStack stack=Augmentations.apply(fresh,RecommendedAbilities.ENDER_SWING);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
         Zombie lifted=zombie(test,player.position().add(.8,0,0));
@@ -78,10 +77,7 @@ public class EnderSwingGameTests {
         double liftedY=lifted.getY(),blockedY=blocked.getY();
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         AbilityTestPackets.use(player,0);
-        test.assertTrue(EnderSwingAbility.active(player),"Ender Swing did not arm");
-        var queue=AxeHeavyNetwork.class.getDeclaredMethod("queueAttack",ServerPlayer.class);queue.setAccessible(true);
-        queue.invoke(null,player);
-        test.assertFalse(EnderSwingAbility.active(player),"The next axe attack did not consume Ender Swing");
+        test.assertFalse(net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,RecommendedAbilities.ENDER_SWING),"Instant swing leaves an armed state");
         test.assertTrue(Math.abs(lifted.getHealth()-(100-damage))<.001 && Math.abs(lifted.getY()-(liftedY+20))<.001,
                 "Nearby enemy was not struck and lifted exactly twenty blocks");
         test.assertTrue(Math.abs(blocked.getHealth()-(100-damage))<.001 && Math.abs(blocked.getY()-blockedY)<.001,
@@ -99,18 +95,40 @@ public class EnderSwingGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void switchingBeforeTheAttackCancelsTheSwing(GameTestHelper test) throws Exception {
-        ServerPlayer player=TestPlayers.survival(test);
-        ItemStack stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),RecommendedAbilities.ENDER_SWING);
-        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
-        AbilityTestPackets.use(player,0);
-        test.assertTrue(EnderSwingAbility.active(player),"Ender Swing did not arm");
-        player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.STICK));
-        WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-        test.assertFalse(EnderSwingAbility.active(player),"Switching kept Ender Swing armed");
-        String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.ENDER_SWING;
-        test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+1200,
-                "Switch cancellation did not start the cooldown");
-        test.getLevel().getServer().getPlayerList().remove(player);test.succeed();
+    public static void allVariantsStartCooldownImmediatelyWithoutOtherAugmentsOrTargets(GameTestHelper test) throws Exception {
+        ServerPlayer player=TestPlayers.survival(test);player.setPos(test.getBounds().getCenter());
+        try {
+            for(var item:java.util.List.of(ModItems.NULLIFIED_AXE.get(),ModItems.NULLIFIED_AXE_RUBY.get(),ModItems.NULLIFIED_AXE_AMBER.get(),ModItems.NULLIFIED_AXE_AMETHYST.get(),ModItems.NULLIFIED_AXE_JADE.get())) {
+                ItemStack stack=Augmentations.apply(new ItemStack(item),RecommendedAbilities.ENDER_SWING);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                test.assertTrue(Augmentations.learned(stack).size()==1,"Fixture has another augment");
+                AbilityTestPackets.use(player,0);
+                String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.ENDER_SWING;
+                long ready=player.level().getGameTime()+1200;
+                test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==ready,"Cooldown does not begin immediately without a followup attack");
+                player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.STICK));WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);AbilityTestPackets.use(player,0);
+                test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==ready,"Switching or repeated activation changes cooldown");
+                test.assertFalse(net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,RecommendedAbilities.ENDER_SWING),"Swing remains armed");
+            }
+        } finally {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
+        test.succeed();
     }
+    @GameTest(template="riftfang_test")
+    public static void tertiarySwingKeepsItsCooldownEvenIfTheWeaponBreaks(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var stack=new ItemStack(ModItems.NULLIFIED_AXE.get());
+        for(var id:java.util.List.of(RecommendedAbilities.NULL_RECEIPT,RecommendedAbilities.SWING_ATTACK,RecommendedAbilities.ENDER_SWING))stack=Augmentations.apply(stack,id);
+        stack.setDamageValue(stack.getMaxDamage()-1);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+        var target=zombie(test,player.position().add(.8,0,0));
+        try {
+            String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.ENDER_SWING;
+            AbilityTestPackets.use(player,2);
+            test.assertTrue(target.getHealth()<100 && stack.isEmpty(),"Tertiary activation does not strike immediately or break the last-durability axe");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+1200,"Breaking the axe loses its instant cooldown");
+            var replacement=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),RecommendedAbilities.ENDER_SWING);player.setItemInHand(InteractionHand.MAIN_HAND,replacement);target.setPos(player.position().add(.8,0,0));target.invulnerableTime=0;float health=target.getHealth();AbilityTestPackets.use(player,0);
+            test.assertTrue(target.getHealth()==health,"Replacement axe bypasses cooldown");
+        } finally {target.discard();WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+
 }

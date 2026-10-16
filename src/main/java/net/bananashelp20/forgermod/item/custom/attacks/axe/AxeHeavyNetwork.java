@@ -112,12 +112,6 @@ public final class AxeHeavyNetwork {
                     (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE), true, stack));
             return true;
         }
-        if (net.bananashelp20.forgermod.item.custom.abilities.EnderSwingAbility.consume(player, stack)) {
-            COMBOS.remove(id);
-            PENDING.remove(id);
-            net.bananashelp20.forgermod.item.custom.abilities.EnderSwingAbility.strike(player, stack);
-            return false;
-        }
         // Sample before the following vanilla attack packet resets the attack ticker.
         if (!AxeItems.canVerticalStrike(stack) || player.getAttackStrengthScale(0) < 1.0F) return false;
         Combo combo = COMBOS.get(id);

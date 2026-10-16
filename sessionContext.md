@@ -45,3 +45,10 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Passable plants have no collision and do not obstruct the step. When downward aim reaches a floor, movement continues forward along that floor; vertical aim remains intact in open air. Walls/ceilings stop the path without sliding sideways or passing through them.
 - Existing collision dimensions, loaded-chunk checks, world border/build-height bounds, relative camera rotation, 10/20-block ranges and cooldowns are preserved. Updated tooltip/card descriptions and markdown/abilityDescriptions.md.
 - Validation: build and all 273 required GameTests passed in build/void-step-passable-plants.log; review run is recorded in build/void-step-passable-plants-reviewed.log. Added downward short/tall-grass tests for all Riftfang variants and a close-wall test; updated ceiling/world-height expectations for sub-half-block clearance. Existing airborne direction, paired-range and camera-packet tests pass.
+
+## Immediate Ender Swing
+
+- Ender Swing now strikes on ability-key activation with no other augment or followup attack required. Removed its armed state and ordinary axe attack hook; the existing 60-second cooldown starts immediately, even with no nearby target.
+- Preserved damage, one-block radius, super-rank bonus, 20-block lift and clearance checks, ally filtering, visuals/sound and axe offhand restrictions. Removed Ender Swing from the reasons to send ordinary axe-combo packets.
+- Ability cooldown duration is captured before activation so an instant attack breaking the equipped weapon cannot erase its cooldown. Updated the in-game tooltip/card and markdown/abilityDescriptions.md.
+- Validation: build and all 273 required GameTests passed in build/ender-swing-immediate.log. The reviewed build and all 274 required GameTests passed in build/ender-swing-immediate-reviewed.log, including a new tertiary-slot last-durability cooldown regression. Existing tests now check immediate damage/lift and independent activation/cooldowns across all five Nullified Axe variants.

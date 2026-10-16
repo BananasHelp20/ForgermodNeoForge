@@ -256,11 +256,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm your next axe swing. It strikes enemies within 1 block for weapon damage (20% more at super rank) and lifts surviving targets 20 blocks if the entire path is clear. Switching cancels the swing. Cooldown after use or cancellation: 60 seconds.
+> Immediately swing to damage enemies within 1 block and lift them 20 blocks if the path is clear. Requires no other augment. Super rank adds 20% damage. Cooldown: 60 seconds.
 
 **Augmentation card:**
 
-> Your next close-range swing damages enemies and lifts them into the air.
+> Immediately swing to damage nearby enemies and lift them into the air.
 
 ### Explosion
 

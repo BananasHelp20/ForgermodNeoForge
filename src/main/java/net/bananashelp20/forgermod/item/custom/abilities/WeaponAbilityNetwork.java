@@ -107,6 +107,8 @@ public final class WeaponAbilityNetwork {
         weapon = Augmentations.canonical(stack);
         WeaponAbilitySlot source = Augmentations.sourceSlot(stack, slot);
         boolean recommended=RecommendedAbilities.active(id);
+        // Instant attacks can break their weapon; capture the learned cooldown before activation.
+        int cooldownTicks = Augmentations.cooldown(stack, slot, weapon);
         if (recommended?RecommendedAbilityRuntime.activate(player,stack,id):weapon.activateAbility(player, stack, source)) {
             if (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source)) {
                 EquippedSession session = ACTIVE.get(player.getUUID());
@@ -120,9 +122,9 @@ public final class WeaponAbilityNetwork {
                 session.activeSlots().add(slot);
                 session.sources().put(slot, source);
                 session.ids().put(slot,id);
-                session.cooldowns().put(slot, Augmentations.cooldown(stack, slot, weapon));
+                session.cooldowns().put(slot, cooldownTicks);
             } else {
-                setCooldown(player, key, now + Augmentations.cooldown(stack, slot, weapon));
+                setCooldown(player, key, now + cooldownTicks);
             }
         } else {
             player.displayClientMessage(Component.translatable("message.forgermod.ability.unavailable"), true);
