@@ -58,3 +58,9 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - A successful armed Deep Wound critical now emits 48 redstone-block fragments and 32 blood-red dust particles from the victim's body center. It also displays on killing blows; Slowness is still only applied to surviving targets.
 - This is particle-only: no explosion, area damage, area status effects or terrain changes. Existing trigger, damage multiplier, Jade behavior and cooldown are unchanged. Updated in-game descriptions and markdown/abilityDescriptions.md.
 - Validation: build and all 274 required GameTests passed in build/deep-wound-blood-burst.log; review run is recorded in build/deep-wound-blood-burst-reviewed.log. The existing real-attack test checks an adjacent bystander stays unharmed and unslowed for all five Assassin Dagger variants. Appearance still needs an in-game look.
+
+## Grave Vault finite flower consumption
+
+- Vanilla BlockItem consumption skips decrementing in Creative mode. Both Grave Vault placement paths now normalize the stored count to exactly one less after a confirmed successful flower placement, preserving Survival's single consumption and failed/cancelled placement hooks.
+- Manual and kill-triggered placement use the live menu's storage when available, persist the depleted inventory to the weapon, and broadcast inventory/menu changes. Emptying the vault removes saved flower storage; later menu writes/save-load cannot restore spent flowers.
+- Validation: build and all 275 required GameTests passed in build/grave-vault-flower-consumption.log; review run is recorded in build/grave-vault-flower-consumption-reviewed.log. New regression coverage repeatedly depletes stock and attempts an extra placement for manual/kill paths in Survival/Creative with open/closed menus, then checks persisted counts. Existing invalid-soil, adventure and all-variant tests remain passing.

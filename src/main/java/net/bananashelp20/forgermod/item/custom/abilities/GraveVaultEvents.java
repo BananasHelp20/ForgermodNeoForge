@@ -34,6 +34,26 @@ public final class GraveVaultEvents {
   }
   CustomData.update(DataComponents.CUSTOM_DATA,weapon,tag->{ if(list.isEmpty()) tag.remove(STORAGE); else tag.put(STORAGE,list); });
  }
+ private static SimpleContainer storage(ServerPlayer player,ItemStack weapon) {
+  return weapon==player.getMainHandItem() && player.containerMenu instanceof GraveVaultMenu menu && menu.stillValid(player)
+    ? menu.storage : read(weapon,player.registryAccess());
+ }
+ /** The vault is finite even in Creative; vanilla placement otherwise skips stack consumption. */
+ private static InteractionResult placeFlower(UseOnContext context) {
+  var flower=context.getItemInHand();int beforeCount=flower.getCount();
+  var block=((BlockItem)flower.getItem()).getBlock();
+  var pos=new net.minecraft.world.item.context.BlockPlaceContext(context).getClickedPos();
+  var before=context.getLevel().getBlockState(pos);
+  var result=flower.useOn(context);
+  var after=context.getLevel().getBlockState(pos);
+  // Preserve placement hooks and cancelled/failed placements. Normalize rather than double-shrink Survival stacks.
+  if(result.consumesAction() && after.is(block) && !after.equals(before)) flower.setCount(beforeCount-1);
+  return result;
+ }
+ private static void save(ServerPlayer player,ItemStack weapon,SimpleContainer storage) {
+  storage.setChanged();write(weapon,storage,player.registryAccess());
+  player.getInventory().setChanged();player.containerMenu.broadcastChanges();
+ }
  private static void open(ServerPlayer player) {
   int selected=player.getInventory().selected;
   player.openMenu(new SimpleMenuProvider((id,inventory,ignored)->new GraveVaultMenu(id,inventory,selected),Component.translatable("menu.forgermod.grave_vault")),buf->buf.writeVarInt(selected));
@@ -50,14 +70,14 @@ public final class GraveVaultEvents {
    event.setCanceled(true); event.setCancellationResult(InteractionResult.SUCCESS); return;
   }
   if(!(event.getEntity() instanceof ServerPlayer player)) return;
-  var weapon=player.getMainHandItem(); var storage=read(weapon,player.registryAccess());
+  var weapon=player.getMainHandItem(); var storage=storage(player,weapon);
   for(int i=0;i<9;i++) { var stack=storage.getItem(i); if(stack.isEmpty()) continue;
    // UseOnContext uses the held weapon by default; override only the placement item.
    var context=new UseOnContext(player,event.getHand(),event.getHitVec()) { @Override public ItemStack getItemInHand() { return stack; } };
    var placement=new net.minecraft.world.item.context.BlockPlaceContext(context);
    if(!player.level().mayInteract(player,placement.getClickedPos()) || !player.mayUseItemAt(placement.getClickedPos(),placement.getClickedFace(),stack)) continue;
-   var result=stack.useOn(context);
-   if(result.consumesAction()) { write(weapon,storage,player.registryAccess()); event.setCanceled(true); event.setCancellationResult(result); return; }
+   var result=placeFlower(context);
+   if(result.consumesAction()) { save(player,weapon,storage); event.setCanceled(true); event.setCancellationResult(result); return; }
   }
  }
  @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
@@ -70,8 +90,7 @@ public final class GraveVaultEvents {
    if(!net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player) || !learned(player.getOffhandItem()))return;
    weapon=player.getOffhandItem();hand=InteractionHand.OFF_HAND;
   }
-  var storage=hand==InteractionHand.MAIN_HAND && player.containerMenu instanceof GraveVaultMenu menu && menu.stillValid(player)
-    ? menu.storage : read(weapon,player.registryAccess());
+  var storage=storage(player,weapon);
   var ground=event.getEntity().getOnPos();var destination=ground.above();
   var hit=new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(ground).add(0,.5,0),net.minecraft.core.Direction.UP,ground,false);
   for(int i=0;i<9;i++) {
@@ -80,7 +99,7 @@ public final class GraveVaultEvents {
    var placement=new net.minecraft.world.item.context.BlockPlaceContext(context);
    if(!placement.getClickedPos().equals(destination) || !player.level().mayInteract(player,destination)
      || !player.mayUseItemAt(destination,placement.getClickedFace(),flower))continue;
-   if(flower.useOn(context).consumesAction()) {storage.setChanged();write(weapon,storage,player.registryAccess());player.containerMenu.broadcastChanges();return;}
+   if(placeFlower(context).consumesAction()) {save(player,weapon,storage);return;}
   }
  }
 

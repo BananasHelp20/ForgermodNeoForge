@@ -90,4 +90,30 @@ public class GraveVaultGameTests {
   test.assertTrue(test.getLevel().getBlockState(soil.above()).isAir() && GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).getCount()==2,"Adventure restrictions bypassed");
   test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
  }
+ @GameTest(template="riftfang_test")
+ public static void finiteStockDepletesForKillsAndManualPlacementInSurvivalAndCreative(GameTestHelper test) {
+  var player=TestPlayers.survival(test);player.setNoGravity(true);var soil=test.absolutePos(new BlockPos(8,4,8));player.setPos(Vec3.atBottomCenterOf(soil.north(2).above()));
+  var hit=new BlockHitResult(Vec3.atCenterOf(soil).add(0,.5,0),Direction.UP,soil,false);
+  try {
+   for(var mode:new GameType[]{GameType.SURVIVAL,GameType.CREATIVE})for(boolean open:new boolean[]{false,true})for(boolean onKill:new boolean[]{false,true}) {
+    player.containerMenu=player.inventoryMenu;player.setGameMode(mode);
+    var weapon=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.OVERGROWN_CLAYMORE.get()),RecommendedAbilities.GRAVE_VAULT);player.setItemInHand(InteractionHand.MAIN_HAND,weapon);
+    var stored=new SimpleContainer(9);stored.setItem(0,new ItemStack(Items.POPPY,2));GraveVaultEvents.write(weapon,stored,player.registryAccess());
+    var menu=open?new GraveVaultMenu(1,player.getInventory(),player.getInventory().selected):null;if(open)player.containerMenu=menu;
+    test.getLevel().setBlockAndUpdate(soil,Blocks.DIRT.defaultBlockState());
+    for(int placed=0;placed<3;placed++) {
+     test.getLevel().setBlockAndUpdate(soil.above(),Blocks.AIR.defaultBlockState());
+     if(onKill)kill(test,player,soil.above(),true);else GraveVaultEvents.onBlock(new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,soil,hit));
+     int remaining=Math.max(0,1-placed);
+     test.assertTrue(GraveVaultEvents.read(weapon,player.registryAccess()).getItem(0).getCount()==remaining,"Saved flower count does not deplete exactly once: "+mode+" open="+open+" kill="+onKill);
+     if(open)test.assertTrue(menu.storage.getItem(0).getCount()==remaining,"Open vault count is stale");
+     test.assertTrue(test.getLevel().getBlockState(soil.above()).is(Blocks.POPPY)==(placed<2),"Empty vault produces another flower");
+    }
+    if(open){menu.storage.setChanged();test.assertTrue(GraveVaultEvents.read(weapon,player.registryAccess()).getItem(0).isEmpty(),"Menu write restores spent flowers");}
+    var restored=ItemStack.parse(player.registryAccess(),weapon.save(player.registryAccess())).orElseThrow();test.assertTrue(GraveVaultEvents.read(restored,player.registryAccess()).isEmpty(),"Save/load restores spent flowers");
+   }
+  }finally {player.containerMenu=player.inventoryMenu;player.server.getPlayerList().remove(player);}
+  test.succeed();
+ }
+
 }
