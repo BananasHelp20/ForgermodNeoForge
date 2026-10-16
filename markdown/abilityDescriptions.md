@@ -84,7 +84,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Bone Guard I/II/III summon 1/2/2 allies. Rank IV unlocks Necromancer: 3/4/5/6 allies at super I/II/III/IV. Higher ranks mix skeletons, bogged, strays and wither skeletons. Necromancer IV equips Power II/Flame bows and diamond/iron swords. Allies last 1 minute and remain after switching weapons.
+> Bone Guard I/II/III summon 1/2/2 allies. Rank IV unlocks Necromancer: 3/4/5/6 allies at super I/II/III/IV. Higher ranks mix skeletons, bogged, strays and wither skeletons. From Necromancer I, ranged allies wear full chainmail and melee allies wear full iron armor. Necromancer IV equips Power II/Flame bows and diamond/iron swords. Allies last 1 minute and remain after switching weapons.
 
 **Augmentation card:**
 
@@ -102,7 +102,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 | Necromancer III | 1 bogged with a bow, 1 stray with a bow, 1 skeleton with a bow, 2 wither skeletons with stone swords |
 | Necromancer IV | 1 bogged with a Power II bow, 1 stray with a Power II bow, 1 skeleton with a Flame bow, 1 wither skeleton with a diamond sword, 1 wither skeleton with a Flame bow, 1 skeleton with an iron sword |
 
-Friendly iron golems and reinforcements remain neutral to each other. Reinforcements remain temporary and do not drop their equipment.
+Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcements wear full chainmail and all melee reinforcements wear full iron armor, including the bow-wielding wither skeleton and sword-wielding regular skeleton at Necromancer IV. Friendly iron golems and reinforcements remain neutral to each other. Reinforcements remain temporary and do not drop their equipment.
 
 ### Challenge Roar
 

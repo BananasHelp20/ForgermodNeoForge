@@ -26,6 +26,12 @@ public class BoneGuardGameTests {
         var power=registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.POWER);var flame=registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FLAME);
         for(var mob:mobs) {
             var weapon=mob.getMainHandItem();boolean wither=mob.getType()==EntityType.WITHER_SKELETON;
+            var armorSlots=java.util.List.of(EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET);
+            var armor=weapon.is(Items.BOW)?java.util.List.of(Items.CHAINMAIL_HELMET,Items.CHAINMAIL_CHESTPLATE,Items.CHAINMAIL_LEGGINGS,Items.CHAINMAIL_BOOTS):java.util.List.of(Items.IRON_HELMET,Items.IRON_CHESTPLATE,Items.IRON_LEGGINGS,Items.IRON_BOOTS);
+            for(int i=0;i<armorSlots.size();i++) {
+                var equipped=mob.getItemBySlot(armorSlots.get(i));
+                test.assertTrue(rank<4?equipped.isEmpty():equipped.is(armor.get(i)) && !equipped.isEnchanted(),"Wrong reinforcement armor at rank "+rank+" slot "+armorSlots.get(i)+" weapon "+weapon);
+            }
             if(rank<7)test.assertTrue(weapon.is(wither?Items.STONE_SWORD:Items.BOW) && !weapon.isEnchanted(),"Wrong standard equipment at rank "+rank);
             else {
                 boolean powered=mob.getType()==EntityType.BOGGED || mob.getType()==EntityType.STRAY;
@@ -102,6 +108,11 @@ public class BoneGuardGameTests {
                     }
                 }
                 if(rank==7)test.assertTrue(mobs.stream().filter(m->m.getType()==EntityType.BOGGED).count()==1 && mobs.stream().filter(m->m.getType()==EntityType.STRAY).count()==1 && mobs.stream().filter(m->m.getType()==EntityType.SKELETON).count()==2 && mobs.stream().filter(m->m.getType()==EntityType.WITHER_SKELETON).count()==2,"Super IV composition wrong");
+                if(rank>=4) {
+                    int drops=player.level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,player.getBoundingBox().inflate(6)).size();
+                    for(var mob:mobs)mob.hurt(player.damageSources().genericKill(),10000);
+                    test.assertTrue(mobs.stream().noneMatch(LivingEntity::isAlive) && player.level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,player.getBoundingBox().inflate(6)).size()==drops,"Armored reinforcements drop farmable equipment");
+                }
                 BoneGuardEvents.cancel(player.getUUID());
             }
             test.assertTrue(Augmentations.apply(stack,AdditionalAbilities.BONE_GUARD).isEmpty(),"Necromancer exceeds IV");

@@ -681,7 +681,7 @@
   "tooltips.forgermod.passive.last_stand.card": "Survive a fatal hit at 1 HP, once every 2 minutes.",
   "tooltips.forgermod.ability.necromancer.name": "Necromancer",
   "tooltips.forgermod.ability.bone_guard.name": "Bone Guard",
-  "tooltips.forgermod.ability.bone_guard": "Bone Guard I/II/III summon 1/2/2 allies. Rank IV unlocks Necromancer: 3/4/5/6 allies at super I/II/III/IV. Higher ranks mix skeletons, bogged, strays and wither skeletons. Necromancer IV equips Power II/Flame bows and diamond/iron swords. Allies last 1 minute and remain after switching weapons.",
+  "tooltips.forgermod.ability.bone_guard": "Bone Guard I/II/III summon 1/2/2 allies. Rank IV unlocks Necromancer: 3/4/5/6 allies at super I/II/III/IV. Higher ranks mix skeletons, bogged, strays and wither skeletons. From Necromancer I, ranged allies wear full chainmail and melee allies wear full iron armor. Necromancer IV equips Power II/Flame bows and diamond/iron swords. Allies last 1 minute and remain after switching weapons.",
   "tooltips.forgermod.ability.bone_guard.card": "Summon reinforcements for 1 minute. Upgrades change their lineup and equipment.",
   "tooltips.forgermod.ability.skull_throw.name": "Skull Throw",
   "tooltips.forgermod.ability.skull_throw": "Fire a slow wither skull that bursts on impact for weapon damage and Wither I for 5 seconds.",

@@ -94,3 +94,9 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - One-minute lifetime, weapon-switch persistence, owner/ally and golem protection, retaliation, noncollectible arrows and no equipment loot are preserved. Arrow helper remains at its original two-argument signature.
 - Updated in-game tooltip/card and the complete lineup table in markdown/abilityDescriptions.md. The all-variant/rank test verifies exact mob types and gear/enchantments; real group combat checks four bow users and both sword users, plus burning arrows from Flame bows.
 - Validation: build and all 278 required GameTests passed in build/bone-guard-level-lineups.log; final review run is recorded in build/bone-guard-level-lineups-reviewed.log. Restart Minecraft to load the changed lineup implementation.
+
+## Necromancer armor by combat role
+
+- From Necromancer I (stored rank 4) onward, every bow reinforcement wears a full chainmail set and every melee reinforcement wears a full iron set. Assignment uses the equipped weapon, so Necromancer IV's bow wither skeleton gets chainmail and its iron-sword regular skeleton gets iron.
+- Bone Guard I-III remain unarmored. Existing lineups, weapons/enchantments, one-minute lifetime, combat AI, retaliation and equipment no-loot rules are unchanged. Updated the game description and markdown/abilityDescriptions.md.
+- Validation: build and all 278 required GameTests passed in build/necromancer-role-armor.log; final review run is recorded in build/necromancer-role-armor-reviewed.log. All-rank/all-variant tests check every armor slot, the unarmored lower ranks, and that killing armored reinforcements drops no farmable items. Existing full-group melee/bow/Flame-arrow combat checks pass.

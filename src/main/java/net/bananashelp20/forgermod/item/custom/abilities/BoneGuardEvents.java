@@ -51,6 +51,13 @@ public final class BoneGuardEvents {
    }
    default -> {return false;}
   }
+  if(rank>=4)for(var mob:mobs) {
+   boolean ranged=mob.getMainHandItem().is(Items.BOW);
+   mob.setItemSlot(EquipmentSlot.HEAD,new ItemStack(ranged?Items.CHAINMAIL_HELMET:Items.IRON_HELMET));
+   mob.setItemSlot(EquipmentSlot.CHEST,new ItemStack(ranged?Items.CHAINMAIL_CHESTPLATE:Items.IRON_CHESTPLATE));
+   mob.setItemSlot(EquipmentSlot.LEGS,new ItemStack(ranged?Items.CHAINMAIL_LEGGINGS:Items.IRON_LEGGINGS));
+   mob.setItemSlot(EquipmentSlot.FEET,new ItemStack(ranged?Items.CHAINMAIL_BOOTS:Items.IRON_BOOTS));
+  }
   var spawned=new ArrayList<Mob>();
   for(var mob:mobs) {
    boolean clear=false;
