@@ -508,13 +508,15 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Weapons:** Emberfang Dagger
 
+**Type:** Passive
+
 **Item tooltip:**
 
-> While burning, arm your next successful dagger hit to extinguish yourself, transfer your remaining fire to the target and heal 5 HP. Infinite burning transfers too; a longer existing target burn is preserved. If your fire ends before the hit, you still heal but transfer no fire. Cooldown: 50 seconds after the hit or cancellation.
+> While burning, hitting a mob extinguishes you and restores 2 HP. Passive; no cooldown.
 
 **Augmentation card:**
 
-> While burning, arm a hit to transfer your fire, extinguish yourself and heal 5 HP.
+> Hit a mob while burning to extinguish yourself and restore 2 HP.
 
 ### Ringing Steel
 

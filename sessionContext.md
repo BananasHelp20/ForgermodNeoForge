@@ -24,3 +24,10 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - The client creates a bounded surface silhouette of the head, torso, arms and legs, holds it for three ticks, then bursts outward over twelve ticks while fading. No extra ticking entities or per-flame network packets are created.
 - Particle registry/options and geometry are common-side; emitter and flame rendering are client-only. The sprite uses the vanilla flame texture.
 - Validation: build and all 271 required GameTests passed in build/cinder-decoy-flame-burst.log; the reviewed build is recorded in build/cinder-decoy-flame-burst-reviewed.log. Visual timing and appearance still need an in-game look.
+
+## Pyromaniac passive
+
+- Pyromaniac retains its ID and learned rank but now occupies a passive slot on Emberfang daggers. Successful player melee damage to a mob while burning extinguishes the wielder and heals exactly 2 HP at all ranks, capped at maximum health. It has no activation or cooldown and no longer transfers fire.
+- A matching dual-wield pair shares Pyromaniac from either hand without stacking. Rejected hits and hits while not burning do nothing; switching to another weapon removes the passive benefit. Extinguishing also clears infinite burning through the existing fire hook.
+- Removed the obsolete armed-state class/test, updated tooltip/card text and markdown/abilityDescriptions.md, and adjusted old active-source/tooltip tests to use current ability categories.
+- Validation: build and all 271 required GameTests passed in build/pyromaniac-passive-corrected.log; review run is recorded in build/pyromaniac-passive-reviewed.log. Coverage includes actual attacks, all five gemstone variants/ranks, repeat ignition without cooldown, healing cap, invalid hits, old saved assignments and shared offhand passives.

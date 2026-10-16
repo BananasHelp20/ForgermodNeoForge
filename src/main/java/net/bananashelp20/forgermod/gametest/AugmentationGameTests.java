@@ -319,7 +319,7 @@ public class AugmentationGameTests {
     public static void learnedSecondaryBindsFirstKeyAndRanksKeepApprovedCooldown(GameTestHelper test) throws Exception {
         var player = test.makeMockServerPlayerInLevel();
         player.setPos(test.getBounds().getCenter());
-        ItemStack stack = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
+        ItemStack stack = new ItemStack(ModItems.DEATHWISPER_DAGGER.get());
         String id = Augmentations.canonical(stack).abilityDescriptionKey(WeaponAbilitySlot.SECONDARY);
         for (int i = 0; i < 4; i++) stack = Augmentations.apply(stack, id);
         test.assertTrue(Augmentations.sourceSlot(stack, WeaponAbilitySlot.PRIMARY) == WeaponAbilitySlot.SECONDARY, "Acquired secondary source mapping wrong");
@@ -329,16 +329,14 @@ public class AugmentationGameTests {
         player.setRemainingFireTicks(200);
         use(player, WeaponAbilitySlot.PRIMARY);
         test.assertTrue(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Dagger could not activate learned ability");
-        Cow cow = EntityType.COW.create(test.getLevel()); cow.setPos(player.position().add(0, 0, 2));
-        test.getLevel().addFreshEntity(cow);
-        ((SwordItemWithEffect)stack.getItem()).postHurtEnemy(stack, cow, player);
-        test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Dagger hit did not consume learned ability");
-        test.assertTrue(cow.isOnFire(), "Learned infernal hit had no effect");
+        runtime.cancelAbility(player, WeaponAbilitySlot.SECONDARY);
+        test.assertFalse(runtime.isAbilityActive(player, WeaponAbilitySlot.SECONDARY), "Learned secondary did not finish");
         var update = WeaponAbilityNetwork.class.getDeclaredMethod("updateSession", ServerPlayer.class); update.setAccessible(true); update.invoke(null, player);
         String key = WeaponCooldownKey.of(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(), WeaponAbilitySlot.SECONDARY);
         long remaining = player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key) - player.level().getGameTime();
         test.assertTrue(remaining == runtime.abilityCooldownTicks(WeaponAbilitySlot.SECONDARY), "Rank IV cooldown wrong");
-        cow.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
+        WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
+        test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
 
     @GameTest(template = "riftfang_test")

@@ -79,8 +79,8 @@ public class DaggerReviewGameTests {
                 append.invoke(weapon, learned, tooltip, key(collapsed.getFirst()), weapon.gemstoneName(), expanded);
                 for (String heading : new String[]{"tooltips.forgermod.ability.heading", "tooltips.forgermod.passive.heading"}) {
                     var rows = tooltip.stream().filter(line -> key(line).equals(heading)).toList();
-                    if (heading.equals("tooltips.forgermod.ability.heading") && !weapon.isDagger()) {
-                        test.assertTrue(rows.isEmpty(), "Claymore/axe still displays copied dagger actives");
+                    if (heading.equals("tooltips.forgermod.ability.heading") && net.bananashelp20.forgermod.augmentation.Augmentations.ids(learned,true).isEmpty()) {
+                        test.assertTrue(rows.isEmpty(), "Weapon without learned actives displays an active heading");
                         continue;
                     }
                     test.assertTrue(rows.size() == 1 && rows.getFirst().getStyle().getColor().getValue() == ChatFormatting.LIGHT_PURPLE.getColor(), "Heading is missing, repeated or not purple");
