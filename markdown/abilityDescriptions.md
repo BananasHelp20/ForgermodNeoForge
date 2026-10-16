@@ -716,7 +716,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Your first landing after launch causes no fall damage while the weapon stays equipped. Axe rank IV becomes Skybreaker I, upgradeable through IV: the first falling axe hit gains mace-style damage and feedback, then landing smashes visible enemies within 5 blocks even if the swing missed. The smash deals weapon damage plus mace fall damage based on the full descent. Super II/III/IV increase the fall-damage bonus by 10%/20%/30%; launch height stays 30 blocks.
+> Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Your first landing after launch causes no fall damage while the weapon stays equipped. Axe rank IV becomes Skybreaker I, upgradeable through IV: the first falling axe hit gains mace-style damage and feedback, then landing smashes all visible mobs within 5 blocks even if the swing missed. The smash deals weapon damage plus mace fall damage based on the full descent. Super II/III/IV increase the fall-damage bonus by 10%/20%/30%; launch height stays 30 blocks.
 
 **Augmentation card:**
 

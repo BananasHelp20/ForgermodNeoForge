@@ -86,10 +86,14 @@ public final class WindchargeEvents {
             || player.isInWaterOrBubble() || player.isInLava() || player.onClimbable() || player.isFallFlying() || player.isPassenger()) {cancel(player.getUUID());return false;}return true;
     }
     public static void cancel(UUID id) {FLIGHTS.remove(id);LANDING_GUARDS.remove(id);IMPACT_GUARDS.remove(id);STRIKES.remove(id);}
+    private static boolean skybreakerTarget(ServerPlayer owner,LivingEntity target) {
+        return target.isAlive() && !target.isSpectator() && target!=owner
+            && (target instanceof net.minecraft.world.entity.Mob || WeaponAbilityTargets.enemy(owner,target));
+    }
     public static float attackBonus(net.minecraft.world.entity.Entity target,net.minecraft.world.damagesource.DamageSource source) {
         if(!(source.getEntity() instanceof ServerPlayer owner) || !source.is(DamageTypes.PLAYER_ATTACK) || !active(owner)
             || FLIGHTS.get(owner.getUUID()).directHit || owner.fallDistance<=1.5 || owner.getDeltaMovement().y>0
-            || owner.isFallFlying() || !(target instanceof LivingEntity living) || !WeaponAbilityTargets.enemy(owner,living)) return 0;
+            || owner.isFallFlying() || !(target instanceof LivingEntity living) || !skybreakerTarget(owner,living)) return 0;
         var flight=FLIGHTS.get(owner.getUUID());flight.sample(owner);
         STRIKES.put(owner.getUUID(),new Strike(living,owner.fallDistance,owner.level().getGameTime()));
         return fallBonus(owner.fallDistance)*flight.bonusMultiplier;
@@ -137,7 +141,7 @@ public final class WindchargeEvents {
     private static void smash(ServerPlayer player,float distance) {
         var flight=FLIGHTS.get(player.getUUID());var center=player.position();
         cancel(player.getUUID());float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+fallBonus(distance)*flight.bonusMultiplier;
-        for(var target:player.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(center,center).inflate(5),e->WeaponAbilityTargets.enemy(player,e))) {
+        for(var target:player.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(center,center).inflate(5),e->skybreakerTarget(player,e))) {
             if(target.position().distanceToSqr(center)>25 || !player.hasLineOfSight(target)) continue;
             int immunity=target.invulnerableTime;target.invulnerableTime=0;boolean hurt;
             try {hurt=target.hurt(player.damageSources().playerAttack(player),damage);}finally {target.invulnerableTime=Math.max(immunity,target.invulnerableTime);}

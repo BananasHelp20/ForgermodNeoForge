@@ -55,7 +55,8 @@ public class WindchargeGameTests {
         for(int x=1;x<=15;x++)for(int z=1;z<=15;z++){test.setBlock(new BlockPos(x,4,z),net.minecraft.world.level.block.Blocks.STONE);for(int y=5;y<=9;y++)test.setBlock(new BlockPos(x,y,z),net.minecraft.world.level.block.Blocks.AIR);}
         test.setBlock(new BlockPos(8,6,10),net.minecraft.world.level.block.Blocks.STONE);test.setBlock(new BlockPos(8,7,10),net.minecraft.world.level.block.Blocks.STONE);
         var edge=EntityType.ZOMBIE.create(test.getLevel());var outside=EntityType.ZOMBIE.create(test.getLevel());var hidden=EntityType.ZOMBIE.create(test.getLevel());var neutral=EntityType.COW.create(test.getLevel());
-        for(var mob:java.util.List.of(edge,outside,hidden,neutral)){mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);test.getLevel().addFreshEntity(mob);}
+        var pet=EntityType.WOLF.create(test.getLevel());pet.tame(player);var golem=EntityType.IRON_GOLEM.create(test.getLevel());golem.setPlayerCreated(true);
+        for(var mob:java.util.List.of(edge,outside,hidden,neutral,pet,golem)){mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);test.getLevel().addFreshEntity(mob);}
         var connection=new RecordingConnection();new io.netty.channel.embedded.EmbeddedChannel(connection);var previous=player.connection;
         new net.minecraft.server.network.ServerGamePacketListenerImpl(test.getLevel().getServer(),connection,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));int count=0;
         try {
@@ -64,12 +65,12 @@ public class WindchargeGameTests {
                 for(int rank=1;rank<=7;rank++) {
                     stack=Augmentations.apply(stack,AdditionalAbilities.WINDCHARGE);if(rank<4)continue;
                     player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setPos(origin);
-                    edge.setPos(origin.add(5,0,0));outside.setPos(origin.add(-5.1,0,0));hidden.setPos(origin.add(0,0,4));neutral.setPos(origin.add(-2,0,0));
-                    for(var mob:java.util.List.of(edge,outside,hidden,neutral)){mob.setHealth(1000);mob.invulnerableTime=20;}
+                    edge.setPos(origin.add(5,0,0));outside.setPos(origin.add(-5.1,0,0));hidden.setPos(origin.add(0,0,4));neutral.setPos(origin.add(-2,0,0));pet.setPos(origin.add(1,0,-2));golem.setPos(origin.add(2,0,-1));
+                    for(var mob:java.util.List.of(edge,outside,hidden,neutral,pet,golem)){mob.setHealth(1000);mob.invulnerableTime=20;}
                     test.assertTrue(WindchargeEvents.activate(player,stack),"Ground-only flight rejected");connection.packets.clear();
                     var fall=new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,30,1);WindchargeEvents.landing(fall);
                     float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+44*(1+.1f*(rank-4));
-                    test.assertTrue(Math.abs(edge.getHealth()-(1000-damage))<.01 && outside.getHealth()==1000 && hidden.getHealth()==1000 && neutral.getHealth()==1000,"Five-block damage, rank scaling, immunity, wall or ally exclusion is wrong");
+                    test.assertTrue(Math.abs(edge.getHealth()-(1000-damage))<.01 && outside.getHealth()==1000 && hidden.getHealth()==1000 && Math.abs(neutral.getHealth()-(1000-damage))<.01 && Math.abs(pet.getHealth()-(1000-damage))<.01 && Math.abs(golem.getHealth()-(1000-damage))<.01,"Five-block all-mob damage, rank scaling, immunity or wall exclusion is wrong");
                     test.assertTrue(fall.getDamageMultiplier()==0 && !WindchargeEvents.active(player),"Landing hurts owner or leaves flight active");
                     test.assertTrue(connection.packets.stream().anyMatch(p->p instanceof net.minecraft.network.protocol.game.ClientboundLevelEventPacket e && e.getType()==2013 && e.getData()==750),"Native mace smash animation not sent");
                     test.assertTrue(connection.packets.stream().anyMatch(p->p instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket s && s.getSound().value()==net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY),"Heavy mace sound not sent");
@@ -77,7 +78,7 @@ public class WindchargeGameTests {
                 }
             }
             test.assertTrue(count==5,"Skipped Skybreaker axe variants");test.succeed();
-        } finally {WindchargeEvents.cancel(player.getUUID());player.connection=previous;for(var mob:java.util.List.of(edge,outside,hidden,neutral))mob.discard();player.server.getPlayerList().remove(player);}
+        } finally {WindchargeEvents.cancel(player.getUUID());player.connection=previous;for(var mob:java.util.List.of(edge,outside,hidden,neutral,pet,golem))mob.discard();player.server.getPlayerList().remove(player);}
     }
     @GameTest(template="riftfang_test")
     public static void groundedTickStillSmashesAfterMaceHitResetFallDistance(GameTestHelper test) {
@@ -99,13 +100,13 @@ public class WindchargeGameTests {
     @GameTest(template="riftfang_test")
     public static void skybreakerSuperIVRetainsLaunchAndUpgradesFallStrike(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
-        var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);mob.setHealth(1000);mob.setPos(player.position().add(1,0,0));test.getLevel().addFreshEntity(mob);
+        var mob=EntityType.COW.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);mob.setHealth(1000);mob.setPos(player.position().add(1,0,0));test.getLevel().addFreshEntity(mob);
         try {
             var stack=new ItemStack(ModItems.SKYBREAKER_AXE.get());for(int i=0;i<7;i++)stack=Augmentations.apply(stack,AdditionalAbilities.WINDCHARGE);player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
             test.assertTrue(WindchargeEvents.activate(player,stack) && WindchargeEvents.active(player),"Super IV flight missing");
             test.assertTrue(Math.abs(player.getDeltaMovement().y-WindchargeEvents.launchVelocity(30))<.001,"Super IV changed launch height");
             player.fallDistance=4;player.setOnGround(false);player.setSprinting(false);player.setDeltaMovement(0,-1,0);float expected=((float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+14*1.3f)*1.5f;player.attack(mob);
-            test.assertTrue(Math.abs(mob.getHealth()-(1000-expected))<.01 && WindchargeEvents.active(player),"Super IV mace critical scaling or pending landing is wrong");
+            test.assertTrue(Math.abs(mob.getHealth()-(1000-expected))<.01 && WindchargeEvents.active(player),"Passive-mob falling hit lacks Super IV mace scaling or consumes pending landing");
             WindchargeEvents.landing(new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,4,1));test.assertFalse(WindchargeEvents.active(player),"Super IV landing remains active");
             player.setHealth(20);player.invulnerableTime=0;test.assertTrue(WindchargeEvents.activate(player,stack),"Super IV could not relaunch");
             player.setOnGround(false);player.setDeltaMovement(0,-1,0);player.fallDistance=10;

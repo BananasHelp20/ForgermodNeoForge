@@ -64,3 +64,9 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Vanilla BlockItem consumption skips decrementing in Creative mode. Both Grave Vault placement paths now normalize the stored count to exactly one less after a confirmed successful flower placement, preserving Survival's single consumption and failed/cancelled placement hooks.
 - Manual and kill-triggered placement use the live menu's storage when available, persist the depleted inventory to the weapon, and broadcast inventory/menu changes. Emptying the vault removes saved flower storage; later menu writes/save-load cannot restore spent flowers.
 - Validation: build and all 275 required GameTests passed in build/grave-vault-flower-consumption.log; review run is recorded in build/grave-vault-flower-consumption-reviewed.log. New regression coverage repeatedly depletes stock and attempts an extra placement for manual/kill paths in Survival/Creative with open/closed menus, then checks persisted counts. Existing invalid-soil, adventure and all-variant tests remain passing.
+
+## Skybreaker all-mob targeting
+
+- Both Skybreaker's falling-hit bonus and landing smash now target all living mobs, including passive animals, neutral golems and tamed/allied mobs. The wielder stays excluded; player/PvP targeting retains its existing rules.
+- Radius, sight/wall checks, damage scaling, knockback and fall protection are unchanged. Updated Windcharge/Skybreaker descriptions.
+- Validation: build and all 275 required GameTests passed in build/skybreaker-all-mobs.log; review run is recorded in build/skybreaker-all-mobs-reviewed.log. The all-five-axe/rank landing test now checks damage to a cow, owned wolf and player-created iron golem alongside hostile mobs, radius and wall exclusions. The real super-IV falling-hit test now uses a passive cow.
