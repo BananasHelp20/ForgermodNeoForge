@@ -52,6 +52,7 @@ public class ForgerMod {
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.StaticBladeNetwork::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.VoidPulseParticles.TYPES.register(modEventBus);
+        net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.worldgen.ModStructures.TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.

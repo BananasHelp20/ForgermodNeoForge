@@ -78,8 +78,11 @@ public final class CinderDecoyEvents {
                     && target.previous().level()==target.mob().level()?target.previous():null);
         decoy.entity().discard();
         double radius=1+Math.clamp(decoy.rank(),1,4);
+        var flames=new net.bananashelp20.forgermod.particle.CinderDecoyParticles.Options(decoy.entity().getYRot(),(float)radius);
         // Vanilla explosion damage reaches twice its power; no block destruction or terrain fire.
-        level.explode(decoy.owner(),pos.x,pos.y,pos.z,(float)(radius/2),false,Level.ExplosionInteraction.NONE);
+        // Replace the vanilla explosion puff so it cannot obscure the flame silhouette.
+        level.explode(decoy.owner(),null,null,pos.x,pos.y,pos.z,(float)(radius/2),false,Level.ExplosionInteraction.NONE,
+                flames,flames,net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE);
         for(Mob enemy:level.getEntitiesOfClass(Mob.class,new net.minecraft.world.phys.AABB(pos,pos).inflate(radius),
                 mob->mob instanceof Enemy && mob.isAlive() && !mob.isAlliedTo(decoy.owner()) && mob.distanceToSqr(pos)<=radius*radius))
             if(level.clip(new net.minecraft.world.level.ClipContext(pos.add(0,1,0),enemy.getEyePosition(),
