@@ -106,6 +106,14 @@ public final class BoneGuardEvents {
   RETALIATION.remove(event.getEntity().getUUID());RETALIATION.values().removeIf(r->r.guard()==event.getEntity());
  }
  @SubscribeEvent public static void target(LivingChangeTargetEvent event) {
+  // Some vanilla target goals cache the arrow's credited player before revenge memory is corrected.
+  // Keep that stale selection on the living reinforcement; an actual player hit replaces the memory normally.
+  if(event.getEntity() instanceof Mob mob && mob.getLastHurtByMob() instanceof LivingEntity guard
+    && guard instanceof FriendlyGuard friendly && event.getNewAboutToBeSetTarget()==friendly.owner()
+    && tracked(guard) && enemy(friendly.owner(),mob) && mob.canAttack(guard)) {
+   double range=mob.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE);
+   if(mob.distanceToSqr(guard)<=range*range)event.setNewAboutToBeSetTarget(guard);
+  }
   if(event.getEntity() instanceof IronGolem && event.getNewAboutToBeSetTarget() instanceof FriendlyGuard ally && !WeaponAbilityTargets.hostileTo(ally.owner(),event.getEntity()))event.setNewAboutToBeSetTarget(null);
   if(event.getEntity() instanceof FriendlyGuard ally && event.getNewAboutToBeSetTarget()!=null && !enemy(ally.owner(),event.getNewAboutToBeSetTarget()))event.setNewAboutToBeSetTarget(null);
  }
@@ -129,8 +137,10 @@ public final class BoneGuardEvents {
   mob.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(melee?Items.STONE_SWORD:Items.BOW));mob.setPersistenceRequired();
  }
  private static boolean allied(ServerPlayer owner,Entity target) {return target==owner || target instanceof FriendlyGuard || target.isAlliedTo(owner) || target instanceof IronGolem golem && !WeaponAbilityTargets.hostileTo(owner,golem);}
- private static AbstractArrow ownArrow(AbstractArrow arrow,ServerPlayer owner,Mob shooter) {
-  arrow.setOwner(owner);arrow.getPersistentData().putUUID(SHOOTER,shooter.getUUID());arrow.pickup=AbstractArrow.Pickup.DISALLOWED;var guard=GUARDS.get(owner.getUUID());if(guard!=null)guard.arrows().add(arrow);return arrow;
+ private static AbstractArrow ownArrow(AbstractArrow arrow,ServerPlayer owner) {
+  // Capture the real shooter before transferring kill credit; retain the original helper signature.
+  if(arrow.getOwner() instanceof FriendlyGuard)arrow.getPersistentData().putUUID(SHOOTER,arrow.getOwner().getUUID());
+  arrow.setOwner(owner);arrow.pickup=AbstractArrow.Pickup.DISALLOWED;var guard=GUARDS.get(owner.getUUID());if(guard!=null)guard.arrows().add(arrow);return arrow;
  }
  public static final class GuardSkeleton extends Skeleton implements FriendlyGuard {
   private final ServerPlayer owner;
@@ -144,7 +154,7 @@ public final class BoneGuardEvents {
   @Override protected void dropEquipment() {}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner,this);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
  }
  public static final class GuardBogged extends Bogged implements FriendlyGuard {
   private final ServerPlayer owner;
@@ -158,7 +168,7 @@ public final class BoneGuardEvents {
   @Override protected void dropEquipment() {}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner,this);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
   @Override public boolean readyForShearing() {return false;}
   @Override public void shear(net.minecraft.sounds.SoundSource source) {}
  }
@@ -174,7 +184,7 @@ public final class BoneGuardEvents {
   @Override protected void dropEquipment() {}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner,this);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
  }
  public static final class GuardWitherSkeleton extends WitherSkeleton implements FriendlyGuard {
   private final ServerPlayer owner;
@@ -188,6 +198,6 @@ public final class BoneGuardEvents {
   @Override protected void dropEquipment() {}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner,this);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
  }
 }

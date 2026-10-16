@@ -130,8 +130,43 @@ public class BoneGuardGameTests {
                 enemy.targetSelector.tick();
                 test.assertTrue(enemy.getTarget() instanceof BoneGuardEvents.FriendlyGuard,"Enemy AI abandons reinforcement combat: "+guard.getType()+" target="+enemy.getTarget());
             }
+            enemy.invulnerableTime=0;enemy.hurt(player.damageSources().playerAttack(player),1);
+            BoneGuardEvents.retaliationTick(new net.neoforged.neoforge.event.tick.EntityTickEvent.Pre(enemy));enemy.setTarget(player);
+            test.assertTrue(enemy.getTarget()==player && enemy.getLastHurtByMob()==player,"A real player hit cannot reclaim retaliation");
         } finally {BoneGuardEvents.cancel(player.getUUID());enemy.discard();player.server.getPlayerList().remove(player);}
         test.succeed();
+    }
+
+    @GameTest(template="riftfang_test",timeoutTicks=120)
+    public static void necromancerIVGroupFiresThroughRealBowAIAtOneZombie(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);player.setNoGravity(true);
+        var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);
+        for(int x=3;x<=20;x++)for(int z=3;z<=20;z++) {
+            test.setBlock(new BlockPos(x,4,z),Blocks.STONE);
+            for(int y=5;y<=10;y++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        }
+        var stack=Augmentations.setLevel(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.BONE_GUARD,7);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var zombie=EntityType.ZOMBIE.create(test.getLevel());zombie.setNoAi(true);zombie.setNoGravity(true);zombie.setPos(point.add(0,0,6));
+        zombie.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(100000);zombie.setHealth(100000);
+        zombie.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
+        zombie.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.CARVED_PUMPKIN));test.getLevel().addFreshEntity(zombie);
+        var fired=new java.util.HashSet<java.util.UUID>();
+        java.util.function.Consumer<net.neoforged.neoforge.event.entity.EntityJoinLevelEvent> listener=event->{
+            if(event.getEntity() instanceof AbstractArrow arrow && arrow.getOwner()==player && arrow.getPersistentData().hasUUID("forgermod_bone_guard_shooter"))
+                fired.add(arrow.getPersistentData().getUUID("forgermod_bone_guard_shooter"));
+        };
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(listener);
+        test.assertTrue(BoneGuardEvents.activate(player,stack),"Necromancer IV group failed to spawn");
+        BoneGuardEvents.tick(new PlayerTickEvent.Pre(player));
+        var archers=player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(5),mob->mob instanceof BoneGuardEvents.FriendlyGuard && !(mob instanceof net.minecraft.world.entity.monster.WitherSkeleton));
+        test.runAfterDelay(80,()->{
+            try {
+                test.assertTrue(archers.size()==4 && archers.stream().allMatch(mob->fired.contains(mob.getUUID())),"Not all skeleton, bogged and stray bow AIs fired at the zombie: "+fired.size());
+                test.succeed();
+            } finally {
+                net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(listener);BoneGuardEvents.cancel(player.getUUID());zombie.discard();player.server.getPlayerList().remove(player);
+            }
+        });
     }
 
 }
