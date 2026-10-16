@@ -596,11 +596,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Teleport up to 10 blocks in your look direction, including into the air; up to 20 blocks with another Riftfang Dagger in your offhand (7-second cooldown)
+> Teleport up to 10 blocks toward your aim, or 20 with a matching offhand dagger. Pass through plants, follow the ground when aiming downward, and stop just before obstacles. Cooldown: 7 seconds.
 
 **Augmentation card:**
 
-> Teleport along your aim. Two Riftfangs double the range.
+> Teleport along your aim, stopping before obstacles. Plants do not block you. Two Riftfangs double the range.
 
 ### Storing Anger
 

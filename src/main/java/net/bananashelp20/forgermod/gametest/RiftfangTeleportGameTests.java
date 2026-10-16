@@ -125,29 +125,58 @@ public class RiftfangTeleportGameTests {
         ServerPlayer forward = player(test, ModItems.RIFTFANG_DAGGER.get(), ModItems.RIFTFANG_DAGGER_JADE.get(), 0);
         Vec3 start = forward.position();
         test.assertTrue(weapon(forward).activateAbility(forward, forward.getMainHandItem(), WeaponAbilitySlot.PRIMARY), "Short clear segment before wall failed");
-        test.assertTrue(forward.position().distanceTo(start.add(0, 0, 5)) < .0001, "Teleport passed through wall or stopped too late");
+        test.assertTrue(forward.position().distanceTo(start.add(0, 0, 5.2)) < .0001, "Teleport passed through wall or stopped too late");
         for (int x = 6; x <= 10; x++) {
             for (int z = 6; z <= 10; z++) test.setBlock(new BlockPos(x, 8, z), Blocks.STONE);
         }
         ServerPlayer upward = player(test, ModItems.RIFTFANG_DAGGER.get(), null, -90);
         start = upward.position();
         test.assertTrue(weapon(upward).activateAbility(upward, upward.getMainHandItem(), WeaponAbilitySlot.PRIMARY), "Short clear segment before ceiling failed");
-        test.assertTrue(upward.position().distanceTo(start.add(0, 3, 0)) < .0001, "Player body passed through ceiling");
+        test.assertTrue(upward.position().distanceTo(start.add(0, 3.2, 0)) < .0001, "Player body passed through ceiling");
         test.succeed();
     }
 
     @GameTest(template = "riftfang_test")
-    public static void blockedAndWorldHeightDoNotTeleport(GameTestHelper test) {
+    public static void shortClearPathsStopAtCeilingsAndWorldHeight(GameTestHelper test) {
         test.setBlock(START.above(2), Blocks.STONE);
         ServerPlayer blocked = player(test, ModItems.RIFTFANG_DAGGER.get(), null, -90);
         Vec3 start = blocked.position();
-        test.assertFalse(weapon(blocked).activateAbility(blocked, blocked.getMainHandItem(), WeaponAbilitySlot.PRIMARY), "Too-short path activated");
-        test.assertTrue(blocked.position().equals(start), "Blocked teleport moved the player");
+        test.assertTrue(weapon(blocked).activateAbility(blocked, blocked.getMainHandItem(), WeaponAbilitySlot.PRIMARY), "Short available path is rejected");
+        test.assertTrue(Math.abs(blocked.getBoundingBox().maxY-test.absolutePos(START.above(2)).getY())<.0001, "Short step does not stop just before ceiling");
+        blocked.setPos(blocked.getX(),test.absolutePos(START.above(2)).getY()-blocked.getBbHeight(),blocked.getZ());start=blocked.position();
+        test.assertFalse(weapon(blocked).activateAbility(blocked,blocked.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Zero-distance path activates");
+        test.assertTrue(blocked.position().equals(start),"Blocked step moves the player");
         ServerPlayer high = player(test, ModItems.RIFTFANG_DAGGER.get(), null, -90);
         high.setPos(high.getX(), test.getLevel().getMaxBuildHeight() - high.getBbHeight() - .05, high.getZ());
-        start = high.position();
-        test.assertFalse(weapon(high).activateAbility(high, high.getMainHandItem(), WeaponAbilitySlot.PRIMARY), "Teleport escaped world height");
-        test.assertTrue(high.position().equals(start), "Invalid-height teleport moved the player");
+        test.assertTrue(weapon(high).activateAbility(high, high.getMainHandItem(), WeaponAbilitySlot.PRIMARY), "Available distance below world height is rejected");
+        test.assertTrue(high.getBoundingBox().maxY<=test.getLevel().getMaxBuildHeight() && test.getLevel().getMaxBuildHeight()-high.getBoundingBox().maxY<.0001,"Step crosses world height or stops too early");
+        test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
+    public static void downwardAimThroughGrassContinuesAlongGround(GameTestHelper test) {
+        for(int x=7;x<=9;x++)for(int z=8;z<=20;z++) {
+            test.setBlock(new BlockPos(x,2,z),Blocks.GRASS_BLOCK);
+            for(int y=3;y<=5;y++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        }
+        test.setBlock(new BlockPos(8,3,9),Blocks.SHORT_GRASS);
+        test.setBlock(new BlockPos(8,3,10),Blocks.TALL_GRASS);
+        test.setBlock(new BlockPos(8,4,10),Blocks.TALL_GRASS.defaultBlockState().setValue(net.minecraft.world.level.block.DoublePlantBlock.HALF,net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER));
+        for(var item:new Item[]{ModItems.RIFTFANG_DAGGER.get(),ModItems.RIFTFANG_DAGGER_RUBY.get(),ModItems.RIFTFANG_DAGGER_AMBER.get(),ModItems.RIFTFANG_DAGGER_AMETHYST.get(),ModItems.RIFTFANG_DAGGER_JADE.get()}) {
+            var player=player(test,item,null,35);var start=player.position();
+            test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Looking down at grass rejects step");
+            test.assertTrue(player.position().distanceTo(start.add(0,0,10))<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Grass obstructs step or downward look enters the ground");
+        }
+        test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
+    public static void wallCloserThanHalfABlockStillAllowsAvailableDistance(GameTestHelper test) {
+        for(int x=6;x<=10;x++)for(int y=2;y<=7;y++)test.setBlock(new BlockPos(x,y,9),Blocks.STONE);
+        var player=player(test,ModItems.RIFTFANG_DAGGER.get(),null,0);var start=player.position();
+        test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Nearby wall rejects a nonzero clear path");
+        test.assertTrue(Math.abs(player.getBoundingBox().maxZ-test.absolutePos(new BlockPos(8,3,9)).getZ())<.0001 && player.getZ()>start.z,"Step is not as far as possible before nearby wall");
+        test.assertTrue(test.getLevel().noCollision(player,player.getBoundingBox()),"Nearby-wall step clips into wall");
         test.succeed();
     }
 }

@@ -2,16 +2,13 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 
 public final class VoidStepPathTest {
     public static void main(String[] args) {
-        expect(40, VoidStepPath.furthestClearStep(step -> true), "full ten blocks");
-        expect(80, VoidStepPath.furthestClearStep(VoidStepPath.PAIRED_STEPS, step -> true), "paired twenty blocks");
-        expect(47, VoidStepPath.furthestClearStep(VoidStepPath.PAIRED_STEPS, step -> step < 48), "paired path stops before wall");
-        expect(0, VoidStepPath.furthestClearStep(0, step -> true), "zero-length path");
-        expect(7, VoidStepPath.furthestClearStep(step -> step < 8), "stops before wall");
-        expect(0, VoidStepPath.furthestClearStep(step -> false), "blocked at start");
-        expect(1, VoidStepPath.furthestClearStep(step -> step == 1), "too short to activate");
+        expect(1, VoidStepPath.clearFraction(t -> true), "clear segment");
+        expect(0, VoidStepPath.clearFraction(t -> false), "starting inside obstruction");
+        expect(.73, VoidStepPath.clearFraction(t -> t <= .73), "partial distance before wall");
+        expect(.01, VoidStepPath.clearFraction(t -> t <= .01), "very short clear segment");
+        expect(0, VoidStepPath.clearFraction(t -> t == 0), "flush against wall");
     }
-
-    private static void expect(int expected, int actual, String caseName) {
-        if (expected != actual) throw new AssertionError(caseName + ": expected " + expected + ", got " + actual);
+    private static void expect(double expected, double actual, String name) {
+        if (Math.abs(expected-actual)>1.0E-5 || actual>expected) throw new AssertionError(name+": "+actual);
     }
 }

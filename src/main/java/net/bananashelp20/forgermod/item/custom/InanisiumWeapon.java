@@ -79,16 +79,36 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         ServerLevel level = player.serverLevel();
         Vec3 start = player.position();
         AABB originalBox = player.getBoundingBox();
-        int clearSteps = VoidStepPath.furthestClearStep(maxSteps, step -> {
-            Vec3 offset = direction.scale(step * VoidStepPath.STEP_DISTANCE);
-            AABB box = originalBox.move(offset);
-            return box.minY >= level.getMinBuildHeight() && box.maxY <= level.getMaxBuildHeight()
-                    && level.getWorldBorder().isWithinBounds(box)
-                    && loadedBox(level, box) && level.noCollision(player, box);
-        });
-        if (clearSteps < 2) return false;
+        Vec3 destination = start;
+        double remaining = maxSteps * VoidStepPath.STEP_DISTANCE;
+        while (remaining > 1.0E-6) {
+            double length = Math.min(VoidStepPath.STEP_DISTANCE, remaining);
+            Vec3 step = direction.scale(length);
+            AABB current = originalBox.move(destination.subtract(start));
+            // A downward aim at grass should continue forward along the floor, just like walking.
+            // Keep real vertical aim in open air, and never slide along walls or ceilings.
+            if (step.y < 0 && direction.horizontalDistance() > 1.0E-4
+                    && loadedBox(level, current.expandTowards(step))) {
+                Vec3 clipped = net.minecraft.world.entity.Entity.collideBoundingBox(player, step, current, level, List.of());
+                if (clipped.y > step.y + 1.0E-7) {
+                    double horizontal = Math.sqrt(Math.max(0, length*length-clipped.y*clipped.y));
+                    step = new Vec3(direction.x / direction.horizontalDistance() * horizontal, clipped.y,
+                            direction.z / direction.horizontalDistance() * horizontal);
+                }
+            }
+            Vec3 travel = step;
+            double fraction = VoidStepPath.clearFraction(t -> {
+                AABB swept = current.expandTowards(travel.scale(t));
+                return swept.minY >= level.getMinBuildHeight() && swept.maxY <= level.getMaxBuildHeight()
+                        && level.getWorldBorder().isWithinBounds(swept)
+                        && loadedBox(level, swept) && level.noCollision(player, swept);
+            });
+            destination = destination.add(travel.scale(fraction));
+            if (fraction < 1) break;
+            remaining -= length;
+        }
+        if (destination.distanceToSqr(start) < 1.0E-8) return false;
 
-        Vec3 destination = start.add(direction.scale(clearSteps * VoidStepPath.STEP_DISTANCE));
         // Zero relative rotation preserves mouse look updated while the teleport packet is in flight.
         return teleportWithSound(player, destination, player.getYRot(), player.getXRot(),
                 Set.of(net.minecraft.world.entity.RelativeMovement.Y_ROT,net.minecraft.world.entity.RelativeMovement.X_ROT));
