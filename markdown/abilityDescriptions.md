@@ -206,11 +206,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing or standing in a visible barrier deals two hearts of damage, at most once per half-second. Marked anchors are exempt from this contact damage. Reaching rank IV becomes Static Field I, upgradeable through IV: at three marks, all living entities inside their triangle take 1/1.25/1.5/1.75 damage per second at super ranks I/II/III/IV. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
+> Mark mobs with melee hits to stun them and create damaging barriers. Static Field also traps and shocks all occupants.
 
 **Augmentation card:**
 
-> Mark enemies to stun them and form damaging barriers. Rank IV adds a field that also hurts you and allies.
+> Link any mobs with barriers. Static Field stuns and shocks everything inside.
 
 **Super I-IV name (transforms at original IV):** Static Field
 

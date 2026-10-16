@@ -309,6 +309,8 @@ Heating Up's fire absorption is now part of its default learned effect at every 
 - Ranks I-IV allow 2/3/4/4 melee-marked enemies, each within 50 blocks of every other anchor. Two marks start 20-second stuns and visible barriers; additional marks refresh that duration. Crossing or standing inside a barrier deals 4 HP with a shared 10-tick per-entity guard; marked endpoints are exempt from stationary contact damage, including fast dashes. Rank IV is named Static Field in item tooltips and upgrade cards: three visible anchors form a triangular field dealing 1 HP per second to all living occupants, including neutral creatures and the caster; other players retain normal PvP protection. Walls block barrier/field formation. Exact-stack switching, death, range separation and expiry release stuns. Ending cooldown 120/100/80/60 seconds. Visibility is checked once per pair per tick and particle counts are bounded.
 - Tested, reviewed, retested and reviewed again; build and all 147 required server tests passed.
 
+- Latest correction: every living mob can be marked, including passive animals and allies. Static Field continuously stuns all occupants and deals 4/5/6/7 HP every 10 ticks at super I/II/III/IV. A shared per-target guard prevents simultaneous barrier/field double hits. Electrical damage uses an armor-bypassing, no-knockback damage type. Canceling releases both anchor and field stuns; briefly overlapping field stuns expire when the field is obstructed. These values supersede the original one-HP-per-second field above.
+
 ## Stunning Presence - completed
 
 - Weapons: Electrium claymore; all gemstone variants.

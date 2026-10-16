@@ -590,8 +590,8 @@
   "tooltips.forgermod.ability.alternating_current": "Your next hit links two visible enemies within 20 blocks. For 1 minute, they alternate 0.5-second stuns each second. Arm time: 30 seconds. Cooldown: 120/100/80/60 seconds.",
   "tooltips.forgermod.ability.alternating_current.card": "Link two enemies; brief stuns alternate between them for 1 minute.",
   "tooltips.forgermod.ability.direct_current.name": "Direct Current",
-  "tooltips.forgermod.ability.direct_current": "Mark 2/3/4/4 enemies with melee hits to stun them and form damaging barriers for 20 seconds. Barriers deal 4 damage on contact. Rank IV unlocks Static Field, which also damages anyone inside the marked triangle. Cooldown: 120/100/80/60 seconds.",
-  "tooltips.forgermod.ability.direct_current.card": "Mark enemies to create damaging barriers; Static Field also damages targets inside.",
+  "tooltips.forgermod.ability.direct_current": "Mark mobs with melee hits to stun them and create damaging barriers. Static Field also traps and shocks all occupants.",
+  "tooltips.forgermod.ability.direct_current.card": "Link any mobs with barriers. Static Field stuns and shocks everything inside.",
   "tooltips.forgermod.ability.static_field.name": "Static Field",
   "tooltips.forgermod.ability.stunning_presence.name": "Stunning Presence",
   "tooltips.forgermod.ability.stunning_presence": "For 30 seconds, pulse 1 damage and a brief stun to visible enemies within 10 blocks every 2/1.65/1.35/1 seconds. Cooldown: 60/50/40/30 seconds.",
@@ -759,5 +759,7 @@
   "item.forgermod.tungsten_axe": "Tungsten Axe",
   "item.forgermod.damask_axe": "Damask Axe",
   "item.forgermod.steel_axe": "Steel Axe",
-  "item.forgermod.scrap_axe": "Scrap Axe"
+  "item.forgermod.scrap_axe": "Scrap Axe",
+  "death.attack.forgermod.direct_current": "%1$s was electrocuted",
+  "death.attack.forgermod.direct_current.player": "%1$s was electrocuted by %2$s"
 }
