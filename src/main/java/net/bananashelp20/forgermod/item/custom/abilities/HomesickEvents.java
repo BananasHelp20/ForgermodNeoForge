@@ -4,7 +4,7 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.JadeAugments;
-import net.bananashelp20.forgermod.item.custom.ElectriumWeapon;
+import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,7 +23,7 @@ public final class HomesickEvents {
 
     private static ItemStack source(ServerPlayer player) {
         ItemStack main = player.getMainHandItem();
-        if (!(main.getItem() instanceof ElectriumWeapon)) return ItemStack.EMPTY;
+        if (!(main.getItem() instanceof PulsiteWeapon)) return ItemStack.EMPTY;
         ItemStack best = Augmentations.hasPassive(main, AdditionalAbilities.HOMESICK) ? main : ItemStack.EMPTY;
         ItemStack off = player.getOffhandItem();
         if (DaggerItems.hasMatchingDaggers(player) && Augmentations.hasPassive(off, AdditionalAbilities.HOMESICK)

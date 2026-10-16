@@ -91,7 +91,7 @@ public final class AdditionalAbilities {
             new Definition(CONDUCTIVE_EDGE, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(STATIC_BLADE, true, 4, 800, 100, Set.of("Electrium:dagger")),
             new Definition(LIGHTNING_ROD, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
-            new Definition(HOMESICK, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
+            new Definition(HOMESICK, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe")),
             new Definition(ALTERNATING_CURRENT, true, 4, 2400, 400, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(DIRECT_CURRENT, true, 4, 2400, 400, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(STUNNING_PRESENCE, true, 4, 1200, 200, Set.of("Electrium:claymore")),

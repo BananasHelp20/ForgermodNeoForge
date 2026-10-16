@@ -1016,7 +1016,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 ### Homesick
 
-**Weapons:** Claymore of Thunder, Static Dagger, Voltage Axe
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
 
 **Item tooltip:**
 

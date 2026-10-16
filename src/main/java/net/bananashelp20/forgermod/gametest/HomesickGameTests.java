@@ -3,9 +3,11 @@ package net.bananashelp20.forgermod.gametest;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.ModItems;
+import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.bananashelp20.forgermod.item.custom.ElectriumWeapon;
 import net.bananashelp20.forgermod.item.custom.abilities.HomesickEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -49,7 +51,7 @@ public class HomesickGameTests {
         try {
             for (var entry : ModItems.ITEMS.getEntries()) {
                 var fresh = new ItemStack(entry.get());
-                boolean eligible = entry.get() instanceof ElectriumWeapon;
+                boolean eligible = entry.get() instanceof PulsiteWeapon;
                 test.assertTrue(Augmentations.pool(fresh).stream().anyMatch(a -> a.id().equals(AdditionalAbilities.HOMESICK)) == eligible,
                         "Homesick assigned to wrong weapon");
                 if (!eligible) continue;
@@ -65,6 +67,38 @@ public class HomesickGameTests {
                 assertBuffs(test, player, JadeAugments.isJade(learned));
                 test.assertTrue(JadeAugments.canInfuse(learned), "Homesick omitted from Jade effect-augment support");
             }
+            test.assertTrue(count == 15, "Skipped Pulsite weapon variants");
+        } finally { player.server.getPlayerList().remove(player); }
+        test.succeed();
+    }
+
+    @GameTest(template = "riftfang_test")
+    public static void electriumCannotLearnReceiveOrActivateHomesick(GameTestHelper test) {
+        var player = TestPlayers.survival(test);
+        stand(test, player);
+        var source = Augmentations.apply(new ItemStack(ModItems.WARDENS_NEEDLE.get()), AdditionalAbilities.HOMESICK);
+        int count = 0;
+        try {
+            for (var entry : ModItems.ITEMS.getEntries()) {
+                if (!(entry.get() instanceof ElectriumWeapon)) continue;
+                count++;
+                var stack = new ItemStack(entry.get());
+                test.assertTrue(Augmentations.apply(stack, AdditionalAbilities.HOMESICK).isEmpty(),
+                        "Electrium can learn Homesick");
+                test.assertTrue(Augmentations.setLevel(stack, AdditionalAbilities.HOMESICK, 1).isEmpty(),
+                        "Command can grant Homesick to Electrium");
+                test.assertTrue(Augmentations.merge(stack, source).isEmpty(),
+                        "Electrium can receive Homesick through merging");
+                // Simulate a stack augmented before Homesick moved to Pulsite.
+                stack.set(DataComponents.CUSTOM_DATA, source.get(DataComponents.CUSTOM_DATA));
+                test.assertFalse(Augmentations.hasPassive(stack, AdditionalAbilities.HOMESICK),
+                        "Legacy Electrium stack retains usable Homesick");
+                clear(player);
+                player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+                tick(player);
+                test.assertFalse(player.hasEffect(MobEffects.MOVEMENT_SPEED) || player.hasEffect(MobEffects.DAMAGE_BOOST),
+                        "Legacy Electrium stack grants Homesick buffs");
+            }
             test.assertTrue(count == 15, "Skipped Electrium weapon variants");
         } finally { player.server.getPlayerList().remove(player); }
         test.succeed();
@@ -74,7 +108,7 @@ public class HomesickGameTests {
     public static void requiresGroundedSculkAndEquippedWeaponAndBuffsExpireNormally(GameTestHelper test) {
         var player = TestPlayers.survival(test);
         stand(test, player);
-        var weapon = Augmentations.apply(new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get()), AdditionalAbilities.HOMESICK);
+        var weapon = Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()), AdditionalAbilities.HOMESICK);
         player.setItemInHand(InteractionHand.MAIN_HAND, weapon);
         try {
             player.setOnGround(false); tick(player);
@@ -118,8 +152,8 @@ public class HomesickGameTests {
     public static void matchingDualDaggersShareOnePassiveWithoutStacking(GameTestHelper test) {
         var player = TestPlayers.survival(test);
         stand(test, player);
-        var main = new ItemStack(ModItems.STATIC_DAGGER.get());
-        var off = Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER_RUBY.get()), AdditionalAbilities.HOMESICK);
+        var main = new ItemStack(ModItems.WARDENS_NEEDLE.get());
+        var off = Augmentations.apply(new ItemStack(ModItems.WARDENS_NEEDLE_RUBY.get()), AdditionalAbilities.HOMESICK);
         try {
             player.setItemInHand(InteractionHand.MAIN_HAND, main);
             player.setItemInHand(InteractionHand.OFF_HAND, off); tick(player);
@@ -132,7 +166,7 @@ public class HomesickGameTests {
             player.setItemInHand(InteractionHand.MAIN_HAND, main); tick(player);
             assertBuffs(test, player, false);
             clear(player);
-            var jade = Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER_JADE.get()), AdditionalAbilities.HOMESICK);
+            var jade = Augmentations.apply(new ItemStack(ModItems.WARDENS_NEEDLE_JADE.get()), AdditionalAbilities.HOMESICK);
             jade = Augmentations.apply(jade, Augmentations.DUAL_WIELD);
             player.setItemInHand(InteractionHand.OFF_HAND, jade); tick(player);
             assertBuffs(test, player, true);
@@ -148,7 +182,7 @@ public class HomesickGameTests {
         var player = TestPlayers.survival(test);
         stand(test, player);
         player.setItemInHand(InteractionHand.MAIN_HAND,
-                Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()), AdditionalAbilities.HOMESICK));
+                Augmentations.apply(new ItemStack(ModItems.WARDENS_NEEDLE.get()), AdditionalAbilities.HOMESICK));
         try {
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 3));
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0)); tick(player);
