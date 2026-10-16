@@ -170,11 +170,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next critical dagger hit deals double damage and inflicts Slowness III on the target for 5 seconds (30-second cooldown)
+> Your next critical dagger hit deals double damage and inflicts Slowness III for 5 seconds, with a purely visual blood burst on the target. Cooldown: 30 seconds.
 
 **Augmentation card:**
 
-> Your next critical hit doubles damage and slows the target.
+> Your next critical hit doubles damage, slows the target and creates a visual blood burst.
 
 ### Delusion
 

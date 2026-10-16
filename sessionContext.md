@@ -52,3 +52,9 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Preserved damage, one-block radius, super-rank bonus, 20-block lift and clearance checks, ally filtering, visuals/sound and axe offhand restrictions. Removed Ender Swing from the reasons to send ordinary axe-combo packets.
 - Ability cooldown duration is captured before activation so an instant attack breaking the equipped weapon cannot erase its cooldown. Updated the in-game tooltip/card and markdown/abilityDescriptions.md.
 - Validation: build and all 273 required GameTests passed in build/ender-swing-immediate.log. The reviewed build and all 274 required GameTests passed in build/ender-swing-immediate-reviewed.log, including a new tertiary-slot last-durability cooldown regression. Existing tests now check immediate damage/lift and independent activation/cooldowns across all five Nullified Axe variants.
+
+## Deep Wound blood burst
+
+- A successful armed Deep Wound critical now emits 48 redstone-block fragments and 32 blood-red dust particles from the victim's body center. It also displays on killing blows; Slowness is still only applied to surviving targets.
+- This is particle-only: no explosion, area damage, area status effects or terrain changes. Existing trigger, damage multiplier, Jade behavior and cooldown are unchanged. Updated in-game descriptions and markdown/abilityDescriptions.md.
+- Validation: build and all 274 required GameTests passed in build/deep-wound-blood-burst.log; review run is recorded in build/deep-wound-blood-burst-reviewed.log. The existing real-attack test checks an adjacent bystander stays unharmed and unslowed for all five Assassin Dagger variants. Appearance still needs an in-game look.

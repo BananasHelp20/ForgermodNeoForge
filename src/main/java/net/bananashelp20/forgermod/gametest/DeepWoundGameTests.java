@@ -29,6 +29,7 @@ public class DeepWoundGameTests {
             var stack=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(item),"tooltips.forgermod.ability.deep_wound");
             player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
             var target=target(test,player);target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);
+            var bystander=target(test,player);bystander.setPos(target.position().add(.7,0,0));
             try {
                 AbilityTestPackets.use(player,0);test.assertTrue(weapon(player).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Packet did not arm Deep Wound");
                 player.setOnGround(false);player.fallDistance=1;player.setSprinting(false);
@@ -38,9 +39,10 @@ public class DeepWoundGameTests {
                 int jade=net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack)?1:0;
                 test.assertTrue(slow!=null && slow.getDuration()==100+20*jade && slow.getAmplifier()==2+jade,"Actual critical lacks expected Slowness");
                 test.assertFalse(weapon(player).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Actual critical retains charge");
+                test.assertTrue(bystander.getHealth()==100 && !bystander.hasEffect(MobEffects.MOVEMENT_SLOWDOWN),"Deep Wound blood burst damages or slows nearby entities");
             } finally {
                 net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
-                DaggerCriticalEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.server.getPlayerList().remove(player);
+                DaggerCriticalEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();bystander.discard();player.server.getPlayerList().remove(player);
             }
         }
         test.succeed();

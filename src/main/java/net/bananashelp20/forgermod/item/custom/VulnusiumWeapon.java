@@ -83,8 +83,16 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
         if (attacker instanceof ServerPlayer player
                 && Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.deep_wound")
                 && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
-                && DEEP_WOUND.consume(player.getUUID()) && !target.isDeadOrDying()) {
-            target.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(
+                && DEEP_WOUND.consume(player.getUUID())) {
+            // Cosmetic only: emit on the struck enemy, including a killing hit; never explode the world.
+            var center=target.getBoundingBox().getCenter();
+            player.serverLevel().sendParticles(new net.minecraft.core.particles.BlockParticleOption(
+                    net.minecraft.core.particles.ParticleTypes.BLOCK,net.minecraft.world.level.block.Blocks.REDSTONE_BLOCK.defaultBlockState()),
+                    center.x,center.y,center.z,48,.12,.18,.12,.35);
+            player.serverLevel().sendParticles(new net.minecraft.core.particles.DustParticleOptions(
+                    new org.joml.Vector3f(.7f,.015f,.03f),1.3f),
+                    center.x,center.y,center.z,32,.45,.35,.45,.12);
+            if (!target.isDeadOrDying()) target.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(
                     player.getMainHandItem(), "tooltips.forgermod.ability.deep_wound",
                     new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2)));
         }
