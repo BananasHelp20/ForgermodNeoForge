@@ -246,3 +246,5 @@
 - Rooting Roots: stopped the repeating growth animation; four bent roots now rise into a closed binding loop around each target, hold steady, and retract once on expiry/cancel. Geometry updates only for actual vertical movement; targets remain horizontally anchored. Uses twelve simple, nonsaved display segments per binding with bounded replacement cleanup.
 
 - Downdraft Bell: continuously acquires airborne mobs (including passive/allied mobs) and elytra/creative flyers inside its moving radius; leaving releases the force immediately, and re-entry reapplies it. Can activate before flyers arrive. Preserves horizontal speed, flight mode, unlimited height, ten-second duration and existing cooldowns.
+
+- Magma Toss: the flying molten rock now renders as a magma block instead of magma cream.

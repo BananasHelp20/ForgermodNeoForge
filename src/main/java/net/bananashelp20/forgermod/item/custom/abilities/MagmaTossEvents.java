@@ -31,7 +31,7 @@ public final class MagmaTossEvents {
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player)) return false;
         int rank=Augmentations.level(stack,AdditionalAbilities.MAGMA_TOSS);
-        var rock=new Snowball(player.level(),player);rock.setItem(new ItemStack(Items.MAGMA_CREAM));
+        var rock=new Snowball(player.level(),player);rock.setItem(new ItemStack(Items.MAGMA_BLOCK));
         rock.shootFromRotation(player,player.getXRot(),player.getYRot(),0,1.4F,0);
         if(!player.level().addFreshEntity(rock)) return false;
         FLIGHTS.put(player.getUUID(),new Flight(stack,player.getInventory().selected,rock,
