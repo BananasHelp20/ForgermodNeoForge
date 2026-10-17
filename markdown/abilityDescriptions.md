@@ -534,11 +534,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Fire a wither skull that bursts for weapon damage and inflicts Wither I for 5 seconds.
+> Fire a fast wither skull up to 500 blocks. It bursts on impact for weapon damage and Wither I for 5 seconds.
 
 **Augmentation card:**
 
-> Fire a skull that bursts for weapon damage and Wither.
+> Fire a fast skull up to 500 blocks; bursts on impact for weapon damage and Wither.
 
 ### Sonic Boom
 

@@ -250,3 +250,6 @@
 - Magma Toss: the flying molten rock now renders as a magma block instead of magma cream.
 
 - Flaming Stomp, Null Receipt and Echo Salvage now require Vertical Strike already learned on the receiving weapon before they can be learned or upgraded through table offers, commands or anvil/template transfers. Templates can still store them independently; existing augments are preserved. Anvil replacements cannot remove a prerequisite needed by the incoming or remaining augments. Ender Swing remains independent.
+
+- Skull Throw: launches much faster (3.5 blocks/tick, native ordinary-skull flight) and has a fixed 500-block maximum travel distance at every rank instead of a five-second timeout. Bursts into bone fragments and souls with a crack sound on block or entity impacts, including passive/allied entities; burst damage retains enemy-only targeting and terrain/caster safety. Temporary current/next chunk tickets allow the full range beyond the caster's loaded area and are released on impact, range expiry and cancellation.
+- Skull Throw: uses the normal dark skull appearance for native fast flight; portal travel is disabled so dimension cloning cannot restore vanilla terrain-damaging skull behavior.
