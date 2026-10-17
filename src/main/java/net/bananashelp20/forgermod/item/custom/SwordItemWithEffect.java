@@ -108,8 +108,15 @@ public class SwordItemWithEffect extends SwordItem {
                             String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0)).withStyle(ChatFormatting.GRAY));
                 }
                 for (String id : passives) {
-                    tooltip.add(Component.translatable("augmentation.forgermod.rank", Augmentations.displayAbilityName(stack,id,Augmentations.level(stack,id)),
-                            WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,Augmentations.level(stack, id)))).withStyle(ChatFormatting.GRAY));
+                    int rank = Augmentations.level(stack,id);
+                    boolean legendary = rank >= 4 && Augmentations.hasSuperForm(stack,id);
+                    Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,rank),
+                            WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,rank)));
+                    tooltip.add(legendary ? Component.empty().withStyle(ChatFormatting.GOLD)
+                            .append(Component.literal("k").withStyle(ChatFormatting.OBFUSCATED))
+                            .append(" ").append(name).append(" ")
+                            .append(Component.literal("k").withStyle(ChatFormatting.OBFUSCATED))
+                            : name.copy().withStyle(ChatFormatting.GRAY));
                     if (expanded) {
                         tooltip.add(AbilityDescriptions.description(stack, id, Augmentations.level(stack,id), false).copy().withStyle(ChatFormatting.GRAY));
                         AbilityDescriptions.appendSuperHint(tooltip, stack, id, Augmentations.level(stack,id));
@@ -122,10 +129,20 @@ public class SwordItemWithEffect extends SwordItem {
                 for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
                     String id = Augmentations.activeId(stack, slot);
                     if (id == null) continue;
-                    Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.displayAbilityName(stack,id,Augmentations.level(stack,id)),
-                            WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,Augmentations.level(stack, id))));
-                    tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip", name,
-                            Component.keybind(slot.keyTranslation())).withStyle(ChatFormatting.GRAY));
+                    int rank = Augmentations.level(stack,id);
+                    boolean legendary = rank >= 4 && Augmentations.hasSuperForm(stack,id);
+                    Component abilityName = Augmentations.abilityName(stack,id,rank);
+                    if (legendary) abilityName = abilityName.copy().withStyle(ChatFormatting.GOLD);
+                    Component name = Component.translatable("augmentation.forgermod.rank", abilityName,
+                            WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,rank)));
+                    if (legendary) name = Component.empty()
+                            .append(Component.literal("k").withStyle(ChatFormatting.GOLD, ChatFormatting.OBFUSCATED))
+                            .append(" ").append(name);
+                    var line = Component.translatable("tooltips.forgermod.ability.tooltip", name,
+                            Component.keybind(slot.keyTranslation())).withStyle(legendary ? ChatFormatting.GOLD : ChatFormatting.GRAY);
+                    if (legendary) line.append(" ")
+                            .append(Component.literal("k").withStyle(ChatFormatting.GOLD, ChatFormatting.OBFUSCATED));
+                    tooltip.add(line);
                     if (expanded) {
                         tooltip.add(AbilityDescriptions.description(stack, id, Augmentations.level(stack,id), false).copy().withStyle(ChatFormatting.GRAY));
                         tooltip.add(Component.translatable("augmentation.forgermod.cooldown",

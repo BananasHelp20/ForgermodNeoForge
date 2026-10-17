@@ -54,6 +54,21 @@ public final class AbilityDescriptionGameTests {
             var rows=new ArrayList<Component>();
             method.invoke(stack.getItem(),stack,rows,"test.lore","no_gemstone",expanded);
             var keys=rows.stream().map(AbilityDescriptionGameTests::key).toList();
+            var title=rows.stream().filter(row->key(row).equals("tooltips.forgermod.ability.tooltip")).findFirst().orElseThrow();
+            if(rank>=4) {
+                test.assertTrue(title.getString().startsWith("k ") && title.getString().endsWith("] k"),"Super glyph does not follow the full keybinding label");
+                int[] animated={0};
+                title.visit((style,text)->{
+                    if(!text.isEmpty()) test.assertTrue(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.GOLD.getColor(),"Super label rank, punctuation or keybinding is not legendary gold");
+                    if(style.isObfuscated()) {
+                        test.assertTrue(text.equals("k"),"Ability text/keybinding became obfuscated");
+                        animated[0]+=text.length();
+                    }
+                    return Optional.empty();
+                },net.minecraft.network.chat.Style.EMPTY);
+                test.assertTrue(animated[0]==2,"Super title has duplicate glyphs around its name");
+                test.assertTrue(json(test,title).contains("key.forgermod.ability_primary"),"Configured keybinding was lost");
+            }
             int hint=keys.indexOf("augmentation.forgermod.super_available");
             test.assertTrue((hint>=0)==(expanded && rank<4),"Hint ignores Shift or current form");
             if(hint>=0) test.assertTrue(keys.get(hint-1).equals("augmentation.forgermod.cooldown"),"Hint is not below cooldown");
@@ -65,6 +80,17 @@ public final class AbilityDescriptionGameTests {
         method.invoke(dagger.getItem(),dagger,rows,"test.lore","no_gemstone",true);
         var keys=rows.stream().map(AbilityDescriptionGameTests::key).toList();
         test.assertTrue(keys.indexOf("augmentation.forgermod.super_available")==keys.indexOf(Augmentations.DOUBLE_JUMP+".current")+1,"Passive note is misplaced");
+        var windwalker=Augmentations.setLevel(dagger,Augmentations.DOUBLE_JUMP,4);
+        rows.clear();method.invoke(windwalker.getItem(),windwalker,rows,"test.lore","no_gemstone",false);
+        var passive=rows.stream().filter(row->row.getString().contains("Windwalker")).findFirst().orElseThrow();
+        test.assertTrue(passive.getString().equals("k Windwalker I k"),"Super passive glyph follows the name instead of the rank");
+        int[] glyphs={0};
+        passive.visit((style,text)->{
+            if(!text.isEmpty()) test.assertTrue(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.GOLD.getColor(),"Super passive rank is not gold");
+            if(style.isObfuscated()){test.assertTrue(text.equals("k"),"Super passive name/rank is obfuscated");glyphs[0]++;}
+            return Optional.empty();
+        },net.minecraft.network.chat.Style.EMPTY);
+        test.assertTrue(glyphs[0]==2,"Super passive glyph count is wrong");
         test.succeed();
     }
 
