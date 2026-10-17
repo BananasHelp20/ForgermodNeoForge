@@ -240,3 +240,5 @@
 - Echo Hearing outlines are now private to the listener, including noisy mobs, players and nonliving entities. Removed shared Glowing effects/tags, preserved other sources of glowing, kept Jade reveal duration, and clear private outlines when listening ends or is canceled.
 
 - Stunning Presence now has a four-times-denser, full-bright cyan 10-block boundary and three-times-denser blue-white pulse ripples. Longer-lived motes overlap for continuous coverage and follow the moving caster; the ripple expands smoothly to the boundary. A compact pattern packet generates each ring locally, with a bounded live-particle budget. Damage, stun, range and cooldown are unchanged.
+
+- Alternating Current now accepts all living mobs, including passive, tamed and team-allied mobs, for both the initial hit and the chained target. Ongoing links also keep accepting allies. Player PvP checks, nearest-target selection, 20-block range, line of sight, timing and zero stun damage are unchanged.

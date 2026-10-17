@@ -24,11 +24,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next hit links two enemies within 20 blocks. For 1 minute, they alternate half-second stuns each second.
+> Your next hit links two mobs within 20 blocks, including allies. For 1 minute, they alternate half-second stuns each second.
 
 **Augmentation card:**
 
-> Link two enemies; brief stuns alternate for 1 minute.
+> Link two mobs, including allies; brief stuns alternate for 1 minute.
 
 ### Always the Gardeners
 
