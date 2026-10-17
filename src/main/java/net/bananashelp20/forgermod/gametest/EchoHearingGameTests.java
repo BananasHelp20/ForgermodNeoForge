@@ -7,6 +7,7 @@ import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.bananashelp20.forgermod.item.custom.abilities.EchoHearingAbility;
+import net.bananashelp20.forgermod.item.custom.abilities.EchoHearingHighlights;
 import net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime;
 import net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments;
 import net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork;
@@ -31,6 +32,45 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class EchoHearingGameTests {
+    @GameTest(template="riftfang_test")
+    public static void privateOutlinesKeepExternalGlowingAndCodecTargetsOnlyItsViewer(GameTestHelper test) {
+        var wielder=player(test);var observer=player(test);
+        var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(wielder.position().add(4,0,0));test.getLevel().addFreshEntity(mob);
+        var drop=new ItemEntity(test.getLevel(),wielder.getX()+3,wielder.getY(),wielder.getZ(),new ItemStack(Items.DIAMOND));
+        drop.setNoGravity(true);drop.setPickUpDelay(32767);drop.setGlowingTag(true);test.getLevel().addFreshEntity(drop);
+        try {
+            mob.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.GLOWING,600,0));
+            var potion=mob.getEffect(MobEffects.GLOWING);
+            var stack=Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()),RecommendedAbilities.ECHO_HEARING);
+            wielder.setItemInHand(InteractionHand.MAIN_HAND,stack);EchoHearingAbility.activate(wielder,stack);
+            noise(test,GameEvent.STEP,mob);noise(test,GameEvent.ENTITY_ACTION,drop);
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==40 && EchoHearingHighlights.remainingTicks(observer,mob)==0,"Private state is shared across viewers");
+            var packet=new EchoHearingHighlights.Payload(mob.getUUID(),wielder.level().getGameTime()+40,false);
+            var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
+            try {
+                EchoHearingHighlights.Payload.CODEC.encode(buffer,packet);
+                var copy=EchoHearingHighlights.Payload.CODEC.decode(buffer);
+                test.assertTrue(copy.equals(packet),"Private highlight packet loses target/deadline");
+                EchoHearingHighlights.apply(wielder,copy);
+                test.assertTrue(EchoHearingHighlights.remainingTicks(observer,mob)==0,"Receiving a packet changes other viewers");
+                var stale=new EchoHearingHighlights.Payload(mob.getUUID(),wielder.level().getGameTime()-1,false);
+                EchoHearingHighlights.apply(wielder,stale);
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==40,"Old packet shortens a refreshed outline");
+                var clear=new EchoHearingHighlights.Payload(new java.util.UUID(0,0),0,true);
+                EchoHearingHighlights.Payload.CODEC.encode(buffer,clear);
+                EchoHearingHighlights.apply(wielder,EchoHearingHighlights.Payload.CODEC.decode(buffer));
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0,"Clear packet leaves private outlines");
+                EchoHearingHighlights.apply(wielder,copy);
+            } finally {buffer.release();}
+            EchoHearingAbility.cancel(wielder.getUUID());
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0 && EchoHearingHighlights.remainingTicks(wielder,drop)==0,"Cancel does not clear private outlines");
+            test.assertTrue(mob.getEffect(MobEffects.GLOWING)==potion && potion.getDuration()==600 && drop.isCurrentlyGlowing(),"Echo Hearing alters another source's glowing");
+        } finally {
+            EchoHearingAbility.cancel(wielder.getUUID());EchoHearingHighlights.clear(wielder);
+            mob.discard();drop.discard();wielder.server.getPlayerList().remove(wielder);observer.server.getPlayerList().remove(observer);
+        }
+        test.succeed();
+    }
     private static ServerPlayer player(GameTestHelper test) {
         ServerPlayer player = TestPlayers.survival(test);
         player.setInvulnerable(true);
@@ -72,14 +112,14 @@ public class EchoHearingGameTests {
                 test.assertFalse(wielder.hasEffect(MobEffects.GLOWING) || otherPlayer.hasEffect(MobEffects.GLOWING)
                         || mob.hasEffect(MobEffects.GLOWING) || drop.isCurrentlyGlowing(), "Activation revealed a silent entity");
                 noise(test, GameEvent.STEP, mob);
-                test.assertTrue(mob.getEffect(MobEffects.GLOWING) != null
-                        && mob.getEffect(MobEffects.GLOWING).getDuration() == 40+(JadeAugments.isJade(learned)?20:0), "Noisy mob received the wrong glowing duration");
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob) == 40+(JadeAugments.isJade(learned)?20:0), "Noisy mob received the wrong private outline duration");
+                test.assertTrue(EchoHearingHighlights.remainingTicks(otherPlayer,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Outline leaks to another viewer or shared effects");
                 noise(test, GameEvent.STEP, otherPlayer);
-                test.assertTrue(otherPlayer.hasEffect(MobEffects.GLOWING), "Noisy other player was excluded");
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,otherPlayer)>0 && !otherPlayer.hasEffect(MobEffects.GLOWING), "Noisy other player was excluded or publicly revealed");
                 noise(test, GameEvent.STEP, wielder);
-                test.assertFalse(wielder.hasEffect(MobEffects.GLOWING), "Listening player revealed themselves");
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,wielder)==0 && !wielder.hasEffect(MobEffects.GLOWING), "Listening player revealed themselves");
                 noise(test, GameEvent.ENTITY_ACTION, drop);
-                test.assertTrue(drop.isCurrentlyGlowing(), "Noisy nonliving entity was excluded");
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,drop)>0 && EchoHearingHighlights.remainingTicks(otherPlayer,drop)==0 && !drop.isCurrentlyGlowing(), "Noisy nonliving entity was excluded or publicly revealed");
                 String key = BuiltInRegistries.ITEM.getKey(item) + ":" + RecommendedAbilities.ECHO_HEARING;
                 test.assertFalse(wielder.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key), "Cooldown began while listening");
             } finally {
@@ -107,16 +147,15 @@ public class EchoHearingGameTests {
         wielder.setItemInHand(InteractionHand.MAIN_HAND, learned);
         AbilityTestPackets.use(wielder, 0);
         noise(test, GameEvent.STEP, mob);
-        test.assertFalse(mob.hasEffect(MobEffects.GLOWING), "Mob outside original radius was revealed");
+        test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0, "Mob outside original radius was revealed");
         wielder.setPos(wielder.getX() + 8, wielder.getY(), wielder.getZ());
         noise(test, GameEvent.STEP, mob);
-        test.assertTrue(mob.hasEffect(MobEffects.GLOWING), "Moving radius did not follow wielder");
-        mob.removeEffect(MobEffects.GLOWING);
+        test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)>0, "Moving radius did not follow wielder");
         wielder.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STICK));
         test.runAfterDelay(2, () -> {
             WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(wielder));
             noise(test, GameEvent.STEP, mob);
-            test.assertFalse(mob.hasEffect(MobEffects.GLOWING), "Switch left listener active");
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Switch left listener or private outlines active");
             String key = BuiltInRegistries.ITEM.getKey(learned.getItem()) + ":" + RecommendedAbilities.ECHO_HEARING;
             long ready = wielder.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key, 0L);
             test.assertTrue(ready > wielder.level().getGameTime() + 590, "Switch did not begin 30-second cooldown");
@@ -139,21 +178,19 @@ public class EchoHearingGameTests {
         wielder.setItemInHand(InteractionHand.MAIN_HAND, learned);
         AbilityTestPackets.use(wielder, 0);
         noise(test, GameEvent.STEP, mob);
-        test.assertTrue(mob.hasEffect(MobEffects.GLOWING), "First noise was not revealed");
+        test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)>0, "First noise was not revealed");
         var originalPosition = wielder.position();
         wielder.setPos(originalPosition.add(40, 0, 0));
         test.runAfterDelay(45, () -> {
-            test.assertFalse(mob.hasEffect(MobEffects.GLOWING), "Glow outlasted two seconds: ticks=" + mob.tickCount
-                    + ", remaining=" + (mob.getEffect(MobEffects.GLOWING) == null ? 0 : mob.getEffect(MobEffects.GLOWING).getDuration()));
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Private outline outlasted two seconds");
             wielder.setPos(originalPosition);
             noise(test, GameEvent.STEP, mob);
-            test.assertTrue(mob.hasEffect(MobEffects.GLOWING), "Later noise did not reveal mob again");
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)>0, "Later noise did not reveal mob again");
         });
         test.runAfterDelay(205, () -> {
             test.assertFalse(RecommendedAbilityRuntime.active(wielder, RecommendedAbilities.ECHO_HEARING), "Listening did not end");
-            mob.removeEffect(MobEffects.GLOWING);
             noise(test, GameEvent.STEP, mob);
-            test.assertFalse(mob.hasEffect(MobEffects.GLOWING), "Expired listener reacted to noise");
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Expired listener reacted to noise");
         });
         test.runAfterDelay(210, () -> {
             WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(wielder));

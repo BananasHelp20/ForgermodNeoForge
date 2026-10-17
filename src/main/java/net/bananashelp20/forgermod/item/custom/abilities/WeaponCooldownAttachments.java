@@ -25,5 +25,9 @@ public final class WeaponCooldownAttachments {
     public static final Supplier<AttachmentType<Boolean>> GHOSTWALK_HIDDEN = TYPES.register(
             "ghostwalk_hidden", () -> AttachmentType.builder(() -> false).build());
 
+    /** Per-viewer outlines, never stored in world/player saves or copied to other players. */
+    public static final Supplier<AttachmentType<Map<java.util.UUID, Long>>> ECHO_HIGHLIGHTS = TYPES.register(
+            "echo_highlights", () -> AttachmentType.builder(() -> Map.<java.util.UUID, Long>of()).build());
+
     private WeaponCooldownAttachments() {}
 }

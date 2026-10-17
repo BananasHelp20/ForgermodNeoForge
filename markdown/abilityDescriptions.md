@@ -244,11 +244,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Listen for nearby sounds and briefly reveal noisy entities with a glow.
+> Listen for nearby sounds and briefly outline noisy entities. Only you see these outlines.
 
 **Augmentation card:**
 
-> Reveal nearby noisy entities with a brief glow.
+> Listen for sounds; privately outline noisy entities.
 
 ### Ender Swing
 

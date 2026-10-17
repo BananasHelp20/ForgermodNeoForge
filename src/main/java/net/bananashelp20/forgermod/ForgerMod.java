@@ -51,6 +51,7 @@ public class ForgerMod {
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.VerticalMotionNetwork::register);
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.StaticBladeNetwork::register);
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.GhostwalkVisibility::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.EchoHearingHighlights::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.VoidPulseParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);

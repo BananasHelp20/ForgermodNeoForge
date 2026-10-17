@@ -236,3 +236,5 @@
 - Soul Hunger absorption now expires after 10 continuous seconds without the passive equipped. Reequipping before expiry cancels removal; later switches start a fresh grace period, and returning after expiry does not restore spent/expired hearts. Other absorption sources remain intact. Matching dual daggers also recognize Soul Hunger on the offhand dagger.
 
 - Ghostwalk and Jumpscare Horror now hide the player, all worn equipment and both held items, including first-person hands. Visibility is synchronized to the player, nearby observers and new trackers, and restored on attack, expiry, weapon switch, dispel, travel or logout. Ordinary invisibility retains vanilla equipment visibility.
+
+- Echo Hearing outlines are now private to the listener, including noisy mobs, players and nonliving entities. Removed shared Glowing effects/tags, preserved other sources of glowing, kept Jade reveal duration, and clear private outlines when listening ends or is canceled.
