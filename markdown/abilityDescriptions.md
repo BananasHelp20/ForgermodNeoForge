@@ -618,11 +618,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> A 30% chance to break a random armor piece on an enemy within melee range.
+> Your next fully charged critical hit has a 30% chance to break one random armor piece.
 
 **Augmentation card:**
 
-> Chance to break a nearby enemy's random armor piece.
+> Your next fully charged critical hit can break one armor piece.
 
 ### Stunning Presence
 

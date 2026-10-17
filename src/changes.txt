@@ -253,3 +253,5 @@
 
 - Skull Throw: launches much faster (3.5 blocks/tick, native ordinary-skull flight) and has a fixed 500-block maximum travel distance at every rank instead of a five-second timeout. Bursts into bone fragments and souls with a crack sound on block or entity impacts, including passive/allied entities; burst damage retains enemy-only targeting and terrain/caster safety. Temporary current/next chunk tickets allow the full range beyond the caster's loaded area and are released on impact, range expiry and cancellation.
 - Skull Throw: uses the normal dark skull appearance for native fast flight; portal travel is disabled so dimension cloning cannot restore vanilla terrain-damaging skull behavior.
+
+- Strong-arm now arms its armor-breaking attempt instead of breaking armor on activation. Only a successful, fully charged critical melee hit against an armored enemy can consume it and roll the existing 30/55/80/100% chance. Ordinary, partially charged, rejected and armorless hits keep it armed; use/failure or switching starts its independent cooldown.
