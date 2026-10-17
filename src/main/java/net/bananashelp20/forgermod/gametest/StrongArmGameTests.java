@@ -27,6 +27,8 @@ public class StrongArmGameTests {
     }
     private static ItemStack weapon(Item item,int rank) {return Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.STRONG_ARM,rank);}
     private static void equip(Zombie zombie) {
+        // Keep vanilla random death drops from changing the post-hit equipment count.
+        for(var slot:new EquipmentSlot[]{EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET})zombie.setDropChance(slot,0);
         zombie.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.DIAMOND_HELMET));zombie.setItemSlot(EquipmentSlot.CHEST,new ItemStack(Items.DIAMOND_CHESTPLATE));
         zombie.setItemSlot(EquipmentSlot.LEGS,new ItemStack(Items.DIAMOND_LEGGINGS));zombie.setItemSlot(EquipmentSlot.FEET,new ItemStack(Items.DIAMOND_BOOTS));
     }

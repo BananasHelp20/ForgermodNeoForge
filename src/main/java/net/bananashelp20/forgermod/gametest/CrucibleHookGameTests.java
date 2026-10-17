@@ -25,6 +25,37 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class CrucibleHookGameTests {
     @GameTest(template="riftfang_test")
+    public static void passiveTeamAlliesAndOwnedPetsReceiveTheWholeHookAndSmash(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setYRot(0);
+        for(int x=-2;x<=2;x++)for(int y=0;y<=4;y++)for(int z=0;z<=12;z++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var team=player.getScoreboard().addPlayerTeam("hook_"+player.getUUID().toString().substring(0,8));player.getScoreboard().addPlayerToTeam(player.getScoreboardName(),team);
+        var cow=EntityType.COW.create(test.getLevel());var wolf=EntityType.WOLF.create(test.getLevel());wolf.tame(player);
+        var stand=EntityType.ARMOR_STAND.create(test.getLevel());stand.setPos(player.position().add(0,0,4));stand.setNoGravity(true);test.getLevel().addFreshEntity(stand);
+        player.getScoreboard().addPlayerToTeam(cow.getScoreboardName(),team);
+        cow.setPos(player.position().add(8,0,0));wolf.setPos(player.position().add(8,0,2));test.getLevel().addFreshEntity(cow);test.getLevel().addFreshEntity(wolf);
+        try {
+            test.assertTrue(cow.isAlliedTo(player) && wolf.isAlliedTo(player),"Hook fixtures are not allies");
+            for(var entry:ModItems.ITEMS.getEntries()) {
+                if(!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.IgnisiumWeapon weapon) || !weapon.isAxe())continue;
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),RecommendedAbilities.CRUCIBLE_HOOK,4);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+                for(var mob:java.util.List.of(cow,wolf)) {
+                    mob.goalSelector.removeAllGoals(goal->true);mob.targetSelector.removeAllGoals(goal->true);mob.setNoGravity(true);
+                    mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.setHealth(200);mob.invulnerableTime=0;mob.setRemainingFireTicks(0);mob.setDeltaMovement(0,0,0);mob.setPos(player.position().add(0,0,10));
+                    double drop=player.getEyeY()-mob.getBoundingBox().getCenter().y;player.setXRot((float)Math.toDegrees(Math.atan2(drop,10)));
+                    var before=mob.position();int wear=stack.getDamageValue();
+                    test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CRUCIBLE_HOOK),"Cannot acquire passive/allied mob");
+                    test.assertTrue(CrucibleHookEvents.active(player) && mob.position().equals(before) && mob.getDeltaMovement().z<0 && mob.getHealth()==200,"Allied hook cancels, teleports or damages during pull");
+                    for(int tick=0;tick<30 && CrucibleHookEvents.active(player);tick++){mob.tick();CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));}
+                    test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(mob.getHealth()-(200-player.getAttributeValue(Attributes.ATTACK_DAMAGE)*2))<.001
+                        && mob.getRemainingFireTicks()==120 && stack.getDamageValue()==wear+1,"Allied mob does not receive normal smash damage, ignition and weapon wear");
+                    mob.setPos(player.position().add(8,0,0));
+                }
+            }
+            test.assertTrue(stand.getHealth()==stand.getMaxHealth() && stand.getDeltaMovement().lengthSqr()==0,"Nonmob armor stand is hooked or damaged");
+            test.succeed();
+        } finally {CrucibleHookEvents.cancel(player.getUUID());player.getScoreboard().removePlayerTeam(team);cow.discard();wolf.discard();stand.discard();player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template="riftfang_test")
     public static void allVariantsPullWithoutTeleportThenSmashForDoubleDamage(GameTestHelper test) {
         for(Item item:new Item[]{ModItems.MOLTEN_AXE.get(),ModItems.MOLTEN_AXE_RUBY.get(),ModItems.MOLTEN_AXE_AMBER.get(),
                 ModItems.MOLTEN_AXE_AMETHYST.get(),ModItems.MOLTEN_AXE_JADE.get()}) {

@@ -25,9 +25,23 @@ public final class CrucibleHookEvents {
     private record Hook(ItemStack stack,int selected,LivingEntity target,long expires,int rank) {}
     private static final Map<UUID,Hook> HOOKS=new HashMap<>();
     private CrucibleHookEvents() {}
+    private static boolean validTarget(ServerPlayer player,LivingEntity target) {
+        return target.isAlive() && !target.isRemoved()
+                && (target instanceof net.minecraft.world.entity.Mob || WeaponAbilityTargets.enemy(player,target));
+    }
+    private static LivingEntity aimedTarget(ServerPlayer player) {
+        var start=player.getEyePosition();var end=start.add(player.getLookAngle().scale(20));
+        var wall=player.level().clip(new net.minecraft.world.level.ClipContext(start,end,
+                net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,player));
+        if(wall.getType()!=net.minecraft.world.phys.HitResult.Type.MISS) end=wall.getLocation();
+        var hit=net.minecraft.world.entity.projectile.ProjectileUtil.getEntityHitResult(player,start,end,
+                player.getBoundingBox().expandTowards(end.subtract(start)).inflate(1),
+                entity->entity instanceof LivingEntity living && validTarget(player,living),start.distanceToSqr(end));
+        return hit==null?null:(LivingEntity)hit.getEntity();
+    }
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player)) return false;
-        var target=WeaponAbilityTargets.aimedEnemy(player,20);
+        var target=aimedTarget(player);
         int rank=Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK);
         if(target==null || rank<=0) return false;
         HOOKS.put(player.getUUID(),new Hook(stack,player.getInventory().selected,target,player.level().getGameTime()+40,rank));
@@ -40,7 +54,7 @@ public final class CrucibleHookEvents {
                 || hook.target().level()!=player.level() || player.level().getGameTime()>=hook.expires()
                 || player.distanceToSqr(hook.target())>24*24
                 || !Augmentations.ids(hook.stack(),true).contains(RecommendedAbilities.CRUCIBLE_HOOK)
-                || !player.hasLineOfSight(hook.target()) || !WeaponAbilityTargets.enemy(player,hook.target())) {
+                || !player.hasLineOfSight(hook.target()) || !validTarget(player,hook.target())) {
             cancel(player.getUUID()); return false;
         }
         return true;

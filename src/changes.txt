@@ -257,3 +257,5 @@
 - Strong-arm now arms its armor-breaking attempt instead of breaking armor on activation. Only a successful, fully charged critical melee hit against an armored enemy can consume it and roll the existing 30/55/80/100% chance. Ordinary, partially charged, rejected and armorless hits keep it armed; use/failure or switching starts its independent cooldown.
 
 - Daydreamer now grants Jump Boost II at level I (Jump Boost III with Jade). Gemstone switches update the granted strength correctly, while weaker/stronger independent Jump Boost potions remain preserved.
+
+- Crucible Hook now acquires and retains all living mobs, including passive, team-allied and owned/tamed mobs, throughout the pull and smash. Existing player PvP rules, wall checks, range, damage, ignition, weapon wear and cooldowns are unchanged.
