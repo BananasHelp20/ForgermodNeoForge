@@ -244,3 +244,5 @@
 - Alternating Current now accepts all living mobs, including passive, tamed and team-allied mobs, for both the initial hit and the chained target. Ongoing links also keep accepting allies. Player PvP checks, nearest-target selection, 20-block range, line of sight, timing and zero stun damage are unchanged.
 
 - Rooting Roots: stopped the repeating growth animation; four bent roots now rise into a closed binding loop around each target, hold steady, and retract once on expiry/cancel. Geometry updates only for actual vertical movement; targets remain horizontally anchored. Uses twelve simple, nonsaved display segments per binding with bounded replacement cleanup.
+
+- Downdraft Bell: continuously acquires airborne mobs (including passive/allied mobs) and elytra/creative flyers inside its moving radius; leaving releases the force immediately, and re-entry reapplies it. Can activate before flyers arrive. Preserves horizontal speed, flight mode, unlimited height, ten-second duration and existing cooldowns.

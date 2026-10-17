@@ -220,11 +220,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Force airborne mobs above you toward the ground for 10 seconds, with no height limit.
+> For 10 seconds, pull airborne mobs and elytra flyers above you down while inside your radius. Unlimited height.
 
 **Augmentation card:**
 
-> Pull airborne mobs above you down for 10 seconds.
+> For 10 seconds, pull nearby airborne mobs and elytra flyers down.
 
 ### Dream Feast
 
