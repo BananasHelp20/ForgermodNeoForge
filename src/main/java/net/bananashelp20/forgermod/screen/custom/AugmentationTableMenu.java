@@ -47,7 +47,7 @@ public final class AugmentationTableMenu extends AbstractContainerMenu {
         var pool=Augmentations.catalog(getSlot(phase()==AugmentationAnimation.COMPLETE?3:0).getItem());
         if(index<0 || index>=pool.size()) return null;
         var ability=pool.get(index);var stack=getSlot(phase()==AugmentationAnimation.COMPLETE?3:0).getItem();
-        return new Augmentations.Ability(ability.id(),ability.active(),Augmentations.abilityName(stack,ability.id(),offerRank(button)+1));
+        return new Augmentations.Ability(ability.id(),ability.active(),Augmentations.displayAbilityName(stack,ability.id(),offerRank(button)+1));
     }
     @Override public boolean clickMenuButton(Player player,int button) {
         return stillValid(player) && table.choose(button);

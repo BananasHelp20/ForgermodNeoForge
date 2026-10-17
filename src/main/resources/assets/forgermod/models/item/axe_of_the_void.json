@@ -6,8 +6,8 @@
   "flip_v": false,
   "emissive_ambient": false,
   "textures": {
-    "axe": "forgermod:item/axe_of_the_void",
-    "particle": "forgermod:item/axe_of_the_void"
+    "axe": "forgermod:item/metals/weapons/special/axe_of_the_void",
+    "particle": "forgermod:item/metals/weapons/special/axe_of_the_void"
   },
   "display": {
     "thirdperson_righthand": {

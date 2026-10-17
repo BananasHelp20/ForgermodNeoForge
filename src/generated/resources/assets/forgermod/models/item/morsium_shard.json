@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/morsium_shard"
+    "layer0": "forgermod:item/metals/shards/morsium_shard"
   }
 }

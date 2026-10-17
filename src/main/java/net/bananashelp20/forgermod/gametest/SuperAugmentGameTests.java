@@ -7,6 +7,52 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class SuperAugmentGameTests {
+    @GameTest(template="riftfang_test")
+    public static void superNamesAreGoldWithOnlyTwoObfuscatedCharacters(GameTestHelper test) throws Exception {
+        var exported=new java.util.LinkedHashSet<String>();
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries()) {
+            var stack=new ItemStack(entry.get());
+            if(!Augmentations.augmentable(stack))continue;
+            for(var ability:Augmentations.catalog(stack)) for(int rank=1;rank<=Augmentations.maxRank(stack,ability.id());rank++) {
+                var plain=Augmentations.abilityName(stack,ability.id(),rank);
+                var display=Augmentations.displayAbilityName(stack,ability.id(),rank);
+                boolean legendary=rank>=4 && Augmentations.hasSuperForm(stack,ability.id());
+                if(!legendary) {
+                    test.assertTrue(display.equals(plain),"Ordinary augment received legendary formatting");
+                    continue;
+                }
+                checked++;
+                test.assertTrue(display.getString().equals("k "+plain.getString()+" k"),"Super name is missing its flanking characters/spaces");
+                var wrapper=net.minecraft.network.chat.Component.empty()
+                        .append(display).append(net.minecraft.network.chat.Component.literal(" IV"))
+                        .withStyle(net.minecraft.ChatFormatting.GRAY);
+                int[] obfuscated={0};
+                wrapper.visit((style,text)->{
+                    if(text.isEmpty())return java.util.Optional.empty();
+                    if(text.equals(" IV")) {
+                        test.assertTrue(!style.isObfuscated() && style.getColor().getValue()==net.minecraft.ChatFormatting.GRAY.getColor(),"Formatting leaks into rank text");
+                    } else {
+                        test.assertTrue(style.getColor().getValue()==net.minecraft.ChatFormatting.GOLD.getColor(),"Parent gray overrides legendary gold");
+                        if(style.isObfuscated()) {
+                            obfuscated[0]+=text.length();
+                            test.assertTrue(text.equals("k"),"Name or spacing is obfuscated");
+                        }
+                    }
+                    return java.util.Optional.empty();
+                },net.minecraft.network.chat.Style.EMPTY);
+                test.assertTrue(obfuscated[0]==2,"Expected exactly two animated characters");
+                display.copy().withStyle(style->style.withColor(0x666666)).visit((style,text)->{
+                    test.assertTrue(style.getColor().getValue()==0x666666,"Rejected card retains bright gold");
+                    return java.util.Optional.empty();
+                },net.minecraft.network.chat.Style.EMPTY);
+                exported.add(net.minecraft.network.chat.Component.Serializer.toJson(display,test.getLevel().registryAccess()));
+            }
+        }
+        test.assertTrue(checked>100,"Skipped super forms, gemstone variants or templates");
+        java.nio.file.Files.writeString(java.nio.file.Path.of("../super-name-components.json"),"["+String.join(",",exported)+"]");
+        test.succeed();
+    }
     public static void progression(GameTestHelper test,ItemStack fresh,String id,String name) {
         ItemStack stack=fresh;
         for(int rank=1;rank<=7;rank++) {

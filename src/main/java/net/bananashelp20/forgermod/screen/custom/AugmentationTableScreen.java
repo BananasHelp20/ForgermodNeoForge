@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.screen.custom;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bananashelp20.forgermod.augmentation.AugmentationAnimation;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.AugmentUpgradeDescriptions;
 import net.bananashelp20.forgermod.item.custom.WeaponTooltips;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public final class AugmentationTableScreen extends AbstractContainerScreen<AugmentationTableMenu> {
@@ -78,6 +80,9 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
     private boolean overCard(int card,double x,double y) {
         return x>=CARD_X[card] && x<CARD_X[card]+CARD_WIDTH && y>=CARD_Y && y<CARD_Y+CARD_HEIGHT;
     }
+    private ItemStack offeredStack() {
+        return menu.getSlot(menu.phase()==AugmentationAnimation.COMPLETE?3:0).getItem();
+    }
     private void renderCard(GuiGraphics gui,int card) {
         var offer=menu.offer(card); if(offer==null) return;
         int x=CARD_X[card],y=CARD_Y;
@@ -91,9 +96,10 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.drawString(font,eyebrow,0,0,rejected?0xff666666:superUpgrade?0xffc58b12:0xff586672,false); gui.pose().popPose();
         // Fit and center the title in the template's upper white box, without a rank suffix.
         float scale=.5F;
-        List<FormattedCharSequence> titleLines=font.split(offer.name(),(int)(37/scale));
+        Component cardName=rejected?offer.name().copy().withStyle(style -> style.withColor(0x666666)):offer.name();
+        List<FormattedCharSequence> titleLines=font.split(cardName,(int)(37/scale));
         while(titleLines.size()*font.lineHeight*scale>7 && scale>.3F) {
-            scale=Math.max(.3F,scale-.025F); titleLines=font.split(offer.name(),(int)(37/scale));
+            scale=Math.max(.3F,scale-.025F); titleLines=font.split(cardName,(int)(37/scale));
         }
         int maxLines=Math.max(1,(int)(7/(font.lineHeight*scale)));
         if(titleLines.size()>maxLines) titleLines=titleLines.subList(0,maxLines);
@@ -109,10 +115,18 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.pose().pushPose(); gui.pose().translate(x+3,y+14,0); gui.pose().scale(.5F,.5F,1);
         Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
         gui.drawString(font,category,(74-font.width(category))/2,0,rejected?0xff666666:superUpgrade?0xffc58b12:offer.active()?0xff2962d9:0xff00a9bd,false);
-        Component description=Component.translatable(offer.id()+".card");
-        if(!net.minecraft.client.resources.language.I18n.exists(offer.id()+".card")) description=Component.translatable(offer.id());
-        var lines=font.split(description,74);
-        for(int row=0;row<Math.min(lines.size(),7);row++) gui.drawString(font,lines.get(row),0,14+row*font.lineHeight,0xff929292,false);
+        gui.pose().popPose();
+        Component description=AugmentUpgradeDescriptions.description(offeredStack(),offer.id(),menu.offerRank(card),true,!rejected);
+        // Changes get the available body area; preserve component colors through wrapping.
+        float bodyScale=.5F;
+        var lines=font.split(description,(int)(37/bodyScale));
+        while(lines.size()*font.lineHeight*bodyScale>36 && bodyScale>.35F) {
+            bodyScale=Math.max(.35F,bodyScale-.025F);
+            lines=font.split(description,(int)(37/bodyScale));
+        }
+        gui.pose().pushPose();gui.pose().translate(x+3,y+21,0);gui.pose().scale(bodyScale,bodyScale,1);
+        for(int row=0;row<Math.min(lines.size(),(int)(36/(font.lineHeight*bodyScale)));row++)
+            gui.drawString(font,lines.get(row),0,row*font.lineHeight,rejected?0xff666666:0xff929292,false);
         gui.pose().popPose();
         if(rejected) gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,0x55808080);
     }
@@ -130,12 +144,14 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
             for(int i=0;i<2;i++) {
                 var offer=menu.offer(i);
                 if(offer!=null && overCard(i,mouseX-leftPos,mouseY-topPos)) {
-                    Component name=offer.name();
+                    boolean rejected=menu.phase()==AugmentationAnimation.COMPLETE && menu.selected()!=i;
+                    Component name=rejected?offer.name().copy().withStyle(style -> style.withColor(0x666666)):offer.name();
                     var lines=new java.util.ArrayList<FormattedCharSequence>();
                     lines.add(name.getVisualOrderText());
-                    lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(Augmentations.displayRank(menu.getSlot(0).getItem(),offer.id(),menu.offerRank(i)+1)))
+                    lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(Augmentations.displayRank(offeredStack(),offer.id(),menu.offerRank(i)+1)))
                             .withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    lines.addAll(font.split(Component.translatable(offer.id()).withStyle(ChatFormatting.GRAY),180));
+                    lines.addAll(font.split(AugmentUpgradeDescriptions.description(offeredStack(),offer.id(),menu.offerRank(i),false,!rejected)
+                            .copy().withStyle(ChatFormatting.GRAY),180));
                     if(menu.phase()==AugmentationAnimation.COMPLETE) lines.add(Component.translatable(menu.selected()==i?
                             "augmentation.forgermod.card.selected":"augmentation.forgermod.card.rejected").withStyle(ChatFormatting.GRAY).getVisualOrderText());
                     gui.renderTooltip(font,lines,mouseX,mouseY);

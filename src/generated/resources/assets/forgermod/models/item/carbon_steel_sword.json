@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/carbon_steel_sword"
+    "layer0": "forgermod:item/metals/weapons/normal/carbon_steel_sword"
   }
 }

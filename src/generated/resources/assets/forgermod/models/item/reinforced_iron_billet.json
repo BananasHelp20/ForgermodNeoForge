@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/reinforced_iron_billet"
+    "layer0": "forgermod:item/metals/raw/reinforced_iron_billet"
   }
 }

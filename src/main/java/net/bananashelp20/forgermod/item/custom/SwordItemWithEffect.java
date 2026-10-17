@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
+import net.bananashelp20.forgermod.augmentation.AbilityDescriptions;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -107,10 +108,11 @@ public class SwordItemWithEffect extends SwordItem {
                             String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0)).withStyle(ChatFormatting.GRAY));
                 }
                 for (String id : passives) {
-                    tooltip.add(Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,Augmentations.level(stack,id)),
+                    tooltip.add(Component.translatable("augmentation.forgermod.rank", Augmentations.displayAbilityName(stack,id,Augmentations.level(stack,id)),
                             WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,Augmentations.level(stack, id)))).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
-                        tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
+                        tooltip.add(AbilityDescriptions.description(stack, id, Augmentations.level(stack,id), false).copy().withStyle(ChatFormatting.GRAY));
+                        AbilityDescriptions.appendSuperHint(tooltip, stack, id, Augmentations.level(stack,id));
                     }
                 }
             }
@@ -120,14 +122,15 @@ public class SwordItemWithEffect extends SwordItem {
                 for (WeaponAbilitySlot slot : WeaponAbilitySlot.values()) {
                     String id = Augmentations.activeId(stack, slot);
                     if (id == null) continue;
-                    Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,Augmentations.level(stack,id)),
+                    Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.displayAbilityName(stack,id,Augmentations.level(stack,id)),
                             WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,Augmentations.level(stack, id))));
                     tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip", name,
                             Component.keybind(slot.keyTranslation())).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
-                        tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
+                        tooltip.add(AbilityDescriptions.description(stack, id, Augmentations.level(stack,id), false).copy().withStyle(ChatFormatting.GRAY));
                         tooltip.add(Component.translatable("augmentation.forgermod.cooldown",
                                 String.format(java.util.Locale.ROOT, "%.2f", Augmentations.cooldown(stack, slot, Augmentations.canonical(stack)) / 20.0)).withStyle(ChatFormatting.GRAY));
+                        AbilityDescriptions.appendSuperHint(tooltip, stack, id, Augmentations.level(stack,id));
                     }
                 }
             }

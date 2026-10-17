@@ -10,6 +10,12 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 public class ModItemModelProvider extends ItemModelProvider {
+    // Search texture locations, not model locations: item ids and model parents stay unchanged.
+    private static final java.util.List<String> ITEM_TEXTURE_FOLDERS = java.util.List.of(
+            "gemstones/", "metals/ingots/", "metals/raw/", "metals/shards/", "metals/tools/",
+            "metals/weapons/normal/", "metals/weapons/special/", "metals/weapons/rusty/",
+            "other/weapon_parts/", "other/", "");
+
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, ForgerMod.MOD_ID, existingFileHelper);
     }
@@ -284,16 +290,46 @@ public class ModItemModelProvider extends ItemModelProvider {
                 ? ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/claymore_handheld")
                 : ResourceLocation.parse("item/handheld");
         return withExistingParent(item.getId().getPath(), parent)
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/" + item.getId().getPath()));
+                .texture("layer0", itemTexture(item.getId().getPath()));
     }
 
     private ItemModelBuilder daggerItem(DeferredItem<?> item, String texture) {
         return withExistingParent(item.getId().getPath(), ResourceLocation.parse("item/handheld"))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "item/" + texture));
+                .texture("layer0", itemTexture(texture));
     }
+
+    @Override
+    public ItemModelBuilder basicItem(ResourceLocation item) {
+        return withExistingParent(item.getPath(), ResourceLocation.parse("item/generated"))
+                .texture("layer0", itemTexture(item.getPath()));
+    }
+
+    private ResourceLocation itemTexture(String name) {
+        ResourceLocation found = null;
+        for (String folder : ITEM_TEXTURE_FOLDERS) {
+            ResourceLocation candidate = modLoc("item/" + folder + name);
+            if (!existingFileHelper.exists(candidate, TEXTURE)) continue;
+            if (found != null) throw new IllegalStateException("Ambiguous item texture " + name
+                    + ": " + found + " and " + candidate);
+            found = candidate;
+        }
+        if (found == null) {
+            String type = name.substring(name.lastIndexOf('_') + 1);
+            String placeholder = switch (type) {
+                case "pickaxe", "axe", "hoe", "shovel", "sword" -> "iron_" + type;
+                default -> "barrier";
+            };
+            ResourceLocation fallback = mcLoc("item/" + placeholder);
+            ForgerMod.LOGGER.warn("Missing custom item texture {}; using {} until artwork is added. "
+                    + "Rerun data generation after adding its PNG under textures/item.", name, fallback);
+            return fallback;
+        }
+        return found;
+    }
+
     private ItemModelBuilder simpleBlockItem(DeferredItem<?> item) {
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.parse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"item/" + item.getId().getPath()));
+                itemTexture(item.getId().getPath()));
     }
 }

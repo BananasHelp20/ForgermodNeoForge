@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/vulnusium_shard"
+    "layer0": "forgermod:item/metals/shards/vulnusium_shard"
   }
 }

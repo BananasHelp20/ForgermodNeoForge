@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/ruby_gemstone"
+    "layer0": "forgermod:item/gemstones/ruby_gemstone"
   }
 }

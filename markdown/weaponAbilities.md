@@ -114,11 +114,15 @@ Available ability names from the actual registered augmentation pools; gemstone 
 | Rusty Dagger | Dagger | Dual Wield |
 | Carbon Steel Knife | Knife | None |
 | Damask Knife | Knife | None |
+| Carbon Steel Sword | Sword | None |
 | Damask Sword | Sword | None |
+| Meteoric Iron Sword | Sword | None |
 | Reinforced Iron Sword | Sword | None |
 | Scrap Iron Sword | Sword | None |
 | Scrapy Sword | Sword | None |
 | Steel Sword | Sword | None |
+| Titanium Sword | Sword | None |
+| Tungsten Sword | Sword | None |
 
 ## Pulsite
 

@@ -157,6 +157,17 @@ public final class Augmentations {
         if(rank>=4 && hasSuperForm(stack,id)) return Component.translatable(superName(stack,id));
         return catalog(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
     }
+    /** Presentation only: keep the underlying translated name available for identity/export. */
+    public static Component displayAbilityName(ItemStack stack, String id, int rank) {
+        Component name = abilityName(stack, id, rank);
+        if (rank < 4 || !hasSuperForm(stack, id)) return name;
+        return Component.empty().withStyle(net.minecraft.ChatFormatting.GOLD)
+                .append(Component.literal("k").withStyle(style -> style.withObfuscated(true)))
+                .append(Component.literal(" ").withStyle(style -> style.withObfuscated(false)))
+                .append(name.copy().withStyle(style -> style.withObfuscated(false)))
+                .append(Component.literal(" ").withStyle(style -> style.withObfuscated(false)))
+                .append(Component.literal("k").withStyle(style -> style.withObfuscated(true)));
+    }
     public static int count(ItemStack stack) { return Math.max(0, data(stack).getInt("count")); }
     public static int duration(ItemStack stack) { return (int)Math.min(Integer.MAX_VALUE, 100L + count(stack) * 20L); }
     public static List<Ability> available(ItemStack stack) {

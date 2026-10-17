@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/raw_meteoric_iron"
+    "layer0": "forgermod:item/metals/raw/raw_meteoric_iron"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/advanced_handle"
+    "layer0": "forgermod:item/other/weapon_parts/advanced_handle"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "forgermod:item/claymore_handheld",
   "textures": {
-    "layer0": "forgermod:item/infernal_claymore_amethyst"
+    "layer0": "forgermod:item/metals/weapons/special/infernal_claymore_amethyst"
   }
 }

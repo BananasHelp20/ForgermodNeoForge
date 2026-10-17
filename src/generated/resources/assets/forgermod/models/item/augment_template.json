@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/augment_template"
+    "layer0": "forgermod:item/other/augment_template"
   }
 }

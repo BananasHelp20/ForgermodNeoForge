@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/amethyst_gemstone"
+    "layer0": "forgermod:item/gemstones/amethyst_gemstone"
   }
 }

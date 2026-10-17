@@ -58,12 +58,12 @@ public final class AugmentAnvilClient {
         graphics.fill(x - 4, y - 5, x + 153, y + 34, 0xCC21152D);
         graphics.drawString(Minecraft.getInstance().font,
                 Component.translatable("screen.forgermod.augment_replace",
-                        Augmentations.abilityName(left, prompt.incoming(), Augmentations.level(right, prompt.incoming()))),
+                        Augmentations.displayAbilityName(left, prompt.incoming(), Augmentations.level(right, prompt.incoming()))),
                 x, y, 0xE7C5FF);
         String chosen = choices.get(prompt.incoming());
         Component selected = chosen == null
                 ? Component.translatable("screen.forgermod.augment_choose")
-                : Augmentations.abilityName(left, chosen, Augmentations.level(left, chosen));
+                : Augmentations.displayAbilityName(left, chosen, Augmentations.level(left, chosen));
         graphics.drawString(Minecraft.getInstance().font,
                 Component.translatable("screen.forgermod.augment_arrows", selected), x, y + 16, 0xFFFFFF);
     }

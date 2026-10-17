@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/assassin_dagger_amber"
+    "layer0": "forgermod:item/metals/weapons/special/assassin_dagger_amber"
   }
 }
