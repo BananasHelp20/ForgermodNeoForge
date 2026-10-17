@@ -420,3 +420,10 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Lush Jungle already sent vanilla level event 1505 after successful growth, but its data/count was zero; Minecraft 1.21.1 passes that value directly into growth-particle spawning. Changed the event data to the normal 15, retaining vanilla particle positioning, bonemeal sound and success-only emission.
 - Extended the fifteen-weapon-variant kill regression with a real recording player connection. Checks a single 1505 packet with count 15 at the fertilized crop, and no packets for fresh gear, neutral kills, stone or mature crops. Existing cross-dimension safety remains covered.
 - Validation: first full build/all 311 required GameTests passed (build/lush-particles-tests.log); reviewed repeat also passed all 311 tests (build/lush-particles-reviewed.log), followed by another code review. Selectively commit/push per AGENTS.md; preserve unrelated pending item-name/mixin work. Before snapshots: build/lush-particles-before. No manual client visual playtest performed.
+
+
+## Template texture and Gemstone Template name
+
+- User clarified Super Augment Template change concerns the texture. Used imagegen for the gold palette reference, then applied the palette to the original pixel art with System.Drawing so the generated image's changed layout/resolution cannot alter the actual animation. Replaced all nine purple shades with dark brown/amber/gold/yellow/ivory shades. Verified all 1155 opaque pixels are in the gold hue range, the full 16x112 strip remains seven 16x16 frames, every alpha value is unchanged and the .mcmeta hash/timings are identical. Visually inspected the final strip. Template text colors were not changed by this request.
+- Renamed the English item label Gemstone Infusion Template to Gemstone Template, preserving gemstone_upgrade_template ID and all recipes/data.
+- Gradle processResources passed (build/template-presentation-tests.log). Selectively commit/push; preserve unrelated pending weapon-name/mixin work. Before snapshots: build/template-presentation-before.
