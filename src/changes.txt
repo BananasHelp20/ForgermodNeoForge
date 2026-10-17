@@ -238,3 +238,5 @@
 - Ghostwalk and Jumpscare Horror now hide the player, all worn equipment and both held items, including first-person hands. Visibility is synchronized to the player, nearby observers and new trackers, and restored on attack, expiry, weapon switch, dispel, travel or logout. Ordinary invisibility retains vanilla equipment visibility.
 
 - Echo Hearing outlines are now private to the listener, including noisy mobs, players and nonliving entities. Removed shared Glowing effects/tags, preserved other sources of glowing, kept Jade reveal duration, and clear private outlines when listening ends or is canceled.
+
+- Stunning Presence now has a four-times-denser, full-bright cyan 10-block boundary and three-times-denser blue-white pulse ripples. Longer-lived motes overlap for continuous coverage and follow the moving caster; the ripple expands smoothly to the boundary. A compact pattern packet generates each ring locally, with a bounded live-particle budget. Damage, stun, range and cooldown are unchanged.

@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.ElectriumWeapon;
 import net.bananashelp20.forgermod.item.custom.abilities.*;
+import net.bananashelp20.forgermod.particle.StunningPresenceParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.InteractionHand;
@@ -39,14 +40,36 @@ public class StunningPresenceGameTests {
                 stack=Augmentations.apply(stack,AdditionalAbilities.STUNNING_PRESENCE);
                 player.setItemInHand(InteractionHand.MAIN_HAND,stack);connection.particles.clear();
                 test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.STUNNING_PRESENCE),"Particle aura activation rejected");
-                int boundary=0,inner=0;
+                int boundary=0,inner=0,patterns=0;
                 for(var packet:connection.particles) {
-                    if(packet.getParticle().getType()!=net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK) continue;
-                    double radius=Math.hypot(packet.getX()-player.getX(),packet.getZ()-player.getZ());
-                    if(Math.abs(radius-10)<.001) boundary++;
-                    else if(Math.abs(radius-1)<.001) inner++;
+                    if(!(packet.getParticle() instanceof StunningPresenceParticles.Options options))continue;
+                    patterns++;
+                    test.assertTrue(options.owner()==player.getId() && options.rank()==rank && packet.getCount()==0,"Pattern loses owner/rank or uses random particle offsets");
+                    if(options.boundary()) {
+                        boundary=StunningPresenceParticles.points(options);
+                        for(int i=0;i<boundary;i++) {
+                            var point=StunningPresenceParticles.position(player.position(),options,i,0);
+                            test.assertTrue(Math.abs(Math.hypot(point.x-player.getX(),point.z-player.getZ())-10)<.001,"Boundary misrepresents the actual ten-block area");
+                            var next=StunningPresenceParticles.position(player.position(),options,(i+1)%boundary,0);
+                            test.assertTrue(point.distanceTo(next)<.41,"Boundary has large gaps");
+                        }
+                    } else {
+                        inner=StunningPresenceParticles.points(options);
+                        test.assertTrue(StunningPresenceParticles.radiusAtAge(options,0)==1
+                                && StunningPresenceParticles.radiusAtAge(options,5)==6
+                                && StunningPresenceParticles.radiusAtAge(options,20)==10,"Pulse is not smooth or exceeds the affected area");
+                    }
+                    var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
+                    try {
+                        net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket.STREAM_CODEC.encode(buffer,packet);
+                        var copy=net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket.STREAM_CODEC.decode(buffer);
+                        test.assertTrue(copy.getParticle().equals(options),"Particle packet loses ring geometry");
+                    } finally {buffer.release();}
                 }
-                test.assertTrue(boundary==32+8*rank && inner==16+4*rank,"Missing ten-block electrical boundary/pulse ripple or wrong rank density");
+                test.assertTrue(boundary==160+32*(rank-1) && inner==60+12*(rank-1) && patterns==2,"Dense boundary/ripple missing or too many ring packets");
+                test.assertTrue(StunningPresenceParticles.LIFETIME>StunningPresenceParticles.VISUAL_INTERVAL
+                        && StunningPresenceParticles.LIFETIME<2*StunningPresenceParticles.VISUAL_INTERVAL
+                        && 2*(boundary+inner)<=704,"Visuals flicker between updates or exceed the live-particle budget");
                 StunningPresenceEvents.cancel(player.getUUID());connection.particles.clear();
                 StunningPresenceEvents.tick(new PlayerTickEvent.Post(player));
                 test.assertTrue(connection.particles.isEmpty(),"Canceled aura still emits particles");
