@@ -49,6 +49,7 @@ public final class CrucibleHookEvents {
         var destination=player.position().add(forward.scale(2));
         HOOKS.put(player.getUUID(),new Hook(stack,player.getInventory().selected,target,player.level().getGameTime()+40,rank,
                 player.serverLevel(),destination));
+        CrucibleHookRope.begin(player,target,player.level().getGameTime()+40);
         advance(player); return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -63,7 +64,7 @@ public final class CrucibleHookEvents {
         }
         return true;
     }
-    public static void cancel(UUID owner) { HOOKS.remove(owner); }
+    public static void cancel(UUID owner) { HOOKS.remove(owner);CrucibleHookRope.end(owner); }
     private static void advance(ServerPlayer player) {
         if(!active(player)) return;
         Hook hook=HOOKS.get(player.getUUID()); var target=hook.target();

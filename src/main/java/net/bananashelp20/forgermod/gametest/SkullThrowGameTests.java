@@ -63,9 +63,16 @@ public class SkullThrowGameTests {
         player.setXRot(0);player.setYRot(-90);
         var stack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         SkullThrowEvents.activate(player,stack);var skull=skull(player);var launch=skull.position();
-        test.runAfterDelay(101,()->test.assertTrue(SkullThrowEvents.active(player) && skull.position().distanceTo(launch)>200,"Flight still has a five-second expiry or fails to advance outside player chunks"));
+        // Chunk activation can delay real entity ticks relative to the GameTest clock.
+        boolean[] checkedFlight={false};
+        test.onEachTick(()->{
+            if(!checkedFlight[0] && skull.tickCount>=101) {
+                test.assertTrue(SkullThrowEvents.active(player) && skull.position().distanceTo(launch)>200,"Flight still has a five-second expiry or fails to advance outside player chunks");
+                checkedFlight[0]=true;
+            }
+        });
         test.runAfterDelay(400,()->{
-            try {test.assertTrue(!skull.isAlive() && !SkullThrowEvents.active(player) && Math.abs(skull.position().distanceTo(launch)-500)<.001 && ticketCount(skull)==0,"Natural flight does not reach its fixed range and clean up: alive="+skull.isAlive()+" distance="+skull.position().distanceTo(launch)+" tickets="+ticketCount(skull)+" removed="+skull.getRemovalReason());test.succeed();}
+            try {test.assertTrue(checkedFlight[0] && !skull.isAlive() && !SkullThrowEvents.active(player) && Math.abs(skull.position().distanceTo(launch)-500)<.001 && ticketCount(skull)==0,"Natural flight does not reach its fixed range and clean up: alive="+skull.isAlive()+" distance="+skull.position().distanceTo(launch)+" tickets="+ticketCount(skull)+" removed="+skull.getRemovalReason());test.succeed();}
             catch(Exception exception){throw new RuntimeException(exception);}
             finally {SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
         });

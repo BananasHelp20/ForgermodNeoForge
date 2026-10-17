@@ -29,5 +29,8 @@ public final class WeaponCooldownAttachments {
     public static final Supplier<AttachmentType<Map<java.util.UUID, Long>>> ECHO_HIGHLIGHTS = TYPES.register(
             "echo_highlights", () -> AttachmentType.builder(() -> Map.<java.util.UUID, Long>of()).build());
 
+    public static final Supplier<AttachmentType<CrucibleHookRope.Link>> CRUCIBLE_HOOK_ROPE = TYPES.register(
+            "crucible_hook_rope", () -> AttachmentType.builder(() -> CrucibleHookRope.NONE).build());
+
     private WeaponCooldownAttachments() {}
 }
