@@ -269,3 +269,5 @@
 - Lullaby now targets all living entities, including passive/flying mobs, tamed pets, team allies and friendly players regardless of PvP settings. Nonplayer living targets sleep until damaged or the effect ends; players retain the existing Slowness substitute. Self, spectators, removed/dead targets and targets behind solid walls are excluded.
 
 - Chain Lightning now jumps between all living targets, including passive mobs, pets, allies and friendly players. It excludes the caster, dead/removed entities and spectators; half-weapon damage, charge interaction, 50% per-hop chance, ten-block per-hop range, ten-hop cap and no repeated targets are preserved.
+
+- Lush Jungle now requests the normal 15 bonemeal growth particles on successful fertilization instead of sending a zero-particle event; vanilla bonemeal sound and success-only behavior are preserved.
