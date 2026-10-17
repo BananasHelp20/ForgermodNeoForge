@@ -438,11 +438,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Put a targeted mob to sleep for 3 seconds, until damaged. Players receive Slowness II instead.
+> Put a targeted entity to sleep for 3 seconds, until damaged. Players receive Slowness II instead.
 
 **Augmentation card:**
 
-> Put a mob to sleep until hit. Slows players instead.
+> Put any mob to sleep until hit. Slows players instead.
 
 ### Magma Toss
 

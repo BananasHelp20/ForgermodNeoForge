@@ -265,3 +265,5 @@
 - Crucible Hook now renders a shaded, slightly sagging rope from the player's hand to the marked target. It follows interpolated endpoints, is synchronized to the caster and nearby/late-tracking players, and clears on smash, cancellation, expiry, target removal, dimension change or logout. Uses native leash rendering geometry without extra entities or changing real leash ownership.
 
 - Super augment tooltip labels are entirely legendary-yellow, including rank, colon and configured keybinding, with only the leading/trailing characters obfuscated. The closing character follows the full label (including passive ranks).
+
+- Lullaby now targets all living entities, including passive/flying mobs, tamed pets, team allies and friendly players regardless of PvP settings. Nonplayer living targets sleep until damaged or the effect ends; players retain the existing Slowness substitute. Self, spectators, removed/dead targets and targets behind solid walls are excluded.
