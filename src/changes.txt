@@ -259,3 +259,5 @@
 - Daydreamer now grants Jump Boost II at level I (Jump Boost III with Jade). Gemstone switches update the granted strength correctly, while weaker/stronger independent Jump Boost potions remain preserved.
 
 - Crucible Hook now acquires and retains all living mobs, including passive, team-allied and owned/tamed mobs, throughout the pull and smash. Existing player PvP rules, wall checks, range, damage, ignition, weapon wear and cooldowns are unchanged.
+
+- Crucible Hook now captures a fixed point two blocks in front of the player when cast, pulls the target there with capped velocity, and only smashes after arrival (within a quarter block) and actual melee reach. Turning/moving no longer drags the destination; arrival stops incoming pull velocity. All-mob eligibility, range, damage, ignition, timeout and cooldowns remain unchanged.

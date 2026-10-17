@@ -146,11 +146,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Pull any mob within 20 blocks close, then smash and ignite it.
+> Pull any mob within 20 blocks to a point 2 blocks in front of you, then smash and ignite it.
 
 **Augmentation card:**
 
-> Pull any mob close, then smash and ignite it.
+> Pull a mob 2 blocks in front of you, then smash and ignite it.
 
 ### Death Stare
 

@@ -25,6 +25,28 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class CrucibleHookGameTests {
     @GameTest(template="riftfang_test")
+    public static void smashWaitsForFixedTwoBlockPointAndActualMeleeReach(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setYRot(0);player.setXRot(0);
+        var start=player.position();var destination=start.add(0,0,2);
+        for(int x=-3;x<=10;x++)for(int y=0;y<=4;y++)for(int z=-3;z<=12;z++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var stack=Augmentations.apply(new ItemStack(ModItems.MOLTEN_AXE.get()),RecommendedAbilities.CRUCIBLE_HOOK);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+        var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.setHealth(200);mob.setPos(start.add(0,0,2.8));test.getLevel().addFreshEntity(mob);
+        try {
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CRUCIBLE_HOOK),"Cannot start close-range hook");
+            test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && mob.getRemainingFireTicks()<=0 && stack.getDamageValue()==0,"Entering ordinary melee reach smashes before arriving");
+            player.setYRot(90);player.setXRot(-85);player.setPos(start.add(.75,0,0));mob.setPos(start.add(0,0,2.6));
+            CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && Math.abs(mob.getDeltaMovement().x)<.0001 && mob.getDeltaMovement().z<0,"Turning/moving shifts the captured point or smashes early");
+            player.setPos(start.add(8,0,0));mob.setPos(destination);mob.setDeltaMovement(1,1,1);CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && mob.getDeltaMovement().lengthSqr()==0,"Arrival smashes outside actual reach or retains incoming pull velocity");
+            player.setPos(start.add(.75,0,0));CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            float expected=200-(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*1.25F;
+            test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(mob.getHealth()-expected)<.001 && mob.getRemainingFireTicks()==60 && stack.getDamageValue()==1,"Arrived target does not receive exactly one smash");
+            CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));test.assertTrue(Math.abs(mob.getHealth()-expected)<.001 && stack.getDamageValue()==1,"Arrival repeats the smash");
+            test.succeed();
+        } finally {CrucibleHookEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template="riftfang_test")
     public static void passiveTeamAlliesAndOwnedPetsReceiveTheWholeHookAndSmash(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setYRot(0);
         for(int x=-2;x<=2;x++)for(int y=0;y<=4;y++)for(int z=0;z<=12;z++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
@@ -46,6 +68,7 @@ public class CrucibleHookGameTests {
                     test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CRUCIBLE_HOOK),"Cannot acquire passive/allied mob");
                     test.assertTrue(CrucibleHookEvents.active(player) && mob.position().equals(before) && mob.getDeltaMovement().z<0 && mob.getHealth()==200,"Allied hook cancels, teleports or damages during pull");
                     for(int tick=0;tick<30 && CrucibleHookEvents.active(player);tick++){mob.tick();CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));}
+                    test.assertTrue(mob.position().distanceTo(player.position().add(0,0,2))<=.251,"Allied smash occurs before reaching the two-block destination");
                     test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(mob.getHealth()-(200-player.getAttributeValue(Attributes.ATTACK_DAMAGE)*2))<.001
                         && mob.getRemainingFireTicks()==120 && stack.getDamageValue()==wear+1,"Allied mob does not receive normal smash damage, ignition and weapon wear");
                     mob.setPos(player.position().add(8,0,0));
@@ -77,6 +100,7 @@ public class CrucibleHookGameTests {
                 zombie.tick(); CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
             }
             test.assertFalse(CrucibleHookEvents.active(player),"Hook never reaches/strikes pulled target");
+            test.assertTrue(zombie.position().distanceTo(player.position().add(0,0,2))<=.251,"Hostile smash occurs before reaching the fixed two-block destination");
             test.assertTrue(Math.abs(zombie.getHealth()-(200-damage))<.001,"Rank IV smash does not deal double weapon damage: health="
                     +zombie.getHealth()+" expected="+(200-damage)+" armor="+zombie.getArmorValue());
             test.assertTrue(zombie.getRemainingFireTicks()==120 && stack.getDamageValue()==1,"Smash does not ignite target or wear weapon");

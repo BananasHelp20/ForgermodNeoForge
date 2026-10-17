@@ -22,7 +22,8 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class CrucibleHookEvents {
-    private record Hook(ItemStack stack,int selected,LivingEntity target,long expires,int rank) {}
+    private record Hook(ItemStack stack,int selected,LivingEntity target,long expires,int rank,
+                        net.minecraft.server.level.ServerLevel level,net.minecraft.world.phys.Vec3 destination) {}
     private static final Map<UUID,Hook> HOOKS=new HashMap<>();
     private CrucibleHookEvents() {}
     private static boolean validTarget(ServerPlayer player,LivingEntity target) {
@@ -44,14 +45,17 @@ public final class CrucibleHookEvents {
         var target=aimedTarget(player);
         int rank=Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK);
         if(target==null || rank<=0) return false;
-        HOOKS.put(player.getUUID(),new Hook(stack,player.getInventory().selected,target,player.level().getGameTime()+40,rank));
+        var forward=net.minecraft.world.phys.Vec3.directionFromRotation(0,player.getYRot());
+        var destination=player.position().add(forward.scale(2));
+        HOOKS.put(player.getUUID(),new Hook(stack,player.getInventory().selected,target,player.level().getGameTime()+40,rank,
+                player.serverLevel(),destination));
         advance(player); return true;
     }
     public static boolean active(ServerPlayer player) {
         Hook hook=HOOKS.get(player.getUUID()); if(hook==null) return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=hook.stack()
                 || player.getInventory().selected!=hook.selected() || !hook.target().isAlive()
-                || hook.target().level()!=player.level() || player.level().getGameTime()>=hook.expires()
+                || player.serverLevel()!=hook.level() || hook.target().level()!=player.level() || player.level().getGameTime()>=hook.expires()
                 || player.distanceToSqr(hook.target())>24*24
                 || !Augmentations.ids(hook.stack(),true).contains(RecommendedAbilities.CRUCIBLE_HOOK)
                 || !player.hasLineOfSight(hook.target()) || !validTarget(player,hook.target())) {
@@ -63,7 +67,11 @@ public final class CrucibleHookEvents {
     private static void advance(ServerPlayer player) {
         if(!active(player)) return;
         Hook hook=HOOKS.get(player.getUUID()); var target=hook.target();
-        if(player.distanceToSqr(target)<=player.entityInteractionRange()*player.entityInteractionRange()) {
+        var direction=hook.destination().subtract(target.position());
+        if(direction.lengthSqr()<=.25*.25) {
+            target.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);target.hasImpulse=true;
+            if(target instanceof ServerPlayer other) other.connection.send(new ClientboundSetEntityMotionPacket(other));
+            if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return;
             cancel(player.getUUID()); player.swing(InteractionHand.MAIN_HAND);
             int immunity=target.invulnerableTime; target.invulnerableTime=0;
             float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*(1+.25F*hook.rank());
@@ -75,8 +83,6 @@ public final class CrucibleHookEvents {
             player.serverLevel().playSound(null,target.blockPosition(),SoundEvents.IRON_GOLEM_ATTACK,SoundSource.PLAYERS,1,.7F);
             return;
         }
-        var destination=player.position().add(player.getLookAngle().multiply(1,0,1).scale(1.5));
-        var direction=destination.subtract(target.position());
         target.setDeltaMovement(direction.normalize().scale(Math.min(direction.length(),.7+.1*hook.rank())));
         target.hasImpulse=true;
         if(target instanceof ServerPlayer other) other.connection.send(new ClientboundSetEntityMotionPacket(other));
