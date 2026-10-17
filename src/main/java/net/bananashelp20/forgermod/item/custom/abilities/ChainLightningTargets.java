@@ -8,7 +8,7 @@ import net.minecraft.util.RandomSource;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 
-/** Chooses the nearest unvisited hostile for each possible ten-block chain jump. */
+/** Chooses the nearest unvisited eligible target for each possible ten-block chain jump. */
 public final class ChainLightningTargets {
     private ChainLightningTargets() {}
 

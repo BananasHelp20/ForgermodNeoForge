@@ -95,7 +95,7 @@
   "tooltips.forgermod.ability.charge_attack": "Each hit adds 5% damage, up to +100%. Hit 21 releases a lightning strike for 20 extra damage.",
   "message.forgermod.charge_attack.armed": "Charge Attack armed for 21 mob hits",
   "tooltips.forgermod.passive.tooltip": "%1$s",
-  "tooltips.forgermod.passive.chain_lightning": "Hits can chain lightning between nearby hostile mobs for half weapon damage. Each jump has a 50% chance, up to 10 jumps.",
+  "tooltips.forgermod.passive.chain_lightning": "Hits can chain lightning between nearby living entities for half weapon damage. Each jump has a 50% chance, up to 10 jumps.",
   "tooltips.forgermod.ability.eye_of_the_storm": "Whirl entities within 10 blocks for 5 seconds, levitating living targets.",
   "message.forgermod.eye_of_the_storm.active": "Eye of the Storm active for 5 seconds",
   "tooltips.forgermod.ability.windy_dash": "Dash in the direction you look.",

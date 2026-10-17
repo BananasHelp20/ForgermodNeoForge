@@ -98,8 +98,8 @@ public class ElectriumWeapon extends SwordItemWithEffect {
         for (int chain = 0; chain < 10; chain++) {
             if (!ChainLightningTargets.shouldContinue(player.getRandom())) break;
             LivingEntity mob = ChainLightningTargets.next(
-                    player.serverLevel().getEntitiesOfClass(Mob.class, previous.getBoundingBox().inflate(10)),
-                    candidate -> candidate instanceof Enemy && candidate.isAlive(),
+                    player.serverLevel().getEntitiesOfClass(LivingEntity.class, previous.getBoundingBox().inflate(10)),
+                    candidate -> candidate != player && candidate.isAlive() && !candidate.isRemoved() && !candidate.isSpectator(),
                     previous::distanceToSqr, visited, LivingEntity::getUUID);
             if (mob == null) break;
             visited.add(mob.getUUID());

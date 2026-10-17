@@ -754,7 +754,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Hits can chain lightning between nearby hostile mobs for half weapon damage. Each jump has a 50% chance, up to 10 jumps.
+> Hits can chain lightning between nearby living entities for half weapon damage. Each jump has a 50% chance, up to 10 jumps.
 
 **Augmentation card:**
 
