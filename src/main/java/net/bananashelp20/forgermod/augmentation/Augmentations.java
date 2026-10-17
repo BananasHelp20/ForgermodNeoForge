@@ -170,11 +170,21 @@ public final class Augmentations {
     }
     public static int count(ItemStack stack) { return Math.max(0, data(stack).getInt("count")); }
     public static int duration(ItemStack stack) { return (int)Math.min(Integer.MAX_VALUE, 100L + count(stack) * 20L); }
+    public static boolean requiresVerticalStrike(String id) {
+        return RecommendedAbilities.FLAMING_STOMP.equals(id)
+                || RecommendedAbilities.NULL_RECEIPT.equals(id)
+                || RecommendedAbilities.ECHO_SALVAGE.equals(id);
+    }
+    private static boolean prerequisitesMet(ItemStack stack, String id, Map<String,Integer> learned) {
+        // Templates store augments independently; the receiving weapon must know the technique.
+        return isTemplate(stack) || !requiresVerticalStrike(id) || learned.getOrDefault(VERTICAL_STRIKE,0)>0;
+    }
     public static List<Ability> available(ItemStack stack) {
         var result = new ArrayList<Ability>();
         var learned = learned(stack);
         int activeCount = ids(stack,true).size(), passiveCount = ids(stack,false).size();
         for (var ability : catalog(stack)) {
+            if (!prerequisitesMet(stack, ability.id(), learned)) continue;
             int level = learned.getOrDefault(ability.id(),0);
             int count = ability.active()?activeCount:passiveCount;
             if (level > 0 && level < maxRank(stack, ability.id())
@@ -211,6 +221,7 @@ public final class Augmentations {
         Ability ability = catalog(stack).stream().filter(candidate -> candidate.id().equals(id)).findFirst().orElse(null);
         if (ability == null) return ItemStack.EMPTY;
         var learned = new LinkedHashMap<>(learned(stack));
+        if (!prerequisitesMet(stack, id, learned)) return ItemStack.EMPTY;
         if (!learned.containsKey(id) && !id.equals(MATERIAL_HIT)
                 && ids(stack, ability.active()).size() >= limit(stack, ability.active())) return ItemStack.EMPTY;
         learned.put(id, rank);
@@ -276,18 +287,23 @@ public final class Augmentations {
         if (!(eligible(left) || isTemplate(left) && left.is(right.getItem())) || !augmentable(right)) return null;
         Map<String, Ability> compatible = new LinkedHashMap<>();
         for (Ability ability : catalog(left)) compatible.put(ability.id(), ability);
+        boolean incomingNeedsVerticalStrike = learned(right).keySet().stream()
+                .anyMatch(id -> compatible.containsKey(id) && requiresVerticalStrike(id));
         LinkedHashMap<String, Integer> merged = new LinkedHashMap<>(learned(left));
         Replacement last = null;
         for (var entry : learned(right).entrySet()) {
             String id = entry.getKey();
             Ability ability = compatible.get(id);
+            if (ability != null && !prerequisitesMet(left,id,learned(left))) return null;
             if (ability == null || merged.containsKey(id) || id.equals(MATERIAL_HIT)) continue;
             List<String> occupied = merged.keySet().stream().filter(key -> !key.equals(MATERIAL_HIT)
                     && compatible.containsKey(key) && compatible.get(key).active() == ability.active()).toList();
             if (occupied.size() >= limit(left, ability.active())) {
-                last = new Replacement(id, occupied);
+                var choices = occupied.stream().filter(key -> isTemplate(left) || !key.equals(VERTICAL_STRIKE)
+                        || !incomingNeedsVerticalStrike && merged.keySet().stream().noneMatch(Augmentations::requiresVerticalStrike)).toList();
+                last = new Replacement(id, choices);
                 String chosen = replacements.get(id);
-                if (!occupied.contains(chosen)) return last;
+                if (!choices.contains(chosen)) return last;
                 merged.remove(chosen);
             }
             merged.put(id, entry.getValue());
@@ -304,6 +320,9 @@ public final class Augmentations {
         if (pendingReplacement(left, right, replacements) != null) return ItemStack.EMPTY;
         Map<String, Ability> compatible = new LinkedHashMap<>();
         for (Ability ability : catalog(left)) compatible.put(ability.id(), ability);
+        var original = learned(left);
+        if (learned(right).keySet().stream().anyMatch(id -> compatible.containsKey(id)
+                && !prerequisitesMet(left,id,original))) return ItemStack.EMPTY;
         LinkedHashMap<String, Integer> merged = new LinkedHashMap<>(learned(left));
         boolean changed = false;
         for (var entry : learned(right).entrySet()) {
@@ -325,6 +344,8 @@ public final class Augmentations {
             changed = true;
         }
         if (!changed) return ItemStack.EMPTY;
+        if (learned(right).keySet().stream().anyMatch(id -> compatible.containsKey(id)
+                && !prerequisitesMet(left,id,merged))) return ItemStack.EMPTY;
         ItemStack result = left.copyWithCount(1);
         write(result, merged, Math.max(count(left), merged.size()));
         return result;

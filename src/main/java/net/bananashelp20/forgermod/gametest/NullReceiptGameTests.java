@@ -41,7 +41,7 @@ public class NullReceiptGameTests {
                 ModItems.NULLIFIED_AXE_AMETHYST.get(),ModItems.NULLIFIED_AXE_JADE.get()}) {
             var player=player(test); var fresh=new ItemStack(item); player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
             test.assertFalse(net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.activate(player,fresh,RecommendedAbilities.NULL_RECEIPT),"Fresh axe arms receipt");
-            var stack=Augmentations.apply(Augmentations.apply(fresh,RecommendedAbilities.NULL_RECEIPT),RecommendedAbilities.SWING_ATTACK);
+            var stack=Augmentations.apply(Augmentations.apply(Augmentations.apply(fresh,Augmentations.VERTICAL_STRIKE),RecommendedAbilities.NULL_RECEIPT),RecommendedAbilities.SWING_ATTACK);
             player.setItemInHand(InteractionHand.MAIN_HAND,stack); player.doTick(); AbilityTestPackets.use(player,0);
             var attacker=EntityType.ZOMBIE.create(test.getLevel()); attacker.setPos(player.position().add(1,0,0));
             player.setInvulnerable(true); test.assertFalse(player.hurt(player.damageSources().mobAttack(attacker),1),"Rejected-hit fixture succeeds"); player.setInvulnerable(false);
@@ -80,7 +80,7 @@ public class NullReceiptGameTests {
     }
     @GameTest(template="riftfang_test")
     public static void absorptionHitsCountAndForceCannotExceedCap(GameTestHelper test) throws Exception {
-        var player=player(test); var stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),RecommendedAbilities.NULL_RECEIPT);
+        var player=player(test); var stack=Augmentations.apply(Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),Augmentations.VERTICAL_STRIKE),RecommendedAbilities.NULL_RECEIPT);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); AbilityTestPackets.use(player,0);
         player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.ABSORPTION,200,2));
         var attacker=EntityType.ZOMBIE.create(test.getLevel()); attacker.setPos(player.position().add(1,0,0));
@@ -97,7 +97,7 @@ public class NullReceiptGameTests {
     }
     @GameTest(template="riftfang_test")
     public static void explosionImpulseIsCanceledAndSwitchStartsCooldown(GameTestHelper test) throws Exception {
-        var player=player(test); var stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),RecommendedAbilities.NULL_RECEIPT);
+        var player=player(test); var stack=Augmentations.apply(Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),Augmentations.VERTICAL_STRIKE),RecommendedAbilities.NULL_RECEIPT);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); AbilityTestPackets.use(player,0);
         var creeper=EntityType.CREEPER.create(test.getLevel()); creeper.setPos(player.position().add(1.5,0,0));
         var original=new Vec3(.2,.1,.3); player.setDeltaMovement(original);

@@ -120,7 +120,7 @@ public class EnderSwingGameTests {
     public static void tertiarySwingKeepsItsCooldownEvenIfTheWeaponBreaks(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
         var stack=new ItemStack(ModItems.NULLIFIED_AXE.get());
-        for(var id:java.util.List.of(RecommendedAbilities.NULL_RECEIPT,RecommendedAbilities.SWING_ATTACK,RecommendedAbilities.ENDER_SWING))stack=Augmentations.apply(stack,id);
+        for(var id:java.util.List.of(Augmentations.VERTICAL_STRIKE,RecommendedAbilities.NULL_RECEIPT,RecommendedAbilities.SWING_ATTACK,RecommendedAbilities.ENDER_SWING))stack=Augmentations.apply(stack,id);
         stack.setDamageValue(stack.getMaxDamage()-1);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
         var target=zombie(test,player.position().add(.8,0,0));
         try {

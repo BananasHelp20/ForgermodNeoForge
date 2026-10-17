@@ -36,7 +36,7 @@ public class EchoSalvageGameTests {
   int count=0; var center=test.absolutePos(new BlockPos(8,5,8));
   for(var item:BuiltInRegistries.ITEM) if(item instanceof PulsiteWeapon weapon && weapon.isAxe()) {
    count++; var player=player(test,center); var fresh=new ItemStack(item); player.setItemInHand(InteractionHand.MAIN_HAND,fresh); slam(player,center); test.assertTrue(EchoSalvageEvents.bonus(player)==0,"Fresh axe stores echo");
-   var stack=Augmentations.apply(fresh,RecommendedAbilities.ECHO_SALVAGE); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+   var stack=Augmentations.apply(Augmentations.apply(fresh,Augmentations.VERTICAL_STRIKE),RecommendedAbilities.ECHO_SALVAGE); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
    test.getLevel().setBlockAndUpdate(center.below(),Blocks.AIR.defaultBlockState()); slam(player,center); test.assertTrue(EchoSalvageEvents.bonus(player)==0,"Empty air stores echo");
    test.getLevel().setBlockAndUpdate(center.below(),Blocks.STONE.defaultBlockState()); slam(player,center); slam(player,center); test.assertTrue(EchoSalvageEvents.bonus(player)==2,"Rank-I cap or no stacking broken");
    var mob=enemy(test,center); mob.setInvulnerable(true); slam(player,center); mob.setInvulnerable(false); test.assertTrue(EchoSalvageEvents.bonus(player)==2,"Rejected hit consumes echo");
@@ -49,7 +49,7 @@ public class EchoSalvageGameTests {
  }
  @GameTest(template="riftfang_test",timeoutTicks=650)
  public static void rankCapCircularSwingSwitchAndExpiryRemainIndependent(GameTestHelper test) throws Exception {
-  var center=test.absolutePos(new BlockPos(8,5,8)); var player=player(test,center); var stack=new ItemStack(net.bananashelp20.forgermod.item.ModItems.ECHOING_AXE.get());
+  var center=test.absolutePos(new BlockPos(8,5,8)); var player=player(test,center); var stack=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.ECHOING_AXE.get()),Augmentations.VERTICAL_STRIKE);
   for(int i=0;i<4;i++) stack=Augmentations.apply(stack,RecommendedAbilities.ECHO_SALVAGE); stack=Augmentations.apply(stack,RecommendedAbilities.SWING_ATTACK); player.setItemInHand(InteractionHand.MAIN_HAND,stack); slam(player,center);
   test.assertTrue(EchoSalvageEvents.bonus(player)==8,"Rank-IV cap wrong"); var mob=enemy(test,center);
   RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.SWING_ATTACK); test.assertTrue(EchoSalvageEvents.bonus(player)==8,"Circular swing releases echo");
@@ -62,7 +62,7 @@ public class EchoSalvageGameTests {
  @GameTest(template="riftfang_test")
  public static void neutralHitsDoNotGenerateOrSpendEchoAndBonusUsesWeaponDamage(GameTestHelper test) throws Exception {
   var center=test.absolutePos(new BlockPos(8,5,8)); var player=player(test,center); player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6);
-  var stack=new ItemStack(net.bananashelp20.forgermod.item.ModItems.ECHOING_AXE.get()); for(int i=0;i<4;i++) stack=Augmentations.apply(stack,RecommendedAbilities.ECHO_SALVAGE); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+  var stack=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.ECHOING_AXE.get()),Augmentations.VERTICAL_STRIKE); for(int i=0;i<4;i++) stack=Augmentations.apply(stack,RecommendedAbilities.ECHO_SALVAGE); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
   var cow=EntityType.COW.create(test.getLevel()); cow.setNoAi(true); cow.setNoGravity(true); cow.setPos(Vec3.atBottomCenterOf(center)); cow.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100); cow.setHealth(100); test.getLevel().addFreshEntity(cow);
   slam(player,center); test.assertTrue(cow.getHealth()==90 && EchoSalvageEvents.bonus(player)==0,"Successful neutral hit incorrectly stores an echo");
   cow.setPos(Vec3.atBottomCenterOf(center.east(5))); slam(player,center); test.assertTrue(EchoSalvageEvents.bonus(player)==3,"Bonus ignores actual weapon damage below cap");

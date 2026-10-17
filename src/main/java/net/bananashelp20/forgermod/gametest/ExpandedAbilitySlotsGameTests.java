@@ -21,7 +21,7 @@ public class ExpandedAbilitySlotsGameTests {
         for(var entry:ModItems.ITEMS.getEntries()) {
             var fresh=new ItemStack(entry.get());if(!Augmentations.eligible(fresh))continue;count++;
             for(boolean active:new boolean[]{true,false}) {
-                var stack=fresh;var pool=Augmentations.pool(fresh).stream().filter(a->a.active()==active && !a.id().equals(Augmentations.MATERIAL_HIT)).toList();int expected=Math.min(pool.size(),Augmentations.limit(fresh,active));
+                var stack=active && Augmentations.canonical(fresh).isAxe()?Augmentations.apply(fresh,Augmentations.VERTICAL_STRIKE):fresh;var pool=Augmentations.pool(fresh).stream().filter(a->a.active()==active && !a.id().equals(Augmentations.MATERIAL_HIT)).toList();int expected=Math.min(pool.size(),Augmentations.limit(fresh,active));
                 for(var ability:pool) {
                     var result=Augmentations.apply(stack,ability.id());
                     if(Augmentations.ids(stack,active).size()<expected){test.assertFalse(result.isEmpty(),"Legal new slot refused");stack=result;}

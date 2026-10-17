@@ -49,7 +49,7 @@ public class FlamingStompGameTests {
         }
         ItemStack fresh = new ItemStack(ModItems.MOLTEN_AXE.get());
         test.assertFalse(Augmentations.ids(fresh,true).contains(RecommendedAbilities.FLAMING_STOMP),"Fresh axe owns Flaming Stomp");
-        ItemStack stack = Augmentations.apply(fresh, RecommendedAbilities.FLAMING_STOMP);
+        ItemStack stack = Augmentations.apply(Augmentations.apply(fresh, Augmentations.VERTICAL_STRIKE), RecommendedAbilities.FLAMING_STOMP);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         player.doTick();
         AbilityTestPackets.use(player,0);
@@ -62,7 +62,7 @@ public class FlamingStompGameTests {
         var field=AxeHeavyNetwork.class.getDeclaredField("PENDING"); field.setAccessible(true);
         @SuppressWarnings("unchecked") Map<UUID,Object> pending=(Map<UUID,Object>)field.get(null);
         Object slam=pending.get(player.getUUID());
-        test.assertTrue(slam!=null,"Attack without Vertical Strike did not schedule a slam");
+        test.assertTrue(slam!=null,"Attack with Vertical Strike did not schedule a slam");
         var centerMethod=slam.getClass().getDeclaredMethod("center"); centerMethod.setAccessible(true);
         BlockPos center=(BlockPos)centerMethod.invoke(slam);
         var edge=zombie(test,center.offset(2,0,2));

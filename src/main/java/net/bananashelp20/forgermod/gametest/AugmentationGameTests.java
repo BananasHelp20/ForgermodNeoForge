@@ -36,6 +36,65 @@ import java.lang.reflect.Proxy;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class AugmentationGameTests {
+    @GameTest(template="riftfang_test")
+    public static void verticalStrikeDependentsRequireTheTechniqueOnTheReceivingWeapon(GameTestHelper test) {
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries()) {
+            var fresh=new ItemStack(entry.get());
+            if(!Augmentations.eligible(fresh)) continue;
+            for(var ability:Augmentations.catalog(fresh)) {
+                if(!Augmentations.requiresVerticalStrike(ability.id())) continue;
+                checked++;String id=ability.id();var before=fresh.copy();
+                test.assertFalse(Augmentations.available(fresh).stream().anyMatch(a->a.id().equals(id)),"Dependent augment offered before Vertical Strike");
+                for(int seed=0;seed<32;seed++) test.assertFalse(Augmentations.offers(fresh,RandomSource.create(seed)).stream().anyMatch(a->a.id().equals(id)),"First card offers a dependent technique");
+                test.assertTrue(Augmentations.apply(fresh,id).isEmpty() && Augmentations.setLevel(fresh,id,1).isEmpty(),"Direct augmentation bypasses prerequisite");
+                var afterOther=Augmentations.apply(fresh,Augmentations.MATERIAL_HIT);
+                test.assertFalse(Augmentations.available(afterOther).stream().anyMatch(a->a.id().equals(id)),"Later offers bypass the missing prerequisite");
+                var template=Augmentations.apply(new ItemStack(ModItems.AUGMENT_TEMPLATE.get()),id);
+                test.assertFalse(template.isEmpty(),"Standalone template cannot store dependent augment");
+                test.assertTrue(Augmentations.merge(fresh,template).isEmpty(),"Anvil/template transfer bypasses prerequisite");
+                var prepared=Augmentations.apply(fresh,Augmentations.VERTICAL_STRIKE);
+                test.assertTrue(Augmentations.available(prepared).stream().anyMatch(a->a.id().equals(id)),"Technique does not unlock its dependent augment");
+                var applied=Augmentations.apply(prepared,id);var merged=Augmentations.merge(prepared,template);
+                test.assertTrue(Augmentations.merge(fresh,applied).isEmpty(),"Bundled transfer bypasses the already-learned requirement");
+                test.assertTrue(!applied.isEmpty() && Augmentations.level(applied,id)==1 && Augmentations.level(applied,Augmentations.VERTICAL_STRIKE)==1,"Unlocked augmentation fails or discards technique");
+                test.assertTrue(!Augmentations.setLevel(prepared,id,1).isEmpty() && Augmentations.level(merged,id)==1 && Augmentations.level(merged,Augmentations.VERTICAL_STRIKE)==1,"Unlocked command/transfer fails");
+                test.assertTrue(ItemStack.matches(before,fresh) && Augmentations.level(template,id)==1,"Rejected operations mutate their inputs");
+            }
+        }
+        test.assertTrue(checked==15,"Did not cover all five variants of all three dependent augments");
+        test.assertFalse(Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),net.bananashelp20.forgermod.augmentation.RecommendedAbilities.ENDER_SWING).isEmpty(),"Standalone Ender Swing gained a prerequisite");
+        test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
+    public static void dependentAnvilReplacementPreservesVerticalStrikeAndSlotLimit(GameTestHelper test) {
+        String id=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.ECHO_SALVAGE;
+        var stack=Augmentations.apply(new ItemStack(ModItems.ECHOING_AXE.get()),Augmentations.VERTICAL_STRIKE);
+        for(var ability:Augmentations.catalog(stack)) {
+            if(Augmentations.ids(stack,false).size()==5) break;
+            if(!ability.active() && !ability.id().equals(id) && !ability.id().equals(Augmentations.VERTICAL_STRIKE)
+                && !ability.id().equals(Augmentations.MATERIAL_HIT)) stack=Augmentations.apply(stack,ability.id());
+        }
+        var template=Augmentations.apply(new ItemStack(ModItems.AUGMENT_TEMPLATE.get()),id);
+        test.assertTrue(Augmentations.ids(stack,false).size()==5,"Replacement fixture is not full");
+        var prompt=Augmentations.pendingReplacement(stack,template,java.util.Map.of());
+        test.assertTrue(prompt!=null && prompt.choices().size()==4 && !prompt.choices().contains(Augmentations.VERTICAL_STRIKE),"Replacement may remove the incoming augment's prerequisite");
+        test.assertTrue(Augmentations.merge(stack,template,java.util.Map.of(id,Augmentations.VERTICAL_STRIKE)).isEmpty(),"Forged replacement removes prerequisite");
+        String extra=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.OVERWHELMING_SMASH;
+        var bundle=Augmentations.apply(Augmentations.apply(new ItemStack(ModItems.AUGMENT_TEMPLATE.get()),extra),id);
+        var bundlePrompt=Augmentations.pendingReplacement(stack,bundle,java.util.Map.of());
+        test.assertTrue(bundlePrompt!=null && bundlePrompt.incoming().equals(extra) && !bundlePrompt.choices().contains(Augmentations.VERTICAL_STRIKE),"Earlier bundled replacement can remove a later incoming augment's prerequisite");
+        test.assertTrue(Augmentations.merge(stack,bundle,java.util.Map.of(extra,Augmentations.VERTICAL_STRIKE,id,prompt.choices().getFirst())).isEmpty(),"Bundled replacements bypass prerequisite protection");
+        var merged=Augmentations.merge(stack,template,java.util.Map.of(id,prompt.choices().getFirst()));
+        test.assertTrue(Augmentations.level(merged,id)==1 && Augmentations.level(merged,Augmentations.VERTICAL_STRIKE)==1
+            && Augmentations.ids(merged,false).size()==5,"Valid replacement loses prerequisite or exceeds passive cap");
+        var extracted=Augmentations.extractFirst(merged,new ItemStack(ModItems.AUGMENT_TEMPLATE.get()));
+        test.assertTrue(extracted!=null && Augmentations.level(extracted.weapon(),id)==1,"Existing augment is deleted when its prerequisite is extracted");
+        test.assertTrue(Augmentations.apply(extracted.weapon(),id).isEmpty() && Augmentations.setLevel(extracted.weapon(),id,2).isEmpty(),"Orphaned existing augment can be upgraded without its prerequisite");
+        test.succeed();
+    }
+
     @GameTest(template = "riftfang_test")
     public static void firstAxeAugmentationOffersButDoesNotGrantVerticalStrike(GameTestHelper test) throws Exception {
         var type = net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.class;

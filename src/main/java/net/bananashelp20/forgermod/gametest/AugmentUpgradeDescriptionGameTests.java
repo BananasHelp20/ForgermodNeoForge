@@ -30,7 +30,9 @@ public final class AugmentUpgradeDescriptionGameTests {
             if(!Augmentations.augmentable(fresh)) continue;
             for(var ability:Augmentations.catalog(fresh)) {
                 for(int rank=1;rank<Augmentations.maxRank(fresh,ability.id());rank++) {
-                    var stack=Augmentations.setLevel(fresh,ability.id(),rank);
+                    var prepared=Augmentations.canonical(fresh)!=null && Augmentations.canonical(fresh).isAxe() && Augmentations.requiresVerticalStrike(ability.id())
+                            ? Augmentations.apply(fresh,Augmentations.VERTICAL_STRIKE):fresh;
+                    var stack=Augmentations.setLevel(prepared,ability.id(),rank);
                     test.assertFalse(stack.isEmpty(),"Cannot create rank fixture");
                     var before=stack.copy();
                     var compact=AugmentUpgradeDescriptions.description(stack,ability.id(),rank,true,true);
