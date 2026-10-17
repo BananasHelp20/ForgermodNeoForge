@@ -1,11 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.attacks.axe;
 
-import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.bananashelp20.forgermod.ForgerMod;
 
 public final class AxeItems {
     private AxeItems() {}
@@ -16,16 +12,11 @@ public final class AxeItems {
     }
 
     public static boolean canVerticalStrike(ItemStack stack) {
-        return isAxe(stack) && (!net.bananashelp20.forgermod.augmentation.Augmentations.eligible(stack)
-                || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(stack,
-                        net.bananashelp20.forgermod.augmentation.Augmentations.VERTICAL_STRIKE));
+        return isAxe(stack) && net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(stack,
+                net.bananashelp20.forgermod.augmentation.Augmentations.VERTICAL_STRIKE);
     }
 
     public static boolean isAxe(ItemStack stack) {
-        return stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe()
-                || stack.is(ModItems.CARBON_STEEL_AXE)
-                || stack.is(ModItems.RUSTY_AXE)
-                || stack.getItem() instanceof AxeItem
-                        && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals(ForgerMod.MOD_ID);
+        return stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe() && weapon.hasMaterialEffect();
     }
 }

@@ -79,13 +79,13 @@ public class AxeChargedStrikeGameTests {
                 test.assertTrue(count(player)==0,"Third swing retains charged progress");swing(player);test.assertTrue(count(player)==0,"Duplicate third packet charges next combo");
             }
         } finally {clear(player);player.server.getPlayerList().remove(player);}
-        test.assertTrue(checked==47+ModItems.TOOL_SETS.size(),"Skipped axe variants: "+checked);test.succeed();
+        test.assertTrue(checked==45,"Skipped axe variants: "+checked);test.succeed();
     }
 
     @GameTest(template="riftfang_test")
     public static void countedPacketPreservesFullVanillaAttackDamage(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
-        player.setPos(origin);player.setNoGravity(true);player.setOnGround(true);player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.CARBON_STEEL_AXE.get()));recharge(player);
+        player.setPos(origin);player.setNoGravity(true);player.setOnGround(true);player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.apply(new ItemStack(ModItems.MOLTEN_AXE.get()),Augmentations.VERTICAL_STRIKE));recharge(player);
         var target=EntityType.ZOMBIE.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);target.setPos(origin.add(0,0,2));
         target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.getAttribute(Attributes.ARMOR).setBaseValue(0);target.setHealth(1000);test.getLevel().addFreshEntity(target);
         try {

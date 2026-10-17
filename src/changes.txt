@@ -274,3 +274,6 @@
 
 - Recolored the Super Augment Template animated item texture from purple to legendary golden-yellow, preserving every pixel position, alpha value, animation frame and timing.
 - Renamed Gemstone Infusion Template to Gemstone Template; its registry ID, recipes and existing items remain compatible.
+
+- Restricted axe weapon behavior (Vertical Strike, heavy-attack packets and offhand restriction) to special-material weapon axes. All ordinary metal/tool axes and vanilla axes have normal tool/offhand behavior and no implicit abilities. Special axes require their learned Vertical Strike augment.
+- Converted the legacy carbon-steel and rusty axes to real AxeItem tools with chopping/stripping and axe tags, preserving their registry IDs, attack stats, rarity, durability and carbon-steel fire resistance. They are no longer sword-tagged items.

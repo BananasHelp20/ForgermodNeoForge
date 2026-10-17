@@ -30,6 +30,8 @@ public class ModItemTagProvider extends ItemTagsProvider {
             }
         }
 
+        tag(ItemTags.AXES).add(ModItems.CARBON_STEEL_AXE.get(), ModItems.RUSTY_AXE.get());
+
         tag(ItemTags.SWORDS)
                 // base variants
                 .add(ModItems.OVERGROWN_CLAYMORE.get())
@@ -209,8 +211,6 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 // other stuff
                 .add(ModItems.CLAYMORE.get())
                 .add(ModItems.RUSTY_CLAYMORE.get())
-                .add(ModItems.CARBON_STEEL_AXE.get())
-                .add(ModItems.RUSTY_AXE.get())
                 .add(ModItems.CARBON_STEEL_DAGGER.get())
                 .add(ModItems.RUSTY_DAGGER.get())
 

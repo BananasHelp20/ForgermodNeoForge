@@ -106,8 +106,6 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Carbon Steel Axe | Axe | Vertical Strike |
-| Rusty Axe | Axe | Vertical Strike |
 | Stumpfl's Bat | Bat | None |
 | Claymore | Claymore | None |
 | Rusty Claymore | Claymore | None |

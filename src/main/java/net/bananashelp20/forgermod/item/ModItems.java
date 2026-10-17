@@ -98,6 +98,18 @@ public class ModItems {
                 });
     }
 
+    private static DeferredItem<AxeItem> createToolAxe(String name, Tier tier, Rarity rarity, int damage, float speed, String lore, boolean fireResistant) {
+        return ITEMS.register(name, () -> {
+            var properties=new Item.Properties().rarity(rarity).attributes(AxeItem.createAttributes(tier,damage,attackSpeedModifier(speed)));
+            if(fireResistant)properties.fireResistant();
+            return new AxeItem(tier,properties) {
+                @Override public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+                    tooltip.add(Component.translatable(lore));super.appendHoverText(stack,context,tooltip,flag);
+                }
+            };
+        });
+    }
+
     public static DeferredItem<SwordItem> createSpecialSwordItem(String name, Supplier<SwordItemWithEffect> weapon) {
         return ITEMS.register(name, weapon);
     }
@@ -195,8 +207,8 @@ public class ModItems {
     public static final DeferredItem<SwordItem> STORMING_CLAYMORE = createSpecialSwordItem("storming_claymore", () -> new TaifuniteWeapon("no_gemstone", "claymore"));
 
     //axes
-    public static final DeferredItem<SwordItem> CARBON_STEEL_AXE = createSwordItemWithRarityAndDescriptionBeingFireResistent("axe", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_AXE_DAMAGE, DEFAULT_AXE_SPEED, "tooltips.forgermod.axe.tooltip");
-    public static final DeferredItem<SwordItem> RUSTY_AXE = createSwordItemWithRarityAndDescription("rusty_axe", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_AXE_DAMAGE, DEFAULT_RUSTY_AXE_SPEED, "tooltips.forgermod.rusty_axe.tooltip");
+    public static final DeferredItem<AxeItem> CARBON_STEEL_AXE = createToolAxe("axe", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_AXE_DAMAGE, DEFAULT_AXE_SPEED, "tooltips.forgermod.axe.tooltip", true);
+    public static final DeferredItem<AxeItem> RUSTY_AXE = createToolAxe("rusty_axe", ModToolTiers.CARBON_STEEL, Rarity.UNCOMMON, DEFAULT_RUSTY_AXE_DAMAGE, DEFAULT_RUSTY_AXE_SPEED, "tooltips.forgermod.rusty_axe.tooltip", false);
     public static final DeferredItem<SwordItem> VERDANT_AXE = createSpecialSwordItem("nature_axe", () -> new LushWeapon("no_gemstone", "axe"));
     public static final DeferredItem<SwordItem> GHOST_AXE = createSpecialSwordItem("hollow_axe", () -> new MorsiumWeapon("no_gemstone", "axe"));
     public static final DeferredItem<SwordItem> MOLTEN_AXE = createSpecialSwordItem("infernal_axe", () -> new IgnisiumWeapon("no_gemstone", "axe"));

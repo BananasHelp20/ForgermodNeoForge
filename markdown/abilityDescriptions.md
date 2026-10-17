@@ -1280,7 +1280,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 ### Vertical Strike
 
-**Weapons:** Carbon Steel Axe, Dreamweaver Axe, Echoing Axe, Ghost Axe, Molten Axe, Nullified Axe, Rusty Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
+**Weapons:** Dreamweaver Axe, Echoing Axe, Ghost Axe, Molten Axe, Nullified Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
 
 **Item tooltip:**
 
