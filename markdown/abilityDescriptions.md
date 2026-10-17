@@ -1236,11 +1236,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Kills grant 1 absorption heart, up to 3 hearts.
+> Kills grant 1 absorption heart, up to 3 hearts. These fade after 10 seconds without Soul Hunger equipped; switching back in time keeps them.
 
 **Augmentation card:**
 
-> Kills grant 1 absorption heart, up to 3.
+> Kills grant absorption, up to 3 hearts. Switch back within 10 seconds to keep them.
 
 ### Stone Song
 
