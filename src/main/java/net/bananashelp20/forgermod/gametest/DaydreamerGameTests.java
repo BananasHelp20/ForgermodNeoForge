@@ -16,6 +16,25 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class DaydreamerGameTests {
     @GameTest(template="riftfang_test")
+    public static void gemstoneChangesAndInfiniteWeakerPotionsPreserveOwnership(GameTestHelper test) {
+        var player=TestPlayers.survival(test);long time=test.getLevel().getDayTime();test.getLevel().setDayTime(6000);
+        try {
+            player.addEffect(new MobEffectInstance(MobEffects.JUMP,-1,0));
+            var base=Augmentations.apply(new ItemStack(ModItems.DREAMWEAVER_AXE.get()),AdditionalAbilities.DAYDREAMER);
+            var jade=Augmentations.apply(new ItemStack(ModItems.DREAMWEAVER_AXE_JADE.get()),AdditionalAbilities.DAYDREAMER);
+            for(var stack:java.util.List.of(base,jade,base)) {
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
+                test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==(JadeAugments.isJade(stack)?2:1),"Variant switch retains the wrong Daydreamer strength");
+            }
+            player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
+            test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==0 && player.getEffect(MobEffects.JUMP).isInfiniteDuration(),"Replacing a weaker infinite effect destroys it on cleanup");
+            player.removeEffect(MobEffects.JUMP);player.addEffect(new MobEffectInstance(MobEffects.JUMP,100,3));
+            player.setItemInHand(InteractionHand.MAIN_HAND,jade);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
+            test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==3 && !player.getEffect(MobEffects.JUMP).isInfiniteDuration(),"Daydreamer replaces a stronger potion");
+            test.succeed();
+        } finally {player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));player.removeEffect(MobEffects.JUMP);test.getLevel().setDayTime(time);player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template="riftfang_test")
     public static void fiveAxesGrantDaytimeJumpAndPreservePotions(GameTestHelper test) {
         var player=TestPlayers.survival(test);long time=test.getLevel().getDayTime();int count=0;
         try {
@@ -26,10 +45,11 @@ public class DaydreamerGameTests {
                 if(!eligible) continue;count++;player.setItemInHand(InteractionHand.MAIN_HAND,fresh);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
                 test.assertFalse(player.hasEffect(MobEffects.JUMP),"Fresh axe gives Jump Boost");
                 var stack=Augmentations.apply(fresh,AdditionalAbilities.DAYDREAMER);player.setItemInHand(InteractionHand.MAIN_HAND,stack);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
-                int expectedAmplifier=JadeAugments.isJade(stack)?1:0;
+                int expectedAmplifier=JadeAugments.isJade(stack)?2:1;
                 test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==expectedAmplifier && player.getEffect(MobEffects.JUMP).isInfiniteDuration(),"Missing daytime Jump Boost");
                 test.getLevel().setDayTime(13000);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));test.assertFalse(player.hasEffect(MobEffects.JUMP),"Night retains Jump Boost");test.getLevel().setDayTime(6000);
                 player.addEffect(new MobEffectInstance(MobEffects.JUMP,200,0));DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
+                test.assertTrue(player.getEffect(MobEffects.JUMP).getAmplifier()==expectedAmplifier,"Weaker potion suppresses the daytime Jump Boost");
                 player.addEffect(new MobEffectInstance(MobEffects.JUMP,100,2));DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
                 player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);DaydreamerEvents.onTick(new PlayerTickEvent.Pre(player));
                 test.assertTrue(player.getEffect(MobEffects.JUMP)!=null && player.getEffect(MobEffects.JUMP).getAmplifier()==2 && !player.getEffect(MobEffects.JUMP).isInfiniteDuration(),"Putting axe away destroys acquired potion");

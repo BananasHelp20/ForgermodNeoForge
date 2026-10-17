@@ -814,11 +814,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Gain Jump Boost I during the day.
+> Gain Jump Boost II during the day.
 
 **Augmentation card:**
 
-> Gain Jump Boost I during the day.
+> Gain Jump Boost II during the day.
 
 ### Death March
 
