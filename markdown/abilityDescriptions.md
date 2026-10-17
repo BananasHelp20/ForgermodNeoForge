@@ -256,11 +256,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Strike enemies within 1 block for weapon damage and launch them up to 20 blocks upward.
+> Strike enemies within 3 blocks for weapon damage and launch them up to 20 blocks upward.
 
 **Augmentation card:**
 
-> Strike nearby enemies and launch them into the air.
+> Strike enemies within 3 blocks and launch them into the air.
 
 ### Explosion
 

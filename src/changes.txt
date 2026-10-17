@@ -230,3 +230,5 @@
 - Shift-expanded tooltips show a short super-ability upgrade notice below the cooldown (after the description for passives), only until the ability becomes a super ability. Templates and augmentation learning/upgrade previews use current/resulting rank descriptions.
 
 - Learned super-ability names now appear in legendary gold with one animated obfuscated character on each side, including weapon/template tooltips, augmentation cards, anvil prompts and command feedback. Ordinary ability names and gray rank/key text retain their formatting; rejected cards remain muted.
+
+- Buffed Ender Swing radius from 1 to 3 blocks at level I, retaining the 3-block radius on its upgraded rank. Updated its sweep particle ring and current-rank/learning descriptions to match.
