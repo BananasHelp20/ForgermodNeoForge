@@ -234,3 +234,5 @@
 - Buffed Ender Swing radius from 1 to 3 blocks at level I, retaining the 3-block radius on its upgraded rank. Updated its sweep particle ring and current-rank/learning descriptions to match.
 
 - Soul Hunger absorption now expires after 10 continuous seconds without the passive equipped. Reequipping before expiry cancels removal; later switches start a fresh grace period, and returning after expiry does not restore spent/expired hearts. Other absorption sources remain intact. Matching dual daggers also recognize Soul Hunger on the offhand dagger.
+
+- Ghostwalk and Jumpscare Horror now hide the player, all worn equipment and both held items, including first-person hands. Visibility is synchronized to the player, nearby observers and new trackers, and restored on attack, expiry, weapon switch, dispel, travel or logout. Ordinary invisibility retains vanilla equipment visibility.

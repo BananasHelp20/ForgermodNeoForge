@@ -364,11 +364,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Become invisible for 10 seconds, ending when you attack.
+> Hide yourself, armor and held items for 10 seconds, ending when you attack.
 
 **Augmentation card:**
 
-> Become invisible for 10 seconds, ending when you attack.
+> Hide yourself, armor and held items for 10 seconds, ending when you attack.
 
 **Super I-IV name (transforms at original IV):** Jumpscare Horror
 

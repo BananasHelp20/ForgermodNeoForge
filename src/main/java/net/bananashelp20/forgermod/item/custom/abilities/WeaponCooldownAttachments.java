@@ -21,5 +21,9 @@ public final class WeaponCooldownAttachments {
             "ability_cooldowns_disabled", () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL).copyOnDeath().build());
 
+    /** Transient rendering state; synchronized by GhostwalkVisibility, never saved or copied on death. */
+    public static final Supplier<AttachmentType<Boolean>> GHOSTWALK_HIDDEN = TYPES.register(
+            "ghostwalk_hidden", () -> AttachmentType.builder(() -> false).build());
+
     private WeaponCooldownAttachments() {}
 }
