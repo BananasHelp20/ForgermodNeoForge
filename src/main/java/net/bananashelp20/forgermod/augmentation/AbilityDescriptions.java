@@ -44,6 +44,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.BLOOD_SACRAFICE -> text(id+".reviewed","Sacrafice half of your total HP to deal double weapon damage for %s.",
+                    (net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank)/20)+" seconds");
             case AdditionalAbilities.BLOOD_RUSH -> text(id+".current","On activation pays %s to gain %s for %s.",
                     "1 heart","speed "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(2+jade),(10+jade)+" seconds");
             default -> null;

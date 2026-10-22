@@ -16,8 +16,10 @@ public final class BloodSacrificeEvents {
     private BloodSacrificeEvents() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player) || player.getHealth()<=0) return false;
-        player.setHealth(player.getHealth()*.5F);player.setAbsorptionAmount(player.getAbsorptionAmount()*.5F);
-        SACRIFICES.put(player.getUUID(),new Sacrifice(stack,player.getInventory().selected,player.serverLevel(),player.level().getGameTime()+400));return true;
+        var remaining=SacrificeCost.pay(player.getHealth(),player.getAbsorptionAmount());
+        player.setAbsorptionAmount(remaining.absorption());player.setHealth(remaining.health());
+        SACRIFICES.put(player.getUUID(),new Sacrifice(stack,player.getInventory().selected,player.serverLevel(),
+                player.level().getGameTime()+SacrificeCost.durationTicks(Augmentations.level(stack,AdditionalAbilities.BLOOD_SACRAFICE))));return true;
     }
     public static boolean active(ServerPlayer player) {
         var state=SACRIFICES.get(player.getUUID());if(state==null) return false;

@@ -19,7 +19,7 @@ import java.util.Objects;
 /** Read-only comparisons of the offered ranks. Never applies an augment or changes gameplay. */
 public final class AugmentUpgradeDescriptions {
     // Readable on both the pale cards and Minecraft's dark tooltip background.
-    public static final int CHANGE_COLOR = 0x248A3D;
+    public static final int CHANGE_COLOR = 0xFFFFFF;
     private static final String PREFIX = "augmentation.forgermod.preview.";
 
     private record Stat(Object amount, Component value) {}
@@ -106,6 +106,7 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case AdditionalAbilities.BLOOD_SACRAFICE -> seconds(stats,"duration",net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank));
             case RecommendedAbilities.CINDER_DECOY -> {
                 numeric(stats, "radius", 1 + Math.clamp(rank, 1, 4), "blocks");
                 seconds(stats, "burn", (2 + rank) * 20);

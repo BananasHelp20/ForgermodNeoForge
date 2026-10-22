@@ -107,7 +107,7 @@ public final class AdditionalAbilities {
             new Definition(POCKET_STORM, true, 4, 800, 100, Set.of("Taifunite:axe")),
             new Definition(BLOOD_RUSH, true, 4, 600, 100, Set.of("Vulnusium:dagger", "Vulnusium:claymore")),
             new Definition(FINAL_STRIKE, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
-            new Definition(BLOOD_SACRAFICE, true, 4, 1200, 200, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
+            new Definition(BLOOD_SACRAFICE, true, 4, 1800, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(SCAR_COMPASS, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(REVENGEFUL_EXIT, false, 1, 0, 0, Set.of("Vulnusium:dagger", "Vulnusium:claymore", "Vulnusium:axe")),
             new Definition(SUNFED, false, 1, 0, 0, Set.of("Lush:dagger", "Lush:claymore", "Lush:axe")),
