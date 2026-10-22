@@ -44,6 +44,11 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.charge_attack" -> text(id+".reviewed","Progressively gain %s in the next %s. The last hit fully charges a lightning attack dealing %s%s",
+                    "+"+number(net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.maximumBonus(rank)*100)+"% damage",
+                    net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.chargingHits(rank)+" hits",
+                    number(net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.lightningDamage(rank))+" damage",
+                    rank>=4 && Augmentations.hasPassive(stack,AdditionalAbilities.LIGHTNING_ROD)?" and also striking you with thunder activating lightning rod.":".");
             case RecommendedAbilities.FALSE_AWAKENING -> text(id+".reviewed","Create a decoy directly beside the enemy you aim at. When that enemy is distracted, you deal %s to that enemy for a duration of %s.",
                     (5+5*rank)+"% more damage",(30+5*(rank-1))+" seconds");
             case RecommendedAbilities.ECHO_HEARING -> text(id+".reviewed","In the next %s after activating this ability, you will be able to hear sounds made from all entities within a %s. After entities make a sound, they glow for %s.",

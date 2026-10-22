@@ -65,6 +65,11 @@ public final class LightningRodEvents {
     public static boolean extraStrike(ServerPlayer player) {
         if(!eligible(player) || !player.level().dimensionType().hasSkyLight() || !player.level().canSeeSky(player.blockPosition())
             || player.level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,player.blockPosition()).getY()>player.blockPosition().getY()) return false;
+        return chargeStrike(player);
+    }
+    /** A fully charged weapon supplies its own lightning, including indoors and in skyless dimensions. */
+    public static boolean chargeStrike(ServerPlayer player) {
+        if(!eligible(player))return false;
         var bolt=new CosmeticBolt(player.serverLevel());
         bolt.setPos(player.position());bolt.setVisualOnly(true);player.serverLevel().addFreshEntity(bolt);grant(player);return true;
     }

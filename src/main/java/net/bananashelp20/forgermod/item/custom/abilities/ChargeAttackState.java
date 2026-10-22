@@ -4,32 +4,39 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Counts successful mob hits; the twenty-first hit discharges the stored charge. */
+/** Counts successful mob hits using the rank captured when the charge is armed. */
 public final class ChargeAttackState {
-    private static final int CHARGING_HITS = 20;
-    private static final float DAMAGE_STEP = 0.05F;
-    private final Map<UUID, Integer> hits = new HashMap<>();
+    private record Charge(int rank,int hits) {}
+    private final Map<UUID, Charge> hits = new HashMap<>();
+
+    public static int chargingHits(int rank) {return new int[]{20,18,17,15}[Math.clamp(rank-1,0,3)];}
+    public static float maximumBonus(int rank) {return 1F+(Math.clamp(rank,1,4)-1)/3F;}
+    public static float lightningDamage(int rank) {return new int[]{20,23,27,30}[Math.clamp(rank-1,0,3)];}
+    public int rank(UUID player) {var charge=hits.get(player);return charge==null?0:charge.rank();}
 
     public boolean arm(UUID player) {
-        return hits.putIfAbsent(player, 0) == null;
+        return arm(player,1);
+    }
+    public boolean arm(UUID player,int rank) {
+        return hits.putIfAbsent(player, new Charge(Math.clamp(rank,1,4),0)) == null;
     }
 
     public boolean recordMobHit(UUID player) {
-        Integer count = hits.get(player);
-        if (count == null) return false;
-        if (count == CHARGING_HITS) {
+        Charge charge = hits.get(player);
+        if (charge == null) return false;
+        if (charge.hits() == chargingHits(charge.rank())) {
             hits.remove(player);
             return true;
         }
-        hits.put(player, count + 1);
+        hits.put(player, new Charge(charge.rank(),charge.hits()+1));
         return false;
     }
 
     /** Returns the multiplier for the next successful hit while this charge is armed. */
     public float damageMultiplier(UUID player) {
-        Integer count = hits.get(player);
-        if (count == null || count >= CHARGING_HITS) return 1.0F;
-        return 1.0F + (count + 1) * DAMAGE_STEP;
+        Charge charge = hits.get(player);
+        if (charge == null || charge.hits() >= chargingHits(charge.rank())) return 1.0F;
+        return 1.0F + (charge.hits()+1)*maximumBonus(charge.rank())/chargingHits(charge.rank());
     }
 
     public boolean isArmed(UUID player) {

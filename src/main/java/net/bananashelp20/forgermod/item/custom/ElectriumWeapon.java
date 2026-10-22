@@ -72,16 +72,19 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
         if (!(attacker instanceof ServerPlayer player)) return;
         if (Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.chain_lightning")) chainLightning(target, player);
-        if (!(target instanceof Mob) || target.isDeadOrDying()) return;
+        if (!(target instanceof Mob)) return;
         dischargeChargeIfReady(target, player);
     }
 
     private static void dischargeChargeIfReady(LivingEntity target, ServerPlayer player) {
-        if (!CHARGE_ATTACK.recordMobHit(player.getUUID()) || target.isDeadOrDying()) return;
+        int rank=CHARGE_ATTACK.rank(player.getUUID());
+        if (!CHARGE_ATTACK.recordMobHit(player.getUUID())) return;
+        if(rank>=4) net.bananashelp20.forgermod.item.custom.abilities.LightningRodEvents.chargeStrike(player);
+        if(target.isDeadOrDying()) return;
 
         int previousInvulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
-        if (target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player), 20.0F)) {
+        if (target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player), ChargeAttackState.lightningDamage(rank))) {
             sendChargeExplosionParticles(target, player);
             player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
                     target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
@@ -144,8 +147,9 @@ public class ElectriumWeapon extends SwordItemWithEffect {
         if (!Augmentations.ids(stack, true).contains(abilityDescriptionKey(slot))) return false;
         if (!isDagger() || !player.isAlive()) return false;
         if (slot == WeaponAbilitySlot.SECONDARY) {
-            boolean armed = CHARGE_ATTACK.arm(player.getUUID());
-            if (armed) player.displayClientMessage(Component.translatable("message.forgermod.charge_attack.armed"), true);
+            int rank=Augmentations.level(stack,"tooltips.forgermod.ability.charge_attack");
+            boolean armed = CHARGE_ATTACK.arm(player.getUUID(),rank);
+            if (armed) player.displayClientMessage(Component.translatable("message.forgermod.charge_attack.armed",ChargeAttackState.chargingHits(rank)+1), true);
             return armed;
         }
         List<Mob> targets = AreaDischargeTargets.select(
