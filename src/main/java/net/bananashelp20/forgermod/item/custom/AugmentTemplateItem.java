@@ -32,8 +32,8 @@ public final class AugmentTemplateItem extends Item {
                     Augmentations.abilityName(stack, id, entry.getValue()),
                     WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,entry.getValue())));
             tooltip.add(name.copy().withStyle(ChatFormatting.LIGHT_PURPLE));
-            if (expanded) tooltip.add(Component.translatable(id.equals(Augmentations.MATERIAL_HIT)
-                    ? "tooltips.forgermod.augment_template.material_hit" : id).withStyle(ChatFormatting.GRAY));
+            if (expanded) tooltip.add(net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,
+                    id.equals(Augmentations.MATERIAL_HIT) ? "tooltips.forgermod.augment_template.material_hit" : id,entry.getValue(),false));
         }
         if (!expanded && !Augmentations.learned(stack).isEmpty()) WeaponTooltips.hint(tooltip);
         super.appendHoverText(stack, context, tooltip, flag);

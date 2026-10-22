@@ -109,8 +109,8 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.pose().pushPose(); gui.pose().translate(x+3,y+14,0); gui.pose().scale(.5F,.5F,1);
         Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
         gui.drawString(font,category,(74-font.width(category))/2,0,rejected?0xff666666:superUpgrade?0xffc58b12:offer.active()?0xff2962d9:0xff00a9bd,false);
-        Component description=Component.translatable(offer.id()+".card");
-        if(!net.minecraft.client.resources.language.I18n.exists(offer.id()+".card")) description=Component.translatable(offer.id());
+        Component description=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(
+                menu.getSlot(completed?3:0).getItem(),offer.id(),menu.offerRank(card)+1,true);
         var lines=font.split(description,74);
         for(int row=0;row<Math.min(lines.size(),7);row++) gui.drawString(font,lines.get(row),0,14+row*font.lineHeight,0xff929292,false);
         gui.pose().popPose();
@@ -135,7 +135,8 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
                     lines.add(name.getVisualOrderText());
                     lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(Augmentations.displayRank(menu.getSlot(0).getItem(),offer.id(),menu.offerRank(i)+1)))
                             .withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    lines.addAll(font.split(Component.translatable(offer.id()).withStyle(ChatFormatting.GRAY),180));
+                    lines.addAll(font.split(net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(
+                            menu.getSlot(menu.phase()==AugmentationAnimation.COMPLETE?3:0).getItem(),offer.id(),menu.offerRank(i)+1,false),180));
                     if(menu.phase()==AugmentationAnimation.COMPLETE) lines.add(Component.translatable(menu.selected()==i?
                             "augmentation.forgermod.card.selected":"augmentation.forgermod.card.rejected").withStyle(ChatFormatting.GRAY).getVisualOrderText());
                     gui.renderTooltip(font,lines,mouseX,mouseY);

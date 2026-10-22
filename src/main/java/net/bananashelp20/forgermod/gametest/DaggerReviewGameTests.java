@@ -96,10 +96,10 @@ public class DaggerReviewGameTests {
                     var args = ((TranslatableContents)title.getContents()).getArgs();
                     var binding = (KeybindContents)((Component)args[1]).getContents();
                     test.assertTrue(binding.getName().equals(slot == WeaponAbilitySlot.PRIMARY ? "key.forgermod.ability_primary" : "key.forgermod.ability_secondary"), "Configured key replaced by literal text");
-                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(id)) == expanded, "Active description does not follow Shift");
+                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(id+".current")) == expanded, "Active description does not follow Shift");
                 }
                 for (String id : net.bananashelp20.forgermod.augmentation.Augmentations.ids(learned, false))
-                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(id)) == expanded, "Passive description does not follow Shift");
+                    test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals(id+".current")) == expanded, "Passive description does not follow Shift");
                 test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.passive.material_effect")) == expanded, "Material description does not follow Shift");
                 test.assertTrue(tooltip.stream().anyMatch(line -> key(line).equals("tooltips.forgermod.ability.shift_hint")) != expanded, "Shift hint state incorrect");
                 for (Component line : tooltip) {

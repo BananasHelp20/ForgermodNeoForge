@@ -103,14 +103,14 @@ public class SwordItemWithEffect extends SwordItem {
                     tooltip.add(Component.translatable("augmentation.forgermod.rank", materialAbilityName(),
                             WeaponTooltips.romanNumeral(materialRank)).withStyle(ChatFormatting.GRAY));
                     if (expanded) tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect",
-                            materialEffect.value().getDisplayName(), WeaponTooltips.romanNumeral(materialEffectAmplifier + 1),
-                            String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0)).withStyle(ChatFormatting.GRAY));
+                            materialEffect.value().getDisplayName(), net.bananashelp20.forgermod.augmentation.AbilityDescriptions.white(WeaponTooltips.romanNumeral(materialEffectAmplifier + 1)),
+                            net.bananashelp20.forgermod.augmentation.AbilityDescriptions.white(String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0))).withStyle(ChatFormatting.GRAY));
                 }
                 for (String id : passives) {
                     tooltip.add(Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,Augmentations.level(stack,id)),
                             WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,Augmentations.level(stack, id)))).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
-                        tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
+                        tooltip.add(net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,id,Augmentations.level(stack,id),false));
                     }
                 }
             }
@@ -125,9 +125,9 @@ public class SwordItemWithEffect extends SwordItem {
                     tooltip.add(Component.translatable("tooltips.forgermod.ability.tooltip", name,
                             Component.keybind(slot.keyTranslation())).withStyle(ChatFormatting.GRAY));
                     if (expanded) {
-                        tooltip.add(Component.translatable(id).withStyle(ChatFormatting.GRAY));
+                        tooltip.add(net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,id,Augmentations.level(stack,id),false));
                         tooltip.add(Component.translatable("augmentation.forgermod.cooldown",
-                                String.format(java.util.Locale.ROOT, "%.2f", Augmentations.cooldown(stack, slot, Augmentations.canonical(stack)) / 20.0)).withStyle(ChatFormatting.GRAY));
+                                net.bananashelp20.forgermod.augmentation.AbilityDescriptions.white(String.format(java.util.Locale.ROOT, "%.2f", Augmentations.cooldown(stack, slot, Augmentations.canonical(stack)) / 20.0))).withStyle(ChatFormatting.GRAY));
                     }
                 }
             }

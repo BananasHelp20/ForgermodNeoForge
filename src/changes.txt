@@ -1,6 +1,8 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Updated Blood Rush's description to the reviewed one-heart activation wording, resolving Jade Speed/duration and highlighting the current values in white.
+- Added shared current-rank ability descriptions with white numeric values in weapon/template tooltips and augmentation cards; removed slash-separated level previews from rendered descriptions without changing unreviewed abilities' mechanics.
 - Added daggers for all special materials
 - Added axes for all special materials
 - Added matching-dagger dual wielding: a main-hand swing triggers a visible offhand follow-up about 100 ms later, including air swings. The follow-up retains the target of a successful main-hand hit. Different gemstones of the same material can be paired; knives cannot.

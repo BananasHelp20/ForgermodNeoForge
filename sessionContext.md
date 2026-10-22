@@ -1,5 +1,11 @@
 # Current project context
 
+## Ability review implementation in progress (2026-10-22)
+
+- User authorized implementing the current conversation's reviewed changes, plus white current-rank numeric values for all not-yet-reviewed abilities/passives without changing their mechanics. Resume the interactive review at **43: Magma Toss** after implementation. Full pending queue is markdown/ability-review-implementation.md; do not treat unfinished entries as completed.
+- Added a shared description path for weapon and template tooltips, augmentation cards and hover. Legacy numeric slash lists resolve to the current rank, values are white and prose gray. Current cooldown/material effect numbers are white. Blood Rush uses the reviewed activation wording and retains Jade's actual stronger effect.
+- Validation: build/lightweight tests pass; all 279 required GameTests pass in build/current-descriptions-reviewed.log, including current rank and white style checks. One legacy tooltip test was updated for the new description key suffix.
+
 ## Ordinary tool material scope correction
 
 The user clarified that ordinary tool sets are only for tungsten, titanium, damask, carbon steel, steel, reinforced iron, meteoric iron and scrap. Supreme materials are excluded from this ordinary tool expansion.
