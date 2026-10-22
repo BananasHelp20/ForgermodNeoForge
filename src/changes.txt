@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Applied the reviewed Lullaby description with white current values; no mechanical changes.
 - Applied the reviewed Live Wire description with white current values; no mechanical changes.
 - Applied the reviewed Flame Breath description with white current values; no mechanical changes.
 - Applied the reviewed Feather Shelter description with white current values; no mechanical changes.
