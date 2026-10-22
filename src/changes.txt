@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Ghostwalk and Jumpscare Horror now reveal the player only after successful melee damage, not air/block swings or rejected attacks. Invisible opening damage is doubled only for the super form; prior invisibility, hidden gear restoration and current cooldowns remain preserved. Applied reviewed white duration/damage descriptions.
 - Flameborn's entity-only fire burst now deals 50% weapon damage at I and 150% at template II, igniting all nearby entities (including allies and neutral mobs) within ten blocks. The caster keeps its thirty-second Fire Resistance; terrain stays untouched. Reviewed damage/range/burn values are white.
 - Cinder Decoy now snapshots the caster's current health (no absorption), accumulates incoming damage instead of detonating on contact or any hostile hit, and lasts ten minutes. Cooldown begins on activation; recasting after it is ready explodes/replaces the old decoy. All visible hostile mobs in its attraction range are drawn to it; reviewed white lifetime/radius/burn values match runtime.
 - Charge Attack now scales from +100% over 20 charging hits at I to +200% over 15 at IV, discharging on the following hit for 20/23/27/30 lightning damage. Maximum-rank discharge also activates a learned Lightning Rod indoors or outdoors; successful killing hits count toward charge. Reviewed values and conditional self-strike text are white.

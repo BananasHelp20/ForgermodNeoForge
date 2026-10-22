@@ -36,8 +36,10 @@ public final class AbilityDescriptionGameTests {
         test.assertTrue(key(AbilityDescriptions.description(dagger,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.current"),"Dagger gets axe mechanics");
         test.assertTrue(key(AbilityDescriptions.description(axe,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.super.current"),"Skybreaker has base description");
         var ghost=new ItemStack(ModItems.HOLLOW_CLAYMORE.get());
-        test.assertTrue(key(AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,3,false)).endsWith("ghostwalk.current"),"Base invisibility leaks opening damage");
-        test.assertTrue(key(AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,4,false)).endsWith("ghostwalk.super.current"),"Super opening damage missing");
+        var baseGhost=AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,3,false);
+        var superGhost=AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,4,false);
+        test.assertTrue(key(baseGhost).endsWith("ghostwalk.reviewed") && !baseGhost.getString().contains("damage"),"Base invisibility leaks opening damage");
+        test.assertTrue(key(superGhost).endsWith("ghostwalk.super.reviewed") && superGhost.getString().contains("damage"),"Super opening damage missing");
         var jade=new ItemStack(ModItems.NIGHTMARE_DAGGER_JADE.get());
         var nightmare=AbilityDescriptions.description(jade,"tooltips.forgermod.ability.absolute_nightmare",1,false);
         test.assertTrue(key(nightmare).endsWith(".current.jade") && json(test,nightmare).contains("6"),"Jade current effect is wrong");

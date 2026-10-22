@@ -44,6 +44,10 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.GHOSTWALK -> rank<4
+                    ?text(id+".reviewed","Become invisible for %s or until striking an enemy.",(10+jade)+" seconds")
+                    :text(id+".super.reviewed","makes you fully invisible for %s or until you strike an enemy. Hitting an enemy while being invisible deals %s.",
+                            (10+2*Math.max(0,rank-4)+jade)+" seconds",number(2*weaponDamage(stack))+" damage");
             case RecommendedAbilities.FLAMEBORN -> text(id+".reviewed","You gain fire resistance for %s, and explode in a burst of fire dealing %s and setting all entities within %s ablaze for %s.",
                     (30+jade)+" seconds",number(weaponDamage(stack)*net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.damageMultiplier(rank))+" damage","10 blocks",(rank>1?7:5)+" seconds");
             case RecommendedAbilities.CINDER_DECOY -> text(id+".reviewed","Creates a decoy that atrackts all hostile mobs for %s. When it disappears or is being dealt the player's health as total damage, the decoy explodes in a fire explosion with a radius of %s, making enemies burn for %s.",

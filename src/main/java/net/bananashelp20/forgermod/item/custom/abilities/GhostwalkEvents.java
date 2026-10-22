@@ -35,11 +35,13 @@ public final class GhostwalkEvents {
             || player.getEffect(MobEffects.INVISIBILITY)!=ghost.owned || !Augmentations.ids(ghost.stack,true).contains(AdditionalAbilities.GHOSTWALK)) {cancel(player.getUUID());return false;}return true;
     }
     public static void cancel(UUID owner) {
+        HITS.remove(owner);
         var ghost=GHOSTS.remove(owner);if(ghost==null) return;
         GhostwalkVisibility.set(ghost.player,false);
         if(ghost.player.getEffect(MobEffects.INVISIBILITY)==ghost.owned || ghost.expiredNaturally && ghost.player.getEffect(MobEffects.INVISIBILITY)==null) {ghost.player.removeEffect(MobEffects.INVISIBILITY);if(ghost.player.isAlive() && ghost.previous!=null) add(ghost.player,ghost.previous);}
     }
-    public static void swing(ServerPlayer player) {if(!WeaponControlLocks.frozen(player) && active(player)) cancel(player.getUUID());}
+    /** Air/block swings clear only an unconfirmed attack, not invisibility. */
+    public static void swing(ServerPlayer player) {HITS.remove(player.getUUID());}
     @SubscribeEvent
     public static void attack(AttackEntityEvent event) {
         if(!event.isCanceled() && event.getEntity() instanceof ServerPlayer player)prepareAttack(player,event.getTarget());
@@ -50,16 +52,22 @@ public final class GhostwalkEvents {
         if(active(player) && Augmentations.level(player.getMainHandItem(),AdditionalAbilities.GHOSTWALK)>=4
                 && target instanceof net.minecraft.world.entity.LivingEntity)
             HITS.put(player.getUUID(),new InvisibleHit(target.getId(),player.level().getGameTime(),player.getMainHandItem()));
-        swing(player);
     }
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
     public static void damage(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
         if(event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player)
                 || !event.getSource().is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK))return;
         var hit=HITS.get(player.getUUID());
-        if(hit!=null && hit.tick()==player.level().getGameTime() && hit.stack()==player.getMainHandItem() && hit.target()==event.getEntity().getId()) {
+        if(hit!=null && active(player) && hit.tick()==player.level().getGameTime() && hit.stack()==player.getMainHandItem() && hit.target()==event.getEntity().getId()) {
             HITS.remove(player.getUUID());event.setAmount(event.getAmount()*2);
         }
+    }
+    @SubscribeEvent
+    public static void successfulHit(net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
+        if((event.getNewDamage()>0 || event.getReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ABSORPTION)>0)
+                && event.getSource().is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)
+                && event.getSource().getEntity() instanceof ServerPlayer player && event.getEntity()!=player && active(player))
+            cancel(player.getUUID());
     }
     @SubscribeEvent
     public static void block(PlayerInteractEvent.LeftClickBlock event) {if(!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) swing(player);}

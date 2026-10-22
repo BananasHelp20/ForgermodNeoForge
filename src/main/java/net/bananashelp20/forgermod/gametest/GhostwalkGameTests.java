@@ -14,6 +14,28 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class GhostwalkGameTests {
     @GameTest(template="riftfang_test")
+    public static void rejectedAttacksKeepGhostwalkAndAbsorbedHitsRevealBothForms(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var target=net.minecraft.world.entity.EntityType.COW.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);
+        target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_ABSORPTION).setBaseValue(100);
+        target.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(target);
+        try {
+            for(int rank:new int[]{1,4}) {
+                var stack=Augmentations.setLevel(new ItemStack(ModItems.HOLLOW_CLAYMORE.get()),AdditionalAbilities.GHOSTWALK,rank);
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
+                player.setOnGround(true);target.invulnerableTime=0;target.setInvulnerable(true);
+                test.assertTrue(GhostwalkEvents.activate(player,stack),"Cannot activate form");
+                player.attack(target);
+                test.assertTrue(GhostwalkEvents.active(player) && GhostwalkVisibility.hidden(player),"Rejected hit reveals player");
+                target.setInvulnerable(false);target.setAbsorptionAmount(100);
+                for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.attack(target);
+                test.assertTrue(target.getHealth()==10 && target.getAbsorptionAmount()<100,"Absorbed-hit fixture failed");
+                test.assertFalse(GhostwalkEvents.active(player) || GhostwalkVisibility.hidden(player),"A successful absorbed hit does not reveal player");
+            }
+        } finally {GhostwalkEvents.cancel(player.getUUID());target.discard();player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void equipmentVisibilityIsSynchronizedAndRestoredWithoutChangingGear(GameTestHelper test) {
         var player=TestPlayers.survival(test);
         var stack=Augmentations.apply(new ItemStack(ModItems.HOLLOW_CLAYMORE.get()),AdditionalAbilities.GHOSTWALK);
@@ -38,7 +60,7 @@ public class GhostwalkGameTests {
             } finally {buffer.release();}
             GhostwalkVisibility.apply(test.getLevel(),new GhostwalkVisibility.Payload(player.getId(),java.util.UUID.randomUUID(),false));
             test.assertTrue(GhostwalkVisibility.hidden(player),"Stale entity id changes a different player's visibility");
-            GhostwalkEvents.swing(player);
+            GhostwalkEvents.cancel(player.getUUID());
             test.assertFalse(GhostwalkVisibility.hidden(player) || GhostwalkVisibility.snapshot(player).hidden(),"Attack does not restore equipment visibility");
             test.assertTrue(player.hasEffect(MobEffects.INVISIBILITY),"Restoring equipment loses prior invisibility");
             for(var slot:gear.keySet())test.assertTrue(ItemStack.matches(gear.get(slot),player.getItemBySlot(slot)),"Hiding equipment changes inventory/attributes");
@@ -95,15 +117,15 @@ public class GhostwalkGameTests {
         test.assertTrue(count==15,"Skipped Morsium variants");test.succeed();
     }
     @GameTest(template="riftfang_test")
-    public static void fifteenVariantsEndOnAirSwingAndPreserveExternalInvisibility(GameTestHelper test) {
+    public static void fifteenVariantsKeepInvisibilityOnAirSwingAndPreserveExternalInvisibility(GameTestHelper test) {
         var player=TestPlayers.survival(test);int count=0;
         try {for(var entry:ModItems.ITEMS.getEntries()) {
             var fresh=new ItemStack(entry.get());boolean eligible=entry.get() instanceof MorsiumWeapon;
             test.assertTrue(Augmentations.pool(fresh).stream().anyMatch(a->a.id().equals(AdditionalAbilities.GHOSTWALK))==eligible,"Wrong Ghostwalk pool");if(!eligible) continue;count++;
             player.removeEffect(MobEffects.INVISIBILITY);player.setItemInHand(InteractionHand.MAIN_HAND,fresh);test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.GHOSTWALK),"Fresh weapon vanishes");
             var stack=Augmentations.apply(fresh,AdditionalAbilities.GHOSTWALK);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
-            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.GHOSTWALK) && player.getEffect(MobEffects.INVISIBILITY).getDuration()==200+(net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack)?20:0),"Ghostwalk duration wrong");GhostwalkEvents.swing(player);test.assertFalse(GhostwalkEvents.active(player) || player.hasEffect(MobEffects.INVISIBILITY),"Air swing keeps invisibility");
-            player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,100,0));GhostwalkEvents.activate(player,stack);GhostwalkEvents.tick(new PlayerTickEvent.Pre(player));GhostwalkEvents.swing(player);test.assertTrue(player.getEffect(MobEffects.INVISIBILITY).getDuration()==99,"Prior invisibility lost or timer paused");player.removeEffect(MobEffects.INVISIBILITY);
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.GHOSTWALK) && player.getEffect(MobEffects.INVISIBILITY).getDuration()==200+(net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack)?20:0),"Ghostwalk duration wrong");GhostwalkEvents.swing(player);test.assertTrue(GhostwalkEvents.active(player) && player.hasEffect(MobEffects.INVISIBILITY),"Air swing reveals player");GhostwalkEvents.cancel(player.getUUID());
+            player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,100,0));GhostwalkEvents.activate(player,stack);GhostwalkEvents.tick(new PlayerTickEvent.Pre(player));GhostwalkEvents.swing(player);test.assertTrue(GhostwalkEvents.active(player),"Air swing ends session with prior potion");GhostwalkEvents.cancel(player.getUUID());test.assertTrue(player.getEffect(MobEffects.INVISIBILITY).getDuration()==99,"Prior invisibility lost or timer paused");player.removeEffect(MobEffects.INVISIBILITY);
             GhostwalkEvents.activate(player,stack);player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,80,0));player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(GhostwalkEvents.active(player) || GhostwalkVisibility.hidden(player),"Switch retains Ghostwalk or hidden equipment");test.assertTrue(player.getEffect(MobEffects.INVISIBILITY).getDuration()==80,"Newly applied potion lost on switch");player.removeEffect(MobEffects.INVISIBILITY);
             var current=player.getMainHandItem();player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,70,0));GhostwalkEvents.activate(player,current);GhostwalkEvents.expired(new net.neoforged.neoforge.event.entity.living.MobEffectEvent.Expired(player,player.getEffect(MobEffects.INVISIBILITY)));player.removeEffect(MobEffects.INVISIBILITY);test.assertFalse(GhostwalkEvents.active(player) || GhostwalkVisibility.hidden(player),"Natural potion expiry retains hidden equipment");test.assertTrue(player.getEffect(MobEffects.INVISIBILITY).getDuration()==70,"Natural expiry loses saved potion");player.removeEffect(MobEffects.INVISIBILITY);
             GhostwalkEvents.activate(player,current);player.removeEffect(MobEffects.INVISIBILITY);test.assertFalse(GhostwalkEvents.active(player) || player.hasEffect(MobEffects.INVISIBILITY) || GhostwalkVisibility.hidden(player),"Dispel resurrects invisibility or leaves equipment hidden");
