@@ -44,6 +44,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.CINDER_DECOY -> text(id+".reviewed","Creates a decoy that atrackts all hostile mobs for %s. When it disappears or is being dealt the player's health as total damage, the decoy explodes in a fire explosion with a radius of %s, making enemies burn for %s.",
+                    "600 seconds",(1+Math.clamp(rank,1,4))+" blocks",(2+rank)+" seconds");
             case "tooltips.forgermod.ability.charge_attack" -> text(id+".reviewed","Progressively gain %s in the next %s. The last hit fully charges a lightning attack dealing %s%s",
                     "+"+number(net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.maximumBonus(rank)*100)+"% damage",
                     net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.chargingHits(rank)+" hits",

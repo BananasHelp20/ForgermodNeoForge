@@ -117,7 +117,7 @@ public final class AugmentUpgradeDescriptions {
             case RecommendedAbilities.CINDER_DECOY -> {
                 numeric(stats, "radius", 1 + Math.clamp(rank, 1, 4), "blocks");
                 seconds(stats, "burn", (2 + rank) * 20);
-                seconds(stats, "duration", 80 + 40 * rank);
+                seconds(stats, "duration", 12000);
             }
             case RecommendedAbilities.COLD_BELLOWS -> seconds(stats, "burn", (2 + rank) * 20);
             case RecommendedAbilities.HEATING_UP -> seconds(stats, "healing_interval", HeatingUpEvents.healingInterval(rank));

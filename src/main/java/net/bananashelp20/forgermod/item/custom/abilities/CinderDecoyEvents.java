@@ -34,9 +34,9 @@ public final class CinderDecoyEvents {
         var stack=new ItemStack(item); stack.set(DataComponents.DYED_COLOR,new DyedItemColor(0xf57824,false)); return stack;
     }
     public static boolean activate(ServerPlayer player,ItemStack stack) {
-        if(active(player)) return false;
         int rank=Augmentations.level(stack,RecommendedAbilities.CINDER_DECOY);
         if(rank<=0) return false;
+        cancel(player.getUUID());
         var entity=new CinderDecoyEntity(player);
         entity.setNoGravity(true); entity.setSilent(true); entity.setNoBasePlate(true); entity.setShowArms(true);
         entity.setYRot(player.getYRot()); entity.setInvisible(true);
@@ -45,15 +45,13 @@ public final class CinderDecoyEvents {
         entity.setItemSlot(EquipmentSlot.LEGS,armor(Items.LEATHER_LEGGINGS)); entity.setItemSlot(EquipmentSlot.FEET,armor(Items.LEATHER_BOOTS));
         if(!player.serverLevel().addFreshEntity(entity)) return false;
         DECOYS.put(player.getUUID(),new Decoy(player,stack,player.getInventory().selected,entity,
-                player.level().getGameTime()+80+40L*rank,rank,new HashMap<>()));
+                player.level().getGameTime()+12000,rank,new HashMap<>()));
         attract(DECOYS.get(player.getUUID())); return true;
     }
     private static void attract(Decoy decoy) {
         for(Mob mob:decoy.entity().level().getEntitiesOfClass(Mob.class,decoy.entity().getBoundingBox().inflate(10),
                 mob->mob instanceof Enemy && mob.isAlive() && !mob.isAlliedTo(decoy.owner()) && mob.hasLineOfSight(decoy.entity()))) {
-            if(mob.getTarget()==decoy.owner() || mob.getTarget()==null) {
-                decoy.targets().putIfAbsent(mob.getUUID(),new Target(mob,mob.getTarget())); mob.setTarget(decoy.entity());
-            }
+            decoy.targets().putIfAbsent(mob.getUUID(),new Target(mob,mob.getTarget())); mob.setTarget(decoy.entity());
         }
     }
     public static boolean active(ServerPlayer player) {
@@ -95,10 +93,6 @@ public final class CinderDecoyEvents {
     public static void onTick(PlayerTickEvent.Post event) {
         if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;
         Decoy decoy=DECOYS.get(player.getUUID());
-        if(!decoy.entity().level().getEntitiesOfClass(Mob.class,decoy.entity().getBoundingBox().inflate(.15),
-                mob->mob instanceof Enemy && mob.isAlive() && !mob.isAlliedTo(player)).isEmpty()) {
-            detonate(player.getUUID()); return;
-        }
         if(player.level().getGameTime()%5==0) {
             attract(decoy);
             player.serverLevel().sendParticles(ParticleTypes.FLAME,decoy.entity().getX(),decoy.entity().getY()+1,decoy.entity().getZ(),8,.3,.7,.3,.01);

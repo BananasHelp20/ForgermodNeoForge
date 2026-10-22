@@ -30,7 +30,30 @@ import java.lang.reflect.Proxy;
 @PrefixGameTestTemplate(false)
 public class CinderDecoyGameTests {
     @GameTest(template="riftfang_test")
-    public static void hostileProjectileDetonatesAndLogoutRemovesReplacement(GameTestHelper test) {
+    public static void healthSnapshotExcludesAbsorptionAndReadyCooldownAllowsRecast(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        player.getAttribute(Attributes.MAX_ABSORPTION).setBaseValue(10);player.setAbsorptionAmount(5);player.setHealth(12);
+        var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        try {
+            use(player,0);var first=decoy(test,player);
+            test.assertTrue(first.getHealth()==12,"Snapshot includes absorption or maximum health");
+            player.setHealth(6);player.setAbsorptionAmount(0);
+            first.hurt(player.damageSources().playerAttack(player),11);
+            test.assertTrue(first.getHealth()==1 && !first.isRemoved(),"Later owner health changes affect snapshot");
+            use(player,0);test.assertTrue(!first.isRemoved(),"Recast bypasses cooldown");
+            String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.CINDER_DECOY;
+            player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of(key,player.level().getGameTime()));
+            use(player,0);var next=decoy(test,player);
+            test.assertTrue(first.isRemoved() && next!=first && next.getHealth()==6,"Ready recast does not replace with new health snapshot");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==player.level().getGameTime()+900,"Recast fails to restart activation cooldown");
+        } finally {
+            CinderDecoyEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void hostileProjectileConsumesHealthBudgetAndLogoutRemovesReplacement(GameTestHelper test) {
         var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);
@@ -41,7 +64,9 @@ public class CinderDecoyGameTests {
         player.setPos(player.position().add(0,0,6));
         var arrow=EntityType.ARROW.create(test.getLevel()); arrow.setOwner(skeleton); arrow.setNoGravity(true);
         arrow.setPos(decoy.position().add(0,1,-2)); arrow.setDeltaMovement(0,0,3); test.getLevel().addFreshEntity(arrow); arrow.tick();
-        test.assertTrue(decoy.isRemoved(),"Real hostile arrow collision does not detonate decoy");
+        test.assertTrue(!decoy.isRemoved() && decoy.getHealth()>0 && decoy.getHealth()<20,"Real hostile arrow does not consume the health budget");
+        decoy.hurt(skeleton.damageSources().mobAttack(skeleton),decoy.getHealth());
+        test.assertTrue(decoy.isRemoved(),"Exhausted health budget does not detonate");
         arrow.discard(); skeleton.discard();
         RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CINDER_DECOY); var replacement=decoy(test,player);
         CinderDecoyEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
@@ -73,8 +98,10 @@ public class CinderDecoyGameTests {
             test.assertTrue(zombie.getTarget()==decoy,"Hostile mob was not attracted");
             test.assertFalse(decoy.shouldBeSaved(),"Decoy can be saved as permanent equipment");
             test.assertTrue(decoy.interactAt(player,Vec3.ZERO,InteractionHand.MAIN_HAND)==InteractionResult.FAIL,"Decoy equipment can be stolen");
-            decoy.hurt(player.damageSources().playerAttack(player),100);
-            test.assertTrue(RecommendedAbilityRuntime.active(player,RecommendedAbilities.CINDER_DECOY),"Player attack detonated or destroyed decoy");
+            decoy.hurt(player.damageSources().playerAttack(player),2);
+            test.assertTrue(decoy.getHealth()==18 && RecommendedAbilityRuntime.active(player,RecommendedAbilities.CINDER_DECOY),"Partial damage destroyed decoy or was ignored");
+            decoy.hurt(zombie.damageSources().mobAttack(zombie),17);
+            test.assertTrue(decoy.getHealth()==1 && !decoy.isRemoved(),"Hostile partial damage detonates early");
             decoy.hurt(zombie.damageSources().mobAttack(zombie),1);
             test.assertTrue(decoy.isRemoved() && !RecommendedAbilityRuntime.active(player,RecommendedAbilities.CINDER_DECOY),"Hostile attack did not finish/remove decoy");
             test.assertTrue(zombie.getHealth()<200 && zombie.getRemainingFireTicks()>=60,"Decoy blast did not damage and ignite enemy");
@@ -85,11 +112,11 @@ public class CinderDecoyGameTests {
         test.succeed();
     }
     @GameTest(template="riftfang_test")
-    public static void contactAndSwitchCleanupStartIndependentCooldowns(GameTestHelper test) throws Exception {
+    public static void contactDoesNotDetonateAndRecastReplacesWithIndependentActivationCooldown(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         stack=Augmentations.apply(stack,RecommendedAbilities.EXPLOSION); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
-        use(player,0); var decoy=decoy(test,player); use(player,1);
+        use(player,1);use(player,0); var decoy=decoy(test,player);
         test.assertTrue(RecommendedAbilityRuntime.active(player,RecommendedAbilities.CINDER_DECOY),"Instant secondary cancels primary decoy");
         String item=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
         test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(item+":"+RecommendedAbilities.EXPLOSION),"Secondary cooldown missing");
@@ -102,7 +129,9 @@ public class CinderDecoyGameTests {
         var zombie=EntityType.ZOMBIE.create(test.getLevel()); zombie.setNoAi(true); zombie.setNoGravity(true);
         zombie.setPos(player.position()); test.getLevel().addFreshEntity(zombie);
         CinderDecoyEvents.onTick(new PlayerTickEvent.Post(player));
-        test.assertTrue(decoy.isRemoved(),"Enemy contact did not trigger decoy");
+        test.assertTrue(!decoy.isRemoved() && decoy.getHealth()==player.getHealth(),"Enemy contact detonates or damages decoy");
+        use(player,0);
+        test.assertTrue(decoy.isRemoved() && decoy(test,player)!=decoy,"Recast does not replace the old decoy");
         zombie.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
     }
     @GameTest(template="riftfang_test")
@@ -135,10 +164,25 @@ public class CinderDecoyGameTests {
         test.succeed();
     }
     @GameTest(template="riftfang_test",timeoutTicks=180)
-    public static void expirationExplodesOnceAndStartsCooldown(GameTestHelper test) throws Exception {
+    public static void tenMinuteExpirationExplodesOnceWithoutRestartingCooldown(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test); player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         var stack=Augmentations.apply(new ItemStack(ModItems.INFERNAL_CLAYMORE.get()),RecommendedAbilities.CINDER_DECOY);
         player.setItemInHand(InteractionHand.MAIN_HAND,stack); use(player,0); var decoy=decoy(test,player);
+        String cooldownKey=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.CINDER_DECOY;
+        long ready=player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(cooldownKey,0L);
+        test.assertTrue(ready==player.level().getGameTime()+900,"Cooldown does not start on activation");
+        var field=CinderDecoyEvents.class.getDeclaredField("DECOYS");field.setAccessible(true);
+        @SuppressWarnings("unchecked") var states=(java.util.Map<java.util.UUID,Object>)field.get(null);
+        var state=states.get(player.getUUID());var components=state.getClass().getRecordComponents();
+        var types=new Class<?>[components.length];var values=new Object[components.length];
+        for(int i=0;i<components.length;i++) {
+            types[i]=components[i].getType();var accessor=components[i].getAccessor();accessor.setAccessible(true);values[i]=accessor.invoke(state);
+            if(components[i].getName().equals("expires")) {
+                test.assertTrue(values[i].equals(player.level().getGameTime()+12000),"Decoy lifetime is not ten minutes");
+                values[i]=player.level().getGameTime()+120;
+            }
+        }
+        var constructor=state.getClass().getDeclaredConstructor(types);constructor.setAccessible(true);states.put(player.getUUID(),constructor.newInstance(values));
         var victim=EntityType.ZOMBIE.create(test.getLevel());victim.setNoAi(true);victim.setNoGravity(true);victim.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD,new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));victim.setPos(decoy.position().add(1,0,0));test.getLevel().addFreshEntity(victim);
         test.runAfterDelay(119,()->{
             test.assertTrue(victim.getHealth()==20 && !decoy.isRemoved(),"Decoy explodes before expiry");
@@ -148,8 +192,7 @@ public class CinderDecoyGameTests {
             test.assertTrue(decoy.isRemoved(),"Expired decoy remains in world");
             test.assertFalse(RecommendedAbilityRuntime.active(player,RecommendedAbilities.CINDER_DECOY),"Expired decoy remains active");
             test.assertTrue(victim.getHealth()<20,"Expiry did not deal explosion damage");
-            String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.CINDER_DECOY;
-            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)>player.level().getGameTime(),"Expiry does not start cooldown");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(cooldownKey)==ready,"Expiry restarts activation cooldown");
             victim.discard();test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
         });
     }

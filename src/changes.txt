@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Cinder Decoy now snapshots the caster's current health (no absorption), accumulates incoming damage instead of detonating on contact or any hostile hit, and lasts ten minutes. Cooldown begins on activation; recasting after it is ready explodes/replaces the old decoy. All visible hostile mobs in its attraction range are drawn to it; reviewed white lifetime/radius/burn values match runtime.
 - Charge Attack now scales from +100% over 20 charging hits at I to +200% over 15 at IV, discharging on the following hit for 20/23/27/30 lightning damage. Maximum-rank discharge also activates a learned Lightning Rod indoors or outdoors; successful killing hits count toward charge. Reviewed values and conditional self-strike text are white.
 - False Awakening now keeps its repeated melee damage bonus for the full decoy session while the marked mob is distracted, instead of consuming it on the first hit. Lethal hits still remove the echo; reviewed bonus/duration values are white.
 - Echo Hearing's private outline now lasts 1/1.35/1.65/2 seconds at I-IV (+1 second with Jade), with reviewed white listening time, range and glow duration; other viewers and external glowing remain unaffected.

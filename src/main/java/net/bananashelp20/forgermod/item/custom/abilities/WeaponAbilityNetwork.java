@@ -109,6 +109,7 @@ public final class WeaponAbilityNetwork {
         boolean recommended=RecommendedAbilities.active(id);
         // Instant attacks can break their weapon; capture the learned cooldown before activation.
         int cooldownTicks = Augmentations.cooldown(stack, slot, weapon);
+        boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id);
         if (recommended?RecommendedAbilityRuntime.activate(player,stack,id):weapon.activateAbility(player, stack, source)) {
             if (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source)) {
                 EquippedSession session = ACTIVE.get(player.getUUID());
@@ -122,7 +123,9 @@ public final class WeaponAbilityNetwork {
                 session.activeSlots().add(slot);
                 session.sources().put(slot, source);
                 session.ids().put(slot,id);
-                session.cooldowns().put(slot, cooldownTicks);
+                // Decoys can be replaced while still alive; do not restart their cooldown on cleanup.
+                session.cooldowns().put(slot, activationCooldown?0:cooldownTicks);
+                if(activationCooldown)setCooldown(player,key,now+cooldownTicks);
             } else {
                 setCooldown(player, key, now + cooldownTicks);
             }
