@@ -12,32 +12,32 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [ ] Challenge Roar: dynamic range/Strength/duration, hard target lock for duration. Intimidating Roar super35/40/45/50 range,20/24/27/30s,60s cooldown. WeaknessI+SlownessI aura while Strength active; dynamic description approved.
 - [ ] Charge Attack: max+200% on charge hit15; discharge16 adds30 lightning damage and strikes wielder if Lightning Rod learned. Low end stays20 charge hits,+100%,20 lightning. White dynamic increments/count/damage, conditional max+LightningRod sentence.
 - [ ] Cinder Decoy: max health equals current ownerHP at creation, excludes absorption; accumulates damage; no touch/single-hit instant detonation;600s lifetime, expiry/death/recast explode; activation cooldown enables recast. All hostile attraction, white lifetime/radius/burn.
-- [ ] Crosswind: existing wording with current cooldown white.
+- [x] Crosswind: existing wording with current cooldown white.
 - [ ] Crucible Hook: exact user description, white damage/burn. Crucible Grappler super: aimed block grappling25/30/35/40 range, acceleration and preserved release velocity, rightclick/switch release, autoarrival setting defaulttrue. Mob hit2.25/2.5/2.75/3x, burn7/8/9/10s, cooldown25s.
-- [ ] Death Stare: exact user conditional description, range sentence omitted at max.
+- [x] Death Stare: exact user conditional description, range sentence omitted at max.
 - [ ] Deep Wound capIII cooldown120/75/30; exact user description white amplifier/duration.
 - [ ] Delusion I-V: effects10/14/18/22/25s, cooldown120/100/80/60/40s; exact user description white duration.
 - [ ] Direct Current: aim+key per unique anchor, consecutive edges only, marked enemies immune to own connection damage. White amount and damage. Static Field >2 anchors filled field, pulses existing1s damage1/1.25/1.5/1.75, .5s stun,20s starts at first connection, not refreshed on marks.
 - [ ] Displace: exact conditional description; belowmax any living entity in range, max any visible entity unlimited loaded range.
-- [ ] Downdraft Bell: exact user description, radius white.
+- [x] Downdraft Bell: exact user description, radius white.
 - [ ] Dream Feast I-V restores2/4/6/8/10 hunger AND saturation; cooldown120/100/75/50/30s, white1/2/3/4/5 hunger bars.
 - [ ] Echo Hearing exact user description white listen/range/glow, glow1s atI ->2s max (+1 Jade).
 - [ ] Ender Swing renamed Gravity Swing (retain ID): capIII radius2/3.5/5 lift10/15/20 gravity+50/100/150% until landing; amplify fall damage; cooldown90/75/60. White radius/height/gravity.
 - [ ] Explosion unchanged base description; Blazing Blast super: same blast/resistance+4 ghast projectiles cardinal relative facing+8 blaze intermediate dirs, projectile damage100/115/130/145%, cooldown120/110/100/90s. Terrain manipulation setting shared Explosion/BlazingBlast defaultfalse including projectiles.
-- [ ] Explosive Hits exact user description white additionaldamage%/radius, existing mechanics.
+- [x] Explosive Hits exact user description white additionaldamage%/radius, existing mechanics.
 - [ ] Eye of Storm: enemies only, radius5 ->12 atV,duration5 ->20 atV including Levitation; trapped enemies follow moving storm.
 - [ ] False Awakening: decoy beside aimed enemy, repeat bonus hits while target distracted for duration, no one-hit consume. Exact user description whitepercent/duration.
-- [ ] Feather Shelter exact user description radius/duration white.
-- [ ] Flame Breath exact user description range/burn white.
+- [x] Feather Shelter exact user description radius/duration white.
+- [x] Flame Breath exact user description range/burn white.
 - [ ] Flameborn: directdamage.5x atI ->1.5x at existingmaxII; all entities ignited; existing FireResistance30s/range10/burn5(or7super). Exact user description white damage/range/burn.
-- [ ] Flaming Stomp exact user description white damage/burn.
+- [x] Flaming Stomp exact user description white damage/burn.
 - [ ] Ghostwalk exact user description white duration, only successful enemy strike breaks invisibility, not air swing. Jumpscare same with white doubled damage.
 - [ ] Gravity Well: single aimed enemy pull then automatic vertical strike, exact user description white range.
 - [ ] Green Feast:1wheat,2HP heal, hunger/saturation2/4/6/8 (+10templateV), existing cooldowns. Exact user description white health/hungerbars.
 - [ ] Just a Dream capII cooldown60/30s; exact user description.
-- [ ] Live Wire exact user description white duration/hearts, mechanics retained.
+- [x] Live Wire exact user description white duration/hearts, mechanics retained.
 - [ ] Lucid Dreaming shared Speed/fallreduction duration30s,50% reduction; white Speedamplifier/percentage/duration.
-- [ ] Lullaby exact user description white range/duration.
+- [x] Lullaby exact user description white range/duration.
 - [ ] Verify, changelog, session handoff and resume Magma Toss showing highlights. Per AGENTS implement/test/review/commit/push each ability before proceeding.
 
 ## Notes

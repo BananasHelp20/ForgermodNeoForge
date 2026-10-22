@@ -209,7 +209,7 @@ public final class AugmentUpgradeDescriptions {
             case AdditionalAbilities.CHALLENGE_ROAR -> numeric(stats, "range", 12 + 4 * rank, "blocks");
             default -> { /* Fixed-effect augments intentionally have no invented rank scaling. */ }
         }
-        if (RecommendedAbilities.active(id)) {
+        if (RecommendedAbilities.active(id) || ReviewedRanks.cooldown(id,rank)>=0) {
             int cooldown = RecommendedAbilities.cooldown(id, rank);
             if (cooldown > 0) seconds(stats, "cooldown", cooldown);
         }

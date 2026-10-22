@@ -41,6 +41,7 @@ public final class Augmentations {
         return stack.getItem() instanceof AugmentTemplateItem template && template.isSuperTemplate();
     }
     public static int maxRank(ItemStack stack, String id) {
+        if(ReviewedRanks.hardCap(id)>0) return ReviewedRanks.hardCap(id);
         return hasSuperForm(stack, id) ? 7 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
     }
     /** Stored ranks 4..7 are super ranks I..IV; the ID and occupied slot stay stable. */
@@ -57,6 +58,7 @@ public final class Augmentations {
         return hasSuperForm(stack,id) && rank >= 4 ? rank - 3 : rank;
     }
     private static int storedMax(ItemStack stack, String id) {
+        if(ReviewedRanks.hardCap(id)>0) return ReviewedRanks.hardCap(id);
         return hasSuperForm(stack,id) ? 7 : RecommendedAbilities.maxRank(id) + 1;
     }
     public static SwordItemWithEffect canonical(ItemStack stack) {
@@ -110,6 +112,7 @@ public final class Augmentations {
             CompoundTag row = (CompoundTag)tag;
             String id = migrateId(row.getString("id"));
             int level = row.getInt("level");
+            if(ReviewedRanks.hardCap(id)>0) level=Math.min(level,ReviewedRanks.hardCap(id));
             if (valid.contains(id) && level >= 1 && level <= storedMax(stack,id)) result.put(id, level);
         }
         return result;
@@ -333,6 +336,7 @@ public final class Augmentations {
             int incoming = entry.getValue();
             int allowed = hasSuperForm(left,id) ? 7 : RecommendedAbilities.maxRank(id)
                     + (isSuperTemplate(right) || eligible(right) && incoming > RecommendedAbilities.maxRank(id) ? 1 : 0);
+            if(ReviewedRanks.hardCap(id)>0) allowed=ReviewedRanks.hardCap(id);
             int rank = current == incoming ? Math.min(allowed, current + 1) : Math.max(current, Math.min(incoming, allowed));
             if (rank <= current) continue;
             if (current == 0 && !id.equals(MATERIAL_HIT)) {
@@ -383,6 +387,8 @@ public final class Augmentations {
     }
     public static int cooldown(ItemStack stack, WeaponAbilitySlot slot, SwordItemWithEffect weapon) {
         String id=activeId(stack,slot);
+        int reviewed=ReviewedRanks.cooldown(id,level(stack,id));
+        if(reviewed>=0) return reviewed;
         if(RecommendedAbilities.active(id)) return RecommendedAbilities.cooldown(id,level(stack,id));
         return Math.max(0, weapon.abilityCooldownTicks(sourceSlot(stack, slot)));
     }
