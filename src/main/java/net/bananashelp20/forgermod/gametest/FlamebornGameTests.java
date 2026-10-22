@@ -25,10 +25,35 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class FlamebornGameTests {
+    @GameTest(template="riftfang_test")
+    public static void allVariantsUseReviewedBaseAndTemplateBurstDamage(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var target=zombie(test,player,4);
+        try {
+            for(var item:BuiltInRegistries.ITEM) {
+                if(!(item instanceof IgnisiumWeapon))continue;
+                for(int rank=1;rank<=2;rank++) {
+                    var template=Augmentations.setLevel(new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get()),RecommendedAbilities.FLAMEBORN,rank);
+                    var stack=Augmentations.merge(new ItemStack(item),template);
+                    test.assertFalse(stack.isEmpty(),"Cannot transfer Flameborn rank");
+                    player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+                    target.setHealth(100);target.invulnerableTime=0;target.clearFire();
+                    float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*(rank==1?.5F:1.5F);
+                    test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.FLAMEBORN),"Ranked burst rejected");
+                    test.assertTrue(Math.abs(target.getHealth()-(100-damage))<.001 && target.getRemainingFireTicks()==(rank==1?100:140),"Wrong damage or ignition at rank "+rank);
+                    net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.cancel(player);
+                }
+            }
+        } finally {
+            net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.cancel(player);target.discard();player.server.getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
     private static Zombie zombie(GameTestHelper test, ServerPlayer player, double offset) {
         Zombie zombie=EntityType.ZOMBIE.create(test.getLevel());
         zombie.setNoAi(true); zombie.setNoGravity(true);
         zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);
+        zombie.getAttribute(Attributes.ARMOR).setBaseValue(0);
         zombie.setHealth(100);
         zombie.setPos(player.getX()+offset,player.getY(),player.getZ());
         test.getLevel().addFreshEntity(zombie);
@@ -51,7 +76,7 @@ public class FlamebornGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void fireBurstAffectsOwnerAndEnemiesButNotAlliesOrTerrain(GameTestHelper test) throws Exception {
+    public static void fireBurstDamagesAndIgnitesAllNearbyEntitiesWithoutTerrainDamage(GameTestHelper test) throws Exception {
         ServerPlayer player=TestPlayers.survival(test);
         player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         ItemStack fresh=new ItemStack(ModItems.MOLTEN_AXE.get());
@@ -73,10 +98,12 @@ public class FlamebornGameTests {
                 "Wielder lacks thirty seconds of Fire Resistance");
         test.assertTrue(player.getRemainingFireTicks()>=100 && near.getRemainingFireTicks()>=100,
                 "Wielder and nearby enemy did not ignite");
-        test.assertTrue(far.getRemainingFireTicks()<=0 && ally.getRemainingFireTicks()<=0 && cow.getRemainingFireTicks()<=0,
-                "Flameborn burned an outside, allied or neutral entity");
-        test.assertTrue(near.getHealth()==100 && before==test.getLevel().getBlockState(block),
-                "Visual explosion dealt unintended damage or changed terrain");
+        test.assertTrue(far.getRemainingFireTicks()<=0 && ally.getRemainingFireTicks()>=100 && cow.getRemainingFireTicks()>=100,
+                "Flameborn excludes allied/neutral entities or exceeds its radius");
+        float expectedDamage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*.5F;
+        test.assertTrue(Math.abs(near.getHealth()-(100-expectedDamage))<.001 && far.getHealth()==100 && ally.getHealth()<100 && cow.getHealth()<10
+                && player.getHealth()==20 && before==test.getLevel().getBlockState(block),
+                "Burst damage is wrong, harms caster or changes terrain");
         String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.FLAMEBORN;
         test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==0,
                 "Flameborn started cooldown before its protection ended");

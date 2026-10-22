@@ -44,6 +44,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.FLAMEBORN -> text(id+".reviewed","You gain fire resistance for %s, and explode in a burst of fire dealing %s and setting all entities within %s ablaze for %s.",
+                    (30+jade)+" seconds",number(weaponDamage(stack)*net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.damageMultiplier(rank))+" damage","10 blocks",(rank>1?7:5)+" seconds");
             case RecommendedAbilities.CINDER_DECOY -> text(id+".reviewed","Creates a decoy that atrackts all hostile mobs for %s. When it disappears or is being dealt the player's health as total damage, the decoy explodes in a fire explosion with a radius of %s, making enemies burn for %s.",
                     "600 seconds",(1+Math.clamp(rank,1,4))+" blocks",(2+rank)+" seconds");
             case "tooltips.forgermod.ability.charge_attack" -> text(id+".reviewed","Progressively gain %s in the next %s. The last hit fully charges a lightning attack dealing %s%s",

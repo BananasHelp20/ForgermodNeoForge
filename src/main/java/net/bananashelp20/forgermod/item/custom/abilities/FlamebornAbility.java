@@ -25,6 +25,7 @@ public final class FlamebornAbility {
                           boolean appliedResistance, int previousFireTicks, int amplifier) {}
     private static final Map<UUID, Active> ACTIVE = new HashMap<>();
     private FlamebornAbility() {}
+    public static float damageMultiplier(int rank) {return rank>1?1.5F:.5F;}
 
     public static boolean activate(ServerPlayer player, ItemStack stack) {
         if (!(stack.getItem() instanceof IgnisiumWeapon)
@@ -45,12 +46,15 @@ public final class FlamebornAbility {
         ACTIVE.put(player.getUUID(), new Active(player.serverLevel(), now, now + duration,
                 previous, applied, previousFireTicks,
                 JadeAugments.amplifier(stack,RecommendedAbilities.FLAMEBORN,0)));
-        for (LivingEntity target : player.serverLevel().getEntitiesOfClass(LivingEntity.class,
-                player.getBoundingBox().inflate(RADIUS),
-                entity -> WeaponAbilityTargets.enemy(player, entity) && player.distanceToSqr(entity) <= RADIUS * RADIUS)) {
+        float damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)
+                *damageMultiplier(Augmentations.level(stack,RecommendedAbilities.FLAMEBORN));
+        var source=player.damageSources().source(net.minecraft.world.damagesource.DamageTypes.PLAYER_EXPLOSION,player);
+        for (var target : player.serverLevel().getEntities(player,player.getBoundingBox().inflate(RADIUS),
+                entity -> entity.isAlive() && !entity.isSpectator() && player.distanceToSqr(entity) <= RADIUS * RADIUS)) {
+            target.hurt(source,damage);
             target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(), burnTicks));
         }
-        // Visual burst only: terrain and nearby allies are left untouched.
+        // Entity-only fire burst: no block destruction or terrain ignition.
         for (int radius = 2; radius <= 10; radius += 2) {
             for (int point = 0; point < 24; point++) {
                 double angle = 2 * Math.PI * point / 24;

@@ -148,7 +148,10 @@ public final class AugmentUpgradeDescriptions {
             }
             case RecommendedAbilities.ECHO_SALVAGE -> numeric(stats, "damage_cap", 2 * rank, "damage");
             case RecommendedAbilities.ENDER_SWING -> numeric(stats, "damage", rank > 1 ? 1.2 : 1, "weapon_damage");
-            case RecommendedAbilities.FLAMEBORN -> seconds(stats, "burn", rank > 1 ? 140 : 100);
+            case RecommendedAbilities.FLAMEBORN -> {
+                seconds(stats, "burn", rank > 1 ? 140 : 100);
+                numeric(stats,"damage",net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.damageMultiplier(rank),"weapon_damage");
+            }
             case Augmentations.DOUBLE_JUMP -> {
                 numeric(stats, "air_jumps", rank >= 4 ? 2 : 1, "jumps");
                 text(stats, "jump_height", .55 + .05 * Math.clamp(rank - 4, 0, 3), "higher_jumps");
