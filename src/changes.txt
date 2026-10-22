@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Applied the reviewed Explosive Hits description with white current values; no mechanical changes.
 - Updated Downdraft Bell to the reviewed current-level description with white variable values; preserved its gameplay.
 - Updated Death Stare to the reviewed current-level description with white variable values; preserved its gameplay.
 - Updated Crosswind to the reviewed current-level description with white variable values; preserved its gameplay.
