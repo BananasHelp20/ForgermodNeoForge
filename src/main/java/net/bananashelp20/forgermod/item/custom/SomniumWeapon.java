@@ -88,7 +88,8 @@ public class SomniumWeapon extends SwordItemWithEffect {
                 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 || !(player.getMainHandItem().getItem() instanceof SomniumWeapon weapon) || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.lucid_dreaming")
                 || !(event.getEntity() instanceof Enemy || event.getEntity() instanceof Player other && player.canHarmPlayer(other))
-                || !LUCID.consumeKill(player.getUUID(), player.level().getGameTime())) return;
+                || !LUCID.consumeKill(player.getUUID(), player.level().getGameTime(),
+                    net.bananashelp20.forgermod.augmentation.JadeAugments.duration(player.getMainHandItem(),"tooltips.forgermod.ability.lucid_dreaming",600))) return;
         MobEffectInstance previous = player.getEffect(MobEffects.MOVEMENT_SPEED);
         if (previous != null) PREVIOUS_SPEED.put(player.getUUID(), new MobEffectInstance(previous));
         MobEffectInstance speed = net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(player.getMainHandItem(),

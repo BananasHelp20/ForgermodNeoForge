@@ -14,8 +14,11 @@ public final class LucidDreamingStateTest {
         expect(false, state.consumeKill(second, 100), "other player cannot consume it");
         expect(true, state.consumeKill(first, 100), "armed kill grants buff");
         expect(false, state.consumeKill(first, 101), "one kill per activation");
-        expect(true, state.reducesFallDamage(first, 399), "last protected tick");
-        expect(false, state.reducesFallDamage(first, 400), "exact expiry");
+        expect(true, state.reducesFallDamage(first, 699), "last protected tick");
+        expect(false, state.reducesFallDamage(first, 700), "exact thirty-second expiry");
+        state.arm(second);state.consumeKill(second,100,620);
+        expect(true,state.reducesFallDamage(second,719),"Jade window");
+        expect(false,state.reducesFallDamage(second,720),"Jade expiry");
         state.arm(first);
         state.clear(first);
         expect(false, state.consumeKill(first, 401), "logout clears armed kill");

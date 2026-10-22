@@ -44,6 +44,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.lucid_dreaming" -> text(id+".reviewed","Your next kill grants %s and %s for %s.",
+                    "Speed "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(2+jade),"50% less fall damage",(30+jade)+" seconds");
             case AdditionalAbilities.GREEN_FEAST -> text(id+".reviewed","remove 1 wheat from your inventory to heal %s and gain %s.","2 health",(ReviewedRanks.foodPoints(rank)/2)+" hungerbars");
             case AdditionalAbilities.JUST_A_DREAM -> text(id+".reviewed","Immediately teleport to your respawn point across all dimensions. if it's not available, return to the world spawn.");
             case AdditionalAbilities.DREAM_FEAST -> text(id+".reviewed","Instantly gain %s.",(ReviewedRanks.foodPoints(rank)/2)+" hunger bars");

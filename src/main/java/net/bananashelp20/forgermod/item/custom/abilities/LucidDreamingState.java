@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-/** One armed kill grants a fifteen-second fall-damage reduction. */
+/** One armed kill grants the same protection window as its Speed buff. */
 public final class LucidDreamingState {
-    private static final long DURATION_TICKS = 300;
+    private static final int DURATION_TICKS = 600;
     private final Set<UUID> armed = new HashSet<>();
     private final Map<UUID, Long> protectedUntil = new HashMap<>();
 
@@ -17,8 +17,12 @@ public final class LucidDreamingState {
     }
 
     public boolean consumeKill(UUID player, long now) {
+        return consumeKill(player,now,DURATION_TICKS);
+    }
+
+    public boolean consumeKill(UUID player,long now,int duration) {
         if (!armed.remove(player)) return false;
-        protectedUntil.put(player, now + DURATION_TICKS);
+        protectedUntil.put(player, now + Math.max(1,duration));
         return true;
     }
 
