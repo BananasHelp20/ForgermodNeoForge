@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Echo Hearing's private outline now lasts 1/1.35/1.65/2 seconds at I-IV (+1 second with Jade), with reviewed white listening time, range and glow duration; other viewers and external glowing remain unaffected.
 - Lucid Dreaming now grants Speed and 50% fall protection for the same 30 seconds (31 with Jade), with reviewed white Speed/amplifier, reduction and shared duration text.
 - Green Feast now consumes one wheat to heal 2 HP and restore 2/4/6/8 hunger and saturation points (10 at template V). Missing hunger can activate it even at full health; reviewed text displays white health/hunger bars.
 - Just a Dream now caps at II (including templates), has 60/30-second cooldowns and uses the reviewed cross-dimension respawn description. Existing over-cap stacks retain it at II.

@@ -72,7 +72,9 @@ public final class EchoHearingAbility {
                     || listener.getInventory().selected != state.slot()
                     || listener.distanceToSqr(noisy) > (double) state.radius() * state.radius()) continue;
 
-            int glowTicks=JadeAugments.duration(state.stack(),RecommendedAbilities.ECHO_HEARING,40);
+            int glowTicks=JadeAugments.duration(state.stack(),RecommendedAbilities.ECHO_HEARING,
+                    net.bananashelp20.forgermod.augmentation.ReviewedRanks.echoGlowTicks(
+                            Augmentations.level(state.stack(),RecommendedAbilities.ECHO_HEARING)));
             EchoHearingHighlights.reveal(listener,noisy,glowTicks);
             int travelTicks = Math.clamp((int) Math.ceil(listener.distanceTo(noisy) / 2.0), 5, 30);
             level.sendParticles(listener, new VibrationParticleOption(new EntityPositionSource(listener, 1.0F), travelTicks),

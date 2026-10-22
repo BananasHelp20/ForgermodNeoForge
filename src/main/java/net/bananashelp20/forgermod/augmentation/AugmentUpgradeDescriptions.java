@@ -139,6 +139,7 @@ public final class AugmentUpgradeDescriptions {
             case RecommendedAbilities.ECHO_HEARING -> {
                 numeric(stats, "range", 24 + 8 * Math.clamp(rank, 1, 4), "blocks");
                 seconds(stats, "duration", 160 + 40 * Math.clamp(rank, 1, 4));
+                seconds(stats, "glow_duration", ReviewedRanks.echoGlowTicks(rank)+jadeTicks);
             }
             case RecommendedAbilities.ECHO_SALVAGE -> numeric(stats, "damage_cap", 2 * rank, "damage");
             case RecommendedAbilities.ENDER_SWING -> numeric(stats, "damage", rank > 1 ? 1.2 : 1, "weapon_damage");

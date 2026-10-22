@@ -44,6 +44,9 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.ECHO_HEARING -> text(id+".reviewed","In the next %s after activating this ability, you will be able to hear sounds made from all entities within a %s. After entities make a sound, they glow for %s.",
+                    (8+2*Math.clamp(rank,1,4))+" seconds",(24+8*Math.clamp(rank,1,4))+" block radius",
+                    number(ReviewedRanks.echoGlowTicks(rank)/20.0+jade)+" seconds");
             case "tooltips.forgermod.ability.lucid_dreaming" -> text(id+".reviewed","Your next kill grants %s and %s for %s.",
                     "Speed "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(2+jade),"50% less fall damage",(30+jade)+" seconds");
             case AdditionalAbilities.GREEN_FEAST -> text(id+".reviewed","remove 1 wheat from your inventory to heal %s and gain %s.","2 health",(ReviewedRanks.foodPoints(rank)/2)+" hungerbars");

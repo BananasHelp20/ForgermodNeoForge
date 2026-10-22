@@ -20,8 +20,8 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [ ] Direct Current: aim+key per unique anchor, consecutive edges only, marked enemies immune to own connection damage. White amount and damage. Static Field >2 anchors filled field, pulses existing1s damage1/1.25/1.5/1.75, .5s stun,20s starts at first connection, not refreshed on marks.
 - [ ] Displace: exact conditional description; belowmax any living entity in range, max any visible entity unlimited loaded range.
 - [x] Downdraft Bell: exact user description, radius white.
-- [ ] Dream Feast I-V restores2/4/6/8/10 hunger AND saturation; cooldown120/100/75/50/30s, white1/2/3/4/5 hunger bars.
-- [ ] Echo Hearing exact user description white listen/range/glow, glow1s atI ->2s max (+1 Jade).
+- [x] Dream Feast I-V restores2/4/6/8/10 hunger AND saturation; cooldown120/100/75/50/30s, white1/2/3/4/5 hunger bars.
+- [x] Echo Hearing exact user description white listen/range/glow, glow1s atI ->2s max (+1 Jade).
 - [ ] Ender Swing renamed Gravity Swing (retain ID): capIII radius2/3.5/5 lift10/15/20 gravity+50/100/150% until landing; amplify fall damage; cooldown90/75/60. White radius/height/gravity.
 - [ ] Explosion unchanged base description; Blazing Blast super: same blast/resistance+4 ghast projectiles cardinal relative facing+8 blaze intermediate dirs, projectile damage100/115/130/145%, cooldown120/110/100/90s. Terrain manipulation setting shared Explosion/BlazingBlast defaultfalse including projectiles.
 - [x] Explosive Hits exact user description white additionaldamage%/radius, existing mechanics.
@@ -33,14 +33,16 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Flaming Stomp exact user description white damage/burn.
 - [ ] Ghostwalk exact user description white duration, only successful enemy strike breaks invisibility, not air swing. Jumpscare same with white doubled damage.
 - [ ] Gravity Well: single aimed enemy pull then automatic vertical strike, exact user description white range.
-- [ ] Green Feast:1wheat,2HP heal, hunger/saturation2/4/6/8 (+10templateV), existing cooldowns. Exact user description white health/hungerbars.
-- [ ] Just a Dream capII cooldown60/30s; exact user description.
+- [x] Green Feast:1wheat,2HP heal, hunger/saturation2/4/6/8 (+10templateV), existing cooldowns. Exact user description white health/hungerbars.
+- [x] Just a Dream capII cooldown60/30s; exact user description.
 - [x] Live Wire exact user description white duration/hearts, mechanics retained.
-- [ ] Lucid Dreaming shared Speed/fallreduction duration30s,50% reduction; white Speedamplifier/percentage/duration.
+- [x] Lucid Dreaming shared Speed/fallreduction duration30s,50% reduction; white Speedamplifier/percentage/duration.
 - [x] Lullaby exact user description white range/duration.
 - [ ] Verify, changelog, session handoff and resume Magma Toss showing highlights. Per AGENTS implement/test/review/commit/push each ability before proceeding.
 
 ## Notes
+
+- User confirmed chains may extend beyond Anger of Zeus's initial 10-40-block wave radius; each jump is still limited to 10 blocks from the previous target. All previously reviewed abilities require their full agreed mechanics, not description-only changes. Unreviewed abilities receive formatting only.
 
 - Actual checkout is E:/Schule/4-Klasse/Projects/Mods/ForgermodNeoForge. D: contains only .idea.
 - Initial worktree clean, HEAD b137f58. Local code differs from public GitHub descriptions; use local sources.

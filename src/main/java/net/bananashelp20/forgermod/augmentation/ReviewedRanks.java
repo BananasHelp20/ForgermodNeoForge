@@ -26,4 +26,5 @@ public final class ReviewedRanks {
     public static int at(int rank,int... values) {return values[Math.clamp(rank-1,0,values.length-1)];}
     public static int delusionTicks(int rank) {return at(rank,10,14,18,22,25)*20;}
     public static int foodPoints(int rank) {return 2*Math.clamp(rank,1,5);}
+    public static int echoGlowTicks(int rank) {return at(rank,20,27,33,40);}
 }

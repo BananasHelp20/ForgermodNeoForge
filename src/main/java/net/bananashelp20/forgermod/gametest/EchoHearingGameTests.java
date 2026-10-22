@@ -33,6 +33,30 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 @PrefixGameTestTemplate(false)
 public class EchoHearingGameTests {
     @GameTest(template="riftfang_test")
+    public static void rankProgressionControlsPrivateGlowAndReviewedDescription(GameTestHelper test) {
+        var wielder=player(test);
+        var mob=EntityType.ZOMBIE.create(test.getLevel());
+        mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(wielder.position().add(4,0,0));test.getLevel().addFreshEntity(mob);
+        try {
+            for(var item:new net.minecraft.world.item.Item[]{ModItems.SHRIEKING_CLAYMORE.get(),ModItems.SHRIEKING_CLAYMORE_JADE.get()}) {
+                for(int rank=1;rank<=4;rank++) {
+                    var stack=Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.ECHO_HEARING,rank);
+                    wielder.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                    test.assertTrue(EchoHearingAbility.activate(wielder,stack),"Cannot start rank "+rank);
+                    noise(test,GameEvent.STEP,mob);
+                    int ticks=net.bananashelp20.forgermod.augmentation.ReviewedRanks.echoGlowTicks(rank)+(JadeAugments.isJade(stack)?20:0);
+                    test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==ticks,"Wrong glow duration at rank "+rank);
+                    var text=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,RecommendedAbilities.ECHO_HEARING,rank,false).getString();
+                    test.assertTrue(text.contains((24+8*rank)+" block radius") && text.contains(net.bananashelp20.forgermod.augmentation.AbilityDescriptions.number(ticks/20.0)+" seconds"),"Description differs from runtime: "+text);
+                    EchoHearingAbility.cancel(wielder.getUUID());
+                }
+            }
+        } finally {
+            EchoHearingAbility.cancel(wielder.getUUID());mob.discard();wielder.server.getPlayerList().remove(wielder);
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void privateOutlinesKeepExternalGlowingAndCodecTargetsOnlyItsViewer(GameTestHelper test) {
         var wielder=player(test);var observer=player(test);
         var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(wielder.position().add(4,0,0));test.getLevel().addFreshEntity(mob);
@@ -44,7 +68,7 @@ public class EchoHearingGameTests {
             var stack=Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()),RecommendedAbilities.ECHO_HEARING);
             wielder.setItemInHand(InteractionHand.MAIN_HAND,stack);EchoHearingAbility.activate(wielder,stack);
             noise(test,GameEvent.STEP,mob);noise(test,GameEvent.ENTITY_ACTION,drop);
-            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==40 && EchoHearingHighlights.remainingTicks(observer,mob)==0,"Private state is shared across viewers");
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==20 && EchoHearingHighlights.remainingTicks(observer,mob)==0,"Private state is shared across viewers or rank-I glow is wrong");
             var packet=new EchoHearingHighlights.Payload(mob.getUUID(),wielder.level().getGameTime()+40,false);
             var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
             try {
@@ -112,7 +136,7 @@ public class EchoHearingGameTests {
                 test.assertFalse(wielder.hasEffect(MobEffects.GLOWING) || otherPlayer.hasEffect(MobEffects.GLOWING)
                         || mob.hasEffect(MobEffects.GLOWING) || drop.isCurrentlyGlowing(), "Activation revealed a silent entity");
                 noise(test, GameEvent.STEP, mob);
-                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob) == 40+(JadeAugments.isJade(learned)?20:0), "Noisy mob received the wrong private outline duration");
+                test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob) == 20+(JadeAugments.isJade(learned)?20:0), "Noisy mob received the wrong private outline duration");
                 test.assertTrue(EchoHearingHighlights.remainingTicks(otherPlayer,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Outline leaks to another viewer or shared effects");
                 noise(test, GameEvent.STEP, otherPlayer);
                 test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,otherPlayer)>0 && !otherPlayer.hasEffect(MobEffects.GLOWING), "Noisy other player was excluded or publicly revealed");
@@ -166,7 +190,7 @@ public class EchoHearingGameTests {
     }
 
     @GameTest(template = "riftfang_test", batch = "echo_hearing_expiry", timeoutTicks = 230)
-    public static void glowExpiresAfterTwoSecondsAndListeningEndsAfterTen(GameTestHelper test) throws Exception {
+    public static void glowExpiresAfterOneSecondAndListeningEndsAfterTen(GameTestHelper test) throws Exception {
         ServerPlayer wielder = player(test);
         var mob = EntityType.ZOMBIE.create(test.getLevel());
         mob.setNoAi(true);
@@ -181,8 +205,8 @@ public class EchoHearingGameTests {
         test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)>0, "First noise was not revealed");
         var originalPosition = wielder.position();
         wielder.setPos(originalPosition.add(40, 0, 0));
-        test.runAfterDelay(45, () -> {
-            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Private outline outlasted two seconds");
+        test.runAfterDelay(21, () -> {
+            test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)==0 && !mob.hasEffect(MobEffects.GLOWING), "Private outline outlasted one second");
             wielder.setPos(originalPosition);
             noise(test, GameEvent.STEP, mob);
             test.assertTrue(EchoHearingHighlights.remainingTicks(wielder,mob)>0, "Later noise did not reveal mob again");

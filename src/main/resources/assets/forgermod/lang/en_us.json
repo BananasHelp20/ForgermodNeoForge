@@ -770,6 +770,7 @@
   "augmentation.forgermod.preview.radius": "Radius: %s.",
   "augmentation.forgermod.preview.range": "Range: %s.",
   "augmentation.forgermod.preview.duration": "Lasts %s.",
+  "augmentation.forgermod.preview.glow_duration": "Noise reveals entities for %s.",
   "augmentation.forgermod.preview.burn": "Burns for %s.",
   "augmentation.forgermod.preview.healing_interval": "Heal 1 HP every %s.",
   "augmentation.forgermod.preview.hands": "Works in %s.",

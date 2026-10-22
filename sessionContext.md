@@ -2,7 +2,10 @@
 
 ## Ability review implementation in progress (2026-10-22)
 
+- Echo Hearing completed: private per-viewer outlines scale 20/27/33/40 ticks (+20 Jade); reviewed white listen/range/glow text and upgrade preview. Build/unit checks and all 315 required GameTests pass in build/echo-hearing-reviewed-ranks.log, including added rank/Jade/runtime-description coverage and one-second expiry.
 - User authorized implementing the current conversation's reviewed changes, plus white current-rank numeric values for all not-yet-reviewed abilities/passives without changing their mechanics. Resume the interactive review at **43: Magma Toss** after implementation. Full pending queue is markdown/ability-review-implementation.md; do not treat unfinished entries as completed.
+- User reiterated that ALL agreed changes belonging to reviewed abilities must be completed, not merely their descriptions. Anger of Zeus chains may extend beyond the initial 10-40-block wave radius (10 blocks per jump, unique targets selected at activation).
+- Completed and pushed through c5c0956: Blood Sacrafice combined-HP cost/progression, Deep Wound III cap/cooldowns, Delusion V duration/cooldowns, Dream Feast V food/saturation/cooldowns, Just a Dream II cap/cooldowns, Green Feast scaling hunger/saturation, Lucid Dreaming shared 30-second duration, and reviewed wording-only entries marked complete in the queue. Latest full run passed all 314 required GameTests (build/echo-hearing-review.log), including Lucid Dreaming's updated lifetime checks.
 - Added a shared description path for weapon and template tooltips, augmentation cards and hover. Legacy numeric slash lists resolve to the current rank, values are white and prose gray. Current cooldown/material effect numbers are white. Blood Rush uses the reviewed activation wording and retains Jade's actual stronger effect.
 - Validation: build/lightweight tests pass; all 279 required GameTests pass in build/current-descriptions-reviewed.log, including current rank and white style checks. One legacy tooltip test was updated for the new description key suffix.
 
