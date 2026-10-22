@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Updated Crosswind to the reviewed current-level description with white variable values; preserved its gameplay.
 - Rebalanced Blood Sacrafice to 15/20/25/30 seconds (35 at template V), a constant 90-second cooldown, and half combined HP/absorption paid absorption-first; updated its reviewed description and white duration.
 - Updated Blood Rush's description to the reviewed one-heart activation wording, resolving Jade Speed/duration and highlighting the current values in white.
 - Added shared current-rank ability descriptions with white numeric values in weapon/template tooltips and augmentation cards; removed slash-separated level previews from rendered descriptions without changing unreviewed abilities' mechanics.

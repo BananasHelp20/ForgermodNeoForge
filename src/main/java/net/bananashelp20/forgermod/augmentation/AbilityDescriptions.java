@@ -44,6 +44,7 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.CROSSWIND -> text(id+".reviewed","Deflect incoming projectiles away from you for 2 minutes. Your own shots are unaffected. Cooldown: %s.",(RecommendedAbilities.cooldown(id,rank)/20)+" seconds");
             case AdditionalAbilities.BLOOD_SACRAFICE -> text(id+".reviewed","Sacrafice half of your total HP to deal double weapon damage for %s.",
                     (net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank)/20)+" seconds");
             case AdditionalAbilities.BLOOD_RUSH -> text(id+".current","On activation pays %s to gain %s for %s.",
