@@ -1,4 +1,6 @@
 {
+  "augmentation.forgermod.preview.food": "Restores %s.",
+  "augmentation.forgermod.preview.value.food_points": "%s hunger and saturation points",
   "tooltips.forgermod.ability.delusion.name": "Delusion",
   "tooltips.forgermod.ability.delusion": "Your next hit makes a mob lose its aggression for 20 seconds.",
   "tooltips.forgermod.ability.delusion.card": "Your next hit calms a mob for 20 seconds.",

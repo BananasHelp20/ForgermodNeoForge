@@ -8,7 +8,10 @@ public final class DreamFeastAbility {
     public static boolean activate(ServerPlayer player) {
         var food=player.getFoodData();
         if(!food.needsFood() && food.getSaturationLevel()>=food.getFoodLevel()) return false;
-        food.eat(8,.5F);
+        int points=net.bananashelp20.forgermod.augmentation.ReviewedRanks.foodPoints(
+                net.bananashelp20.forgermod.augmentation.Augmentations.level(player.getMainHandItem(),
+                        net.bananashelp20.forgermod.augmentation.AdditionalAbilities.DREAM_FEAST));
+        food.eat(points,.5F);
         player.serverLevel().sendParticles(ParticleTypes.HAPPY_VILLAGER,player.getX(),player.getY()+1,player.getZ(),12,.4,.4,.4,.03);
         return true;
     }
