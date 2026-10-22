@@ -12,6 +12,26 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class GreenFeastGameTests {
     @GameTest(template="riftfang_test")
+    public static void hungerAndSaturationScaleTogetherIncludingTemplateFive(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        try {
+            for(var entry:ModItems.ITEMS.getEntries()) if(entry.get() instanceof LushWeapon) {
+                for(int rank=1;rank<=5;rank++) {
+                    var template=Augmentations.setLevel(new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get()),AdditionalAbilities.GREEN_FEAST,rank);
+                    var stack=Augmentations.merge(new ItemStack(entry.get()),template);
+                    test.assertFalse(stack.isEmpty(),"Cannot transfer reviewed Green Feast rank");
+                    player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setHealth(18);
+                    player.getFoodData().setFoodLevel(8);player.getFoodData().setSaturation(1);
+                    player.getInventory().setItem(10,new ItemStack(Items.WHEAT,2));
+                    test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.GREEN_FEAST),"Feast rejected");
+                    test.assertTrue(player.getHealth()==20 && player.getFoodData().getFoodLevel()==8+2*rank
+                            && player.getFoodData().getSaturationLevel()==1+2*rank && player.getInventory().getItem(10).getCount()==1,"Incorrect food, saturation, healing or wheat cost at "+rank);
+                }
+            }
+        } finally {player.server.getPlayerList().remove(player);}
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void fifteenVariantsConsumeOneWheatForHealingOrSaturation(GameTestHelper test) {
         var player=TestPlayers.survival(test);int count=0;
         try {for(var entry:ModItems.ITEMS.getEntries()) {
