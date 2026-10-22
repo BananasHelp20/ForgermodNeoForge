@@ -44,6 +44,7 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.FLAMING_STOMP -> text(id+".reviewed","your next axe attack becomes a vertical 5x5 strike dealing %s and setting enemies ablaze for %s.",number(weaponDamage(stack))+" damage","5 seconds");
             case AdditionalAbilities.LULLABY -> text(id+".reviewed","Aim at a mob within %s to put it to sleep for %s. Any form of damage wakes it.",(8+2*rank)+" blocks",(3+jade)+" seconds");
             case AdditionalAbilities.LIVE_WIRE -> text(id+".reviewed","In the next %s, enemies that hit you take %s in return.","8 seconds","1 hearts damage");
             case AdditionalAbilities.FLAME_BREATH -> text(id+".reviewed","Incinerate the area in front of you with a range of %s, igninting enemies for %s.",(6+rank)+" blocks",(2+rank)+" seconds");
@@ -58,6 +59,16 @@ public final class AbilityDescriptions {
                     "1 heart","speed "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(2+jade),(10+jade)+" seconds");
             default -> null;
         };
+    }
+
+    public static String number(double value) {
+        return String.format(java.util.Locale.ROOT,"%.2f",value).replaceAll("\\.?0+$","");
+    }
+    public static double weaponDamage(ItemStack stack) {
+        var attributes=stack.getOrDefault(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS,
+                net.minecraft.world.item.component.ItemAttributeModifiers.EMPTY);
+        return 1+attributes.modifiers().stream().filter(entry->entry.attribute().equals(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE))
+                .mapToDouble(entry->entry.modifier().amount()).sum();
     }
 
 
