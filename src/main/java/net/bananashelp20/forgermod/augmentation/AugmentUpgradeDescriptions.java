@@ -106,6 +106,10 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case AdditionalAbilities.DISPLACE -> {
+                if(rank>=4)text(stats,"range","unlimited","visible_range");
+                else numeric(stats,"range",10,"blocks");
+            }
             case "tooltips.forgermod.ability.charge_attack" -> {
                 numeric(stats,"charge_hits",net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.chargingHits(rank),"hits");
                 numeric(stats,"charge_bonus",net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.maximumBonus(rank)*100,"percent");

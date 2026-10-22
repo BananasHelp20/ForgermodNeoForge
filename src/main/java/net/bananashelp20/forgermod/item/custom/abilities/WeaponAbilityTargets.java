@@ -32,4 +32,38 @@ public final class WeaponAbilityTargets {
                 target->target instanceof LivingEntity living && enemy(player,living),start.distanceToSqr(end));
         return hit==null?null:(LivingEntity)hit.getEntity();
     }
+
+    /** Unbounded aim only scans entities already loaded and never traces through unloaded chunks. */
+    public static net.minecraft.world.entity.Entity aimedLoadedEntity(ServerPlayer player,double range,
+            java.util.function.Predicate<net.minecraft.world.entity.Entity> eligible) {
+        var start=player.getEyePosition();var look=player.getLookAngle();
+        net.minecraft.world.entity.Entity nearestEntity=null;net.minecraft.world.phys.Vec3 nearestHit=null;
+        double nearest=range*range;
+        for(var entity:player.serverLevel().getAllEntities()) {
+            if(entity==player || !entity.isAlive() || entity.isRemoved() || entity.isSpectator() || !eligible.test(entity))continue;
+            double reach=entity.getBoundingBox().getCenter().distanceTo(start)+entity.getBbWidth()+entity.getBbHeight();
+            var hit=entity.getBoundingBox().inflate(entity.getPickRadius()).clip(start,start.add(look.scale(Math.min(range,reach))));
+            if(hit.isPresent() && start.distanceToSqr(hit.get())<=nearest) {
+                nearest=start.distanceToSqr(hit.get());nearestEntity=entity;nearestHit=hit.get();
+            }
+        }
+        if(nearestEntity==null || !loadedLine(player.serverLevel(),start,nearestHit))return null;
+        return player.level().clip(new ClipContext(start,nearestHit,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player))
+                .getType()==HitResult.Type.MISS?nearestEntity:null;
+    }
+    private static boolean loadedLine(net.minecraft.server.level.ServerLevel level,net.minecraft.world.phys.Vec3 start,net.minecraft.world.phys.Vec3 end) {
+        int x=net.minecraft.util.Mth.floor(start.x)>>4,z=net.minecraft.util.Mth.floor(start.z)>>4;
+        int ex=net.minecraft.util.Mth.floor(end.x)>>4,ez=net.minecraft.util.Mth.floor(end.z)>>4;
+        double dx=end.x-start.x,dz=end.z-start.z;
+        int sx=dx>0?1:dx<0?-1:0,sz=dz>0?1:dz<0?-1:0;
+        double tx=sx==0?Double.POSITIVE_INFINITY:((sx>0?(x+1)*16.0:x*16.0)-start.x)/dx;
+        double tz=sz==0?Double.POSITIVE_INFINITY:((sz>0?(z+1)*16.0:z*16.0)-start.z)/dz;
+        while(true) {
+            if(!level.getChunkSource().hasChunk(x,z))return false;
+            if(x==ex && z==ez)return true;
+            if(tx<tz){x+=sx;tx+=16/Math.abs(dx);}
+            else if(tz<tx){z+=sz;tz+=16/Math.abs(dz);}
+            else{x+=sx;z+=sz;tx+=16/Math.abs(dx);tz+=16/Math.abs(dz);}
+        }
+    }
 }

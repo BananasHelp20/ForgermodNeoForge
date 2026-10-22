@@ -9,7 +9,10 @@ public final class DisplaceAbility {
     private DisplaceAbility() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(player.isPassenger() || player.isVehicle()) return false;
-        var target=WeaponAbilityTargets.aimedEnemy(player,10);
+        boolean maximum=net.bananashelp20.forgermod.augmentation.Augmentations.level(stack,
+                net.bananashelp20.forgermod.augmentation.AdditionalAbilities.DISPLACE)>=4;
+        var target=WeaponAbilityTargets.aimedLoadedEntity(player,maximum?Double.POSITIVE_INFINITY:10,
+                entity->(maximum || entity instanceof net.minecraft.world.entity.LivingEntity) && !entity.isInvisibleTo(player));
         if(target==null || target.isPassenger() || target.isVehicle()) return false;
         var from=player.position();var to=target.position();var level=player.serverLevel();
         if(!WeaponTeleportSafety.clear(player,level,to,target) || !WeaponTeleportSafety.clear(target,level,from,player)) return false;

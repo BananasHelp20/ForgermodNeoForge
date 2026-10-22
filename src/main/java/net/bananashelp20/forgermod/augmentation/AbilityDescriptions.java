@@ -44,6 +44,9 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.DISPLACE -> rank>=4
+                    ?text(id+".reviewed.max","Aim at any %s to swap places with it when activating the ability while aiming at it.","visible entity")
+                    :text(id+".reviewed","Aim at any living entity within %s to swap places with it when activating the ability while aiming at it.","10 blocks");
             case AdditionalAbilities.GRAVITY_WELL -> text(id+".reviewed","Aim at an enemy and activate the ability to pull an enemy within %s to you and immediately strike it with a vertical strike.","6 blocks");
             case RecommendedAbilities.ENDER_SWING -> text(id+".reviewed","make a swing attack with a %s that teleports hit enemies %s in the air and increases their gravity by %s (increasing their falldamage drastically).",
                     number(ReviewedRanks.gravitySwingRadius(rank))+" block radius",ReviewedRanks.gravitySwingHeight(rank)+" blocks","+"+number(ReviewedRanks.gravitySwingBonus(rank)*100)+"%");
