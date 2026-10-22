@@ -44,6 +44,7 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.LIVE_WIRE -> text(id+".reviewed","In the next %s, enemies that hit you take %s in return.","8 seconds","1 hearts damage");
             case AdditionalAbilities.FLAME_BREATH -> text(id+".reviewed","Incinerate the area in front of you with a range of %s, igninting enemies for %s.",(6+rank)+" blocks",(2+rank)+" seconds");
             case AdditionalAbilities.FEATHER_SHELTER -> text(id+".reviewed","Give yourself and allies within %s slow falling for %s.",(2+2*rank)+" blocks",(10+jade)+" seconds");
             case RecommendedAbilities.EXPLOSIVE_HITS -> text(id+".reviewed","Your next 10 melee hits create small blasts that deal an additional %s. The areal blast has a radius of %s around the hit enemy.","30% areal damage",(2+rank)+" blocks");
