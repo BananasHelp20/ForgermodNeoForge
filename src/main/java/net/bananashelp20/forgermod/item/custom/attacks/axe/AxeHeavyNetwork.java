@@ -90,8 +90,16 @@ public final class AxeHeavyNetwork {
         // Vanilla resets only the client ticker for a miss. Mirror that on the server,
         // including weak misses, after sampling charge; entity hits reset themselves.
         if (payload.attackKind() == 1) player.resetAttackStrengthTicker();
-        if (slam) PacketDistributor.sendToPlayersTrackingEntityAndSelf(player,
-                new SlamAnimationPayload(player.getId()));
+        if (slam) sendAnimation(player);
+    }
+
+    private static void sendAnimation(ServerPlayer player) {
+        player.getPersistentData().putLong(ANIMATION_TAG,player.level().getGameTime());
+        var viewers=new java.util.HashSet<>(player.serverLevel().getChunkSource().chunkMap.getPlayers(player.chunkPosition(),false));
+        viewers.add(player);
+        for(var viewer:viewers)
+            if(net.neoforged.neoforge.network.registration.NetworkRegistry.hasChannel(viewer.connection,SlamAnimationPayload.TYPE.id()))
+                PacketDistributor.sendToPlayer(viewer,new SlamAnimationPayload(player.getId()));
     }
 
     private static boolean queueAttack(ServerPlayer player) {
@@ -152,6 +160,19 @@ public final class AxeHeavyNetwork {
             if (!state.getCollisionShape(player.level(), pos).isEmpty()) return pos.above();
         }
         return null;
+    }
+
+    /** An ability-supplied strike uses normal Vertical Strike geometry and passive interactions immediately. */
+    public static boolean abilityVerticalStrike(ServerPlayer player,ItemStack source,Vec3 center) {
+        if(!player.isAlive() || player.isSpectator() || source!=player.getMainHandItem()
+                || !AxeItems.isAxe(source) || !player.getOffhandItem().isEmpty()
+                || net.bananashelp20.forgermod.item.custom.abilities.WeaponControlLocks.frozen(player))return false;
+        COMBOS.remove(player.getUUID());PENDING.remove(player.getUUID());
+        sendAnimation(player);
+        player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+        landSlam(player,new PendingSlam(player.serverLevel(),source.getItem(),player.level().getGameTime(),
+                BlockPos.containing(center),(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),false,source));
+        return true;
     }
 
     @SubscribeEvent

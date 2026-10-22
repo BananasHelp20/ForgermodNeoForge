@@ -32,7 +32,7 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Flameborn: directdamage.5x atI ->1.5x at existingmaxII; all entities ignited; existing FireResistance30s/range10/burn5(or7super). Exact user description white damage/range/burn.
 - [x] Flaming Stomp exact user description white damage/burn.
 - [x] Ghostwalk exact user description white duration, only successful enemy strike breaks invisibility, not air swing. Jumpscare same with white doubled damage.
-- [ ] Gravity Well: single aimed enemy pull then automatic vertical strike, exact user description white range.
+- [x] Gravity Well: single aimed enemy pull then automatic vertical strike, exact user description white range.
 - [x] Green Feast:1wheat,2HP heal, hunger/saturation2/4/6/8 (+10templateV), existing cooldowns. Exact user description white health/hungerbars.
 - [x] Just a Dream capII cooldown60/30s; exact user description.
 - [x] Live Wire exact user description white duration/hearts, mechanics retained.

@@ -30,14 +30,13 @@ public final class GravityWellEvents {
         if(active(player)) return false;
         int rank=Augmentations.level(stack,AdditionalAbilities.GRAVITY_WELL);
         if(rank<=0) return false;
-        var targets=player.level().getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(6),
-                e->WeaponAbilityTargets.enemy(player,e) && player.distanceToSqr(e)<=36 && player.hasLineOfSight(e));
-        if(targets.isEmpty()) return false;
+        var target=WeaponAbilityTargets.aimedEnemy(player,6);
+        if(target==null)return false;
         // Capture the point once: turning or moving must not drag the destination around.
         var forward=net.minecraft.world.phys.Vec3.directionFromRotation(0,player.getYRot());
         var destination=player.position().add(forward.scale(2));
         PULLS.put(player.getUUID(),new Pull(stack,player.getInventory().selected,player.level().getGameTime()+40,
-                player.serverLevel(),destination,.5+.1*rank,new HashSet<>(targets)));
+                player.serverLevel(),destination,.5+.1*rank,new HashSet<>(Set.of(target))));
         advance(player);return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -66,17 +65,7 @@ public final class GravityWellEvents {
             target.hasImpulse=true;
             if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
             if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return false;
-            int immunity=target.invulnerableTime;
-            target.invulnerableTime=0;
-            float damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
-            if(target.hurt(player.damageSources().playerAttack(player),damage)) {
-                var weapon=Augmentations.canonical(pull.stack());
-                if(weapon!=null) weapon.applyMaterialEffect(target,pull.stack());
-            } else target.invulnerableTime=immunity;
-            player.swing(InteractionHand.MAIN_HAND);
-            player.serverLevel().sendParticles(ParticleTypes.CLOUD,target.getX(),target.getY()+.2,target.getZ(),12,.5,.1,.5,.05);
-            player.serverLevel().playSound(null,target.blockPosition(),SoundEvents.IRON_GOLEM_ATTACK,SoundSource.PLAYERS,.6F,.7F);
-            return true;
+            return net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.abilityVerticalStrike(player,pull.stack(),target.position());
         });
         if(pull.awaiting().isEmpty()) cancel(player.getUUID());
     }

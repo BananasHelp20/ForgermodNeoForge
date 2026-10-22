@@ -1,6 +1,8 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Vertical Strike animation broadcasts now check the negotiated client channel, preserving animations for connected clients without attempting unsupported packets to fake/test players.
+- Gravity Well now pulls only the aimed enemy within six blocks, then performs an immediate normal 3x3 Vertical Strike on arrival rather than a single ordinary hit. Reuses Vertical Strike animation, area damage and passive interactions; range, fixed destination, collision-safe pull and cooldowns are preserved. Reviewed range is white.
 - Renamed Ender Swing to Gravity Swing without changing its saved ID. It now caps at III, with 2/3.5/5-block radius, 10/15/20-block lift, +50/100/150% gravity and fall damage until landing, and 90/75/60-second cooldowns. Existing higher-rank 1.2x direct hit damage is retained; ceilings still block unsafe lifts. Victim modifiers are transient, replace rather than stack and clear on landing/fluid/climb/unload. Reviewed radius/height/gravity values are white.
 - Ghostwalk and Jumpscare Horror now reveal the player only after successful melee damage, not air/block swings or rejected attacks. Invisible opening damage is doubled only for the super form; prior invisibility, hidden gear restoration and current cooldowns remain preserved. Applied reviewed white duration/damage descriptions.
 - Flameborn's entity-only fire burst now deals 50% weapon damage at I and 150% at template II, igniting all nearby entities (including allies and neutral mobs) within ten blocks. The caster keeps its thirty-second Fire Resistance; terrain stays untouched. Reviewed damage/range/burn values are white.

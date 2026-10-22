@@ -22,6 +22,30 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class GravityWellGameTests {
     @GameTest(template="riftfang_test")
+    public static void aimedTargetAloneIsPulledAndArrivalHitsTheVerticalStrikeArea(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setYRot(0);player.setXRot(0);
+        for(int x=-4;x<=4;x++)for(int y=0;y<4;y++)for(int z=0;z<=7;z++)
+            test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var target=EntityType.ZOMBIE.create(test.getLevel());var side=EntityType.ZOMBIE.create(test.getLevel());var near=EntityType.ZOMBIE.create(test.getLevel());
+        for(var mob:java.util.List.of(target,side,near)) {
+            mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(100);
+            mob.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR).setBaseValue(0);mob.setHealth(100);test.getLevel().addFreshEntity(mob);
+        }
+        target.setPos(player.position().add(0,0,5));side.setPos(player.position().add(2,0,5));near.setPos(player.position().add(.8,0,2.6));
+        var stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),AdditionalAbilities.GRAVITY_WELL);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        try {
+            test.assertTrue(GravityWellEvents.activate(player,stack),"Aimed cast fails");
+            test.assertTrue(target.getDeltaMovement().z<0 && side.getDeltaMovement().equals(Vec3.ZERO) && near.getDeltaMovement().equals(Vec3.ZERO),"Pull selects more than aimed target");
+            target.setPos(player.position().add(0,0,2));GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
+            test.assertTrue(target.getHealth()<100 && near.getHealth()<100 && side.getHealth()==100,"Arrival is not a bounded 3x3 vertical area strike");
+            test.assertFalse(GravityWellEvents.active(player),"Arrival does not finish pull");
+        } finally {
+            GravityWellEvents.cancel(player.getUUID());for(var mob:java.util.List.of(target,side,near))mob.discard();player.server.getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void fiveAxesPullWithoutDamageThenSmashOnceAndCancelOnSwitch(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);player.setYRot(0);
         for(int x=5;x<=11;x++) for(int y=5;y<=8;y++) for(int z=6;z<=14;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
