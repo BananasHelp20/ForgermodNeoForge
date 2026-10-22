@@ -16,6 +16,8 @@ public final class StormStateTest {
         expect(true, state.activate(first, 110), "reactivate after expiry");
         state.clear(first);
         expect(false, state.isActive(first, 111), "logout cleanup");
+        expect(true,state.activate(first,200,400),"maximum duration");
+        if(state.remainingTicks(first,200)!=400 || state.remainingTicks(first,599)!=1 || state.remainingTicks(first,600)!=0)throw new AssertionError("ranked duration boundaries");
     }
 
     private static void expect(boolean expected, boolean actual, String description) {

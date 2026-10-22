@@ -4,8 +4,6 @@ import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
-import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
-import net.bananashelp20.forgermod.item.custom.abilities.StormState;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,7 +14,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -31,7 +28,6 @@ import java.util.List;
 
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class TaifuniteWeapon extends SwordItemWithEffect {
-    private static final StormState STORM = new StormState();
     private static final double DASH_SPEED = 1.2; // Blocks per tick; travel distance follows normal physics.
     public static Holder<MobEffect> effect = MobEffects.LEVITATION;
     public static int durationInTicks = 60;
@@ -81,7 +77,7 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
                     player.getX(), player.getY() + 0.5, player.getZ(), 12, 0.2, 0.2, 0.2, 0.06);
             return true;
         }
-        boolean active = STORM.activate(player.getUUID(), player.level().getGameTime());
+        boolean active = net.bananashelp20.forgermod.item.custom.abilities.EyeOfStormEvents.activate(player,stack);
         if (active) player.displayClientMessage(Component.translatable("message.forgermod.eye_of_the_storm.active"), true);
         return active;
     }
@@ -95,12 +91,12 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     @Override
     public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
         return slot == WeaponAbilitySlot.PRIMARY
-                && STORM.isActive(player.getUUID(), player.level().getGameTime());
+                && net.bananashelp20.forgermod.item.custom.abilities.EyeOfStormEvents.active(player);
     }
 
     @Override
     public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
-        if (slot == WeaponAbilitySlot.PRIMARY) STORM.clear(player.getUUID());
+        if (slot == WeaponAbilitySlot.PRIMARY) net.bananashelp20.forgermod.item.custom.abilities.EyeOfStormEvents.cancel(player.getUUID());
     }
 
     @Override
@@ -119,39 +115,12 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        long now = player.level().getGameTime();
-        if (!player.isAlive()) {
-            STORM.clear(player.getUUID());
-            return;
-        }
-        if (!STORM.isActive(player.getUUID(), now)) return;
-
-        List<Entity> targets = AreaDischargeTargets.select(
-                player.serverLevel().getEntities(player, player.getBoundingBox().inflate(10), Entity::isAlive),
-                Entity::isAlive, player::distanceToSqr, 10);
-        for (Entity target : targets) {
-            Vec3 radial = target.position().subtract(player.position());
-            Vec3 flat = new Vec3(radial.x, 0, radial.z);
-            if (flat.lengthSqr() < 0.01) flat = new Vec3(1, 0, 0);
-            Vec3 outward = flat.normalize();
-            Vec3 tangent = new Vec3(-outward.z, 0, outward.x);
-            target.setDeltaMovement(tangent.scale(0.35).subtract(outward.scale(0.08)).add(0, 0.16, 0));
-            target.hasImpulse = true;
-            target.hurtMarked = true;
-            if (now % 10 == 0 && target instanceof LivingEntity living) {
-                living.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(
-                        player.getMainHandItem(), "tooltips.forgermod.ability.eye_of_the_storm",
-                        new MobEffectInstance(MobEffects.LEVITATION, 15, 0)));
-            }
-            if (now % 5 == 0) player.serverLevel().sendParticles(ParticleTypes.CLOUD,
-                    target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
-                    2, 0.2, 0.3, 0.2, 0.01);
-        }
+        net.bananashelp20.forgermod.item.custom.abilities.EyeOfStormEvents.tick(player);
     }
 
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        STORM.clear(event.getEntity().getUUID());
+        net.bananashelp20.forgermod.item.custom.abilities.EyeOfStormEvents.cancel(event.getEntity().getUUID());
     }
 
     @Override

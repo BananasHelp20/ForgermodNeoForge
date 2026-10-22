@@ -25,7 +25,7 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Ender Swing renamed Gravity Swing (retain ID): capIII radius2/3.5/5 lift10/15/20 gravity+50/100/150% until landing; amplify fall damage; cooldown90/75/60. White radius/height/gravity.
 - [ ] Explosion unchanged base description; Blazing Blast super: same blast/resistance+4 ghast projectiles cardinal relative facing+8 blaze intermediate dirs, projectile damage100/115/130/145%, cooldown120/110/100/90s. Terrain manipulation setting shared Explosion/BlazingBlast defaultfalse including projectiles.
 - [x] Explosive Hits exact user description white additionaldamage%/radius, existing mechanics.
-- [ ] Eye of Storm: enemies only, radius5 ->12 atV,duration5 ->20 atV including Levitation; trapped enemies follow moving storm.
+- [x] Eye of Storm: enemies only, radius5 ->12 atV,duration5 ->20 atV including Levitation; trapped enemies follow moving storm.
 - [x] False Awakening: decoy beside aimed enemy, repeat bonus hits while target distracted for duration, no one-hit consume. Exact user description whitepercent/duration.
 - [x] Feather Shelter exact user description radius/duration white.
 - [x] Flame Breath exact user description range/burn white.

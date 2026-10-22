@@ -6,6 +6,7 @@ public final class ReviewedRanks {
     public static int hardCap(String id) {
         if(id==null)return -1;
         return switch(id) {
+            case "tooltips.forgermod.ability.eye_of_the_storm" -> 5;
             case "tooltips.forgermod.ability.ender_swing" -> 3;
             case "tooltips.forgermod.ability.just_a_dream" -> 2;
             case "tooltips.forgermod.ability.dream_feast" -> 5;
@@ -32,4 +33,6 @@ public final class ReviewedRanks {
     public static double gravitySwingRadius(int rank) {return 2+1.5*(Math.clamp(rank,1,3)-1);}
     public static int gravitySwingHeight(int rank) {return at(rank,10,15,20);}
     public static double gravitySwingBonus(int rank) {return .5*Math.clamp(rank,1,3);}
+    public static double stormRadius(int rank) {return switch(Math.clamp(rank,1,5)){case 1->5;case 2->7;case 3->9;case 4->10.5;default->12;};}
+    public static int stormTicks(int rank) {return at(rank,5,9,13,16,20)*20;}
 }

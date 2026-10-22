@@ -2,6 +2,8 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.augmentation.ReviewedRanks;
 public final class ReviewedRanksTest {
     public static void main(String[] args) {
+        if(ReviewedRanks.hardCap("tooltips.forgermod.ability.eye_of_the_storm")!=5 || ReviewedRanks.stormRadius(1)!=5 || ReviewedRanks.stormRadius(5)!=12
+                || ReviewedRanks.stormTicks(1)!=100 || ReviewedRanks.stormTicks(5)!=400)throw new AssertionError("Eye of the Storm progression");
         String gravity="tooltips.forgermod.ability.ender_swing";
         if(ReviewedRanks.hardCap(gravity)!=3 || ReviewedRanks.gravitySwingRadius(1)!=2 || ReviewedRanks.gravitySwingRadius(2)!=3.5 || ReviewedRanks.gravitySwingRadius(3)!=5
                 || ReviewedRanks.gravitySwingHeight(1)!=10 || ReviewedRanks.gravitySwingHeight(3)!=20 || ReviewedRanks.gravitySwingBonus(3)!=1.5

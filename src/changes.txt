@@ -1,6 +1,8 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Eye of the Storm dismounts captured enemies so riding cannot bypass its confinement; allied/passive mounts are not themselves captured.
+- Eye of the Storm now levels through V: 5/7/9/10.5/12-block radii and 5/9/13/16/20-second storm/Levitation duration (+1 second with Jade). Only enemies are captured; captured targets stay within the moving storm using loaded, collision-safe positions rather than being left behind when the caster moves. Own Levitation clears on cancellation, preserving independent effects. Reviewed radius/duration values are white.
 - Displace now swaps with any visible living target within ten blocks at lower ranks, including passive/allied creatures. At IV+ it can target any visible loaded entity (including items/projectiles) with no fixed distance limit. Line-of-sight, loaded-chunk, border, collision, fluid and passenger safety checks remain; reviewed range/maximum-target text is white.
 - Vertical Strike animation broadcasts now check the negotiated client channel, preserving animations for connected clients without attempting unsupported packets to fake/test players.
 - Gravity Well now pulls only the aimed enemy within six blocks, then performs an immediate normal 3x3 Vertical Strike on arrival rather than a single ordinary hit. Reuses Vertical Strike animation, area damage and passive interactions; range, fixed destination, collision-safe pull and cooldowns are preserved. Reviewed range is white.

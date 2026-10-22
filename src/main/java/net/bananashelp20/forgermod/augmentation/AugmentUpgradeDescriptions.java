@@ -106,6 +106,10 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case "tooltips.forgermod.ability.eye_of_the_storm" -> {
+                numeric(stats,"radius",ReviewedRanks.stormRadius(rank),"blocks");
+                seconds(stats,"duration",ReviewedRanks.stormTicks(rank)+jadeTicks);
+            }
             case AdditionalAbilities.DISPLACE -> {
                 if(rank>=4)text(stats,"range","unlimited","visible_range");
                 else numeric(stats,"range",10,"blocks");
