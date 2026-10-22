@@ -44,6 +44,7 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.DEATH_STARE -> rank>=4 ? text(id+".reviewed.max","Teleport beside the mob you aim at when activating the ability.") : text(id+".reviewed","Teleport beside the mob you aim at when activating the ability. The mob has to be within a distance of %s.",((int)net.bananashelp20.forgermod.item.custom.abilities.DeathStareAbility.range(rank))+" blocks");
             case AdditionalAbilities.CROSSWIND -> text(id+".reviewed","Deflect incoming projectiles away from you for 2 minutes. Your own shots are unaffected. Cooldown: %s.",(RecommendedAbilities.cooldown(id,rank)/20)+" seconds");
             case AdditionalAbilities.BLOOD_SACRAFICE -> text(id+".reviewed","Sacrafice half of your total HP to deal double weapon damage for %s.",
                     (net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank)/20)+" seconds");
