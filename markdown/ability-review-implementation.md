@@ -26,7 +26,7 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [ ] Explosion unchanged base description; Blazing Blast super: same blast/resistance+4 ghast projectiles cardinal relative facing+8 blaze intermediate dirs, projectile damage100/115/130/145%, cooldown120/110/100/90s. Terrain manipulation setting shared Explosion/BlazingBlast defaultfalse including projectiles.
 - [x] Explosive Hits exact user description white additionaldamage%/radius, existing mechanics.
 - [ ] Eye of Storm: enemies only, radius5 ->12 atV,duration5 ->20 atV including Levitation; trapped enemies follow moving storm.
-- [ ] False Awakening: decoy beside aimed enemy, repeat bonus hits while target distracted for duration, no one-hit consume. Exact user description whitepercent/duration.
+- [x] False Awakening: decoy beside aimed enemy, repeat bonus hits while target distracted for duration, no one-hit consume. Exact user description whitepercent/duration.
 - [x] Feather Shelter exact user description radius/duration white.
 - [x] Flame Breath exact user description range/burn white.
 - [ ] Flameborn: directdamage.5x atI ->1.5x at existingmaxII; all entities ignited; existing FireResistance30s/range10/burn5(or7super). Exact user description white damage/range/burn.

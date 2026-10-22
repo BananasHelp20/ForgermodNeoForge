@@ -2,6 +2,7 @@
 
 ## Ability review implementation in progress (2026-10-22)
 
+- False Awakening completed: repeated bonuses only while the mob is targeting the echo; nonlethal hits do not consume the session. Reviewed white percent/duration text. Build/unit checks rerun and all 315 required GameTests passed (build/false-awakening-reviewed.log); updated tests cover repeat bonus, no bonus without distraction, lethal cleanup, switches and expiry.
 - Echo Hearing completed: private per-viewer outlines scale 20/27/33/40 ticks (+20 Jade); reviewed white listen/range/glow text and upgrade preview. Build/unit checks and all 315 required GameTests pass in build/echo-hearing-reviewed-ranks.log, including added rank/Jade/runtime-description coverage and one-second expiry.
 - User authorized implementing the current conversation's reviewed changes, plus white current-rank numeric values for all not-yet-reviewed abilities/passives without changing their mechanics. Resume the interactive review at **43: Magma Toss** after implementation. Full pending queue is markdown/ability-review-implementation.md; do not treat unfinished entries as completed.
 - User reiterated that ALL agreed changes belonging to reviewed abilities must be completed, not merely their descriptions. Anger of Zeus chains may extend beyond the initial 10-40-block wave radius (10 blocks per jump, unique targets selected at activation).

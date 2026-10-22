@@ -102,7 +102,9 @@ public final class FalseAwakeningEvents {
     public static void onIncoming(LivingIncomingDamageEvent event) {
         if(event.getAmount()>0 && event.getSource().is(DamageTypes.PLAYER_ATTACK)
                 && event.getSource().getEntity() instanceof ServerPlayer player && active(player)) {
-            var dream=DREAMS.get(player.getUUID()); if(event.getEntity()==dream.real()) event.setAmount(event.getAmount()*(1.05F+.05F*dream.rank()));
+            var dream=DREAMS.get(player.getUUID());
+            if(event.getEntity()==dream.real() && (!(dream.real() instanceof Mob mob) || mob.getTarget()==dream.echo()))
+                event.setAmount(event.getAmount()*(1.05F+.05F*dream.rank()));
         }
     }
     @SubscribeEvent
@@ -111,7 +113,7 @@ public final class FalseAwakeningEvents {
                 && event.getSource().getEntity() instanceof ServerPlayer player) {
             // A lethal hit must still remove the echo, even though active() now sees a dead target.
             var dream=DREAMS.get(player.getUUID());
-            if(dream!=null && event.getEntity()==dream.real()) cancel(player.getUUID());
+            if(dream!=null && event.getEntity()==dream.real() && !dream.real().isAlive()) cancel(player.getUUID());
         }
     }
     @SubscribeEvent

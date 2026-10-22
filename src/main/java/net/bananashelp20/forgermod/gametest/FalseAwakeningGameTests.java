@@ -65,7 +65,7 @@ public class FalseAwakeningGameTests {
         enemy.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000); enemy.setHealth(1000); enemy.setPos(player.position().add(x,0,z)); test.getLevel().addFreshEntity(enemy); return enemy;
     }
     @GameTest(template="riftfang_test")
-    public static void allVariantsCreateProtectedEchoAttractAIAndPayOneRealHitBonus(GameTestHelper test) throws Exception {
+    public static void allVariantsCreateProtectedEchoAndKeepBonusWhileDistracted(GameTestHelper test) throws Exception {
         for(Item item:new Item[]{ModItems.NIGHTMARE_DAGGER.get(),ModItems.NIGHTMARE_DAGGER_RUBY.get(),ModItems.NIGHTMARE_DAGGER_AMBER.get(),
                 ModItems.NIGHTMARE_DAGGER_AMETHYST.get(),ModItems.NIGHTMARE_DAGGER_JADE.get()}) {
             var player=player(test); var fresh=new ItemStack(item); player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
@@ -84,9 +84,14 @@ public class FalseAwakeningGameTests {
             test.assertTrue(FalseAwakeningEvents.active(player),"Rejected real hit consumes dream");
             real.hurt(player.damageSources().playerAttack(player),10);
             test.assertTrue(Math.abs(real.getHealth()-987.5F)<.001,"Real hit lacks rank-IV bonus");
-            test.assertTrue(!FalseAwakeningEvents.active(player) && echo.isRemoved() && real.getTarget()==player && nearby.getTarget()==null,"Dream does not clean up/restore AI");
+            test.assertTrue(FalseAwakeningEvents.active(player) && !echo.isRemoved() && real.getTarget()==echo,"First hit consumes distraction");
             real.invulnerableTime=0; real.hurt(player.damageSources().playerAttack(player),10);
-            test.assertTrue(real.getHealth()==977.5F,"Bonus applies twice");
+            test.assertTrue(real.getHealth()==975F,"Repeat hit loses bonus");
+            real.setTarget(nearby);real.invulnerableTime=0;real.hurt(player.damageSources().playerAttack(player),10);
+            test.assertTrue(real.getHealth()==965F && FalseAwakeningEvents.active(player),"Undistracted target receives bonus or consumes session");
+            real.setTarget(echo);
+            FalseAwakeningEvents.cancel(player.getUUID());
+            test.assertTrue(echo.isRemoved() && real.getTarget()==player && nearby.getTarget()==null,"Ending dream does not restore AI");
             WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             String key=BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.FALSE_AWAKENING;
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+600,"Ending dream fails to start rank-IV cooldown");

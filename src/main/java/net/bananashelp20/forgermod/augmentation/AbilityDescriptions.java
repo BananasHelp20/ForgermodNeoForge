@@ -44,6 +44,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.FALSE_AWAKENING -> text(id+".reviewed","Create a decoy directly beside the enemy you aim at. When that enemy is distracted, you deal %s to that enemy for a duration of %s.",
+                    (5+5*rank)+"% more damage",(30+5*(rank-1))+" seconds");
             case RecommendedAbilities.ECHO_HEARING -> text(id+".reviewed","In the next %s after activating this ability, you will be able to hear sounds made from all entities within a %s. After entities make a sound, they glow for %s.",
                     (8+2*Math.clamp(rank,1,4))+" seconds",(24+8*Math.clamp(rank,1,4))+" block radius",
                     number(ReviewedRanks.echoGlowTicks(rank)/20.0+jade)+" seconds");
