@@ -22,7 +22,7 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Downdraft Bell: exact user description, radius white.
 - [x] Dream Feast I-V restores2/4/6/8/10 hunger AND saturation; cooldown120/100/75/50/30s, white1/2/3/4/5 hunger bars.
 - [x] Echo Hearing exact user description white listen/range/glow, glow1s atI ->2s max (+1 Jade).
-- [ ] Ender Swing renamed Gravity Swing (retain ID): capIII radius2/3.5/5 lift10/15/20 gravity+50/100/150% until landing; amplify fall damage; cooldown90/75/60. White radius/height/gravity.
+- [x] Ender Swing renamed Gravity Swing (retain ID): capIII radius2/3.5/5 lift10/15/20 gravity+50/100/150% until landing; amplify fall damage; cooldown90/75/60. White radius/height/gravity.
 - [ ] Explosion unchanged base description; Blazing Blast super: same blast/resistance+4 ghast projectiles cardinal relative facing+8 blaze intermediate dirs, projectile damage100/115/130/145%, cooldown120/110/100/90s. Terrain manipulation setting shared Explosion/BlazingBlast defaultfalse including projectiles.
 - [x] Explosive Hits exact user description white additionaldamage%/radius, existing mechanics.
 - [ ] Eye of Storm: enemies only, radius5 ->12 atV,duration5 ->20 atV including Levitation; trapped enemies follow moving storm.

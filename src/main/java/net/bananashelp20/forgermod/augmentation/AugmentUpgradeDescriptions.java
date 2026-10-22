@@ -147,7 +147,12 @@ public final class AugmentUpgradeDescriptions {
                 seconds(stats, "glow_duration", ReviewedRanks.echoGlowTicks(rank)+jadeTicks);
             }
             case RecommendedAbilities.ECHO_SALVAGE -> numeric(stats, "damage_cap", 2 * rank, "damage");
-            case RecommendedAbilities.ENDER_SWING -> numeric(stats, "damage", rank > 1 ? 1.2 : 1, "weapon_damage");
+            case RecommendedAbilities.ENDER_SWING -> {
+                numeric(stats,"damage",rank>1?1.2:1,"weapon_damage");
+                numeric(stats,"radius",ReviewedRanks.gravitySwingRadius(rank),"blocks");
+                numeric(stats,"lift",ReviewedRanks.gravitySwingHeight(rank),"blocks");
+                numeric(stats,"gravity",ReviewedRanks.gravitySwingBonus(rank)*100,"percent");
+            }
             case RecommendedAbilities.FLAMEBORN -> {
                 seconds(stats, "burn", rank > 1 ? 140 : 100);
                 numeric(stats,"damage",net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.damageMultiplier(rank),"weapon_damage");

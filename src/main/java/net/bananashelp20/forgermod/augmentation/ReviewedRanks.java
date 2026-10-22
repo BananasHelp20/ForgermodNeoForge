@@ -6,6 +6,7 @@ public final class ReviewedRanks {
     public static int hardCap(String id) {
         if(id==null)return -1;
         return switch(id) {
+            case "tooltips.forgermod.ability.ender_swing" -> 3;
             case "tooltips.forgermod.ability.just_a_dream" -> 2;
             case "tooltips.forgermod.ability.dream_feast" -> 5;
             case "tooltips.forgermod.ability.delusion" -> 5;
@@ -16,6 +17,7 @@ public final class ReviewedRanks {
     public static int cooldown(String id,int rank) {
         if(id==null)return -1;
         return switch(id) {
+            case "tooltips.forgermod.ability.ender_swing" -> at(rank,90,75,60)*20;
             case "tooltips.forgermod.ability.just_a_dream" -> at(rank,60,30)*20;
             case "tooltips.forgermod.ability.dream_feast" -> at(rank,120,100,75,50,30)*20;
             case "tooltips.forgermod.ability.delusion" -> at(rank,120,100,80,60,40)*20;
@@ -27,4 +29,7 @@ public final class ReviewedRanks {
     public static int delusionTicks(int rank) {return at(rank,10,14,18,22,25)*20;}
     public static int foodPoints(int rank) {return 2*Math.clamp(rank,1,5);}
     public static int echoGlowTicks(int rank) {return at(rank,20,27,33,40);}
+    public static double gravitySwingRadius(int rank) {return 2+1.5*(Math.clamp(rank,1,3)-1);}
+    public static int gravitySwingHeight(int rank) {return at(rank,10,15,20);}
+    public static double gravitySwingBonus(int rank) {return .5*Math.clamp(rank,1,3);}
 }
