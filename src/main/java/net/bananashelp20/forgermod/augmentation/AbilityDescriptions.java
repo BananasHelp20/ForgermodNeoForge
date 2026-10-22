@@ -44,6 +44,7 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.JUST_A_DREAM -> text(id+".reviewed","Immediately teleport to your respawn point across all dimensions. if it's not available, return to the world spawn.");
             case AdditionalAbilities.DREAM_FEAST -> text(id+".reviewed","Instantly gain %s.",(ReviewedRanks.foodPoints(rank)/2)+" hunger bars");
             case RecommendedAbilities.DELUSION -> text(id+".reviewed","Your next hit stops the mob from targeting anything for %s.",(ReviewedRanks.delusionTicks(rank)/20)+" seconds");
             case "tooltips.forgermod.ability.deep_wound" -> text(id+".reviewed","Your next critical hit deals double damage and inflicts Slowness %s for %s.",

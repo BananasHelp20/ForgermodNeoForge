@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Just a Dream now caps at II (including templates), has 60/30-second cooldowns and uses the reviewed cross-dimension respawn description. Existing over-cap stacks retain it at II.
 - Dream Feast now restores 2/4/6/8/10 hunger AND saturation points at I-V, uses 120/100/75/50/30-second cooldowns, and displays the current hunger bars in white.
 - Delusion now levels through V, suppresses targets for 10/14/18/22/25 seconds and uses 120/100/80/60/40-second cooldowns; reviewed white-duration description and previews match runtime.
 - Deep Wound now caps at III including templates, uses 120/75/30-second cooldowns and the reviewed white Slowness/duration description. Older over-cap stacks retain the ability at the new cap.

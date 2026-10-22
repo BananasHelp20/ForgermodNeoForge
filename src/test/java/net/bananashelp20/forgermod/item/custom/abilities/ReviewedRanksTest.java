@@ -8,5 +8,7 @@ public final class ReviewedRanksTest {
         String delusion="tooltips.forgermod.ability.delusion";
         if(ReviewedRanks.hardCap(delusion)!=5 || ReviewedRanks.delusionTicks(1)!=200 || ReviewedRanks.delusionTicks(5)!=500 || ReviewedRanks.cooldown(delusion,1)!=2400 || ReviewedRanks.cooldown(delusion,5)!=800)throw new AssertionError();
         if(ReviewedRanks.foodPoints(1)!=2 || ReviewedRanks.foodPoints(5)!=10 || ReviewedRanks.hardCap("tooltips.forgermod.ability.dream_feast")!=5 || ReviewedRanks.cooldown("tooltips.forgermod.ability.dream_feast",5)!=600)throw new AssertionError();
+        String home="tooltips.forgermod.ability.just_a_dream";
+        if(ReviewedRanks.hardCap(home)!=2 || ReviewedRanks.cooldown(home,1)!=1200 || ReviewedRanks.cooldown(home,2)!=600 || ReviewedRanks.cooldown(home,5)!=600)throw new AssertionError();
     }
 }
