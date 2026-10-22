@@ -31,20 +31,20 @@ public class DelusionGameTests {
    player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
    mob.setTarget(player); test.assertTrue(mob.getTarget()==player && !DelusionEvents.active(player),"Switch retains suppression");
    String key=BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.DELUSION;
-   test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+800,"Switch misses cooldown");
+   test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+2400,"Switch misses reviewed cooldown");
    mob.discard(); test.getLevel().getServer().getPlayerList().remove(player);
   }
   test.assertTrue(count==15,"Missing Somnium variants"); test.succeed();
  }
  @GameTest(template="riftfang_test",timeoutTicks=450)
- public static void suppressionEndsAfterTwentySeconds(GameTestHelper test) throws Exception {
+ public static void levelOneSuppressionEndsAfterTenSeconds(GameTestHelper test) throws Exception {
   var player=TestPlayers.survival(test); player.setInvulnerable(true);
   var item=net.bananashelp20.forgermod.item.ModItems.DREAMBOUND_CLAYMORE.get();
   var stack=Augmentations.apply(new ItemStack(item),RecommendedAbilities.DELUSION); player.setItemInHand(InteractionHand.MAIN_HAND,stack);
   var mob=EntityType.ZOMBIE.create(test.getLevel()); mob.setNoAi(true); mob.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD,new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN)); mob.setNoGravity(true); mob.setPos(player.position()); test.getLevel().addFreshEntity(mob);
   AbilityTestPackets.use(player,0); mob.hurt(player.damageSources().playerAttack(player),1);
-  test.runAfterDelay(399,()-> { test.assertTrue(DelusionEvents.active(player),"Suppression ended early"); mob.setTarget(player); test.assertTrue(mob.getTarget()==null,"Early reacquisition"); });
-  test.runAfterDelay(401,()-> { WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player)); mob.setTarget(player);
+  test.runAfterDelay(199,()-> { test.assertTrue(DelusionEvents.active(player),"Suppression ended early"); mob.setTarget(player); test.assertTrue(mob.getTarget()==null,"Early reacquisition"); });
+  test.runAfterDelay(201,()-> { WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player)); mob.setTarget(player);
    test.assertTrue(!DelusionEvents.active(player) && mob.getTarget()==player,"Suppression does not expire");
    mob.discard(); test.getLevel().getServer().getPlayerList().remove(player); test.succeed(); });
  }

@@ -15,8 +15,8 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Crosswind: existing wording with current cooldown white.
 - [ ] Crucible Hook: exact user description, white damage/burn. Crucible Grappler super: aimed block grappling25/30/35/40 range, acceleration and preserved release velocity, rightclick/switch release, autoarrival setting defaulttrue. Mob hit2.25/2.5/2.75/3x, burn7/8/9/10s, cooldown25s.
 - [x] Death Stare: exact user conditional description, range sentence omitted at max.
-- [ ] Deep Wound capIII cooldown120/75/30; exact user description white amplifier/duration.
-- [ ] Delusion I-V: effects10/14/18/22/25s, cooldown120/100/80/60/40s; exact user description white duration.
+- [x] Deep Wound capIII cooldown120/75/30; exact user description white amplifier/duration.
+- [x] Delusion I-V: effects10/14/18/22/25s, cooldown120/100/80/60/40s; exact user description white duration.
 - [ ] Direct Current: aim+key per unique anchor, consecutive edges only, marked enemies immune to own connection damage. White amount and damage. Static Field >2 anchors filled field, pulses existing1s damage1/1.25/1.5/1.75, .5s stun,20s starts at first connection, not refreshed on marks.
 - [ ] Displace: exact conditional description; belowmax any living entity in range, max any visible entity unlimited loaded range.
 - [x] Downdraft Bell: exact user description, radius white.

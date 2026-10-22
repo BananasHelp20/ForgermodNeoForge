@@ -1,6 +1,7 @@
 # Unreleased changes since Forgermod 0.1.7 (Minecraft 1.21.1 / NeoForge)
 
 ## Added
+- Delusion now levels through V, suppresses targets for 10/14/18/22/25 seconds and uses 120/100/80/60/40-second cooldowns; reviewed white-duration description and previews match runtime.
 - Deep Wound now caps at III including templates, uses 120/75/30-second cooldowns and the reviewed white Slowness/duration description. Older over-cap stacks retain the ability at the new cap.
 - Applied Flaming Stomp's reviewed description with white damage resolved from the weapon's attributes and white burn duration.
 - Applied the reviewed Lullaby description with white current values; no mechanical changes.

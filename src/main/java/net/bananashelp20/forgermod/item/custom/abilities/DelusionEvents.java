@@ -75,7 +75,7 @@ public final class DelusionEvents {
                 || !(event.getSource().getEntity() instanceof ServerPlayer player) || !active(player)
                 || !(event.getEntity() instanceof Mob mob) || !WeaponAbilityTargets.enemy(player,mob)) return;
         var dream=DREAMS.get(player.getUUID()); if(dream.target!=null) return;
-        dream.target=mob; dream.expires=player.level().getGameTime()+400;
+        dream.target=mob; dream.expires=player.level().getGameTime()+net.bananashelp20.forgermod.augmentation.ReviewedRanks.delusionTicks(Augmentations.level(dream.stack,RecommendedAbilities.DELUSION));
         TARGETS.computeIfAbsent(mob.getUUID(),ignored->new HashSet<>()).add(player.getUUID());
         mob.goalSelector.getAvailableGoals().stream().filter(goal->goal.isRunning()).forEach(goal->goal.stop()); mob.getNavigation().stop();
         mob.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET); mob.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);

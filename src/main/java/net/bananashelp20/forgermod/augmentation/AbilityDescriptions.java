@@ -44,6 +44,7 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.DELUSION -> text(id+".reviewed","Your next hit stops the mob from targeting anything for %s.",(ReviewedRanks.delusionTicks(rank)/20)+" seconds");
             case "tooltips.forgermod.ability.deep_wound" -> text(id+".reviewed","Your next critical hit deals double damage and inflicts Slowness %s for %s.",
                     net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(3+jade),(5+jade)+" seconds");
             case RecommendedAbilities.FLAMING_STOMP -> text(id+".reviewed","your next axe attack becomes a vertical 5x5 strike dealing %s and setting enemies ablaze for %s.",number(weaponDamage(stack))+" damage","5 seconds");

@@ -106,6 +106,7 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case RecommendedAbilities.DELUSION -> seconds(stats,"duration",ReviewedRanks.delusionTicks(rank));
             case AdditionalAbilities.BLOOD_SACRAFICE -> seconds(stats,"duration",net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank));
             case RecommendedAbilities.CINDER_DECOY -> {
                 numeric(stats, "radius", 1 + Math.clamp(rank, 1, 4), "blocks");
