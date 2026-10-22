@@ -65,6 +65,7 @@ public class MagmaTossGameTests {
                 test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.MAGMA_TOSS),"Magma Toss cannot activate");
                 var rock=player.level().getEntitiesOfClass(Snowball.class,player.getBoundingBox().inflate(3),e->e.getOwner()==player).getFirst();
                 test.assertTrue(rock.getDeltaMovement().length()>1,"Rock is not a moving projectile");
+                test.assertTrue(rock.getItem().is(net.minecraft.world.item.Items.MAGMA_BLOCK),"Molten rock does not render as a magma block");
                 target.invulnerableTime=0;target.setRemainingFireTicks(0);float before=target.getHealth(),owner=player.getHealth();
                 var event=new ProjectileImpactEvent(rock,new EntityHitResult(target,target.getBoundingBox().getCenter()));MagmaTossEvents.impact(event);
                 test.assertTrue(event.isCanceled() && !rock.isAlive() && !MagmaTossEvents.active(player),"Impact does not end rock");

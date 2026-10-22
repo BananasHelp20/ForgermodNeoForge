@@ -1,8 +1,8 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 60 active abilities, 47 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 59 active abilities, 49 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
-Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.
+Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift. Text below is the base learning summary; item tooltips resolve current rank, weapon type and Jade effects dynamically. Base abilities show a separate Shift-only super-upgrade notice below their cooldown, without describing future super effects. Upgrade cards compare ranks and highlight changed values in green.
 
 ## Active abilities
 
@@ -12,11 +12,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next two successful dagger hits inflict Weakness IV and Darkness V on the target for five seconds at level I, or ten seconds at higher levels.
+> Your next two dagger hits inflict Weakness IV and Darkness V for 5 seconds.
 
 **Augmentation card:**
 
-> Two hits inflict Weakness IV and Darkness V: 5 seconds at I, 10 seconds above I.
+> Two hits inflict Weakness IV and Darkness V for 5-10 seconds.
 
 ### Alternating Current
 
@@ -24,11 +24,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm a hit for up to 30 seconds. Hitting an enemy with another visible enemy within 20 blocks starts a one-minute link: the second enemy is stunned for 0.5 seconds immediately, then the stun alternates every second. Stuns add no damage. The link ends if targets die, separate by more than 20 blocks, or you switch weapons. Walls block pulses. Cooldown after ending: 120/100/80/60 seconds.
+> Your next hit links two mobs within 20 blocks, including allies. For 1 minute, they alternate half-second stuns each second.
 
 **Augmentation card:**
 
-> Link two enemies within 20 blocks; harmless 0.5-second stuns alternate every second for one minute.
+> Link two mobs, including allies; brief stuns alternate for 1 minute.
 
 ### Always the Gardeners
 
@@ -36,11 +36,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Arm your next enemy kill for 60 seconds. It leaves a plant and a poison cloud for five minutes. Everyone in the cloud, including you and allies, receives Poison I for 20 seconds. Radius: 2/2.5/3/3.5 blocks. Placed gardens remain after switching; only unused arming is canceled. The next planted garden replaces the old one. Cooldown after ending: 60/50/40/30 seconds.
+> Your next kill plants a 5-minute poison cloud. Everyone inside, including you, receives Poison I for 20 seconds.
 
 **Augmentation card:**
 
-> Your next enemy kill plants a five-minute poison cloud. Affects everyone for 20 seconds.
+> Your next kill plants a lasting cloud that poisons everyone.
 
 ### Area Discharge
 
@@ -48,11 +48,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Strike every hostile mob within 5 blocks with lightning for half your current weapon damage; each lightning hit counts toward Charge Attack (30-second cooldown)
+> Strike hostile mobs within 5 blocks with lightning for half weapon damage. These hits also build Charge Attack.
 
 **Augmentation card:**
 
-> Lightning hits nearby enemies and builds Charge Attack.
+> Lightning hits nearby enemies for half damage and builds charge.
 
 ### Blood Rush
 
@@ -60,11 +60,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Spend 2 health points to gain Speed II for 10 seconds. Cannot be used if the cost would kill you.
+> Spend 2 HP to gain Speed II for 10 seconds.
 
 **Augmentation card:**
 
-> Spend 2 health points for 10 seconds of Speed II.
+> Spend 2 HP for 10 seconds of Speed II.
 
 ### Blood Sacrafice
 
@@ -72,11 +72,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Sacrifice half your health and absorption to deal double weapon damage for 20 seconds. Switching weapons ends the effect.
+> Sacrifice half your health and absorption to deal double weapon damage for 20 seconds.
 
 **Augmentation card:**
 
-> Sacrifice half your health and absorption for 20 seconds of double damage.
+> Spend half your health and absorption for 20 seconds of double damage.
 
 ### Bone Guard
 
@@ -84,25 +84,13 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Bone Guard I/II/III summon 1/2/2 allies. Rank IV unlocks Necromancer: 3/4/5/6 allies at super I/II/III/IV. Higher ranks mix skeletons, bogged, strays and wither skeletons. From Necromancer I, ranged allies wear full chainmail and melee allies wear full iron armor. Necromancer IV equips Power II/Flame bows and diamond/iron swords. Allies last 1 minute and remain after switching weapons.
+> Summon one skeleton ally for 1 minute.
 
 **Augmentation card:**
 
-> Summon reinforcements for 1 minute. Upgrades change their lineup and equipment.
+> Summon one skeleton ally for 1 minute.
 
 **Super I-IV name (transforms at original IV):** Necromancer
-
-| Augment level | Reinforcements |
-| --- | --- |
-| Bone Guard I | 1 skeleton with a bow |
-| Bone Guard II | 2 skeletons with bows |
-| Bone Guard III | 1 bogged with a bow and 1 skeleton with a bow |
-| Necromancer I | 1 wither skeleton with a stone sword, 1 bogged with a bow, 1 stray with a bow |
-| Necromancer II | 2 wither skeletons with stone swords, 1 bogged with a bow, 1 stray with a bow |
-| Necromancer III | 1 bogged with a bow, 1 stray with a bow, 1 skeleton with a bow, 2 wither skeletons with stone swords |
-| Necromancer IV | 1 bogged with a Power II bow, 1 stray with a Power II bow, 1 skeleton with a Flame bow, 1 wither skeleton with a diamond sword, 1 wither skeleton with a Flame bow, 1 skeleton with an iron sword |
-
-Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcements wear full chainmail and all melee reinforcements wear full iron armor, including the bow-wielding wither skeleton and sword-wielding regular skeleton at Necromancer IV. Friendly iron golems and reinforcements remain neutral to each other. Reinforcements remain temporary and do not drop their equipment.
 
 ### Challenge Roar
 
@@ -110,11 +98,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Roar to make hostile mobs within 16/20/24/28 blocks target you, even through walls, and gain Strength I for 10 seconds. Players, allies and neutral creatures are unaffected by the taunt. Cooldown: 30/25/20/15 seconds.
+> Taunt nearby hostile mobs into targeting you and gain Strength I for 10 seconds.
 
 **Augmentation card:**
 
-> Hostile mobs within 16/20/24/28 blocks target you, even through walls. Gain Strength I for 10 seconds.
+> Taunt nearby hostile mobs and gain Strength I for 10 seconds.
 
 ### Charge Attack
 
@@ -122,11 +110,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next 20 mob hits each deal 5% more damage than the previous hit, reaching +100%; the 21st discharges 20 extra lightning damage (2-minute cooldown)
+> Each hit adds 5% damage, up to +100%. Hit 21 releases a lightning strike for 20 extra damage.
 
 **Augmentation card:**
 
-> Build damage over 20 hits; discharge lightning on hit 21.
+> Build +5% damage per hit; hit 21 releases lightning.
 
 ### Cinder Decoy
 
@@ -134,11 +122,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Leave an ember silhouette that attracts nearby hostile mobs for 6/8/10/12 seconds. It explodes whenever it disappears, including hostile contact, attacks, expiry, switching, death or logout. Explosion radius: 2/3/4/5 blocks at levels I/II/III/IV; nearby enemies ignite for 3/4/5/6 seconds. You and terrain are unharmed. Cooldown: 45 seconds after it ends.
+> Leave a decoy that attracts hostile mobs, then explodes and ignites enemies when struck or when it fades.
 
 **Augmentation card:**
 
-> Leave an ember decoy; disappearance explodes within 2-5 blocks and ignites enemies.
+> Lure mobs with a decoy that explodes when struck or when it fades.
 
 ### Crosswind
 
@@ -146,11 +134,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> For two minutes, incoming projectiles are deflected in varied sideways directions with a random tilt, steering away from you while preserving their speed. Your own shots are unaffected. Switching weapons cancels protection. Cooldown after ending: 180/160/140/120 seconds.
+> Deflect incoming projectiles for 2 minutes.
 
 **Augmentation card:**
 
-> Deflect incoming projectiles for two minutes.
+> Deflect incoming projectiles for 2 minutes.
 
 ### Crucible Hook
 
@@ -158,11 +146,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Hook the enemy you aim at within 20 blocks, pull it toward you and smash it upon reaching melee range. Damage: 1.25/1.5/1.75/2 times current weapon damage; burn: 3/4/5/6 seconds. Cooldown: 40/35/30/25 seconds. Blocks obstruct the hook; switching cancels it.
+> Pull any mob within 20 blocks to a point 2 blocks in front of you, then smash and ignite it.
 
 **Augmentation card:**
 
-> Pull an aimed enemy close, then smash and ignite it.
+> Pull a mob 2 blocks in front of you, then smash and ignite it.
 
 ### Death Stare
 
@@ -170,11 +158,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Teleport beside the mob directly under your crosshair. Range: 30/60/120 blocks at levels I/II/III; level IV reaches any loaded, visible distance. Walls block targeting and occupied destinations are rejected. Cooldown: 45/40/35/30 seconds.
+> Teleport beside the mob under your crosshair within 30 blocks.
 
 **Augmentation card:**
 
-> Teleport beside the mob directly under your crosshair.
+> Teleport beside the mob under your crosshair.
 
 ### Deep Wound
 
@@ -182,11 +170,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next critical dagger hit deals double damage and inflicts Slowness III for 5 seconds, with a purely visual blood burst on the target. Cooldown: 30 seconds.
+> Your next critical dagger hit deals double damage and inflicts Slowness III for 5 seconds.
 
 **Augmentation card:**
 
-> Your next critical hit doubles damage, slows the target and creates a visual blood burst.
+> Your next crit deals double damage and Slowness III for 5 seconds.
 
 ### Delusion
 
@@ -194,11 +182,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm your next successful melee hit on a mob for up to 30 seconds. That mob forgets its aggression and cannot acquire an attack target for 20 seconds. It may still wander. Switching cancels the effect. Cooldown after ending: 40/35/30/25 seconds.
+> Your next hit makes a mob lose its aggression for 20 seconds.
 
 **Augmentation card:**
 
-> Your next mob hit makes it forget aggression for 20 seconds.
+> Your next hit calms a mob for 20 seconds.
 
 ### Direct Current
 
@@ -206,11 +194,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm marking for 30 seconds. Melee-hit 2/3/4/4 different enemies, each within 50 blocks of every other mark. At two marks, stun the anchors and form barriers for 20 seconds; another mark refreshes that duration. Crossing or standing in a visible barrier deals two hearts of damage, at most once per half-second. Marked anchors are exempt from this contact damage. Reaching rank IV becomes Static Field I, upgradeable through IV: at three marks, all living entities inside their triangle take 1/1.25/1.5/1.75 damage per second at super ranks I/II/III/IV. Walls block barriers and field formation. Switching or anchor death cancels. Cooldown after ending: 120/100/80/60 seconds.
+> Mark two mobs with melee hits to stun them and create damaging barriers.
 
 **Augmentation card:**
 
-> Mark enemies to stun them and form damaging barriers. Rank IV adds a field that also hurts you and allies.
+> Mark two mobs with melee hits to stun them and create damaging barriers.
 
 **Super I-IV name (transforms at original IV):** Static Field
 
@@ -220,11 +208,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Swap places with the visible enemy under your crosshair within 10 blocks. Both bodies must fit in clear, loaded, dry destinations; mounted entities cannot swap. Cooldown: 40/35/30/25 seconds.
+> Swap places with a visible enemy within 10 blocks.
 
 **Augmentation card:**
 
-> Swap places with a visible aimed enemy within ten blocks if both destinations are clear.
+> Swap places with a visible enemy within 10 blocks.
 
 ### Downdraft Bell
 
@@ -232,11 +220,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Force all airborne mobs above you downward for ten seconds, within a horizontal radius of 4/6/8/10 blocks and with no height limit. Downward speed is at least 2/2.2/2.4/2.6 blocks per tick, countering flying AI until they land. Grounded and swimming mobs are not selected. Uses normal collision and falling, preserves horizontal momentum, and adds no direct damage or teleportation. Switching cancels. Cooldown after ending: 30/25/20/15 seconds.
+> For 10 seconds, pull airborne mobs and elytra flyers above you down while inside your radius. Unlimited height.
 
 **Augmentation card:**
 
-> Pull airborne mobs above you to the ground for ten seconds, regardless of height.
+> For 10 seconds, pull nearby airborne mobs and elytra flyers down.
 
 ### Dream Feast
 
@@ -244,11 +232,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Instantly restore eight hunger points and eight saturation points. Can replenish saturation at full hunger; both cap normally.
+> Restore 8 hunger and 8 saturation.
 
 **Augmentation card:**
 
-> Restore eight hunger and eight saturation points.
+> Restore 8 hunger and 8 saturation.
 
 ### Echo Hearing
 
@@ -256,11 +244,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Listen for 10/12/14/16 seconds. Other entities making noise within 32/40/48/56 blocks glow for 2 seconds, even through walls, and send a vibration toward you. The range follows you. Cooldown after listening ends: 30/25/20/15 seconds.
+> Listen for nearby sounds and briefly outline noisy entities. Only you see these outlines.
 
 **Augmentation card:**
 
-> For 10/12/14/16 seconds, noisy entities within a moving 32/40/48/56-block radius glow for 2 seconds and send vibrations toward you.
+> Listen for sounds; privately outline noisy entities.
 
 ### Ender Swing
 
@@ -268,11 +256,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Immediately swing to damage enemies within 1 block and lift them 20 blocks if the path is clear. Requires no other augment. Super rank adds 20% damage. Cooldown: 60 seconds.
+> Strike enemies within 3 blocks for weapon damage and launch them up to 20 blocks upward.
 
 **Augmentation card:**
 
-> Immediately swing to damage nearby enemies and lift them into the air.
+> Strike enemies within 3 blocks and launch them into the air.
 
 ### Explosion
 
@@ -280,11 +268,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Gain Resistance IV for 2 seconds and unleash a wide creeper-style explosion reaching about 8 blocks, with a cloud of blast and smoke particles. Your own explosion does not hurt or knock you back and does not destroy terrain. Cooldown: 60/55/50/45 seconds at levels I/II/III/IV.
+> Explode without harming yourself or blocks, and gain Resistance IV for 2 seconds.
 
 **Augmentation card:**
 
-> Gain Resistance IV, then unleash a wide, terrain-safe explosion reaching about 8 blocks.
+> Explode safely and gain Resistance IV for 2 seconds.
 
 ### Explosive Hits
 
@@ -292,11 +280,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next 10 successful melee hits create blasts dealing 30% of your current weapon damage, without harming you or terrain. Radius: 3/4/5/6 blocks at levels I/II/III/IV (7 at super rank). Cooldown: 45 seconds after the charges finish or are canceled by switching.
+> Your next 10 hits explode for 30% weapon damage to nearby enemies, without harming you or blocks.
 
 **Augmentation card:**
 
-> Ten hits explode for 30% weapon damage, without harming you.
+> Ten hits explode for 30% weapon damage. You and blocks are safe.
 
 ### Eye of the Storm
 
@@ -304,11 +292,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Whirl all entities except you within 10 blocks for 5 seconds; living targets are levitated (1-minute cooldown)
+> Whirl entities within 10 blocks for 5 seconds, levitating living targets.
 
 **Augmentation card:**
 
-> Whirl nearby entities; living targets levitate.
+> Whirl nearby entities and levitate living targets for 5 seconds.
 
 ### False Awakening
 
@@ -316,11 +304,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Mark an aimed enemy within 20 blocks with alternating real/echo silhouettes. A shadowless violet echo distracts visible hostile mobs within 8 blocks. Your next successful melee hit on the real target deals 10/15/20/25% more damage and ends the dream. Duration: 30/35/40/45 seconds; cooldown after ending: 60/50/40/30 seconds.
+> Mark an enemy within 20 blocks and distract mobs with a decoy. Your next hit on the marked enemy deals bonus damage.
 
 **Augmentation card:**
 
-> Distract enemies with an echo; strike the real target for a bonus.
+> Distract mobs with a decoy; deal bonus damage to the marked enemy.
 
 ### Feather Shelter
 
@@ -328,11 +316,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Grant yourself and allies within 4/6/8/10 blocks Slow Falling for 10 seconds.
+> Give yourself and nearby allies Slow Falling for 10 seconds.
 
 **Augmentation card:**
 
-> Give yourself and nearby allies 10 seconds of Slow Falling.
+> Grant yourself and nearby allies 10 seconds of Slow Falling.
 
 ### Flame Breath
 
@@ -340,11 +328,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Breathe a 35-degree fire cone in your look direction, dealing current weapon damage and burning enemies for 3/4/5/6 seconds. Range: 7/8/9/10 blocks; cooldown: 30/25/20/15 seconds. Blocks stop the breath.
+> Breathe a cone of fire that deals weapon damage and ignites enemies ahead.
 
 **Augmentation card:**
 
-> Breathe a wide fire cone, damaging and igniting enemies ahead.
+> Breathe fire to damage and ignite enemies ahead.
 
 ### Flameborn
 
@@ -352,11 +340,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Gain Fire Resistance for 30 seconds and unleash a visual fire burst. You and all enemies within 10 blocks burn for 5 seconds (7 seconds at super rank). Allies and terrain are unharmed. Switching ends your protection. Cooldown after ending: 5 minutes.
+> Gain Fire Resistance for 30 seconds and ignite yourself and enemies within 10 blocks.
 
 **Augmentation card:**
 
-> Gain Fire Resistance and ignite yourself and nearby enemies in a fire burst.
+> Gain Fire Resistance; ignite yourself and nearby enemies.
 
 ### Flaming Stomp
 
@@ -364,11 +352,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm your next axe attack to strike vertically. The 5×5 area ahead takes weapon damage, and enemies there burn for 5 seconds. Switching weapons cancels the strike. Cooldown after the strike or cancellation: 2 minutes.
+> Your next axe attack becomes a fiery 5x5 slam, dealing weapon damage and igniting enemies for 5 seconds.
 
 **Augmentation card:**
 
-> Your next axe attack becomes a fiery 5×5 vertical strike.
+> Your next axe attack becomes a fiery 5x5 area slam.
 
 ### Ghostwalk
 
@@ -376,11 +364,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Become invisible for 10 seconds until attacking. At level IV, transforms into Jumpscare Horror I: your invisible opening attack deals double damage and breaks Ghostwalk. Super I-IV invisibility lasts 10/12/14/16 seconds.
+> Hide yourself, armor and held items for 10 seconds, ending when you attack.
 
 **Augmentation card:**
 
-> Vanish until attacking. Super form doubles your invisible opening hit.
+> Hide yourself, armor and held items for 10 seconds, ending when you attack.
 
 **Super I-IV name (transforms at original IV):** Jumpscare Horror
 
@@ -390,11 +378,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Pull visible enemies within six blocks to a fixed point two blocks ahead of you. Only after reaching that point within melee range does the smash deal weapon damage. The pull itself deals no damage. Pull speed: 0.6/0.7/0.8/0.9. Ends after arrival or two seconds; switching cancels. Cooldown after ending: 40/35/30/25 seconds.
+> Pull visible enemies within 6 blocks to a point ahead of you, then smash those that reach it for weapon damage.
 
 **Augmentation card:**
 
-> Pull enemies to a fixed point two blocks ahead; smash for weapon damage only on arrival within reach.
+> Pull enemies close, then smash them for weapon damage.
 
 ### Green Feast
 
@@ -402,11 +390,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Consume one wheat to restore one heart and two saturation points, capped at current hunger. Can be used at full health when saturation is missing.
+> Consume 1 wheat to heal 1 heart and restore 2 saturation.
 
 **Augmentation card:**
 
-> One wheat restores one heart and two saturation points.
+> Consume 1 wheat for 1 heart and 2 saturation.
 
 ### Just a Dream
 
@@ -414,11 +402,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Teleport safely to your respawn point, including across dimensions. Missing beds or anchors fall back to world spawn. Does not consume respawn-anchor charges. Mounted use is rejected. Cooldown: 60/50/40/30 seconds.
+> Teleport to your respawn point, or world spawn if it is unavailable.
 
 **Augmentation card:**
 
-> Teleport safely to your respawn point, even in another dimension.
+> Teleport to your respawn point, or world spawn if unavailable.
 
 ### Live Wire
 
@@ -426,11 +414,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> For eight seconds, enemies that successfully hit you in melee receive two damage in return. Reflected damage cannot reflect again. Switching weapons cancels. Cooldown after ending: 40/35/30/25 seconds.
+> For 8 seconds, melee attackers take 2 damage when they hit you.
 
 **Augmentation card:**
 
-> For eight seconds, reflect two damage to melee attackers.
+> For 8 seconds, melee attackers take 2 damage on hit.
 
 ### Lucid Dreaming
 
@@ -438,11 +426,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next dagger kill against an enemy grants Speed II for 30 seconds and halves fall damage for the next 15 seconds (15-second cooldown)
+> Your next dagger kill grants Speed II for 30 seconds and halves fall damage for 15 seconds.
 
 **Augmentation card:**
 
-> Your next enemy kill grants Speed II and halves fall damage.
+> Your next kill grants Speed II and halves fall damage.
 
 ### Lullaby
 
@@ -450,11 +438,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Put the aimed enemy within 10/12/14/16 blocks to sleep for three seconds. Sleeping mobs cannot move or attack; damage wakes them immediately. Players instead receive Slowness II for three seconds. Switching cancels sleep. Cooldown: 40/35/30/25 seconds after sleep ends.
+> Put a targeted entity to sleep for 3 seconds, until damaged. Players receive Slowness II instead.
 
 **Augmentation card:**
 
-> Sleep an aimed mob for three seconds; damage wakes it. Players receive brief Slowness.
+> Put any mob to sleep until hit. Slows players instead.
 
 ### Magma Toss
 
@@ -462,11 +450,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Throw a molten rock that bursts on the first enemy or solid block, dealing current weapon damage and igniting nearby enemies. Radius: 2/2.5/3/3.5 blocks; burn: 3/4/5/6 seconds. Projectile lasts up to 3 seconds. Cooldown after ending: 35/30/25/20 seconds. Blocks stop blast damage; terrain and allies are safe.
+> Throw a molten rock that bursts on impact, dealing weapon damage and igniting nearby enemies.
 
 **Augmentation card:**
 
-> Throw a molten rock that bursts on impact, damaging and igniting nearby enemies.
+> Throw a molten rock that bursts and ignites nearby enemies.
 
 ### Magnetic Throw
 
@@ -474,11 +462,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Launch the aimed enemy within melee reach along your look direction with velocity 1.1/1.3/1.5/1.7. Walls block targeting; adds no damage or teleportation. Cooldown: 25/20/15/10 seconds.
+> Launch an enemy within melee range in the direction you look.
 
 **Augmentation card:**
 
-> Launch an enemy within melee reach along your look direction.
+> Launch a nearby enemy in your look direction.
 
 ### Null Receipt
 
@@ -486,11 +474,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Negate knockback from the next five damaging hits and store the canceled force, up to 5. Release it as extra knockback with your next vertical axe slam. Lasts up to 30 seconds; switching cancels it. Cooldown after release/end: 40/35/30/25 seconds.
+> Absorb knockback from five incoming hits, then release it with a vertical strike.
 
 **Augmentation card:**
 
-> Store knockback from five hits; release it in a vertical slam.
+> Store knockback from five incoming hits; release it in a slam.
 
 ### Pocket Storm
 
@@ -498,11 +486,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next melee hit smashes enemies within 3 blocks for weapon damage and strong knockback. The original victim receives knockback without a second damage hit.
+> Your next melee hit smashes nearby enemies for weapon damage and strong knockback.
 
 **Augmentation card:**
 
-> Arm a melee hit to create an area smash with strong knockback.
+> Your next hit creates an area smash with strong knockback.
 
 ### Poisoned Vein
 
@@ -510,25 +498,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next dagger kill against a hostile mob leaves a 3-block poison cloud for 5 seconds, applying 30 seconds of Poison I to anyone inside, including you (45-second cooldown)
+> Your next dagger kill leaves a 5-second cloud. Everyone within 3 blocks, including you, receives Poison I for 30 seconds.
 
 **Augmentation card:**
 
-> Your next enemy kill leaves a cloud that poisons anyone inside.
-
-### Pyromaniac
-
-**Weapons:** Emberfang Dagger
-
-**Type:** Passive
-
-**Item tooltip:**
-
-> While burning, hitting a mob extinguishes you and restores 2 HP. Passive; no cooldown.
-
-**Augmentation card:**
-
-> Hit a mob while burning to extinguish yourself and restore 2 HP.
+> Your next kill leaves a cloud that poisons everyone, including you.
 
 ### Ringing Steel
 
@@ -536,11 +510,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm your next successful melee hit until used or the weapon is switched. It also deals 15 durability damage to the victim's held weapon, respecting normal durability enchantments. Armor and shields are unaffected.
+> Your next melee hit deals 15 durability damage to the enemy's held weapon.
 
 **Augmentation card:**
 
-> Your next hit damages the enemy's held weapon by 15 durability.
+> Your next hit deals 15 durability damage to the enemy's weapon.
 
 ### Rooting Roots
 
@@ -548,11 +522,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Roots grow from the ground around hostile mobs within 10 blocks, holding them in place and poisoning them for 10 seconds. The roots retract when the hold ends. (1-minute cooldown)
+> Root and poison hostile mobs within 10 blocks for 10 seconds.
 
 **Augmentation card:**
 
-> Animated roots emerge to bind and poison enemies within 10 blocks, then withdraw after 10 seconds.
+> Root and poison nearby hostile mobs for 10 seconds.
 
 ### Skull Throw
 
@@ -560,11 +534,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Fire a slow wither skull. Its first impact bursts for weapon damage and Wither I for 5 seconds against nearby enemies, without breaking blocks.
+> Fire a fast wither skull up to 500 blocks. It bursts on impact for weapon damage and Wither I for 5 seconds.
 
 **Augmentation card:**
 
-> A slow skull bursts for weapon damage and brief Wither.
+> Fire a fast skull up to 500 blocks; bursts on impact for weapon damage and Wither.
 
 ### Sonic Boom
 
@@ -572,11 +546,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Fire a 50-block, 3x3 piercing sonic blast along your aim for twice your equipped attack damage; hits all entities except items, and only blocks along its center stop it (45-second cooldown)
+> Fire a piercing sonic blast up to 50 blocks for double attack damage. Blocks stop it.
 
 **Augmentation card:**
 
-> Fire a piercing sonic blast for twice your weapon damage.
+> Fire a piercing sonic blast for double damage. Blocks stop it.
 
 ### Sonically Charged Crit
 
@@ -584,7 +558,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next critical dagger hit adds damage equal to 15% of the target's maximum health and releases a sonic boom (30-second cooldown)
+> Your next critical dagger hit adds 15% of the target's maximum health as damage.
 
 **Augmentation card:**
 
@@ -596,11 +570,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm the next swing for up to 30 seconds. It releases a four-block-wide, half-block-high echo along your look direction at that swing, traveling 20 blocks and dealing current weapon damage once to each enemy per echo. Only a fully blocked four-block-wide cross-section stops it; a one-block hole lets it through. Dual wielding matching daggers sends a second echo with the paired offhand swing, even without Static Blade on that dagger. Switching cancels. Cooldown after ending: 40/35/30/25 seconds.
+> Your next swing sends a piercing echo up to 20 blocks for weapon damage. A matching offhand dagger sends a second echo.
 
 **Augmentation card:**
 
-> Release a wide piercing echo for 20 blocks through wall openings; matching dual wield adds an offhand echo.
+> Your next swing fires an echo; matching dual daggers fire two.
 
 ### Stepping Through the Void
 
@@ -608,11 +582,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Teleport up to 10 blocks toward your aim, or 20 with a matching offhand dagger. Pass through plants, follow the ground when aiming downward, and stop just before obstacles. Cooldown: 7 seconds.
+> Teleport up to 10 blocks in your look direction, stopping before obstacles. A matching offhand dagger doubles the range.
 
 **Augmentation card:**
 
-> Teleport along your aim, stopping before obstacles. Plants do not block you. Two Riftfangs double the range.
+> Teleport 10 blocks ahead, or 20 with a matching offhand dagger.
 
 ### Storing Anger
 
@@ -620,11 +594,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal no damage for 10 seconds; your next Morsium dagger hit releases all stored damage (1-minute cooldown)
+> Store your damage instead of dealing it for 10 seconds, then release it on your next dagger hit.
 
 **Augmentation card:**
 
-> Store damage for 10 seconds, then release it on your next hit.
+> Store damage for 10 seconds; release it on your next hit.
 
 ### Strengthened Bones
 
@@ -632,11 +606,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your next dagger kill against a hostile mob makes you invulnerable for 10 seconds (90-second cooldown)
+> Your next dagger kill grants 10 seconds of invulnerability.
 
 **Augmentation card:**
 
-> Your next enemy kill grants 10 seconds of invulnerability.
+> Your next kill grants 10 seconds of invulnerability.
 
 ### Strong-arm
 
@@ -644,11 +618,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Attempt to break one random armor piece on the enemy you aim at within melee range. Chance: 30/55/80/100% at levels I/II/III/IV. A valid attempt starts a 60/50/40/30-second cooldown even if the roll fails. No armored target means no cooldown.
+> Your next fully charged critical hit has a 30% chance to break one random armor piece.
 
 **Augmentation card:**
 
-> Chance to break one random armor piece on an aimed enemy.
+> Your next fully charged critical hit can break one armor piece.
 
 ### Stunning Presence
 
@@ -656,11 +630,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> For 30 seconds, visible enemies within 10 blocks take one damage and are stunned for 0.5 seconds per pulse. Pulses occur every 2/1.65/1.35/1 seconds. A rotating electrical boundary and expanding pulse ripples show the area; higher levels add denser, faster sparks. Switching cancels. Cooldown after ending: 60/50/40/30 seconds.
+> For 30 seconds, repeatedly damage and briefly stun visible enemies within 10 blocks.
 
 **Augmentation card:**
 
-> For 30 seconds, pulse damage and 0.5-second stuns within a visible 10-block electrical aura.
+> Repeatedly damage and stun nearby enemies for 30 seconds.
 
 ### Sudden Presence
 
@@ -668,7 +642,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Teleport behind the nearest hostile mob within 20 blocks (2-minute cooldown)
+> Teleport behind the nearest hostile mob within 20 blocks.
 
 **Augmentation card:**
 
@@ -680,11 +654,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Swing around, dealing current weapon damage to every visible enemy within your current melee range. Cooldown: 30/25/20/15 seconds at levels I/II/III/IV.
+> Strike all visible enemies within melee range for weapon damage.
 
 **Augmentation card:**
 
-> Strike every visible enemy in your melee range.
+> Strike all visible enemies within melee range.
 
 ### Upwind
 
@@ -692,11 +666,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Arm your next successful melee hit for up to 30 seconds. After normal hit knockback, add 0.6/0.8/1.0/1.2 knockback and launch the enemy upward at velocity 0.6/0.8/1.0/1.2, respecting knockback resistance. Adds no direct damage. Switching cancels. Cooldown after the hit: 30/25/20/15 seconds.
+> Your next melee hit launches the enemy upward with extra knockback.
 
 **Augmentation card:**
 
-> Your next melee hit adds knockback and launches the enemy upward.
+> Your next hit launches the enemy with extra knockback.
 
 ### Vacuum Burst
 
@@ -704,7 +678,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Pull dropped items and experience orbs within 6/8/10/12 blocks toward you with one gust. Normal pickup rules still apply.
+> Pull nearby dropped items and experience toward you.
 
 **Augmentation card:**
 
@@ -716,11 +690,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Draw violet particles inward for half a second, then release a fast outward burst that pushes all visible mobs away, including passive and knockback-resistant mobs, without damage. Radius: 4/5/6/7 blocks; push strength: 0.6/0.8/1/1.2. Switching cancels the charge. Cooldown after release or cancellation: 30/25/20/15 seconds.
+> Release a burst that pushes nearby mobs away without dealing damage.
 
 **Augmentation card:**
 
-> Gather void energy, then burst outward to push nearby mobs without damage.
+> Push nearby mobs away without dealing damage.
 
 ### Windcharge
 
@@ -728,11 +702,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Launch upward about 5/10/15/20 blocks (axes: 10/16/23/30). Your first landing after launch causes no fall damage while the weapon stays equipped. Axe rank IV becomes Skybreaker I, upgradeable through IV: the first falling axe hit gains mace-style damage and feedback, then landing smashes all visible mobs within 5 blocks even if the swing missed. The smash deals weapon damage plus mace fall damage based on the full descent. Super II/III/IV increase the fall-damage bonus by 10%/20%/30%; launch height stays 30 blocks.
+> Launch upward and avoid damage on your next landing.
 
 **Augmentation card:**
 
-> Launch upward; axe rank IV gains a falling area smash.
+> Launch upward and avoid damage on your next landing.
 
 **Axe super I-IV name (transforms at original IV):** Skybreaker
 
@@ -742,11 +716,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Launch yourself in your look direction; momentum, gravity and collisions determine the distance (5-second base cooldown)
+> Dash in the direction you look.
 
 **Augmentation card:**
 
-> Launch yourself in the direction you look.
+> Dash in the direction you look.
 
 ## Passives
 
@@ -756,11 +730,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Each fully charged melee hit echoes for one damage point after one second. Echoes cannot trigger hit abilities or another echo; putting the weapon away cancels them.
+> Fully charged hits deal 1 extra damage after 1 second.
 
 **Augmentation card:**
 
-> Charged melee hits echo for one damage after one second.
+> Charged hits echo for 1 damage after 1 second.
 
 ### Backstab
 
@@ -768,11 +742,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 20% more melee damage when striking an enemy from behind, within 60 degrees of directly behind it. Maximum level: I.
+> Deal 20% more melee damage from behind.
 
 **Augmentation card:**
 
-> Deal 20% more melee damage when striking an enemy from behind.
+> Deal 20% more melee damage from behind.
 
 ### Chain Lightning
 
@@ -780,11 +754,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Hits can chain up to 10 times, with a 50% chance per link. Each next hostile mob is within 10 blocks of the previous target and takes half your current weapon damage.
+> Hits can chain lightning between nearby living entities for half weapon damage. Each jump has a 50% chance, up to 10 jumps.
 
 **Augmentation card:**
 
-> Hits can arc between enemies for half weapon damage.
+> Hits can chain lightning for half weapon damage.
 
 ### Charred Edge
 
@@ -792,11 +766,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 15% more melee damage to enemies with Fire Resistance. Maximum level: I.
+> Deal 15% more melee damage to enemies with Fire Resistance.
 
 **Augmentation card:**
 
-> Deal 15% more melee damage to enemies with Fire Resistance.
+> Deal 15% more damage to enemies with Fire Resistance.
 
 ### Cold Bellows
 
@@ -804,11 +778,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Successfully blocking damage with a shield ignites the attacker, including the shooter of a blocked projectile, for 3/4/5/6 seconds at levels I/II/III/IV. Hold this claymore in your main hand.
+> Shield blocks ignite the attacker, including projectile shooters.
 
 **Augmentation card:**
 
-> Shield blocks ignite the attacking enemy or projectile shooter.
+> Shield blocks ignite attackers, including shooters.
 
 ### Compost
 
@@ -816,11 +790,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Eating rotten flesh while holding this weapon in either hand does not apply Hunger. Existing Hunger and other sources are unaffected.
+> Eat rotten flesh without getting Hunger.
 
 **Augmentation card:**
 
-> Eat rotten flesh without its Hunger effect.
+> Eat rotten flesh without getting Hunger.
 
 ### Conductive Edge
 
@@ -828,7 +802,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 20% more melee damage to enemies standing in water or exposed to rain.
+> Deal 20% more melee damage to enemies in water or rain.
 
 **Augmentation card:**
 
@@ -840,11 +814,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Gain Jump Boost I while holding this axe in your main hand during daytime. Ends when you put it away or night begins. Stronger potion effects are preserved.
+> Gain Jump Boost II during the day.
 
 **Augmentation card:**
 
-> Gain Jump Boost I while holding the axe during daytime.
+> Gain Jump Boost II during the day.
 
 ### Death March
 
@@ -852,11 +826,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Dagger damage rises as the target loses health, up to double damage
+> Deal more dagger damage as the target loses health, up to double damage.
 
 **Augmentation card:**
 
-> Deal more damage as the target loses health, up to double.
+> Deal more damage to wounded enemies, up to double.
 
 ### Death's Due
 
@@ -864,11 +838,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Enemy kills grant 25% more experience, rounded down to whole points. Item drops are unchanged.
+> Kills grant 25% more experience.
 
 **Augmentation card:**
 
-> Enemy kills grant 25% more experience.
+> Kills grant 25% more experience.
 
 ### Distance Tax
 
@@ -876,11 +850,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> A successful hit marks one enemy for 10 seconds. Then its distance from you deals 0.5/0.75/1/1.25 damage per block at levels I/II/III/IV, capped at 40 damage. Repeated hits keep the deadline; another enemy replaces the mark. Switching cancels it.
+> Your last hit marks an enemy. After 10 seconds, it takes damage based on your distance, up to 40 damage.
 
 **Augmentation card:**
 
-> Mark an enemy, then move away before the ten-second tax.
+> Mark on hit; distance deals damage after 10 seconds, up to 40.
 
 ### Double Jump
 
@@ -888,11 +862,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Press Jump again in midair after a normal jump for one air jump. Reaching rank IV becomes Windwalker I, granting two air jumps. Super II/III/IV increase vertical lift from 0.55 to 0.60/0.65/0.70, preserving sprint momentum. Matching daggers with Dual Wield on either hand combine their learned jump counts (up to four); landing or switching resets the budget.
+> Jump once in midair. Matching dual-wielded daggers can add more jumps.
 
 **Augmentation card:**
 
-> One air jump. At IV, becomes Windwalker I with two air jumps; upgrade through IV for stronger lift.
+> Jump once in midair. Matching dual-wielded daggers can add more jumps.
 
 **Super I-IV name (transforms at original IV):** Windwalker
 
@@ -902,7 +876,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Daggers of the same material strike in both hands, including different gemstone variants; learned material hits apply their effect.
+> Wield two daggers of the same material to attack with both. Gemstones may differ.
+
+**Augmentation card:**
+
+> Attack with two daggers of the same material.
 
 ### Echo Appetite
 
@@ -910,11 +888,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Breaking sculk, sculk veins, sensors, catalysts or shriekers restores half a drumstick. Killing a Warden restores two drumsticks. Neither adds saturation.
+> Breaking sculk restores half a drumstick; killing a Warden restores 2 drumsticks.
 
 **Augmentation card:**
 
-> Break sculk blocks for half a drumstick; defeat a Warden for two drumsticks.
+> Restore hunger by breaking sculk or killing a Warden.
 
 ### Echo Salvage
 
@@ -922,11 +900,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> A vertical strike that misses living targets but strikes solid ground or a wall stores one echo for 30 seconds. Your next vertical strike that successfully hits an enemy consumes it, adding half your weapon damage, capped at 2/4/6/8 bonus damage. Echoes do not stack; ordinary attacks and circular swings do not consume them. Switching clears the echo.
+> A vertical strike that hits terrain but misses enemies stores bonus damage for your next successful slam, lasting 30 seconds.
 
 **Augmentation card:**
 
-> A missed vertical strike stores an echo. Your next successful vertical strike releases capped bonus damage.
+> A slam that hits terrain stores bonus damage for the next slam.
 
 ### Echoing Speed
 
@@ -934,11 +912,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Successful hits on the same enemy each add 5% attack speed, capped at 20/30/40/50% at levels I/II/III/IV. A different target resets buildup. Eight seconds without a hit, switching weapons or the target dying clears it.
+> Consecutive hits on the same enemy build attack speed. Changing targets or pausing for 8 seconds resets the bonus.
 
 **Augmentation card:**
 
-> Build attack speed with repeated hits on one enemy.
+> Build attack speed by repeatedly hitting the same enemy.
 
 ### Final strike
 
@@ -946,7 +924,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 50% more melee damage to your most recently hit enemy when it has less than 10% health.
+> Deal 50% more damage to your last hit enemy when it is below 10% health.
 
 **Augmentation card:**
 
@@ -958,11 +936,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Gain infinite Fire Resistance while holding this weapon in your main hand. Level II also works in the offhand and is the maximum level. Weapon protection ends when neither hand qualifies; other Fire Resistance effects keep their normal duration.
+> Gain Fire Resistance while held in your main hand.
 
 **Augmentation card:**
 
-> Fire Resistance while held; level II also protects from offhand.
+> Fire Resistance in your main hand; at II, either hand.
 
 ### Grave Vault
 
@@ -970,11 +948,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Store flowers in nine slots in this weapon. Sneak-right-click to open a one-row chest interface. Enemy kills plant one stored flower where the victim stood when placement is valid. Right-click a block to place a flower manually.
+> Store flowers in a nine-slot vault. Sneak-right-click to open it; kills and right-clicks on blocks plant stored flowers.
 
 **Augmentation card:**
 
-> A nine-slot flower vault; enemy kills plant a stored flower at the victim.
+> Store flowers; sneak-right-click to open. Kills plant a flower.
 
 ### Headwind
 
@@ -982,25 +960,23 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Sprinting uses half the normal hunger exhaustion while this weapon is held.
+> Sprinting consumes half as much hunger.
 
 **Augmentation card:**
 
-> Halve hunger exhaustion from sprinting.
+> Sprinting consumes half as much hunger.
 
 ### Heating Up
 
 **Weapons:** Infernal Claymore
 
-**Type:** Passive
-
 **Item tooltip:**
 
-> Fire damage is prevented. While burning, restore 1 HP every 2/1.75/1.5/1.25 seconds (rank V: 1 second). Neither protection nor healing works in lava; lava damage is never prevented.
+> Heal slowly instead of taking fire damage while burning. Does not work in lava.
 
 **Augmentation card:**
 
-> Prevent fire damage and slowly heal while burning. Does not work in lava.
+> Fire heals you instead of hurting you. Excludes lava.
 
 ### Heavy Current
 
@@ -1008,11 +984,23 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 15% more melee damage to enemies wearing armor in all four normal armor slots.
+> Deal 15% more melee damage to fully armored enemies.
 
 **Augmentation card:**
 
 > Deal 15% more melee damage to fully armored enemies.
+
+### Homesick
+
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
+
+**Item tooltip:**
+
+> Standing on sculk grants Speed II and Strength I for 3 seconds.
+
+**Augmentation card:**
+
+> Standing on sculk grants Speed II and Strength I.
 
 ### Last Stand
 
@@ -1020,11 +1008,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Once every 2 minutes, a fatal hit leaves you at 1 health point instead. Requires more than 1 health point before the hit.
+> Survive a fatal hit with 1 HP once every 2 minutes.
 
 **Augmentation card:**
 
-> Survive a fatal hit at 1 HP, once every 2 minutes.
+> Survive a fatal hit with 1 HP once every 2 minutes.
 
 ### Leech
 
@@ -1032,11 +1020,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Always heal from 10/12/14/16% of damage dealt while wielding this dagger. No bonus damage, activation, hit limit or cooldown. One matching dual-wield dagger may provide the passive.
+> Heal for 10% of the damage you deal with this dagger.
 
 **Augmentation card:**
 
-> Always heal from damage dealt; no bonus damage or cooldown.
+> Dagger damage heals you.
 
 ### Lightning Rod
 
@@ -1044,11 +1032,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> While holding this weapon, lightning cannot hurt or ignite you. Extra harmless strikes can occur under open sky without a storm (level I: average once per ten minutes; higher levels: once per minute). A strike grants five absorption hearts and Strength I for 30 seconds; repeated strikes replenish those five hearts without stacking. Putting the weapon away ends these buffs.
+> Attract lightning under open sky. Strikes grant 5 absorption hearts and Strength I instead of harming you.
 
 **Augmentation card:**
 
-> Lightning is harmless and grants five absorption hearts plus Strength I; extra strikes need no storm.
+> Attract harmless lightning for 5 absorption hearts and Strength I.
 
 ### Lonely Dream
 
@@ -1056,11 +1044,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Gain 5% attack speed for each enemy within ten blocks while holding this weapon. The bonus updates as enemies enter or leave and ends when you switch weapons. Maximum level: I.
+> Gain 5% attack speed for each enemy within 10 blocks.
 
 **Augmentation card:**
 
-> Gain 5% attack speed for each enemy within ten blocks.
+> Gain 5% attack speed per enemy within 10 blocks.
 
 ### Lumberjack
 
@@ -1068,11 +1056,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Breaking logs with this axe does not consume weapon durability.
+> Breaking logs costs no durability.
 
 **Augmentation card:**
 
-> Mine logs without using weapon durability.
+> Breaking logs costs no durability.
 
 ### Lush Jungle
 
@@ -1080,11 +1068,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Killing an enemy bonemeals the block beneath it, if that block accepts bonemeal. No item cost or cooldown.
+> Kills bonemeal the block beneath the enemy.
 
 **Augmentation card:**
 
-> Enemy kills bonemeal the block beneath them.
+> Kills bonemeal the block beneath the enemy.
 
 ### Nether Born
 
@@ -1092,7 +1080,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 20% more melee and weapon-explosion damage while holding this weapon in the Nether. This passive has one level.
+> Deal 20% more weapon damage in the Nether.
 
 **Augmentation card:**
 
@@ -1104,11 +1092,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Melee hits that are successfully shield-blocked break that shield. Deal 20% extra armor durability damage, carrying fractional wear between hits. Mobs use the same vanilla armor-wear baseline for this bonus. Maximum level: I.
+> Break blocking shields and deal 20% more damage to armor durability.
 
 **Augmentation card:**
 
-> Break blocking shields and add 20% armor wear.
+> Break shields and deal 20% more armor durability damage.
 
 ### Photosynthesis
 
@@ -1116,11 +1104,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Restore 1 weapon durability every 15 seconds during daylight while this weapon is held.
+> Restore 1 weapon durability every 15 seconds in daylight.
 
 **Augmentation card:**
 
-> Slowly repair this weapon while holding it during daylight.
+> Slowly repair this weapon in daylight.
 
 ### Pillow Armor
 
@@ -1128,11 +1116,23 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Take 25% less fall damage while holding this axe in your main hand.
+> Take 25% less fall damage.
 
 **Augmentation card:**
 
-> Take 25% less fall damage while holding the axe.
+> Take 25% less fall damage.
+
+### Pyromaniac
+
+**Weapons:** Emberfang Dagger
+
+**Item tooltip:**
+
+> Hit a mob while burning to extinguish yourself and heal 2 HP.
+
+**Augmentation card:**
+
+> Hit while burning to extinguish yourself and heal 2 HP.
 
 ### Quick Recharge
 
@@ -1140,11 +1140,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> A successful fully charged critical hit shortens this weapon variant's primary ability cooldown by one second. Can trigger once every two seconds. Does not change the secondary cooldown.
+> Fully charged critical hits shorten your primary cooldown by 1 second, once every 2 seconds.
 
 **Augmentation card:**
 
-> Charged critical hits shorten the primary cooldown by one second, once every two seconds.
+> Charged crits reduce your primary cooldown by 1 second.
 
 ### Resonance Crit
 
@@ -1152,7 +1152,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Fully charged melee hits against rising, jumping enemies are critical hits, even while you stand on the ground.
+> Fully charged hits critically strike jumping enemies, even while you are grounded.
 
 **Augmentation card:**
 
@@ -1164,11 +1164,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 20% more dagger damage to undead mobs
+> Deal 20% more dagger damage to undead.
 
 **Augmentation card:**
 
-> Deal 20% more damage to undead mobs.
+> Deal 20% more damage to undead.
 
 ### Revengeful Exit
 
@@ -1176,11 +1176,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Dying to an enemy releases a blood explosion for weapon damage within 5 blocks, plus 5 times weapon damage to your killer. Does not destroy blocks.
+> When killed by an enemy, deal weapon damage within 5 blocks and five times weapon damage to your killer.
 
 **Augmentation card:**
 
-> On death, damage nearby entities and deal 5 times weapon damage to your killer.
+> When killed by an enemy, blast nearby foes and deal fivefold damage to your killer.
 
 ### Sapling Harvest
 
@@ -1188,11 +1188,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Enemy kills have a 15% chance to drop 1 extra random sapling.
+> Kills have a 15% chance to drop an extra sapling.
 
 **Augmentation card:**
 
-> Enemy kills may drop an extra sapling (15% chance).
+> Kills have a 15% chance to drop an extra sapling.
 
 ### Scar Compass
 
@@ -1200,11 +1200,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Your most recently hit enemy glows for 10 minutes, until you hit another enemy or stop holding this weapon.
+> Your most recently hit enemy glows for 10 minutes.
 
 **Augmentation card:**
 
-> Mark your most recently hit enemy with a 10-minute glow.
+> Your last hit enemy glows for 10 minutes.
 
 ### Sleepwalker
 
@@ -1212,7 +1212,7 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Deal 10% more melee damage at night in dimensions with a day-night cycle. Night is between world times 13000 and 23000; storms during daytime do not count. Maximum level: I.
+> Deal 10% more melee damage at night.
 
 **Augmentation card:**
 
@@ -1224,11 +1224,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> While sprinting directly behind a moving ally within three blocks and in clear sight, gain 10% base movement speed. The bonus ends when you stop, overtake, turn away, lose sight, or put the dagger away. Does not stack.
+> Sprint behind a moving ally within 3 blocks to gain 10% movement speed.
 
 **Augmentation card:**
 
-> Sprint behind a moving ally to gain a small speed bonus.
+> Sprint behind a moving ally for 10% more speed.
 
 ### Soul Hunger
 
@@ -1236,11 +1236,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Enemy kills grant one absorption heart, up to three earned hearts. Earned absorption stays when the weapon is put away and is consumed by damage. Only a held learned weapon earns more.
+> Kills grant 1 absorption heart, up to 3 hearts. These fade after 10 seconds without Soul Hunger equipped; switching back in time keeps them.
 
 **Augmentation card:**
 
-> Enemy kills grant 2 absorption health, up to 6.
+> Kills grant absorption, up to 3 hearts. Switch back within 10 seconds to keep them.
 
 ### Stone Song
 
@@ -1248,11 +1248,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Gain two armor points while holding this blade below Y=0.
+> Gain 2 armor below Y=0.
 
 **Augmentation card:**
 
-> Holding this blade below Y=0 grants two armor points.
+> Gain 2 armor below Y=0.
 
 ### Sunfed
 
@@ -1260,11 +1260,11 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> While outside under an open daytime sky, restore one hunger point and one saturation point every 15 seconds. Saturation can recover at full hunger; both cap at 20.
+> Sunlight restores 1 hunger and 1 saturation every 15 seconds.
 
 **Augmentation card:**
 
-> Sunlight restores one hunger and one saturation point every 15 seconds.
+> Sunlight restores hunger and saturation every 15 seconds.
 
 ### Unfinished Dream
 
@@ -1272,20 +1272,23 @@ Bone Guard I-III are unarmored. From Necromancer I onward, all ranged reinforcem
 
 **Item tooltip:**
 
-> Killing an enemy before it damages you heals one health point, equal to half a heart. Hits absorbed by absorption health still count. Maximum level: I.
+> Killing an enemy before it damages you heals half a heart.
 
 **Augmentation card:**
 
-> Killing an enemy before it hits you heals half a heart.
+> Kill an enemy before it hurts you to heal half a heart.
 
 ### Vertical Strike
 
-**Weapons:** Carbon Steel Axe, Dreamweaver Axe, Echoing Axe, Ghost Axe, Molten Axe, Nullified Axe, Rusty Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
+**Weapons:** Dreamweaver Axe, Echoing Axe, Ghost Axe, Molten Axe, Nullified Axe, Skybreaker Axe, Verdant Axe, Voltage Axe, Woundmaker Axe
 
 **Item tooltip:**
 
-> Every third fully charged attack within 10 seconds slams a 3×3 area ahead. Partially charged attacks do not build smash charge.
-Requires an empty offhand.
+> Three fully charged attacks within 10 seconds trigger an area slam. Requires an empty offhand.
+
+**Augmentation card:**
+
+> Three charged attacks trigger an area slam. Keep your offhand empty.
 
 ### Void Grip
 
@@ -1293,11 +1296,11 @@ Requires an empty offhand.
 
 **Item tooltip:**
 
-> Your melee hits produce 25% less knockback, keeping enemies within dagger reach. Maximum level: I.
+> Your melee hits cause 25% less knockback.
 
 **Augmentation card:**
 
-> Your melee hits produce 25% less knockback.
+> Your melee hits cause 25% less knockback.
 
 ### Warden Tone
 
@@ -1305,11 +1308,11 @@ Requires an empty offhand.
 
 **Item tooltip:**
 
-> While holding this weapon, your actions and owned projectiles make no detectable sculk vibrations. Taking damage remains detectable. Other entities and sounds remain unaffected.
+> Your actions and projectiles do not alert sculk. Taking damage still does.
 
 **Augmentation card:**
 
-> Suppress your sculk vibrations while holding this weapon. Taking damage still reveals you.
+> Avoid alerting sculk, except when taking damage.
 ## Material-hit effects
 
 These are learned separately through augmentation. Each material has one effect; the tooltip substitutes its name, effect strength and weapon-specific duration into the following in-game template:

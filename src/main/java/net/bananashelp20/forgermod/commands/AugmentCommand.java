@@ -130,7 +130,7 @@ public final class AugmentCommand {
             living.setItemInHand(InteractionHand.MAIN_HAND, augmented);
             if (living instanceof ServerPlayer player) player.inventoryMenu.broadcastChanges();
             changed++;
-            singleName = Augmentations.abilityName(augmented, ability.id(), rank);
+            singleName = Augmentations.displayAbilityName(augmented, ability.id(), rank);
             displayRank = Augmentations.displayRank(augmented, ability.id(), rank);
         }
         if (changed == 0) throw NOTHING.create();

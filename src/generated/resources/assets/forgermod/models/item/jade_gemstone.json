@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/jade_gemstone"
+    "layer0": "forgermod:item/gemstones/jade_gemstone"
   }
 }

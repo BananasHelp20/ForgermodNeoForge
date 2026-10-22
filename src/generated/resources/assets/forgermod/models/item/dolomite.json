@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/dolomite"
+    "layer0": "forgermod:item/metals/raw/dolomite"
   }
 }

@@ -17,6 +17,53 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class DowndraftBellGameTests {
+    @GameTest(template="riftfang_test")
+    public static void movingRadiusAcquiresNewFlyersAndReleasesLeaversIncludingElytra(GameTestHelper test) throws Exception {
+        var owner=TestPlayers.survival(test);var flyer=TestPlayers.survival(test);
+        var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,8,8)));
+        owner.setPos(origin);owner.setNoGravity(true);flyer.setNoGravity(true);
+        var mob=EntityType.BAT.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);
+        mob.setPos(origin.add(6,30,0));test.getLevel().addFreshEntity(mob);
+        flyer.setPos(origin.add(6,20,0));flyer.startFallFlying();
+        var stack=Augmentations.apply(new ItemStack(ModItems.DEAD_CALM_DAGGER.get()),AdditionalAbilities.DOWNDRAFT_BELL);
+        owner.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        try {
+            test.assertTrue(net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.activate(owner,stack),"Cannot prepare an empty downdraft area for incoming flyers");
+            mob.setPos(origin.add(4,30,0));mob.setDeltaMovement(.3,1,.2);
+            flyer.setPos(origin.add(3,20,0));flyer.setDeltaMovement(.5,1,.25);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(owner));
+            test.assertTrue(mob.getDeltaMovement().equals(new Vec3(.3,-2,.2)),"Entering passive flyer is not caught at the radius boundary");
+            test.assertTrue(flyer.getDeltaMovement().equals(new Vec3(.5,-2,.25)) && flyer.isFallFlying(),"Elytra flyer missed, horizontal speed changed or flight cancelled");
+            flyer.setDeltaMovement(.5,1,.25);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(flyer));
+            test.assertTrue(flyer.getDeltaMovement().y==-2,"Elytra client movement can override the sustained force");
+            flyer.stopFallFlying();flyer.getAbilities().flying=true;flyer.setDeltaMovement(0,1,0);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(flyer));
+            test.assertTrue(flyer.getDeltaMovement().y==-2 && flyer.getAbilities().flying,"Other player flight is unaffected or its flight mode is removed");
+            flyer.getAbilities().flying=false;flyer.setDeltaMovement(0,1,0);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(flyer));
+            test.assertTrue(flyer.getDeltaMovement().y==1,"Ordinary nonflying player remains trapped");
+            flyer.startFallFlying();
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(owner));
+            mob.setPos(origin.add(4.1,30,0));mob.setDeltaMovement(0,1,0);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.before(new net.neoforged.neoforge.event.tick.EntityTickEvent.Pre(mob));
+            flyer.setPos(origin.add(4.1,20,0));flyer.setDeltaMovement(0,1,0);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(flyer));
+            test.assertTrue(mob.getDeltaMovement().y==1 && flyer.getDeltaMovement().y==1,"Leaving the radius does not release flight immediately");
+            owner.setPos(origin.add(3,0,0));
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(owner));
+            test.assertTrue(mob.getDeltaMovement().y==-2 && flyer.getDeltaMovement().y==-2,"Moving area fails to reacquire flying targets");
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.cancel(owner.getUUID());
+            mob.setDeltaMovement(0,1,0);flyer.setDeltaMovement(0,1,0);
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.before(new net.neoforged.neoforge.event.tick.EntityTickEvent.Pre(mob));
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(flyer));
+            test.assertTrue(mob.getDeltaMovement().y==1 && flyer.getDeltaMovement().y==1,"Cancellation leaves a force on an acquired flyer");
+            test.succeed();
+        } finally {
+            net.bananashelp20.forgermod.item.custom.abilities.DowndraftBellAbility.cancel(owner.getUUID());mob.discard();
+            owner.server.getPlayerList().remove(owner);flyer.server.getPlayerList().remove(flyer);
+        }
+    }
     @GameTest(template="riftfang_test",timeoutTicks=240)
     public static void sustainedDowndraftGroundsHighFlyingMobsAndExpiresAfterTenSeconds(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);

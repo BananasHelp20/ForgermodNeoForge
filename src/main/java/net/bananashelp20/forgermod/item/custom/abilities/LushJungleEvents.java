@@ -20,6 +20,6 @@ public final class LushJungleEvents {
   var pos=event.getEntity().blockPosition().below();var level=player.serverLevel();
   if(!level.getWorldBorder().isWithinBounds(pos) || !level.mayInteract(player,pos)
     || !player.mayUseItemAt(pos,net.minecraft.core.Direction.UP,new ItemStack(Items.BONE_MEAL)))return;
-  if(BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL),level,pos))level.levelEvent(1505,pos,0);
+  if(BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL),level,pos))level.levelEvent(1505,pos,15);
  }
 }

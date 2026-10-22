@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/ignisium_ingot"
+    "layer0": "forgermod:item/metals/ingots/ignisium_ingot"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/raw_titanium"
+    "layer0": "forgermod:item/metals/raw/raw_titanium"
   }
 }

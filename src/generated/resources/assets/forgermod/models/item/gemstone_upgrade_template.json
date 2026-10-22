@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/gemstone_upgrade_template"
+    "layer0": "forgermod:item/other/gemstone_upgrade_template"
   }
 }

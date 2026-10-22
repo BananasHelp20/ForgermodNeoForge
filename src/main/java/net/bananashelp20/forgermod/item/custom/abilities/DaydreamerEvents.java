@@ -60,13 +60,17 @@ public final class DaydreamerEvents {
         // Milk/removal or replacement ends ownership; do not resurrect a deliberately removed potion.
         if(grant!=null && current!=grant.owned) { GRANTS.remove(player.getUUID()); grant=null; }
         if(!eligible(player)) { end(player,grant); return; }
-        if(grant==null) {
-            if(current!=null && (current.isInfiniteDuration() || current.getAmplifier()>0)) return;
-            grant=new Grant(current); GRANTS.put(player.getUUID(),grant);
+        var desired=JadeAugments.reinforce(player.getMainHandItem(),AdditionalAbilities.DAYDREAMER,
+                new MobEffectInstance(MobEffects.JUMP,-1,1,false,false,true));
+        // Reconcile gemstone changes and externally strengthened effects without retaining our old strength.
+        if(grant!=null && (current==null || current.getAmplifier()!=desired.getAmplifier())) {
+            end(player,grant);grant=null;current=player.getEffect(MobEffects.JUMP);
         }
-        if(current==null || current.getAmplifier()==0 && !current.isInfiniteDuration()) {
-            add(player,JadeAugments.reinforce(player.getMainHandItem(),AdditionalAbilities.DAYDREAMER,
-                    new MobEffectInstance(MobEffects.JUMP,-1,0,false,false,true)));
+        if(grant==null) {
+            if(current!=null && (current.getAmplifier()>desired.getAmplifier()
+                    || current.getAmplifier()==desired.getAmplifier() && current.isInfiniteDuration())) return;
+            grant=new Grant(current); GRANTS.put(player.getUUID(),grant);
+            add(player,desired);
             grant.owned=player.getEffect(MobEffects.JUMP);
         }
         // Track independently acquired effects while our infinite grant masks their ordinary timer.

@@ -46,6 +46,7 @@ public final class RecommendedAbilityRuntime {
     }
     public static boolean active(ServerPlayer player,String id) {
         return AdditionalAbilityRuntime.active(player,id) || RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
+                || RecommendedAbilities.STRONG_ARM.equals(id) && StrongArmAbility.active(player)
                 || RecommendedAbilities.FLAMEBORN.equals(id) && FlamebornAbility.active(player)
                 || RecommendedAbilities.EXPLOSIVE_HITS.equals(id) && ExplosiveHitsEvents.active(player)
                 || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.active(player)
@@ -58,6 +59,7 @@ public final class RecommendedAbilityRuntime {
     }
     public static void cancel(ServerPlayer player,String id) {
         AdditionalAbilityRuntime.cancel(player,id);
+        if(RecommendedAbilities.STRONG_ARM.equals(id)) StrongArmAbility.cancel(player.getUUID());
         if(RecommendedAbilities.FLAMEBORN.equals(id)) FlamebornAbility.cancel(player);
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) ExplosiveHitsEvents.cancel(player.getUUID());

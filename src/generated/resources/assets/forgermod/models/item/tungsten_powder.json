@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/tungsten_powder"
+    "layer0": "forgermod:item/metals/raw/tungsten_powder"
   }
 }

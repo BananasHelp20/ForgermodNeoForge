@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/ancient_upgrade_template"
+    "layer0": "forgermod:item/other/ancient_upgrade_template"
   }
 }

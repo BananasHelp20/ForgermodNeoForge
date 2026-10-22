@@ -1,6 +1,6 @@
 {
   "parent": "forgermod:item/claymore_handheld",
   "textures": {
-    "layer0": "forgermod:item/claymore_of_thunder_amber"
+    "layer0": "forgermod:item/metals/weapons/special/claymore_of_thunder_amber"
   }
 }

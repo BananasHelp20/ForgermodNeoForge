@@ -32,13 +32,42 @@ public class RootingRootsGameTests {
         for(int x=5;x<=13;x++)for(int z=5;z<=13;z++){test.setBlock(new BlockPos(x,4,z),net.minecraft.world.level.block.Blocks.STONE);for(int y=5;y<=8;y++)test.setBlock(new BlockPos(x,y,z),net.minecraft.world.level.block.Blocks.AIR);}
         var mob=target(test,start.add(0,0,2));var stack=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(ModItems.LEAFCUTTER_DAGGER.get()),"tooltips.forgermod.ability.rooting_roots");player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         AbilityTestPackets.use(player,0);var roots=models(test,start);
-        test.assertTrue(roots.size()==3 && roots.stream().allMatch(r->height(r)<.01),"Roots do not start buried with three bounded models");
+        test.assertTrue(roots.size()==12 && roots.stream().allMatch(r->height(r)<.01),"Roots do not start buried with twelve bounded models");
         test.runAfterDelay(2,()->{
-            test.assertTrue(roots.stream().allMatch(r->height(r)>.5 && r.saveWithoutId(new net.minecraft.nbt.CompoundTag()).getCompound("block_state").getString("Name").equals("minecraft:mangrove_roots")
+            test.assertTrue(roots.stream().allMatch(r->height(r)>.2 && r.saveWithoutId(new net.minecraft.nbt.CompoundTag()).getCompound("block_state").getString("Name").equals("minecraft:mangrove_roots")
                 && Math.abs(r.getY()-start.y)<.001 && !r.shouldBeSaved() && r.noPhysics && r.isNoGravity()
                 && r.saveWithoutId(new net.minecraft.nbt.CompoundTag()).getInt("interpolation_duration")==10),"Growth transform, ground origin or safe display properties are wrong");
         });
-        test.runAfterDelay(199,()->test.assertTrue(models(test,start).size()==3 && ((LushWeapon)stack.getItem()).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Roots disappear before the hold ends"));
+        test.runAfterDelay(12,()->{
+            float before=height(roots.getFirst());
+            mob.setPos(mob.position().add(0,.5,0));
+            LushWeapon.onLevelTick(new net.neoforged.neoforge.event.tick.LevelTickEvent.Post(()->true,test.getLevel()));
+            test.assertTrue(height(roots.getFirst())>before,"Roots do not adapt to vertical target movement");
+            mob.setPos(start.add(0,0,2));
+            LushWeapon.onLevelTick(new net.neoforged.neoforge.event.tick.LevelTickEvent.Post(()->true,test.getLevel()));
+            test.assertTrue(Math.abs(height(roots.getFirst())-before)<.001,"Roots do not return to the ground binding after a target settles");
+        });
+        // Clear existing metadata, then verify even one-second boundaries do not restart growth.
+        for(int delay=20;delay<=60;delay++) test.runAfterDelay(delay,()->{
+            roots.forEach(r->r.getEntityData().packDirty());
+            LushWeapon.onLevelTick(new net.neoforged.neoforge.event.tick.LevelTickEvent.Post(()->true,test.getLevel()));
+            test.assertTrue(roots.stream().noneMatch(r->r.getEntityData().isDirty()),"Stationary roots restart their animation during the hold");
+            mob.setDeltaMovement(1,0,1);mob.setPos(mob.position().add(1,0,1));
+            LushWeapon.onEntityTick(new net.neoforged.neoforge.event.tick.EntityTickEvent.Post(mob));
+            test.assertTrue(mob.position().distanceTo(start.add(0,0,2))<.001 && mob.getDeltaMovement().horizontalDistanceSqr()==0,"Bound enemy escapes the visible roots");
+        });
+        test.runAfterDelay(16,()->{
+            var endpoints=new java.util.ArrayList<Vec3>();
+            for(var root:roots){
+                var tag=root.saveWithoutId(new net.minecraft.nbt.CompoundTag());
+                var transform=com.mojang.math.Transformation.EXTENDED_CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE,tag.get("transformation")).getOrThrow();
+                var top=transform.getMatrix().transformPosition(new org.joml.Vector3f(.5f,1,.5f));
+                endpoints.add(new Vec3(top.x,top.y,top.z));
+            }
+            test.assertTrue(endpoints.stream().anyMatch(v->v.x>.1) && endpoints.stream().anyMatch(v->v.x<-.1)
+                && endpoints.stream().anyMatch(v->v.z>.1) && endpoints.stream().anyMatch(v->v.z<-.1),"Roots do not wrap all sides of the target");
+        });
+        test.runAfterDelay(199,()->test.assertTrue(models(test,start).size()==12 && ((LushWeapon)stack.getItem()).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Roots disappear before the hold ends"));
         test.runAfterDelay(201,()->{
             LushWeapon.onLevelTick(new net.neoforged.neoforge.event.tick.LevelTickEvent.Post(()->true,test.getLevel()));
             test.assertTrue(roots.stream().allMatch(r->!r.isRemoved() && height(r)<.01),"Expired roots vanish instead of interpolating back into ground");
@@ -56,7 +85,7 @@ public class RootingRootsGameTests {
         var mob=target(test,start.add(0,0,2));var stack=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(ModItems.LEAFCUTTER_DAGGER.get()),"tooltips.forgermod.ability.rooting_roots");player.setItemInHand(InteractionHand.MAIN_HAND,stack);AbilityTestPackets.use(player,0);var roots=models(test,start);
         test.runAfterDelay(15,()->{
             player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
-            test.assertTrue(roots.size()==3 && roots.stream().allMatch(r->height(r)<.01 && !r.isRemoved()),"Switch does not start retraction");
+            test.assertTrue(roots.size()==12 && roots.stream().allMatch(r->height(r)<.01 && !r.isRemoved()),"Switch does not start retraction");
             var free=mob.position().add(1,0,0);mob.setPos(free);LushWeapon.onEntityTick(new net.neoforged.neoforge.event.tick.EntityTickEvent.Post(mob));test.assertTrue(mob.position().equals(free),"Switch leaves target bound during retraction");
         });
         test.runAfterDelay(29,()->{try {test.assertTrue(roots.stream().allMatch(net.minecraft.world.entity.Entity::isRemoved),"Canceled root models remain after retraction");test.succeed();}finally {LushWeapon.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));mob.discard();player.server.getPlayerList().remove(player);}});

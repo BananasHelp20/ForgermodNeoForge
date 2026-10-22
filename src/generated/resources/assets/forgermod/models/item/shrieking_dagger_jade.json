@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/wardens_needle_jade"
+    "layer0": "forgermod:item/metals/weapons/special/wardens_needle_jade"
   }
 }

@@ -106,39 +106,41 @@ Available ability names from the actual registered augmentation pools; gemstone 
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Carbon Steel Axe | Axe | Vertical Strike |
-| Rusty Axe | Axe | Vertical Strike |
 | Stumpfl's Bat | Bat | None |
 | Claymore | Claymore | None |
 | Rusty Claymore | Claymore | None |
 | Rusty Dagger | Dagger | Dual Wield |
 | Carbon Steel Knife | Knife | None |
 | Damask Knife | Knife | None |
+| Carbon Steel Sword | Sword | None |
 | Damask Sword | Sword | None |
+| Meteoric Iron Sword | Sword | None |
 | Reinforced Iron Sword | Sword | None |
 | Scrap Iron Sword | Sword | None |
 | Scrapy Sword | Sword | None |
 | Steel Sword | Sword | None |
+| Titanium Sword | Sword | None |
+| Tungsten Sword | Sword | None |
 
 ## Pulsite
 
 | Weapon | Type | Available abilities |
 | --- | --- | --- |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
-| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Homesick, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Homesick, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Homesick, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Homesick, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Echoing Axe | Axe | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Echo Salvage, Homesick, Overwhelming Smash, Swing Attack, Vertical Strike, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Shrieking Claymore | Claymore | Aftershock, Challenge Roar, Darkness Hit, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Ringing Steel, Stone Song, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
+| Resonance Dagger | Dagger | Aftershock, Backstab, Challenge Roar, Darkness Hit, Dual Wield, Echo Appetite, Echo Hearing, Homesick, Resonance Crit, Sonic Boom, Sonically Charged Crit, Warden Tone |
 
 ## Somnium
 

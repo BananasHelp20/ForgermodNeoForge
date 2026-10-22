@@ -20,6 +20,44 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class AlternatingCurrentGameTests {
     @GameTest(template="riftfang_test")
+    public static void everyVariantLinksOwnedAndTeamAlliesInEitherRole(GameTestHelper test) {
+        var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);
+        for(int x=7;x<=9;x++)for(int y=5;y<=8;y++)for(int z=8;z<=24;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        var cow=EntityType.COW.create(test.getLevel());var wolf=EntityType.WOLF.create(test.getLevel());wolf.tame(player);
+        var stand=EntityType.ARMOR_STAND.create(test.getLevel());stand.setPos(origin.add(0,0,6));stand.setNoGravity(true);test.getLevel().addFreshEntity(stand);
+        for(var mob:java.util.List.of(cow,wolf)) {
+            mob.setNoGravity(true);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);test.getLevel().addFreshEntity(mob);
+        }
+        var team=player.getScoreboard().addPlayerTeam("ac_"+player.getUUID().toString().substring(0,8));
+        player.getScoreboard().addPlayerToTeam(player.getScoreboardName(),team);player.getScoreboard().addPlayerToTeam(cow.getScoreboardName(),team);
+        int checked=0;
+        try {
+            test.assertTrue(wolf.isAlliedTo(player) && cow.isAlliedTo(player),"Fixtures are not owned/team allies");
+            for(var entry:ModItems.ITEMS.getEntries())if(entry.get() instanceof ElectriumWeapon) {
+                checked++;
+                for(boolean ownedFirst:new boolean[]{false,true}) {
+                    var first=ownedFirst?wolf:cow;var second=ownedFirst?cow:wolf;
+                    first.setPos(origin.add(0,0,5));second.setPos(origin.add(0,0,10));
+                    for(var mob:java.util.List.of(first,second)) {mob.setHealth(100);mob.invulnerableTime=0;mob.setNoAi(false);}
+                    var stack=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.ALTERNATING_CURRENT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                    test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.ALTERNATING_CURRENT),"Allied link activation rejected");
+                    test.assertTrue(first.hurt(player.damageSources().playerAttack(player),1),"Initial allied hit rejected");
+                    test.assertTrue(WeaponControlLocks.frozen(second) && !WeaponControlLocks.frozen(first) && !WeaponControlLocks.frozen(stand),"Allied secondary was not selected or an armor stand was targeted");
+                    test.assertTrue(AlternatingCurrentEvents.active(player) && AlternatingCurrentEvents.remainingTicks(player)==1200,"Ally validation immediately cancels the link");
+                    AlternatingCurrentEvents.tick(new PlayerTickEvent.Post(player));
+                    test.assertTrue(first.getHealth()==99 && second.getHealth()==100,"Allied stun adds damage");
+                    AlternatingCurrentEvents.cancel(player.getUUID());
+                    test.assertFalse(WeaponControlLocks.frozen(first) || WeaponControlLocks.frozen(second) || first.isNoAi() || second.isNoAi(),"Allied AI/stun not restored on cancel");
+                }
+            }
+            test.assertTrue(checked==15,"Skipped Electrium weapon types or gemstone variants");
+        } finally {
+            AlternatingCurrentEvents.cancel(player.getUUID());player.getScoreboard().removePlayerTeam(team);
+            cow.discard();wolf.discard();stand.discard();player.server.getPlayerList().remove(player);
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void allWeaponsLinkNearestEnemyWithoutAddedDamage(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin);
         for(int y=5;y<=8;y++) for(int z=8;z<=40;z++) test.setBlock(new BlockPos(8,y,z),Blocks.AIR);

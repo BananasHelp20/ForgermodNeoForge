@@ -5,6 +5,7 @@ import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,12 +24,16 @@ public final class AlternatingCurrentEvents {
     }
     private static final Map<UUID,Link> LINKS=new HashMap<>();
     private AlternatingCurrentEvents() {}
+    private static boolean validTarget(ServerPlayer player,LivingEntity target) {
+        return target.isAlive() && !target.isRemoved()
+                && (target instanceof Mob || WeaponAbilityTargets.enemy(player,target));
+    }
     public static boolean activate(ServerPlayer player,ItemStack stack) {if(active(player)) return false;LINKS.put(player.getUUID(),new Link(player,stack));return true;}
     public static boolean active(ServerPlayer player) {
         var link=LINKS.get(player.getUUID());if(link==null) return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=link.stack || player.getInventory().selected!=link.selected
             || player.level().getGameTime()>=link.expires || !Augmentations.ids(link.stack,true).contains(AdditionalAbilities.ALTERNATING_CURRENT)
-            || link.first!=null && (!WeaponAbilityTargets.enemy(player,link.first) || !WeaponAbilityTargets.enemy(player,link.second)
+            || link.first!=null && (!validTarget(player,link.first) || !validTarget(player,link.second)
                 || link.first.level()!=player.level() || link.second.level()!=player.level() || link.first.distanceToSqr(link.second)>400)) {cancel(player.getUUID());return false;}
         return true;
     }
@@ -37,9 +42,9 @@ public final class AlternatingCurrentEvents {
     @SubscribeEvent
     public static void landed(LivingDamageEvent.Post event) {
         if(!event.getSource().is(DamageTypes.PLAYER_ATTACK) || !(event.getSource().getEntity() instanceof ServerPlayer player) || !active(player)
-            || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0 || !WeaponAbilityTargets.enemy(player,event.getEntity())) return;
+            || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0 || !validTarget(player,event.getEntity())) return;
         var link=LINKS.get(player.getUUID());if(link.first!=null) return;var first=event.getEntity();
-        var next=player.level().getEntitiesOfClass(LivingEntity.class,first.getBoundingBox().inflate(20),e->e!=first && WeaponAbilityTargets.enemy(player,e) && first.distanceToSqr(e)<=400 && first.hasLineOfSight(e))
+        var next=player.level().getEntitiesOfClass(LivingEntity.class,first.getBoundingBox().inflate(20),e->e!=first && validTarget(player,e) && first.distanceToSqr(e)<=400 && first.hasLineOfSight(e))
             .stream().min(Comparator.comparingDouble(first::distanceToSqr)).orElse(null);if(next==null) return;
         link.first=first;link.second=next;link.expires=player.level().getGameTime()+1200;link.nextPulse=player.level().getGameTime()+20;
         pulse(player,link,next);

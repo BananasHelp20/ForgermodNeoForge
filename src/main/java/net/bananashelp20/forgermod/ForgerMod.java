@@ -50,9 +50,13 @@ public class ForgerMod {
         modEventBus.addListener(net.bananashelp20.forgermod.augmentation.AugmentAnvilNetwork::register);
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.VerticalMotionNetwork::register);
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.StaticBladeNetwork::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.GhostwalkVisibility::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.EchoHearingHighlights::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.CrucibleHookRope::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.VoidPulseParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);
+        net.bananashelp20.forgermod.particle.StunningPresenceParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.worldgen.ModStructures.TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.

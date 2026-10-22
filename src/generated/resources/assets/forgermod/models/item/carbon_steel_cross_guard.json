@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "forgermod:item/carbon_steel_cross_guard"
+    "layer0": "forgermod:item/other/weapon_parts/carbon_steel_cross_guard"
   }
 }

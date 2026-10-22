@@ -26,6 +26,75 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class SkullThrowGameTests {
+    private static WitherSkull skull(net.minecraft.server.level.ServerPlayer player) {
+        return player.level().getEntitiesOfClass(WitherSkull.class,player.getBoundingBox().inflate(5),e->e.getOwner()==player).getFirst();
+    }
+    private static int ticketCount(WitherSkull skull) throws Exception {
+        var field=skull.getClass().getDeclaredField("tickets");field.setAccessible(true);
+        return ((java.util.Set<?>)field.get(skull)).size();
+    }
+    private static final class RecordingConnection extends net.minecraft.network.Connection {
+        final java.util.List<net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket> particles=new java.util.ArrayList<>();
+        RecordingConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush) {
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle) particles.add(particle);
+        }
+        boolean burst(){return particles.stream().anyMatch(p->p.getParticle() instanceof net.minecraft.core.particles.BlockParticleOption block && block.getState().is(Blocks.BONE_BLOCK))
+            && particles.stream().anyMatch(p->p.getParticle()==net.minecraft.core.particles.ParticleTypes.EXPLOSION);}
+    }
+    @GameTest(template="riftfang_test",timeoutTicks=430)
+    public static void fixedFiveHundredBlockRangeAtEveryRankAndBeyondPlayerChunks(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);
+        var start=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,8,8))).with(net.minecraft.core.Direction.Axis.Y,test.getLevel().getMaxBuildHeight()+20);
+        player.setPos(start);player.setXRot(-90);
+        for(int rank=1;rank<=4;rank++) {
+            var stack=Augmentations.setLevel(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW,rank);
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);SkullThrowEvents.activate(player,stack);
+            var skull=skull(player);var launch=skull.position();int ticks=0;
+            test.assertTrue(!skull.shouldBeSaved() && !skull.canUsePortal(true) && !skull.canChangeDimensions(test.getLevel(),test.getLevel()),"Temporary safe skull can be saved or cloned into an unsafe vanilla skull");
+            while(skull.isAlive() && ticks++<400) {skull.tick();test.assertTrue(ticketCount(skull)<=2,"Flight retains traversed chunk tickets");}
+            test.assertTrue(!skull.isAlive() && Math.abs(skull.position().distanceTo(launch)-500)<.001,"Range is not exactly 500 blocks at rank "+rank);
+            test.assertTrue(ticks>100 && ticks<300 && ticketCount(skull)==0 && !SkullThrowEvents.active(player),"Flight expires too early, moves too slowly or leaks tickets");
+        }
+        var previewStack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,previewStack);
+        SkullThrowEvents.activate(player,previewStack);var preview=skull(player);preview.tick();
+        test.assertTrue(ticketCount(preview)>0,"Travel does not acquire a temporary chunk ticket");
+        SkullThrowEvents.cancel(player.getUUID());test.assertTrue(!preview.isAlive() && ticketCount(preview)==0,"Cancellation retains flight tickets");
+        player.setXRot(0);player.setYRot(-90);
+        var stack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        SkullThrowEvents.activate(player,stack);var skull=skull(player);var launch=skull.position();
+        // Chunk activation can delay real entity ticks relative to the GameTest clock.
+        boolean[] checkedFlight={false};
+        test.onEachTick(()->{
+            if(!checkedFlight[0] && skull.tickCount>=101) {
+                test.assertTrue(SkullThrowEvents.active(player) && skull.position().distanceTo(launch)>200,"Flight still has a five-second expiry or fails to advance outside player chunks");
+                checkedFlight[0]=true;
+            }
+        });
+        test.runAfterDelay(400,()->{
+            try {test.assertTrue(checkedFlight[0] && !skull.isAlive() && !SkullThrowEvents.active(player) && Math.abs(skull.position().distanceTo(launch)-500)<.001 && ticketCount(skull)==0,"Natural flight does not reach its fixed range and clean up: alive="+skull.isAlive()+" distance="+skull.position().distanceTo(launch)+" tickets="+ticketCount(skull)+" removed="+skull.getRemovalReason());test.succeed();}
+            catch(Exception exception){throw new RuntimeException(exception);}
+            finally {SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+        });
+    }
+    @GameTest(template="riftfang_test")
+    public static void fastSkullBurstsOnRealGroundAndPassiveEntityImpacts(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);var previous=player.connection;
+        var connection=new RecordingConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(test.getLevel().getServer(),connection,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        var start=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
+        for(int x=5;x<=11;x++)for(int z=5;z<=13;z++){test.setBlock(new BlockPos(x,4,z),Blocks.STONE);for(int y=5;y<=12;y++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);}
+        var cow=EntityType.COW.create(test.getLevel());cow.setNoAi(true);cow.setNoGravity(true);cow.setPos(start.add(0,0,3));test.getLevel().addFreshEntity(cow);
+        var stack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        try {
+            player.setPos(start.add(0,5,0));player.setXRot(90);SkullThrowEvents.activate(player,stack);var skull=skull(player);
+            for(int i=0;i<5 && skull.isAlive();i++)skull.tick();
+            test.assertTrue(!skull.isAlive() && connection.burst() && ticketCount(skull)==0 && test.getBlockState(new BlockPos(8,4,8)).is(Blocks.STONE),"Ground impact does not burst into bone fragments or damages terrain");
+            player.setPos(start);player.setXRot(0);player.setYRot(0);connection.particles.clear();SkullThrowEvents.activate(player,stack);skull=skull(player);
+            for(int i=0;i<3 && skull.isAlive();i++)skull.tick();
+            test.assertTrue(!skull.isAlive() && connection.burst() && cow.getHealth()==cow.getMaxHealth() && !cow.hasEffect(net.minecraft.world.effect.MobEffects.WITHER),"Passive entity does not burst the skull safely");
+            test.succeed();
+        } finally {SkullThrowEvents.cancel(player.getUUID());cow.discard();player.connection=previous;player.server.getPlayerList().remove(player);}
+    }
     @GameTest(template="riftfang_test", timeoutTicks=100)
     public static void realProjectileHitsWallAndLeavesTerrainAndHiddenEnemyUntouched(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);
@@ -65,7 +134,7 @@ public class SkullThrowGameTests {
                 var stack=Augmentations.apply(fresh,AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
                 test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.SKULL_THROW),"Magma Toss cannot activate");
                 var rock=player.level().getEntitiesOfClass(WitherSkull.class,player.getBoundingBox().inflate(3),e->e.getOwner()==player).getFirst();
-                test.assertTrue(rock.getDeltaMovement().length()>.1 && rock.getDeltaMovement().length()<1,"Rock is not a moving projectile");
+                test.assertTrue(Math.abs(rock.getDeltaMovement().length()-3.5)<.0001,"Skull does not launch at its faster speed");
                 target.invulnerableTime=0;target.removeEffect(net.minecraft.world.effect.MobEffects.WITHER);float before=target.getHealth(),owner=player.getHealth();
                 var event=new ProjectileImpactEvent(rock,new EntityHitResult(target,target.getBoundingBox().getCenter()));SkullThrowEvents.impact(event);
                 test.assertTrue(event.isCanceled() && !rock.isAlive() && !SkullThrowEvents.active(player),"Impact does not end rock");

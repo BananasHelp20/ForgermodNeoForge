@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/stumpfl_bat"
+    "layer0": "forgermod:item/metals/weapons/special/stumpfl_bat"
   }
 }

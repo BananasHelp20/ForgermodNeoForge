@@ -1,6 +1,6 @@
 {
   "parent": "forgermod:item/claymore_handheld",
   "textures": {
-    "layer0": "forgermod:item/rusty_claymore"
+    "layer0": "forgermod:item/metals/weapons/rusty/rusty_claymore"
   }
 }

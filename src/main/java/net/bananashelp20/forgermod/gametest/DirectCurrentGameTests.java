@@ -36,6 +36,7 @@ public class DirectCurrentGameTests {
         a.hurt(player.damageSources().playerAttack(player),1);b.hurt(player.damageSources().playerAttack(player),1);
         DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
         test.assertTrue(standing.getHealth()==16 && outside.getHealth()==20 && above.getHealth()==20,"Stationary body intersection, width or height is wrong");
+        test.assertTrue(standing.getDeltaMovement().equals(Vec3.ZERO),"Current contact applies knockback");
         test.assertTrue(a.getHealth()==19 && b.getHealth()==19,"Stationary endpoint anchors take contact damage");
         DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==16,"Same-tick contact bypasses damage guard");
         test.runAfterDelay(9,()->{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==16,"Contact repeats before half a second");});
@@ -71,7 +72,7 @@ public class DirectCurrentGameTests {
         test.assertTrue(count==15,"Skipped Direct Current variants");test.succeed();
     }
     @GameTest(template="riftfang_test",timeoutTicks=100)
-    public static void staticFieldHurtsEveryOccupantOncePerSecondAndSupportsFourAnchors(GameTestHelper test) {
+    public static void staticFieldStunsAndShocksEveryOccupantWithoutKnockback(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(origin.add(1,0,2.5));
         for(int x=7;x<=16;x++) for(int y=5;y<=8;y++) for(int z=7;z<=16;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
         var a=zombie(test,origin);var b=zombie(test,origin.add(6,0,0));var c=zombie(test,origin.add(0,0,6));var d=zombie(test,origin.add(6,0,6));var neutral=EntityType.COW.create(test.getLevel());neutral.setNoAi(true);neutral.setNoGravity(true);neutral.setPos(origin.add(2.5,0,1));test.getLevel().addFreshEntity(neutral);
@@ -79,8 +80,20 @@ public class DirectCurrentGameTests {
         var name=Augmentations.abilityName(stack,AdditionalAbilities.DIRECT_CURRENT,4);test.assertTrue(name.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals("tooltips.forgermod.ability.static_field.name"),"Rank IV is not named Static Field");
         test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Static Field rejected");for(var mob:java.util.List.of(a,b,c,d)) mob.hurt(player.damageSources().playerAttack(player),1);
         test.assertTrue(DirectCurrentEvents.marked(player)==4 && DirectCurrentEvents.remainingTicks(player)==400,"Rank IV does not support four marks");float health=neutral.getHealth();
-        test.runAfterDelay(20,()->{
-            try {DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-1 && player.getHealth()==19,"Field damage wrong: neutral="+neutral.getHealth()+" expected="+(health-1)+" player="+player.getHealth()+" active="+DirectCurrentEvents.active(player)+" remaining="+DirectCurrentEvents.remainingTicks(player)+" playerPos="+player.position());DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-1,"Field damages more than once per second");test.succeed();}
+        DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+        test.assertTrue(WeaponControlLocks.frozen(neutral),"Field occupant is not stunned before the damage pulse");
+        test.runAfterDelay(10,()->{
+            try {
+                DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+                test.assertTrue(neutral.getHealth()==health-4 && player.getHealth()==16,"Field must shock every occupant for four damage");
+                test.assertTrue(WeaponControlLocks.frozen(neutral) && neutral.getDeltaMovement().equals(Vec3.ZERO),"Field damage knocks a stunned occupant back");
+                test.assertTrue(a.getHealth()==15,"Anchor takes stacked barrier and field damage");
+                DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+                test.assertTrue(neutral.getHealth()==health-4,"Field bypasses its damage interval");
+                DirectCurrentEvents.cancel(player.getUUID());
+                test.assertFalse(WeaponControlLocks.frozen(neutral),"Cancel leaves a field occupant stunned");
+                test.succeed();
+            }
             finally {DirectCurrentEvents.cancel(player.getUUID());for(var mob:java.util.List.of(a,b,c,d)) mob.discard();neutral.discard();player.server.getPlayerList().remove(player);}
         });
     }
@@ -93,10 +106,35 @@ public class DirectCurrentGameTests {
         var name=Augmentations.abilityName(stack,AdditionalAbilities.DIRECT_CURRENT,4);test.assertTrue(name.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals("tooltips.forgermod.ability.static_field.name"),"Rank IV is not named Static Field");
         test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Static Field rejected");for(var mob:java.util.List.of(a,b,c,d)) mob.hurt(player.damageSources().playerAttack(player),1);
         test.assertTrue(DirectCurrentEvents.marked(player)==4 && DirectCurrentEvents.remainingTicks(player)==400,"Rank IV does not support four marks");float health=neutral.getHealth();
-        test.runAfterDelay(20,()->{
-            try {DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-1.75f && player.getHealth()==18.25f,"Field damage wrong: neutral="+neutral.getHealth()+" expected="+(health-1)+" player="+player.getHealth()+" active="+DirectCurrentEvents.active(player)+" remaining="+DirectCurrentEvents.remainingTicks(player)+" playerPos="+player.position());DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-1.75f,"Field damages more than once per second");test.succeed();}
+        test.runAfterDelay(10,()->{
+            try {DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-7 && player.getHealth()==13,"Super Static Field IV must deal seven damage per pulse");DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(neutral.getHealth()==health-7,"Field damages more than once per pulse");test.succeed();}
             finally {DirectCurrentEvents.cancel(player.getUUID());for(var mob:java.util.List.of(a,b,c,d)) mob.discard();neutral.discard();player.server.getPlayerList().remove(player);}
         });
+    }
+    @GameTest(template="riftfang_test")
+    public static void passiveAndOwnedMobsCanAnchorCircuits(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
+        player.setPos(origin);
+        for(int x=7;x<=9;x++) for(int y=5;y<=8;y++) for(int z=8;z<=18;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        var cow=EntityType.COW.create(test.getLevel());
+        var wolf=EntityType.WOLF.create(test.getLevel());
+        cow.setPos(origin.add(0,0,3));cow.setNoGravity(true);
+        wolf.setPos(origin.add(0,0,8));wolf.setNoGravity(true);wolf.tame(player);
+        test.getLevel().addFreshEntity(cow);test.getLevel().addFreshEntity(wolf);
+        try {
+            test.assertTrue(wolf.isAlliedTo(player),"Test wolf is not an ally");
+            var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.DIRECT_CURRENT);
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.DIRECT_CURRENT),"Circuit rejected");
+            cow.hurt(player.damageSources().playerAttack(player),1);
+            wolf.hurt(player.damageSources().playerAttack(player),1);
+            test.assertTrue(DirectCurrentEvents.marked(player)==2 && DirectCurrentEvents.active(player),"Friendly or passive anchors rejected");
+            test.assertTrue(WeaponControlLocks.frozen(cow) && WeaponControlLocks.frozen(wolf),"Friendly anchors are not stunned");
+            DirectCurrentEvents.cancel(player.getUUID());
+            test.assertFalse(WeaponControlLocks.frozen(cow) || WeaponControlLocks.frozen(wolf) || cow.isNoAi() || wolf.isNoAi(),"Friendly anchors stay stunned after cancel");
+            test.succeed();
+        } finally {DirectCurrentEvents.cancel(player.getUUID());cow.discard();wolf.discard();player.server.getPlayerList().remove(player);}
     }
     @GameTest(template="riftfang_test")
     public static void geometryRejectsNonCrossingsAndHeightAndDegenerateTriangles(GameTestHelper test) {

@@ -70,7 +70,7 @@ for row in rows:
 
 active = sum(a["active"] for a in abilities.values())
 passive = len(abilities) - active
-lines = ["# In-game weapon abilities", "", f"English descriptions from the game language file and actual registered pools: {active} active abilities, {passive} passives, and nine material-hit effects. Unimplemented proposals are excluded.", "", "Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift; cards use their shorter description where provided.", ""]
+lines = ["# In-game weapon abilities", "", f"English descriptions from the game language file and actual registered pools: {active} active abilities, {passive} passives, and nine material-hit effects. Unimplemented proposals are excluded.", "", "Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift. Text below is the base learning summary; item tooltips resolve current rank, weapon type and Jade effects dynamically. Base abilities show a separate Shift-only super-upgrade notice below their cooldown, without describing future super effects. Upgrade cards compare ranks and highlight changed values in green.", ""]
 for is_active, heading in ((True, "Active abilities"), (False, "Passives")):
     lines += ["## " + heading, ""]
     for id, ability in sorted(abilities.items(), key=lambda item: component(item[1]["name"])):

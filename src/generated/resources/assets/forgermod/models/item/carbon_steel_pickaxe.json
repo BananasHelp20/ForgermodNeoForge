@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/carbon_steel_pickaxe"
+    "layer0": "forgermod:item/metals/tools/carbon_steel_pickaxe"
   }
 }

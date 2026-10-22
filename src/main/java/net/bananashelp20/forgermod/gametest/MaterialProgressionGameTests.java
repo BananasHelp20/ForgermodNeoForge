@@ -35,6 +35,38 @@ public class MaterialProgressionGameTests {
         return tool != null && tool.isCorrectForDrops(block.defaultBlockState());
     }
 
+    @GameTest(template="empty")
+    public static void toolAxesHaveToolActionsAndKeepOffhandWithoutWeaponAbilities(GameTestHelper test) {
+        var player=TestPlayers.survival(test);
+        var tools=new java.util.ArrayList<Item>();
+        ModItems.TOOL_SETS.values().forEach(set->tools.add(set.axe().get()));
+        tools.addAll(java.util.List.of(ModItems.CARBON_STEEL_AXE.get(),ModItems.RUSTY_AXE.get(),Items.IRON_AXE,Items.DIAMOND_AXE));
+        try {
+            for(var item:tools) {
+                var stack=new ItemStack(item);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                player.setItemInHand(InteractionHand.OFF_HAND,new ItemStack(Items.TORCH));
+                test.assertTrue(item instanceof net.minecraft.world.item.AxeItem && stack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.AXE_STRIP),"Ordinary axe cannot act as a tool");
+                test.assertTrue(stack.is(net.minecraft.tags.ItemTags.AXES) && !stack.is(net.minecraft.tags.ItemTags.SWORDS),"Tool axe has wrong vanilla tags");
+                test.assertFalse(AxeItems.isAxe(stack) || AxeItems.canAttackPacket(stack) || AxeItems.canVerticalStrike(stack),"Ordinary axe enters special weapon behavior");
+                var rows=new java.util.ArrayList<net.minecraft.network.chat.Component>();
+                net.bananashelp20.forgermod.item.custom.WeaponTooltips.ordinaryPassives(stack,rows,true);
+                test.assertTrue(rows.isEmpty(),"Tool axe advertises a weapon passive");
+                net.bananashelp20.forgermod.item.custom.attacks.axe.AxeOffhandRestriction.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
+                test.assertTrue(player.getOffhandItem().is(Items.TORCH),"Tool axe removes the offhand item");
+            }
+            int special=0;
+            for(var entry:ModItems.ITEMS.getEntries()) {
+                if(!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.SwordItemWithEffect weapon) || !weapon.isAxe())continue;
+                special++;var fresh=new ItemStack(weapon);
+                test.assertTrue(AxeItems.isAxe(fresh) && !AxeItems.canVerticalStrike(fresh),"Fresh special axe has implicit Vertical Strike");
+                var learned=net.bananashelp20.forgermod.augmentation.Augmentations.apply(fresh,net.bananashelp20.forgermod.augmentation.Augmentations.VERTICAL_STRIKE);
+                test.assertTrue(AxeItems.canVerticalStrike(learned) && AxeItems.canAttackPacket(learned),"Learned special axe lost its strike");
+                test.assertFalse(learned.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.AXE_STRIP),"Special weapon axe acts as a chopping tool");
+            }
+            test.assertTrue(special==45,"Skipped special axe variants");test.succeed();
+        } finally {player.server.getPlayerList().remove(player);}
+    }
+
     @GameTest(template = "empty")
     public static void miningOrderAndOreRequirements(GameTestHelper test) {
         test.assertTrue(ModItems.TOOL_SETS.keySet().equals(java.util.Set.of("scrap", "meteoric_iron", "reinforced_iron", "steel", "damask", "titanium", "tungsten", "carbon_steel")),
@@ -69,8 +101,8 @@ public class MaterialProgressionGameTests {
         test.assertTrue(canHarvest(ModItems.TOOL_SETS.get("carbon_steel").pickaxe().get(), ModBlocks.INANISIUM_BLOCK.get()),
                 "Carbon steel cannot harvest special material block");
         for (var set : ModItems.TOOL_SETS.values()) {
-            test.assertTrue(AxeItems.canVerticalStrike(new ItemStack(set.axe().get())),
-                    "Material axe lost its heavy strike: " + set.axe().getId());
+            test.assertFalse(AxeItems.canVerticalStrike(new ItemStack(set.axe().get())),
+                    "Material tool axe has a weapon-only heavy strike: " + set.axe().getId());
         }
         test.succeed();
     }

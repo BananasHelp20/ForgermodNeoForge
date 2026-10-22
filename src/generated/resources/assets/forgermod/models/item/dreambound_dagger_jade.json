@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/nightmare_dagger_jade"
+    "layer0": "forgermod:item/metals/weapons/special/nightmare_dagger_jade"
   }
 }

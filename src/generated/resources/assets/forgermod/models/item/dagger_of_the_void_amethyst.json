@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forgermod:item/riftfang_dagger_amethyst"
+    "layer0": "forgermod:item/metals/weapons/special/riftfang_dagger_amethyst"
   }
 }

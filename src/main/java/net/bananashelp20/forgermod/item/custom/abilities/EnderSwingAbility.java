@@ -18,7 +18,7 @@ import java.util.Set;
 
 /** Immediately swings at close enemies and lifts victims through a clear vertical column. */
 public final class EnderSwingAbility {
-    private static final double RADIUS = 1.0;
+    private static final double RADIUS = 3.0;
     private static final int LIFT = 20;
     private EnderSwingAbility() {}
 
