@@ -17,7 +17,7 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Death Stare: exact user conditional description, range sentence omitted at max.
 - [x] Deep Wound capIII cooldown120/75/30; exact user description white amplifier/duration.
 - [x] Delusion I-V: effects10/14/18/22/25s, cooldown120/100/80/60/40s; exact user description white duration.
-- [ ] Direct Current: aim+key per unique anchor, consecutive edges only, marked enemies immune to own connection damage. White amount and damage. Static Field >2 anchors filled field, pulses existing1s damage1/1.25/1.5/1.75, .5s stun,20s starts at first connection, not refreshed on marks.
+- [x] Direct Current: aim+key per unique anchor, consecutive edges only, marked enemies immune to own connection damage. White amount and damage. Static Field >2 anchors filled field, pulses existing1s damage1/1.25/1.5/1.75, .5s stun,20s starts at first connection, not refreshed on marks.
 - [x] Displace: exact conditional description; belowmax any living entity in range, max any visible entity unlimited loaded range.
 - [x] Downdraft Bell: exact user description, radius white.
 - [x] Dream Feast I-V restores2/4/6/8/10 hunger AND saturation; cooldown120/100/75/50/30s, white1/2/3/4/5 hunger bars.

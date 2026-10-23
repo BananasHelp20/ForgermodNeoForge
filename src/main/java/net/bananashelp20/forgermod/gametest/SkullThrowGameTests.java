@@ -33,6 +33,14 @@ public class SkullThrowGameTests {
         var field=skull.getClass().getDeclaredField("tickets");field.setAccessible(true);
         return ((java.util.Set<?>)field.get(skull)).size();
     }
+    @SuppressWarnings("unchecked")
+    private static void retainFlightTicketsDuringAcceleratedTestClock(WitherSkull skull)throws Exception{
+        var field=skull.getClass().getDeclaredField("tickets");field.setAccessible(true);
+        var typeField=SkullThrowEvents.class.getDeclaredField("FLIGHT_TICKET");typeField.setAccessible(true);
+        var type=(net.minecraft.server.level.TicketType<java.util.UUID>)typeField.get(null);
+        for(var chunk:java.util.Set.copyOf((java.util.Set<net.minecraft.world.level.ChunkPos>)field.get(skull)))
+            ((net.minecraft.server.level.ServerLevel)skull.level()).getChunkSource().addRegionTicket(type,chunk,3,skull.getUUID());
+    }
     private static final class RecordingConnection extends net.minecraft.network.Connection {
         final java.util.List<net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket> particles=new java.util.ArrayList<>();
         RecordingConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);}
@@ -66,6 +74,9 @@ public class SkullThrowGameTests {
         // Chunk activation can delay real entity ticks relative to the GameTest clock.
         boolean[] checkedFlight={false};
         test.onEachTick(()->{
+            // GameTest advances hundreds of game ticks while async chunk work is still pending.
+            // Retain only tickets the real projectile already issued; do not drive its physics manually.
+            try{if(skull.isAlive())retainFlightTicketsDuringAcceleratedTestClock(skull);}catch(Exception failure){SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);throw new RuntimeException(failure);}
             if(!checkedFlight[0] && skull.tickCount>=101) {
                 test.assertTrue(SkullThrowEvents.active(player) && skull.position().distanceTo(launch)>200,"Flight still has a five-second expiry or fails to advance outside player chunks");
                 checkedFlight[0]=true;

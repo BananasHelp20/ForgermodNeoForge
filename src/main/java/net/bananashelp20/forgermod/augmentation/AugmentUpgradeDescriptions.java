@@ -199,7 +199,8 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats, "targets", Math.min(4, rank + 1), "targets");
                 if (rank >= 4) {
                     text(stats, "unlocks", true, "static_field");
-                    numeric(stats, "field_damage", 4 + Math.max(0, rank - 4), "field_damage");
+                    numeric(stats, "field_damage", 1 + .25*Math.max(0, rank - 4), "field_damage");
+                    seconds(stats,"stun_duration",10);seconds(stats,"duration",400);
                 }
             }
             case AdditionalAbilities.STUNNING_PRESENCE -> seconds(stats, "pulse_interval", Math.round(40 - (rank - 1) * 20F / 3));

@@ -84,7 +84,7 @@ public final class AugmentUpgradeDescriptionGameTests {
         var jade=new ItemStack(ModItems.NIGHTMARE_DAGGER_JADE.get());
         test.assertTrue(property(test,jade,"tooltips.forgermod.ability.absolute_nightmare",1,"duration").after().equals(11.0),"Jade's extra second is missing");
         var thunder=new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get());
-        test.assertTrue(property(test,thunder,AdditionalAbilities.DIRECT_CURRENT,4,"field_damage").after().equals(5.0)
+        test.assertTrue(property(test,thunder,AdditionalAbilities.DIRECT_CURRENT,4,"field_damage").after().equals(1.25)
                 && !has(thunder,AdditionalAbilities.DIRECT_CURRENT,4,"targets") && !has(thunder,AdditionalAbilities.DIRECT_CURRENT,4,"unlocks"),"Static Field repeats unchanged unlocks");
         test.succeed();
     }

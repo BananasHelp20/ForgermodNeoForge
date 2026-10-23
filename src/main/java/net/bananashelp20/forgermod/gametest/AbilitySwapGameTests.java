@@ -56,6 +56,8 @@ public class AbilitySwapGameTests {
     @GameTest(template = "riftfang_test")
     public static void rotatingThreeArmedAbilitiesKeepsCooldownsOnEveryKeyAndOtherStacks(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);
+        player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setXRot(-90);
+        var marked=net.minecraft.world.entity.EntityType.ZOMBIE.create(test.getLevel());marked.setNoAi(true);marked.setNoGravity(true);marked.setPos(player.position().add(0,4,0));test.getLevel().addFreshEntity(marked);
         var ids=java.util.List.of(net.bananashelp20.forgermod.augmentation.AdditionalAbilities.STATIC_BLADE,
                 net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ALTERNATING_CURRENT,
                 net.bananashelp20.forgermod.augmentation.AdditionalAbilities.DIRECT_CURRENT);
@@ -71,7 +73,7 @@ public class AbilitySwapGameTests {
                 for(int i=0;i<3;i++)test.assertTrue(java.util.Objects.equals(cooldowns.get(item(stack)+":"+ids.get(i)),now+(i==0?800:2400)),"Cooldown no longer follows rotated ability identity");
             }
             player.setItemInHand(InteractionHand.MAIN_HAND,original);for(int slot=0;slot<3;slot++)use(player,slot);
-            test.assertFalse(ids.stream().anyMatch(id->net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,id)),"Unrotated stack bypasses cooldowns");test.succeed();
+            test.assertFalse(ids.stream().anyMatch(id->net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,id)),"Unrotated stack bypasses cooldowns");marked.discard();test.succeed();
         } finally {WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
     }
     private static IPayloadContext context(ServerPlayer player) {

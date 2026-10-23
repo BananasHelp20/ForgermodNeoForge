@@ -44,6 +44,9 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.DIRECT_CURRENT -> rank<4
+                    ?text(id+".reviewed","Mark up to %s by aiming at them and pressing the ability activation key. By marking them, they get connected one by one, forming a constant current that connects them. Enemies entering/passing the current are being dealt %s every 0.5s.",Math.min(4,rank+1)+" enemies","4 damage")
+                    :text(id+".super.reviewed","Mark up to %s by aiming at them and pressing the ability activation key. Works like Direct Current, but instead of just straight barriers, creates a static field if more than 2 enemies are marked. It deals %s every second while stunning enemies for %s each time. The full field stays up to %s before discipating. The duration starts when the first connection has formed.","4 enemies",number(1+.25*Math.max(0,rank-4))+" damage","0.5 seconds","20 seconds");
             case RecommendedAbilities.CRUCIBLE_HOOK -> text(id+(rank>=5?".super.reviewed":".reviewed"),
                     "Activate the ability while aiming at a target mob. You will pull the mob to you and automatically hit with a smash attack dealing %s. The smash will also set the enemy ablaze. Burn duration: %s."
                             +(rank>=5?" Aim at a block within %s to grapple towards it with acceleration. Right-click with the weapon or switch weapons to release, preserving momentum. Automatic release on arrival can be toggled in the mod settings.":""),

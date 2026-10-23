@@ -25,9 +25,9 @@ public final class AbilityDescriptionGameTests {
         var thunder=new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get());
         for(int rank=1;rank<=7;rank++) {
             var text=AbilityDescriptions.description(thunder,AdditionalAbilities.DIRECT_CURRENT,rank,false);
-            test.assertTrue(key(text).equals(AdditionalAbilities.DIRECT_CURRENT+(rank>=4?".super":"")+".current"),"Wrong electrical form");
+            test.assertTrue(key(text).equals(AdditionalAbilities.DIRECT_CURRENT+(rank>=4?".super":"")+".reviewed"),"Wrong electrical form");
             var targets=(Component)((TranslatableContents)text.getContents()).getArgs()[0];
-            test.assertTrue(((TranslatableContents)targets.getContents()).getArgs()[0].equals(""+Math.min(4,rank+1)),"Shows future target count");
+            test.assertTrue(targets.getString().equals(Math.min(4,rank+1)+" enemies"),"Shows future target count");
             test.assertTrue(AbilityDescriptions.canBecomeSuper(thunder,AdditionalAbilities.DIRECT_CURRENT,rank)==(rank<4),"Super hint remains after conversion");
         }
         var dagger=new ItemStack(ModItems.DEAD_CALM_DAGGER.get());
@@ -74,7 +74,7 @@ public final class AbilityDescriptionGameTests {
             int hint=keys.indexOf("augmentation.forgermod.super_available");
             test.assertTrue((hint>=0)==(expanded && rank<4),"Hint ignores Shift or current form");
             if(hint>=0) test.assertTrue(keys.get(hint-1).equals("augmentation.forgermod.cooldown"),"Hint is not below cooldown");
-            test.assertTrue(keys.contains(AdditionalAbilities.DIRECT_CURRENT+(rank>=4?".super":"")+".current")==expanded,"Description ignores Shift");
+            test.assertTrue(keys.contains(AdditionalAbilities.DIRECT_CURRENT+(rank>=4?".super":"")+".reviewed")==expanded,"Description ignores Shift");
         }
         // Passives have no cooldown: their note follows their current-rank description.
         var dagger=Augmentations.setLevel(new ItemStack(ModItems.DEAD_CALM_DAGGER.get()),Augmentations.DOUBLE_JUMP,1);

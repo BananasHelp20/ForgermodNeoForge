@@ -6,7 +6,6 @@ import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,13 +14,10 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import java.util.*;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
@@ -31,6 +27,7 @@ public final class DirectCurrentEvents {
     private static final String FIELD_LOCK = AdditionalAbilities.DIRECT_CURRENT + ".field";
     private static final class Circuit {
         final ItemStack stack;final int selected,rank;final ServerLevel level;long expires,nextField,nextParticles;
+        boolean connected;
         final List<LivingEntity> anchors=new ArrayList<>();final Map<UUID,Vec3> previous=new HashMap<>();final Map<UUID,Long> shockReady=new HashMap<>();
         Circuit(ServerPlayer player,ItemStack stack) {this.stack=stack;selected=player.getInventory().selected;rank=Augmentations.level(stack,AdditionalAbilities.DIRECT_CURRENT);level=player.serverLevel();expires=level.getGameTime()+600;}
     }
@@ -38,10 +35,20 @@ public final class DirectCurrentEvents {
     private static final Map<UUID,Circuit> CIRCUITS=new HashMap<>();
     private DirectCurrentEvents() {}
     private static boolean validTarget(ServerPlayer player,LivingEntity target) {
-        return target.isAlive() && !target.isRemoved()
-                && (target instanceof Mob || WeaponAbilityTargets.enemy(player,target));
+        return target.isAlive() && !target.isRemoved() && WeaponAbilityTargets.enemy(player,target);
     }
-    public static boolean activate(ServerPlayer player,ItemStack stack) {if(active(player)) return false;CIRCUITS.put(player.getUUID(),new Circuit(player,stack));return true;}
+    public static boolean activate(ServerPlayer player,ItemStack stack) {
+        if(stack!=player.getMainHandItem() || !player.isAlive() || player.isSpectator() || Augmentations.level(stack,AdditionalAbilities.DIRECT_CURRENT)<=0)return false;
+        var target=WeaponAbilityTargets.aimedEnemy(player,50);if(target==null || !validTarget(player,target))return false;
+        boolean running=active(player);var circuit=running?CIRCUITS.get(player.getUUID()):new Circuit(player,stack);
+        if(circuit.anchors.contains(target) || circuit.anchors.size()>=Math.min(4,circuit.rank+1) || circuit.anchors.stream().anyMatch(e->e.distanceToSqr(target)>2500))return false;
+        if(!running)CIRCUITS.put(player.getUUID(),circuit);
+        circuit.anchors.add(target);if(circuit.anchors.size()<2)return true;
+        long now=player.level().getGameTime();
+        if(!circuit.connected){circuit.connected=true;circuit.expires=now+400;circuit.nextField=now+20;}
+        for(var anchor:circuit.anchors)WeaponControlLocks.acquire(anchor,player.getUUID(),AdditionalAbilities.DIRECT_CURRENT,(int)(circuit.expires-now));
+        circuit.nextParticles=now;seed(circuit);return true;
+    }
     private static boolean tooFar(Circuit circuit) {
         for(int i=0;i<circuit.anchors.size();i++) for(int j=i+1;j<circuit.anchors.size();j++) if(circuit.anchors.get(i).distanceToSqr(circuit.anchors.get(j))>2500) return true;
         return false;
@@ -56,18 +63,6 @@ public final class DirectCurrentEvents {
     public static long remainingTicks(ServerPlayer player) {return active(player)?CIRCUITS.get(player.getUUID()).expires-player.level().getGameTime():0;}
     public static int marked(ServerPlayer player) {return active(player)?CIRCUITS.get(player.getUUID()).anchors.size():0;}
     public static void cancel(UUID owner) {CIRCUITS.remove(owner);WeaponControlLocks.release(owner,AdditionalAbilities.DIRECT_CURRENT);WeaponControlLocks.release(owner,FIELD_LOCK);}
-    @SubscribeEvent
-    public static void landed(LivingDamageEvent.Post event) {
-        if(!event.getSource().is(DamageTypes.PLAYER_ATTACK) || !(event.getSource().getEntity() instanceof ServerPlayer player) || !active(player)
-            || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0 || !validTarget(player,event.getEntity())) return;
-        var circuit=CIRCUITS.get(player.getUUID());var target=event.getEntity();
-        if(circuit.anchors.contains(target) || circuit.anchors.size()>=Math.min(4,circuit.rank+1) || circuit.anchors.stream().anyMatch(e->e.distanceToSqr(target)>2500)) return;
-        circuit.anchors.add(target);if(circuit.anchors.size()<2) return;
-        long now=player.level().getGameTime();circuit.expires=now+400;
-        for(var anchor:circuit.anchors) WeaponControlLocks.acquire(anchor,player.getUUID(),AdditionalAbilities.DIRECT_CURRENT,400);
-        if(circuit.anchors.size()==2 || circuit.anchors.size()==3) circuit.nextField=now+10;
-        circuit.nextParticles=now;seed(circuit);
-    }
     private static AABB bounds(Circuit circuit) {
         var first=circuit.anchors.getFirst();AABB box=first.getBoundingBox();for(var anchor:circuit.anchors) box=box.minmax(anchor.getBoundingBox());return box.inflate(2,3,2);
     }
@@ -81,6 +76,23 @@ public final class DirectCurrentEvents {
     public static boolean inside(Vec3 point,Vec3 a,Vec3 b,Vec3 c) {
         if(Math.abs(side(a,b,c))<.01 || point.y<Math.min(a.y,Math.min(b.y,c.y))-.5 || point.y>Math.max(a.y,Math.max(b.y,c.y))+2.5) return false;
         double x=side(a,b,point),y=side(b,c,point),z=side(c,a,point);return !(x<-.000001 || y<-.000001 || z<-.000001) || !(x>.000001 || y>.000001 || z>.000001);
+    }
+    public static boolean inside(Vec3 point,List<Vec3> polygon){
+        if(polygon.size()<3)return false;
+        double minY=Double.POSITIVE_INFINITY,maxY=Double.NEGATIVE_INFINITY,area=0;boolean contained=false;
+        for(int i=0,j=polygon.size()-1;i<polygon.size();j=i++){
+            var a=polygon.get(j);var b=polygon.get(i);var origin=polygon.getFirst();minY=Math.min(minY,b.y);maxY=Math.max(maxY,b.y);area+=(a.x-origin.x)*(b.z-origin.z)-(b.x-origin.x)*(a.z-origin.z);
+            if((a.z>point.z)!=(b.z>point.z) && point.x<(b.x-a.x)*(point.z-a.z)/(b.z-a.z)+a.x)contained=!contained;
+        }
+        return Math.abs(area)>.01 && contained && point.y>=minY-.5 && point.y<=maxY+2.5;
+    }
+    /** A filled field surrounds its marks regardless of their selection order. */
+    public static List<Vec3> fieldPolygon(List<Vec3> points){
+        var sorted=points.stream().distinct().sorted(Comparator.comparingDouble((Vec3 p)->p.x).thenComparingDouble(p->p.z)).toList();
+        if(sorted.size()<3)return sorted;var hull=new ArrayList<Vec3>();
+        for(var point:sorted){while(hull.size()>=2 && side(hull.get(hull.size()-2),hull.getLast(),point)<=.000001)hull.removeLast();hull.add(point);}
+        int lower=hull.size();for(int i=sorted.size()-2;i>=0;i--){var point=sorted.get(i);while(hull.size()>lower && side(hull.get(hull.size()-2),hull.getLast(),point)<=.000001)hull.removeLast();hull.add(point);}
+        hull.removeLast();return List.copyOf(hull);
     }
     /** A narrow electrical curtain intersects the entity's body, even without movement. */
     private static boolean touching(LivingEntity entity,Barrier barrier) {
@@ -100,29 +112,30 @@ public final class DirectCurrentEvents {
     public static void tick(PlayerTickEvent.Post event) {
         if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;var circuit=CIRCUITS.get(player.getUUID());if(circuit.anchors.size()<2) return;long now=player.level().getGameTime();
         var occupants=circuit.level.getEntitiesOfClass(LivingEntity.class,bounds(circuit).inflate(8),LivingEntity::isAlive);var seen=new HashSet<UUID>();
-        var barriers=new ArrayList<Barrier>();boolean[][] visible=new boolean[4][4];
-        for(int i=0;i<circuit.anchors.size();i++) for(int j=i+1;j<circuit.anchors.size();j++) {
-            var a=circuit.anchors.get(i);var b=circuit.anchors.get(j);visible[i][j]=a.hasLineOfSight(b);
-            if(visible[i][j]) barriers.add(new Barrier(a.position(),b.position()));
+        var barriers=new ArrayList<Barrier>();var polygon=fieldPolygon(circuit.anchors.stream().map(LivingEntity::position).toList());boolean field=circuit.rank>=4 && polygon.size()>=3;
+        var endpoints=field?polygon.stream().map(point->circuit.anchors.stream().filter(anchor->anchor.position().equals(point)).findFirst().orElseThrow()).toList():circuit.anchors;
+        int edges=field?endpoints.size():endpoints.size()-1;boolean unobstructed=true;
+        for(int i=0;i<edges;i++){
+            var a=endpoints.get(i);var b=endpoints.get((i+1)%endpoints.size());boolean visible=a.hasLineOfSight(b);unobstructed&=visible;
+            if(visible)barriers.add(new Barrier(a.position(),b.position()));
         }
-        boolean field=circuit.rank>=4 && circuit.anchors.size()>=3 && visible[0][1] && visible[1][2] && visible[0][2];
+        field&=unobstructed;
         boolean fieldPulse=field && now>=circuit.nextField;
         for(var entity:occupants) {
+            if(circuit.anchors.contains(entity) || !WeaponAbilityTargets.enemy(player,entity))continue;
             var id=entity.getUUID();seen.add(id);var old=circuit.previous.getOrDefault(id,new Vec3(entity.xo,entity.yo,entity.zo));
             boolean contacted=false;
             for(var barrier:barriers) if(crosses(old,entity.position(),barrier.from(),barrier.to())
                 || !circuit.anchors.contains(entity) && touching(entity,barrier)) {contacted=true;break;}
-            boolean withinField=field && inside(entity.position(),circuit.anchors.get(0).position(),circuit.anchors.get(1).position(),circuit.anchors.get(2).position());
-            if(withinField) {
-                WeaponControlLocks.acquire(entity,player.getUUID(),FIELD_LOCK,2);
-            }
-            if((contacted || withinField && fieldPulse) && now>=circuit.shockReady.getOrDefault(id,0L)) {
-                damage(player,entity,withinField?4+Math.max(0,circuit.rank-4):4);
-                circuit.shockReady.put(id,now+10);
+            boolean withinField=field && inside(entity.position(),polygon);
+            if((field?fieldPulse && (contacted || withinField):contacted) && now>=circuit.shockReady.getOrDefault(id,0L)) {
+                damage(player,entity,field?1+.25F*Math.max(0,circuit.rank-4):4);
+                if(field)WeaponControlLocks.acquire(entity,player.getUUID(),FIELD_LOCK,10);
+                circuit.shockReady.put(id,now+(field?20:10));
             }
             circuit.previous.put(id,entity.position());
         }
-        circuit.previous.keySet().retainAll(seen);circuit.shockReady.keySet().retainAll(seen);if(fieldPulse) circuit.nextField=now+10;
+        circuit.previous.keySet().retainAll(seen);circuit.shockReady.keySet().retainAll(seen);if(fieldPulse) circuit.nextField=now+20;
         if(now>=circuit.nextParticles) {
             for(var barrier:barriers) {
                 var from=barrier.from().add(0,1,0);var delta=barrier.to().subtract(barrier.from());int samples=Math.min(24,Math.max(2,(int)(delta.length()/2)));
