@@ -33,6 +33,11 @@ public class Config {
             .comment("Automatically release Crucible Grappler when reaching its anchor. Release always preserves momentum.")
             .define("grappleAutoRelease",true);
 
+    public static final ModConfigSpec.BooleanValue EXPLOSION_TERRAIN=BUILDER
+            .translation("forgermod.configuration.explosionTerrain")
+            .comment("Allow Explosion/Blazing Blast and its projectiles to destroy blocks or ignite terrain. Server-controlled; disabled by default.")
+            .define("explosionTerrain",false);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     private static boolean validateItemName(final Object obj) {

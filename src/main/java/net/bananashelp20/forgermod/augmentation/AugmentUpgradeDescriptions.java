@@ -245,6 +245,9 @@ public final class AugmentUpgradeDescriptions {
                 if(rank>=5)text(stats,"super_form",true,"intimidating_roar");
             }
             default -> { /* Fixed-effect augments intentionally have no invented rank scaling. */ }
+            case RecommendedAbilities.EXPLOSION -> {
+                if(rank>=5){numeric(stats,"projectile_damage",100*ReviewedRanks.blastProjectileMultiplier(rank),"percent");text(stats,"super_form",true,"blazing_blast");}
+            }
         }
         if (RecommendedAbilities.active(id) || ReviewedRanks.cooldown(id,rank)>=0) {
             int cooldown = RecommendedAbilities.cooldown(id, rank);

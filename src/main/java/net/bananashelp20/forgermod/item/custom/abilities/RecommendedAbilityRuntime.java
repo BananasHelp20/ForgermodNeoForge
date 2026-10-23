@@ -23,12 +23,14 @@ public final class RecommendedAbilityRuntime {
             player.addEffect(JadeAugments.reinforce(stack, id,
                     new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,40,3)));
             // Vanilla excludes the causing entity from explosion damage/knockback.
-            player.level().explode(player,player.getX(),player.getY(),player.getZ(),4,false,Level.ExplosionInteraction.NONE);
+            player.level().explode(player,player.getX(),player.getY(),player.getZ(),4,false,
+                    net.bananashelp20.forgermod.Config.EXPLOSION_TERRAIN.get()?Level.ExplosionInteraction.TNT:Level.ExplosionInteraction.NONE);
             var level=player.serverLevel();
             double x=player.getX(), y=player.getY()+.8, z=player.getZ();
             level.sendParticles(ParticleTypes.EXPLOSION, x,y,z, 24, 2.3,1.3,2.3, 0);
             level.sendParticles(ParticleTypes.POOF, x,y,z, 40, 2.6,1.5,2.6, .12);
             level.sendParticles(ParticleTypes.LARGE_SMOKE, x,y,z, 18, 2,1.2,2, .04);
+            BlazingBlastEvents.fire(player,stack);
             return true;
         }
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) return CinderDecoyEvents.activate(player,stack);

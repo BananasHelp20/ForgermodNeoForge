@@ -2,6 +2,9 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.augmentation.ReviewedRanks;
 public final class ReviewedRanksTest {
     public static void main(String[] args) {
+        int[] explosionCooldowns={60,55,50,45,120,110,100,90};
+        for(int rank=1;rank<=8;rank++)if(ReviewedRanks.cooldown("tooltips.forgermod.ability.explosion",rank)!=20*explosionCooldowns[rank-1])throw new AssertionError("Explosion/Blazing cooldown");
+        for(int rank=5;rank<=8;rank++)if(Math.abs(ReviewedRanks.blastProjectileMultiplier(rank)-(1+.15*(rank-5)))>.00001)throw new AssertionError("Blazing damage progression");
         for(int rank=1;rank<=8;rank++){
             if(ReviewedRanks.grappleRange(rank)!=(rank<5?0:25+5*(rank-5)))throw new AssertionError("Grapple range");
             if(ReviewedRanks.cooldown("tooltips.forgermod.ability.crucible_hook",rank)!=(rank<5?45-rank*5:25)*20)throw new AssertionError("Hook/Grappler cooldown");

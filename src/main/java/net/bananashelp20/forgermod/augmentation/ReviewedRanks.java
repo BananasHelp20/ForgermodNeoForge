@@ -21,6 +21,7 @@ public final class ReviewedRanks {
             case "tooltips.forgermod.ability.area_discharge" -> at(rank,180,130,80,30,300,260,220,180)*20;
             case "tooltips.forgermod.ability.challenge_roar" -> at(rank,30,25,20,15,60,60,60,60)*20;
             case "tooltips.forgermod.ability.crucible_hook" -> at(rank,40,35,30,25,25,25,25,25)*20;
+            case "tooltips.forgermod.ability.explosion" -> at(rank,60,55,50,45,120,110,100,90)*20;
             case "tooltips.forgermod.ability.ender_swing" -> at(rank,90,75,60)*20;
             case "tooltips.forgermod.ability.just_a_dream" -> at(rank,60,30)*20;
             case "tooltips.forgermod.ability.dream_feast" -> at(rank,120,100,75,50,30)*20;
@@ -32,6 +33,7 @@ public final class ReviewedRanks {
     public static int at(int rank,int... values) {return values[Math.clamp(rank-1,0,values.length-1)];}
     public static int roarRange(int rank) {return at(rank,16,20,24,28,35,40,45,50);}
     public static int grappleRange(int rank) {return at(rank,0,0,0,0,25,30,35,40);}
+    public static double blastProjectileMultiplier(int rank){return 1+.15*(Math.clamp(rank,5,8)-5);}
     public static int roarTicks(int rank) {return at(rank,10,10,10,10,20,24,27,30)*20;}
     public static int delusionTicks(int rank) {return at(rank,10,14,18,22,25)*20;}
     public static int foodPoints(int rank) {return 2*Math.clamp(rank,1,5);}
