@@ -44,6 +44,11 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.CRUCIBLE_HOOK -> text(id+(rank>=5?".super.reviewed":".reviewed"),
+                    "Activate the ability while aiming at a target mob. You will pull the mob to you and automatically hit with a smash attack dealing %s. The smash will also set the enemy ablaze. Burn duration: %s."
+                            +(rank>=5?" Aim at a block within %s to grapple towards it with acceleration. Right-click with the weapon or switch weapons to release, preserving momentum. Automatic release on arrival can be toggled in the mod settings.":""),
+                    rank>=5?new Object[]{number(weaponDamage(stack)*(1+.25*rank))+" damage",(2+rank)+" seconds",ReviewedRanks.grappleRange(rank)+" blocks"}
+                            :new Object[]{number(weaponDamage(stack)*(1+.25*rank))+" damage",(2+rank)+" seconds"});
             case AdditionalAbilities.CHALLENGE_ROAR -> text(id+(rank>=5?".super.reviewed":".reviewed"),
                     "Agro all hostile mobs within %s on you, and giving you %s for %s. Agroed enemis will not target any other entitiy during that time."
                             +(rank>=5?" Additionally, all enemies within the range gain Weakness I and Slowness I while your strength effect is active.":""),

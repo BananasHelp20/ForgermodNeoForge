@@ -28,6 +28,11 @@ public class Config {
             .comment("A list of items to log on common setup.")
             .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), () -> "", Config::validateItemName);
 
+    public static final ModConfigSpec.BooleanValue GRAPPLE_AUTO_RELEASE=BUILDER
+            .translation("forgermod.configuration.grappleAutoRelease")
+            .comment("Automatically release Crucible Grappler when reaching its anchor. Release always preserves momentum.")
+            .define("grappleAutoRelease",true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     private static boolean validateItemName(final Object obj) {

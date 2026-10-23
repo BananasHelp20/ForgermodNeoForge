@@ -13,7 +13,7 @@ Work requested in the current conversation. Resume the interactive review at **4
 - [x] Charge Attack: max+200% on charge hit15; discharge16 adds30 lightning damage and strikes wielder if Lightning Rod learned. Low end stays20 charge hits,+100%,20 lightning. White dynamic increments/count/damage, conditional max+LightningRod sentence.
 - [x] Cinder Decoy: max health equals current ownerHP at creation, excludes absorption; accumulates damage; no touch/single-hit instant detonation;600s lifetime, expiry/death/recast explode; activation cooldown enables recast. All hostile attraction, white lifetime/radius/burn.
 - [x] Crosswind: existing wording with current cooldown white.
-- [ ] Crucible Hook: exact user description, white damage/burn. Crucible Grappler super: aimed block grappling25/30/35/40 range, acceleration and preserved release velocity, rightclick/switch release, autoarrival setting defaulttrue. Mob hit2.25/2.5/2.75/3x, burn7/8/9/10s, cooldown25s.
+- [x] Crucible Hook: exact user description, white damage/burn. Crucible Grappler super: aimed block grappling25/30/35/40 range, acceleration and preserved release velocity, rightclick/switch release, autoarrival setting defaulttrue. Mob hit2.25/2.5/2.75/3x, burn7/8/9/10s, cooldown25s.
 - [x] Death Stare: exact user conditional description, range sentence omitted at max.
 - [x] Deep Wound capIII cooldown120/75/30; exact user description white amplifier/duration.
 - [x] Delusion I-V: effects10/14/18/22/25s, cooldown120/100/80/60/40s; exact user description white duration.

@@ -41,10 +41,14 @@ public final class CrucibleHookEvents {
         return hit==null?null:(LivingEntity)hit.getEntity();
     }
     public static boolean activate(ServerPlayer player,ItemStack stack) {
+        return activate(player,stack,net.bananashelp20.forgermod.Config.GRAPPLE_AUTO_RELEASE.get());
+    }
+    public static boolean activate(ServerPlayer player,ItemStack stack,boolean autoRelease) {
         if(active(player)) return false;
         var target=aimedTarget(player);
         int rank=Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK);
-        if(target==null || rank<=0) return false;
+        if(rank<=0) return false;
+        if(target==null)return CrucibleGrapplerEvents.activate(player,stack,autoRelease);
         var forward=net.minecraft.world.phys.Vec3.directionFromRotation(0,player.getYRot());
         var destination=player.position().add(forward.scale(2));
         HOOKS.put(player.getUUID(),new Hook(stack,player.getInventory().selected,target,player.level().getGameTime()+40,rank,
@@ -53,6 +57,7 @@ public final class CrucibleHookEvents {
         advance(player); return true;
     }
     public static boolean active(ServerPlayer player) {
+        if(CrucibleGrapplerEvents.active(player))return true;
         Hook hook=HOOKS.get(player.getUUID()); if(hook==null) return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=hook.stack()
                 || player.getInventory().selected!=hook.selected() || !hook.target().isAlive()
@@ -64,8 +69,9 @@ public final class CrucibleHookEvents {
         }
         return true;
     }
-    public static void cancel(UUID owner) { HOOKS.remove(owner);CrucibleHookRope.end(owner); }
+    public static void cancel(UUID owner) { HOOKS.remove(owner);CrucibleGrapplerEvents.cancel(owner);CrucibleHookRope.end(owner); }
     private static void advance(ServerPlayer player) {
+        if(CrucibleGrapplerEvents.active(player)){CrucibleGrapplerEvents.tick(player);return;}
         if(!active(player)) return;
         Hook hook=HOOKS.get(player.getUUID()); var target=hook.target();
         var direction=hook.destination().subtract(target.position());

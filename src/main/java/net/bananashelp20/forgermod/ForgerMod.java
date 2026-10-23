@@ -97,7 +97,9 @@ public class ForgerMod {
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
-
+            net.neoforged.fml.ModList.get().getModContainerById(MOD_ID).orElseThrow().registerExtensionPoint(
+                    net.neoforged.neoforge.client.gui.IConfigScreenFactory.class,
+                    (net.neoforged.neoforge.client.gui.IConfigScreenFactory)net.neoforged.neoforge.client.gui.ConfigurationScreen::new);
         }
 
         @SubscribeEvent

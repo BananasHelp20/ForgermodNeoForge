@@ -10,11 +10,14 @@ import java.lang.reflect.Proxy;
 final class AbilityTestPackets {
     private AbilityTestPackets() {}
     static void use(ServerPlayer player,int slot) throws Exception {
+        use(player,slot,net.bananashelp20.forgermod.Config.GRAPPLE_AUTO_RELEASE.get());
+    }
+    static void use(ServerPlayer player,int slot,boolean grappleAutoRelease) throws Exception {
         var method=WeaponAbilityNetwork.class.getDeclaredMethod("handleAbility",WeaponAbilityNetwork.UseAbilityPayload.class,IPayloadContext.class);
         method.setAccessible(true);
         var context=(IPayloadContext)Proxy.newProxyInstance(IPayloadContext.class.getClassLoader(),new Class<?>[]{IPayloadContext.class},
                 (proxy,called,args)->called.getName().equals("player")?player:null);
         method.invoke(null,new WeaponAbilityNetwork.UseAbilityPayload(slot,player.getInventory().selected,
-                BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString()),context);
+                BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString(),grappleAutoRelease),context);
     }
 }

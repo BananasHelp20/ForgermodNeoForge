@@ -14,6 +14,9 @@ import net.minecraft.world.level.Level;
 public final class RecommendedAbilityRuntime {
     private RecommendedAbilityRuntime() {}
     public static boolean activate(ServerPlayer player,ItemStack stack,String id) {
+        return activate(player,stack,id,net.bananashelp20.forgermod.Config.GRAPPLE_AUTO_RELEASE.get());
+    }
+    public static boolean activate(ServerPlayer player,ItemStack stack,String id,boolean grappleAutoRelease) {
         if(!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player) || stack!=player.getMainHandItem()
                 || !Augmentations.ids(stack,true).contains(id)) return false;
         if(RecommendedAbilities.EXPLOSION.equals(id)) {
@@ -30,7 +33,7 @@ public final class RecommendedAbilityRuntime {
         }
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) return CinderDecoyEvents.activate(player,stack);
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) return ExplosiveHitsEvents.activate(player,stack);
-        if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) return CrucibleHookEvents.activate(player,stack);
+        if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) return CrucibleHookEvents.activate(player,stack,grappleAutoRelease);
         if(RecommendedAbilities.STRONG_ARM.equals(id)) return StrongArmAbility.activate(player,stack);
         if(RecommendedAbilities.SWING_ATTACK.equals(id)) return SwingAttackAbility.activate(player,stack);
         if(RecommendedAbilities.DEATH_STARE.equals(id)) return DeathStareAbility.activate(player,stack);

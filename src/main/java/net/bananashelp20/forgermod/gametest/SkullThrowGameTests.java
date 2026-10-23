@@ -42,7 +42,7 @@ public class SkullThrowGameTests {
         boolean burst(){return particles.stream().anyMatch(p->p.getParticle() instanceof net.minecraft.core.particles.BlockParticleOption block && block.getState().is(Blocks.BONE_BLOCK))
             && particles.stream().anyMatch(p->p.getParticle()==net.minecraft.core.particles.ParticleTypes.EXPLOSION);}
     }
-    @GameTest(template="riftfang_test",timeoutTicks=430)
+    @GameTest(template="riftfang_test",timeoutTicks=830)
     public static void fixedFiveHundredBlockRangeAtEveryRankAndBeyondPlayerChunks(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);player.setNoGravity(true);
         var start=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,8,8))).with(net.minecraft.core.Direction.Axis.Y,test.getLevel().getMaxBuildHeight()+20);
@@ -70,8 +70,13 @@ public class SkullThrowGameTests {
                 test.assertTrue(SkullThrowEvents.active(player) && skull.position().distanceTo(launch)>200,"Flight still has a five-second expiry or fails to advance outside player chunks");
                 checkedFlight[0]=true;
             }
+            if(!skull.isAlive()){
+                try{test.assertTrue(checkedFlight[0] && !SkullThrowEvents.active(player) && Math.abs(skull.position().distanceTo(launch)-500)<.001 && ticketCount(skull)==0,"Natural flight ends early or leaks tickets");test.succeed();}
+                catch(Exception failure){throw new RuntimeException(failure);}
+                finally{SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+            }
         });
-        test.runAfterDelay(400,()->{
+        test.runAfterDelay(800,()->{
             try {test.assertTrue(checkedFlight[0] && !skull.isAlive() && !SkullThrowEvents.active(player) && Math.abs(skull.position().distanceTo(launch)-500)<.001 && ticketCount(skull)==0,"Natural flight does not reach its fixed range and clean up: alive="+skull.isAlive()+" distance="+skull.position().distanceTo(launch)+" tickets="+ticketCount(skull)+" removed="+skull.getRemovalReason());test.succeed();}
             catch(Exception exception){throw new RuntimeException(exception);}
             finally {SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}

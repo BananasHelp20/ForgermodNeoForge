@@ -22,7 +22,9 @@ import java.util.*;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class CrucibleHookRope {
     public static final int SEGMENTS=24;
-    public record Link(int targetId,UUID targetUuid,long expires) {}
+    public record Link(int targetId,UUID targetUuid,long expires,Vec3 anchor) {
+        public Link(int targetId,UUID targetUuid,long expires){this(targetId,targetUuid,expires,null);}
+    }
     public static final Link NONE=new Link(-1,new UUID(0,0),0);
     private static final Map<UUID,Set<ServerPlayer>> TRACKERS=new HashMap<>();
     private static final Map<UUID,ServerPlayer> OWNERS=new HashMap<>();
@@ -30,8 +32,8 @@ public final class CrucibleHookRope {
     public record Payload(int ownerId,UUID ownerUuid,Link link) implements CustomPacketPayload {
         public static final Type<Payload> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"crucible_hook_rope"));
         public static final StreamCodec<RegistryFriendlyByteBuf,Payload> CODEC=StreamCodec.of(
-                (buffer,value)->{buffer.writeVarInt(value.ownerId());buffer.writeUUID(value.ownerUuid());buffer.writeVarInt(value.link().targetId());buffer.writeUUID(value.link().targetUuid());buffer.writeLong(value.link().expires());},
-                buffer->new Payload(buffer.readVarInt(),buffer.readUUID(),new Link(buffer.readVarInt(),buffer.readUUID(),buffer.readLong())));
+                (buffer,value)->{buffer.writeVarInt(value.ownerId());buffer.writeUUID(value.ownerUuid());buffer.writeVarInt(value.link().targetId());buffer.writeUUID(value.link().targetUuid());buffer.writeLong(value.link().expires());buffer.writeBoolean(value.link().anchor()!=null);if(value.link().anchor()!=null){buffer.writeDouble(value.link().anchor().x);buffer.writeDouble(value.link().anchor().y);buffer.writeDouble(value.link().anchor().z);}},
+                buffer->{int owner=buffer.readVarInt();UUID uuid=buffer.readUUID();int target=buffer.readVarInt();UUID targetUuid=buffer.readUUID();long expires=buffer.readLong();Vec3 anchor=buffer.readBoolean()?new Vec3(buffer.readDouble(),buffer.readDouble(),buffer.readDouble()):null;return new Payload(owner,uuid,new Link(target,targetUuid,expires,anchor));});
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     public static Link link(Player owner){return owner.getData(WeaponCooldownAttachments.CRUCIBLE_HOOK_ROPE);}
@@ -40,6 +42,12 @@ public final class CrucibleHookRope {
         OWNERS.put(owner.getUUID(),owner);
         owner.setData(WeaponCooldownAttachments.CRUCIBLE_HOOK_ROPE,new Link(target.getId(),target.getUUID(),expires));
         broadcast(owner);
+    }
+    public static void beginBlock(ServerPlayer owner,Vec3 anchor){
+        OWNERS.put(owner.getUUID(),owner);owner.setData(WeaponCooldownAttachments.CRUCIBLE_HOOK_ROPE,new Link(-2,new UUID(0,0),Long.MAX_VALUE,anchor));broadcast(owner);
+    }
+    public static Vec3 blockAnchor(Player owner){
+        var link=link(owner);return owner.isAlive() && !owner.isRemoved() && !owner.isSpectator() && owner.level().getGameTime()<link.expires() && link.targetId()==-2?link.anchor():null;
     }
     public static void end(UUID ownerId) {
         var owner=OWNERS.remove(ownerId);if(owner==null)return;
@@ -70,7 +78,7 @@ public final class CrucibleHookRope {
         return start.lerp(end,t).add(0,-4*sag*t*(1-t),0);
     }
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToClient(Payload.TYPE,Payload.CODEC,(payload,context)->apply(context.player().level(),payload));
+        event.registrar("2").playToClient(Payload.TYPE,Payload.CODEC,(payload,context)->apply(context.player().level(),payload));
     }
     @SubscribeEvent public static void tracking(PlayerEvent.StartTracking event) {
         if(event.getEntity() instanceof ServerPlayer viewer && event.getTarget() instanceof ServerPlayer owner

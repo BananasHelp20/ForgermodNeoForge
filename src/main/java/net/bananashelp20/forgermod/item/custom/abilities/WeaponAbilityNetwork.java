@@ -37,7 +37,8 @@ public final class WeaponAbilityNetwork {
     private static final Map<UUID, EquippedSession> ACTIVE = new HashMap<>();
     private WeaponAbilityNetwork() {}
 
-    public record UseAbilityPayload(int slot, int selectedSlot, String itemId) implements CustomPacketPayload {
+    public record UseAbilityPayload(int slot, int selectedSlot, String itemId,boolean grappleAutoRelease) implements CustomPacketPayload {
+        public UseAbilityPayload(int slot,int selectedSlot,String itemId){this(slot,selectedSlot,itemId,net.bananashelp20.forgermod.Config.GRAPPLE_AUTO_RELEASE.get());}
         public static final Type<UseAbilityPayload> TYPE = new Type<>(
                 ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "use_weapon_ability"));
         public static final StreamCodec<RegistryFriendlyByteBuf, UseAbilityPayload> STREAM_CODEC =
@@ -45,6 +46,7 @@ public final class WeaponAbilityNetwork {
                         ByteBufCodecs.VAR_INT, UseAbilityPayload::slot,
                         ByteBufCodecs.VAR_INT, UseAbilityPayload::selectedSlot,
                         ByteBufCodecs.STRING_UTF8, UseAbilityPayload::itemId,
+                        ByteBufCodecs.BOOL, UseAbilityPayload::grappleAutoRelease,
                         UseAbilityPayload::new);
 
         @Override
@@ -54,7 +56,7 @@ public final class WeaponAbilityNetwork {
     }
 
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToServer(
+        event.registrar("2").playToServer(
                 UseAbilityPayload.TYPE, UseAbilityPayload.STREAM_CODEC, WeaponAbilityNetwork::handleAbility);
         event.registrar("1").playToServer(SwapAbilitiesPayload.TYPE, SwapAbilitiesPayload.STREAM_CODEC,
                 WeaponAbilityNetwork::handleSwap);
@@ -112,7 +114,7 @@ public final class WeaponAbilityNetwork {
         boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id)
                 || Augmentations.AREA_DISCHARGE.equals(id)
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id);
-        if (recommended?RecommendedAbilityRuntime.activate(player,stack,id):weapon.activateAbility(player, stack, source)) {
+        if (recommended?RecommendedAbilityRuntime.activate(player,stack,id,payload.grappleAutoRelease()):weapon.activateAbility(player, stack, source)) {
             if (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source)) {
                 EquippedSession session = ACTIVE.get(player.getUUID());
                 if (session == null) {

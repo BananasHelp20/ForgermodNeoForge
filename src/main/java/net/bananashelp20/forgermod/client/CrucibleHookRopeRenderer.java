@@ -25,9 +25,9 @@ public final class CrucibleHookRopeRenderer {
         float partial=event.getPartialTick().getGameTimeDeltaPartialTick(false);
         var camera=event.getCamera().getPosition();var buffers=minecraft.renderBuffers().bufferSource();
         for(var owner:level.players()) {
-            var target=CrucibleHookRope.target(owner);if(target==null)continue;
+            var target=CrucibleHookRope.target(owner);var block=CrucibleHookRope.blockAnchor(owner);if(target==null && block==null)continue;
             var start=owner.getRopeHoldPosition(partial);
-            var end=target.getPosition(partial).add(0,target.getBbHeight()*.55,0);
+            var end=block!=null?block:target.getPosition(partial).add(0,target.getBbHeight()*.55,0);
             if(start.distanceToSqr(end)<.000001)continue;
             var axis=end.subtract(start).normalize();var side=axis.cross(new Vec3(0,1,0));
             if(side.lengthSqr()<.000001)side=new Vec3(1,0,0);
