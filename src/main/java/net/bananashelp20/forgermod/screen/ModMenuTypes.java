@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, ForgerMod.MOD_ID);
+    public static final Supplier<MenuType<net.bananashelp20.forgermod.screen.custom.NecromancerMenu>> NECROMANCER_MENU=registerMenuType("necromancer",net.bananashelp20.forgermod.screen.custom.NecromancerMenu::new);
 
     public static final Supplier<MenuType<ForgeMenu>> FORGE_MENU = registerMenuType("forge_menu", ForgeMenu::new);
     public static final Supplier<MenuType<InfusionTableMenu>> INFUSION_TABLE_MENU = registerMenuType("infusion_table_menu", InfusionTableMenu::new);

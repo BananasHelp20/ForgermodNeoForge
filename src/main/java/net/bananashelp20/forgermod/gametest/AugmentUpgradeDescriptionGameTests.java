@@ -96,20 +96,9 @@ public final class AugmentUpgradeDescriptionGameTests {
         var claymore=new ItemStack(ModItems.HOLLOW_CLAYMORE.get());
         var roster=property(test,claymore,AdditionalAbilities.BONE_GUARD,2,"summons");
         test.assertFalse(roster.before().equals(roster.after()),"Same-sized reinforcement upgrade hides the new mob type");
-        test.assertTrue(has(claymore,AdditionalAbilities.BONE_GUARD,3,"equipment") && !has(claymore,AdditionalAbilities.BONE_GUARD,4,"equipment")
-                && has(claymore,AdditionalAbilities.BONE_GUARD,6,"equipment"),"Necromancer equipment improvements are wrong");
-        var summons=property(test,claymore,AdditionalAbilities.BONE_GUARD,3,"summons");
-        var groups=(Component)((TranslatableContents)summons.sentence(true).getContents()).getArgs()[0];
-        int unchanged=0,changed=0;
-        for(var group:groups.getSiblings()) {
-            if(!(group.getContents() instanceof TranslatableContents text)) continue;
-            if(text.getKey().contains(".bogged.")) {
-                test.assertTrue(group.getStyle().getColor()==null,"Unchanged bogged is highlighted");unchanged++;
-            } else {
-                test.assertTrue(group.getStyle().getColor()!=null && group.getStyle().getColor().getValue()==AugmentUpgradeDescriptions.CHANGE_COLOR,"New reinforcement is not green");changed++;
-            }
-        }
-        test.assertTrue(unchanged==1 && changed==2,"Roster comparison missed mob types");
+        test.assertTrue(has(claymore,AdditionalAbilities.BONE_GUARD,3,"capacity") && has(claymore,AdditionalAbilities.BONE_GUARD,4,"equipment")
+                && !has(claymore,AdditionalAbilities.BONE_GUARD,6,"equipment"),"Necromancer capacity/equipment unlock is wrong");
+        test.assertTrue(!has(claymore,AdditionalAbilities.BONE_GUARD,3,"summons"),"Custom roster is replaced by a fake fixed roster preview");
         test.succeed();
     }
 }

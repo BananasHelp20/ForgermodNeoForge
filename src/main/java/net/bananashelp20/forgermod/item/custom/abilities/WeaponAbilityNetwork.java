@@ -114,6 +114,7 @@ public final class WeaponAbilityNetwork {
         boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id)
                 || Augmentations.AREA_DISCHARGE.equals(id)
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id);
+        activationCooldown|=net.bananashelp20.forgermod.augmentation.AdditionalAbilities.BONE_GUARD.equals(id);
         if (recommended?RecommendedAbilityRuntime.activate(player,stack,id,payload.grappleAutoRelease()):weapon.activateAbility(player, stack, source)) {
             if (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source)) {
                 EquippedSession session = ACTIVE.get(player.getUUID());

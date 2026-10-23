@@ -2,7 +2,7 @@
 
 English descriptions from the game language file and actual registered pools: 59 active abilities, 49 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
-Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift. Text below is the base learning summary; item tooltips resolve current rank, weapon type and Jade effects dynamically. Base abilities show a separate Shift-only super-upgrade notice below their cooldown, without describing future super effects. Upgrade cards compare ranks and highlight changed values in green.
+Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift. Most text below is a historical base learning summary; see [the reviewed implementation queue](ability-review-implementation.md) for the current approved changes. The shared AbilityDescriptions implementation is authoritative for current in-game wording: gray prose and white current-level values, including cooldowns. Base abilities show a separate Shift-only super-upgrade notice below their cooldown, without describing future super effects. Upgrade cards compare ranks and highlight changed values in white.
 
 ## Active abilities
 
@@ -84,13 +84,19 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Summon one skeleton ally for 1 minute.
+> Activate this ability to summon 1 Skeleton that will fight for you in battle. Reinforcements disappear after 10 minutes
 
 **Augmentation card:**
 
-> Summon one skeleton ally for 1 minute.
+> Activate this ability to summon 1 Skeleton that will fight for you in battle. Reinforcements disappear after 10 minutes
 
 **Super I-IV name (transforms at original IV):** Necromancer
+
+**Necromancer tooltip:**
+
+> Summon {reinforcements} that fight for you're side. Reinforcements can be customized using Shift+Alt.
+
+The roster placeholder resolves to the actual selected reinforcement names/counts in white. Capacity is4/6/8/10; real equipment unlocks at II and retains wear/enchantments between summons. Skeleton Horse costs3 including its rider; Zombie Horse and bosses are excluded. Shift+Alt opens on modifier release (Shift+Alt+S still rotates abilities). Editing requires no living reinforcements. All groups last10 minutes and are replaced on a ready recast; switching weapons does not despawn them.
 
 ### Challenge Roar
 

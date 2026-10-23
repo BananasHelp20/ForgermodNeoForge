@@ -53,6 +53,7 @@ public class ForgerMod {
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.GhostwalkVisibility::register);
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.EchoHearingHighlights::register);
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.CrucibleHookRope::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.NecromancerNetwork::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.VoidPulseParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);
@@ -104,6 +105,7 @@ public class ForgerMod {
 
         @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.NECROMANCER_MENU.get(),net.bananashelp20.forgermod.screen.custom.NecromancerScreen::new);
             event.register(ModMenuTypes.FORGE_MENU.get(), ForgeScreen::new);
             event.register(ModMenuTypes.GRAVE_VAULT_MENU.get(), net.bananashelp20.forgermod.screen.custom.GraveVaultScreen::new);
             event.register(ModMenuTypes.INFUSION_TABLE_MENU.get(), InfusionTableScreen::new);

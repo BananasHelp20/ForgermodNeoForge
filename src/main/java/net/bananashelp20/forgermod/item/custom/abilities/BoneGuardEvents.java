@@ -18,67 +18,74 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.*;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class BoneGuardEvents {
- private record Guard(List<Mob> skeletons,long expires,int rank,List<AbstractArrow> arrows) {}
+ private record Guard(List<Mob> skeletons,long expires,int rank,List<AbstractArrow> arrows,UUID loadoutId) {}
  private static final Map<UUID,Guard> GUARDS=new HashMap<>();
  private record Retaliation(Mob victim,LivingEntity guard) {}
  private static final Map<UUID,Retaliation> RETALIATION=new HashMap<>();
  private static final String SHOOTER="forgermod_bone_guard_shooter";
  private BoneGuardEvents() {}
  public interface FriendlyGuard {ServerPlayer owner();}
+ public static boolean busy(UUID loadoutId) {
+  if(loadoutId==null)return false;
+  return GUARDS.values().stream().anyMatch(group->loadoutId.equals(group.loadoutId()) && group.skeletons().stream().anyMatch(mob->mob.isAlive() && !mob.isRemoved()));
+ }
+ public static void cancelWeapon(UUID loadoutId) {for(var entry:List.copyOf(GUARDS.entrySet()))if(Objects.equals(loadoutId,entry.getValue().loadoutId()))cancel(entry.getKey());}
  public static boolean activate(ServerPlayer player,ItemStack stack) {
-  if(active(player))return false;
-  int rank=Augmentations.level(stack,AdditionalAbilities.BONE_GUARD);if(rank<=0)return false;
-  var mobs=new ArrayList<Mob>();
-  switch(rank) {
-   case 1 -> mobs.add(new GuardSkeleton(player.level(),player));
-   case 2 -> {mobs.add(new GuardSkeleton(player.level(),player));mobs.add(new GuardSkeleton(player.level(),player));}
-   case 3 -> {mobs.add(new GuardBogged(player.level(),player));mobs.add(new GuardSkeleton(player.level(),player));}
-   case 4,5 -> {
-    for(int i=0;i<rank-3;i++)mobs.add(new GuardWitherSkeleton(player.level(),player));
-    mobs.add(new GuardBogged(player.level(),player));mobs.add(new GuardStray(player.level(),player));
-   }
-   case 6 -> {
-    mobs.add(new GuardBogged(player.level(),player));mobs.add(new GuardStray(player.level(),player));mobs.add(new GuardSkeleton(player.level(),player));
-    mobs.add(new GuardWitherSkeleton(player.level(),player));mobs.add(new GuardWitherSkeleton(player.level(),player));
-   }
-   case 7 -> {
-    mobs.add(enchantedBow(new GuardBogged(player.level(),player),net.minecraft.world.item.enchantment.Enchantments.POWER,2));
-    mobs.add(enchantedBow(new GuardStray(player.level(),player),net.minecraft.world.item.enchantment.Enchantments.POWER,2));
-    mobs.add(enchantedBow(new GuardSkeleton(player.level(),player),net.minecraft.world.item.enchantment.Enchantments.FLAME,1));
-    mobs.add(equip(new GuardWitherSkeleton(player.level(),player),Items.DIAMOND_SWORD));
-    mobs.add(enchantedBow(equip(new GuardWitherSkeleton(player.level(),player),Items.BOW),net.minecraft.world.item.enchantment.Enchantments.FLAME,1));
-    mobs.add(equip(new GuardSkeleton(player.level(),player),Items.IRON_SWORD));
-   }
-   default -> {return false;}
+  int rank=Augmentations.level(stack,AdditionalAbilities.BONE_GUARD);
+  if(rank<=0 || !player.isAlive() || player.isSpectator() || stack!=player.getMainHandItem() || player.containerMenu instanceof net.bananashelp20.forgermod.screen.custom.NecromancerMenu)return false;
+  var loadout=rank>=4?NecromancerLoadouts.get(player,stack):null;
+  if(loadout!=null && (loadout.types.isEmpty() || loadout.used()>NecromancerCatalog.capacity(rank)))return false;
+  if(loadout!=null && GUARDS.entrySet().stream().anyMatch(entry->!entry.getKey().equals(player.getUUID()) && loadout.id.equals(entry.getValue().loadoutId()) && entry.getValue().skeletons().stream().anyMatch(mob->mob.isAlive() && !mob.isRemoved())))return false;
+  var units=new ArrayList<NecromancerUndead.Unit>();
+  if(rank<4) {
+   if(rank==3)units.add(NecromancerUndead.create(6,player));
+   units.add(NecromancerUndead.create(0,player));if(rank==2)units.add(NecromancerUndead.create(0,player));
+  }else for(int row=0;row<loadout.types.size();row++) {
+   var unit=NecromancerUndead.create(loadout.types.get(row),player);units.add(unit);
+   if(rank>=5)NecromancerEquipment.bind(unit.equipment(),loadout,row);
   }
-  if(rank>=4)for(var mob:mobs) {
-   boolean ranged=mob.getMainHandItem().is(Items.BOW);
-   mob.setItemSlot(EquipmentSlot.HEAD,new ItemStack(ranged?Items.CHAINMAIL_HELMET:Items.IRON_HELMET));
-   mob.setItemSlot(EquipmentSlot.CHEST,new ItemStack(ranged?Items.CHAINMAIL_CHESTPLATE:Items.IRON_CHESTPLATE));
-   mob.setItemSlot(EquipmentSlot.LEGS,new ItemStack(ranged?Items.CHAINMAIL_LEGGINGS:Items.IRON_LEGGINGS));
-   mob.setItemSlot(EquipmentSlot.FEET,new ItemStack(ranged?Items.CHAINMAIL_BOOTS:Items.IRON_BOOTS));
+  var old=GUARDS.get(player.getUUID());Set<Mob> replaced=old==null?Set.of():new HashSet<>(old.skeletons());
+  var staged=new ArrayList<Mob>();
+  for(var unit:units) {
+   boolean clear=false;
+   for(int attempt=0;attempt<64;attempt++) {
+    double angle=(attempt%8)*Math.PI/4,radius=1.5+(attempt/8)*.9;
+    unit.root().setPos(player.position().add(Math.cos(angle)*radius,0,Math.sin(angle)*radius));
+    if(unit.root()!=unit.equipment())unit.equipment().setPos(unit.root().position().add(0,1.6,0));
+    clear=true;
+    for(var mob:unit.members()) {
+     var box=mob.getBoundingBox();
+     if(!player.level().getWorldBorder().isWithinBounds(box)
+       || !player.serverLevel().hasChunksAt(net.minecraft.core.BlockPos.containing(box.minX,box.minY,box.minZ),net.minecraft.core.BlockPos.containing(box.maxX,box.maxY,box.maxZ))
+       || player.level().getBlockCollisions(mob,box).iterator().hasNext()
+       || !player.level().getEntities(mob,box,entity->!replaced.contains(entity) && !unit.members().contains(entity) && entity.isAlive() && !entity.isSpectator() && (entity instanceof LivingEntity || entity.canBeCollidedWith())).isEmpty()
+       || staged.stream().anyMatch(other->other.getBoundingBox().intersects(box))) {clear=false;break;}
+    }
+    if(clear)break;
+   }
+   if(!clear) {for(var made:units)for(var mob:made.members()){NecromancerEquipment.release(mob);mob.discard();}return false;}
+   staged.addAll(unit.members());
   }
   var spawned=new ArrayList<Mob>();
-  for(var mob:mobs) {
-   boolean clear=false;
-   for(int i=0;i<32;i++) {
-    double angle=(i%8)*Math.PI/4,radius=1.5+(i/8)*.75;mob.setPos(player.position().add(Math.cos(angle)*radius,0,Math.sin(angle)*radius));
-    var box=mob.getBoundingBox();
-    if(player.level().getWorldBorder().isWithinBounds(box) && player.serverLevel().hasChunksAt(mob.blockPosition(),mob.blockPosition()) && player.level().noCollision(mob) && spawned.stream().noneMatch(other->other.getBoundingBox().intersects(box))) {clear=true;break;}
+  for(var unit:units) {
+   for(var mob:unit.members()) {
+    if(!player.level().addFreshEntity(mob)) {for(var made:units)for(var member:made.members()){NecromancerEquipment.release(member);member.discard();}return false;}
+    spawned.add(mob);
    }
-   if(!clear || !player.level().addFreshEntity(mob)) {spawned.forEach(Entity::discard);return false;}
-   spawned.add(mob);
+   if(unit.root()!=unit.equipment())unit.equipment().startRiding(unit.root(),true);
   }
-  GUARDS.put(player.getUUID(),new Guard(spawned,player.level().getGameTime()+1200,rank,new ArrayList<>()));return true;
+  // Keep the old army until the replacement was fully validated and successfully spawned.
+  cancel(player.getUUID());
+  GUARDS.put(player.getUUID(),new Guard(spawned,player.level().getGameTime()+12000,rank,new ArrayList<>(),loadout==null?null:loadout.id));return true;
  }
  public static boolean active(ServerPlayer player) {
-  var guard=GUARDS.get(player.getUUID());if(guard==null)return false;guard.skeletons().removeIf(e->!e.isAlive());
+  var guard=GUARDS.get(player.getUUID());if(guard==null)return false;guard.skeletons().removeIf(e->{if(!e.isAlive() || e.isRemoved()){NecromancerEquipment.release(e);return true;}return false;});
   if(!player.isAlive() || player.isSpectator() || guard.skeletons().isEmpty() || guard.skeletons().getFirst().level()!=player.level()
     || player.level().getGameTime()>=guard.expires()) {cancel(player.getUUID());return false;}
   return true;
  }
- public static void cancel(UUID owner) {RETALIATION.values().removeIf(r->r.guard() instanceof FriendlyGuard friendly && friendly.owner().getUUID().equals(owner));var guard=GUARDS.remove(owner);if(guard!=null){guard.skeletons().forEach(Entity::discard);guard.arrows().forEach(Entity::discard);}}
- private static boolean enemy(ServerPlayer owner,LivingEntity target) {
+ public static void cancel(UUID owner) {RETALIATION.values().removeIf(r->r.guard() instanceof FriendlyGuard friendly && friendly.owner().getUUID().equals(owner));var guard=GUARDS.remove(owner);if(guard!=null){guard.skeletons().forEach(mob->{NecromancerEquipment.release(mob);mob.discard();});guard.arrows().forEach(Entity::discard);}}
+ static boolean enemy(ServerPlayer owner,LivingEntity target) {
   return !(target instanceof FriendlyGuard) && !(target instanceof IronGolem && !WeaponAbilityTargets.hostileTo(owner,target)) && WeaponAbilityTargets.enemy(owner,target);
  }
  private static boolean tracked(LivingEntity entity) {
@@ -95,6 +102,7 @@ public final class BoneGuardEvents {
   }
  }
  @SubscribeEvent public static void join(net.neoforged.neoforge.event.entity.EntityJoinLevelEvent event) {
+  if(!event.getLevel().isClientSide && event.getEntity() instanceof AbstractArrow arrow && arrow.getOwner() instanceof FriendlyGuard friendly)ownArrow(arrow,friendly.owner());
   if(event.getLevel().isClientSide || !(event.getEntity() instanceof Mob mob) || !(mob instanceof Enemy) || mob instanceof FriendlyGuard)return;
   if(mob.targetSelector.getAvailableGoals().stream().noneMatch(goal->goal.getGoal() instanceof GuardTargetGoal))
    mob.targetSelector.addGoal(1,new GuardTargetGoal(mob));
@@ -157,75 +165,92 @@ public final class BoneGuardEvents {
  private static void configure(AbstractSkeleton mob,boolean melee) {
   mob.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(melee?Items.STONE_SWORD:Items.BOW));mob.setPersistenceRequired();
  }
- private static AbstractSkeleton equip(AbstractSkeleton mob,Item weapon) {
-  // AbstractSkeleton.setItemSlot reassesses its bow/melee goals, including wither skeletons.
-  mob.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(weapon));return mob;
- }
- private static AbstractSkeleton enchantedBow(AbstractSkeleton mob,net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.Enchantment> enchantment,int rank) {
-  mob.getMainHandItem().enchant(mob.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(enchantment),rank);return mob;
- }
- private static boolean allied(ServerPlayer owner,Entity target) {return target==owner || target instanceof FriendlyGuard || target.isAlliedTo(owner) || target instanceof IronGolem golem && !WeaponAbilityTargets.hostileTo(owner,golem);}
- private static AbstractArrow ownArrow(AbstractArrow arrow,ServerPlayer owner) {
+ static boolean allied(ServerPlayer owner,Entity target) {return target==owner || target instanceof FriendlyGuard || target.isAlliedTo(owner) || target instanceof IronGolem golem && !WeaponAbilityTargets.hostileTo(owner,golem);}
+ static AbstractArrow ownArrow(AbstractArrow arrow,ServerPlayer owner) {
   // Capture the real shooter before transferring kill credit; retain the original helper signature.
   if(arrow.getOwner() instanceof FriendlyGuard)arrow.getPersistentData().putUUID(SHOOTER,arrow.getOwner().getUUID());
   arrow.setOwner(owner);arrow.pickup=AbstractArrow.Pickup.DISALLOWED;var guard=GUARDS.get(owner.getUUID());if(guard!=null)guard.arrows().add(arrow);return arrow;
  }
  public static final class GuardSkeleton extends Skeleton implements FriendlyGuard {
   private final ServerPlayer owner;
-  private GuardSkeleton(Level level,ServerPlayer owner) {super(EntityType.SKELETON,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,false);}
+  GuardSkeleton(Level level,ServerPlayer owner) {super(EntityType.SKELETON,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,false);}
   @Override public ServerPlayer owner() {return owner;}
   @Override protected boolean isSunBurnTick() {return false;}
   @Override protected boolean shouldDespawnInPeaceful() {return false;}
   @Override public boolean shouldBeSaved() {return false;}
+  @Override public boolean canUsePortal(boolean allowPassengers) {return false;}
+  @Override public boolean canChangeDimensions(Level oldLevel,Level newLevel) {return false;}
   @Override protected boolean shouldDropLoot() {return false;}
   @Override public boolean shouldDropExperience() {return false;}
   @Override protected void dropEquipment() {}
+  @Override public ItemStack getProjectile(ItemStack weapon) {return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
+  @Override protected void hurtArmor(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override protected void hurtHelmet(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override public boolean doHurtTarget(Entity target) {boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {var arrow=ownArrow(super.getArrow(ammo,velocity,weapon),owner);NecromancerEquipment.wearBow(this);return arrow;}
  }
  public static final class GuardBogged extends Bogged implements FriendlyGuard {
   private final ServerPlayer owner;
-  private GuardBogged(Level level,ServerPlayer owner) {super(EntityType.BOGGED,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,false);}
+  GuardBogged(Level level,ServerPlayer owner) {super(EntityType.BOGGED,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,false);}
   @Override public ServerPlayer owner() {return owner;}
   @Override protected boolean isSunBurnTick() {return false;}
   @Override protected boolean shouldDespawnInPeaceful() {return false;}
   @Override public boolean shouldBeSaved() {return false;}
+  @Override public boolean canUsePortal(boolean allowPassengers) {return false;}
+  @Override public boolean canChangeDimensions(Level oldLevel,Level newLevel) {return false;}
   @Override protected boolean shouldDropLoot() {return false;}
   @Override public boolean shouldDropExperience() {return false;}
   @Override protected void dropEquipment() {}
+  @Override public ItemStack getProjectile(ItemStack weapon) {return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
+  @Override protected void hurtArmor(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override protected void hurtHelmet(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override public boolean doHurtTarget(Entity target) {boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {var arrow=ownArrow(super.getArrow(ammo,velocity,weapon),owner);NecromancerEquipment.wearBow(this);return arrow;}
   @Override public boolean readyForShearing() {return false;}
   @Override public void shear(net.minecraft.sounds.SoundSource source) {}
  }
  public static final class GuardStray extends Stray implements FriendlyGuard {
   private final ServerPlayer owner;
-  private GuardStray(Level level,ServerPlayer owner) {super(EntityType.STRAY,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,false);}
+  GuardStray(Level level,ServerPlayer owner) {super(EntityType.STRAY,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,false);}
   @Override public ServerPlayer owner() {return owner;}
   @Override protected boolean isSunBurnTick() {return false;}
   @Override protected boolean shouldDespawnInPeaceful() {return false;}
   @Override public boolean shouldBeSaved() {return false;}
+  @Override public boolean canUsePortal(boolean allowPassengers) {return false;}
+  @Override public boolean canChangeDimensions(Level oldLevel,Level newLevel) {return false;}
   @Override protected boolean shouldDropLoot() {return false;}
   @Override public boolean shouldDropExperience() {return false;}
   @Override protected void dropEquipment() {}
+  @Override public ItemStack getProjectile(ItemStack weapon) {return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
+  @Override protected void hurtArmor(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override protected void hurtHelmet(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override public boolean doHurtTarget(Entity target) {boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {var arrow=ownArrow(super.getArrow(ammo,velocity,weapon),owner);NecromancerEquipment.wearBow(this);return arrow;}
  }
  public static final class GuardWitherSkeleton extends WitherSkeleton implements FriendlyGuard {
   private final ServerPlayer owner;
-  private GuardWitherSkeleton(Level level,ServerPlayer owner) {super(EntityType.WITHER_SKELETON,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,true);}
+  GuardWitherSkeleton(Level level,ServerPlayer owner) {super(EntityType.WITHER_SKELETON,level);this.owner=owner;targetSelector.removeAllGoals(g->true);configure(this,true);}
   @Override public ServerPlayer owner() {return owner;}
   @Override protected boolean isSunBurnTick() {return false;}
   @Override protected boolean shouldDespawnInPeaceful() {return false;}
   @Override public boolean shouldBeSaved() {return false;}
+  @Override public boolean canUsePortal(boolean allowPassengers) {return false;}
+  @Override public boolean canChangeDimensions(Level oldLevel,Level newLevel) {return false;}
   @Override protected boolean shouldDropLoot() {return false;}
   @Override public boolean shouldDropExperience() {return false;}
   @Override protected void dropEquipment() {}
+  @Override public ItemStack getProjectile(ItemStack weapon) {return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
+  @Override protected void hurtArmor(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override protected void hurtHelmet(net.minecraft.world.damagesource.DamageSource source,float damage) {doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+  @Override public boolean doHurtTarget(Entity target) {boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
   @Override public boolean isAlliedTo(Entity target) {return owner!=null && allied(owner,target) || super.isAlliedTo(target);}
   @Override public boolean canAttack(LivingEntity target) {return owner!=null && enemy(owner,target) && super.canAttack(target);}
-  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {return ownArrow(super.getArrow(ammo,velocity,weapon),owner);}
+  @Override protected AbstractArrow getArrow(ItemStack ammo,float velocity,ItemStack weapon) {var arrow=ownArrow(super.getArrow(ammo,velocity,weapon),owner);NecromancerEquipment.wearBow(this);return arrow;}
  }
 }

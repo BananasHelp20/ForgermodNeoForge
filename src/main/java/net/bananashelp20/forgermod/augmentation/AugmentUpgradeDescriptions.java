@@ -225,18 +225,14 @@ public final class AugmentUpgradeDescriptions {
                 if (rank >= 4) numeric(stats, "opening_hit", 2, "weapon_damage");
             }
             case AdditionalAbilities.BONE_GUARD -> {
-                var counts = switch (Math.clamp(rank, 1, 7)) {
-                    case 1 -> List.of(1, 0, 0, 0);
-                    case 2 -> List.of(2, 0, 0, 0);
-                    case 3 -> List.of(1, 1, 0, 0);
-                    case 4 -> List.of(0, 1, 1, 1);
-                    case 5 -> List.of(0, 1, 1, 2);
-                    case 6 -> List.of(1, 1, 1, 2);
-                    default -> List.of(2, 1, 1, 2);
-                };
-                stats.put("summons", new Stat(counts, roster(counts, counts, false)));
-                if (rank >= 4) text(stats, "equipment", rank >= 7 ? 2 : 1, rank >= 7 ? "elite_equipment" : "armor");
-                numeric(stats, "ally_range", 6 + 2 * Math.min(4, rank), "blocks");
+                if(rank<4){
+                    var counts=rank==1?List.of(1,0,0,0):rank==2?List.of(2,0,0,0):List.of(1,1,0,0);
+                    stats.put("summons",new Stat(counts,roster(counts,counts,false)));
+                }else{
+                    numeric(stats,"capacity",net.bananashelp20.forgermod.item.custom.abilities.NecromancerCatalog.capacity(rank),"capacity");
+                    if(rank>=5)text(stats,"equipment",true,"custom_equipment");
+                }
+                seconds(stats,"duration",12000);
             }
             case AdditionalAbilities.SKULL_THROW -> numeric(stats, "radius", 1.5 + .5 * rank, "blocks");
             case AdditionalAbilities.CHALLENGE_ROAR -> {
