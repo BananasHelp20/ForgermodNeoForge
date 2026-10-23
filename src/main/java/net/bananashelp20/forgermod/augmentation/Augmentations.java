@@ -23,6 +23,7 @@ public final class Augmentations {
     public static final String DUAL_WIELD = "tooltips.forgermod.passive.dagger";
     public static final String DOUBLE_JUMP = "tooltips.forgermod.passive.double_jump";
     public static final String MATERIAL_HIT = "augmentation.forgermod.material_hit";
+    public static final String AREA_DISCHARGE = "tooltips.forgermod.ability.area_discharge";
     private static final String LEGACY_MATERIAL_HIT = "augmentation.forgermod.empowered_hit";
     private static final String DATA = "forgermod_augments";
     private static List<Ability> cachedTemplatePool;
@@ -42,10 +43,13 @@ public final class Augmentations {
     }
     public static int maxRank(ItemStack stack, String id) {
         if(ReviewedRanks.hardCap(id)>0) return ReviewedRanks.hardCap(id);
-        return hasSuperForm(stack, id) ? 7 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
+        return hasSuperForm(stack, id) ? superStart(id)+3 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
     }
-    /** Stored ranks 4..7 are super ranks I..IV; the ID and occupied slot stay stable. */
+    /** Existing forms start after base III; newly reviewed four-rank bases start after IV. */
+    public static int superStart(String id) {return AREA_DISCHARGE.equals(id)?5:4;}
+    public static boolean isSuper(ItemStack stack,String id,int rank) {return hasSuperForm(stack,id) && rank>=superStart(id);}
     public static String superName(ItemStack stack, String id) {
+        if(AREA_DISCHARGE.equals(id))return "tooltips.forgermod.ability.anger_of_zeus.name";
         if (AdditionalAbilities.BONE_GUARD.equals(id)) return "tooltips.forgermod.ability.necromancer.name";
         if (AdditionalAbilities.GHOSTWALK.equals(id)) return "tooltips.forgermod.ability.jumpscare_horror.name";
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return "tooltips.forgermod.ability.static_field.name";
@@ -55,11 +59,11 @@ public final class Augmentations {
     }
     public static boolean hasSuperForm(ItemStack stack, String id) { return superName(stack,id) != null; }
     public static int displayRank(ItemStack stack, String id, int rank) {
-        return hasSuperForm(stack,id) && rank >= 4 ? rank - 3 : rank;
+        return isSuper(stack,id,rank) ? rank-superStart(id)+1 : rank;
     }
     private static int storedMax(ItemStack stack, String id) {
         if(ReviewedRanks.hardCap(id)>0) return ReviewedRanks.hardCap(id);
-        return hasSuperForm(stack,id) ? 7 : RecommendedAbilities.maxRank(id) + 1;
+        return hasSuperForm(stack,id) ? superStart(id)+3 : RecommendedAbilities.maxRank(id) + 1;
     }
     public static SwordItemWithEffect canonical(ItemStack stack) {
         if (!(stack.getItem() instanceof SwordItemWithEffect weapon)) return null;
@@ -157,13 +161,13 @@ public final class Augmentations {
     public static Component abilityName(ItemStack stack,String id,int rank) {
         if (MATERIAL_HIT.equals(id) && isTemplate(stack))
             return Component.translatable("augmentation.forgermod.material_hit.name");
-        if(rank>=4 && hasSuperForm(stack,id)) return Component.translatable(superName(stack,id));
+        if(isSuper(stack,id,rank)) return Component.translatable(superName(stack,id));
         return catalog(stack).stream().filter(a->a.id().equals(id)).map(Ability::name).findFirst().orElse(Component.translatable(id+".name"));
     }
     /** Presentation only: keep the underlying translated name available for identity/export. */
     public static Component displayAbilityName(ItemStack stack, String id, int rank) {
         Component name = abilityName(stack, id, rank);
-        if (rank < 4 || !hasSuperForm(stack, id)) return name;
+        if (!isSuper(stack,id,rank)) return name;
         return Component.empty().withStyle(net.minecraft.ChatFormatting.GOLD)
                 .append(Component.literal("k").withStyle(style -> style.withObfuscated(true)))
                 .append(Component.literal(" ").withStyle(style -> style.withObfuscated(false)))
@@ -334,7 +338,7 @@ public final class Augmentations {
             if (ability == null) continue;
             int current = merged.getOrDefault(id, 0);
             int incoming = entry.getValue();
-            int allowed = hasSuperForm(left,id) ? 7 : RecommendedAbilities.maxRank(id)
+            int allowed = hasSuperForm(left,id) ? superStart(id)+3 : RecommendedAbilities.maxRank(id)
                     + (isSuperTemplate(right) || eligible(right) && incoming > RecommendedAbilities.maxRank(id) ? 1 : 0);
             if(ReviewedRanks.hardCap(id)>0) allowed=ReviewedRanks.hardCap(id);
             int rank = current == incoming ? Math.min(allowed, current + 1) : Math.max(current, Math.min(incoming, allowed));

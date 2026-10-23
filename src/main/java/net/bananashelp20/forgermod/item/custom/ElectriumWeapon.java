@@ -4,7 +4,6 @@ import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
-import net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeTargets;
 import net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState;
 import net.bananashelp20.forgermod.item.custom.abilities.ChainLightningTargets;
 import net.minecraft.core.Holder;
@@ -16,9 +15,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -93,6 +89,8 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             target.invulnerableTime = previousInvulnerableTime;
         }
     }
+    public static float chargeMultiplier(ServerPlayer player){return CHARGE_ATTACK.damageMultiplier(player.getUUID());}
+    public static void recordLightningHit(Mob target,ServerPlayer player){dischargeChargeIfReady(target,player);}
 
     private void chainLightning(LivingEntity original, ServerPlayer player) {
         Set<UUID> visited = new HashSet<>();
@@ -152,28 +150,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             if (armed) player.displayClientMessage(Component.translatable("message.forgermod.charge_attack.armed",ChargeAttackState.chargingHits(rank)+1), true);
             return armed;
         }
-        List<Mob> targets = AreaDischargeTargets.select(
-                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(5)),
-                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 5);
-        if (targets.isEmpty()) return false;
-
-        int struck = 0;
-        float damage = (float)(player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5
-                * CHARGE_ATTACK.damageMultiplier(player.getUUID()));
-        for (Mob target : targets) {
-            LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(player.serverLevel());
-            if (bolt == null) continue;
-            bolt.moveTo(target.position());
-            bolt.setVisualOnly(true);
-            bolt.setCause(player);
-            if (player.serverLevel().addFreshEntity(bolt)) {
-                if (target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player, bolt), damage)) {
-                    struck++;
-                    dischargeChargeIfReady(target, player);
-                }
-            }
-        }
-        return struck > 0;
+        return net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeEvents.activate(player,stack);
     }
 
     @SubscribeEvent
@@ -193,19 +170,20 @@ public class ElectriumWeapon extends SwordItemWithEffect {
 
     @Override
     public boolean isAbilityActive(ServerPlayer player, WeaponAbilitySlot slot) {
-        return slot == WeaponAbilitySlot.SECONDARY && CHARGE_ATTACK.isArmed(player.getUUID());
+        return slot == WeaponAbilitySlot.PRIMARY?net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeEvents.active(player):CHARGE_ATTACK.isArmed(player.getUUID());
     }
 
     @Override
     public void cancelAbility(ServerPlayer player, WeaponAbilitySlot slot) {
         if (slot == WeaponAbilitySlot.SECONDARY) CHARGE_ATTACK.clear(player.getUUID());
+        else net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeEvents.cancel(player.getUUID());
     }
 
     @Override
     public String abilityDescriptionKey(WeaponAbilitySlot slot) {
         if (!isDagger()) return null;
         return slot == WeaponAbilitySlot.PRIMARY
-                ? "tooltips.forgermod.ability.area_discharge"
+                ? Augmentations.AREA_DISCHARGE
                 : "tooltips.forgermod.ability.charge_attack";
     }
 
@@ -217,6 +195,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         CHARGE_ATTACK.clear(event.getEntity().getUUID());
+        net.bananashelp20.forgermod.item.custom.abilities.AreaDischargeEvents.cancel(event.getEntity().getUUID());
     }
 
     @Override

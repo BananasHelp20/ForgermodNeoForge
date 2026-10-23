@@ -17,7 +17,7 @@ public class SuperAugmentGameTests {
             for(var ability:Augmentations.catalog(stack)) for(int rank=1;rank<=Augmentations.maxRank(stack,ability.id());rank++) {
                 var plain=Augmentations.abilityName(stack,ability.id(),rank);
                 var display=Augmentations.displayAbilityName(stack,ability.id(),rank);
-                boolean legendary=rank>=4 && Augmentations.hasSuperForm(stack,ability.id());
+                boolean legendary=Augmentations.isSuper(stack,ability.id(),rank);
                 if(!legendary) {
                     test.assertTrue(display.equals(plain),"Ordinary augment received legendary formatting");
                     continue;

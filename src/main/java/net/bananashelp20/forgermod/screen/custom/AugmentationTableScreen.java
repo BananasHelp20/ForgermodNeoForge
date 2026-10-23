@@ -88,7 +88,7 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         int x=CARD_X[card],y=CARD_Y;
         boolean completed=menu.phase()==AugmentationAnimation.COMPLETE;
         boolean rejected=completed && menu.selected()!=card;
-        boolean superUpgrade=menu.offerRank(card)==3 && Augmentations.hasSuperForm(
+        boolean superUpgrade=menu.offerRank(card)==Augmentations.superStart(offer.id())-1 && Augmentations.hasSuperForm(
                 menu.getSlot(completed?3:0).getItem(),offer.id());
         gui.blit(CARD_TEMPLATE,x,y,0,0,0,CARD_WIDTH,CARD_HEIGHT,CARD_WIDTH,CARD_HEIGHT);
         Component eyebrow=Component.translatable(menu.offerRank(card)==0?"augmentation.forgermod.card.new":"augmentation.forgermod.card.upgrade");

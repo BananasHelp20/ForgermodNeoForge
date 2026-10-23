@@ -106,6 +106,13 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case Augmentations.AREA_DISCHARGE -> {
+                int superRank=Math.clamp(rank-4,1,4);
+                numeric(stats,"radius",rank<5?5:10*superRank,"blocks");
+                numeric(stats,"damage",rank<5?.5:2,"weapon_damage");
+                numeric(stats,"waves",rank<5?1:superRank,"waves");
+                if(rank>=5)text(stats,"unlocks",true,"anger_of_zeus");
+            }
             case "tooltips.forgermod.ability.eye_of_the_storm" -> {
                 numeric(stats,"radius",ReviewedRanks.stormRadius(rank),"blocks");
                 seconds(stats,"duration",ReviewedRanks.stormTicks(rank)+jadeTicks);

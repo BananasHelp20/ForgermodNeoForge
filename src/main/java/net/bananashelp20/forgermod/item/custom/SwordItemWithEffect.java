@@ -109,7 +109,7 @@ public class SwordItemWithEffect extends SwordItem {
                 }
                 for (String id : passives) {
                     int rank = Augmentations.level(stack,id);
-                    boolean legendary = rank >= 4 && Augmentations.hasSuperForm(stack,id);
+                    boolean legendary = Augmentations.isSuper(stack,id,rank);
                     Component name = Component.translatable("augmentation.forgermod.rank", Augmentations.abilityName(stack,id,rank),
                             WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,rank)));
                     tooltip.add(legendary ? Component.empty().withStyle(ChatFormatting.GOLD)
@@ -130,7 +130,7 @@ public class SwordItemWithEffect extends SwordItem {
                     String id = Augmentations.activeId(stack, slot);
                     if (id == null) continue;
                     int rank = Augmentations.level(stack,id);
-                    boolean legendary = rank >= 4 && Augmentations.hasSuperForm(stack,id);
+                    boolean legendary = Augmentations.isSuper(stack,id,rank);
                     Component abilityName = Augmentations.abilityName(stack,id,rank);
                     if (legendary) abilityName = abilityName.copy().withStyle(ChatFormatting.GOLD);
                     Component name = Component.translatable("augmentation.forgermod.rank", abilityName,

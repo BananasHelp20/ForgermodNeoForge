@@ -18,6 +18,7 @@ public final class ReviewedRanks {
     public static int cooldown(String id,int rank) {
         if(id==null)return -1;
         return switch(id) {
+            case "tooltips.forgermod.ability.area_discharge" -> at(rank,180,130,80,30,300,260,220,180)*20;
             case "tooltips.forgermod.ability.ender_swing" -> at(rank,90,75,60)*20;
             case "tooltips.forgermod.ability.just_a_dream" -> at(rank,60,30)*20;
             case "tooltips.forgermod.ability.dream_feast" -> at(rank,120,100,75,50,30)*20;

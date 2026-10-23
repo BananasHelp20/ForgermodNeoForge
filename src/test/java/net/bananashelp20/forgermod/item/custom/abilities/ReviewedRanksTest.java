@@ -2,6 +2,8 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.augmentation.ReviewedRanks;
 public final class ReviewedRanksTest {
     public static void main(String[] args) {
+        String area="tooltips.forgermod.ability.area_discharge";int[] areaCooldowns={180,130,80,30,300,260,220,180};
+        for(int i=0;i<areaCooldowns.length;i++)if(ReviewedRanks.cooldown(area,i+1)!=areaCooldowns[i]*20)throw new AssertionError("Area/Zeus cooldown");
         if(ReviewedRanks.hardCap("tooltips.forgermod.ability.eye_of_the_storm")!=5 || ReviewedRanks.stormRadius(1)!=5 || ReviewedRanks.stormRadius(5)!=12
                 || ReviewedRanks.stormTicks(1)!=100 || ReviewedRanks.stormTicks(5)!=400)throw new AssertionError("Eye of the Storm progression");
         String gravity="tooltips.forgermod.ability.ender_swing";
