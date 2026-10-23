@@ -46,10 +46,11 @@ public final class Augmentations {
         return hasSuperForm(stack, id) ? superStart(id)+3 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
     }
     /** Existing forms start after base III; newly reviewed four-rank bases start after IV. */
-    public static int superStart(String id) {return AREA_DISCHARGE.equals(id)?5:4;}
+    public static int superStart(String id) {return AREA_DISCHARGE.equals(id) || AdditionalAbilities.CHALLENGE_ROAR.equals(id)?5:4;}
     public static boolean isSuper(ItemStack stack,String id,int rank) {return hasSuperForm(stack,id) && rank>=superStart(id);}
     public static String superName(ItemStack stack, String id) {
         if(AREA_DISCHARGE.equals(id))return "tooltips.forgermod.ability.anger_of_zeus.name";
+        if(AdditionalAbilities.CHALLENGE_ROAR.equals(id))return "tooltips.forgermod.ability.intimidating_roar.name";
         if (AdditionalAbilities.BONE_GUARD.equals(id)) return "tooltips.forgermod.ability.necromancer.name";
         if (AdditionalAbilities.GHOSTWALK.equals(id)) return "tooltips.forgermod.ability.jumpscare_horror.name";
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return "tooltips.forgermod.ability.static_field.name";

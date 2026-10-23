@@ -54,7 +54,7 @@ public final class DelusionEvents {
         var owners=TARGETS.get(dream.target.getUUID());
         if(owners!=null) { owners.remove(owner); if(owners.isEmpty()) TARGETS.remove(dream.target.getUUID()); }
     }
-    private static boolean suppressed(Mob mob) {
+    public static boolean suppressed(Mob mob) {
         var owners=TARGETS.get(mob.getUUID()); if(owners==null) return false;
         for(var owner:Set.copyOf(owners)) {
             var dream=DREAMS.get(owner); if(dream!=null && dream.target==mob && active(dream.owner)) return true;

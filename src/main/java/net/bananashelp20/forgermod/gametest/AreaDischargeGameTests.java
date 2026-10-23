@@ -97,8 +97,8 @@ public final class AreaDischargeGameTests {
     @GameTest(template="riftfang_test",batch="review_zeus_chains",timeoutTicks=50)
     public static void chainsExtendBeyondFortyAndUseMarkedTargetsWithTwoHundredMsDelays(GameTestHelper test)throws Exception{
         var player=player(test);var origin=player.position().add(0,30,0);player.setPos(origin);keepLoaded(test,origin);List<Zombie> targets=new ArrayList<>();
-        // Stay in the test's entity-accessible region; the pure planner test separately covers full nine-block hops.
-        for(int i=0;i<7;i++)targets.add(mob(test,origin.add(0,0,39+2*i)));
+        // Vertical nine-block hops stay in one entity-accessible chunk regardless of the random test origin.
+        for(int i=0;i<7;i++)targets.add(mob(test,origin.add(0,39+9*i,0)));
         var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,8);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         float[] capturedDamage={0};
         // Schedule callbacks before the test starts iterating its pending-callback map.
@@ -110,7 +110,7 @@ public final class AreaDischargeGameTests {
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);capturedDamage[0]=damage;
         try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}
         test.assertTrue(Math.abs(targets.getFirst().getHealth()-(1000-2*damage))<.01,"Leading empty waves delay the only initial target: health="+targets.getFirst().getHealth()+" expected="+(1000-2*damage)+" player="+player.position()+" origin="+origin+" queried="+player.serverLevel().getEntitiesOfClass(Zombie.class,player.getBoundingBox().inflate(40)).size()+" active="+AreaDischargeEvents.active(player));
-        keepLoaded(test,origin.add(0,0,120));targets.get(1).setPos(origin.add(0,0,120));
+        targets.get(1).setPos(origin.add(0,120,0));
         });
         checkLater(test,8,player,targets,()->test.assertTrue(targets.get(1).getHealth()==1000,"First chain fires before200ms"));
         checkLater(test,10,player,targets,()->test.assertTrue(targets.get(1).getHealth()<1000 && targets.get(2).getHealth()==1000,"Wrong per-jump delay or moved mark lost: first="+targets.get(1).getHealth()+" second="+targets.get(2).getHealth()+" removed="+targets.get(1).isRemoved()+" active="+AreaDischargeEvents.active(player)));

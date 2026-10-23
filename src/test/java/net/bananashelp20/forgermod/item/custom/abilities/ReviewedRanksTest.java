@@ -2,6 +2,9 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.augmentation.ReviewedRanks;
 public final class ReviewedRanksTest {
     public static void main(String[] args) {
+        String roar="tooltips.forgermod.ability.challenge_roar";
+        int[] ranges={16,20,24,28,35,40,45,50},durations={10,10,10,10,20,24,27,30},cooldowns={30,25,20,15,60,60,60,60};
+        for(int i=0;i<8;i++)if(ReviewedRanks.roarRange(i+1)!=ranges[i] || ReviewedRanks.roarTicks(i+1)!=durations[i]*20 || ReviewedRanks.cooldown(roar,i+1)!=cooldowns[i]*20)throw new AssertionError("Roar progression");
         String area="tooltips.forgermod.ability.area_discharge";int[] areaCooldowns={180,130,80,30,300,260,220,180};
         for(int i=0;i<areaCooldowns.length;i++)if(ReviewedRanks.cooldown(area,i+1)!=areaCooldowns[i]*20)throw new AssertionError("Area/Zeus cooldown");
         if(ReviewedRanks.hardCap("tooltips.forgermod.ability.eye_of_the_storm")!=5 || ReviewedRanks.stormRadius(1)!=5 || ReviewedRanks.stormRadius(5)!=12

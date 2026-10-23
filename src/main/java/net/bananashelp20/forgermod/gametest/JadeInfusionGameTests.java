@@ -68,6 +68,7 @@ public class JadeInfusionGameTests {
         var player = TestPlayers.survival(test);
         try {
             ItemStack jade = Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE_JADE.get()), AdditionalAbilities.CHALLENGE_ROAR);
+            player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,jade);
             ChallengeRoarAbility.activate(player, jade);
             var strength = player.getEffect(MobEffects.DAMAGE_BOOST);
             test.assertTrue(strength != null && strength.getAmplifier() == 1 && strength.getDuration() == 220,
@@ -75,10 +76,12 @@ public class JadeInfusionGameTests {
             player.removeEffect(MobEffects.DAMAGE_BOOST);
 
             ItemStack plain = Augmentations.apply(new ItemStack(ModItems.SHRIEKING_CLAYMORE.get()), AdditionalAbilities.CHALLENGE_ROAR);
+            player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,plain);
             ChallengeRoarAbility.activate(player, plain);
             strength = player.getEffect(MobEffects.DAMAGE_BOOST);
             test.assertTrue(strength != null && strength.getAmplifier() == 0 && strength.getDuration() == 200,
                     "Uninfused status effect changed");
+            ChallengeRoarAbility.cancel(player.getUUID());
         } finally {
             player.server.getPlayerList().remove(player);
         }

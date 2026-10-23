@@ -940,6 +940,8 @@
   "tooltips.forgermod.ability.skull_throw.current.card.jade": "Fast skull, 500-block range; bursts within %s for weapon damage and Wither II.",
   "tooltips.forgermod.ability.challenge_roar.current.card": "Taunt within %s; Strength I for 10 seconds.",
   "tooltips.forgermod.ability.challenge_roar.current.card.jade": "Taunt within %s; Strength II for 11 seconds.",
+  "tooltips.forgermod.ability.intimidating_roar.name": "Intimidating Roar",
+  "augmentation.forgermod.preview.value.intimidating_roar": "Intimidating Roar",
   "augmentation.forgermod.preview.value.one_air_jump": "1 air jump",
   "tooltips.forgermod.ability.bone_guard.armor": "chainmail for ranged allies and iron armor for melee allies",
   "tooltips.forgermod.ability.bone_guard.elite_equipment": "chainmail for ranged allies, iron armor for melee allies, enchanted bows and stronger swords"

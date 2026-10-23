@@ -44,6 +44,11 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.CHALLENGE_ROAR -> text(id+(rank>=5?".super.reviewed":".reviewed"),
+                    "Agro all hostile mobs within %s on you, and giving you %s for %s. Agroed enemis will not target any other entitiy during that time."
+                            +(rank>=5?" Additionally, all enemies within the range gain Weakness I and Slowness I while your strength effect is active.":""),
+                    ReviewedRanks.roarRange(rank)+" blocks","strength "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(1+jade),
+                    (ReviewedRanks.roarTicks(rank)/20+jade)+" seconds");
             case Augmentations.AREA_DISCHARGE -> rank<5
                     ?text(id+".reviewed","By activating this ability, all hostile mobs within 5 blocks are being struck by lightning dealing half your weapon damage to each target.")
                     :text(id+".super.reviewed","Strike all hostile and agroed neutral creatures within %s for twice weapon damage in %s. All targets are marked on activation. Waves strike 0.5 seconds apart, skipping empty waves. Each initial strike has a 50% chance to start up to 5 chains, each reaching 10 blocks from the previous target, 0.2 seconds apart, and dealing half weapon damage. Chains may extend beyond the initial wave radius.",

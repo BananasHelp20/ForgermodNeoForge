@@ -237,7 +237,11 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats, "ally_range", 6 + 2 * Math.min(4, rank), "blocks");
             }
             case AdditionalAbilities.SKULL_THROW -> numeric(stats, "radius", 1.5 + .5 * rank, "blocks");
-            case AdditionalAbilities.CHALLENGE_ROAR -> numeric(stats, "range", 12 + 4 * rank, "blocks");
+            case AdditionalAbilities.CHALLENGE_ROAR -> {
+                numeric(stats,"range",ReviewedRanks.roarRange(rank),"blocks");
+                seconds(stats,"duration",ReviewedRanks.roarTicks(rank)+jadeTicks);
+                if(rank>=5)text(stats,"super_form",true,"intimidating_roar");
+            }
             default -> { /* Fixed-effect augments intentionally have no invented rank scaling. */ }
         }
         if (RecommendedAbilities.active(id) || ReviewedRanks.cooldown(id,rank)>=0) {
