@@ -66,8 +66,7 @@ public class ThunderclapGameTests {
             AbilityTestPackets.use(player,0);
             for(int i=0;i<12 && first.getHealth()==200;i++){player.move(MoverType.SELF,player.getDeltaMovement());ThunderclapEvents.tick(player);}
             test.assertTrue(first.getHealth()<200 && second.getHealth()==200 && ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),first.getBoundingBox())<=1.00001 && wire.snaps==0 && wire.swings>0,"Chain target selected before a visible hit within one block");
-            for(int i=0;i<2;i++){ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==0 && player.getDeltaMovement().equals(Vec3.ZERO),"No visible strike beat before chaining");}
-            ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==1 && Math.abs(player.getYRot())>1,"No one-time camera turn to the off-axis next mob");
+            ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==1 && Math.abs(player.getYRot())>1 && player.getDeltaMovement().lengthSqr()>0,"Next hop does not launch on the first tick after impact or misses its one-time camera turn");
             player.setYRot(137);player.setXRot(20);ThunderclapEvents.tick(player);test.assertTrue(player.getYRot()==137 && player.getXRot()==20 && wire.snaps==1,"Camera remains forced after snap");
             test.assertTrue(wire.particles.stream().anyMatch(value->value instanceof net.bananashelp20.forgermod.particle.LightningArcParticles.Options options && options.owner()==player.getId()),"Movement trail is not attached to rendered player");
             advance(player);test.assertTrue(second.getHealth()<200 && wire.snaps==1,"Next strike misses or repeatedly controls camera");
@@ -255,7 +254,6 @@ public class ThunderclapGameTests {
             first.move(MoverType.SELF,new Vec3(-3,0,0));
             test.assertTrue(ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),first.getBoundingBox())>1,"Knockback fixture remains in contact");
             var impact=player.position();float health=first.getHealth();
-            for(int tick=0;tick<2;tick++)ThunderclapEvents.tick(player);
             ThunderclapEvents.tick(player);
             test.assertTrue(player.position().equals(impact) && player.getDeltaMovement().x>0,"Confirmed hit chases knocked-back victim rather than next target");
             advance(player);

@@ -28,7 +28,7 @@ public final class ThunderclapEvents {
     public static final double AIM_RANGE=10, CHAIN_RANGE=10;
     private static final class Dash {
         final ServerPlayer owner;final ItemStack stack;final int slot,rank;final ServerLevel level;final boolean noGravity;
-        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks,replans;
+        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,replans;
         Dash(ServerPlayer player,ItemStack stack,Mob target,int rank){owner=player;this.stack=stack;slot=player.getInventory().selected;
             this.target=target;this.rank=rank;level=player.serverLevel();noGravity=player.isNoGravity();previous=player.position();}
     }
@@ -125,9 +125,8 @@ public final class ThunderclapEvents {
         var now=player.position();var previous=dash.previous;double moved=now.distanceToSqr(previous);
         if(moved>64){cancel(player.getUUID());return;} // An external teleport must not become a dash hit.
         if(moved>.000001){net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,previous.add(0,.9,0),now.add(0,.9,0),player.getId(),2);dash.stalled=0;}
-        else if(dash.legTicks>1 && dash.impactTicks==0)dash.stalled++;
+        else if(dash.legTicks>1)dash.stalled++;
         dash.previous=now;player.fallDistance=0;
-        if(dash.impactTicks>0){dash.impactTicks--;dash.stalled=0;motion(player,Vec3.ZERO);return;}
         if(dash.visited.contains(dash.target.getUUID())){
             // A confirmed hit ends this leg. Never chase its victim again after knockback or death.
             Mob struck=dash.target;
@@ -146,7 +145,8 @@ public final class ThunderclapEvents {
             // A rejected native attack must not repeatedly ram or swing at the same body.
             if(!strike(player,dash,dash.target)){cancel(player.getUUID());return;}
             if(DASHES.get(player.getUUID())!=dash)return;
-            dash.visited.add(dash.target.getUUID());dash.impactTicks=2;return;
+            // The next tick immediately launches the next hop, after this confirmed impact packet.
+            dash.visited.add(dash.target.getUUID());return;
         }
         Vec3 point=destination(player,dash.target);
         while(!dash.route.isEmpty() && dash.route.peekFirst().distanceToSqr(now)<.01)dash.route.removeFirst();

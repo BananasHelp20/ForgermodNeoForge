@@ -390,3 +390,5 @@
 - Strong-arm arming fix: retain 30/55/80/100% armor-break chances and cooldown on the qualifying attempt or weapon switch; reject unlearned, offhand, frozen, dead or spectator activation.
 
 - Crucible grapple acceleration buff: block grappling now adds 0.45 blocks/tick of pull velocity per tick instead of 0.12 (3.75x acceleration), reaching its existing 2.5-block/tick speed cap much sooner. Release retains momentum.
+
+- Thunderclap faster chaining: removed the two extra idle ticks after each successful hit. The next target is acquired and its velocity dash begins on the first following tick, retaining confirmed-melee-before-lightning ordering.
