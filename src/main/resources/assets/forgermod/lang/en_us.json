@@ -962,5 +962,9 @@
   "tooltips.forgermod.ability.thunderclap.card": "Dash and slash through nearby mobs; each hit adds half weapon damage as lightning.",
   "tooltips.forgermod.ability.thunderclap.current": "Aim at a mob within %s and dash to it with a lightning slash. Deal a full melee hit plus %s lightning damage. Chain to the nearest unhit mob within %s of each previous target until none remain.",
   "augmentation.forgermod.preview.dash_speed": "Dash speed: %s.",
-  "augmentation.forgermod.preview.value.blocks_per_second": "%s blocks/second"
+  "augmentation.forgermod.preview.value.blocks_per_second": "%s blocks/second",
+  "commands.forgermod.augment.already": "%s is already applied. Use /augment upgrade to increase its level.",
+  "commands.forgermod.augment.missing": "%s is not applied to the held item. Use /augment new first.",
+  "commands.forgermod.augment.no_super": "%s has no super form on this item.",
+  "commands.forgermod.augment.updated.multiple": "Updated %s on %s targets."
 }
