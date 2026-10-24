@@ -56,8 +56,8 @@ public final class AbilityDescriptions {
                     :text(id+".super.reviewed","Mark up to %s by aiming at them and pressing the ability activation key. Works like Direct Current, but instead of just straight barriers, creates a static field if more than 2 enemies are marked. It deals %s every second while stunning enemies for %s each time. The full field stays up to %s before discipating. The duration starts when the first connection has formed.","4 enemies",number(1+.25*Math.max(0,rank-4))+" damage","0.5 seconds","20 seconds");
             case RecommendedAbilities.CRUCIBLE_HOOK -> text(id+(rank>=5?".super.reviewed":".reviewed"),
                     "Activate the ability while aiming at a target mob. You will pull the mob to you and automatically hit with a smash attack dealing %s. The smash will also set the enemy ablaze. Burn duration: %s."
-                            +(rank>=5?" Aim at a block within %s to grapple towards it with acceleration. Right-click with the weapon or switch weapons to release, preserving momentum. Automatic release on arrival can be toggled in the mod settings.":""),
-                    rank>=5?new Object[]{number(weaponDamage(stack)*(1+.25*rank))+" damage",(2+rank)+" seconds",ReviewedRanks.grappleRange(rank)+" blocks"}
+                            +(rank>=5?" Aim at a block within %s to grapple. Activate again to move the hook to another reachable block. Right-click or switch weapons to release, preserving momentum. Block-grappling cooldown: %s.":""),
+                    rank>=5?new Object[]{number(weaponDamage(stack)*(1+.25*rank))+" damage",(2+rank)+" seconds",ReviewedRanks.grappleRange(rank)+" blocks",net.bananashelp20.forgermod.item.custom.abilities.CrucibleGrapplerEvents.cooldownTicks(rank)/20+" seconds"}
                             :new Object[]{number(weaponDamage(stack)*(1+.25*rank))+" damage",(2+rank)+" seconds"});
             case AdditionalAbilities.CHALLENGE_ROAR -> text(id+(rank>=5?".super.reviewed":".reviewed"),
                     "Agro all hostile mobs within %s on you, and giving you %s for %s. Agroed enemis will not target any other entitiy during that time."

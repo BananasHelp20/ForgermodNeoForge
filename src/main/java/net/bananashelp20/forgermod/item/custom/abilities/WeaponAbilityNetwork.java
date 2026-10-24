@@ -33,6 +33,7 @@ public final class WeaponAbilityNetwork {
                                    EnumSet<WeaponAbilitySlot> activeSlots,
                                    Map<WeaponAbilitySlot, WeaponAbilitySlot> sources,
                                    Map<WeaponAbilitySlot, String> ids,
+                                   Map<WeaponAbilitySlot, String> cooldownKeys,
                                    Map<WeaponAbilitySlot, Integer> cooldowns) {}
     private static final Map<UUID, EquippedSession> ACTIVE = new HashMap<>();
     private WeaponAbilityNetwork() {}
@@ -97,11 +98,13 @@ public final class WeaponAbilityNetwork {
         WeaponAbilitySlot slot = WeaponAbilitySlot.values()[payload.slot()];
         String id=Augmentations.activeId(stack, slot);
         if (id == null) return;
-        String key = cooldownKey(stack, slot);
+        boolean grappleCast=RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.grappleCast(player,stack);
+        String key = cooldownKey(stack, slot)+(grappleCast?":grapple":"");
         long now = player.level().getGameTime();
         Map<String, Long> playerCooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS);
         long readyAt = playerCooldowns.getOrDefault(key, 0L);
-        if (!player.getData(WeaponCooldownAttachments.DISABLED) && now < readyAt) {
+        boolean freeGrapple=grappleCast && CrucibleGrapplerEvents.cooldownTicks(Augmentations.level(stack,id))==0;
+        if (!freeGrapple && !player.getData(WeaponCooldownAttachments.DISABLED) && now < readyAt) {
             player.displayClientMessage(Component.translatable("message.forgermod.ability.cooldown",
                     (readyAt - now + 19) / 20), true);
             return;
@@ -110,7 +113,7 @@ public final class WeaponAbilityNetwork {
         WeaponAbilitySlot source = Augmentations.sourceSlot(stack, slot);
         boolean recommended=RecommendedAbilities.active(id);
         // Instant attacks can break their weapon; capture the learned cooldown before activation.
-        int cooldownTicks = Augmentations.cooldown(stack, slot, weapon);
+        int cooldownTicks = grappleCast?CrucibleGrapplerEvents.cooldownTicks(Augmentations.level(stack,id)):Augmentations.cooldown(stack, slot, weapon);
         boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id)
                 || Augmentations.AREA_DISCHARGE.equals(id)
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id)
@@ -126,17 +129,17 @@ public final class WeaponAbilityNetwork {
                 if (session == null) {
                     session = new EquippedSession(stack, itemId(stack), player.getInventory().selected, weapon,
                             EnumSet.noneOf(WeaponAbilitySlot.class), new EnumMap<>(WeaponAbilitySlot.class),
-                            new EnumMap<>(WeaponAbilitySlot.class),
+                            new EnumMap<>(WeaponAbilitySlot.class),new EnumMap<>(WeaponAbilitySlot.class),
                             new EnumMap<>(WeaponAbilitySlot.class));
                     ACTIVE.put(player.getUUID(), session);
                 }
                 session.activeSlots().add(slot);
                 session.sources().put(slot, source);
-                session.ids().put(slot,id);
+                session.ids().put(slot,id);session.cooldownKeys().put(slot,key);
                 // Activation cooldowns must not restart when an ongoing effect ends or is canceled.
                 session.cooldowns().put(slot, activationCooldown?0:cooldownTicks);
                 if(activationCooldown)setCooldown(player,key,now+cooldownTicks);
-            } else {
+            } else if(!grappleCast || cooldownTicks>0) {
                 setCooldown(player, key, now + cooldownTicks);
             }
         } else {
@@ -180,7 +183,7 @@ public final class WeaponAbilityNetwork {
             if (RecommendedAbilities.active(id)?RecommendedAbilityRuntime.active(player,id)
                     :session.weapon().isAbilityActive(player, session.sources().get(slot))) return false;
             int cooldown = session.cooldowns().get(slot);
-            if (cooldown > 0) setCooldown(player, cooldownKey(session.itemId(),session.sources().get(slot),id), now + cooldown);
+            if (cooldown > 0) setCooldown(player, session.cooldownKeys().get(slot), now + cooldown);
             return true;
         });
         if (session.activeSlots().isEmpty()) {
@@ -200,7 +203,7 @@ public final class WeaponAbilityNetwork {
             if(RecommendedAbilities.active(id)) RecommendedAbilityRuntime.cancel(player,id);
             else session.weapon().cancelAbility(player, session.sources().get(slot));
             int cooldown = session.cooldowns().get(slot);
-            if (cooldown > 0) setCooldown(player, cooldownKey(session.itemId(),session.sources().get(slot),id), now + cooldown);
+            if (cooldown > 0) setCooldown(player, session.cooldownKeys().get(slot), now + cooldown);
         }
         ACTIVE.remove(player.getUUID());
     }

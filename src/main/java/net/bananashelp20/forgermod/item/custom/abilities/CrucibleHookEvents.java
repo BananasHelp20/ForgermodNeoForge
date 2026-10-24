@@ -40,10 +40,15 @@ public final class CrucibleHookEvents {
                 entity->entity instanceof LivingEntity living && validTarget(player,living),start.distanceToSqr(end));
         return hit==null?null:(LivingEntity)hit.getEntity();
     }
+    public static boolean grappleCast(ServerPlayer player,ItemStack stack) {
+        return Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK)>=5
+                && (CrucibleGrapplerEvents.active(player) || aimedTarget(player)==null);
+    }
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         return activate(player,stack,net.bananashelp20.forgermod.Config.GRAPPLE_AUTO_RELEASE.get());
     }
     public static boolean activate(ServerPlayer player,ItemStack stack,boolean autoRelease) {
+        if(CrucibleGrapplerEvents.active(player))return CrucibleGrapplerEvents.activate(player,stack,autoRelease);
         if(active(player)) return false;
         var target=aimedTarget(player);
         int rank=Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK);

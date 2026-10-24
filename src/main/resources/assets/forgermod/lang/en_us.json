@@ -962,6 +962,7 @@
   "tooltips.forgermod.ability.crucible_grappler.name": "Crucible Grappler",
   "augmentation.forgermod.preview.value.crucible_grappler": "Crucible Grappler",
   "augmentation.forgermod.preview.grapple_range": "Grappling range: %s.",
+  "augmentation.forgermod.preview.grapple_cooldown": "Grapple cooldown: %s.",
   "augmentation.forgermod.preview.stun_duration": "Stun duration: %s.",
   "forgermod.configuration.grappleAutoRelease": "Release grapple on arrival",
   "forgermod.configuration.explosionTerrain": "Explosion terrain damage",

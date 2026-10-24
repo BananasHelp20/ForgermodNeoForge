@@ -146,7 +146,7 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats, "damage", 1 + .25 * rank, "weapon_damage");
                 seconds(stats, "burn", (2 + rank) * 20);
                 text(stats, "pull", .7 + .1 * rank, "stronger_pull");
-                if(rank>=5){numeric(stats,"grapple_range",ReviewedRanks.grappleRange(rank),"blocks");text(stats,"super_form",true,"crucible_grappler");}
+                if(rank>=5){seconds(stats,"grapple_cooldown",net.bananashelp20.forgermod.item.custom.abilities.CrucibleGrapplerEvents.cooldownTicks(rank));numeric(stats,"grapple_range",ReviewedRanks.grappleRange(rank),"blocks");text(stats,"super_form",true,"crucible_grappler");}
             }
             case RecommendedAbilities.STRONG_ARM -> numeric(stats, "chance", StrongArmAbility.chance(rank) * 100, "percent");
             case RecommendedAbilities.DEATH_STARE -> {

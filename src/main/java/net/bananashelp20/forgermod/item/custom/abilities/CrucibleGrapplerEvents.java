@@ -22,13 +22,15 @@ public final class CrucibleGrapplerEvents {
     private static final Map<UUID,Grapple> GRAPPLES=new HashMap<>();
     private static final double PULL_ACCELERATION=.45;
     private CrucibleGrapplerEvents(){}
+    public static int cooldownTicks(int rank){return rank>=8?0:500;}
     public static boolean activate(ServerPlayer player,ItemStack stack,boolean autoRelease){
         int rank=Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK);int range=ReviewedRanks.grappleRange(rank);
-        if(rank<5 || active(player) || stack!=player.getMainHandItem() || !player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player))return false;
+        if(rank<5 || stack!=player.getMainHandItem() || !player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player))return false;
         Vec3 start=player.getEyePosition(),end=start.add(player.getLookAngle().scale(range));
         if(!player.serverLevel().hasChunksAt(BlockPos.containing(start),BlockPos.containing(end)))return false;
         var hit=player.level().clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));
-        if(hit.getType()!=HitResult.Type.BLOCK)return false;
+        if(hit.getType()!=HitResult.Type.BLOCK || !player.level().getWorldBorder().isWithinBounds(hit.getBlockPos()))return false;
+        // Validate the new anchor completely before replacing any live grapple or rope.
         var destination=hit.getLocation().add(Vec3.atLowerCornerOf(hit.getDirection().getNormal()).scale(.8)).add(0,-player.getBbHeight()*.5,0);
         GRAPPLES.put(player.getUUID(),new Grapple(stack,player.getInventory().selected,player.serverLevel(),hit.getBlockPos().immutable(),destination,autoRelease));
         CrucibleHookRope.beginBlock(player,hit.getLocation());tick(player);return true;

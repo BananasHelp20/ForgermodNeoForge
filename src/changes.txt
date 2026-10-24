@@ -397,3 +397,6 @@
 
 - Strong-arm ally and rearm fix: qualifying critical hits now work on armored mobs including allied Necromancer reinforcements; breaking supplied armor consumes the real bank-owned item.
 - Strong-arm ally and rearm fix: pressing the ability again while armed succeeds without losing the pending attempt; the same held weapon can be rearmed after the normal cooldown without switching.
+
+- Crucible Grappler mode cooldowns: maximum Grappler IV has zero cooldown for block grappling; mob pull/smash retains its separate normal 25-second cooldown. Earlier Grappler ranks retain 25-second block cooldowns.
+- Crucible Grappler mode cooldowns: pressing the ability while grappling replaces the anchor only after a reachable in-range block is validated; invalid aims preserve the old rope and momentum. Added current-mode tooltip/upgrade cooldown values.

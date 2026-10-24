@@ -41,7 +41,8 @@ public final class CrucibleGrapplerGameTests {
             try{var snapshot=CrucibleHookRope.snapshot(player);CrucibleHookRope.Payload.CODEC.encode(buffer,snapshot);test.assertTrue(snapshot.equals(CrucibleHookRope.Payload.CODEC.decode(buffer)),"Block rope codec loses anchor");}finally{buffer.release();}
             var momentum=player.getDeltaMovement();test.getLevel().setBlockAndUpdate(inside,Blocks.AIR.defaultBlockState());
             test.assertFalse(CrucibleHookEvents.active(player),"Destroyed anchor retains grapple");test.assertTrue(player.getDeltaMovement().equals(momentum),"Destroyed anchor clears momentum");WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsValue(player.level().getGameTime()+500),"Grapple cancellation cooldown differs from25s");
+            String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.CRUCIBLE_HOOK+":grapple";
+            test.assertTrue(rank==8?!player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key):player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+500,"Wrong per-mode grapple cooldown at "+rank);
             player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());var outside=inside.above();test.getLevel().setBlockAndUpdate(outside,Blocks.STONE.defaultBlockState());AbilityTestPackets.use(player,0);
             test.assertFalse(CrucibleHookEvents.active(player),"Out-of-range block selected");test.getLevel().setBlockAndUpdate(outside,Blocks.AIR.defaultBlockState());
             test.assertTrue(Augmentations.maxRank(stack,RecommendedAbilities.CRUCIBLE_HOOK)==8 && Augmentations.displayRank(stack,RecommendedAbilities.CRUCIBLE_HOOK,rank)==rank-4,"Wrong Grappler super ranks");
@@ -77,4 +78,39 @@ public final class CrucibleGrapplerGameTests {
             var description=AbilityDescriptions.description(stack,RecommendedAbilities.CRUCIBLE_HOOK,rank,false).getString();test.assertTrue(description.contains(ReviewedRanks.grappleRange(rank)+" blocks") && description.contains((2+rank)+" seconds"),"Missing current grapple description");
         }}finally{zombie.discard();cleanup(player);}test.succeed();
     }
+    @GameTest(template="riftfang_test",batch="grappler_rehook_cooldowns")
+    public static void maxGrappleRetargetsAtomicallyAndMobHookKeepsIndependentCooldown(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();
+        // The template/world can contain reachable blocks outside its bounds: make the invalid ray explicitly empty.
+        for(int x=-1;x<=10;x++)for(int z=-41;z<=3;z++)for(int y=0;y<=4;y++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var above=player.blockPosition().above(12);test.getLevel().setBlockAndUpdate(above,Blocks.STONE.defaultBlockState());
+        var side=player.blockPosition().east(8).above();test.getLevel().setBlockAndUpdate(side,Blocks.STONE.defaultBlockState());
+        try{for(var item:variants()){
+            player.setPos(origin);player.setXRot(-90);player.setYRot(0);player.setDeltaMovement(Vec3.ZERO);
+            var stack=Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.CRUCIBLE_HOOK,8);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            AbilityTestPackets.use(player,0,false);var first=CrucibleHookRope.blockAnchor(player);test.assertTrue(first!=null,"Initial grapple missing");
+            player.setXRot(0);player.setYRot(180);var momentum=player.getDeltaMovement();AbilityTestPackets.use(player,0,false);
+            test.assertTrue(CrucibleHookEvents.active(player) && first.equals(CrucibleHookRope.blockAnchor(player)) && player.getDeltaMovement().equals(momentum),"Invalid rehook releases previous anchor or changes momentum");
+            player.setYRot(-90);AbilityTestPackets.use(player,0,false);var second=CrucibleHookRope.blockAnchor(player);
+            test.assertTrue(second!=null && !first.equals(second) && second.distanceToSqr(side.getCenter())<2,"Reachable rehook does not replace old block anchor");
+            CrucibleGrapplerEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(),"Max block grapple creates a cooldown");
+            String legacyKey=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.CRUCIBLE_HOOK+":grapple";
+            player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of(legacyKey,player.level().getGameTime()+500));
+            player.setXRot(-90);AbilityTestPackets.use(player,0,false);test.assertTrue(CrucibleHookEvents.active(player),"Max grapple cannot immediately reactivate or inherits old lower-rank cooldown");
+            CrucibleGrapplerEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+            player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());player.setXRot(0);player.setYRot(0);
+            var zombie=EntityType.ZOMBIE.create(test.getLevel());zombie.setNoAi(true);zombie.setNoGravity(true);zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);zombie.setHealth(200);zombie.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(zombie);
+            try{
+                AbilityTestPackets.use(player,0);String attackKey=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.CRUCIBLE_HOOK;
+                long deadline=player.level().getGameTime()+500;
+                test.assertTrue(zombie.getHealth()<200 && player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(attackKey,0L)==deadline,"Mob hook lost usual cooldown");
+                float health=zombie.getHealth();AbilityTestPackets.use(player,0);test.assertTrue(zombie.getHealth()==health,"Mob-hook cooldown is bypassed");
+                player.setXRot(-90);AbilityTestPackets.use(player,0,false);
+                test.assertTrue(CrucibleHookEvents.active(player) && player.getData(WeaponCooldownAttachments.COOLDOWNS).get(attackKey)==deadline,"Mob cooldown blocks grapple or grapple changes mob deadline");
+                CrucibleGrapplerEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+            }finally{zombie.discard();}
+        }}finally{cleanup(player);}test.succeed();
+    }
+
 }
