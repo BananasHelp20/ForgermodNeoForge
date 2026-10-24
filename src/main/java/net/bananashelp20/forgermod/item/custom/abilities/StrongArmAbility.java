@@ -36,9 +36,10 @@ public final class StrongArmAbility {
     private StrongArmAbility() {}
     public static float chance(int rank) { return switch(Math.clamp(rank,1,4)) { case 1->.3F; case 2->.55F; case 3->.8F; default->1; }; }
     public static boolean activate(ServerPlayer player,ItemStack stack) {
-        if(active(player)) return false;
-        var target=WeaponAbilityTargets.aimedEnemy(player,player.entityInteractionRange()); if(target==null) return false;
-        if(armor(target).isEmpty()) return false;
+        if(!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player)
+                || stack!=player.getMainHandItem() || !Augmentations.ids(stack,true).contains(RecommendedAbilities.STRONG_ARM)
+                || active(player)) return false;
+        // Arm the next qualifying hit; target and armor checks belong to the actual attack.
         ARMED.put(player.getUUID(),new Armed(player,stack));return true;
     }
     public static boolean active(ServerPlayer player) {

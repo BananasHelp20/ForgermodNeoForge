@@ -385,3 +385,6 @@
 - Thunderclap contact fix: detect actual swept body contact between movement updates, including fast steps ending beyond the target, and clamp approach velocity before entering a mob body.
 - Thunderclap contact fix: confirmed hits advance after the normal impact beat without pursuing a knocked-back or dead victim again; next-leg obstacle routing uses the new target.
 - Thunderclap contact fix: rejected native melee hits immediately stop the dash rather than repeatedly attacking/ramming the same target; successful melee is still required for lightning damage and chaining.
+
+- Strong-arm arming fix: activate the learned ability without first aiming at an armored enemy in melee range. It prepares the next fully charged, successful critical hit against an armored enemy; ordinary, partial, rejected and unarmored hits keep the attempt ready.
+- Strong-arm arming fix: retain 30/55/80/100% armor-break chances and cooldown on the qualifying attempt or weapon switch; reject unlearned, offhand, frozen, dead or spectator activation.

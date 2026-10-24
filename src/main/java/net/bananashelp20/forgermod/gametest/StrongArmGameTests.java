@@ -43,13 +43,16 @@ public class StrongArmGameTests {
         player.attack(target);
     }
     @GameTest(template="riftfang_test")
-    public static void failedCriticalRollStartsCooldownButArmorlessAttemptDoesNot(GameTestHelper test) throws Exception {
+    public static void failedCriticalRollStartsCooldownButArmorlessHitDoesNot(GameTestHelper test) throws Exception {
         var player=player(test);var zombie=target(test,player);var stack=weapon(ModItems.MOLTEN_AXE.get(),1);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.STRONG_ARM;
         try {
             AbilityTestPackets.use(player,0);
-            test.assertFalse(StrongArmAbility.active(player) || player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Armorless activation arms Strong-arm or starts cooldown");
-            zombie.setItemSlot(EquipmentSlot.CHEST,new ItemStack(Items.DIAMOND_CHESTPLATE));AbilityTestPackets.use(player,0);
+            test.assertTrue(StrongArmAbility.active(player) && !player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Armorless target prevents arming or starts cooldown");
+            strike(test,player,zombie,true,2,0);
+            WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+            test.assertTrue(StrongArmAbility.active(player) && !player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Armorless hit consumes attempt or starts cooldown");
+            zombie.setItemSlot(EquipmentSlot.CHEST,new ItemStack(Items.DIAMOND_CHESTPLATE));
             test.assertTrue(StrongArmAbility.active(player) && !player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key),"Arming starts cooldown before its hit");
             strike(test,player,zombie,true,2,0);
             test.assertTrue(!zombie.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && !StrongArmAbility.active(player),"Failed critical roll breaks armor or remains armed");
@@ -115,4 +118,49 @@ public class StrongArmGameTests {
             test.succeed();
         } finally {StrongArmAbility.cancel(player.getUUID());zombie.discard();player.server.getPlayerList().remove(player);}
     }
+    @GameTest(template="riftfang_test",batch="strong_arm_arm_first")
+    public static void allVariantsAndRanksCanArmWhileLookingAwayAndThenUseNextCritical(GameTestHelper test)throws Exception{
+        var player=player(test);var zombie=target(test,player);
+        try{
+            for(Item item:new Item[]{ModItems.MOLTEN_AXE.get(),ModItems.MOLTEN_AXE_RUBY.get(),ModItems.MOLTEN_AXE_AMBER.get(),ModItems.MOLTEN_AXE_AMETHYST.get(),ModItems.MOLTEN_AXE_JADE.get()}){
+                for(int rank=1;rank<=4;rank++){
+                    var stack=weapon(item,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+                    player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                    zombie.setPos(player.position().add(0,0,2));equip(zombie);player.setXRot(-90);
+                    AbilityTestPackets.use(player,0);
+                    test.assertTrue(StrongArmAbility.active(player) && armor(zombie)==4 && player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(),"Looking into empty sky prevents arming or changes armor/cooldown at rank "+rank);
+                    // Re-pressing the key cannot replace or consume the pending attempt.
+                    AbilityTestPackets.use(player,0);test.assertTrue(StrongArmAbility.active(player),"Repeated key loses armed attempt");
+                    player.setXRot(0);strike(test,player,zombie,false,2,0);
+                    test.assertTrue(StrongArmAbility.active(player) && armor(zombie)==4,"Ordinary attack consumes pre-armed attempt");
+                    strike(test,player,zombie,true,2,0);
+                    test.assertFalse(StrongArmAbility.active(player),"Valid fully charged critical does not consume pre-armed attempt");
+                    test.assertTrue(armor(zombie)==(net.minecraft.util.RandomSource.create(0).nextFloat()<StrongArmAbility.chance(rank)?3:4),"Pre-arming changes deterministic armor-breaking chance at rank "+rank);
+                    WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+                    String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.STRONG_ARM;
+                    test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+RecommendedAbilities.cooldown(RecommendedAbilities.STRONG_ARM,rank),"Qualifying pre-armed attempt starts wrong cooldown");
+                }
+            }
+            test.succeed();
+        }finally{StrongArmAbility.cancel(player.getUUID());WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));zombie.discard();player.server.getPlayerList().remove(player);}
+    }
+    @GameTest(template="riftfang_test",batch="strong_arm_arm_guards")
+    public static void unlearnedOffhandAndFrozenWeaponsCannotArm(GameTestHelper test){
+        var player=player(test);var stack=weapon(ModItems.MOLTEN_AXE.get(),4);
+        try{
+            player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.MOLTEN_AXE.get()));
+            test.assertFalse(StrongArmAbility.activate(player,player.getMainHandItem()),"Unlearned Strong-arm activates");
+            player.setItemInHand(InteractionHand.OFF_HAND,stack);
+            test.assertFalse(StrongArmAbility.activate(player,stack),"Offhand weapon arms Strong-arm");
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            WeaponControlLocks.acquire(player,player.getUUID(),"strong_arm_test",20);
+            test.assertFalse(StrongArmAbility.activate(player,stack),"Frozen wielder arms Strong-arm");
+            WeaponControlLocks.release(player.getUUID(),"strong_arm_test");
+            test.assertTrue(StrongArmAbility.activate(player,stack),"Valid held weapon cannot arm in empty air");
+            player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+            test.assertFalse(StrongArmAbility.active(player),"Putting weapon away leaves it armed");
+            test.succeed();
+        }finally{WeaponControlLocks.release(player.getUUID(),"strong_arm_test");StrongArmAbility.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+    }
+
 }
