@@ -65,6 +65,7 @@ public final class MagmaTossEvents {
         }
         player.serverLevel().sendParticles(ParticleTypes.FLAME,point.x,point.y,point.z,45,radius*.4,radius*.4,radius*.4,.06);
         player.serverLevel().sendParticles(ParticleTypes.EXPLOSION,point.x,point.y,point.z,1,0,0,0,0);
+        player.serverLevel().playSound(null,point.x,point.y,point.z,net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,net.minecraft.sounds.SoundSource.PLAYERS,.6F,1.05F);
         rock.discard();
     }
     @SubscribeEvent

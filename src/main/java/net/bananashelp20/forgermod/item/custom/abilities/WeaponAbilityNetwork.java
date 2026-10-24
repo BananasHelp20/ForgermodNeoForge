@@ -120,6 +120,7 @@ public final class WeaponAbilityNetwork {
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.MAGMA_TOSS.equals(id);
         activationCooldown|=independentLifetime;
         if (recommended?RecommendedAbilityRuntime.activate(player,stack,id,payload.grappleAutoRelease()):weapon.activateAbility(player, stack, source)) {
+            WeaponAbilitySounds.play(player,stack,id);
             if (!independentLifetime && (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source))) {
                 EquippedSession session = ACTIVE.get(player.getUUID());
                 if (session == null) {
