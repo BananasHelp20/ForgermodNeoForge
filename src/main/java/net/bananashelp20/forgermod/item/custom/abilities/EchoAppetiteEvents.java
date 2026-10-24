@@ -19,7 +19,7 @@ public final class EchoAppetiteEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onWardenDeath(LivingDeathEvent event) {
         if (event.isCanceled() || event.getEntity().getType() != EntityType.WARDEN
-                || !(event.getSource().getEntity() instanceof ServerPlayer player)
+                || !(PassiveActors.attacker(event.getSource()) instanceof ServerPlayer player)
                 || !player.isAlive() || player.isSpectator()
                 || !(player.getMainHandItem().getItem() instanceof PulsiteWeapon)
                 || !Augmentations.hasPassive(player.getMainHandItem(), AdditionalAbilities.ECHO_APPETITE)) return;

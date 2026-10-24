@@ -14,7 +14,7 @@ public final class WardenToneEvents {
  @SubscribeEvent(priority=EventPriority.HIGHEST)
  public static void onVibration(VanillaGameEvent event) {
   if(event.getLevel().isClientSide || event.getVanillaEvent().is(GameEvent.ENTITY_DAMAGE)) return;
-  Entity cause=event.getCause(); if(cause instanceof Projectile projectile) cause=projectile.getOwner();
+  Entity cause=event.getCause(); if(cause instanceof Projectile projectile) cause=PassiveActors.projectileActor(projectile);
   if(PassiveActors.entity(cause) instanceof LivingEntity player && player.isAlive() && !player.isSpectator() && player.level()==event.getLevel()
    && Augmentations.ids(PassiveActors.weapon(player,RecommendedAbilities.WARDEN_TONE),false).contains(RecommendedAbilities.WARDEN_TONE)) event.setCanceled(true);
  }

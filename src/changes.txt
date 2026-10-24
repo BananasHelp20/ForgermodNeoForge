@@ -375,3 +375,5 @@
 - Magma Toss now has a launch cue and one local explosion sound on actual impact, matching its existing visual burst without changing damage or terrain.
 
 - Skull Throw audio now uses a spectral whoosh when launched and a brittle bone crack with escaping souls on impact, replacing the skeleton-death cry. Sounds remain local; projectile damage, speed, range and launch cooldown are unchanged.
+
+- Reinforcement projectile isolation: credited arrows no longer borrow the summoner's Echo Appetite or Warden Tone. Kill credit still awards half XP normally; hunger remains inactive on reinforcements and vibration passives use the actual wielder. Normal player arrows retain both passives.

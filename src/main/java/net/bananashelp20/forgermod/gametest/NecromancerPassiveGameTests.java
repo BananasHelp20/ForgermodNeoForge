@@ -208,4 +208,20 @@ public class NecromancerPassiveGameTests {
             test.assertTrue(rangedXp.getDroppedExperience()==4,"Ranged reinforcement XP is not halved or uses summoner's Death's Due");arrow.discard();victim.discard();
         }finally{net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(listener);close(f);}test.succeed();
     }
+    @GameTest(template="riftfang_test",batch="necro_passive_projectile_owner")
+    public static void creditedArrowsDoNotBorrowSummonerHungerOrVibrationPassives(GameTestHelper test){
+        var f=fixture(test);var warden=EntityType.WARDEN.create(test.getLevel());var arrow=EntityType.ARROW.create(test.getLevel());
+        try{
+            var weapon=learn(ModItems.SHRIEKING_CLAYMORE.get(),AdditionalAbilities.ECHO_APPETITE,1);weapon=Augmentations.setLevel(weapon,RecommendedAbilities.WARDEN_TONE,1);f.owner().setItemInHand(InteractionHand.MAIN_HAND,weapon);
+            equip(f.guard(),new ItemStack(Items.BOW),ItemStack.EMPTY);f.owner().getFoodData().setFoodLevel(10);f.owner().getFoodData().setSaturation(0);arrow.setOwner(f.owner());arrow.getPersistentData().putUUID("forgermod_bone_guard_shooter",f.guard().getUUID());
+            EchoAppetiteEvents.onWardenDeath(new net.neoforged.neoforge.event.entity.living.LivingDeathEvent(warden,warden.damageSources().arrow(arrow,f.owner())));
+            test.assertTrue(f.owner().getFoodData().getFoodLevel()==10,"Reinforcement kill borrows summoner's hunger passive");
+            var vibration=new net.neoforged.neoforge.event.VanillaGameEvent(test.getLevel(),net.minecraft.world.level.gameevent.GameEvent.PROJECTILE_LAND,f.guard().position(),net.minecraft.world.level.gameevent.GameEvent.Context.of(arrow));WardenToneEvents.onVibration(vibration);
+            test.assertFalse(vibration.isCanceled(),"Reinforcement arrow borrows summoner's Warden Tone");
+            arrow.getPersistentData().remove("forgermod_bone_guard_shooter");
+            EchoAppetiteEvents.onWardenDeath(new net.neoforged.neoforge.event.entity.living.LivingDeathEvent(warden,warden.damageSources().arrow(arrow,f.owner())));
+            test.assertTrue(f.owner().getFoodData().getFoodLevel()==14,"Real player arrow lost Echo Appetite");
+            var direct=new net.neoforged.neoforge.event.VanillaGameEvent(test.getLevel(),net.minecraft.world.level.gameevent.GameEvent.PROJECTILE_LAND,f.owner().position(),net.minecraft.world.level.gameevent.GameEvent.Context.of(arrow));WardenToneEvents.onVibration(direct);test.assertTrue(direct.isCanceled(),"Real player arrow lost Warden Tone");
+        }finally{arrow.discard();warden.discard();close(f);}test.succeed();
+    }
 }

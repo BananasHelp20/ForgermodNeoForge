@@ -34,9 +34,14 @@ public final class PassiveActors {
     public static ServerLevel level(LivingEntity actor){return (ServerLevel)actor.level();}
     public static int selected(LivingEntity actor){return actor instanceof ServerPlayer player?player.getInventory().selected:0;}
     public static LivingEntity find(MinecraftServer server,UUID id){for(var level:server.getAllLevels())if(level.getEntity(id) instanceof LivingEntity actor && supported(actor))return actor;return null;}
+    public static Entity projectileActor(net.minecraft.world.entity.projectile.Projectile projectile){
+        if(projectile instanceof AbstractArrow arrow && arrow.getPersistentData().hasUUID("forgermod_bone_guard_shooter"))
+            return arrow.level() instanceof ServerLevel level?level.getEntity(arrow.getPersistentData().getUUID("forgermod_bone_guard_shooter")):null;
+        return projectile.getOwner();
+    }
     public static Entity attacker(DamageSource source){
         if(source.getDirectEntity() instanceof AbstractArrow arrow && arrow.getPersistentData().hasUUID("forgermod_bone_guard_shooter"))
-            return arrow.level() instanceof ServerLevel level?level.getEntity(arrow.getPersistentData().getUUID("forgermod_bone_guard_shooter")):null;
+            return projectileActor(arrow);
         return source.getEntity();
     }
     @EventBusSubscriber(modid=ForgerMod.MOD_ID,bus=EventBusSubscriber.Bus.MOD)
