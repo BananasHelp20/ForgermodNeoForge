@@ -59,12 +59,15 @@ public final class AugmentCommand {
     @SubscribeEvent
     public static void register(RegisterCommandsEvent event) {
         var root=Commands.literal("augment").requires(source -> source.hasPermission(2));
-        for(var mode:Mode.values()) root.then(Commands.literal(mode.command)
-                .then(Commands.argument("targets",EntityArgument.entities())
-                        .then(Commands.argument("abilityName",StringArgumentType.greedyString())
-                                .suggests((context,builder)->SharedSuggestionProvider.suggest(suggestions(context,mode),builder))
-                                .executes(context->apply(context.getSource(),EntityArgument.getEntities(context,"targets"),
-                                        StringArgumentType.getString(context,"abilityName"),mode)))));
+        for(var mode:Mode.values()) {
+            var targets=Commands.argument("targets",EntityArgument.entities());
+            if(mode==Mode.UPGRADE)targets.executes(context->upgradeAll(context.getSource(),EntityArgument.getEntities(context,"targets")));
+            targets.then(Commands.argument("abilityName",StringArgumentType.greedyString())
+                    .suggests((context,builder)->SharedSuggestionProvider.suggest(suggestions(context,mode),builder))
+                    .executes(context->apply(context.getSource(),EntityArgument.getEntities(context,"targets"),
+                            StringArgumentType.getString(context,"abilityName"),mode)));
+            root.then(Commands.literal(mode.command).then(targets));
+        }
         event.getDispatcher().register(root);
     }
 
@@ -160,6 +163,37 @@ public final class AugmentCommand {
             }
             return Augmentations.setLevel(result,id,rank);
         }finally{visiting.remove(id);}
+    }
+
+    private static int upgradeAll(CommandSourceStack source,Collection<? extends Entity> targets)throws CommandSyntaxException {
+        int changed=0;
+        for(var target:targets){
+            if(!(target instanceof LivingEntity living)){
+                if(targets.size()==1)throw NOT_LIVING.create(target.getName().getString());
+                continue;
+            }
+            boolean updated=false;
+            for(var hand:InteractionHand.values()){
+                var held=living.getItemInHand(hand);var result=held;
+                // Read ranks from the original item so prerequisite repair cannot upgrade a new ability twice.
+                for(var ability:Augmentations.catalog(held)){
+                    if(Augmentations.level(held,ability.id())<=0)continue;
+                    int rank;
+                    try{rank=desiredRank(held,ability,Mode.UPGRADE);}catch(CommandSyntaxException skipped){continue;}
+                    var upgraded=withPrerequisites(result,ability.id(),rank);
+                    if(!upgraded.isEmpty()){result=upgraded;updated=true;}
+                }
+                if(result!=held)living.setItemInHand(hand,result);
+            }
+            if(updated){
+                changed++;
+                if(living instanceof ServerPlayer player)player.inventoryMenu.broadcastChanges();
+            }
+        }
+        if(changed==0)throw NOTHING.create();
+        int count=changed;
+        source.sendSuccess(()->Component.translatable("commands.forgermod.augment.upgrade_all",count),true);
+        return changed;
     }
 
     private static int apply(CommandSourceStack source, Collection<? extends Entity> targets,

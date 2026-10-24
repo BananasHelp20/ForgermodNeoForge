@@ -504,6 +504,7 @@
   "commands.forgermod.augment.no_item": "Cannot augment %s: no item is held in the main hand.",
   "commands.forgermod.augment.incompatible": "The held item %s cannot receive that augment or has no free slot.",
   "commands.forgermod.augment.level": "Requested augment rank %s exceeds this item's maximum rank of %s.",
+  "commands.forgermod.augment.upgrade_all": "Upgraded all available learned augments on both held items for %s target(s).",
   "commands.forgermod.augment.failed": "No target could receive that augment.",
   "commands.forgermod.augment.success.single": "Applied %s rank %s to %s.",
   "commands.forgermod.augment.success.multiple": "Applied %s rank %s to %s targets.",

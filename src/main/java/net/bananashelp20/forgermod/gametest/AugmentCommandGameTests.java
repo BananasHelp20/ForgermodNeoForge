@@ -13,6 +13,44 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class AugmentCommandGameTests {
     @GameTest(template="riftfang_test")
+    public static void unnamedUpgradeUpdatesBothHandsOncePreservesCapsAndSuperProgression(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);
+        try{
+            var dispatcher=player.server.getCommands().getDispatcher();var source=player.createCommandSourceStack().withPermission(4);
+            var main=new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get());
+            main=Augmentations.setLevel(main,AdditionalAbilities.DIRECT_CURRENT,3);
+            main=Augmentations.setLevel(main,AdditionalAbilities.LIGHTNING_ROD,1);
+            main.setDamageValue(5);main.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal("Preserved name"));
+            var off=new ItemStack(ModItems.DEAD_CALM_DAGGER.get());
+            off=Augmentations.setLevel(off,Augmentations.DUAL_WIELD,Augmentations.maxRank(off,Augmentations.DUAL_WIELD));
+            off=Augmentations.setLevel(off,AdditionalAbilities.WINDCHARGE,1);
+            var beforeMain=main.copy();var beforeOff=off.copy();
+            player.setItemInHand(InteractionHand.MAIN_HAND,main);player.setItemInHand(InteractionHand.OFF_HAND,off);
+            test.assertTrue(dispatcher.execute("augment upgrade @s",source)==1,"Bulk command counts hands instead of targets");
+            test.assertTrue(Augmentations.level(player.getMainHandItem(),AdditionalAbilities.DIRECT_CURRENT)==4 && Augmentations.isSuper(player.getMainHandItem(),AdditionalAbilities.DIRECT_CURRENT,4),"Bulk upgrade does not advance into super form");
+            for(var hand:InteractionHand.values()){
+                var before=hand==InteractionHand.MAIN_HAND?beforeMain:beforeOff;var after=player.getItemInHand(hand);
+                for(var ability:Augmentations.catalog(before)){
+                    int rank=Augmentations.level(before,ability.id());int expected=rank==0?0:Math.min(rank+1,Augmentations.maxRank(before,ability.id()));
+                    test.assertTrue(Augmentations.level(after,ability.id())==expected,"Bulk missed, added, capped incorrectly or double-upgraded "+hand+" "+ability.id());
+                }
+                test.assertTrue(Augmentations.count(before)==Augmentations.count(after),"Bulk upgrade changes table count");
+            }
+            test.assertTrue(player.getMainHandItem().getDamageValue()==5 && player.getMainHandItem().getHoverName().getString().equals("Preserved name"),"Bulk loses item components");
+            dispatcher.execute("augment upgrade @s",source);test.assertTrue(Augmentations.level(player.getMainHandItem(),AdditionalAbilities.DIRECT_CURRENT)==5,"Repeated bulk command fails to upgrade super");
+            player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+            dispatcher.execute("augment upgrade @s",source);test.assertTrue(Augmentations.level(player.getOffhandItem(),AdditionalAbilities.WINDCHARGE)==4,"Empty mainhand prevents offhand upgrade");
+            player.setItemInHand(InteractionHand.OFF_HAND,new ItemStack(ModItems.DEAD_CALM_DAGGER.get()));
+            expectFailure(test,()->dispatcher.execute("augment upgrade @s",source),"Bulk learns abilities on a fresh weapon");
+            test.assertTrue(Augmentations.ids(player.getOffhandItem(),true).isEmpty() && Augmentations.ids(player.getOffhandItem(),false).isEmpty(),"No-op learns augments");
+            var capped=Augmentations.setLevel(new ItemStack(ModItems.DEAD_CALM_DAGGER.get()),AdditionalAbilities.WINDCHARGE,4);
+            player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(net.minecraft.world.item.Items.STICK));player.setItemInHand(InteractionHand.OFF_HAND,capped);
+            expectFailure(test,()->dispatcher.execute("augment upgrade @s",source),"Bulk exceeds every learned augment's cap");
+            test.assertTrue(ItemStack.matches(capped,player.getOffhandItem()),"Fully capped bulk attempt mutates item");
+        }finally{player.server.getPlayerList().remove(player);}test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
     public static void newAndUpgradeSkipIncompatibleTargetsAndReturnChangedCount(GameTestHelper test)throws Exception{
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
         var first=EntityType.ZOMBIE.create(test.getLevel());var second=EntityType.ZOMBIE.create(test.getLevel());var incompatible=EntityType.ZOMBIE.create(test.getLevel());
@@ -25,6 +63,9 @@ public class AugmentCommandGameTests {
             test.assertTrue(dispatcher.execute("augment new "+targets+" forgermod:flame_breath",source)==2,"New changed count/compatibility");
             test.assertTrue(dispatcher.execute("augment upgrade "+targets+" flame_breath",source)==2,"Upgrade changed count/compatibility");
             test.assertTrue(Augmentations.level(first.getMainHandItem(),AdditionalAbilities.FLAME_BREATH)==2 && Augmentations.level(second.getMainHandItem(),AdditionalAbilities.FLAME_BREATH)==2 && Augmentations.level(incompatible.getMainHandItem(),AdditionalAbilities.FLAME_BREATH)==0,"Mixed-target mutation is incorrect");
+            incompatible.setItemInHand(InteractionHand.OFF_HAND,Augmentations.setLevel(new ItemStack(ModItems.DEAD_CALM_DAGGER.get()),AdditionalAbilities.WINDCHARGE,1));
+            test.assertTrue(dispatcher.execute("augment upgrade "+targets,source)==3,"Bulk multi-target command skips offhand-only target or miscounts");
+            test.assertTrue(Augmentations.level(first.getMainHandItem(),AdditionalAbilities.FLAME_BREATH)==3 && Augmentations.level(second.getMainHandItem(),AdditionalAbilities.FLAME_BREATH)==3 && Augmentations.level(incompatible.getOffhandItem(),AdditionalAbilities.WINDCHARGE)==2,"Bulk selector upgrades incorrect items");
         }finally{first.discard();second.discard();incompatible.discard();player.server.getPlayerList().remove(player);}test.succeed();
     }
     @GameTest(template="riftfang_test")

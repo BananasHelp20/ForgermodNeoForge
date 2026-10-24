@@ -416,3 +416,5 @@
 - Static Field marked corners: Direct Current/Static Field can mark all mobs, including allied reinforcements and pets, and affect neutral mobs in their wires/field; the caster and marked anchors retain their existing immunity. Updated descriptions and geometry/native particle tests.
 
 - Absolute Nightmare cave activation: replaced the Elder Guardian curse with vanilla cave ambience at normal pitch.
+
+- Bulk held augment upgrade: /augment upgrade <target> without an ability name upgrades every compatible learned augment once on both mainhand and offhand, skipping capped/unavailable upgrades and preserving the existing named-ability command.
