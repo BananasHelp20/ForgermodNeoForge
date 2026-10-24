@@ -33,7 +33,7 @@ public final class AreaDischargeEvents {
         if(active(player))return false;
         int rank=Augmentations.level(stack,Augmentations.AREA_DISCHARGE);boolean zeus=Augmentations.isSuper(stack,Augmentations.AREA_DISCHARGE,rank);
         if(rank<=0 || stack!=player.getMainHandItem() || !player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player))return false;
-        int waves=Augmentations.displayRank(stack,Augmentations.AREA_DISCHARGE,rank);double radius=zeus?10*waves:5;
+        int waves=Augmentations.displayRank(stack,Augmentations.AREA_DISCHARGE,rank);double radius=zeus?ZeusStrikePlan.waveRadius(waves):5;
         var initial=AreaDischargeTargets.select(player.serverLevel().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(radius)),
                 mob->eligible(player,mob,zeus),player::distanceToSqr,radius);
         if(initial.isEmpty())return false;

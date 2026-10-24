@@ -67,7 +67,7 @@ public final class AbilityDescriptions {
             case Augmentations.AREA_DISCHARGE -> rank<5
                     ?text(id+".reviewed","By activating this ability, all hostile mobs within 5 blocks are being struck by lightning dealing half your weapon damage to each target.")
                     :text(id+".super.reviewed","Strike all hostile and agroed neutral creatures within %s for twice weapon damage in %s. All targets are marked on activation. Waves strike 0.5 seconds apart, skipping empty waves. Each initial strike has a 50% chance to start up to 5 chains, each reaching 10 blocks from the previous target, 0.2 seconds apart, and dealing half weapon damage. Chains may extend beyond the initial wave radius.",
-                            (10*Math.clamp(rank-4,1,4))+" blocks",Math.clamp(rank-4,1,4)+(rank==5?" wave":" waves"));
+                            number(net.bananashelp20.forgermod.item.custom.abilities.ZeusStrikePlan.waveRadius(rank-4))+" blocks",Math.clamp(rank-4,1,4)+(rank==5?" wave":" waves"));
             case "tooltips.forgermod.ability.eye_of_the_storm" -> text(id+".reviewed","you create a small storm around you with you being the center. This storm affects all enemies within a %s and lasts %s.",
                     number(ReviewedRanks.stormRadius(rank))+" block radius",(ReviewedRanks.stormTicks(rank)/20+jade)+" seconds");
             case AdditionalAbilities.DISPLACE -> rank>=4

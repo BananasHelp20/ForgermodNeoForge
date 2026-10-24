@@ -54,6 +54,8 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 > Lightning hits nearby enemies for half damage and builds charge.
 
+Anger of Zeus uses initial wave radii of 5/10/15/20 blocks at super levels I/II/III/IV. Lightning chains still reach 10 blocks from each previous target.
+
 ### Blood Rush
 
 **Weapons:** Assassin Dagger, Curseblood Claymore

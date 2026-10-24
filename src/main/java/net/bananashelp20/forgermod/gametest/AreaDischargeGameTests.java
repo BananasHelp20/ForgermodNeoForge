@@ -46,6 +46,26 @@ public final class AreaDischargeGameTests {
         // Embedded connections do not run the normal ServerPlayer doTick/player-event path.
         for(int tick=1;tick<=ticks;tick++)checkLater(test,tick,player,entities,()->AreaDischargeEvents.tick(player));
     }
+    @GameTest(template="riftfang_test",batch="review_zeus_half_boundaries",timeoutTicks=40)
+    public static void superRanksIncludeFiveTenFifteenTwentyButNotJustOutside(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position().add(0,30,0);player.setPos(origin);keepLoaded(test,origin);
+        var targets=new ArrayList<Zombie>();
+        checkLater(test,5,player,targets,()->{
+            try{
+                for(int rank=1;rank<=4;rank++){
+                    double radius=5*rank;var edge=mob(test,origin.add(0,radius,0));var outside=mob(test,origin.add(0,radius+.125,0));targets.add(edge);targets.add(outside);
+                    var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,rank+4);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+                    player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+                    long seed=0;while(ZeusStrikePlan.startsChain(net.minecraft.util.RandomSource.create(seed).nextFloat()))seed++;player.getRandom().setSeed(seed);
+                    AbilityTestPackets.use(player,0);
+                    test.assertTrue(edge.getHealth()<1000 && outside.getHealth()==1000,"Wrong native five-block wave boundary at super "+rank);
+                    test.assertTrue(!AreaDischargeEvents.active(player),"Single nonempty outer wave did not skip earlier empty bands");
+                    edge.discard();outside.discard();
+                }
+                test.succeed();
+            }catch(Exception e){throw new RuntimeException(e);}finally{cleanup(test,player,targets);}
+        });
+    }
     @GameTest(template="riftfang_test",batch="review_area_progression")
     public static void progressionCooldownsAndNeutralEligibility(GameTestHelper test)throws Exception{
         var player=player(test);var zombie=mob(test,player.position().add(0,0,3));
@@ -78,7 +98,7 @@ public final class AreaDischargeGameTests {
     }
     @GameTest(template="riftfang_test",batch="review_zeus_waves",timeoutTicks=60)
     public static void emptyWavesSkipMarkedTargetsStillHitAfterMovingAndSwitchCancels(GameTestHelper test)throws Exception{
-        var player=player(test);var origin=player.position();var near=mob(test,origin.add(0,0,5));var far=mob(test,origin.add(0,0,25));
+        var player=player(test);var origin=player.position();var near=mob(test,origin.add(0,0,5));var far=mob(test,origin.add(0,0,12.5));
         var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,7);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         AbilityTestPackets.use(player,0);long ready=player.level().getGameTime()+4400;
         drive(test,player,List.of(near,far),23);
@@ -88,17 +108,17 @@ public final class AreaDischargeGameTests {
         checkLater(test,11,player,List.of(near,far),()->{
             test.assertTrue(far.getHealth()<1000 && !AreaDischargeEvents.active(player),"Empty middle wave not skipped or moved mark lost: health="+far.getHealth()+" removed="+far.isRemoved()+" active="+AreaDischargeEvents.active(player));
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsValue(ready),"Wave completion restarts cooldown");
-            near.setHealth(1000);far.setHealth(1000);far.setPos(origin.add(0,0,25));player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            near.setHealth(1000);far.setHealth(1000);far.setPos(origin.add(0,0,12.5));player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
             try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}
             player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
         });
         test.runAfterDelay(23,()->{try{test.assertTrue(far.getHealth()==1000 && !AreaDischargeEvents.active(player),"Switch leaves queued lightning");test.succeed();}finally{cleanup(test,player,List.of(near,far));}});
     }
     @GameTest(template="riftfang_test",batch="review_zeus_chains",timeoutTicks=50)
-    public static void chainsExtendBeyondFortyAndUseMarkedTargetsWithTwoHundredMsDelays(GameTestHelper test)throws Exception{
+    public static void chainsExtendBeyondTwentyAndUseMarkedTargetsWithTwoHundredMsDelays(GameTestHelper test)throws Exception{
         var player=player(test);var origin=player.position().add(0,30,0);player.setPos(origin);keepLoaded(test,origin);List<Zombie> targets=new ArrayList<>();
         // Vertical nine-block hops stay in one entity-accessible chunk regardless of the random test origin.
-        for(int i=0;i<7;i++)targets.add(mob(test,origin.add(0,39+9*i,0)));
+        for(int i=0;i<7;i++)targets.add(mob(test,origin.add(0,19+9*i,0)));
         var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,8);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         float[] capturedDamage={0};
         // Schedule callbacks before the test starts iterating its pending-callback map.
@@ -109,7 +129,7 @@ public final class AreaDischargeGameTests {
         long seed=0;while(!ZeusStrikePlan.startsChain(net.minecraft.util.RandomSource.create(seed).nextFloat()))seed++;player.getRandom().setSeed(seed);
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);capturedDamage[0]=damage;
         try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}
-        test.assertTrue(Math.abs(targets.getFirst().getHealth()-(1000-2*damage))<.01,"Leading empty waves delay the only initial target: health="+targets.getFirst().getHealth()+" expected="+(1000-2*damage)+" player="+player.position()+" origin="+origin+" queried="+player.serverLevel().getEntitiesOfClass(Zombie.class,player.getBoundingBox().inflate(40)).size()+" active="+AreaDischargeEvents.active(player));
+        test.assertTrue(Math.abs(targets.getFirst().getHealth()-(1000-2*damage))<.01,"Leading empty waves delay the only initial target: health="+targets.getFirst().getHealth()+" expected="+(1000-2*damage)+" player="+player.position()+" origin="+origin+" queried="+player.serverLevel().getEntitiesOfClass(Zombie.class,player.getBoundingBox().inflate(20)).size()+" active="+AreaDischargeEvents.active(player));
         targets.get(1).setPos(origin.add(0,120,0));
         });
         checkLater(test,8,player,targets,()->test.assertTrue(targets.get(1).getHealth()==1000,"First chain fires before200ms"));

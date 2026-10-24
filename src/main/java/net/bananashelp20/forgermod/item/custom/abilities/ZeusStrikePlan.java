@@ -7,17 +7,18 @@ import java.util.function.*;
 public final class ZeusStrikePlan {
     public record Strike<T>(T target,T previous,int delayTicks,float damageMultiplier) {}
     private ZeusStrikePlan(){}
+    public static double waveRadius(int wave){return 5.0*Math.clamp(wave,1,4);}
     public static boolean startsChain(float roll){return roll<.5F;}
     public static <T,K> List<Strike<T>> select(Iterable<T> initial,int waves,Predicate<T> eligible,
             ToDoubleFunction<T> distanceFromOwner,Function<T,? extends Iterable<T>> neighbors,
             ToDoubleBiFunction<T,T> distanceBetween,Function<T,K> key,BooleanSupplier startChain){
         waves=Math.clamp(waves,1,4);
         var groups=new ArrayList<List<T>>();for(int wave=0;wave<waves;wave++)groups.add(new ArrayList<>());
-        Set<K> marked=new HashSet<>();double maximum=waves*10.0;
+        Set<K> marked=new HashSet<>();double maximum=waveRadius(waves);
         for(T target:initial){
             double distance=distanceFromOwner.applyAsDouble(target);
             if(eligible.test(target) && distance<=maximum*maximum && marked.add(key.apply(target)))
-                groups.get(Math.clamp((int)Math.ceil(Math.sqrt(distance)/10)-1,0,waves-1)).add(target);
+                groups.get(Math.clamp((int)Math.ceil(Math.sqrt(distance)/5)-1,0,waves-1)).add(target);
         }
         List<Strike<T>> strikes=new ArrayList<>();int nonemptyWave=0;
         for(var group:groups){

@@ -112,7 +112,7 @@ public final class AugmentUpgradeDescriptions {
             }
             case Augmentations.AREA_DISCHARGE -> {
                 int superRank=Math.clamp(rank-4,1,4);
-                numeric(stats,"radius",rank<5?5:10*superRank,"blocks");
+                numeric(stats,"radius",rank<5?5:net.bananashelp20.forgermod.item.custom.abilities.ZeusStrikePlan.waveRadius(superRank),"blocks");
                 numeric(stats,"damage",rank<5?.5:2,"weapon_damage");
                 numeric(stats,"waves",rank<5?1:superRank,"waves");
                 if(rank>=5)text(stats,"unlocks",true,"anger_of_zeus");
