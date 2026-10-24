@@ -49,7 +49,7 @@ public final class AbilityDescriptions {
                     "20 blocks","half weapon","10 blocks");
             case AdditionalAbilities.BONE_GUARD -> rank<4
                     ?text(id+".reviewed","Activate this ability to summon %s that will fight for you in battle. Reinforcements disappear after 10 minutes",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank))
-                    :text(id+".super.reviewed","Summon %s that fight for you're side. Reinforcements can be customized using Shift+Alt.",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank));
+                    :text(id+".super.reviewed","Summon %s that fight for you. Customize reinforcements using %s.",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank),Component.keybind("key.forgermod.necromancer_customize"));
             case RecommendedAbilities.EXPLOSION -> rank<5?null:text(id+".super.reviewed","Create the same explosion and Resistance as Explosion, and fire 4 ghast fireballs in the cardinal directions relative to your facing and 8 blaze fireballs between them. Projectiles deal %s of their normal damage. Terrain damage can be toggled in the mod settings and is disabled by default.",number(100*ReviewedRanks.blastProjectileMultiplier(rank))+"%");
             case AdditionalAbilities.DIRECT_CURRENT -> rank<4
                     ?text(id+".reviewed","Mark up to %s by aiming at them and pressing the ability activation key. By marking them, they get connected one by one, forming a constant current that connects them. Enemies entering/passing the current are being dealt %s every 0.5s.",Math.min(4,rank+1)+" enemies","4 damage")

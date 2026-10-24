@@ -33,6 +33,23 @@ public class NecromancerGameTests {
     private static List<Mob> guards(ServerPlayer player){return player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(12),mob->mob instanceof BoneGuardEvents.FriendlyGuard guard && guard.owner()==player && mob.isAlive());}
     private static void clean(ServerPlayer player){BoneGuardEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
     private static void roster(NecromancerLoadouts.Loadout loadout,int... types){loadout.types.clear();for(int type:types)loadout.types.add(type);loadout.gear.setChanged();}
+    @GameTest(template="riftfang_test")
+    public static void customizationDescriptionUsesConfiguredKeybindForEverySuperRankAndVariant(GameTestHelper test){
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.MorsiumWeapon weapon) || weapon.isDagger())continue;
+            for(int rank=4;rank<=7;rank++){
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.BONE_GUARD,rank);
+                var description=AbilityDescriptions.description(stack,AdditionalAbilities.BONE_GUARD,rank,false);
+                test.assertTrue(description.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents,"Description lost translation");
+                var values=((net.minecraft.network.chat.contents.TranslatableContents)description.getContents()).getArgs();
+                test.assertTrue(values.length==2 && values[1] instanceof net.minecraft.network.chat.Component key
+                        && key.getContents() instanceof net.minecraft.network.chat.contents.KeybindContents content
+                        && content.getName().equals("key.forgermod.necromancer_customize"),"Customization tooltip hardcodes old shortcut");checked++;
+            }
+        }
+        test.assertTrue(checked==40,"Skipped Necromancer variants/ranks");test.succeed();
+    }
     @GameTest(template="riftfang_test",batch="review_necromancer_catalog")
     public static void everyAllowedUndeadSpawnsAndHorseIncludesRider(GameTestHelper test){
         var player=player(test);var stack=weapon(player,7);var bank=NecromancerLoadouts.get(player,stack);
@@ -128,7 +145,7 @@ public class NecromancerGameTests {
             test.assertTrue(first.stream().allMatch(Entity::isRemoved) && guards(player).size()==2,"Ready recast did not replace entire army");
             player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
             test.assertTrue(BoneGuardEvents.active(player) && player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==ready,"Weapon switch removed army or restarted cooldown");
-            player.setItemInHand(InteractionHand.MAIN_HAND,stack);var description=AbilityDescriptions.description(stack,AdditionalAbilities.BONE_GUARD,5,false);test.assertTrue(description.getString().contains("1 Skeleton and 1 Zombie") && description.getString().contains("Shift+Alt"),"Description ignores current roster");
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);var description=AbilityDescriptions.description(stack,AdditionalAbilities.BONE_GUARD,5,false);test.assertTrue(description.getString().contains("1 Skeleton and 1 Zombie") && description.getString().contains("Customize reinforcements"),"Description ignores current roster");
         }finally{clean(player);}test.succeed();
     }
 }

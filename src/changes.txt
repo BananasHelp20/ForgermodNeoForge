@@ -349,3 +349,5 @@
 - Thunderclap obstacles: route velocity bursts up and over low ledges through a fully checked body corridor instead of canceling immediately; retain solid-wall, ceiling, landing, chunk and world-border collision limits.
 
 - Skull Throw starts its per-variant cooldown when fired; impacts, expiry and weapon-switch cancellation no longer start or restart that cooldown.
+
+- Necromancer controls: replace the Shift+Alt release chord with a configurable Customize Necromancer Reinforcements binding, default Shift+right-click with a learned held weapon. Suppress the overlapping vanilla interaction and show the configured binding in the ability description.

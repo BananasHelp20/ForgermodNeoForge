@@ -96,9 +96,9 @@ Anger of Zeus uses initial wave radii of 5/10/15/20 blocks at super levels I/II/
 
 **Necromancer tooltip:**
 
-> Summon {reinforcements} that fight for you're side. Reinforcements can be customized using Shift+Alt.
+> Summon {reinforcements} that fight for you. Customize reinforcements using {configured customization key}.
 
-The roster placeholder resolves to the actual selected reinforcement names/counts in white. Capacity is4/6/8/10; real equipment unlocks at II and retains wear/enchantments between summons. Skeleton Horse costs3 including its rider; Zombie Horse and bosses are excluded. Shift+Alt opens on modifier release (Shift+Alt+S still rotates abilities). Editing requires no living reinforcements. All groups last10 minutes and are replaced on a ready recast; switching weapons does not despawn them.
+The roster placeholder resolves to the actual selected reinforcement names/counts in white. Capacity is4/6/8/10; real equipment unlocks at II and retains wear/enchantments between summons. Skeleton Horse costs3 including its rider; Zombie Horse and bosses are excluded. Shift+right-click opens by default, configurable under Customize Necromancer Reinforcements in Controls (Shift+Alt+S still rotates abilities). Editing requires no living reinforcements. All groups last10 minutes and are replaced on a ready recast; switching weapons does not despawn them.
 
 ### Challenge Roar
 
