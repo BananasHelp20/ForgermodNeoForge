@@ -28,7 +28,7 @@ public final class ThunderclapEvents {
     public static final double AIM_RANGE=10, CHAIN_RANGE=10;
     private static final class Dash {
         final ServerPlayer owner;final ItemStack stack;final int slot,rank;final ServerLevel level;final boolean noGravity;
-        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks,replans,failedHits;
+        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks,replans;
         Dash(ServerPlayer player,ItemStack stack,Mob target,int rank){owner=player;this.stack=stack;slot=player.getInventory().selected;
             this.target=target;this.rank=rank;level=player.serverLevel();noGravity=player.isNoGravity();previous=player.position();}
     }
@@ -87,44 +87,71 @@ public final class ThunderclapEvents {
         var point=new Vec3(Math.clamp(eye.x,box.minX,box.maxX),Math.clamp(eye.y,box.minY,box.maxY),Math.clamp(eye.z,box.minZ,box.maxZ));
         return clear(player.serverLevel(),eye,point,player) || clear(player.serverLevel(),eye,target.getEyePosition(),player);
     }
+    /** First entry into the rounded body-distance envelope, even when the endpoint passes beyond it. */
+    public static double contactFraction(AABB body,AABB target,Vec3 movement,double radius){
+        double squared=radius*radius;
+        if(bodyDistanceSqr(body,target)<=squared)return 0;
+        if(movement.lengthSqr()<1E-12 || bodyDistanceSqr(body.expandTowards(movement),target)>squared)return -1;
+        // Distance between translated boxes is convex along a line; find its minimum before the entry root.
+        double low=0,high=1;
+        for(int i=0;i<32;i++){
+            double left=(2*low+high)/3,right=(low+2*high)/3;
+            if(bodyDistanceSqr(body.move(movement.scale(left)),target)<=bodyDistanceSqr(body.move(movement.scale(right)),target))high=right;else low=left;
+        }
+        double closest=(low+high)*.5;
+        if(bodyDistanceSqr(body.move(movement),target)<bodyDistanceSqr(body.move(movement.scale(closest)),target))closest=1;
+        if(bodyDistanceSqr(body.move(movement.scale(closest)),target)>squared)return -1;
+        low=0;high=closest;
+        for(int i=0;i<24;i++){
+            double middle=(low+high)*.5;
+            if(bodyDistanceSqr(body.move(movement.scale(middle)),target)<=squared)high=middle;else low=middle;
+        }
+        return high;
+    }
     private static Vec3 arrivalVelocity(ServerPlayer player,Mob target,Vec3 velocity){
-        // Stop at the first point in body range, before a solid mob can block a fast movement step.
-        var body=player.getBoundingBox();var destination=target.getBoundingBox();
-        if(bodyDistanceSqr(body,destination)<=.81 || bodyDistanceSqr(body.move(velocity),destination)>.81)return velocity;
-        double low=0,high=1;for(int i=0;i<16;i++){double middle=(low+high)*.5;if(bodyDistanceSqr(body.move(velocity.scale(middle)),destination)<=.81)high=middle;else low=middle;}
-        return velocity.scale(high);
+        if(bodyDistanceSqr(player.getBoundingBox(),target.getBoundingBox())<=.81)return velocity;
+        double contact=contactFraction(player.getBoundingBox(),target.getBoundingBox(),velocity,.9);
+        return contact<0?velocity:velocity.scale(contact);
+    }
+    private static boolean crossedContact(Dash dash,Vec3 previous,Vec3 now){
+        Vec3 movement=now.subtract(previous);var body=dash.owner.getBoundingBox().move(previous.subtract(now));
+        double contact=contactFraction(body,dash.target.getBoundingBox(),movement,1);
+        if(contact<0)return false;
+        var step=movement.scale(contact);var eye=previous.add(step).add(0,dash.owner.getEyeHeight(),0);
+        return visibleBody(dash.owner,dash.target,eye) && passable(dash,body,step);
     }
     public static void tick(ServerPlayer player){
         if(!active(player))return;var dash=DASHES.get(player.getUUID());dash.legTicks++;
-        var now=player.position();double moved=now.distanceToSqr(dash.previous);
+        var now=player.position();var previous=dash.previous;double moved=now.distanceToSqr(previous);
         if(moved>64){cancel(player.getUUID());return;} // An external teleport must not become a dash hit.
-        if(moved>.000001){net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,dash.previous.add(0,.9,0),now.add(0,.9,0),player.getId(),2);dash.stalled=0;}
+        if(moved>.000001){net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,previous.add(0,.9,0),now.add(0,.9,0),player.getId(),2);dash.stalled=0;}
         else if(dash.legTicks>1 && dash.impactTicks==0)dash.stalled++;
         dash.previous=now;player.fallDistance=0;
         if(dash.impactTicks>0){dash.impactTicks--;dash.stalled=0;motion(player,Vec3.ZERO);return;}
-        Vec3 point=destination(player,dash.target);
-        while(!dash.route.isEmpty() && dash.route.peekFirst().distanceToSqr(now)<.01)dash.route.removeFirst();
-        Vec3 direction=(dash.route.isEmpty()?point:dash.route.peekFirst()).subtract(now);
-        if(!dash.level.getWorldBorder().isWithinBounds(dash.target.blockPosition()) || bodyDistanceSqr(player.getBoundingBox(),dash.target.getBoundingBox())>24*24){cancel(player.getUUID());return;}
-        if(bodyDistanceSqr(player.getBoundingBox(),dash.target.getBoundingBox())<=1.00001 && visibleBody(player,dash.target)){
-            motion(player,Vec3.ZERO);Mob struck=dash.target;
-            if(!dash.visited.contains(struck.getUUID())){
-                dash.route.clear();dash.stalled=0;
-                if(!strike(player,dash,struck)){if(++dash.failedHits>=6)cancel(player.getUUID());return;}
-                dash.visited.add(struck.getUUID());dash.failedHits=0;dash.impactTicks=2;return;
-            }
-            if(DASHES.get(player.getUUID())!=dash)return;
-            if(!player.isAlive() || player.getMainHandItem()!=dash.stack || dash.stack.isEmpty()){cancel(player.getUUID());return;}
-            // Each hop is measured from the last victim, not from the caster's original position.
+        if(dash.visited.contains(dash.target.getUUID())){
+            // A confirmed hit ends this leg. Never chase its victim again after knockback or death.
+            Mob struck=dash.target;
             Mob next=dash.level.getEntitiesOfClass(Mob.class,struck.getBoundingBox().inflate(CHAIN_RANGE),mob->eligible(mob)
                     && !dash.visited.contains(mob.getUUID()) && struck.distanceToSqr(mob)<=CHAIN_RANGE*CHAIN_RANGE
                     && visibleBody(player,mob))
                     .stream().min(Comparator.comparingDouble(struck::distanceToSqr)).orElse(null);
             if(next==null){cancel(player.getUUID());return;}
             player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,next.getEyePosition());
-            dash.target=next;dash.route.clear();dash.legTicks=0;dash.stalled=0;dash.replans=0;dash.failedHits=0;direction=destination(player,next).subtract(now);
+            dash.target=next;dash.route.clear();dash.legTicks=0;dash.stalled=0;dash.replans=0;previous=now;
         }
-        double length=direction.length();if(length<.000001)return;
+        if(!dash.level.getWorldBorder().isWithinBounds(dash.target.blockPosition()) || bodyDistanceSqr(player.getBoundingBox(),dash.target.getBoundingBox())>24*24){cancel(player.getUUID());return;}
+        boolean inRange=bodyDistanceSqr(player.getBoundingBox(),dash.target.getBoundingBox())<=1.00001 && visibleBody(player,dash.target);
+        if(inRange || moved>.000001 && crossedContact(dash,previous,now)){
+            motion(player,Vec3.ZERO);dash.route.clear();dash.stalled=0;
+            // A rejected native attack must not repeatedly ram or swing at the same body.
+            if(!strike(player,dash,dash.target)){cancel(player.getUUID());return;}
+            if(DASHES.get(player.getUUID())!=dash)return;
+            dash.visited.add(dash.target.getUUID());dash.impactTicks=2;return;
+        }
+        Vec3 point=destination(player,dash.target);
+        while(!dash.route.isEmpty() && dash.route.peekFirst().distanceToSqr(now)<.01)dash.route.removeFirst();
+        Vec3 direction=(dash.route.isEmpty()?point:dash.route.peekFirst()).subtract(now);
+        double length=direction.length();if(length<.000001){motion(player,Vec3.ZERO);return;}
         Vec3 velocity=arrivalVelocity(player,dash.target,direction.scale(Math.min(speed(dash.rank),length)/length));
         if(!passable(dash,player.getBoundingBox(),velocity)){
             // Clear one-block ledges in three real movement legs: up, across, then down.

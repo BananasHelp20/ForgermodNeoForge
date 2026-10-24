@@ -226,4 +226,65 @@ public class ThunderclapGameTests {
             test.assertFalse(ThunderclapEvents.active(player),"Out-of-range target holds ability open");
         }finally{first.discard();next.discard();outside.discard();blocked.discard();cleanup(player);}test.succeed();
     }
+    @GameTest(template="riftfang_test",batch="thunderclap_contact_sweep")
+    public static void lateMovementAcrossBodyHitsImmediatelyWithoutRammingBack(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();var target=mob(test,EntityType.COW,origin.add(0,0,4));
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-target.getEyeY(),4)));
+        try{
+            AbilityTestPackets.use(player,0);
+            // A delayed client update can cover two movement frames and finish beyond the hit envelope.
+            player.move(MoverType.SELF,new Vec3(0,0,7));
+            test.assertTrue(ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),target.getBoundingBox())>1,"Fixture did not cross beyond target");
+            ThunderclapEvents.tick(player);
+            test.assertTrue(target.getHealth()<200 && player.getDeltaMovement().equals(Vec3.ZERO),"Crossed body contact is missed or player accelerates back into victim");
+            float health=target.getHealth();advance(player);
+            test.assertTrue(!ThunderclapEvents.active(player) && target.getHealth()==health,"A crossed contact repeats the melee strike or keeps chasing");
+        }finally{target.discard();cleanup(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_knockback_chain")
+    public static void struckMobMovingOutOfRangeCannotDelayOrRedirectNextLeg(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();var first=mob(test,EntityType.COW,origin.add(0,0,5));var second=mob(test,EntityType.COW,origin.add(4,0,7));
+        first.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0);
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-first.getEyeY(),5)));
+        try{
+            AbilityTestPackets.use(player,0);
+            for(int i=0;i<8 && first.getHealth()==200;i++){player.move(MoverType.SELF,player.getDeltaMovement());ThunderclapEvents.tick(player);}
+            test.assertTrue(first.getHealth()<200,"Initial native hit missing");
+            first.move(MoverType.SELF,new Vec3(-3,0,0));
+            test.assertTrue(ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),first.getBoundingBox())>1,"Knockback fixture remains in contact");
+            var impact=player.position();float health=first.getHealth();
+            for(int tick=0;tick<2;tick++)ThunderclapEvents.tick(player);
+            ThunderclapEvents.tick(player);
+            test.assertTrue(player.position().equals(impact) && player.getDeltaMovement().x>0,"Confirmed hit chases knocked-back victim rather than next target");
+            advance(player);
+            test.assertTrue(second.getHealth()<200 && first.getHealth()==health && !ThunderclapEvents.active(player),"Knockback interrupts chain or repeats old hit");
+        }finally{first.discard();second.discard();cleanup(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_contact_geometry")
+    public static void contactEnvelopeClampsCrossingDiagonalAndVerticalStepsBeforeMobBody(GameTestHelper test){
+        var body=new net.minecraft.world.phys.AABB(-.3,0,-.3,.3,1.8,.3);
+        for(var step:List.of(new Vec3(0,0,8),new Vec3(8,0,8),new Vec3(0,8,0))){
+            var target=body.move(step.scale(.5));double fraction=ThunderclapEvents.contactFraction(body,target,step,.9);
+            test.assertTrue(fraction>0 && fraction<.5,"Contact missed when movement endpoint passes completely beyond mob");
+            var arrival=body.move(step.scale(fraction));
+            test.assertTrue(Math.abs(ThunderclapEvents.bodyDistanceSqr(arrival,target)-.81)<.00001 && !arrival.intersects(target),"Contact clamp penetrates the mob or stops outside attack range");
+        }
+        test.assertTrue(ThunderclapEvents.contactFraction(body,body.move(5,0,0),new Vec3(0,0,8),.9)<0,"Unrelated sideways movement invents body contact");
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_rejected_contact")
+    public static void rejectedContactCancelsImmediatelyWithoutRepeatedAttackOrPush(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();var target=mob(test,EntityType.COW,origin.add(0,0,4));target.setInvulnerable(true);
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-target.getEyeY(),4)));
+        try{
+            AbilityTestPackets.use(player,0);
+            player.move(MoverType.SELF,player.getDeltaMovement());ThunderclapEvents.tick(player);
+            test.assertTrue(!ThunderclapEvents.active(player) && player.getDeltaMovement().equals(Vec3.ZERO) && target.getHealth()==200,"Rejected contact keeps repeatedly attacking/ramming");
+            test.assertTrue(player.level().getEntitiesOfClass(net.minecraft.world.entity.LightningBolt.class,player.getBoundingBox().inflate(16)).isEmpty(),"Rejected contact produces a false lightning impact");
+        }finally{target.discard();cleanup(player);}test.succeed();
+    }
+
 }

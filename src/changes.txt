@@ -381,3 +381,7 @@
 - Inward Zeus waves: Anger of Zeus now strikes occupied radial bands from farthest to nearest, retaining existing radii, damage, chains and cooldowns.
 - Inward Zeus waves: Lightning Rod learned on the casting weapon or a valid matching dual-wielded dagger adds one final caster-only lightning strike after all enemy strikes/chains, granting normal Lightning Rod buffs without damaging nearby entities or terrain.
 - Inward Zeus waves: Lightning Rod now recognizes either valid dual-wield dagger, including different gemstone variants; pending self-strikes require Lightning Rod to remain available on valid held equipment.
+
+- Thunderclap contact fix: detect actual swept body contact between movement updates, including fast steps ending beyond the target, and clamp approach velocity before entering a mob body.
+- Thunderclap contact fix: confirmed hits advance after the normal impact beat without pursuing a knocked-back or dead victim again; next-leg obstacle routing uses the new target.
+- Thunderclap contact fix: rejected native melee hits immediately stop the dash rather than repeatedly attacking/ramming the same target; successful melee is still required for lightning damage and chaining.
