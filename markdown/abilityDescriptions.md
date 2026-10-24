@@ -1,6 +1,6 @@
 # In-game weapon abilities
 
-English descriptions from the game language file and actual registered pools: 59 active abilities, 49 passives, and nine material-hit effects. Unimplemented proposals are excluded.
+English descriptions from the game language file and actual registered pools: 60 active abilities, 49 passives, and nine material-hit effects. Unimplemented proposals are excluded.
 
 Special weapons learn these abilities through augmentation. Each assignment includes its base, Ruby, Amber, Amethyst and Jade variants. Item descriptions appear while holding Shift. Most text below is a historical base learning summary; see [the reviewed implementation queue](ability-review-implementation.md) for the current approved changes. The shared AbilityDescriptions implementation is authoritative for current in-game wording: gray prose and white current-level values, including cooldowns. Base abilities show a separate Shift-only super-upgrade notice below their cooldown, without describing future super effects. Upgrade cards compare ranks and highlight changed values in white.
 
@@ -665,6 +665,18 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 **Augmentation card:**
 
 > Strike all visible enemies within melee range.
+
+### Thunderclap
+
+**Weapons:** Claymore of Thunder, Static Dagger
+
+**Item tooltip:**
+
+> Dash to an aimed mob within 20 blocks with a full melee hit plus half weapon damage as lightning. Chain to the nearest unhit mob within 10 blocks of each victim until none remain.
+
+**Augmentation card:**
+
+> Dash and slash through nearby mobs; each hit adds half weapon damage as lightning.
 
 ### Upwind
 

@@ -26,6 +26,7 @@ public final class AbilityDescriptions {
         return Component.translatableWithFallback(key,fallback,java.util.Arrays.stream(values).map(AbilityDescriptions::white).toArray()).withStyle(ChatFormatting.GRAY);
     }
     public static Component description(ItemStack stack,String id,int rank,boolean compact) {
+        if(compact && AdditionalAbilities.THUNDERCLAP.equals(id))return text(id+".card","Dash and slash through nearby mobs; each hit adds half weapon damage as lightning.");
         Component reviewed=reviewed(stack,id,Math.max(1,rank));
         if(reviewed!=null) return reviewed;
         Component current=currentDescription(stack,id,rank,compact);
@@ -44,6 +45,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.THUNDERCLAP -> text(id+".current","Aim at a mob within %s and dash to it with a lightning slash. Deal a full melee hit plus %s lightning damage. Chain to the nearest unhit mob within %s of each previous target until none remain.",
+                    "20 blocks","half weapon","10 blocks");
             case AdditionalAbilities.BONE_GUARD -> rank<4
                     ?text(id+".reviewed","Activate this ability to summon %s that will fight for you in battle. Reinforcements disappear after 10 minutes",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank))
                     :text(id+".super.reviewed","Summon %s that fight for you're side. Reinforcements can be customized using Shift+Alt.",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank));

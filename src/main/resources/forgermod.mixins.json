@@ -4,6 +4,7 @@
   "package": "net.bananashelp20.forgermod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AttackStrengthAccess",
     "HeadwindMixin",
     "CompostMixin",
     "InfiniteBurnMixin"

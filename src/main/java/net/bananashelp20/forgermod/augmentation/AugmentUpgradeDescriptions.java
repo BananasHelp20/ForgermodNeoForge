@@ -106,6 +106,10 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case AdditionalAbilities.THUNDERCLAP -> {
+                numeric(stats,"dash_speed",net.bananashelp20.forgermod.item.custom.abilities.ThunderclapEvents.speed(rank)*20,"blocks_per_second");
+                numeric(stats,"range",20,"blocks");
+            }
             case Augmentations.AREA_DISCHARGE -> {
                 int superRank=Math.clamp(rank-4,1,4);
                 numeric(stats,"radius",rank<5?5:10*superRank,"blocks");

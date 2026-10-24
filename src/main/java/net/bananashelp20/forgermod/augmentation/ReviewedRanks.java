@@ -12,6 +12,7 @@ public final class ReviewedRanks {
             case "tooltips.forgermod.ability.dream_feast" -> 5;
             case "tooltips.forgermod.ability.delusion" -> 5;
             case "tooltips.forgermod.ability.deep_wound" -> 3;
+            case "tooltips.forgermod.ability.thunderclap" -> 4;
             default -> -1;
         };
     }

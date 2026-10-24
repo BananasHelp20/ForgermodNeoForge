@@ -17,6 +17,7 @@ public final class AdditionalAbilityRuntime {
         if (AdditionalAbilities.DREAM_FEAST.equals(id)) return DreamFeastAbility.activate(player);
         if (AdditionalAbilities.MAGNETIC_THROW.equals(id)) return MagneticThrowAbility.activate(player,stack);
         if (AdditionalAbilities.LIVE_WIRE.equals(id)) return LiveWireEvents.activate(player,stack);
+        if (AdditionalAbilities.THUNDERCLAP.equals(id)) return ThunderclapEvents.activate(player,stack);
         if (AdditionalAbilities.STATIC_BLADE.equals(id)) return StaticBladeEvents.activate(player,stack);
         if (AdditionalAbilities.ALTERNATING_CURRENT.equals(id)) return AlternatingCurrentEvents.activate(player,stack);
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return DirectCurrentEvents.activate(player,stack);
@@ -46,6 +47,7 @@ public final class AdditionalAbilityRuntime {
             || AdditionalAbilities.GRAVITY_WELL.equals(id) && GravityWellEvents.active(player)
             || AdditionalAbilities.LULLABY.equals(id) && LullabyEvents.active(player)
             || AdditionalAbilities.LIVE_WIRE.equals(id) && LiveWireEvents.active(player)
+            || AdditionalAbilities.THUNDERCLAP.equals(id) && ThunderclapEvents.active(player)
             || AdditionalAbilities.STATIC_BLADE.equals(id) && StaticBladeEvents.active(player)
             || AdditionalAbilities.ALTERNATING_CURRENT.equals(id) && AlternatingCurrentEvents.active(player)
             || AdditionalAbilities.DIRECT_CURRENT.equals(id) && DirectCurrentEvents.active(player)
@@ -59,6 +61,7 @@ public final class AdditionalAbilityRuntime {
             || AdditionalAbilities.GHOSTWALK.equals(id) && GhostwalkEvents.active(player); }
     public static void cancel(ServerPlayer player,String id){
         if(AdditionalAbilities.CHALLENGE_ROAR.equals(id))ChallengeRoarAbility.cancel(player.getUUID());
+        if(AdditionalAbilities.THUNDERCLAP.equals(id))ThunderclapEvents.cancel(player.getUUID());
         cancelOthers(player,id);
     }
     // Bone Guard groups have their own lifetime and survive equipped-session cancellation.

@@ -11,16 +11,16 @@ Available ability names from the actual registered augmentation pools; gemstone 
 | Voltage Axe | Axe | Alternating Current, Conductive Edge, Direct Current, Heavy Current, Lightning Rod, Magnetic Throw, Overwhelming Smash, Quick Recharge, Slowness Hit, Static Field, Swing Attack, Vertical Strike |
 | Voltage Axe | Axe | Alternating Current, Conductive Edge, Direct Current, Heavy Current, Lightning Rod, Magnetic Throw, Overwhelming Smash, Quick Recharge, Slowness Hit, Static Field, Swing Attack, Vertical Strike |
 | Voltage Axe | Axe | Alternating Current, Conductive Edge, Direct Current, Heavy Current, Lightning Rod, Magnetic Throw, Overwhelming Smash, Quick Recharge, Slowness Hit, Static Field, Swing Attack, Vertical Strike |
-| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence |
-| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence |
-| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence |
-| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence |
-| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence |
-| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade |
-| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade |
-| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade |
-| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade |
-| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade |
+| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence, Thunderclap |
+| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence, Thunderclap |
+| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence, Thunderclap |
+| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence, Thunderclap |
+| Claymore of Thunder | Claymore | Alternating Current, Conductive Edge, Direct Current, Lightning Rod, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Stunning Presence, Thunderclap |
+| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade, Thunderclap |
+| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade, Thunderclap |
+| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade, Thunderclap |
+| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade, Thunderclap |
+| Static Dagger | Dagger | Alternating Current, Area Discharge, Backstab, Chain Lightning, Charge Attack, Conductive Edge, Direct Current, Dual Wield, Lightning Rod, Live Wire, Magnetic Throw, Quick Recharge, Slowness Hit, Static Field, Static blade, Thunderclap |
 
 ## Ignisium
 

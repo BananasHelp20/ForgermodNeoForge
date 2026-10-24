@@ -27,6 +27,7 @@ public final class AdditionalAbilities {
     public static final String LIVE_WIRE = "tooltips.forgermod.ability.live_wire";
     public static final String QUICK_RECHARGE = "tooltips.forgermod.passive.quick_recharge";
     public static final String CONDUCTIVE_EDGE = "tooltips.forgermod.passive.conductive_edge";
+    public static final String THUNDERCLAP = "tooltips.forgermod.ability.thunderclap";
     public static final String STATIC_BLADE = "tooltips.forgermod.ability.static_blade";
     public static final String LIGHTNING_ROD = "tooltips.forgermod.passive.lightning_rod";
     public static final String HOMESICK = "tooltips.forgermod.passive.homesick";
@@ -89,6 +90,7 @@ public final class AdditionalAbilities {
             new Definition(LIVE_WIRE, true, 4, 800, 100, Set.of("Electrium:dagger")),
             new Definition(QUICK_RECHARGE, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(CONDUCTIVE_EDGE, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
+            new Definition(THUNDERCLAP, true, 4, 600, 100, Set.of("Electrium:dagger", "Electrium:claymore")),
             new Definition(STATIC_BLADE, true, 4, 800, 100, Set.of("Electrium:dagger")),
             new Definition(LIGHTNING_ROD, false, 1, 0, 0, Set.of("Electrium:dagger", "Electrium:claymore", "Electrium:axe")),
             new Definition(HOMESICK, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe")),
