@@ -110,16 +110,8 @@ public class ElectriumWeapon extends SwordItemWithEffect {
                     (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F
                             * CHARGE_ATTACK.damageMultiplier(player.getUUID()))) {
                 dischargeChargeIfReady(mob, player);
-                for (int step = 1; step <= 6; step++) {
-                    double fraction = step / 7.0;
-                    player.serverLevel().sendParticles(ParticleTypes.ELECTRIC_SPARK,
-                            previous.getX() + (mob.getX() - previous.getX()) * fraction,
-                            previous.getY() + previous.getBbHeight() * 0.5
-                                    + (mob.getY() + mob.getBbHeight() * 0.5
-                                    - previous.getY() - previous.getBbHeight() * 0.5) * fraction,
-                            previous.getZ() + (mob.getZ() - previous.getZ()) * fraction,
-                            1, 0, 0, 0, 0);
-                }
+                net.bananashelp20.forgermod.particle.LightningArcParticles.emit(player.serverLevel(),
+                        previous.getBoundingBox().getCenter(),mob.getBoundingBox().getCenter(),-1,5);
             } else {
                 mob.invulnerableTime = previousInvulnerableTime;
             }

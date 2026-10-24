@@ -12,9 +12,19 @@ import net.neoforged.neoforge.gametest.*;
 
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class ChainLightningGameTests {
+    private static final class ArcConnection extends net.minecraft.network.Connection {
+        final java.util.List<net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket> arcs=new java.util.ArrayList<>();
+        ArcConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle
+                    && particle.getParticle() instanceof net.bananashelp20.forgermod.particle.LightningArcParticles.Options)arcs.add(particle);
+        }
+    }
     @GameTest(template="riftfang_test")
     public static void fiveDaggersChainThroughPassivePetsFlyingMobsAndAlliedPlayers(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);var other=TestPlayers.survival(test);
+        var previousConnection=player.connection;var wire=new ArcConnection();
+        new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
         var origin=test.getBounds().getCenter().add(0,20,0);player.setPos(origin);player.setNoGravity(true);
         var original=EntityType.ZOMBIE.create(test.getLevel());original.setPos(origin.add(0,0,2));original.setNoAi(true);test.getLevel().addFreshEntity(original);
         var cow=EntityType.COW.create(test.getLevel());var wolf=EntityType.WOLF.create(test.getLevel());wolf.tame(player);var bat=EntityType.BAT.create(test.getLevel());
@@ -37,14 +47,24 @@ public class ChainLightningGameTests {
                 count++;player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(entry.get()));player.doTick();
                 for(var target:targets){target.setHealth(200);target.invulnerableTime=0;}
                 float before=player.getHealth();float expected=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*.5F;
+                wire.arcs.clear();var bolts=player.level().getEntitiesOfClass(LightningBolt.class,player.getBoundingBox().inflate(60)).stream().map(Entity::getUUID).toList();
                 player.getRandom().setSeed(seed);method.invoke(weapon,original,player);
+                test.assertTrue(wire.arcs.size()==4,"A successful hop did not send one jagged lightning arc");
+                LivingEntity previous=original;
+                for(int hop=0;hop<targets.size();hop++){
+                    var packet=wire.arcs.get(hop);var options=(net.bananashelp20.forgermod.particle.LightningArcParticles.Options)packet.getParticle();
+                    var from=new net.minecraft.world.phys.Vec3(packet.getX(),packet.getY(),packet.getZ());
+                    test.assertTrue(from.distanceTo(previous.getBoundingBox().getCenter())<.001 && from.add(options.delta()).distanceTo(targets.get(hop).getBoundingBox().getCenter())<.001
+                            && options.owner()==-1 && options.ticks()==5,"Lightning arc endpoints/lifetime are incorrect");previous=targets.get(hop);
+                }
+                test.assertTrue(player.level().getEntitiesOfClass(LightningBolt.class,player.getBoundingBox().inflate(60)).stream().map(Entity::getUUID).toList().equals(bolts),"Exchange spawns actual vanilla lightning");
                 for(var target:targets)test.assertTrue(Math.abs(target.getHealth()-(200-expected))<.001,"Chain misses or repeats allied/passive target: "+target.getType());
                 test.assertTrue(player.getHealth()==before && original.getHealth()==original.getMaxHealth(),"Chain damages caster or revisits initial target");
             }
             test.assertTrue(count==5,"Skipped Electrium dagger variants");test.succeed();
         } finally {
             original.discard();cow.discard();wolf.discard();bat.discard();player.getScoreboard().removePlayerTeam(team);player.server.setPvpAllowed(pvp);
-            player.server.getPlayerList().remove(other);player.server.getPlayerList().remove(player);
+            player.connection=previousConnection;player.server.getPlayerList().remove(other);player.server.getPlayerList().remove(player);
         }
     }
 }
