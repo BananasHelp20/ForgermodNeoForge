@@ -65,7 +65,7 @@ public class ThunderclapGameTests {
         try{
             AbilityTestPackets.use(player,0);
             for(int i=0;i<12 && first.getHealth()==200;i++){player.move(MoverType.SELF,player.getDeltaMovement());ThunderclapEvents.tick(player);}
-            test.assertTrue(first.getHealth()<200 && second.getHealth()==200 && player.distanceToSqr(first)<=1 && wire.snaps==0 && wire.swings>0,"Chain target selected before a visible hit within one block");
+            test.assertTrue(first.getHealth()<200 && second.getHealth()==200 && ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),first.getBoundingBox())<=1.00001 && wire.snaps==0 && wire.swings>0,"Chain target selected before a visible hit within one block");
             for(int i=0;i<2;i++){ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==0 && player.getDeltaMovement().equals(Vec3.ZERO),"No visible strike beat before chaining");}
             ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==1 && Math.abs(player.getYRot())>1,"No one-time camera turn to the off-axis next mob");
             player.setYRot(137);player.setXRot(20);ThunderclapEvents.tick(player);test.assertTrue(player.getYRot()==137 && player.getXRot()==20 && wire.snaps==1,"Camera remains forced after snap");
@@ -83,6 +83,48 @@ public class ThunderclapGameTests {
             for(int i=0;i<=16;i++){var point=net.bananashelp20.forgermod.particle.LightningArcParticles.point(delta,i,99,0);test.assertTrue(Double.isFinite(point.x) && Double.isFinite(point.y) && Double.isFinite(point.z),"Vertical or zero-length arc is invalid");}
         }
         test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_body")
+    public static void wideTallAndSolidMobsAreHitAtTheirBodyWithoutApproachingTheirCenter(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();
+        int index=0;try{for(var type:List.of(EntityType.RAVAGER,EntityType.GIANT,EntityType.SHULKER,EntityType.GIANT)){
+            player.setPos(origin);player.setYRot(0);player.setXRot(0);player.setDeltaMovement(Vec3.ZERO);
+            var target=mob(test,type,origin.add(0,0,index++==3?30:7));if(index==4){target.getAttribute(Attributes.SCALE).setBaseValue(12);target.refreshDimensions();}player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-target.getBoundingBox().getCenter().y,7)));if(index==4)player.setXRot(0);var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            try{
+                AbilityTestPackets.use(player,0);
+                for(int tick=0;tick<20 && target.getHealth()==200 && ThunderclapEvents.active(player);tick++){player.move(MoverType.SELF,player.getDeltaMovement());ThunderclapEvents.tick(player);}
+                test.assertTrue(target.getHealth()<200 && player.distanceToSqr(target)>1 && ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),target.getBoundingBox())<=1.00001,"Thunderclap still requires center proximity for "+type+" case="+index+" active="+ThunderclapEvents.active(player)+" health="+target.getHealth()+" player="+player.position()+" box="+target.getBoundingBox()+" gap="+ThunderclapEvents.bodyDistanceSqr(player.getBoundingBox(),target.getBoundingBox())+" interact="+player.canInteractWithEntity(target,0));
+                test.assertFalse(player.getBoundingBox().intersects(target.getBoundingBox()),"Dash enters mob body instead of striking its surface");
+            }finally{target.discard();ThunderclapEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));}
+        }}finally{cleanup(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_heights")
+    public static void elevationDifferencesAndRaisedPlatformsReachBodyAndPreserveTenBlockAim(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();
+        try{for(int elevation:new int[]{-3,3,6}){
+            for(int x=-3;x<=3;x++)for(int z=0;z<=10;z++)for(int y=-4;y<=10;y++)test.getLevel().setBlockAndUpdate(BlockPos.containing(origin).offset(x,y,z),Blocks.AIR.defaultBlockState());
+            player.setPos(origin);player.setYRot(0);player.setXRot(0);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            var target=mob(test,EntityType.COW,origin.add(0,elevation,5));
+            if(elevation>0)for(int x=-1;x<=1;x++)for(int z=5;z<=7;z++)for(int y=-1;y<elevation;y++)test.getLevel().setBlockAndUpdate(BlockPos.containing(origin).offset(x,y,z),Blocks.STONE.defaultBlockState());
+            var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+            player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-target.getEyeY(),5)));
+            try{AbilityTestPackets.use(player,0);advance(player);test.assertTrue(target.getHealth()<200,"Dash fails elevation/platform at "+elevation+" position="+player.position());test.assertTrue(test.getLevel().noCollision(player,player.getBoundingBox().deflate(.0001)),"Height routing clips terrain");}
+            finally{target.discard();ThunderclapEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));}
+        }
+        for(int x=-3;x<=3;x++)for(int z=0;z<=14;z++)for(int y=-4;y<=10;y++)test.getLevel().setBlockAndUpdate(BlockPos.containing(origin).offset(x,y,z),Blocks.AIR.defaultBlockState());
+        player.setPos(origin);player.setXRot(0);player.setYRot(0);var distant=mob(test,EntityType.COW,origin.add(0,0,12));
+        try{player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());AbilityTestPackets.use(player,0);test.assertFalse(ThunderclapEvents.active(player),"Initial aim still exceeds ten blocks");}
+        finally{distant.discard();}
+        }finally{cleanup(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_confirmed_impact")
+    public static void invulnerableTargetsNeverProduceThunderImpactOrAdvanceTheChain(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();var first=mob(test,EntityType.COW,origin.add(0,0,5));var next=mob(test,EntityType.COW,origin.add(3,0,7));first.setInvulnerable(true);
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-first.getEyeY(),5)));
+        try{AbilityTestPackets.use(player,0);advance(player);
+            test.assertTrue(first.getHealth()==200 && next.getHealth()==200 && !ThunderclapEvents.active(player),"Failed melee still chains or stays stuck indefinitely");
+            test.assertTrue(player.level().getEntitiesOfClass(net.minecraft.world.entity.LightningBolt.class,player.getBoundingBox().inflate(16)).isEmpty(),"Thunder impact appears without an accepted melee hit");
+        }finally{first.discard();next.discard();cleanup(player);}test.succeed();
     }
     @GameTest(template="riftfang_test",batch="thunderclap_variants")
     public static void allTenVariantsAndRanksChainBeyondFourTargetsWithArrivalSlashesAndViewSnaps(GameTestHelper test)throws Exception{
@@ -165,7 +207,7 @@ public class ThunderclapGameTests {
                 // A low roof permits standing, but not the extra half-block clearance required by the ledge.
                 for(int z=0;z<=8;z++)test.getLevel().setBlockAndUpdate(BlockPos.containing(origin).offset(0,2,z),ceiling?Blocks.STONE.defaultBlockState():Blocks.AIR.defaultBlockState());
                 AbilityTestPackets.use(player,0);advance(player);
-                test.assertTrue((target.getHealth()<200)==!ceiling,"Slab path ignores ceiling or still aborts at a low ledge");
+                test.assertTrue(target.getHealth()<200,"Dash cannot find a collision-free route past the slab/low roof");
                 test.assertTrue(test.getLevel().noCollision(player,player.getBoundingBox().deflate(.0001)),"Dash body clips into ledge/ceiling");
                 WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             }

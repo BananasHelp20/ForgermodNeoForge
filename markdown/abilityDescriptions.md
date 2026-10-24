@@ -674,7 +674,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Dash to an aimed mob within 20 blocks with a full melee hit plus half weapon damage as lightning. Chain to the nearest unhit mob within 10 blocks of each victim until none remain.
+> Dash to an aimed mob within 10 blocks with a full melee hit plus half weapon damage as lightning. Chain to the nearest unhit mob within 10 blocks of each victim until none remain.
 
 **Augmentation card:**
 

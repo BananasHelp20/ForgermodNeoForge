@@ -46,7 +46,7 @@ public final class AbilityDescriptions {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
             case AdditionalAbilities.THUNDERCLAP -> text(id+".current","Aim at a mob within %s and dash to it with a lightning slash. Deal a full melee hit plus %s lightning damage. Chain to the nearest unhit mob within %s of each previous target until none remain.",
-                    "20 blocks","half weapon","10 blocks");
+                    number(net.bananashelp20.forgermod.item.custom.abilities.ThunderclapEvents.AIM_RANGE)+" blocks","half weapon",number(net.bananashelp20.forgermod.item.custom.abilities.ThunderclapEvents.CHAIN_RANGE)+" blocks");
             case AdditionalAbilities.BONE_GUARD -> rank<4
                     ?text(id+".reviewed","Activate this ability to summon %s that will fight for you in battle. Reinforcements disappear after 10 minutes",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank))
                     :text(id+".super.reviewed","Summon %s that fight for you. Customize reinforcements using %s.",net.bananashelp20.forgermod.item.custom.abilities.NecromancerLoadouts.roster(stack,rank),Component.keybind("key.forgermod.necromancer_customize"));

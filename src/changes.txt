@@ -367,3 +367,6 @@
 - Reinforcements automatically block with equipped shields and shields receive vanilla durability wear; Cold Bellows can ignite blocked attackers. Their passive chains, slams and death explosions spare the summoner and allies.
 - Reinforcement melee and ranged kills now award player-collectible XP at 50% of normal, rounded down; Death's Due applies its bonus before the reduction using the reinforcement's equipped weapon.
 - Per user choice, hunger, double-jump and mining passives have no effect on reinforcements; no hunger system or jumping/mining AI was added. Cooldown-only Quick Recharge has no usable active ability to recharge.
+
+- Thunderclap body distance: hits and rechain readiness now use the one-block gap between player/mob bounding boxes rather than mob center distance. Fast movement stops at body range, allowing large/tall/solid mobs to be struck without entering their center; body-surface visibility preserves wall checks.
+- Thunderclap now uses a 10-block initial targeting range and 10-block per-victim chain range. Added bounded collision-checked obstacle routing and body-height approach points; a small arrival margin avoids subpixel stalls. Thunder hit particles, lightning and impact audio occur only after an accepted simulated melee hit; failed hits neither rechain nor leave an endless dash. Updated in-game range text.

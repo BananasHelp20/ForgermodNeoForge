@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
@@ -26,10 +25,10 @@ import java.util.*;
 /** Collision-respecting velocity bursts with a single view snap when selecting each new chain target. */
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class ThunderclapEvents {
-    public static final double AIM_RANGE=20, CHAIN_RANGE=10;
+    public static final double AIM_RANGE=10, CHAIN_RANGE=10;
     private static final class Dash {
         final ServerPlayer owner;final ItemStack stack;final int slot,rank;final ServerLevel level;final boolean noGravity;
-        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks;
+        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks,replans,failedHits;
         Dash(ServerPlayer player,ItemStack stack,Mob target,int rank){owner=player;this.stack=stack;slot=player.getInventory().selected;
             this.target=target;this.rank=rank;level=player.serverLevel();noGravity=player.isNoGravity();previous=player.position();}
     }
@@ -41,12 +40,8 @@ public final class ThunderclapEvents {
         return level.clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player)).getType()==HitResult.Type.MISS;
     }
     private static Mob aimed(ServerPlayer player){
-        Vec3 from=player.getEyePosition(),to=from.add(player.getLookAngle().scale(AIM_RANGE));
-        var wall=player.level().clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));
-        if(wall.getType()!=HitResult.Type.MISS)to=wall.getLocation();
-        var hit=ProjectileUtil.getEntityHitResult(player,from,to,player.getBoundingBox().expandTowards(to.subtract(from)).inflate(1),
-                entity->entity instanceof Mob mob && eligible(mob),from.distanceToSqr(to));
-        return hit==null?null:(Mob)hit.getEntity();
+        var entity=WeaponAbilityTargets.aimedLoadedEntity(player,AIM_RANGE,target->target instanceof Mob mob && eligible(mob));
+        return entity instanceof Mob mob?mob:null;
     }
     public static boolean activate(ServerPlayer player,ItemStack stack){
         if(active(player) || stack!=player.getMainHandItem() || !(stack.getItem() instanceof ElectriumWeapon weapon) || weapon.isAxe()
@@ -55,7 +50,7 @@ public final class ThunderclapEvents {
         Mob target=aimed(player);if(target==null)return false;
         var dash=new Dash(player,stack,target,rank);DASHES.put(player.getUUID(),dash);
         player.setNoGravity(true);player.fallDistance=0;
-        dash.level.playSound(null,player.blockPosition(),SoundEvents.TRIDENT_THUNDER.value(),SoundSource.PLAYERS,.55F,1.6F);
+        dash.level.playSound(null,player.blockPosition(),SoundEvents.TRIDENT_THROW.value(),SoundSource.PLAYERS,.55F,1.7F);
         tick(player);return true;
     }
     public static boolean active(ServerPlayer player){
@@ -75,53 +70,77 @@ public final class ThunderclapEvents {
         player.connection.send(new ClientboundSetEntityMotionPacket(player));
     }
     private static Vec3 destination(ServerPlayer player,Mob target){
-        var delta=target.position().subtract(player.position());var horizontal=new Vec3(delta.x,0,delta.z);
-        if(horizontal.lengthSqr()<.000001)horizontal=new Vec3(0,0,1);
-        double gap=Math.min(.75,target.getBbWidth()*.5+player.getBbWidth()*.5+.1);
-        return target.position().subtract(horizontal.normalize().scale(gap));
+        var box=target.getBoundingBox();var now=player.position();
+        double x=Math.clamp(now.x,box.minX,box.maxX),z=Math.clamp(now.z,box.minZ,box.maxZ);
+        var toward=new Vec3(x-now.x,0,z-now.z);if(toward.lengthSqr()>.000001){var gap=toward.normalize().scale(player.getBbWidth()*.5+.35);x-=gap.x;z-=gap.z;}
+        double y=Math.clamp(now.y,box.minY-player.getBbHeight()+.2,box.maxY-.2);
+        return new Vec3(x,y,z);
+    }
+    public static double bodyDistanceSqr(AABB first,AABB second){
+        double x=Math.max(0,Math.max(first.minX-second.maxX,second.minX-first.maxX));
+        double y=Math.max(0,Math.max(first.minY-second.maxY,second.minY-first.maxY));
+        double z=Math.max(0,Math.max(first.minZ-second.maxZ,second.minZ-first.maxZ));return x*x+y*y+z*z;
+    }
+    private static boolean visibleBody(ServerPlayer player,Mob target){return visibleBody(player,target,player.getEyePosition());}
+    private static boolean visibleBody(ServerPlayer player,Mob target,Vec3 eye){
+        var box=target.getBoundingBox();
+        var point=new Vec3(Math.clamp(eye.x,box.minX,box.maxX),Math.clamp(eye.y,box.minY,box.maxY),Math.clamp(eye.z,box.minZ,box.maxZ));
+        return clear(player.serverLevel(),eye,point,player) || clear(player.serverLevel(),eye,target.getEyePosition(),player);
+    }
+    private static Vec3 arrivalVelocity(ServerPlayer player,Mob target,Vec3 velocity){
+        // Stop at the first point in body range, before a solid mob can block a fast movement step.
+        var body=player.getBoundingBox();var destination=target.getBoundingBox();
+        if(bodyDistanceSqr(body,destination)<=.81 || bodyDistanceSqr(body.move(velocity),destination)>.81)return velocity;
+        double low=0,high=1;for(int i=0;i<16;i++){double middle=(low+high)*.5;if(bodyDistanceSqr(body.move(velocity.scale(middle)),destination)<=.81)high=middle;else low=middle;}
+        return velocity.scale(high);
     }
     public static void tick(ServerPlayer player){
         if(!active(player))return;var dash=DASHES.get(player.getUUID());dash.legTicks++;
         var now=player.position();double moved=now.distanceToSqr(dash.previous);
         if(moved>64){cancel(player.getUUID());return;} // An external teleport must not become a dash hit.
-        if(moved>.0001){net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,dash.previous.add(0,.9,0),now.add(0,.9,0),player.getId(),2);dash.stalled=0;}
+        if(moved>.000001){net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,dash.previous.add(0,.9,0),now.add(0,.9,0),player.getId(),2);dash.stalled=0;}
         else if(dash.legTicks>1 && dash.impactTicks==0)dash.stalled++;
         dash.previous=now;player.fallDistance=0;
         if(dash.impactTicks>0){dash.impactTicks--;dash.stalled=0;motion(player,Vec3.ZERO);return;}
         Vec3 point=destination(player,dash.target);
         while(!dash.route.isEmpty() && dash.route.peekFirst().distanceToSqr(now)<.01)dash.route.removeFirst();
         Vec3 direction=(dash.route.isEmpty()?point:dash.route.peekFirst()).subtract(now);
-        if(!dash.level.getWorldBorder().isWithinBounds(dash.target.blockPosition()) || player.distanceToSqr(dash.target)>24*24
-                || !player.hasLineOfSight(dash.target)){cancel(player.getUUID());return;}
-        if(dash.route.isEmpty() && direction.lengthSqr()<=.35*.35 && player.distanceToSqr(dash.target)<=1 && player.canInteractWithEntity(dash.target,0)){
+        if(!dash.level.getWorldBorder().isWithinBounds(dash.target.blockPosition()) || bodyDistanceSqr(player.getBoundingBox(),dash.target.getBoundingBox())>24*24){cancel(player.getUUID());return;}
+        if(bodyDistanceSqr(player.getBoundingBox(),dash.target.getBoundingBox())<=1.00001 && visibleBody(player,dash.target)){
             motion(player,Vec3.ZERO);Mob struck=dash.target;
-            if(dash.visited.add(struck.getUUID())){strike(player,dash,struck);dash.impactTicks=2;dash.stalled=0;return;}
+            if(!dash.visited.contains(struck.getUUID())){
+                dash.route.clear();dash.stalled=0;
+                if(!strike(player,dash,struck)){if(++dash.failedHits>=6)cancel(player.getUUID());return;}
+                dash.visited.add(struck.getUUID());dash.failedHits=0;dash.impactTicks=2;return;
+            }
             if(DASHES.get(player.getUUID())!=dash)return;
             if(!player.isAlive() || player.getMainHandItem()!=dash.stack || dash.stack.isEmpty()){cancel(player.getUUID());return;}
             // Each hop is measured from the last victim, not from the caster's original position.
             Mob next=dash.level.getEntitiesOfClass(Mob.class,struck.getBoundingBox().inflate(CHAIN_RANGE),mob->eligible(mob)
                     && !dash.visited.contains(mob.getUUID()) && struck.distanceToSqr(mob)<=CHAIN_RANGE*CHAIN_RANGE
-                    && player.hasLineOfSight(mob) && clear(dash.level,struck.getEyePosition(),mob.getEyePosition(),player))
+                    && visibleBody(player,mob))
                     .stream().min(Comparator.comparingDouble(struck::distanceToSqr)).orElse(null);
             if(next==null){cancel(player.getUUID());return;}
             player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,next.getEyePosition());
-            dash.target=next;dash.route.clear();dash.legTicks=0;dash.stalled=0;direction=destination(player,next).subtract(now);
+            dash.target=next;dash.route.clear();dash.legTicks=0;dash.stalled=0;dash.replans=0;dash.failedHits=0;direction=destination(player,next).subtract(now);
         }
         double length=direction.length();if(length<.000001)return;
-        Vec3 velocity=direction.scale(Math.min(speed(dash.rank),length)/length);
+        Vec3 velocity=arrivalVelocity(player,dash.target,direction.scale(Math.min(speed(dash.rank),length)/length));
         if(!passable(dash,player.getBoundingBox(),velocity)){
             // Clear one-block ledges in three real movement legs: up, across, then down.
             // The complete body corridor must be loaded and clear, including the landing.
-            if(!dash.route.isEmpty() || !overLedge(dash,point)){cancel(player.getUUID());return;}
+            dash.route.clear();
+            if(++dash.replans>3 || !overLedge(dash,point) && !routeAround(dash)){cancel(player.getUUID());return;}
             direction=dash.route.peekFirst().subtract(now);length=direction.length();
-            velocity=direction.scale(Math.min(speed(dash.rank),length)/length);
+            velocity=arrivalVelocity(player,dash.target,direction.scale(Math.min(speed(dash.rank),length)/length));
         }
         motion(player,velocity);
     }
     private static boolean passable(Dash dash,AABB box,Vec3 movement){
         var swept=box.expandTowards(movement).deflate(.0001);
         return dash.level.hasChunksAt(BlockPos.containing(swept.minX,swept.minY,swept.minZ),BlockPos.containing(swept.maxX,swept.maxY,swept.maxZ))
-                && dash.level.noCollision(dash.owner,swept);
+                && net.minecraft.world.entity.Entity.collideBoundingBox(dash.owner,movement,box,dash.level,
+                    dash.level.getEntityCollisions(dash.owner,box.expandTowards(movement))).distanceToSqr(movement)<.00000001;
     }
     private static boolean overLedge(Dash dash,Vec3 destination){
         var origin=dash.owner.position();var box=dash.owner.getBoundingBox();
@@ -136,7 +155,41 @@ public final class ThunderclapEvents {
         }
         return false;
     }
-    private static void strike(ServerPlayer player,Dash dash,Mob target){
+    private record Step(int x,int y,int z){Vec3 offset(){return new Vec3(x*.5,y*.5,z*.5);}}
+    private record Visit(Step step,double cost,double estimate){}
+    private static boolean routeAround(Dash dash){
+        var origin=dash.owner.position();var box=dash.owner.getBoundingBox();var target=dash.target.getBoundingBox();
+        var start=new Step(0,0,0);var open=new PriorityQueue<Visit>(Comparator.comparingDouble(Visit::estimate));
+        var scores=new HashMap<Step,Double>();var parents=new HashMap<Step,Step>();scores.put(start,0.0);open.add(new Visit(start,0,0));
+        int lowY=Math.max(-28,Math.min(-8,(int)Math.floor((target.minY-box.minY)*2)-4));
+        int highY=Math.min(28,Math.max(8,(int)Math.ceil((target.minY-box.minY)*2)+4));
+        int[][] directions={{1,0,0},{-1,0,0},{0,0,1},{0,0,-1},{0,1,0},{0,-1,0}};int expanded=0;
+        while(!open.isEmpty() && expanded++<512){
+            var visit=open.remove();var step=visit.step();if(visit.cost()>scores.getOrDefault(step,Double.MAX_VALUE))continue;
+            var offset=step.offset();var body=box.move(offset);
+            if(bodyDistanceSqr(body,target)<=.81 && visibleBody(dash.owner,dash.target,origin.add(offset).add(0,dash.owner.getEyeHeight(),0))){
+                var path=new ArrayList<Vec3>();var cursor=step;while(!cursor.equals(start)){path.add(origin.add(cursor.offset()));cursor=parents.get(cursor);}Collections.reverse(path);
+                var from=origin;int first=0;
+                while(first<path.size()){
+                    int last=first;while(last+1<path.size() && passable(dash,box.move(from.subtract(origin)),path.get(last+1).subtract(from)))last++;
+                    dash.route.addLast(path.get(last));from=path.get(last);first=last+1;
+                }
+                dash.stalled=0;return !dash.route.isEmpty();
+            }
+            for(var direction:directions){
+                var next=new Step(step.x()+direction[0],step.y()+direction[1],step.z()+direction[2]);
+                if(Math.abs(next.x())>28 || Math.abs(next.z())>28 || next.y()<lowY || next.y()>highY)continue;
+                var delta=new Vec3(direction[0]*.5,direction[1]*.5,direction[2]*.5);var nextBody=box.move(next.offset());
+                if(!dash.level.getWorldBorder().isWithinBounds(BlockPos.containing(origin.add(next.offset()))) || !passable(dash,body,delta)
+                        || !dash.level.noCollision(dash.owner,nextBody.deflate(.0001)))continue;
+                double cost=visit.cost()+.5;if(cost>=scores.getOrDefault(next,Double.MAX_VALUE))continue;
+                scores.put(next,cost);parents.put(next,step);double remaining=Math.max(0,Math.sqrt(bodyDistanceSqr(nextBody,target))-.9);
+                open.add(new Visit(next,cost,cost+remaining*1.25));
+            }
+        }
+        return false;
+    }
+    private static boolean strike(ServerPlayer player,Dash dash,Mob target){
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),health=target.getHealth()+target.getAbsorptionAmount();
         var access=(AttackStrengthAccess)player;int previous=access.forgermod$getAttackStrengthTicker();
         int charged=(int)Math.ceil(player.getCurrentItemAttackStrengthDelay())+1;boolean sprinting=player.isSprinting();
@@ -148,7 +201,7 @@ public final class ThunderclapEvents {
             if(access.forgermod$getAttackStrengthTicker()==charged)access.forgermod$setAttackStrengthTicker(previous);
         }
         boolean landed=target.getHealth()+target.getAbsorptionAmount()<health;
-        if(!landed)target.invulnerableTime=immunity;
+        if(!landed){target.invulnerableTime=immunity;return false;}
         var bolt=LightningRodEvents.visualStrike(player,target.position());
         if(landed && target.isAlive()){
             int meleeImmunity=target.invulnerableTime;target.invulnerableTime=0;
@@ -160,7 +213,7 @@ public final class ThunderclapEvents {
         dash.level.sendParticles(ParticleTypes.FLASH,center.x,center.y,center.z,1,0,0,0,0);
         dash.level.sendParticles(ParticleTypes.ELECTRIC_SPARK,center.x,center.y,center.z,32,.4,.65,.4,.15);
         net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,center.add(0,2.5,0),center,-1,4);
-        dash.level.playSound(null,target.blockPosition(),SoundEvents.LIGHTNING_BOLT_IMPACT,SoundSource.PLAYERS,.75F,1.5F);
+        dash.level.playSound(null,target.blockPosition(),SoundEvents.LIGHTNING_BOLT_IMPACT,SoundSource.PLAYERS,.75F,1.5F);return true;
     }
     @SubscribeEvent public static void playerTick(PlayerTickEvent.Post event){if(event.getEntity() instanceof ServerPlayer player)tick(player);}
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event){cancel(event.getEntity().getUUID());}
