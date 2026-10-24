@@ -62,6 +62,25 @@ public class EnderSwingGameTests {
         }
         test.succeed();
     }
+    @GameTest(template="riftfang_test")
+    public static void passiveAndOwnedMobsUseHighestAvailableCeilingSpaceAtEveryRank(GameTestHelper test){
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(Vec3.atBottomCenterOf(BlockPos.containing(test.getBounds().getCenter())));
+        for(int x=-3;x<=3;x++)for(int z=-3;z<=3;z++)for(int y=0;y<=24;y++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var cow=EntityType.COW.create(test.getLevel());var wolf=EntityType.WOLF.create(test.getLevel());wolf.tame(player);
+        for(var mob:java.util.List.of(cow,wolf)){mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);test.getLevel().addFreshEntity(mob);}
+        var ceiling=player.blockPosition().offset(1,4,0);test.getLevel().setBlockAndUpdate(ceiling,Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+        try{for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof InanisiumWeapon weapon) || !weapon.isAxe())continue;
+            for(int rank=1;rank<=3;rank++){
+                for(var mob:java.util.List.of(cow,wolf)){net.bananashelp20.forgermod.item.custom.abilities.GravitySwingEffects.clear(mob);mob.setHealth(200);mob.invulnerableTime=0;}
+                cow.setPos(player.position().add(1,0,0));wolf.setPos(player.position().add(-1,0,0));
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),RecommendedAbilities.ENDER_SWING,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+                EnderSwingAbility.activate(player,stack);
+                test.assertTrue(cow.getHealth()<200 && cow.getY()>player.getY() && cow.getBoundingBox().maxY<=ceiling.getY() && ceiling.getY()-cow.getBoundingBox().maxY<.01,"Passive mob is excluded or not lifted to exact ceiling clearance");
+                test.assertTrue(wolf.getHealth()<200 && Math.abs(wolf.getY()-player.getY()-net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingHeight(rank))<.001,"Owned mob is excluded or full clear lift changed");
+            }
+        }}finally{for(var mob:java.util.List.of(cow,wolf)){net.bananashelp20.forgermod.item.custom.abilities.GravitySwingEffects.clear(mob);mob.discard();}player.server.getPlayerList().remove(player);}test.succeed();
+    }
     private static Zombie zombie(GameTestHelper test, Vec3 pos) {
         Zombie zombie=EntityType.ZOMBIE.create(test.getLevel());
         zombie.setNoAi(true); zombie.setNoGravity(true);
@@ -88,7 +107,7 @@ public class EnderSwingGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void activationImmediatelyHitsOnlyNearbyEnemiesAndLiftsThroughClearSpace(GameTestHelper test) throws Exception {
+    public static void activationImmediatelyHitsAllNearbyMobsAndRespectsCeilings(GameTestHelper test) throws Exception {
         ServerPlayer player=TestPlayers.survival(test);
         player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         BlockPos feet=player.blockPosition();
@@ -103,7 +122,7 @@ public class EnderSwingGameTests {
         Zombie blocked=zombie(test,player.position().add(-.8,0,0));
         Zombie edge=zombie(test,player.position().add(2.0,0,0));
         Zombie outside=zombie(test,player.position().add(2.1,0,0));
-        Zombie ally=zombie(test,player.position().add(0,0,.8));
+        Zombie ally=zombie(test,player.position().add(.8,0,.8));
         var team=player.getScoreboard().addPlayerTeam("ender_"+player.getUUID().toString().substring(0,8));
         player.getScoreboard().addPlayerToTeam(player.getScoreboardName(),team);
         player.getScoreboard().addPlayerToTeam(ally.getScoreboardName(),team);
@@ -115,11 +134,11 @@ public class EnderSwingGameTests {
         test.assertFalse(net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,RecommendedAbilities.ENDER_SWING),"Instant swing leaves an armed state");
         test.assertTrue(Math.abs(lifted.getHealth()-(100-damage))<.001 && Math.abs(lifted.getY()-(liftedY+10))<.001,
                 "Nearby enemy was not struck and lifted exactly ten blocks");
-        test.assertTrue(Math.abs(blocked.getHealth()-(100-damage))<.001 && Math.abs(blocked.getY()-blockedY)<.001,
+        test.assertTrue(Math.abs(blocked.getHealth()-(100-damage))<.001 && Math.abs(blocked.getBoundingBox().maxY-obstruction.getY())<.01,
                 "Blocked enemy was not damaged or passed through a ceiling");
         test.assertTrue(Math.abs(edge.getHealth()-(100-damage))<.001 && Math.abs(edge.getY()-(edgeY+10))<.001,
                 "Enemy exactly two blocks away was not struck and lifted");
-        test.assertTrue(outside.getHealth()==100 && ally.getHealth()==100 && player.getHealth()==20,
+        test.assertTrue(outside.getHealth()==100 && ally.getHealth()<100 && ally.getY()>edgeY+9 && player.getHealth()==20,
                 "Swing damaged an outside target, ally or wielder");
         WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
         String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.ENDER_SWING;

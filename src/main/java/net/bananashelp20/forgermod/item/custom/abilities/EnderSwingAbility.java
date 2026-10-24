@@ -40,12 +40,12 @@ public final class EnderSwingAbility {
         player.swing(InteractionHand.MAIN_HAND);
         for (LivingEntity target : player.serverLevel().getEntitiesOfClass(LivingEntity.class,
                 player.getBoundingBox().inflate(radius),
-                living -> WeaponAbilityTargets.enemy(player, living) && player.distanceToSqr(living) <= radius * radius)) {
+                living -> living!=player && living.isAlive() && !living.isRemoved() && (living instanceof net.minecraft.world.entity.Mob || WeaponAbilityTargets.enemy(player,living)) && player.distanceToSqr(living) <= radius * radius)) {
             int previousImmunity = target.invulnerableTime;
             target.invulnerableTime = 0;
             if (target.hurt(player.damageSources().playerAttack(player), damage)) {
                 stack.getItem().postHurtEnemy(stack, target, player);
-                if (target.isAlive() && clearLift(player, target,height)) lift(player, target,height,rank);
+                if (target.isAlive()) {double available=availableLift(player,target,height);if(available>.001)lift(player,target,available,rank);}
             } else {
                 target.invulnerableTime = previousImmunity;
             }
@@ -61,21 +61,22 @@ public final class EnderSwingAbility {
                 SoundSource.PLAYERS, 1, .7f);
     }
 
-    private static boolean clearLift(ServerPlayer player, LivingEntity target,int height) {
-        if (target.isPassenger() || target.isVehicle()) return false;
-        var level = player.serverLevel();
-        AABB box = target.getBoundingBox();
-        if (box.maxY + height > level.getMaxBuildHeight()
-                || !level.getChunkSource().hasChunk(target.blockPosition().getX() >> 4,
-                        target.blockPosition().getZ() >> 4)) return false;
-        for (int step = 1; step <= height; step++) {
-            AABB moved = box.move(0, step, 0);
-            if (!level.getWorldBorder().isWithinBounds(moved) || !level.noCollision(target, moved)) return false;
+    private static double availableLift(ServerPlayer player,LivingEntity target,int height) {
+        if(target.isPassenger() || target.isVehicle())return 0;
+        var level=player.serverLevel();var box=target.getBoundingBox();
+        double maximum=Math.min(height,level.getMaxBuildHeight()-box.maxY);
+        if(maximum<=0 || !level.getWorldBorder().isWithinBounds(box)
+                || !level.hasChunksAt(net.minecraft.core.BlockPos.containing(box.minX,box.minY,box.minZ),net.minecraft.core.BlockPos.containing(box.maxX,box.maxY,box.maxZ)))return 0;
+        if(!level.getBlockCollisions(target,box.expandTowards(0,maximum,0)).iterator().hasNext())return maximum;
+        double low=0,high=maximum;
+        for(int i=0;i<14;i++){
+            double middle=(low+high)*.5;
+            if(level.getBlockCollisions(target,box.expandTowards(0,middle,0)).iterator().hasNext())high=middle;else low=middle;
         }
-        return true;
+        return Math.max(0,low-.0001);
     }
 
-    private static void lift(ServerPlayer player, LivingEntity target,int height,int rank) {
+    private static void lift(ServerPlayer player, LivingEntity target,double height,int rank) {
         Vec3 start = target.position();
         if (target instanceof ServerPlayer other) {
             if (!other.teleportTo(player.serverLevel(), start.x, start.y + height, start.z,

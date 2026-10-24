@@ -74,7 +74,7 @@ public final class AbilityDescriptions {
                     ?text(id+".reviewed.max","Aim at any %s to swap places with it when activating the ability while aiming at it.","visible entity")
                     :text(id+".reviewed","Aim at any living entity within %s to swap places with it when activating the ability while aiming at it.","10 blocks");
             case AdditionalAbilities.GRAVITY_WELL -> text(id+".reviewed","Aim at an enemy and activate the ability to pull an enemy within %s to you and immediately strike it with a vertical strike.","6 blocks");
-            case RecommendedAbilities.ENDER_SWING -> text(id+".reviewed","make a swing attack with a %s that teleports hit enemies %s in the air and increases their gravity by %s (increasing their falldamage drastically).",
+            case RecommendedAbilities.ENDER_SWING -> text(id+".reviewed","Swing at all mobs within a %s, lifting them up to %s or the highest clear space below a ceiling. Increase their gravity and fall damage by %s.",
                     number(ReviewedRanks.gravitySwingRadius(rank))+" block radius",ReviewedRanks.gravitySwingHeight(rank)+" blocks","+"+number(ReviewedRanks.gravitySwingBonus(rank)*100)+"%");
             case AdditionalAbilities.GHOSTWALK -> rank<4
                     ?text(id+".reviewed","Become invisible for %s or until striking an enemy.",(10+jade)+" seconds")
