@@ -410,3 +410,7 @@
 - Distance Tax active conversion: now an active ability that arms the next successful mob hit. That first target is marked for the existing ten-second distance-based damage (maximum 40); later hits do not replace or refresh it.
 - Distance Tax active conversion: existing learned ranks are preserved; if all three active slots are occupied, Distance Tax stays visibly learned but inactive until a slot is freed. It no longer acts as a reinforcement/player passive.
 - Distance Tax active conversion: added activation sound and current descriptions, normal cancellation cleanup and a temporary bounded target-chunk ticket so distance damage can resolve after the player moves away. No extra cooldown added beyond its active mark lifecycle.
+
+- Static Field marked corners: two marks form a line; three/four marks close the current back to the first and fill a triangle/quadrilateral using every marked mob, including concave four-corner shapes.
+- Static Field marked corners: added bounded interior electrical shimmer to show the affected area. Degenerate marks cannot create a filled field; walls and existing timing/damage/stun rules remain.
+- Static Field marked corners: Direct Current/Static Field can mark all mobs, including allied reinforcements and pets, and affect neutral mobs in their wires/field; the caster and marked anchors retain their existing immunity. Updated descriptions and geometry/native particle tests.

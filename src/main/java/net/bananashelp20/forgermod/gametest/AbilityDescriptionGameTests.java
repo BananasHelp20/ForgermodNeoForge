@@ -27,7 +27,7 @@ public final class AbilityDescriptionGameTests {
             var text=AbilityDescriptions.description(thunder,AdditionalAbilities.DIRECT_CURRENT,rank,false);
             test.assertTrue(key(text).equals(AdditionalAbilities.DIRECT_CURRENT+(rank>=4?".super":"")+".reviewed"),"Wrong electrical form");
             var targets=(Component)((TranslatableContents)text.getContents()).getArgs()[0];
-            test.assertTrue(targets.getString().equals(Math.min(4,rank+1)+" enemies"),"Shows future target count");
+            test.assertTrue(targets.getString().equals(Math.min(4,rank+1)+" mobs"),"Shows future target count");
             test.assertTrue(AbilityDescriptions.canBecomeSuper(thunder,AdditionalAbilities.DIRECT_CURRENT,rank)==(rank<4),"Super hint remains after conversion");
         }
         var dagger=new ItemStack(ModItems.DEAD_CALM_DAGGER.get());

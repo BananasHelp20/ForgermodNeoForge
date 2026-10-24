@@ -61,11 +61,11 @@ public final class DirectCurrentGameTests {
     }
     @GameTest(template="riftfang_test",timeoutTicks=50)
     public static void stationaryContactRepeatsAtHalfSecondsAndWallsStopIt(GameTestHelper test){
-        var player=player(test);var origin=player.position();var a=zombie(test,origin);var b=zombie(test,origin.add(0,0,6));var standing=zombie(test,origin.add(.4,0,3));var outside=zombie(test,origin.add(1.2,0,3));var above=zombie(test,origin.add(0,4,3));var actors=List.of(a,b,standing,outside,above);equip(player,1);mark(player,a);mark(player,b);
-        DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==196 && outside.getHealth()==200 && above.getHealth()==200 && a.getHealth()==200 && b.getHealth()==200,"Wrong body contact or anchor immunity");
+        var player=player(test);var origin=player.position();var a=zombie(test,origin);var b=zombie(test,origin.add(0,0,6));var standing=zombie(test,origin.add(.4,0,3));var outside=zombie(test,origin.add(1.2,0,3));var above=zombie(test,origin.add(0,4,3));var passive=EntityType.COW.create(test.getLevel());passive.setNoAi(true);passive.setNoGravity(true);passive.setPos(origin.add(.3,0,4.5));test.getLevel().addFreshEntity(passive);var actors=List.of(a,b,standing,outside,above,passive);equip(player,1);mark(player,a);mark(player,b);
+        DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==196 && passive.getHealth()==6 && outside.getHealth()==200 && above.getHealth()==200 && a.getHealth()==200 && b.getHealth()==200,"Wrong body contact or anchor immunity");
         DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==196,"Same-tick repeat damage");
         later(test,9,player,actors,()->{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==196,"Early half-second pulse");});
-        later(test,10,player,actors,()->{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==192 && standing.getDeltaMovement().equals(Vec3.ZERO),"Missing repeated contact or added knockback");});
+        later(test,10,player,actors,()->{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(standing.getHealth()==192 && passive.getHealth()==2 && passive.getDeltaMovement().equals(Vec3.ZERO) && standing.getDeltaMovement().equals(Vec3.ZERO),"Missing repeated contact or added knockback");});
         later(test,20,player,actors,()->{var wall=net.minecraft.core.BlockPos.containing(origin.add(0,1,3));test.getLevel().setBlockAndUpdate(wall,Blocks.STONE.defaultBlockState());DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
             test.assertTrue(standing.getHealth()==192,"Current passes through wall");test.getLevel().setBlockAndUpdate(wall,Blocks.AIR.defaultBlockState());cleanup(player,actors);test.succeed();});
     }
@@ -101,11 +101,11 @@ public final class DirectCurrentGameTests {
             player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));test.assertFalse(DirectCurrentEvents.active(player),"Switch keeps field");for(var actor:actors)test.assertFalse(WeaponControlLocks.frozen(actor),"Cancel keeps anchor lock");cleanup(player,actors);test.succeed();});
     }
     @GameTest(template="riftfang_test")
-    public static void passiveAlliedAndDistantTargetsAreNotMarked(GameTestHelper test){
+    public static void passiveAlliedMobsCanBeMarkedButDistantTargetsCannot(GameTestHelper test){
         var player=player(test);var origin=player.position();var cow=EntityType.COW.create(test.getLevel());var wolf=EntityType.WOLF.create(test.getLevel());wolf.tame(player);
-        for(var mob:List.of(cow,wolf)){mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(origin);test.getLevel().addFreshEntity(mob);}var near=zombie(test,origin.add(6,0,0));var far=zombie(test,origin.add(0,60,0));var actors=List.of(cow,wolf,near,far);
-        try{equip(player,1);mark(player,cow);mark(player,wolf);test.assertFalse(DirectCurrentEvents.active(player),"Passive/allied target starts circuit");mark(player,near);player.setPos(origin);aim(player,far);
-            try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}test.assertTrue(DirectCurrentEvents.marked(player)==1,"Distant target outside50 blocks is marked");
+        for(var mob:List.of(cow,wolf)){mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(mob==cow?origin:origin.add(0,0,6));test.getLevel().addFreshEntity(mob);}var near=zombie(test,origin.add(6,0,0));var far=zombie(test,origin.add(0,60,0));var actors=List.of(cow,wolf,near,far);
+        try{equip(player,3);mark(player,cow);mark(player,wolf);test.assertTrue(DirectCurrentEvents.marked(player)==2 && WeaponControlLocks.frozen(cow) && WeaponControlLocks.frozen(wolf),"Passive/allied mobs cannot form a circuit");mark(player,near);player.setPos(origin);aim(player,far);
+            try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}test.assertTrue(DirectCurrentEvents.marked(player)==3,"Distant target outside50 blocks is marked");
         }finally{cleanup(player,actors);}test.succeed();
     }
     @GameTest(template="riftfang_test")
@@ -116,4 +116,38 @@ public final class DirectCurrentGameTests {
         var offset=new Vec3(14000000,0,-14000000);var polygon=DirectCurrentEvents.fieldPolygon(List.of(a.add(offset),b.add(offset),c.add(offset),new Vec3(6,0,6).add(offset)));
         test.assertTrue(DirectCurrentEvents.inside(new Vec3(5,0,5).add(offset),polygon),"All-anchor field missing opposite corner");test.assertFalse(DirectCurrentEvents.inside(new Vec3(5,4,5).add(offset),polygon) || DirectCurrentEvents.inside(new Vec3(7,0,5).add(offset),polygon),"Polygon exceeds height or boundary");test.succeed();
     }
+    private static final class ParticleConnection extends net.minecraft.network.Connection {
+        final List<Vec3> sparks=new ArrayList<>();
+        ParticleConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle && particle.getParticle()==net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK)sparks.add(new Vec3(particle.getX(),particle.getY(),particle.getZ()));
+        }
+    }
+    @GameTest(template="riftfang_test",batch="static_field_triangle_closure",timeoutTicks=45)
+    public static void thirdMarkClosesBackToFirstAndShowsTheFilledTriangle(GameTestHelper test){
+        var player=player(test);var origin=player.position();
+        for(int x=-1;x<=10;x++)for(int y=0;y<=9;y++)for(int z=-1;z<=10;z++)test.getLevel().setBlockAndUpdate(net.minecraft.core.BlockPos.containing(origin).offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var a=zombie(test,origin);var b=zombie(test,origin.add(8,0,0));var c=zombie(test,origin.add(0,0,8));var edge=zombie(test,origin.add(.3,0,4));var inside=zombie(test,origin.add(2,0,2));var actors=List.of(a,b,c,edge,inside);
+        var old=player.connection;var wire=new ParticleConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        try{equip(player,4);mark(player,a);DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(wire.sparks.isEmpty() && !WeaponControlLocks.frozen(a),"Single mark already creates a field");
+            mark(player,b);wire.sparks.clear();DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+            test.assertTrue(edge.getHealth()==200 && inside.getHealth()==200 && wire.sparks.stream().noneMatch(point->point.distanceToSqr(origin.add(0,1,4))<.01),"Two marks form more than a line");
+            mark(player,c);wire.sparks.clear();DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+            test.assertTrue(wire.sparks.stream().anyMatch(point->point.distanceToSqr(origin.add(0,1,4))<.01),"Third mark does not return current to first anchor");
+            test.assertTrue(wire.sparks.stream().anyMatch(point->Math.abs(point.y-origin.y-.08)<.01 && DirectCurrentEvents.inside(point,List.of(a.position(),b.position(),c.position()))),"Triangle has no interior visual shimmer");
+            player.connection=old;
+            later(test,20,player,actors,()->{try{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(edge.getHealth()==199 && inside.getHealth()==199 && WeaponControlLocks.frozen(inside),"Closed triangle fails to damage/stun its interior and closing edge");test.succeed();}finally{player.connection=old;cleanup(player,actors);}});
+        }catch(RuntimeException|Error failure){player.connection=old;cleanup(player,actors);throw failure;}
+    }
+    @GameTest(template="riftfang_test")
+    public static void fourthCornerIsRetainedForConcaveQuadrilateralsAndArbitraryMarkOrder(GameTestHelper test){
+        var offset=new Vec3(14000000,0,-14000000);var a=offset.add(0,0,0);var b=offset.add(8,0,0);var c=offset.add(0,0,8);var d=offset.add(1,0,1);
+        for(var points:List.of(List.of(a,b,c,d),List.of(d,b,a,c),List.of(c,a,d,b))){
+            var polygon=DirectCurrentEvents.fieldPolygon(points);
+            test.assertTrue(polygon.size()==4 && polygon.containsAll(points),"A marked fourth corner is discarded as an interior hull point");
+            test.assertTrue(DirectCurrentEvents.inside(offset.add(3,0,1),polygon) && !DirectCurrentEvents.inside(offset.add(.25,0,4),polygon),"Quadrilateral ignores the fourth corner or self-intersects after unordered marking");
+        }
+        test.succeed();
+    }
+
 }
