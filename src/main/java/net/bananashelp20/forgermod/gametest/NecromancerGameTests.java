@@ -33,6 +33,64 @@ public class NecromancerGameTests {
     private static List<Mob> guards(ServerPlayer player){return player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(12),mob->mob instanceof BoneGuardEvents.FriendlyGuard guard && guard.owner()==player && mob.isAlive());}
     private static void clean(ServerPlayer player){BoneGuardEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
     private static void roster(NecromancerLoadouts.Loadout loadout,int... types){loadout.types.clear();for(int type:types)loadout.types.add(type);loadout.gear.setChanged();}
+    @GameTest(template="riftfang_test",batch="necromancer_ui")
+    public static void consumedOffhandTotemMarksBankDirtyAndDoesNotReturnOnSave(GameTestHelper test){
+        var player=player(test);var stack=weapon(player,5);var bank=NecromancerLoadouts.get(player,stack);roster(bank,0);bank.gear.setItem(5,new ItemStack(Items.TOTEM_OF_UNDYING));
+        var storage=player.server.overworld().getDataStorage().computeIfAbsent(new net.minecraft.world.level.saveddata.SavedData.Factory<>(NecromancerLoadouts::new,NecromancerLoadouts::load),"forgermod_necromancer_loadouts");
+        try{
+            test.assertTrue(BoneGuardEvents.activate(player,stack),"Cannot summon totem reinforcement");var guard=guards(player).getFirst();guard.setNoAi(true);storage.setDirty(false);
+            guard.hurt(player.damageSources().playerAttack(player),1000);
+            test.assertTrue(guard.isAlive() && bank.gear.getItem(5).isEmpty() && storage.isDirty(),"Consumed offhand totem remains bank-owned or was not marked for saving");
+        }finally{clean(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="necromancer_ui")
+    public static void pickerAppendsSelectsAndCancelsWithoutReplacingGearAndSlotsFollowSelection(GameTestHelper test){
+        var player=player(test);var stack=weapon(player,7);var bank=NecromancerLoadouts.get(player,stack);roster(bank,0,1);bank.publish(stack);
+        var sword=new ItemStack(Items.DIAMOND_SWORD);var bow=new ItemStack(Items.BOW);var shield=new ItemStack(Items.SHIELD);
+        bank.gear.setItem(0,sword);bank.gear.setItem(6,bow);bank.gear.setItem(11,shield);
+        try{
+            var menu=new NecromancerMenu(1,player.getInventory(),player.getInventory().selected);
+            test.assertTrue(menu.selected()==0 && menu.rosterSize()==2 && menu.slots.size()==42 && menu.getSlot(0).getItem()==sword,"Default selection, six equipment slots or inventory layout wrong");
+            test.assertTrue(menu.getSlot(0).x==9 && menu.getSlot(1).y==8 && menu.getSlot(5).x==57 && menu.getSlot(6).y==84 && menu.getSlot(33).y==142,"Slots do not align with redesigned texture");
+            test.assertTrue(menu.clickMenuButton(player,11) && menu.getSlot(0).getItem()==bow && menu.getSlot(5).getItem()==shield,"Selection does not expose correct hand items");
+            test.assertFalse(menu.clickMenuButton(player,200),"Forged selection appends without opening picker");
+            test.assertTrue(menu.clickMenuButton(player,1) && menu.picking() && bank.types.equals(List.of(0,1)),"Add mutates roster before a mob is chosen");
+            test.assertTrue(!menu.getSlot(0).isActive() && !menu.getSlot(6).isActive() && menu.quickMoveStack(player,0).isEmpty(),"Picker leaves inventory interactions enabled");
+            test.assertTrue(menu.clickMenuButton(player,206) && !menu.picking() && menu.selected()==2 && bank.types.equals(List.of(0,1,6)),"Chosen reinforcement is not appended and selected");
+            test.assertTrue(bank.gear.getItem(0)==sword && bank.gear.getItem(6)==bow && bank.gear.getItem(11)==shield,"Appending replaces or clones existing equipment");
+            test.assertTrue(menu.clickMenuButton(player,1) && menu.clickMenuButton(player,3) && bank.types.size()==3,"Back changes roster");
+            player.getInventory().setItem(9,new ItemStack(Items.IRON_HELMET));menu.quickMoveStack(player,6);
+            test.assertTrue(menu.getSlot(1).getItem().is(Items.IRON_HELMET) && menu.getSlot(0).getItem().isEmpty(),"Shift-click armor chooses main hand instead of armor slot");
+            player.getInventory().setItem(10,new ItemStack(Items.SHIELD));menu.quickMoveStack(player,7);
+            test.assertTrue(menu.getSlot(5).getItem().is(Items.SHIELD),"Shift-click shield does not choose offhand");
+            test.assertTrue(menu.clickMenuButton(player,301) && bank.types.equals(List.of(0,6)) && menu.selected()==1,"Removing preceding row changes selected reinforcement");
+            test.assertTrue(menu.getSlot(1).getItem().is(Items.IRON_HELMET) && menu.getSlot(5).getItem().is(Items.SHIELD)
+                    && player.getInventory().items.stream().filter(item->item.is(Items.BOW)).mapToInt(ItemStack::getCount).sum()==1 && player.getInventory().items.stream().filter(item->item.is(Items.SHIELD)).mapToInt(ItemStack::getCount).sum()==1,"Removing row loses, mixes or duplicates hand/armor items");
+            while(menu.used()<menu.capacity()){test.assertTrue(menu.clickMenuButton(player,1) && menu.clickMenuButton(player,200),"Cannot fill remaining roster capacity");}
+            test.assertTrue(!menu.clickMenuButton(player,1) && menu.rosterSize()==9,"Full roster opens add picker or has wrong capacity count");
+        }finally{clean(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="necromancer_ui")
+    public static void legacyFiveSlotSavesMigrateEachRowAndNewOffhandSavesRoundTrip(GameTestHelper test){
+        var registry=test.getLevel().registryAccess();var root=new net.minecraft.nbt.CompoundTag();var record=new net.minecraft.nbt.CompoundTag();record.putUUID("Id",UUID.randomUUID());record.putIntArray("Types",new int[]{0,1});
+        var gear=new net.minecraft.nbt.ListTag();int[] oldSlots={0,4,5,9};var items=List.of(new ItemStack(Items.BOW),new ItemStack(Items.IRON_BOOTS),new ItemStack(Items.DIAMOND_SWORD),new ItemStack(Items.DIAMOND_BOOTS));
+        for(int i=0;i<oldSlots.length;i++){var entry=new net.minecraft.nbt.CompoundTag();entry.putInt("Slot",oldSlots[i]);entry.put("Item",items.get(i).save(registry));gear.add(entry);}
+        record.put("Gear",gear);var records=new net.minecraft.nbt.ListTag();records.add(record);root.put("Loadouts",records);
+        var migrated=NecromancerLoadouts.load(root,registry).save(new net.minecraft.nbt.CompoundTag(),registry);var saved=migrated.getList("Loadouts",10).getCompound(0);var savedGear=saved.getList("Gear",10);
+        test.assertTrue(saved.getInt("EquipmentSlots")==6 && savedGear.size()==4,"Legacy format not marked migrated");int[] expected={0,4,6,10};
+        for(int i=0;i<expected.length;i++)test.assertTrue(savedGear.getCompound(i).getInt("Slot")==expected[i] && ItemStack.matches(ItemStack.parse(registry,savedGear.getCompound(i).getCompound("Item")).orElse(ItemStack.EMPTY),items.get(i)),"Migration moves old row equipment into wrong slot");
+        var offhand=new net.minecraft.nbt.CompoundTag();offhand.putInt("Slot",11);offhand.put("Item",new ItemStack(Items.TOTEM_OF_UNDYING).save(registry));savedGear.add(offhand);
+        test.assertTrue(NecromancerLoadouts.load(migrated,registry).save(new net.minecraft.nbt.CompoundTag(),registry).equals(migrated),"New offhand items are lost on save/load");test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="necromancer_ui")
+    public static void summonedOffhandUsesRealBankItemAndSurvivesDismissal(GameTestHelper test){
+        var player=player(test);var stack=weapon(player,5);var bank=NecromancerLoadouts.get(player,stack);roster(bank,0);var shield=new ItemStack(Items.SHIELD);bank.gear.setItem(5,shield);
+        try{
+            test.assertTrue(BoneGuardEvents.activate(player,stack),"Cannot summon equipped reinforcement");var guard=guards(player).getFirst();
+            test.assertTrue(guard.getOffhandItem()==shield && NecromancerEquipment.supplied(guard,EquipmentSlot.OFFHAND),"Summon offhand is copied or missing");
+            BoneGuardEvents.cancel(player.getUUID());test.assertTrue(bank.gear.getItem(5)==shield && guard.getOffhandItem().isEmpty(),"Dismissal loses or duplicates real offhand");
+        }finally{clean(player);}test.succeed();
+    }
     @GameTest(template="riftfang_test")
     public static void customizationDescriptionUsesConfiguredKeybindForEverySuperRankAndVariant(GameTestHelper test){
         int checked=0;
@@ -77,7 +135,7 @@ public class NecromancerGameTests {
                 roster(bank,0);test.assertTrue(menu.clickMenuButton(player,111) && bank.used()==4,"Zoglin replacement/cost failed");
                 test.assertFalse(menu.clickMenuButton(player,999),"Forged mob type accepted");
                 test.assertTrue(menu.canEquip()==(rank>=5),"Equipment rank gate wrong");
-                test.assertFalse(menu.getSlot(0).mayPlace(new ItemStack(Items.DIRT)) || menu.getSlot(1).mayPlace(new ItemStack(Items.IRON_CHESTPLATE)),"Invalid equipment accepted");
+                test.assertTrue(menu.getSlot(0).mayPlace(new ItemStack(Items.DIRT))==(rank>=5) && !menu.getSlot(1).mayPlace(new ItemStack(Items.IRON_CHESTPLATE)),"Hand/armor equipment acceptance or rank gate wrong");
                 if(rank>=5){var sword=new ItemStack(Items.IRON_SWORD);sword.setDamageValue(17);menu.getSlot(0).set(sword);test.assertTrue(bank.gear.getItem(0)==sword,"Editor copied supplied gear");
                     test.assertTrue(menu.clickMenuButton(player,100),"Mob replacement failed");test.assertTrue(bank.gear.getItem(0).isEmpty() && player.getInventory().items.stream().anyMatch(item->item.is(Items.IRON_SWORD) && item.getDamageValue()==17),"Replacement did not return supplied sword with its wear");}
                 test.assertTrue(menu.clickMenuButton(player,2) && bank.types.isEmpty(),"Removal failed");

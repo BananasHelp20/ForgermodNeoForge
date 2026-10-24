@@ -355,3 +355,7 @@
 - Chain Lightning exchanges now render flickering blue/yellow jagged lightning arcs anchored between each chained pair, replacing the sparse spark line without spawning vanilla lightning bolts. Damage, hop chance, range and target selection are unchanged.
 
 - Sculk roar animations: Challenging Roar emits two expanding cyan sound ripples, a shrieker pulse and soul wisps; Intimidating Roar adds a third, higher ripple and stronger soul burst. Waves expand to the current ability range, fade quickly and use one bounded client pattern packet per nearby viewer instead of ticking server entities or per-mote packets.
+
+- Necromancer UI now uses the redesigned inventory texture, vanilla-style buttons and armor icons, a selectable scrollable roster, and a separate add-selection page that appends/selects the chosen reinforcement. Opens with the first reinforcement selected; removal returns its items and preserves other rows.
+- Added real main-hand/offhand item configuration alongside four armor slots, matching the new texture. Main/offhand accept held items; shift-click prefers matching armor and shields/totems in offhand. Migrates old five-slot equipment saves to six slots without moving equipment between reinforcements. Existing capacity, equipment-rank unlock, live-army editing locks and real-item ownership remain enforced.
+- Necromancer UI offhand equipment uses the real stored item on summoned reinforcements; consuming a totem marks the bank dirty so it cannot reappear from an older save.

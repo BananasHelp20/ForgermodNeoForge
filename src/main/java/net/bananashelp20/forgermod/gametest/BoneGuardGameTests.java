@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.gametest;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.abilities.NecromancerCatalog;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.MorsiumWeapon;
@@ -28,7 +29,7 @@ public class BoneGuardGameTests {
     }
     private static void mixed(net.minecraft.server.level.ServerPlayer player,ItemStack stack,boolean bowWither){
         var loadout=NecromancerLoadouts.get(player,stack);loadout.types.clear();loadout.types.addAll(java.util.List.of(0,5,6,9,1));
-        if(bowWither){var bow=new ItemStack(Items.BOW);bow.enchant(player.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FLAME),1);loadout.gear.setItem(15,bow);loadout.gear.setItem(20,new ItemStack(Items.IRON_SWORD));}
+        if(bowWither){var bow=new ItemStack(Items.BOW);bow.enchant(player.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FLAME),1);loadout.gear.setItem(3*NecromancerCatalog.EQUIPMENT_SLOTS,bow);loadout.gear.setItem(4*NecromancerCatalog.EQUIPMENT_SLOTS,new ItemStack(Items.IRON_SWORD));}
         loadout.publish(stack);
     }
     @GameTest(template="riftfang_test")

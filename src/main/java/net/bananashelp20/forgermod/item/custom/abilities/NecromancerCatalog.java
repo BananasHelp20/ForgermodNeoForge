@@ -6,7 +6,7 @@ import java.util.List;
 /** Normal non-boss undead; a skeleton horse entry includes its skeleton rider. */
 public final class NecromancerCatalog {
     public record Choice(EntityType<?> type,int cost){}
-    public static final int MAX_ENTRIES=10,EQUIPMENT_SLOTS=5;
+    public static final int MAX_ENTRIES=10,EQUIPMENT_SLOTS=6;
     public static final List<Choice> CHOICES=List.of(
             new Choice(EntityType.SKELETON,1),new Choice(EntityType.ZOMBIE,1),new Choice(EntityType.ZOMBIE_VILLAGER,1),
             new Choice(EntityType.HUSK,2),new Choice(EntityType.DROWNED,2),new Choice(EntityType.STRAY,2),new Choice(EntityType.BOGGED,2),

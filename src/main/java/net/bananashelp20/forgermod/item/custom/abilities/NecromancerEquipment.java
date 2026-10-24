@@ -10,17 +10,17 @@ import java.util.*;
 /** Summon slots point at the actual bank-owned items, not copies. Only real supplied equipment wears. */
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class NecromancerEquipment {
-    public static final EquipmentSlot[] SLOTS={EquipmentSlot.MAINHAND,EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET};
+    public static final EquipmentSlot[] SLOTS={EquipmentSlot.MAINHAND,EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET,EquipmentSlot.OFFHAND};
     private record Binding(NecromancerLoadouts.Loadout loadout,int row,Mob mob){}
     private static final Map<UUID,Binding> BINDINGS=new HashMap<>();
     private NecromancerEquipment(){}
     public static void bind(Mob mob,NecromancerLoadouts.Loadout loadout,int row){
         BINDINGS.put(mob.getUUID(),new Binding(loadout,row,mob));
-        for(int i=0;i<5;i++){var stack=loadout.gear.getItem(row*5+i);if(!stack.isEmpty())mob.setItemSlot(SLOTS[i],stack);}
+        for(int i=0;i<SLOTS.length;i++){var stack=loadout.gear.getItem(row*NecromancerCatalog.EQUIPMENT_SLOTS+i);if(!stack.isEmpty())mob.setItemSlot(SLOTS[i],stack);}
     }
     public static boolean supplied(Mob mob,EquipmentSlot slot){
         var binding=BINDINGS.get(mob.getUUID());if(binding==null)return false;
-        for(int i=0;i<5;i++)if(SLOTS[i]==slot)return !binding.loadout.gear.getItem(binding.row*5+i).isEmpty() && mob.getItemBySlot(slot)==binding.loadout.gear.getItem(binding.row*5+i);return false;
+        for(int i=0;i<SLOTS.length;i++)if(SLOTS[i]==slot)return !binding.loadout.gear.getItem(binding.row*NecromancerCatalog.EQUIPMENT_SLOTS+i).isEmpty() && mob.getItemBySlot(slot)==binding.loadout.gear.getItem(binding.row*NecromancerCatalog.EQUIPMENT_SLOTS+i);return false;
     }
     public static void changed(Mob mob){var binding=BINDINGS.get(mob.getUUID());if(binding!=null)binding.loadout.gear.setChanged();}
     public static void wearWeapon(Mob mob){
@@ -31,8 +31,11 @@ public final class NecromancerEquipment {
     public static void wearBow(Mob mob){if(supplied(mob,EquipmentSlot.MAINHAND) && mob.getMainHandItem().getItem() instanceof BowItem){mob.getMainHandItem().hurtAndBreak(1,mob,EquipmentSlot.MAINHAND);changed(mob);}}
     public static void release(Mob mob){
         var binding=BINDINGS.remove(mob.getUUID());if(binding==null)return;
-        for(int i=0;i<5;i++)if(mob.getItemBySlot(SLOTS[i])==binding.loadout.gear.getItem(binding.row*5+i))mob.setItemSlot(SLOTS[i],ItemStack.EMPTY);
+        for(int i=0;i<SLOTS.length;i++)if(mob.getItemBySlot(SLOTS[i])==binding.loadout.gear.getItem(binding.row*NecromancerCatalog.EQUIPMENT_SLOTS+i))mob.setItemSlot(SLOTS[i],ItemStack.EMPTY);
         binding.loadout.gear.setChanged();
+    }
+    @SubscribeEvent public static void totem(net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent event){
+        if(event.getEntity() instanceof Mob mob)changed(mob);
     }
     @SubscribeEvent(priority=EventPriority.LOWEST)
     public static void death(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event){if(event.getEntity() instanceof Mob mob)release(mob);}
@@ -59,7 +62,7 @@ public final class NecromancerEquipment {
         stack.setDamageValue(stack.getDamageValue()-restored);changed(mob);orb.discard();if(remaining>0)ExperienceOrb.award(level,point,remaining);
     }
     public static boolean validItem(int slot,ItemStack item){
-        if(item.isEmpty())return true;if(slot==0)return item.getItem() instanceof SwordItem || item.getItem() instanceof AxeItem || item.getItem() instanceof BowItem || item.getItem() instanceof CrossbowItem || item.getItem() instanceof TridentItem;
+        if(item.isEmpty())return true;if(slot==0 || slot==5)return true;
         return slot>=1 && slot<5 && item.getItem() instanceof ArmorItem armor && armor.getEquipmentSlot()==SLOTS[slot];
     }
 }

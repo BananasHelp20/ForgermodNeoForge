@@ -30,13 +30,13 @@ public final class NecromancerLoadouts extends SavedData {
         }
         public void remove(int index,ServerPlayer player){
             if(BoneGuardEvents.busy(id) || index<0 || index>=types.size())return;returnGear(index,player);
-            for(int row=index;row<types.size()-1;row++)for(int slot=0;slot<5;slot++)gear.setItem(row*5+slot,gear.removeItemNoUpdate((row+1)*5+slot));
-            for(int slot=0;slot<5;slot++)gear.setItem((types.size()-1)*5+slot,ItemStack.EMPTY);types.remove(index);gear.setChanged();
+            for(int row=index;row<types.size()-1;row++)for(int slot=0;slot<NecromancerCatalog.EQUIPMENT_SLOTS;slot++)gear.setItem(row*NecromancerCatalog.EQUIPMENT_SLOTS+slot,gear.removeItemNoUpdate((row+1)*NecromancerCatalog.EQUIPMENT_SLOTS+slot));
+            for(int slot=0;slot<NecromancerCatalog.EQUIPMENT_SLOTS;slot++)gear.setItem((types.size()-1)*NecromancerCatalog.EQUIPMENT_SLOTS+slot,ItemStack.EMPTY);types.remove(index);gear.setChanged();
         }
         public void returnGear(int index,ServerPlayer player){
             if(BoneGuardEvents.busy(id) || index<0 || index>=types.size())return;
-            for(int slot=0;slot<5;slot++){
-                var item=gear.removeItemNoUpdate(index*5+slot);if(item.isEmpty())continue;player.getInventory().add(item);
+            for(int slot=0;slot<NecromancerCatalog.EQUIPMENT_SLOTS;slot++){
+                var item=gear.removeItemNoUpdate(index*NecromancerCatalog.EQUIPMENT_SLOTS+slot);if(item.isEmpty())continue;player.getInventory().add(item);
                 if(!item.isEmpty()){var dropped=new ItemEntity(player.level(),player.getX(),player.getY(),player.getZ(),item);dropped.setDefaultPickUpDelay();player.level().addFreshEntity(dropped);}
             }gear.setChanged();
         }
@@ -66,14 +66,18 @@ public final class NecromancerLoadouts extends SavedData {
         for(int i=0;i<list.size();i++){
             var saved=list.getCompound(i);if(!saved.hasUUID("Id"))continue;var record=new Loadout(storage,saved.getUUID("Id"));
             for(int type:saved.getIntArray("Types"))if(NecromancerCatalog.valid(type) && record.types.size()<10)record.types.add(type);
-            var items=saved.getList("Gear",Tag.TAG_COMPOUND);for(int j=0;j<items.size();j++){var item=items.getCompound(j);int slot=item.getInt("Slot");if(slot>=0 && slot<record.types.size()*5)record.gear.setItem(slot,ItemStack.parse(registry,item.getCompound("Item")).orElse(ItemStack.EMPTY));}
+            int stride=saved.getInt("EquipmentSlots")==NecromancerCatalog.EQUIPMENT_SLOTS?NecromancerCatalog.EQUIPMENT_SLOTS:5;
+            var items=saved.getList("Gear",Tag.TAG_COMPOUND);for(int j=0;j<items.size();j++){
+                var item=items.getCompound(j);int slot=item.getInt("Slot");
+                if(slot>=0 && slot<record.types.size()*stride)record.gear.setItem((slot/stride)*NecromancerCatalog.EQUIPMENT_SLOTS+slot%stride,ItemStack.parse(registry,item.getCompound("Item")).orElse(ItemStack.EMPTY));
+            }
             storage.records.put(record.id,record);
         }return storage;
     }
     @Override public CompoundTag save(CompoundTag tag,HolderLookup.Provider registry){
         var list=new ListTag();for(var record:records.values()){
-            var saved=new CompoundTag();saved.putUUID("Id",record.id);saved.putIntArray("Types",record.types.stream().mapToInt(Integer::intValue).toArray());var items=new ListTag();
-            for(int i=0;i<record.types.size()*5;i++){var stack=record.gear.getItem(i);if(stack.isEmpty())continue;var item=new CompoundTag();item.putInt("Slot",i);item.put("Item",stack.save(registry));items.add(item);}saved.put("Gear",items);list.add(saved);
+            var saved=new CompoundTag();saved.putUUID("Id",record.id);saved.putInt("EquipmentSlots",NecromancerCatalog.EQUIPMENT_SLOTS);saved.putIntArray("Types",record.types.stream().mapToInt(Integer::intValue).toArray());var items=new ListTag();
+            for(int i=0;i<record.types.size()*NecromancerCatalog.EQUIPMENT_SLOTS;i++){var stack=record.gear.getItem(i);if(stack.isEmpty())continue;var item=new CompoundTag();item.putInt("Slot",i);item.put("Item",stack.save(registry));items.add(item);}saved.put("Gear",items);list.add(saved);
         }tag.put("Loadouts",list);return tag;
     }
 }
