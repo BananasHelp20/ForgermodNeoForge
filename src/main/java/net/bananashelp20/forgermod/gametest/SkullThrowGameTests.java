@@ -43,9 +43,11 @@ public class SkullThrowGameTests {
     }
     private static final class RecordingConnection extends net.minecraft.network.Connection {
         final java.util.List<net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket> particles=new java.util.ArrayList<>();
+        final java.util.List<net.minecraft.sounds.SoundEvent> sounds=new java.util.ArrayList<>();
         RecordingConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);}
         @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush) {
             if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle) particles.add(particle);
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound)sounds.add(sound.getSound().value());
         }
         boolean burst(){return particles.stream().anyMatch(p->p.getParticle() instanceof net.minecraft.core.particles.BlockParticleOption block && block.getState().is(Blocks.BONE_BLOCK))
             && particles.stream().anyMatch(p->p.getParticle()==net.minecraft.core.particles.ParticleTypes.EXPLOSION);}
@@ -140,11 +142,14 @@ public class SkullThrowGameTests {
         var stack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         try {
             player.setPos(start.add(0,5,0));player.setXRot(90);SkullThrowEvents.activate(player,stack);var skull=skull(player);
+            test.assertTrue(connection.sounds.contains(net.minecraft.sounds.SoundEvents.WITHER_SHOOT) && connection.sounds.contains(net.minecraft.sounds.SoundEvents.TRIDENT_THROW.value()),"Skull launch lacks spectral projectile whoosh");
             for(int i=0;i<5 && skull.isAlive();i++)skull.tick();
             test.assertTrue(!skull.isAlive() && connection.burst() && ticketCount(skull)==0 && test.getBlockState(new BlockPos(8,4,8)).is(Blocks.STONE),"Ground impact does not burst into bone fragments or damages terrain");
-            player.setPos(start);player.setXRot(0);player.setYRot(0);connection.particles.clear();SkullThrowEvents.activate(player,stack);skull=skull(player);
+            test.assertTrue(connection.sounds.contains(net.minecraft.sounds.SoundEvents.BONE_BLOCK_BREAK) && connection.sounds.contains(net.minecraft.sounds.SoundEvents.SOUL_ESCAPE.value()) && !connection.sounds.contains(net.minecraft.sounds.SoundEvents.SKELETON_DEATH),"Skull impact uses old death cry or lacks bone/soul sounds");
+            player.setPos(start);player.setXRot(0);player.setYRot(0);connection.particles.clear();connection.sounds.clear();SkullThrowEvents.activate(player,stack);skull=skull(player);
             for(int i=0;i<3 && skull.isAlive();i++)skull.tick();
             test.assertTrue(!skull.isAlive() && connection.burst() && cow.getHealth()==cow.getMaxHealth() && !cow.hasEffect(net.minecraft.world.effect.MobEffects.WITHER),"Passive entity does not burst the skull safely");
+            test.assertTrue(connection.sounds.size()==4 && connection.sounds.contains(net.minecraft.sounds.SoundEvents.BONE_BLOCK_BREAK) && !connection.sounds.contains(net.minecraft.sounds.SoundEvents.SKELETON_DEATH),"Entity collision duplicates sound or retains old death cry");
             test.succeed();
         } finally {SkullThrowEvents.cancel(player.getUUID());cow.discard();player.connection=previous;player.server.getPlayerList().remove(player);}
     }

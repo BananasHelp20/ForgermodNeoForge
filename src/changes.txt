@@ -373,3 +373,5 @@
 
 - Active ability sounds: added short, themed vanilla-sample activation cues for previously silent actives, including fire/void/dream/electric/wind/blood/nature/soul/sculk effects. Existing dedicated cast/impact sounds are retained; failed, unlearned and cooldown-blocked activations stay silent. Base Windcharge gains a launch cue while Skybreaker retains its existing heavy landing sound.
 - Magma Toss now has a launch cue and one local explosion sound on actual impact, matching its existing visual burst without changing damage or terrain.
+
+- Skull Throw audio now uses a spectral whoosh when launched and a brittle bone crack with escaping souls on impact, replacing the skeleton-death cry. Sounds remain local; projectile damage, speed, range and launch cooldown are unchanged.

@@ -6,6 +6,8 @@ import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.WitherSkull;
@@ -45,6 +47,8 @@ public final class SkullThrowEvents {
         if(!player.level().addFreshEntity(rock)) return false;
         FLIGHTS.put(player.getUUID(),new Flight(stack,player.getInventory().selected,rock,
                 rank,(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.WITHER_SHOOT,SoundSource.PLAYERS,.45F,1.45F);
+        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.TRIDENT_THROW.value(),SoundSource.PLAYERS,.3F,.85F);
         return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -84,8 +88,8 @@ public final class SkullThrowEvents {
         player.serverLevel().sendParticles(new net.minecraft.core.particles.BlockParticleOption(ParticleTypes.BLOCK,
                 net.minecraft.world.level.block.Blocks.BONE_BLOCK.defaultBlockState()),point.x,point.y,point.z,36,.18,.18,.18,.18);
         player.serverLevel().sendParticles(ParticleTypes.EXPLOSION,point.x,point.y,point.z,1,0,0,0,0);
-        player.serverLevel().playSound(null,point.x,point.y,point.z,net.minecraft.sounds.SoundEvents.SKELETON_DEATH,
-                net.minecraft.sounds.SoundSource.PLAYERS,1, .8F);
+        player.serverLevel().playSound(null,point.x,point.y,point.z,SoundEvents.BONE_BLOCK_BREAK,SoundSource.PLAYERS,.8F,.7F);
+        player.serverLevel().playSound(null,point.x,point.y,point.z,SoundEvents.SOUL_ESCAPE.value(),SoundSource.PLAYERS,.5F,1.1F);
         cancel(player.getUUID());
     }
     @SubscribeEvent
