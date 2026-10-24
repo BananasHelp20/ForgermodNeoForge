@@ -392,3 +392,5 @@
 - Crucible grapple acceleration buff: block grappling now adds 0.45 blocks/tick of pull velocity per tick instead of 0.12 (3.75x acceleration), reaching its existing 2.5-block/tick speed cap much sooner. Release retains momentum.
 
 - Thunderclap faster chaining: removed the two extra idle ticks after each successful hit. The next target is acquired and its velocity dash begins on the first following tick, retaining confirmed-melee-before-lightning ordering.
+
+- Skull Throw explosion impact: replaced the bone-crack/soul-escape impact sounds with one explosion and one skeleton death sound, layered at the projectile impact point.

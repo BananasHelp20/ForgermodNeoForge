@@ -88,8 +88,8 @@ public final class SkullThrowEvents {
         player.serverLevel().sendParticles(new net.minecraft.core.particles.BlockParticleOption(ParticleTypes.BLOCK,
                 net.minecraft.world.level.block.Blocks.BONE_BLOCK.defaultBlockState()),point.x,point.y,point.z,36,.18,.18,.18,.18);
         player.serverLevel().sendParticles(ParticleTypes.EXPLOSION,point.x,point.y,point.z,1,0,0,0,0);
-        player.serverLevel().playSound(null,point.x,point.y,point.z,SoundEvents.BONE_BLOCK_BREAK,SoundSource.PLAYERS,.8F,.7F);
-        player.serverLevel().playSound(null,point.x,point.y,point.z,SoundEvents.SOUL_ESCAPE.value(),SoundSource.PLAYERS,.5F,1.1F);
+        player.serverLevel().playSound(null,point.x,point.y,point.z,SoundEvents.GENERIC_EXPLODE.value(),SoundSource.PLAYERS,.8F,1F);
+        player.serverLevel().playSound(null,point.x,point.y,point.z,SoundEvents.SKELETON_DEATH,SoundSource.PLAYERS,1F,1F);
         cancel(player.getUUID());
     }
     @SubscribeEvent
