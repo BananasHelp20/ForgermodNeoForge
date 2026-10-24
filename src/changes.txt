@@ -414,3 +414,5 @@
 - Static Field marked corners: two marks form a line; three/four marks close the current back to the first and fill a triangle/quadrilateral using every marked mob, including concave four-corner shapes.
 - Static Field marked corners: added bounded interior electrical shimmer to show the affected area. Degenerate marks cannot create a filled field; walls and existing timing/damage/stun rules remain.
 - Static Field marked corners: Direct Current/Static Field can mark all mobs, including allied reinforcements and pets, and affect neutral mobs in their wires/field; the caster and marked anchors retain their existing immunity. Updated descriptions and geometry/native particle tests.
+
+- Absolute Nightmare cave activation: replaced the Elder Guardian curse with vanilla cave ambience at normal pitch.

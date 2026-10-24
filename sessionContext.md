@@ -667,3 +667,7 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Updated current/fallback descriptions, existing allied/neutral tests and added native particle-packet regression proving no connection on first mark, line-only on second, closing third-to-first edge/interior shimmer on third, followed by damage/stun. Added large-coordinate unordered/concave four-corner geometry regression.
 
 - Verification: full build and all 403 required GameTests passed in build/static-field-corners-final.log. Corrected the native packet-capture fixture to restore the normal simulated-player connection before advancing server ticks, and updated the rank-description regression for all-mob wording. Reviewed boundary ordering, degenerate geometry, bounded particles, native no-knockback damage, lifecycle and corner/occupant targeting.
+
+## Absolute Nightmare cave activation
+- Replaced the Elder Guardian curse activation cue with vanilla SoundEvents.AMBIENT_CAVE, volume 0.8 and natural pitch 1.0, through the existing successful-activation-only player sound path. All variants/ranks share the cue. No new assets.
+- Full build and all 403 required GameTests passed in build/nightmare-cave-sound-tests.log; reviewed successful activation gating and registered Holder overload, then reran all 403 tests successfully in build/nightmare-cave-sound-reviewed.log. Checklist checked only after verification. Scoped commit/push preserves unrelated user assets and local table/UI work.

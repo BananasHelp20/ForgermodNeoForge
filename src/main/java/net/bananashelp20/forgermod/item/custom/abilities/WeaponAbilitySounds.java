@@ -58,7 +58,7 @@ public final class WeaponAbilitySounds {
             case "tooltips.forgermod.ability.poisoned_vein" -> List.of(cue(SoundEvents.BREWING_STAND_BREW,0.65F,0.75F), cue(SoundEvents.SLIME_SQUISH_SMALL,0.4F,0.8F));
             case "tooltips.forgermod.ability.strengthened_bones" -> List.of(cue(SoundEvents.BONE_BLOCK_PLACE,0.7F,0.7F), cue(SoundEvents.SKELETON_AMBIENT,0.3F,1.2F));
             case "tooltips.forgermod.ability.storing_anger" -> List.of(cue(SoundEvents.WARDEN_HEARTBEAT,0.65F,0.7F), cue(SoundEvents.BEACON_POWER_SELECT,0.4F,0.65F));
-            case "tooltips.forgermod.ability.absolute_nightmare" -> List.of(cue(SoundEvents.ELDER_GUARDIAN_CURSE,0.4F,1.4F));
+            case "tooltips.forgermod.ability.absolute_nightmare" -> List.of(cue(SoundEvents.AMBIENT_CAVE,0.8F,1.0F));
             case "tooltips.forgermod.ability.lucid_dreaming" -> List.of(cue(SoundEvents.AMETHYST_BLOCK_CHIME,0.65F,1.1F), cue(SoundEvents.ENCHANTMENT_TABLE_USE,0.4F,1.1F));
             case "tooltips.forgermod.ability.eye_of_the_storm" -> List.of(cue(SoundEvents.BREEZE_WIND_CHARGE_BURST,0.6F,0.8F), cue(SoundEvents.CONDUIT_ACTIVATE,0.45F,0.8F));
             case "tooltips.forgermod.ability.windy_dash" -> List.of(cue(SoundEvents.BREEZE_SHOOT,0.65F,1.25F), cue(SoundEvents.PHANTOM_FLAP,0.35F,1.3F));
