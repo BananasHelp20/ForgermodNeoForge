@@ -21,7 +21,8 @@ public final class ZeusStrikePlan {
                 groups.get(Math.clamp((int)Math.ceil(Math.sqrt(distance)/5)-1,0,waves-1)).add(target);
         }
         List<Strike<T>> strikes=new ArrayList<>();int nonemptyWave=0;
-        for(var group:groups){
+        for(int band=groups.size()-1;band>=0;band--){
+            var group=groups.get(band);
             if(group.isEmpty())continue;
             for(T target:group)strikes.add(new Strike<>(target,null,nonemptyWave*10,2));
             nonemptyWave++;

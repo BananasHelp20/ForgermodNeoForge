@@ -377,3 +377,7 @@
 - Skull Throw audio now uses a spectral whoosh when launched and a brittle bone crack with escaping souls on impact, replacing the skeleton-death cry. Sounds remain local; projectile damage, speed, range and launch cooldown are unchanged.
 
 - Reinforcement projectile isolation: credited arrows no longer borrow the summoner's Echo Appetite or Warden Tone. Kill credit still awards half XP normally; hunger remains inactive on reinforcements and vibration passives use the actual wielder. Normal player arrows retain both passives.
+
+- Inward Zeus waves: Anger of Zeus now strikes occupied radial bands from farthest to nearest, retaining existing radii, damage, chains and cooldowns.
+- Inward Zeus waves: Lightning Rod learned on the casting weapon or a valid matching dual-wielded dagger adds one final caster-only lightning strike after all enemy strikes/chains, granting normal Lightning Rod buffs without damaging nearby entities or terrain.
+- Inward Zeus waves: Lightning Rod now recognizes either valid dual-wield dagger, including different gemstone variants; pending self-strikes require Lightning Rod to remain available on valid held equipment.

@@ -1448,3 +1448,5 @@ The tables below expand that template into the actual English item descriptions 
 | Amber | On hit: Darkness VI for 3.75 seconds | On hit: Darkness VI for 7.00 seconds | On hit: Darkness VI for 12.45 seconds |
 | Amethyst | On hit: Darkness VI for 4.10 seconds | On hit: Darkness VI for 7.00 seconds | On hit: Darkness VI for 10.75 seconds |
 | Jade | On hit: Darkness VII for 4.25 seconds | On hit: Darkness VII for 8.00 seconds | On hit: Darkness VII for 14.20 seconds |
+
+Anger of Zeus waves now strike from the outermost occupied band toward the player. After the enemy strikes and chains finish, Lightning Rod on the casting weapon or a valid matching dual-wield partner adds a player-only lightning strike, granting its usual buffs.

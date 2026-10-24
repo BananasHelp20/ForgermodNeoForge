@@ -92,4 +92,27 @@ public class LightningRodGameTests {
         } finally {LightningRodEvents.end(player);bolt.discard();player.server.getPlayerList().remove(player);}
         test.assertTrue(count==15,"Skipped Lightning Rod variants");test.succeed();
     }
+    @GameTest(template="riftfang_test")
+    public static void offhandRodRequiresMatchingLearnedDualWieldAcrossGemstones(GameTestHelper test){
+        var player=TestPlayers.survival(test);int count=0;
+        try{
+            for(var entry:ModItems.ITEMS.getEntries()){
+                if(!(entry.get() instanceof ElectriumWeapon))continue;count++;
+                var main=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.LIGHTNING_ROD);
+                player.setItemInHand(InteractionHand.MAIN_HAND,main);player.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
+                test.assertTrue(LightningRodEvents.source(player)==main,"Main weapon rod ignored");
+                if(!net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.isDagger(main))continue;
+                var off=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER_JADE.get()),AdditionalAbilities.LIGHTNING_ROD);
+                var fresh=new ItemStack(entry.get());player.setItemInHand(InteractionHand.MAIN_HAND,fresh);player.setItemInHand(InteractionHand.OFF_HAND,off);
+                test.assertTrue(LightningRodEvents.source(player).isEmpty(),"Offhand rod bypasses learned Dual Wield");
+                off=Augmentations.apply(off,Augmentations.DUAL_WIELD);player.setItemInHand(InteractionHand.OFF_HAND,off);
+                test.assertTrue(LightningRodEvents.source(player)==off && LightningRodEvents.chargeStrike(player),"Offhand Dual Wield/rod sharing fails across gemstones");
+                test.assertTrue(player.getAbsorptionAmount()==10,"Shared rod grants wrong absorption");LightningRodEvents.end(player);
+                player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.apply(new ItemStack(ModItems.EMBERFANG_DAGGER.get()),Augmentations.DUAL_WIELD));
+                test.assertTrue(LightningRodEvents.source(player).isEmpty(),"Mismatched dagger materials share rod");
+            }
+            test.assertTrue(count==15,"Missed electrium variants");test.succeed();
+        }finally{LightningRodEvents.end(player);player.server.getPlayerList().remove(player);}
+    }
+
 }

@@ -102,27 +102,27 @@ public final class AreaDischargeGameTests {
         var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,7);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         AbilityTestPackets.use(player,0);long ready=player.level().getGameTime()+4400;
         drive(test,player,List.of(near,far),23);
-        test.assertTrue(near.getHealth()<1000 && far.getHealth()==1000 && AreaDischargeEvents.active(player),"Waves do not defer outer targets");
-        keepLoaded(test,origin.add(0,0,45));far.setPos(origin.add(0,0,45));
-        checkLater(test,9,player,List.of(near,far),()->test.assertTrue(far.getHealth()==1000,"Outer wave fires before500ms"));
+        test.assertTrue(far.getHealth()<1000 && near.getHealth()==1000 && AreaDischargeEvents.active(player),"Waves do not start at the outside");
+        keepLoaded(test,origin.add(0,0,45));near.setPos(origin.add(0,0,45));
+        checkLater(test,9,player,List.of(near,far),()->test.assertTrue(near.getHealth()==1000,"Inner wave fires before500ms"));
         checkLater(test,11,player,List.of(near,far),()->{
-            test.assertTrue(far.getHealth()<1000 && !AreaDischargeEvents.active(player),"Empty middle wave not skipped or moved mark lost: health="+far.getHealth()+" removed="+far.isRemoved()+" active="+AreaDischargeEvents.active(player));
+            test.assertTrue(near.getHealth()<1000 && !AreaDischargeEvents.active(player),"Empty middle wave not skipped or moved mark lost: health="+far.getHealth()+" removed="+far.isRemoved()+" active="+AreaDischargeEvents.active(player));
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsValue(ready),"Wave completion restarts cooldown");
-            near.setHealth(1000);far.setHealth(1000);far.setPos(origin.add(0,0,12.5));player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            near.setHealth(1000);far.setHealth(1000);near.setPos(origin.add(0,0,5));far.setPos(origin.add(0,0,12.5));player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
             try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}
             player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
         });
-        test.runAfterDelay(23,()->{try{test.assertTrue(far.getHealth()==1000 && !AreaDischargeEvents.active(player),"Switch leaves queued lightning");test.succeed();}finally{cleanup(test,player,List.of(near,far));}});
+        test.runAfterDelay(23,()->{try{test.assertTrue(near.getHealth()==1000 && !AreaDischargeEvents.active(player),"Switch leaves queued lightning");test.succeed();}finally{cleanup(test,player,List.of(near,far));}});
     }
-    @GameTest(template="riftfang_test",batch="review_zeus_chains",timeoutTicks=50)
+    @GameTest(template="riftfang_test",batch="review_zeus_chains",timeoutTicks=55)
     public static void chainsExtendBeyondTwentyAndUseMarkedTargetsWithTwoHundredMsDelays(GameTestHelper test)throws Exception{
         var player=player(test);var origin=player.position().add(0,30,0);player.setPos(origin);keepLoaded(test,origin);List<Zombie> targets=new ArrayList<>();
         // Vertical nine-block hops stay in one entity-accessible chunk regardless of the random test origin.
         for(int i=0;i<7;i++)targets.add(mob(test,origin.add(0,19+9*i,0)));
-        var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,8);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,8);stack=Augmentations.apply(stack,AdditionalAbilities.LIGHTNING_ROD);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         float[] capturedDamage={0};
         // Schedule callbacks before the test starts iterating its pending-callback map.
-        for(int tick=6;tick<=27;tick++)checkLater(test,tick,player,targets,()->AreaDischargeEvents.tick(player));
+        for(int tick=6;tick<=37;tick++)checkLater(test,tick,player,targets,()->AreaDischargeEvents.tick(player));
         // Newly forced chunks must finish becoming entity-accessible before targets can be selected.
         checkLater(test,5,player,targets,()->{
         player.doTick();
@@ -137,7 +137,11 @@ public final class AreaDischargeGameTests {
         test.runAfterDelay(27,()->{try{
             float damage=capturedDamage[0];
             for(int i=1;i<=5;i++)test.assertTrue(Math.abs(targets.get(i).getHealth()-(1000-.5F*damage))<.01,"Chain fails, repeats or has wrong damage at jump"+i+": health="+targets.get(i).getHealth()+" expected="+(1000-.5F*damage)+" removed="+targets.get(i).isRemoved());
-            test.assertTrue(targets.get(6).getHealth()==1000 && !AreaDischargeEvents.active(player),"Chain exceeds five jumps");test.succeed();
+            test.assertTrue(targets.get(6).getHealth()==1000 && AreaDischargeEvents.active(player) && player.getAbsorptionAmount()==0,"Chain exceeds five jumps or self wave fires before the chain ends");
+        }catch(RuntimeException|Error failure){cleanup(test,player,targets);throw failure;}});
+        test.runAfterDelay(37,()->{try{
+            test.assertTrue(!AreaDischargeEvents.active(player) && player.getAbsorptionAmount()==10,"Final player-only Lightning Rod wave missing");
+            test.assertTrue(player.getHealth()==20 && targets.get(6).getHealth()==1000,"Self wave hurts caster or nearby mobs");test.succeed();
         }finally{cleanup(test,player,targets);}});
     }
     @GameTest(template="riftfang_test",batch="review_area_charge")
@@ -157,4 +161,47 @@ public final class AreaDischargeGameTests {
         }finally{cleanup(test,player,targets);}
         test.succeed();
     }
+    @GameTest(template="riftfang_test",batch="review_zeus_inward_plan")
+    public static void allRanksStrikeOutsideInWithoutRepeatingTargets(GameTestHelper test){
+        for(int waves=1;waves<=4;waves++){
+            List<Integer> targets=new ArrayList<>();for(int band=1;band<=waves;band++)targets.add(band);
+            var plan=ZeusStrikePlan.select(targets,waves,t->true,t->25.0*t*t,t->List.of(),(a,b)->0,Integer::valueOf,()->false);
+            for(int i=0;i<waves;i++)test.assertTrue(plan.get(i).target()==waves-i && plan.get(i).delayTicks()==10*i
+                    && plan.get(i).damageMultiplier()==2,"Zeus wave order, timing or damage changed at rank "+waves);
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="review_zeus_offhand_wave",timeoutTicks=45)
+    public static void offhandRodAddsOneSafeFinalWaveAndSwitchingCancelsIt(GameTestHelper test)throws Exception{
+        var player=player(test);var target=mob(test,player.position().add(0,0,3));
+        var cow=EntityType.COW.create(test.getLevel());cow.setNoAi(true);cow.setNoGravity(true);cow.setPos(player.position());test.getLevel().addFreshEntity(cow);
+        var stack=Augmentations.setLevel(new ItemStack(ModItems.STATIC_DAGGER.get()),Augmentations.AREA_DISCHARGE,5);
+        stack=Augmentations.apply(stack,Augmentations.DUAL_WIELD);
+        var rod=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER_JADE.get()),AdditionalAbilities.LIGHTNING_ROD);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setItemInHand(InteractionHand.OFF_HAND,rod);
+        var entities=List.of(target,cow);AbilityTestPackets.use(player,0);long ready=player.getData(WeaponCooldownAttachments.COOLDOWNS).values().iterator().next();
+        drive(test,player,entities,33);
+        checkLater(test,9,player,entities,()->test.assertTrue(player.getAbsorptionAmount()==0 && AreaDischargeEvents.active(player),"Self wave fires before final delay"));
+        checkLater(test,11,player,entities,()->{
+            test.assertTrue(player.getAbsorptionAmount()==10 && !AreaDischargeEvents.active(player),"Matching gemstone offhand rod does not supply final wave");
+            test.assertTrue(player.getHealth()==20 && cow.getHealth()==10 && !cow.isOnFire(),"Player-only wave affects nearby cow or caster health");
+            var bolts=test.getLevel().getEntitiesOfClass(LightningBolt.class,player.getBoundingBox().inflate(.1));
+            test.assertTrue(bolts.size()==1,"Self wave missing or duplicated");bolts.getFirst().tick();
+            test.assertTrue(cow.getHealth()==10 && !cow.isOnFire(),"Cosmetic self wave causes vanilla collateral damage");
+            test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsValue(ready),"Self wave restarts cooldown");
+            LightningRodEvents.end(player);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}
+            player.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
+        });
+        checkLater(test,22,player,entities,()->{
+            test.assertTrue(player.getAbsorptionAmount()==0 && !AreaDischargeEvents.active(player),"Removed offhand rod still grants a self wave");
+            player.setItemInHand(InteractionHand.OFF_HAND,rod);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+            try{AbilityTestPackets.use(player,0);}catch(Exception e){throw new RuntimeException(e);}
+            player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+        });
+        test.runAfterDelay(34,()->{try{
+            test.assertTrue(player.getAbsorptionAmount()==0 && !AreaDischargeEvents.active(player),"Switching weapon leaves pending self strike");test.succeed();
+        }finally{cleanup(test,player,entities);}});
+    }
+
 }

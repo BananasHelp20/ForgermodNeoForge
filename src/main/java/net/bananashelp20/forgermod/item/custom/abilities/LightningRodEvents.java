@@ -30,7 +30,7 @@ public final class LightningRodEvents {
     private static final class Grant {
         final ItemStack stack;final int selected;float remaining;long expires,lastStrike;
         MobEffectInstance owned,previous;
-        Grant(LivingEntity player) {stack=PassiveActors.weapon(player,AdditionalAbilities.LIGHTNING_ROD);selected=PassiveActors.selected(player);previous=copy(player.getEffect(MobEffects.DAMAGE_BOOST));lastStrike=Long.MIN_VALUE/2;}
+        Grant(LivingEntity player) {stack=source(player);selected=PassiveActors.selected(player);previous=copy(player.getEffect(MobEffects.DAMAGE_BOOST));lastStrike=Long.MIN_VALUE/2;}
     }
     // Vanilla visual-only lightning still powers rods and cleans copper on its first tick.
     // Clients render the ordinary lightning entity type; the server only expires this cosmetic bolt.
@@ -42,7 +42,16 @@ public final class LightningRodEvents {
     private static final Set<UUID> INTERNAL=new HashSet<>();
     private LightningRodEvents() {}
     private static MobEffectInstance copy(MobEffectInstance effect) {return effect==null?null:MobEffectInstance.load((net.minecraft.nbt.CompoundTag)effect.save());}
-    private static boolean eligible(LivingEntity player) {return player.isAlive() && !player.isSpectator() && Augmentations.hasPassive(PassiveActors.weapon(player,AdditionalAbilities.LIGHTNING_ROD),AdditionalAbilities.LIGHTNING_ROD);}
+    /** Only a learned main-hand passive or a valid matching dual-wield partner can supply the rod. */
+    public static ItemStack source(LivingEntity player) {
+        var main=player.getMainHandItem();var off=player.getOffhandItem();String id=AdditionalAbilities.LIGHTNING_ROD;
+        boolean mainRod=Augmentations.hasPassive(main,id);
+        if(net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player)
+                && Augmentations.hasPassive(off,id) && (!mainRod || Augmentations.level(off,id)>Augmentations.level(main,id)
+                || Augmentations.level(off,id)==Augmentations.level(main,id) && JadeAugments.isJade(off)))return off;
+        return mainRod?main:ItemStack.EMPTY;
+    }
+    private static boolean eligible(LivingEntity player) {return player.isAlive() && !player.isSpectator() && Augmentations.hasPassive(source(player),AdditionalAbilities.LIGHTNING_ROD);}
     private static void add(LivingEntity player,MobEffectInstance effect) {INTERNAL.add(player.getUUID());try {player.addEffect(effect);}finally {INTERNAL.remove(player.getUUID());}}
     public static void end(LivingEntity player) {
         var grant=GRANTS.remove(player.getUUID());if(grant==null) return;
@@ -53,7 +62,7 @@ public final class LightningRodEvents {
     }
     public static boolean grant(LivingEntity player) {
         if(!eligible(player)) return false;var grant=GRANTS.get(player.getUUID());long now=player.level().getGameTime();
-        if(grant!=null && (grant.stack!=PassiveActors.weapon(player,AdditionalAbilities.LIGHTNING_ROD) || grant.selected!=PassiveActors.selected(player) || now>=grant.expires)) {end(player);grant=null;}
+        if(grant!=null && (grant.stack!=source(player) || grant.selected!=PassiveActors.selected(player) || now>=grant.expires)) {end(player);grant=null;}
         if(grant==null) {grant=new Grant(player);GRANTS.put(player.getUUID(),grant);}
         if(now-grant.lastStrike<20) return true;grant.lastStrike=now;grant.expires=now+JadeAugments.duration(grant.stack,AdditionalAbilities.LIGHTNING_ROD,600);
         var attribute=player.getAttribute(Attributes.MAX_ABSORPTION);
@@ -98,7 +107,7 @@ public final class LightningRodEvents {
         if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player)) return;
         var grant=GRANTS.get(player.getUUID());
         if(grant!=null) {
-            if(!eligible(player) || PassiveActors.weapon(player,AdditionalAbilities.LIGHTNING_ROD)!=grant.stack || PassiveActors.selected(player)!=grant.selected || player.level().getGameTime()>=grant.expires) end(player);
+            if(!eligible(player) || source(player)!=grant.stack || PassiveActors.selected(player)!=grant.selected || player.level().getGameTime()>=grant.expires) end(player);
             else {
                 grant.remaining=Math.min(grant.remaining,player.getAbsorptionAmount());
                 if(player.getEffect(MobEffects.DAMAGE_BOOST)!=grant.owned) {grant.owned=null;grant.previous=null;}
@@ -106,7 +115,7 @@ public final class LightningRodEvents {
             }
         }
         if(eligible(player) && player.tickCount%20==0) {
-            int seconds = Augmentations.level(PassiveActors.weapon(player,AdditionalAbilities.LIGHTNING_ROD),AdditionalAbilities.LIGHTNING_ROD)==1 ? 600 : 60;
+            int seconds = Augmentations.level(source(player),AdditionalAbilities.LIGHTNING_ROD)==1 ? 600 : 60;
             if(player.getRandom().nextInt(seconds)==0) extraStrike(player);
         }
     }

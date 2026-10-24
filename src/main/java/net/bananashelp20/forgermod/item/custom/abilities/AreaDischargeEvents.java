@@ -20,8 +20,10 @@ import java.util.*;
 public final class AreaDischargeEvents {
     private static final class Cast {
         final ItemStack stack;final int slot;final ServerLevel level;final long started;final float damage;
+        final boolean selfStrike;final int selfStrikeDelay;
         final List<ZeusStrikePlan.Strike<Mob>> strikes;final Set<UUID> hit=new HashSet<>();int next;
-        Cast(ServerPlayer player,ItemStack stack,List<ZeusStrikePlan.Strike<Mob>> strikes,float damage){this.stack=stack;slot=player.getInventory().selected;level=player.serverLevel();started=level.getGameTime();this.strikes=strikes;this.damage=damage;}
+        Cast(ServerPlayer player,ItemStack stack,List<ZeusStrikePlan.Strike<Mob>> strikes,float damage){this.stack=stack;slot=player.getInventory().selected;level=player.serverLevel();started=level.getGameTime();this.strikes=strikes;this.damage=damage;selfStrike=!LightningRodEvents.source(player).isEmpty();
+            selfStrikeDelay=strikes.stream().mapToInt(ZeusStrikePlan.Strike::delayTicks).max().orElse(0)+10;}
     }
     private static final Map<UUID,Cast> CASTS=new HashMap<>();
     private AreaDischargeEvents(){}
@@ -49,7 +51,7 @@ public final class AreaDischargeEvents {
         var cast=CASTS.get(player.getUUID());if(cast==null)return false;
         if(player.isAlive() && !player.isSpectator() && player.serverLevel()==cast.level && player.getMainHandItem()==cast.stack
                 && player.getInventory().selected==cast.slot && Augmentations.ids(cast.stack,true).contains(Augmentations.AREA_DISCHARGE)
-                && cast.next<cast.strikes.size())return true;
+                && (cast.next<cast.strikes.size() || cast.selfStrike))return true;
         cancel(player.getUUID());return false;
     }
     public static void cancel(UUID owner){CASTS.remove(owner);}
@@ -78,7 +80,12 @@ public final class AreaDischargeEvents {
             if((planned.previous()==null || cast.hit.contains(planned.previous().getUUID()))
                     && strike(player,planned.target(),planned.previous(),cast.damage*planned.damageMultiplier()))cast.hit.add(planned.target().getUUID());
         }
-        if(cast.next==cast.strikes.size()){cancel(player.getUUID());return;}
+        if(cast.next==cast.strikes.size()){
+            if(cast.selfStrike && elapsed<cast.selfStrikeDelay)return;
+            // Recheck current learned equipment; either valid held rod can supply the final wave.
+            if(cast.selfStrike)LightningRodEvents.chargeStrike(player);
+            cancel(player.getUUID());return;
+        }
         if(elapsed%4==0)for(int i=cast.next;i<cast.strikes.size();i++){
             var target=cast.strikes.get(i).target();if(target.isAlive() && target.level()==cast.level)mark(player,target);
         }
