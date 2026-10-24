@@ -59,6 +59,7 @@ public class ForgerMod {
         net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.StunningPresenceParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.LightningArcParticles.TYPES.register(modEventBus);
+        net.bananashelp20.forgermod.particle.SculkRoarParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.worldgen.ModStructures.TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.

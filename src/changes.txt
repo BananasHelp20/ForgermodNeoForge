@@ -353,3 +353,5 @@
 - Necromancer controls: replace the Shift+Alt release chord with a configurable Customize Necromancer Reinforcements binding, default Shift+right-click with a learned held weapon. Suppress the overlapping vanilla interaction and show the configured binding in the ability description.
 
 - Chain Lightning exchanges now render flickering blue/yellow jagged lightning arcs anchored between each chained pair, replacing the sparse spark line without spawning vanilla lightning bolts. Damage, hop chance, range and target selection are unchanged.
+
+- Sculk roar animations: Challenging Roar emits two expanding cyan sound ripples, a shrieker pulse and soul wisps; Intimidating Roar adds a third, higher ripple and stronger soul burst. Waves expand to the current ability range, fade quickly and use one bounded client pattern packet per nearby viewer instead of ticking server entities or per-mote packets.

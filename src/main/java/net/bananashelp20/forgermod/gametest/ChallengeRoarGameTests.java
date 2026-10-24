@@ -18,6 +18,53 @@ import net.neoforged.neoforge.gametest.*;
 import java.util.*;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class ChallengeRoarGameTests {
+    private static final class RoarConnection extends net.minecraft.network.Connection {
+        final List<net.bananashelp20.forgermod.particle.SculkRoarParticles.Options> patterns=new ArrayList<>();
+        RoarConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle && particle.getParticle() instanceof net.bananashelp20.forgermod.particle.SculkRoarParticles.Options options)patterns.add(options);
+        }
+    }
+    @GameTest(template="riftfang_test",batch="review_roar_animation")
+    public static void everyPulsiteVariantAndRankEmitsOneBoundedSculkRipplePattern(GameTestHelper test){
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var previous=player.connection;var wire=new RoarConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        var viewer=TestPlayers.survival(test);viewer.setNoGravity(true);viewer.setPos(player.position().add(0,0,45));
+        var viewerPrevious=viewer.connection;var viewerWire=new RoarConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,viewerWire,viewer,net.minecraft.server.network.CommonListenerCookie.createInitial(viewer.getGameProfile(),false));
+        int checked=0;
+        try{for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof PulsiteWeapon))continue;
+            for(int rank=1;rank<=8;rank++){
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.CHALLENGE_ROAR,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);wire.patterns.clear();viewerWire.patterns.clear();
+                test.assertTrue(ChallengeRoarAbility.activate(player,stack),"Roar animation cast refused");
+                test.assertTrue(wire.patterns.size()==1 && wire.patterns.getFirst().rank()==rank && wire.patterns.getFirst().radius()==ReviewedRanks.roarRange(rank),"Missing or duplicate full-radius sculk pattern");
+                test.assertTrue(viewerWire.patterns.size()==1,"Roar viewer beyond vanilla 32-block packet distance misses full pattern");
+                ChallengeRoarAbility.cancel(player.getUUID());checked++;
+            }
+        }}finally{ChallengeRoarAbility.cancel(player.getUUID());player.connection=previous;viewer.connection=viewerPrevious;player.server.getPlayerList().remove(viewer);player.server.getPlayerList().remove(player);}
+        test.assertTrue(checked==120,"Skipped roar weapons or ranks");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void sculkRipplesExpandInSequenceAndFadeWithinBoundedLifetime(GameTestHelper test){
+        for(int rank=1;rank<=8;rank++){
+            var options=new net.bananashelp20.forgermod.particle.SculkRoarParticles.Options(rank,ReviewedRanks.roarRange(rank));
+            var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
+            try{net.bananashelp20.forgermod.particle.SculkRoarParticles.Options.STREAM.encode(buffer,options);test.assertTrue(options.equals(net.bananashelp20.forgermod.particle.SculkRoarParticles.Options.STREAM.decode(buffer)),"Roar pattern codec loses rank/radius");}finally{buffer.release();}
+            int waves=net.bananashelp20.forgermod.particle.SculkRoarParticles.waves(options),points=net.bananashelp20.forgermod.particle.SculkRoarParticles.points(options);
+            test.assertTrue(waves==(rank>=5?3:2) && waves*points<=480,"Unbounded roar particles or missing super ripple");
+            for(int wave=0;wave<waves;wave++){
+                double previous=0;
+                for(int age=0;age<=40;age++){
+                    double radius=net.bananashelp20.forgermod.particle.SculkRoarParticles.radius(options,wave,age);
+                    test.assertTrue(Double.isFinite(radius) && radius>=previous && radius<=options.radius(),"Ripple reverses, exceeds range or is invalid");previous=radius;
+                    var point=net.bananashelp20.forgermod.particle.SculkRoarParticles.position(Vec3.ZERO,options,wave,points/2,age);
+                    test.assertTrue(Math.abs(point.horizontalDistance()-radius)<.001 && point.y>=0,"Ripple points leave their wave");
+                }
+                test.assertTrue(previous==options.radius() && net.bananashelp20.forgermod.particle.SculkRoarParticles.alpha(wave,40)==0,"Ripple fails to reach range or fade");
+            }
+        }
+        test.succeed();
+    }
     @GameTest(template="riftfang_test",batch="review_roar_delusion")
     public static void brainTargetLockYieldsToDelusionAndResumesAfterIt(GameTestHelper test){
         var owner=TestPlayers.survival(test);var dreamer=TestPlayers.survival(test);owner.setNoGravity(true);dreamer.setNoGravity(true);owner.setPos(test.getBounds().getCenter());dreamer.setPos(owner.position());

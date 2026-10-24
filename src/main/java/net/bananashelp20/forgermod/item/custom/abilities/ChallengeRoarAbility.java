@@ -63,7 +63,9 @@ public final class ChallengeRoarAbility {
             roar.targets.put(mob.getUUID(),mob);OWNERS.put(mob.getUUID(),player.getUUID());redirect(roar,mob,true);
         }
         tick(player);
-        roar.level.sendParticles(ParticleTypes.SONIC_BOOM,player.getX(),player.getY()+1,player.getZ(),1,0,0,0,0);
+        net.bananashelp20.forgermod.particle.SculkRoarParticles.emit(player,rank,roar.range);
+        roar.level.sendParticles(new net.minecraft.core.particles.ShriekParticleOption(0),player.getX(),player.getY()+.3,player.getZ(),1,0,0,0,0);
+        roar.level.sendParticles(ParticleTypes.SCULK_SOUL,player.getX(),player.getY()+1,player.getZ(),roar.intimidating?24:12,.45,.5,.45,.035);
         roar.level.playSound(null,player.blockPosition(),SoundEvents.WARDEN_ROAR,player.getSoundSource(),.7F,1.2F);return true;
     }
     public static boolean active(ServerPlayer player){
