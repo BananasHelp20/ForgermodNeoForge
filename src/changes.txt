@@ -345,3 +345,5 @@
 - Alternating Current now uses two aim-and-activate marks instead of an automatic secondary target. Each once-per-second current jump deals 2 HP and stuns both linked targets for half a second. Replaced the dot line with flickering lightning ribbons; no vanilla lightning bolts are spawned. Preserved all-mob/allied targeting, range, link duration, cooldown and shared control-lock restoration.
 
 - Magma Toss cooldown now starts on launch. Removed its three-second timeout and weapon-switch deletion; independent magma-block projectiles survive until collision and later casts do not overwrite older flights. Any entity/block impact bursts the struck rock while retaining enemy-only blast damage/terrain safety. Logout, dimension/removal cleanup prevents orphan flights.
+
+- Thunderclap obstacles: route velocity bursts up and over low ledges through a fully checked body corridor instead of canceling immediately; retain solid-wall, ceiling, landing, chunk and world-border collision limits.

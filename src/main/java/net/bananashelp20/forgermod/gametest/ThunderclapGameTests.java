@@ -139,7 +139,8 @@ public class ThunderclapGameTests {
             // The eyes can see over this obstacle, but the player's feet cannot pass through it.
             var feet=wall.below();test.getLevel().setBlockAndUpdate(feet,Blocks.STONE.defaultBlockState());
             AbilityTestPackets.use(player,0);advance(player);test.assertFalse(ThunderclapEvents.active(player),"Body collision retains dash");
-            test.assertTrue(player.getZ()<feet.getZ() && target.getHealth()==200 && !player.isNoGravity(),"Dash phases through a low obstacle, hits remotely or leaks gravity");
+            test.assertTrue(player.getZ()>feet.getZ() && target.getHealth()<200 && !player.isNoGravity(),"Dash fails to clear a one-block ledge and strike, or leaks gravity");
+            target.setHealth(200);target.invulnerableTime=0;
             test.getLevel().setBlockAndUpdate(feet,Blocks.AIR.defaultBlockState());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());player.setPos(origin);
             AbilityTestPackets.use(player,0);player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.STICK));WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             test.assertTrue(!ThunderclapEvents.active(player) && !player.isNoGravity() && player.getDeltaMovement().equals(Vec3.ZERO) && target.getHealth()==200,"Switch keeps movement or hits");
@@ -148,6 +149,26 @@ public class ThunderclapGameTests {
             test.assertTrue(!ThunderclapEvents.active(player) && !player.isNoGravity(),"Removed target retains dash");
             target=mob(test,EntityType.COW,origin.add(0,0,8));WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());AbilityTestPackets.use(player,0);test.assertTrue(ThunderclapEvents.active(player),"Stall fixture failed to start");for(int i=0;i<12;i++)ThunderclapEvents.tick(player);
             test.assertTrue(!ThunderclapEvents.active(player) && !player.isNoGravity(),"No movement packets cause an endless active dash");
+        }finally{target.discard();cleanup(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_ledge_clearance")
+    public static void slabDetourUsesRealMovementAndCeilingBlocksUnsafeLifts(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();var target=mob(test,EntityType.COW,origin.add(0,0,8));
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+        var feet=player.blockPosition().offset(0,0,4);
+        try{
+            for(boolean ceiling:new boolean[]{false,true}){
+                player.setPos(origin);player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-origin.y-.7,8)));player.setYRot(0);
+                target.setHealth(200);target.invulnerableTime=0;player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());
+                test.getLevel().setBlockAndUpdate(feet,Blocks.STONE_SLAB.defaultBlockState());
+                // A low roof permits standing, but not the extra half-block clearance required by the ledge.
+                for(int z=0;z<=8;z++)test.getLevel().setBlockAndUpdate(BlockPos.containing(origin).offset(0,2,z),ceiling?Blocks.STONE.defaultBlockState():Blocks.AIR.defaultBlockState());
+                AbilityTestPackets.use(player,0);advance(player);
+                test.assertTrue((target.getHealth()<200)==!ceiling,"Slab path ignores ceiling or still aborts at a low ledge");
+                test.assertTrue(test.getLevel().noCollision(player,player.getBoundingBox().deflate(.0001)),"Dash body clips into ledge/ceiling");
+                WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+            }
         }finally{target.discard();cleanup(player);}test.succeed();
     }
     @GameTest(template="riftfang_test",batch="thunderclap_lethal")

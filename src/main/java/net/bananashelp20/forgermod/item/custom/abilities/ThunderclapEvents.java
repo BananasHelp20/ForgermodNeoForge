@@ -23,13 +23,13 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.*;
 
-/** Collision-respecting velocity bursts. Neither player position nor view angles are assigned. */
+/** Collision-respecting velocity bursts with a single view snap when selecting each new chain target. */
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class ThunderclapEvents {
     public static final double AIM_RANGE=20, CHAIN_RANGE=10;
     private static final class Dash {
         final ServerPlayer owner;final ItemStack stack;final int slot,rank;final ServerLevel level;final boolean noGravity;
-        final Set<UUID> visited=new HashSet<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks;
+        final Set<UUID> visited=new HashSet<>();final Deque<Vec3> route=new ArrayDeque<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks;
         Dash(ServerPlayer player,ItemStack stack,Mob target,int rank){owner=player;this.stack=stack;slot=player.getInventory().selected;
             this.target=target;this.rank=rank;level=player.serverLevel();noGravity=player.isNoGravity();previous=player.position();}
     }
@@ -88,10 +88,12 @@ public final class ThunderclapEvents {
         else if(dash.legTicks>1 && dash.impactTicks==0)dash.stalled++;
         dash.previous=now;player.fallDistance=0;
         if(dash.impactTicks>0){dash.impactTicks--;dash.stalled=0;motion(player,Vec3.ZERO);return;}
-        Vec3 point=destination(player,dash.target),direction=point.subtract(now);
+        Vec3 point=destination(player,dash.target);
+        while(!dash.route.isEmpty() && dash.route.peekFirst().distanceToSqr(now)<.01)dash.route.removeFirst();
+        Vec3 direction=(dash.route.isEmpty()?point:dash.route.peekFirst()).subtract(now);
         if(!dash.level.getWorldBorder().isWithinBounds(dash.target.blockPosition()) || player.distanceToSqr(dash.target)>24*24
                 || !player.hasLineOfSight(dash.target)){cancel(player.getUUID());return;}
-        if(direction.lengthSqr()<=.35*.35 && player.distanceToSqr(dash.target)<=1 && player.canInteractWithEntity(dash.target,0)){
+        if(dash.route.isEmpty() && direction.lengthSqr()<=.35*.35 && player.distanceToSqr(dash.target)<=1 && player.canInteractWithEntity(dash.target,0)){
             motion(player,Vec3.ZERO);Mob struck=dash.target;
             if(dash.visited.add(struck.getUUID())){strike(player,dash,struck);dash.impactTicks=2;dash.stalled=0;return;}
             if(DASHES.get(player.getUUID())!=dash)return;
@@ -103,14 +105,36 @@ public final class ThunderclapEvents {
                     .stream().min(Comparator.comparingDouble(struck::distanceToSqr)).orElse(null);
             if(next==null){cancel(player.getUUID());return;}
             player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,next.getEyePosition());
-            dash.target=next;dash.legTicks=0;dash.stalled=0;direction=destination(player,next).subtract(now);
+            dash.target=next;dash.route.clear();dash.legTicks=0;dash.stalled=0;direction=destination(player,next).subtract(now);
         }
         double length=direction.length();if(length<.000001)return;
         Vec3 velocity=direction.scale(Math.min(speed(dash.rank),length)/length);
-        var swept=player.getBoundingBox().expandTowards(velocity).deflate(.02);
-        if(!dash.level.hasChunksAt(BlockPos.containing(swept.minX,swept.minY,swept.minZ),BlockPos.containing(swept.maxX,swept.maxY,swept.maxZ))
-                || !dash.level.noCollision(player,swept)){cancel(player.getUUID());return;}
+        if(!passable(dash,player.getBoundingBox(),velocity)){
+            // Clear one-block ledges in three real movement legs: up, across, then down.
+            // The complete body corridor must be loaded and clear, including the landing.
+            if(!dash.route.isEmpty() || !overLedge(dash,point)){cancel(player.getUUID());return;}
+            direction=dash.route.peekFirst().subtract(now);length=direction.length();
+            velocity=direction.scale(Math.min(speed(dash.rank),length)/length);
+        }
         motion(player,velocity);
+    }
+    private static boolean passable(Dash dash,AABB box,Vec3 movement){
+        var swept=box.expandTowards(movement).deflate(.0001);
+        return dash.level.hasChunksAt(BlockPos.containing(swept.minX,swept.minY,swept.minZ),BlockPos.containing(swept.maxX,swept.maxY,swept.maxZ))
+                && dash.level.noCollision(dash.owner,swept);
+    }
+    private static boolean overLedge(Dash dash,Vec3 destination){
+        var origin=dash.owner.position();var box=dash.owner.getBoundingBox();
+        double base=Math.max(origin.y,destination.y);
+        for(double lift=.5;lift<=1.25;lift+=.25){
+            var top=new Vec3(origin.x,base+lift,origin.z);var across=new Vec3(destination.x,top.y,destination.z);
+            var up=top.subtract(origin);var horizontal=across.subtract(top);
+            if(passable(dash,box,up) && passable(dash,box.move(up),horizontal)
+                    && passable(dash,box.move(across.subtract(origin)),destination.subtract(across))){
+                dash.route.addLast(top);dash.route.addLast(across);dash.stalled=0;return true;
+            }
+        }
+        return false;
     }
     private static void strike(ServerPlayer player,Dash dash,Mob target){
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),health=target.getHealth()+target.getAbsorptionAmount();

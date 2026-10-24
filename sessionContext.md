@@ -531,3 +531,7 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 ## Ability review: Magma Toss
 - Removed the three-second expiry and made launched rocks independent of held weapon sessions; multiple flights cannot overwrite one another. Cooldown starts on launch, including when switching weapons before impact. A physical mob/block collision bursts only that rock; blast targeting and terrain safety remain unchanged. Transient rocks clean up on logout/dimension change/removal.
 - Verification: build + all 356 required GameTests passed in build/review-magma-tests.log; after adding a real 65-tick survival, per-variant launch cooldown, passive impact and multiple-flight regression test, build + all 357 passed in build/review-magma-reviewed.log. Reviewed callback/map removal and cooldown independence again. No client visual playtest.
+
+## Ability review: Thunderclap obstacles
+- Re-read of PERSON review found the added obstacle-interruption request. Dash now routes up, across and down over low ledges using velocity only and validates all three full-body corridors (loaded chunks, world border, ceiling and landing). Route cleared on each chain hop; one-time view snap and impact beat retained.
+- Build and 357 GameTests passed in build/review-thunder-obstacles-tests.log. After adding slab-versus-low-ceiling regression coverage, build and all 358 required tests passed in build/review-thunder-obstacles-reviewed.log. Reviewed route completion, native movement, no-gravity restoration and blocked walls again.
