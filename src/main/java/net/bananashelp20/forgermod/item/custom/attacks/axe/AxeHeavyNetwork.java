@@ -192,9 +192,19 @@ public final class AxeHeavyNetwork {
         landSlam(player, slam);
     }
 
+    /** Convert an accepted melee hit without striking its primary victim twice. */
+    public static void echoVerticalStrike(ServerPlayer player,ItemStack source,LivingEntity primary,float bonus){
+        if(source!=player.getMainHandItem() || !player.isAlive())return;
+        COMBOS.remove(player.getUUID());PENDING.remove(player.getUUID());sendAnimation(player);player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+        var slam=new PendingSlam(player.serverLevel(),source.getItem(),player.level().getGameTime(),primary.blockPosition(),(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),false,source);
+        net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.vertical(player,()->landSlamBody(player,slam,primary,bonus));
+    }
     private static void landSlam(ServerPlayer player, PendingSlam slam) {
-        float echoBonus=net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.bonus(player);
-        boolean hitAnything=false,hitEnemy=false;
+        net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.vertical(player,()->landSlamBody(player,slam,null,Float.NaN));
+    }
+    private static void landSlamBody(ServerPlayer player,PendingSlam slam,LivingEntity skipped,float suppliedBonus){
+        float echoBonus=Float.isNaN(suppliedBonus)?net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.bonus(player):suppliedBonus;
+        boolean hitAnything=skipped!=null,attemptedHit=skipped!=null;
         double storedKnockback=net.bananashelp20.forgermod.item.custom.abilities.NullReceiptEvents.release(player);
         ServerLevel level = slam.level();
         BlockPos center = slam.center();
@@ -204,17 +214,18 @@ public final class AxeHeavyNetwork {
 
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area,
                 entity -> entity != player && entity.isAlive())) {
+            if(target==skipped)continue;
             if (target instanceof Player other && !player.canHarmPlayer(other)) continue;
             if (!player.hasLineOfSight(target)) continue;
 
             if (slam.flaming() && net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityTargets.enemy(player, target))
                 target.setRemainingFireTicks(Math.max(target.getRemainingFireTicks(), 100));
 
+            attemptedHit=true;
             int previousInvulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;
-            boolean enemy=net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityTargets.enemy(player,target);
-            if (target.hurt(player.damageSources().playerAttack(player), slam.damage()+(enemy?echoBonus:0))) {
-                hitAnything=true; hitEnemy|=enemy;
+            if (target.hurt(player.damageSources().playerAttack(player), slam.damage()+echoBonus)) {
+                hitAnything=true;
                 if (slam.axe() instanceof SwordItemWithEffect weapon) {
                     weapon.applyMaterialEffect(target, player.getMainHandItem());
                     var runtime = net.bananashelp20.forgermod.augmentation.Augmentations.canonical(player.getMainHandItem());
@@ -228,7 +239,7 @@ public final class AxeHeavyNetwork {
         }
 
         boolean solidImpact=!level.getBlockState(center.below()).getCollisionShape(level,center.below()).isEmpty();
-        net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.onImpact(player,hitAnything,hitEnemy,solidImpact);
+        net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.onImpact(player,hitAnything,attemptedHit,solidImpact,slam.damage());
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {

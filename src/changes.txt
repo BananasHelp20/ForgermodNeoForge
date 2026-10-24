@@ -400,3 +400,7 @@
 
 - Crucible Grappler mode cooldowns: maximum Grappler IV has zero cooldown for block grappling; mob pull/smash retains its separate normal 25-second cooldown. Earlier Grappler ranks retain 25-second block cooldowns.
 - Crucible Grappler mode cooldowns: pressing the ability while grappling replaces the anchor only after a reachable in-range block is validated; invalid aims preserve the old rope and momentum. Added current-mode tooltip/upgrade cooldown values.
+
+- Echo Salvage persistent strike bank: missed solid-ground Vertical Strikes now store uncapped half-strike damage in the weapon itself, with capacities of 2/3/4/5 strikes at levels I/II/III/IV. Removed the 30-second expiry and loss on switching; storage survives item saves and reloads.
+- Echo Salvage persistent strike bank: the next successful melee hit becomes an animated area Vertical Strike and releases the full bank once, without dealing a duplicate primary hit. Existing Vertical Strikes also release the bank. Blocked/rejected hits neither spend it nor generate a fresh missed strike.
+- Echo Salvage persistent strike bank: reinforcement melee also releases the bank with ally-safe slam targeting; supplied weapon storage is marked for saving. Updated capacity descriptions and upgrade previews.

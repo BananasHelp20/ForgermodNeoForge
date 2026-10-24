@@ -166,7 +166,7 @@ public final class AugmentUpgradeDescriptions {
                 seconds(stats, "duration", 160 + 40 * Math.clamp(rank, 1, 4));
                 seconds(stats, "glow_duration", ReviewedRanks.echoGlowTicks(rank)+jadeTicks);
             }
-            case RecommendedAbilities.ECHO_SALVAGE -> numeric(stats, "damage_cap", 2 * rank, "damage");
+            case RecommendedAbilities.ECHO_SALVAGE -> numeric(stats, "stored_strikes", net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.capacity(rank), "strikes");
             case RecommendedAbilities.ENDER_SWING -> {
                 numeric(stats,"damage",rank>1?1.2:1,"weapon_damage");
                 numeric(stats,"radius",ReviewedRanks.gravitySwingRadius(rank),"blocks");

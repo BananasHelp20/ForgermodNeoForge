@@ -190,7 +190,7 @@ public final class AbilityDescriptions {
             case "tooltips.forgermod.ability.false_awakening" -> Component.translatable("tooltips.forgermod.ability.false_awakening.current", values.get("duration"), values.get("bonus_damage"));
             case "tooltips.forgermod.ability.always_the_gardeners" -> Component.translatable("tooltips.forgermod.ability.always_the_gardeners.current", values.get("radius"));
             case "tooltips.forgermod.ability.echo_pin" -> Component.translatable("tooltips.forgermod.ability.echo_pin.current", values.get("range"), values.get("duration"));
-            case "tooltips.forgermod.passive.echo_salvage" -> Component.translatable("tooltips.forgermod.passive.echo_salvage.current", values.get("damage_cap"));
+            case "tooltips.forgermod.passive.echo_salvage" -> Component.translatable("tooltips.forgermod.passive.echo_salvage.current", values.get("stored_strikes"));
             case "tooltips.forgermod.ability.ender_swing" -> Component.translatable("tooltips.forgermod.ability.ender_swing.current", values.get("damage"));
             case "tooltips.forgermod.ability.flameborn" -> Component.translatable("tooltips.forgermod.ability.flameborn.current", values.get("burn"));
             case "tooltips.forgermod.passive.double_jump" -> Component.translatable("tooltips.forgermod.passive.double_jump.current", values.get("air_jumps"));

@@ -88,14 +88,22 @@ public final class NecromancerPassiveCombat {
         var slam=SLAMS.get(mob.getUUID());if(slam==null)return;
         if(!mob.isAlive() || mob.getMainHandItem()!=slam.stack() || !mob.getOffhandItem().isEmpty() || WeaponControlLocks.frozen(mob)){SLAMS.remove(mob.getUUID());return;}
         if(mob.level().getGameTime()<slam.due())return;SLAMS.remove(mob.getUUID());
+        EchoSalvageEvents.vertical(mob,()->landSlam(mob,slam,null,EchoSalvageEvents.bonus(mob)));
+    }
+    public static void echoVerticalStrike(Mob mob,ItemStack stack,LivingEntity primary,float bonus){
+        COMBOS.remove(mob.getUUID());SLAMS.remove(mob.getUUID());
+        var slam=new Slam(stack,mob.level().getGameTime(),primary.blockPosition(),(float)mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        EchoSalvageEvents.vertical(mob,()->landSlam(mob,slam,primary,bonus));
+    }
+    private static void landSlam(Mob mob,Slam slam,LivingEntity skipped,float echo){
         var center=slam.center();var area=new AABB(center.getX()-1,center.getY(),center.getZ()-1,center.getX()+2,center.getY()+2.5,center.getZ()+2);
-        boolean hitAnything=false,hitEnemy=false;float echo=EchoSalvageEvents.bonus(mob);var previous=CURRENT.get();CURRENT.set(new Attack(mob,slam.stack(),true));AftershockEvents.prepare(mob);
-        try{for(var target:mob.level().getEntitiesOfClass(LivingEntity.class,area,t->t.isAlive() && !t.isSpectator() && PassiveActors.canAffect(mob,t))){
-            if(!mob.hasLineOfSight(target))continue;boolean enemy=WeaponAbilityTargets.enemy(mob,target);int immunity=target.invulnerableTime;target.invulnerableTime=0;
-            if(target.hurt(mob.damageSources().mobAttack(mob),slam.damage()+(enemy?echo:0))){hitAnything=true;hitEnemy|=enemy;target.knockback(.5,center.getX()+.5-target.getX(),center.getZ()+.5-target.getZ());}
+        boolean hitAnything=skipped!=null,attemptedHit=skipped!=null;var previous=CURRENT.get();CURRENT.set(new Attack(mob,slam.stack(),true));AftershockEvents.prepare(mob);
+        try{for(var target:mob.level().getEntitiesOfClass(LivingEntity.class,area,t->t!=skipped && t.isAlive() && !t.isSpectator() && PassiveActors.canAffect(mob,t))){
+            if(!mob.hasLineOfSight(target))continue;attemptedHit=true;int immunity=target.invulnerableTime;target.invulnerableTime=0;
+            if(target.hurt(mob.damageSources().mobAttack(mob),slam.damage()+echo)){hitAnything=true;target.knockback(.5,center.getX()+.5-target.getX(),center.getZ()+.5-target.getZ());}
             else target.invulnerableTime=immunity;
         }}finally{if(previous==null)CURRENT.remove();else CURRENT.set(previous);}
-        EchoSalvageEvents.onImpact(mob,hitAnything,hitEnemy,!mob.level().getBlockState(center.below()).getCollisionShape(mob.level(),center.below()).isEmpty());
+        EchoSalvageEvents.onImpact(mob,hitAnything,attemptedHit,!mob.level().getBlockState(center.below()).getCollisionShape(mob.level(),center.below()).isEmpty(),slam.damage());
         mob.swing(InteractionHand.MAIN_HAND);for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)PassiveActors.level(mob).sendParticles(ParticleTypes.CLOUD,center.getX()+x+.5,center.getY()+.1,center.getZ()+z+.5,5,.25,.05,.25,.02);
         PassiveActors.level(mob).playSound(null,center,SoundEvents.IRON_GOLEM_ATTACK,SoundSource.HOSTILE,1,.7F);
     }
