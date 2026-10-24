@@ -24,6 +24,8 @@ Examples:
 
 Ability names are case-insensitive. Spaces, underscores, namespaced IDs and quoted names are supported. Super forms accept their own name or their underlying base augment's ID. For ambiguous base names, use `forgermod:ability/<name>` or `forgermod:passive/<name>`.
 
-Autocomplete lists only abilities usable for the chosen operation and held items. Material compatibility, prerequisites and available active/passive slots still apply. Existing item names, enchantments and durability are preserved. Templates remain supported, and commands do not consume ingredients or increase the Augmentation Table use count.
+Autocomplete lists only abilities usable for the chosen operation and held items. Missing prerequisite augments are learned automatically at level I when the weapon has room for the complete dependency chain. Existing prerequisites retain their levels. Material compatibility and active/passive slot limits still apply; a failed operation leaves that target's item unchanged. Templates continue to store augments independently. Existing item names, enchantments and durability are preserved. Templates remain supported, and commands do not consume ingredients or increase the Augmentation Table use count.
 
 Multiple-target selectors skip targets that cannot receive the requested change and report the number changed. If none can receive it, the command fails without changing their items.
+
+For example, `/augment new @s flaming_stomp` also learns Vertical Strike if it is missing and both augments fit. This applies to upgrades that need a missing prerequisite too.

@@ -185,9 +185,12 @@ public final class Augmentations {
                 || RecommendedAbilities.NULL_RECEIPT.equals(id)
                 || RecommendedAbilities.ECHO_SALVAGE.equals(id);
     }
+    /** Templates store augments independently; weapons must learn their prerequisite techniques. */
+    public static List<String> prerequisites(ItemStack stack,String id) {
+        return !isTemplate(stack) && requiresVerticalStrike(id) ? List.of(VERTICAL_STRIKE) : List.of();
+    }
     private static boolean prerequisitesMet(ItemStack stack, String id, Map<String,Integer> learned) {
-        // Templates store augments independently; the receiving weapon must know the technique.
-        return isTemplate(stack) || !requiresVerticalStrike(id) || learned.getOrDefault(VERTICAL_STRIKE,0)>0;
+        return prerequisites(stack,id).stream().allMatch(required->learned.getOrDefault(required,0)>0);
     }
     public static List<Ability> available(ItemStack stack) {
         var result = new ArrayList<Ability>();

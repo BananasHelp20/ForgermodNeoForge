@@ -98,7 +98,7 @@ public final class AugmentCommand {
         for(var ability:abilities){
             boolean available=targets.stream().anyMatch(target->{
                 if(!(target instanceof LivingEntity living))return false;
-                try{int rank=desiredRank(living.getMainHandItem(),ability,mode);return !Augmentations.setLevel(living.getMainHandItem(),ability.id(),rank).isEmpty();}
+                try{int rank=desiredRank(living.getMainHandItem(),ability,mode);return !withPrerequisites(living.getMainHandItem(),ability.id(),rank).isEmpty();}
                 catch(CommandSyntaxException ignored){return false;}
             });
             if(!available)continue;
@@ -145,6 +145,23 @@ public final class AugmentCommand {
         return current+1;
     }
 
+    /** Stage the entire dependency chain on copies; never leave a partial command result behind. */
+    private static ItemStack withPrerequisites(ItemStack held,String id,int rank){
+        return withPrerequisites(held,id,rank,new java.util.HashSet<>());
+    }
+    private static ItemStack withPrerequisites(ItemStack held,String id,int rank,java.util.Set<String> visiting){
+        if(!visiting.add(id))return ItemStack.EMPTY;
+        try{
+            ItemStack result=held;
+            for(String required:Augmentations.prerequisites(held,id)){
+                if(Augmentations.level(result,required)>0)continue;
+                result=withPrerequisites(result,required,1,visiting);
+                if(result.isEmpty())return ItemStack.EMPTY;
+            }
+            return Augmentations.setLevel(result,id,rank);
+        }finally{visiting.remove(id);}
+    }
+
     private static int apply(CommandSourceStack source, Collection<? extends Entity> targets,
                              String name, Mode mode) throws CommandSyntaxException {
         Augmentations.Ability ability = resolve(name,mode);
@@ -166,7 +183,7 @@ public final class AugmentCommand {
             }
             int rank;
             try{rank=desiredRank(held,ability,mode);}catch(CommandSyntaxException failure){if(targets.size()==1)throw failure;continue;}
-            ItemStack augmented = Augmentations.setLevel(held, ability.id(), rank);
+            ItemStack augmented = withPrerequisites(held, ability.id(), rank);
             if (augmented.isEmpty()) {
                 if (targets.size() == 1) throw INCOMPATIBLE.create(held.getHoverName().getString());
                 continue;

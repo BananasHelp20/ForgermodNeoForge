@@ -80,12 +80,63 @@ public class AugmentCommandGameTests {
             player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.RIFTFANG_DAGGER.get()));
             expectFailure(test,()->dispatcher.execute("augment new @s flame_breath",source),"Incompatible material accepted");expectFailure(test,()->dispatcher.execute("augment new @s not_an_augment",source),"Unknown accepted");
             player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.DEAD_CALM_DAGGER.get()));expectFailure(test,()->dispatcher.execute("augment super @s skybreaker",source),"Dagger accepts axe-only super");dispatcher.execute("augment new @s windcharge",source);expectFailure(test,()->dispatcher.execute("augment upgrade @s skybreaker",source),"Axe-only super alias upgrades an incompatible dagger ability");
-            player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.MOLTEN_AXE.get()));expectFailure(test,()->dispatcher.execute("augment new @s flaming_stomp",source),"Prerequisite bypassed");dispatcher.execute("augment new @s vertical_strike",source);dispatcher.execute("augment new @s flaming_stomp",source);
+            player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.MOLTEN_AXE.get()));dispatcher.execute("augment new @s flaming_stomp",source);test.assertTrue(Augmentations.level(player.getMainHandItem(),Augmentations.VERTICAL_STRIKE)==1,"Command did not learn Vertical Strike automatically");
             player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.AUGMENT_TEMPLATE.get()));dispatcher.execute("augment new @s flame_breath",source);dispatcher.execute("augment upgrade @s flame_breath",source);test.assertTrue(Augmentations.level(player.getMainHandItem(),AdditionalAbilities.FLAME_BREATH)==2,"Template support lost");
             ItemStack full=new ItemStack(ModItems.AUGMENT_TEMPLATE.get());var active=Augmentations.catalog(full).stream().filter(a->a.active() && !Augmentations.requiresVerticalStrike(a.id())).toList();
             for(int i=0;i<Augmentations.limit(full,true);i++)full=Augmentations.apply(full,active.get(i).id());String id=active.get(Augmentations.limit(full,true)).id();player.setItemInHand(InteractionHand.MAIN_HAND,full);
             String command="augment new @s "+id.substring(id.lastIndexOf('.')+1);expectFailure(test,()->dispatcher.execute(command,source),"Full slots accepted another active");
             test.assertTrue(Augmentations.ids(player.getMainHandItem(),true).size()==Augmentations.limit(full,true),"Failed command changes slot count");
+        }finally{player.server.getPlayerList().remove(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void everyDependentVariantAutomaticallyLearnsMissingTechnique(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);int checked=0;
+        try{
+            var dispatcher=player.server.getCommands().getDispatcher();var source=player.createCommandSourceStack().withPermission(4);
+            for(var entry:ModItems.ITEMS.getEntries()){
+                var fresh=new ItemStack(entry.get());if(!Augmentations.eligible(fresh))continue;
+                for(var ability:Augmentations.catalog(fresh)){
+                    if(!Augmentations.requiresVerticalStrike(ability.id()))continue;checked++;
+                    for(boolean known:new boolean[]{false,true}){
+                        var input=known?Augmentations.setLevel(fresh,Augmentations.VERTICAL_STRIKE,1):fresh.copy();player.setItemInHand(InteractionHand.MAIN_HAND,input);
+                        String suffix=ability.id().substring(ability.id().lastIndexOf('.')+1);
+                        var suggestions=dispatcher.getCompletionSuggestions(dispatcher.parse("augment new @s forgermod:"+suffix.substring(0,suffix.length()-1),source)).get();
+                        test.assertTrue(suggestions.getList().stream().anyMatch(v->v.getText().equals("forgermod:"+suffix)),"Auto-dependency choice is absent from completion: "+suffix);
+                        test.assertTrue(ItemStack.matches(input,player.getMainHandItem()),"Completion adds a prerequisite before execution");
+                        dispatcher.execute("augment new @s "+suffix,source);
+                        test.assertTrue(Augmentations.level(player.getMainHandItem(),ability.id())==1 && Augmentations.level(player.getMainHandItem(),Augmentations.VERTICAL_STRIKE)==1,"Missing dependent/prerequisite on "+entry.getId());
+                        test.assertTrue(Augmentations.ids(player.getMainHandItem(),false).stream().filter(Augmentations.VERTICAL_STRIKE::equals).count()==1,"Existing prerequisite duplicated");
+                    }
+                }
+            }
+            test.assertTrue(checked==15,"Skipped dependent augment gemstone variants: "+checked);
+        }finally{player.server.getPlayerList().remove(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void failedDependencyTransactionsRollbackAndLegacyUpgradesRestorePrerequisite(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);
+        try{
+            var dispatcher=player.server.getCommands().getDispatcher();var source=player.createCommandSourceStack().withPermission(4);
+            ItemStack full=new ItemStack(ModItems.MOLTEN_AXE.get());
+            for(String id:java.util.List.of(AdditionalAbilities.FLAME_BREATH,AdditionalAbilities.MAGMA_TOSS,RecommendedAbilities.CRUCIBLE_HOOK))full=Augmentations.setLevel(full,id,1);
+            test.assertTrue(!full.isEmpty() && Augmentations.ids(full,true).size()==3,"Full active-slot fixture invalid");player.setItemInHand(InteractionHand.MAIN_HAND,full);var before=full.copy();
+            expectFailure(test,()->dispatcher.execute("augment new @s flaming_stomp",source),"Dependent applied despite full active slots");
+            test.assertTrue(ItemStack.matches(before,player.getMainHandItem()) && Augmentations.level(player.getMainHandItem(),Augmentations.VERTICAL_STRIKE)==0,"Failed active command partially adds prerequisite");
+            ItemStack echo=new ItemStack(ModItems.ECHOING_AXE.get());
+            var passives=Augmentations.catalog(echo).stream().filter(a->!a.active() && !a.id().equals(Augmentations.MATERIAL_HIT) && !a.id().equals(Augmentations.VERTICAL_STRIKE) && !Augmentations.requiresVerticalStrike(a.id())).toList();
+            test.assertTrue(passives.size()>=4,"Passive-slot fixture incomplete");
+            for(int i=0;i<4;i++)echo=Augmentations.setLevel(echo,passives.get(i).id(),1);
+            player.setItemInHand(InteractionHand.MAIN_HAND,echo);before=echo.copy();
+            expectFailure(test,()->dispatcher.execute("augment new @s echo_salvage",source),"One passive slot accepted two augments");
+            test.assertTrue(ItemStack.matches(before,player.getMainHandItem()),"Partial prerequisite leaked when dependent had no remaining passive slot");
+            var suggestions=dispatcher.getCompletionSuggestions(dispatcher.parse("augment new @s forgermod:echo_s",source)).get();test.assertTrue(suggestions.getList().stream().noneMatch(v->v.getText().equals("forgermod:echo_salvage")),"Impossible dependency pair appears in completion");
+            var legacy=Augmentations.setLevel(new ItemStack(ModItems.NULLIFIED_AXE.get()),Augmentations.VERTICAL_STRIKE,1);legacy=Augmentations.setLevel(legacy,RecommendedAbilities.NULL_RECEIPT,1);
+            var data=legacy.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA).copyTag();var levels=data.getCompound("forgermod_augments").getList("levels",net.minecraft.nbt.Tag.TAG_COMPOUND);
+            for(int i=levels.size()-1;i>=0;i--)if(levels.getCompound(i).getString("id").equals(Augmentations.VERTICAL_STRIKE))levels.remove(i);
+            legacy.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.of(data));player.setItemInHand(InteractionHand.MAIN_HAND,legacy);
+            dispatcher.execute("augment upgrade @s null_receipt",source);test.assertTrue(Augmentations.level(player.getMainHandItem(),RecommendedAbilities.NULL_RECEIPT)==2 && Augmentations.level(player.getMainHandItem(),Augmentations.VERTICAL_STRIKE)==1,"Legacy upgrade failed to repair its missing prerequisite");
+            player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.AUGMENT_TEMPLATE.get()));dispatcher.execute("augment new @s echo_salvage",source);
+            test.assertTrue(Augmentations.level(player.getMainHandItem(),RecommendedAbilities.ECHO_SALVAGE)==1 && Augmentations.level(player.getMainHandItem(),Augmentations.VERTICAL_STRIKE)==0,"Storage template incorrectly gains a weapon prerequisite");
         }finally{player.server.getPlayerList().remove(player);}test.succeed();
     }
     private static void expectFailure(GameTestHelper test,ThrowingCommand command,String message)throws Exception{
