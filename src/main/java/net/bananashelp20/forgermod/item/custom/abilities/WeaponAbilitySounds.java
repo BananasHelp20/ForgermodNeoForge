@@ -25,6 +25,7 @@ public final class WeaponAbilitySounds {
         }
         return switch(id){
             case STRONG_ARM -> List.of(cue(SoundEvents.ARMOR_EQUIP_IRON,0.6F,0.7F), cue(SoundEvents.PLAYER_ATTACK_STRONG,0.45F,0.7F));
+            case DISTANCE_TAX -> List.of(cue(SoundEvents.AMETHYST_BLOCK_CHIME,.5F,.65F));
             case NULL_RECEIPT -> List.of(cue(SoundEvents.RESPAWN_ANCHOR_CHARGE,0.55F,0.65F));
             case FALSE_AWAKENING -> List.of(cue(SoundEvents.ILLUSIONER_MIRROR_MOVE,0.65F,1.1F));
             case DELUSION -> List.of(cue(SoundEvents.ILLUSIONER_CAST_SPELL,0.55F,0.9F));

@@ -406,3 +406,7 @@
 - Echo Salvage persistent strike bank: reinforcement melee also releases the bank with ally-safe slam targeting; supplied weapon storage is marked for saving. Updated capacity descriptions and upgrade previews.
 
 - Blood Sacrifice health requirement: activation now requires strictly more than 4 HP; absorption cannot bypass the requirement. Failed low-health activation spends no resources and starts no cooldown. Updated item/card descriptions.
+
+- Distance Tax active conversion: now an active ability that arms the next successful mob hit. That first target is marked for the existing ten-second distance-based damage (maximum 40); later hits do not replace or refresh it.
+- Distance Tax active conversion: existing learned ranks are preserved; if all three active slots are occupied, Distance Tax stays visibly learned but inactive until a slot is freed. It no longer acts as a reinforcement/player passive.
+- Distance Tax active conversion: added activation sound and current descriptions, normal cancellation cleanup and a temporary bounded target-chunk ticket so distance damage can resolve after the player moves away. No extra cooldown added beyond its active mark lifecycle.

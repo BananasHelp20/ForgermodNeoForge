@@ -151,6 +151,11 @@ public class SwordItemWithEffect extends SwordItem {
                     }
                 }
             }
+            for(String id:Augmentations.inactiveActives(stack)){
+                int rank=Augmentations.level(stack,id);
+                var name=Component.translatable("augmentation.forgermod.rank",Augmentations.abilityName(stack,id,rank),WeaponTooltips.romanNumeral(Augmentations.displayRank(stack,id,rank)));
+                tooltip.add(Component.translatable("augmentation.forgermod.inactive_no_slot",name).withStyle(ChatFormatting.DARK_GRAY));
+            }
             if (expanded && actives.size() >= 2) tooltip.add(Component.translatable("tooltips.forgermod.ability.swap_hint").withStyle(ChatFormatting.GRAY));
         }
         tooltip.add(Component.empty());

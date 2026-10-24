@@ -61,7 +61,7 @@ public final class RecommendedAbilities {
         if(stack.getItem() instanceof InanisiumWeapon weapon && weapon.isDagger())
             return List.of(new Augmentations.Ability(DEATH_STARE,true),new Augmentations.Ability(ECHOING_SPEED,false));
         if(stack.getItem() instanceof InanisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
-            return List.of(new Augmentations.Ability(DISTANCE_TAX,false));
+            return List.of(new Augmentations.Ability(DISTANCE_TAX,true));
         if(stack.getItem() instanceof InanisiumWeapon weapon && weapon.isAxe())
             return List.of(new Augmentations.Ability(NULL_RECEIPT,true),new Augmentations.Ability(ENDER_SWING,true));
         if(stack.getItem() instanceof IgnisiumWeapon weapon && !weapon.isDagger() && !weapon.isAxe())
@@ -75,11 +75,12 @@ public final class RecommendedAbilities {
                     new Augmentations.Ability(FLAMING_STOMP,true));
         return List.of();
     }
-    public static boolean active(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.active(); return ENDER_SWING.equals(id) || FLAMEBORN.equals(id) || FLAMING_STOMP.equals(id) || ECHO_HEARING.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
+    public static boolean active(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.active(); return DISTANCE_TAX.equals(id) || ENDER_SWING.equals(id) || FLAMEBORN.equals(id) || FLAMING_STOMP.equals(id) || ECHO_HEARING.equals(id) || GARDENERS.equals(id) || EXPLOSION.equals(id) || CINDER_DECOY.equals(id) || EXPLOSIVE_HITS.equals(id) || CRUCIBLE_HOOK.equals(id) || STRONG_ARM.equals(id) || SWING_ATTACK.equals(id) || DEATH_STARE.equals(id) || NULL_RECEIPT.equals(id) || FALSE_AWAKENING.equals(id) || DELUSION.equals(id); }
     public static int maxRank(String id) { var added=AdditionalAbilities.definition(id); if(added!=null) return added.maxRank(); return Augmentations.DUAL_WIELD.equals(id) || Augmentations.VERTICAL_STRIKE.equals(id) || FLAMING_STOMP.equals(id) || FLAMEBORN.equals(id) || ENDER_SWING.equals(id)?1:FIRE_RESISTANCE.equals(id)?2:NETHER_BORN.equals(id) || OVERWHELMING_SMASH.equals(id) || GRAVE_VAULT.equals(id) || WARDEN_TONE.equals(id)?1:4; }
     public static int cooldown(String id,int rank) {
         int reviewed=ReviewedRanks.cooldown(id,rank);if(reviewed>=0)return reviewed;
         var added=AdditionalAbilities.definition(id); if(added!=null) return added.cooldown()-added.cooldownStep()*(Math.clamp(rank,1,added.maxRank())-1);
+        if(DISTANCE_TAX.equals(id))return 0; // Its ten-second mark resolves before it can be armed again.
         if(ECHO_HEARING.equals(id)) return 600-100*(Math.clamp(rank,1,4)-1);
         if(GARDENERS.equals(id)) return 1200-200*(Math.clamp(rank,1,4)-1);
         if(DELUSION.equals(id)) return 800-100*(Math.clamp(rank,1,4)-1);

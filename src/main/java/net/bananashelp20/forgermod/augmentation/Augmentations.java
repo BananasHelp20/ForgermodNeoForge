@@ -129,7 +129,13 @@ public final class Augmentations {
         List<String> result = new ArrayList<>();
         Map<String, Boolean> types = new HashMap<>();
         for (var ability : catalog(stack)) types.put(ability.id(), ability.active());
-        for (String id : learned(stack).keySet()) {
+        var learnedIds=new ArrayList<>(learned(stack).keySet());
+        // A former passive becoming active must not displace three already-equipped actives.
+        if(active && learnedIds.contains(RecommendedAbilities.DISTANCE_TAX)
+                && learnedIds.stream().filter(id->!id.equals(RecommendedAbilities.DISTANCE_TAX) && Boolean.TRUE.equals(types.get(id))).count()>=limit(stack,true)){
+            learnedIds.remove(RecommendedAbilities.DISTANCE_TAX);learnedIds.add(RecommendedAbilities.DISTANCE_TAX);
+        }
+        for (String id : learnedIds) {
             if (!id.equals(MATERIAL_HIT) && Objects.equals(types.get(id), active) && !result.contains(id) && result.size() < limit(stack, active)) result.add(id);
         }
         if (active && data(stack).contains("active_order", Tag.TAG_LIST)) {
@@ -142,6 +148,11 @@ public final class Augmentations {
             result = ordered;
         } else if (active && data(stack).getBoolean("swapped") && result.size()>=2) Collections.swap(result,0,1);
         return List.copyOf(result);
+    }
+    public static List<String> inactiveActives(ItemStack stack){
+        var equipped=ids(stack,true);var activeTypes=new HashSet<String>();
+        for(var ability:catalog(stack))if(ability.active())activeTypes.add(ability.id());
+        return learned(stack).keySet().stream().filter(id->activeTypes.contains(id) && !equipped.contains(id)).toList();
     }
     public static int level(ItemStack stack, String id) {
         Integer value = learned(stack).get(id);

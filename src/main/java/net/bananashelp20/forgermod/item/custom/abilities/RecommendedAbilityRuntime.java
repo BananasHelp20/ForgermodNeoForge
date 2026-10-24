@@ -37,6 +37,7 @@ public final class RecommendedAbilityRuntime {
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) return ExplosiveHitsEvents.activate(player,stack);
         if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id)) return CrucibleHookEvents.activate(player,stack,grappleAutoRelease);
         if(RecommendedAbilities.STRONG_ARM.equals(id)) return StrongArmAbility.activate(player,stack);
+        if(RecommendedAbilities.DISTANCE_TAX.equals(id)) return DistanceTaxEvents.activate(player,stack);
         if(RecommendedAbilities.SWING_ATTACK.equals(id)) return SwingAttackAbility.activate(player,stack);
         if(RecommendedAbilities.DEATH_STARE.equals(id)) return DeathStareAbility.activate(player,stack);
         if(RecommendedAbilities.NULL_RECEIPT.equals(id)) return NullReceiptEvents.activate(player,stack);
@@ -52,6 +53,7 @@ public final class RecommendedAbilityRuntime {
     public static boolean active(ServerPlayer player,String id) {
         return AdditionalAbilityRuntime.active(player,id) || RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
                 || RecommendedAbilities.STRONG_ARM.equals(id) && StrongArmAbility.active(player)
+                || RecommendedAbilities.DISTANCE_TAX.equals(id) && DistanceTaxEvents.active(player)
                 || RecommendedAbilities.FLAMEBORN.equals(id) && FlamebornAbility.active(player)
                 || RecommendedAbilities.EXPLOSIVE_HITS.equals(id) && ExplosiveHitsEvents.active(player)
                 || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.active(player)
@@ -65,6 +67,7 @@ public final class RecommendedAbilityRuntime {
     public static void cancel(ServerPlayer player,String id) {
         AdditionalAbilityRuntime.cancel(player,id);
         if(RecommendedAbilities.STRONG_ARM.equals(id)) StrongArmAbility.cancel(player.getUUID());
+        if(RecommendedAbilities.DISTANCE_TAX.equals(id)) DistanceTaxEvents.cancel(player.getUUID());
         if(RecommendedAbilities.FLAMEBORN.equals(id)) FlamebornAbility.cancel(player);
         if(RecommendedAbilities.CINDER_DECOY.equals(id)) CinderDecoyEvents.cancel(player.getUUID());
         if(RecommendedAbilities.EXPLOSIVE_HITS.equals(id)) ExplosiveHitsEvents.cancel(player.getUUID());

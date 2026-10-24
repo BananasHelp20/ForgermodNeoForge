@@ -138,7 +138,7 @@ public class NecromancerPassiveGameTests {
         }finally{close(f);}test.succeed();
     }
     @GameTest(template="riftfang_test",batch="necro_passive_delayed",timeoutTicks=260)
-    public static void distanceTaxFiresAtTenSecondsAndAftershockUsesGuardDamageWithoutRecursion(GameTestHelper test){
+    public static void aftershockUsesGuardDamageAndActiveDistanceTaxDoesNotFireForReinforcements(GameTestHelper test){
         var f=fixture(test);
         var weapon=learn(ModItems.SHRIEKING_CLAYMORE.get(),AdditionalAbilities.AFTERSHOCK,1);weapon=Augmentations.setLevel(weapon,AdditionalAbilities.RESONANCE_CRIT,1);equip(f.guard(),weapon,ItemStack.EMPTY);
         f.target().setOnGround(false);f.target().setDeltaMovement(0,.3,0);float before=f.target().getHealth(),base=(float)f.guard().getAttributeValue(Attributes.ATTACK_DAMAGE);NecromancerPassiveCombat.attack(f.guard(),f.target());f.target().setDeltaMovement(Vec3.ZERO);
@@ -148,7 +148,7 @@ public class NecromancerPassiveGameTests {
             equip(f.guard(),learn(ModItems.CLAYMORE_OF_THE_VOID.get(),RecommendedAbilities.DISTANCE_TAX,1),ItemStack.EMPTY);f.target().invulnerableTime=0;NecromancerPassiveCombat.attack(f.guard(),f.target());
             float marked=f.target().getHealth();f.guard().setPos(f.guard().position().add(0,0,-8));
             test.runAfterDelay(201,()->{
-                try{float expected=DistanceTaxEvents.damage(f.guard().distanceTo(f.target()),1);test.assertTrue(Math.abs(marked-f.target().getHealth()-expected)<.01,"Distance Tax uses owner distance or fails on mob ticks");test.succeed();}
+                try{test.assertTrue(Math.abs(marked-f.target().getHealth())<.01,"Reinforcement automatically uses active Distance Tax");test.succeed();}
                 finally{close(f);}
             });
         });
