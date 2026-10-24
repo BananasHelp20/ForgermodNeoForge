@@ -404,3 +404,5 @@
 - Echo Salvage persistent strike bank: missed solid-ground Vertical Strikes now store uncapped half-strike damage in the weapon itself, with capacities of 2/3/4/5 strikes at levels I/II/III/IV. Removed the 30-second expiry and loss on switching; storage survives item saves and reloads.
 - Echo Salvage persistent strike bank: the next successful melee hit becomes an animated area Vertical Strike and releases the full bank once, without dealing a duplicate primary hit. Existing Vertical Strikes also release the bank. Blocked/rejected hits neither spend it nor generate a fresh missed strike.
 - Echo Salvage persistent strike bank: reinforcement melee also releases the bank with ally-safe slam targeting; supplied weapon storage is marked for saving. Updated capacity descriptions and upgrade previews.
+
+- Blood Sacrifice health requirement: activation now requires strictly more than 4 HP; absorption cannot bypass the requirement. Failed low-health activation spends no resources and starts no cooldown. Updated item/card descriptions.

@@ -15,7 +15,7 @@ public final class BloodSacrificeEvents {
     private static final Map<UUID,Sacrifice> SACRIFICES=new HashMap<>();
     private BloodSacrificeEvents() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
-        if(active(player) || player.getHealth()<=0) return false;
+        if(active(player) || player.getHealth()<=4) return false;
         var remaining=SacrificeCost.pay(player.getHealth(),player.getAbsorptionAmount());
         player.setAbsorptionAmount(remaining.absorption());player.setHealth(remaining.health());
         SACRIFICES.put(player.getUUID(),new Sacrifice(stack,player.getInventory().selected,player.serverLevel(),

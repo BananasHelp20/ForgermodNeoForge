@@ -31,4 +31,25 @@ public class BloodSacrificeGameTests {
         }} finally {BloodSacrificeEvents.cancel(player.getUUID());mob.discard();cow.discard();player.setHealth(20);player.server.getPlayerList().remove(player);}
         test.assertTrue(count==15,"Skipped variants");test.succeed();
     }
+    @GameTest(template="riftfang_test",batch="blood_sacrifice_health_gate")
+    public static void strictFourHealthBoundaryCannotBeBypassedWithAbsorption(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);player.setNoGravity(true);
+        player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,10000,1));int checked=0;
+        try{for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof VulnusiumWeapon))continue;checked++;
+            for(int rank=1;rank<=4;rank++){
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.BLOOD_SACRAFICE,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                for(float health:new float[]{1,3.99F,4})for(float absorption:new float[]{0,8}){
+                    player.setHealth(health);player.setAbsorptionAmount(absorption);player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                    AbilityTestPackets.use(player,0);
+                    test.assertTrue(!BloodSacrificeEvents.active(player) && player.getHealth()==health && player.getAbsorptionAmount()==absorption && player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(),"Low-health activation spends resources or bypasses strict four-HP gate");
+                }
+                player.setHealth(4.01F);player.setAbsorptionAmount(0);AbilityTestPackets.use(player,0);
+                test.assertTrue(BloodSacrificeEvents.active(player) && Math.abs(player.getHealth()-2.005F)<.001,"Activation just above four HP is refused or spends wrong amount");
+                BloodSacrificeEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+            }
+        }test.assertTrue(checked==15,"Skipped sacrifice weapon variants");test.succeed();}
+        finally{BloodSacrificeEvents.cancel(player.getUUID());WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.setHealth(20);player.server.getPlayerList().remove(player);}
+    }
+
 }
