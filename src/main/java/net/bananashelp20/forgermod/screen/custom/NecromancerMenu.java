@@ -22,12 +22,16 @@ public final class NecromancerMenu extends AbstractContainerMenu {
     public NecromancerMenu(int id,Inventory inventory,RegistryFriendlyByteBuf extra){this(id,inventory,extra.readVarInt());}
     public NecromancerMenu(int id,Inventory inventory,int hotbar){
         super(ModMenuTypes.NECROMANCER_MENU.get(),id);owner=inventory.player;this.hotbar=hotbar;weapon=hotbar>=0 && hotbar<9?inventory.getItem(hotbar):ItemStack.EMPTY;
-        loadout=owner instanceof ServerPlayer player?NecromancerLoadouts.get(player,weapon):null;Arrays.fill(remote,-1);remote[10]=0;
+        loadout=owner instanceof ServerPlayer player?NecromancerLoadouts.get(player,weapon):null;
+        if(loadout!=null && owner instanceof ServerPlayer player)for(int row=0;row<loadout.types.size();row++)NecromancerEquipment.normalizeHands(loadout,row,player);
+        Arrays.fill(remote,-1);remote[10]=0;
         for(int index=0;index<15;index++){final int key=index;addDataSlot(new DataSlot(){@Override public int get(){return value(key);}@Override public void set(int value){remote[key]=value;}});}
         int[][] positions={{9,26},{33,8},{33,26},{33,44},{33,62},{57,26}};
         for(int i=0;i<NecromancerCatalog.EQUIPMENT_SLOTS;i++){final int column=i;addSlot(new Slot(equipment,i,positions[i][0],positions[i][1]){
             @Override public boolean isActive(){return !picking() && canEquip();}
-            @Override public boolean mayPlace(ItemStack stack){return !picking() && canEquip() && stillValid(owner) && NecromancerEquipment.validItem(column,stack);}
+            @Override public boolean mayPlace(ItemStack stack){return !picking() && canEquip() && stillValid(owner) && NecromancerEquipment.validItem(column,stack)
+                    && (column!=0 || NecromancerEquipment.validHands(stack,equipment.getItem(5)))
+                    && (column!=5 || NecromancerEquipment.validHands(equipment.getItem(0),stack));}
             @Override public boolean mayPickup(Player player){return !picking() && canEquip() && stillValid(player);}
             @Override public int getMaxStackSize(){return 1;}
             @Override public com.mojang.datafixers.util.Pair<net.minecraft.resources.ResourceLocation,net.minecraft.resources.ResourceLocation> getNoItemIcon(){

@@ -14,7 +14,25 @@ public final class NecromancerEquipment {
     private record Binding(NecromancerLoadouts.Loadout loadout,int row,Mob mob){}
     private static final Map<UUID,Binding> BINDINGS=new HashMap<>();
     private NecromancerEquipment(){}
+    public static boolean validHands(ItemStack main,ItemStack off){
+        return off.isEmpty() || !net.bananashelp20.forgermod.item.custom.attacks.axe.AxeItems.isAxe(main);
+    }
+    private static void refund(net.minecraft.server.level.ServerPlayer owner,ItemStack item){
+        owner.getInventory().add(item);if(!item.isEmpty()){var drop=new net.minecraft.world.entity.item.ItemEntity(owner.level(),owner.getX(),owner.getY(),owner.getZ(),item);drop.setDefaultPickUpDelay();owner.level().addFreshEntity(drop);}
+    }
+    public static void normalizeHands(NecromancerLoadouts.Loadout loadout,int row,net.minecraft.server.level.ServerPlayer owner){
+        int first=row*NecromancerCatalog.EQUIPMENT_SLOTS;
+        if(!BoneGuardEvents.busy(loadout.id) && !validHands(loadout.gear.getItem(first),loadout.gear.getItem(first+5))){refund(owner,loadout.gear.removeItemNoUpdate(first+5));loadout.gear.setChanged();}
+    }
+    @SubscribeEvent public static void hands(net.neoforged.neoforge.event.tick.EntityTickEvent.Pre event){
+        if(event.getEntity() instanceof Mob mob && mob instanceof BoneGuardEvents.FriendlyGuard guard && !mob.level().isClientSide && !validHands(mob.getMainHandItem(),mob.getOffhandItem())){
+            var off=mob.getOffhandItem();var binding=BINDINGS.get(mob.getUUID());
+            if(binding!=null && binding.loadout.gear.getItem(binding.row*NecromancerCatalog.EQUIPMENT_SLOTS+5)==off)binding.loadout.gear.removeItemNoUpdate(binding.row*NecromancerCatalog.EQUIPMENT_SLOTS+5);
+            mob.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);refund(guard.owner(),off);changed(mob);
+        }
+    }
     public static void bind(Mob mob,NecromancerLoadouts.Loadout loadout,int row){
+        if(mob instanceof BoneGuardEvents.FriendlyGuard guard)normalizeHands(loadout,row,guard.owner());
         BINDINGS.put(mob.getUUID(),new Binding(loadout,row,mob));
         for(int i=0;i<SLOTS.length;i++){var stack=loadout.gear.getItem(row*NecromancerCatalog.EQUIPMENT_SLOTS+i);if(!stack.isEmpty())mob.setItemSlot(SLOTS[i],stack);}
     }

@@ -33,6 +33,27 @@ public class NecromancerGameTests {
     private static List<Mob> guards(ServerPlayer player){return player.level().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(12),mob->mob instanceof BoneGuardEvents.FriendlyGuard guard && guard.owner()==player && mob.isAlive());}
     private static void clean(ServerPlayer player){BoneGuardEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
     private static void roster(NecromancerLoadouts.Loadout loadout,int... types){loadout.types.clear();for(int type:types)loadout.types.add(type);loadout.gear.setChanged();}
+    @GameTest(template="riftfang_test",batch="necro_hands")
+    public static void specialAxesBlockBothInsertionOrdersAndLegacyOffhandsAreRefunded(GameTestHelper test){
+        var player=player(test);var stack=weapon(player,7);var bank=NecromancerLoadouts.get(player,stack);roster(bank,0);
+        int checked=0;
+        try{
+            var menu=new NecromancerMenu(1,player.getInventory(),player.getInventory().selected);
+            for(var entry:ModItems.ITEMS.getEntries()){
+                var axe=new ItemStack(entry.get());if(!net.bananashelp20.forgermod.item.custom.attacks.axe.AxeItems.isAxe(axe))continue;checked++;
+                bank.gear.setItem(5,new ItemStack(Items.SHIELD));test.assertFalse(menu.getSlot(0).mayPlace(axe),"Heavy axe can be inserted beside an offhand");
+                bank.gear.setItem(5,ItemStack.EMPTY);test.assertTrue(menu.getSlot(0).mayPlace(axe),"Heavy axe cannot be equipped alone");bank.gear.setItem(0,axe);
+                test.assertFalse(menu.getSlot(5).mayPlace(new ItemStack(Items.SHIELD)),"Offhand can be inserted beside heavy axe");bank.gear.setItem(0,ItemStack.EMPTY);
+            }
+            test.assertTrue(checked==45 && NecromancerEquipment.validHands(new ItemStack(Items.IRON_AXE),new ItemStack(Items.SHIELD)),"Wrong special/ordinary axe restrictions");
+            bank.gear.setItem(0,new ItemStack(ModItems.GHOST_AXE.get()));bank.gear.setItem(5,new ItemStack(Items.SHIELD));
+            new NecromancerMenu(2,player.getInventory(),player.getInventory().selected);
+            test.assertTrue(bank.gear.getItem(5).isEmpty() && player.getInventory().items.stream().filter(item->item.is(Items.SHIELD)).mapToInt(ItemStack::getCount).sum()==1,"Legacy invalid offhand lost or duplicated on refund");
+            test.assertTrue(BoneGuardEvents.activate(player,stack),"Cannot summon heavy-axe reinforcement");var guard=guards(player).getFirst();
+            guard.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(Items.APPLE));NecromancerEquipment.hands(new net.neoforged.neoforge.event.tick.EntityTickEvent.Pre(guard));
+            test.assertTrue(guard.getOffhandItem().isEmpty() && player.getInventory().items.stream().filter(item->item.is(Items.APPLE)).mapToInt(ItemStack::getCount).sum()==1,"Runtime offhand restriction loses the item or leaves it equipped");
+        }finally{clean(player);}test.succeed();
+    }
     @GameTest(template="riftfang_test",batch="necromancer_ui")
     public static void consumedOffhandTotemMarksBankDirtyAndDoesNotReturnOnSave(GameTestHelper test){
         var player=player(test);var stack=weapon(player,5);var bank=NecromancerLoadouts.get(player,stack);roster(bank,0);bank.gear.setItem(5,new ItemStack(Items.TOTEM_OF_UNDYING));
