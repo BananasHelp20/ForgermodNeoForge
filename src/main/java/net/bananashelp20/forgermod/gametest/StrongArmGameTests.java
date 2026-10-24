@@ -33,7 +33,7 @@ public class StrongArmGameTests {
         zombie.setItemSlot(EquipmentSlot.LEGS,new ItemStack(Items.DIAMOND_LEGGINGS));zombie.setItemSlot(EquipmentSlot.FEET,new ItemStack(Items.DIAMOND_BOOTS));
     }
     private static int armor(Zombie zombie) {int count=0;for(var item:zombie.getArmorSlots())if(!item.isEmpty())count++;return count;}
-    private static void strike(GameTestHelper test,ServerPlayer player,Zombie target,boolean critical,int charge,long seed) {
+    private static void strike(GameTestHelper test,ServerPlayer player,LivingEntity target,boolean critical,int charge,long seed) {
         player.resetAttackStrengthTicker();
         int ticks=charge==2?80:charge==1?Math.max(0,(int)Math.floor(player.getCurrentItemAttackStrengthDelay())-1):0;
         for(int i=0;i<ticks;i++)player.doTick();
@@ -161,6 +161,36 @@ public class StrongArmGameTests {
             test.assertFalse(StrongArmAbility.active(player),"Putting weapon away leaves it armed");
             test.succeed();
         }finally{WeaponControlLocks.release(player.getUUID(),"strong_arm_test");StrongArmAbility.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+    }
+
+    @GameTest(template="riftfang_test",batch="strong_arm_summon_rearm")
+    public static void armoredSummonsCanBeBrokenAndSameHeldWeaponRearmsAfterCooldown(GameTestHelper test)throws Exception{
+        var player=player(test);var summon=Augmentations.setLevel(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.BONE_GUARD,5);
+        player.setItemInHand(InteractionHand.MAIN_HAND,summon);var bank=NecromancerLoadouts.get(player,summon);bank.types.clear();bank.types.add(0);
+        try{
+            for(Item item:new Item[]{ModItems.MOLTEN_AXE.get(),ModItems.MOLTEN_AXE_RUBY.get(),ModItems.MOLTEN_AXE_AMBER.get(),ModItems.MOLTEN_AXE_AMETHYST.get(),ModItems.MOLTEN_AXE_JADE.get()}){
+                BoneGuardEvents.cancel(player.getUUID());player.setItemInHand(InteractionHand.MAIN_HAND,summon);
+                bank.gear.setItem(2,new ItemStack(Items.DIAMOND_CHESTPLATE));
+                test.assertTrue(BoneGuardEvents.activate(player,summon),"Summon fixture failed");
+                var guard=test.getLevel().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(12),mob->mob instanceof BoneGuardEvents.FriendlyGuard friend && friend.owner()==player && mob.isAlive()).getFirst();
+                guard.setNoAi(true);guard.setNoGravity(true);guard.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);guard.setHealth(1000);
+                var stack=weapon(item,4);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                for(int cycle=0;cycle<2;cycle++){
+                    if(cycle>0){bank.gear.setItem(2,new ItemStack(Items.DIAMOND_CHESTPLATE));guard.setItemSlot(EquipmentSlot.CHEST,bank.gear.getItem(2));}
+                    AbilityTestPackets.use(player,0);test.assertTrue(StrongArmAbility.active(player),"Held weapon cannot arm again without switching");
+                    AbilityTestPackets.use(player,0);test.assertTrue(StrongArmAbility.active(player) && player.getData(WeaponCooldownAttachments.COOLDOWNS).isEmpty(),"Re-pressing consumes armed attempt or starts cooldown");
+                    test.assertTrue(guard.isAlliedTo(player),"Fixture is not an allied reinforcement");
+                    strike(test,player,guard,true,2,0);
+                    test.assertTrue(!StrongArmAbility.active(player) && guard.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && bank.gear.getItem(2).isEmpty(),"Summoned ally armor is excluded or bank item survives armor break");
+                    WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+                    AbilityTestPackets.use(player,0);test.assertFalse(StrongArmAbility.active(player),"Cooldown is bypassed after successful armor break");
+                    // Advance just this ability's deadline rather than changing shared world time.
+                    player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                    test.assertTrue(player.getMainHandItem()==stack,"Rearm fixture switched weapon");
+                }
+            }
+            test.succeed();
+        }finally{StrongArmAbility.cancel(player.getUUID());BoneGuardEvents.cancel(player.getUUID());WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
     }
 
 }

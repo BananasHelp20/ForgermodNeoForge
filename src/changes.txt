@@ -394,3 +394,6 @@
 - Thunderclap faster chaining: removed the two extra idle ticks after each successful hit. The next target is acquired and its velocity dash begins on the first following tick, retaining confirmed-melee-before-lightning ordering.
 
 - Skull Throw explosion impact: replaced the bone-crack/soul-escape impact sounds with one explosion and one skeleton death sound, layered at the projectile impact point.
+
+- Strong-arm ally and rearm fix: qualifying critical hits now work on armored mobs including allied Necromancer reinforcements; breaking supplied armor consumes the real bank-owned item.
+- Strong-arm ally and rearm fix: pressing the ability again while armed succeeds without losing the pending attempt; the same held weapon can be rearmed after the normal cooldown without switching.

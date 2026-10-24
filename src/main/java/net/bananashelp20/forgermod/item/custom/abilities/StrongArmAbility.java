@@ -37,8 +37,8 @@ public final class StrongArmAbility {
     public static float chance(int rank) { return switch(Math.clamp(rank,1,4)) { case 1->.3F; case 2->.55F; case 3->.8F; default->1; }; }
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player)
-                || stack!=player.getMainHandItem() || !Augmentations.ids(stack,true).contains(RecommendedAbilities.STRONG_ARM)
-                || active(player)) return false;
+                || stack!=player.getMainHandItem() || !Augmentations.ids(stack,true).contains(RecommendedAbilities.STRONG_ARM)) return false;
+        if(active(player))return true; // Already ready: re-pressing never requires a weapon switch.
         // Arm the next qualifying hit; target and armor checks belong to the actual attack.
         ARMED.put(player.getUUID(),new Armed(player,stack));return true;
     }
@@ -67,7 +67,7 @@ public final class StrongArmAbility {
         if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;
         var armed=ARMED.get(player.getUUID());armed.clearHit();
         if(!event.isCriticalHit() || player.getAttackStrengthScale(0)<1 || WeaponControlLocks.frozen(player)
-                || !(event.getTarget() instanceof LivingEntity target) || !WeaponAbilityTargets.enemy(player,target)
+                || !(event.getTarget() instanceof LivingEntity target) || target==player || !target.isAlive() || target.isSpectator()
                 || target.isInvulnerableTo(player.damageSources().playerAttack(player))) return;
         armed.target=target.getUUID();armed.tick=player.level().getGameTime();
     }
@@ -94,7 +94,9 @@ public final class StrongArmAbility {
         if(player.getRandom().nextFloat()<chance(Augmentations.level(armed.stack,RecommendedAbilities.STRONG_ARM))) {
             var slot=armor.get(player.getRandom().nextInt(armor.size()));
             var piece=target.getItemBySlot(slot); var item=piece.getItem();
-            target.setItemSlot(slot,piece.getCount()>1?piece.copyWithCount(piece.getCount()-1):ItemStack.EMPTY);
+            // Consume the real item, including bank-owned reinforcement equipment.
+            piece.shrink(1);target.setItemSlot(slot,piece.isEmpty()?ItemStack.EMPTY:piece);
+            if(target instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);
             target.onEquippedItemBroken(item,slot);
         }
     }
