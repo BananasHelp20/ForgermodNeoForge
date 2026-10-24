@@ -66,7 +66,7 @@ public class ConcurrentAbilityGameTests {
                     AbilityTestPackets.use(player,1);
                     test.assertTrue(MagmaTossEvents.active(player) && rock.isAlive() && BoneGuardEvents.active(player),"Second axe ability cancels the projectile/summons");
                     var cooldowns=player.getData(WeaponCooldownAttachments.COOLDOWNS);
-                    test.assertTrue(cooldowns.containsKey(key(axe,AdditionalAbilities.FLAME_BREATH)) && !cooldowns.containsKey(key(axe,AdditionalAbilities.MAGMA_TOSS))
+                    test.assertTrue(cooldowns.containsKey(key(axe,AdditionalAbilities.FLAME_BREATH)) && cooldowns.containsKey(key(axe,AdditionalAbilities.MAGMA_TOSS))
                             && Objects.equals(cooldowns.get(key(summon,AdditionalAbilities.BONE_GUARD)),summonReady),"Ability cooldowns share a global slot or restart each other");
                     if(iteration%2==0){
                         var point=player.position().add(0,5,0);
@@ -76,11 +76,11 @@ public class ConcurrentAbilityGameTests {
                     }
                     player.getInventory().selected=0;player.setItemInHand(InteractionHand.MAIN_HAND,summon);
                     WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-                    test.assertTrue(!MagmaTossEvents.active(player) && !rock.isAlive() && BoneGuardEvents.active(player),"Switch leaves weapon projectile or cancels independent summons");
+                    test.assertTrue(MagmaTossEvents.active(player)==(iteration%2!=0) && rock.isAlive()==(iteration%2!=0) && BoneGuardEvents.active(player),"Switch deletes an uncollided rock or cancels independent summons");
                     AbilityTestPackets.use(player,0);
                     test.assertTrue(guards(player).stream().map(Mob::getUUID).toList().equals(ids),"Cooldown was bypassed and replaced the active army");
                     test.assertTrue(Objects.equals(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key(summon,AdditionalAbilities.BONE_GUARD)),summonReady),"Returning to summon weapon restarts its cooldown");
-                    BoneGuardEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+                    MagmaTossEvents.cancel(player.getUUID());BoneGuardEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
                 }
             }
             test.assertTrue(checked==30,"Missing Bone Guard/Necromancer ranks or variants");test.succeed();

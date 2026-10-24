@@ -114,8 +114,9 @@ public final class WeaponAbilityNetwork {
         boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id)
                 || Augmentations.AREA_DISCHARGE.equals(id)
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id);
-        // Summons own their lifetime independently of equipped weapon sessions and activation slots.
-        boolean independentLifetime=net.bananashelp20.forgermod.augmentation.AdditionalAbilities.BONE_GUARD.equals(id);
+        // Summons and launched magma rocks own their lifetime independently of equipped sessions.
+        boolean independentLifetime=net.bananashelp20.forgermod.augmentation.AdditionalAbilities.BONE_GUARD.equals(id)
+                || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.MAGMA_TOSS.equals(id);
         activationCooldown|=independentLifetime;
         if (recommended?RecommendedAbilityRuntime.activate(player,stack,id,payload.grappleAutoRelease()):weapon.activateAbility(player, stack, source)) {
             if (!independentLifetime && (recommended?RecommendedAbilityRuntime.active(player,id):weapon.isAbilityActive(player, source))) {

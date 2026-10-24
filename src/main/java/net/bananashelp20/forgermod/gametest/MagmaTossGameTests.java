@@ -47,6 +47,37 @@ public class MagmaTossGameTests {
         });
     }
 
+    @GameTest(template="riftfang_test", timeoutTicks=100)
+    public static void launchCooldownAndIndependentRocksSurviveOldTimeoutAndWeaponSwitch(GameTestHelper test)throws Exception {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);
+        player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8))));player.setXRot(-90);
+        var rocks=new java.util.ArrayList<Snowball>();var deadlines=new java.util.HashMap<String,Long>();
+        for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof IgnisiumWeapon weapon) || !weapon.isAxe())continue;
+            var stack=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.MAGMA_TOSS);
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+            AbilityTestPackets.use(player,0);
+            String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+AdditionalAbilities.MAGMA_TOSS;
+            long deadline=player.level().getGameTime()+Augmentations.cooldown(stack,net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.PRIMARY,weapon);
+            test.assertTrue(java.util.Objects.equals(player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS).get(key),deadline),"Cooldown missing on launch");
+            deadlines.put(key,deadline);
+            var rock=player.level().getEntitiesOfClass(Snowball.class,player.getBoundingBox().inflate(3),e->e.getOwner()==player && !rocks.contains(e)).getFirst();
+            rock.setPos(player.position().add(0,12+rocks.size()*2,0));rock.setNoGravity(true);rock.setDeltaMovement(Vec3.ZERO);rocks.add(rock);
+        }
+        player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+        test.runAfterDelay(65,()->{
+            try {
+                test.assertTrue(rocks.size()==5 && rocks.stream().allMatch(Snowball::isAlive) && MagmaTossEvents.active(player),"Uncollided rocks expire after three seconds or a weapon switch");
+                var cow=EntityType.COW.create(test.getLevel());cow.setPos(rocks.getFirst().position());test.getLevel().addFreshEntity(cow);
+                MagmaTossEvents.impact(new ProjectileImpactEvent(rocks.getFirst(),new EntityHitResult(cow)));
+                test.assertFalse(rocks.getFirst().isAlive(),"Passive mob collision does not burst rock");cow.discard();
+                test.assertTrue(rocks.subList(1,5).stream().allMatch(Snowball::isAlive),"One impact deletes other flights");
+                test.assertTrue(player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS).entrySet().containsAll(deadlines.entrySet()),"Impact/switch restarts launch cooldowns");
+            } finally {MagmaTossEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+            test.succeed();
+        });
+    }
+
     @GameTest(template="riftfang_test")
     public static void impactDamagesAndIgnitesAllVariantsWithoutTerrainOrCasterDamage(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);
@@ -72,7 +103,7 @@ public class MagmaTossGameTests {
                 test.assertTrue(Math.abs(before-target.getHealth()-player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.001 && target.getRemainingFireTicks()==60,"Impact damage/fire wrong");
                 test.assertTrue(player.getHealth()==owner,"Magma blast damages caster");
                 test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.MAGMA_TOSS),"Cannot start next direct-runtime test");
-                player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(MagmaTossEvents.active(player),"Switch does not cancel rock");
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertTrue(MagmaTossEvents.active(player),"Weapon switch deletes an in-flight rock");MagmaTossEvents.cancel(player.getUUID());
             }
             test.assertTrue(count==5,"Skipped magma variants");
         } finally {MagmaTossEvents.cancel(player.getUUID());target.discard();player.server.getPlayerList().remove(player);}

@@ -343,3 +343,5 @@
 - Thunderclap now uses faster 3.5/3.6/3.7/3.8-block-per-tick bursts, waits for a hit within one block and a brief strike/thunder impact before selecting the next mob, and turns the camera once toward each newly selected target without locking it. Replaced white-yellow dots with animated blue-yellow lightning ribbons attached behind the rendered player so the trail cannot overtake the dash.
 
 - Alternating Current now uses two aim-and-activate marks instead of an automatic secondary target. Each once-per-second current jump deals 2 HP and stuns both linked targets for half a second. Replaced the dot line with flickering lightning ribbons; no vanilla lightning bolts are spawned. Preserved all-mob/allied targeting, range, link duration, cooldown and shared control-lock restoration.
+
+- Magma Toss cooldown now starts on launch. Removed its three-second timeout and weapon-switch deletion; independent magma-block projectiles survive until collision and later casts do not overwrite older flights. Any entity/block impact bursts the struck rock while retaining enemy-only blast damage/terrain safety. Logout, dimension/removal cleanup prevents orphan flights.
