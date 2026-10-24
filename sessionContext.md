@@ -535,3 +535,7 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 ## Ability review: Thunderclap obstacles
 - Re-read of PERSON review found the added obstacle-interruption request. Dash now routes up, across and down over low ledges using velocity only and validates all three full-body corridors (loaded chunks, world border, ceiling and landing). Route cleared on each chain hop; one-time view snap and impact beat retained.
 - Build and 357 GameTests passed in build/review-thunder-obstacles-tests.log. After adding slab-versus-low-ceiling regression coverage, build and all 358 required tests passed in build/review-thunder-obstacles-reviewed.log. Reviewed route completion, native movement, no-gravity restoration and blocked walls again.
+
+## Ability review: Skull Throw
+- Cooldown now starts when fired. Ongoing equipped flight uses a zero deferred cooldown, so impact/range expiry/weapon switching cannot restart the launch deadline. Existing 500-block flight, safety and switch cancellation remain.
+- Build + all 359 required GameTests passed in both build/review-skull-tests.log and build/review-skull-reviewed.log. New packet-path coverage checks all five variants at ranks I-IV, rejects recast, and verifies exact cooldown deadlines after delayed impact and delayed switch. Reviewed session cleanup and independent cooldown keys again.

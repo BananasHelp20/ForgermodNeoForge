@@ -50,6 +50,43 @@ public class SkullThrowGameTests {
         boolean burst(){return particles.stream().anyMatch(p->p.getParticle() instanceof net.minecraft.core.particles.BlockParticleOption block && block.getState().is(Blocks.BONE_BLOCK))
             && particles.stream().anyMatch(p->p.getParticle()==net.minecraft.core.particles.ParticleTypes.EXPLOSION);}
     }
+    @GameTest(template="riftfang_test",timeoutTicks=100)
+    public static void everyVariantAndRankStartsCooldownAtLaunchWithoutRestartOnImpactOrSwitch(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setXRot(-90);
+        player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,8,8))));
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof MorsiumWeapon weapon) || !weapon.isAxe())continue;
+            for(int rank=1;rank<=4;rank++){
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.SKULL_THROW,rank);
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                AbilityTestPackets.use(player,0);var rock=skull(player);String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(entry.get())+":"+AdditionalAbilities.SKULL_THROW;
+                long ready=player.level().getGameTime()+Augmentations.cooldown(stack,net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.PRIMARY,weapon);
+                test.assertTrue(java.util.Objects.equals(player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS).get(key),ready),"Skull cooldown missing at launch: "+key+" rank "+rank);
+                AbilityTestPackets.use(player,0);test.assertTrue(rock.isAlive() && SkullThrowEvents.active(player),"Cooldown recast replaces active skull");
+                SkullThrowEvents.cancel(player.getUUID());net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));checked++;
+            }
+        }
+        test.assertTrue(checked==20,"Skipped Skull Throw variants/ranks");
+        var stack=Augmentations.apply(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+        player.setData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());AbilityTestPackets.use(player,0);
+        var deadlines=player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS);var rock=skull(player);
+        test.runAfterDelay(5,()->{
+            var point=rock.position();SkullThrowEvents.impact(new ProjectileImpactEvent(rock,new net.minecraft.world.phys.BlockHitResult(point,net.minecraft.core.Direction.UP,BlockPos.containing(point),false)));
+            net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+            test.assertTrue(!rock.isAlive() && player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS).equals(deadlines),"Impact restarts launch cooldown");
+            player.setData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+            try{AbilityTestPackets.use(player,0);}catch(Exception failure){throw new RuntimeException(failure);}
+            var switchedDeadline=player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS);
+            test.runAfterDelay(5,()->{
+                try{
+                    player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+                    net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+                    test.assertTrue(!SkullThrowEvents.active(player) && player.getData(net.bananashelp20.forgermod.item.custom.abilities.WeaponCooldownAttachments.COOLDOWNS).equals(switchedDeadline),"Weapon switch restarts launch cooldown");test.succeed();
+                }finally{SkullThrowEvents.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+            });
+        });
+    }
     @GameTest(template="riftfang_test",timeoutTicks=830)
     public static void fixedFiveHundredBlockRangeAtEveryRankAndBeyondPlayerChunks(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);player.setNoGravity(true);

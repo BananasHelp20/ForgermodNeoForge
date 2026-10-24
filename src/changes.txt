@@ -347,3 +347,5 @@
 - Magma Toss cooldown now starts on launch. Removed its three-second timeout and weapon-switch deletion; independent magma-block projectiles survive until collision and later casts do not overwrite older flights. Any entity/block impact bursts the struck rock while retaining enemy-only blast damage/terrain safety. Logout, dimension/removal cleanup prevents orphan flights.
 
 - Thunderclap obstacles: route velocity bursts up and over low ledges through a fully checked body corridor instead of canceling immediately; retain solid-wall, ceiling, landing, chunk and world-border collision limits.
+
+- Skull Throw starts its per-variant cooldown when fired; impacts, expiry and weapon-switch cancellation no longer start or restart that cooldown.

@@ -113,7 +113,8 @@ public final class WeaponAbilityNetwork {
         int cooldownTicks = Augmentations.cooldown(stack, slot, weapon);
         boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id)
                 || Augmentations.AREA_DISCHARGE.equals(id)
-                || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id);
+                || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id)
+                || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.SKULL_THROW.equals(id);
         // Summons and launched magma rocks own their lifetime independently of equipped sessions.
         boolean independentLifetime=net.bananashelp20.forgermod.augmentation.AdditionalAbilities.BONE_GUARD.equals(id)
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.MAGMA_TOSS.equals(id);
@@ -131,7 +132,7 @@ public final class WeaponAbilityNetwork {
                 session.activeSlots().add(slot);
                 session.sources().put(slot, source);
                 session.ids().put(slot,id);
-                // Decoys and preselected lightning casts start their cooldown when activated.
+                // Activation cooldowns must not restart when an ongoing effect ends or is canceled.
                 session.cooldowns().put(slot, activationCooldown?0:cooldownTicks);
                 if(activationCooldown)setCooldown(player,key,now+cooldownTicks);
             } else {
