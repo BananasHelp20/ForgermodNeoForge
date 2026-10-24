@@ -10,10 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import java.util.*;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
@@ -28,37 +26,46 @@ public final class AlternatingCurrentEvents {
         return target.isAlive() && !target.isRemoved()
                 && (target instanceof Mob || WeaponAbilityTargets.enemy(player,target));
     }
-    public static boolean activate(ServerPlayer player,ItemStack stack) {if(active(player)) return false;LINKS.put(player.getUUID(),new Link(player,stack));return true;}
+    private static LivingEntity aimed(ServerPlayer player){
+        var from=player.getEyePosition();var to=from.add(player.getLookAngle().scale(20));
+        var wall=player.level().clip(new net.minecraft.world.level.ClipContext(from,to,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,player));
+        if(wall.getType()!=net.minecraft.world.phys.HitResult.Type.MISS)to=wall.getLocation();
+        var hit=net.minecraft.world.entity.projectile.ProjectileUtil.getEntityHitResult(player,from,to,player.getBoundingBox().expandTowards(to.subtract(from)).inflate(1),
+                entity->entity instanceof LivingEntity living && validTarget(player,living),from.distanceToSqr(to));
+        return hit==null?null:(LivingEntity)hit.getEntity();
+    }
+    public static boolean activate(ServerPlayer player,ItemStack stack){
+        if(!player.isAlive() || player.isSpectator() || WeaponControlLocks.frozen(player) || stack!=player.getMainHandItem() || Augmentations.level(stack,AdditionalAbilities.ALTERNATING_CURRENT)<=0)return false;
+        active(player);var link=LINKS.get(player.getUUID());var target=aimed(player);if(target==null)return false;
+        if(link==null){link=new Link(player,stack);link.first=target;LINKS.put(player.getUUID(),link);player.serverLevel().sendParticles(player,net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,true,target.getX(),target.getEyeY()+.2,target.getZ(),6,.15,.15,.15,.02);return true;}
+        if(link.second!=null || link.first==target || link.first.distanceToSqr(target)>400 || !link.first.hasLineOfSight(target))return false;
+        link.second=target;link.expires=player.level().getGameTime()+1200;link.nextPulse=player.level().getGameTime()+20;pulse(player,link);return true;
+    }
     public static boolean active(ServerPlayer player) {
         var link=LINKS.get(player.getUUID());if(link==null) return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=link.stack || player.getInventory().selected!=link.selected
             || player.level().getGameTime()>=link.expires || !Augmentations.ids(link.stack,true).contains(AdditionalAbilities.ALTERNATING_CURRENT)
-            || link.first!=null && (!validTarget(player,link.first) || !validTarget(player,link.second)
-                || link.first.level()!=player.level() || link.second.level()!=player.level() || link.first.distanceToSqr(link.second)>400)) {cancel(player.getUUID());return false;}
+            || link.first!=null && (!validTarget(player,link.first) || link.first.level()!=player.level())
+            || link.second!=null && (!validTarget(player,link.second) || link.second.level()!=player.level() || link.first.distanceToSqr(link.second)>400)) {cancel(player.getUUID());return false;}
         return true;
     }
     public static long remainingTicks(ServerPlayer player) {return active(player)?LINKS.get(player.getUUID()).expires-player.level().getGameTime():0;}
     public static void cancel(UUID owner) {LINKS.remove(owner);WeaponControlLocks.release(owner,AdditionalAbilities.ALTERNATING_CURRENT);}
-    @SubscribeEvent
-    public static void landed(LivingDamageEvent.Post event) {
-        if(!event.getSource().is(DamageTypes.PLAYER_ATTACK) || !(event.getSource().getEntity() instanceof ServerPlayer player) || !active(player)
-            || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0 || !validTarget(player,event.getEntity())) return;
-        var link=LINKS.get(player.getUUID());if(link.first!=null) return;var first=event.getEntity();
-        var next=player.level().getEntitiesOfClass(LivingEntity.class,first.getBoundingBox().inflate(20),e->e!=first && validTarget(player,e) && first.distanceToSqr(e)<=400 && first.hasLineOfSight(e))
-            .stream().min(Comparator.comparingDouble(first::distanceToSqr)).orElse(null);if(next==null) return;
-        link.first=first;link.second=next;link.expires=player.level().getGameTime()+1200;link.nextPulse=player.level().getGameTime()+20;
-        pulse(player,link,next);
-    }
-    private static void pulse(ServerPlayer player,Link link,LivingEntity target) {
-        if(!link.first.hasLineOfSight(link.second)) return;
-        WeaponControlLocks.acquire(target,player.getUUID(),AdditionalAbilities.ALTERNATING_CURRENT,10);
-        var from=link.first.getEyePosition();var delta=link.second.getEyePosition().subtract(from);int count=Math.min(32,Math.max(2,(int)(delta.length()*2)));
-        for(int i=0;i<=count;i++) {var p=from.add(delta.scale((double)i/count));player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,p.x,p.y,p.z,1,0,0,0,.01);}
+    private static void pulse(ServerPlayer player,Link link){
+        if(!link.first.hasLineOfSight(link.second))return;
+        for(var target:java.util.List.of(link.first,link.second)){
+            int immunity=target.invulnerableTime;target.invulnerableTime=0;
+            if(!target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT,player),2))target.invulnerableTime=immunity;
+            WeaponControlLocks.acquire(target,player.getUUID(),AdditionalAbilities.ALTERNATING_CURRENT,10);
+        }
+        var from=link.pulseFirst?link.first:link.second;var to=link.pulseFirst?link.second:link.first;
+        net.bananashelp20.forgermod.particle.LightningArcParticles.emit(player.serverLevel(),from.getEyePosition(),to.getEyePosition(),-1,5);
+        link.pulseFirst=!link.pulseFirst;
     }
     @SubscribeEvent
     public static void tick(PlayerTickEvent.Post event) {
-        if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;var link=LINKS.get(player.getUUID());if(link.first==null || player.level().getGameTime()<link.nextPulse) return;
-        pulse(player,link,link.pulseFirst?link.first:link.second);link.pulseFirst=!link.pulseFirst;link.nextPulse=player.level().getGameTime()+20;
+        if(!(event.getEntity() instanceof ServerPlayer player) || !active(player)) return;var link=LINKS.get(player.getUUID());if(link.second==null || player.level().getGameTime()<link.nextPulse) return;
+        pulse(player,link);link.nextPulse=player.level().getGameTime()+20;
     }
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {cancel(event.getEntity().getUUID());}
