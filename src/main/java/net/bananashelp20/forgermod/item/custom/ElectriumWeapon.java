@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.abilities.PassiveActors;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState;
@@ -66,6 +67,10 @@ public class ElectriumWeapon extends SwordItemWithEffect {
 
     @Override
     public void onDaggerHit(LivingEntity target, LivingEntity attacker) {
+        if(attacker instanceof Mob && PassiveActors.supported(attacker)){
+            if(PassiveActors.has(attacker,"tooltips.forgermod.passive.chain_lightning"))passiveChainLightning(target,attacker);
+            return;
+        }
         if (!(attacker instanceof ServerPlayer player)) return;
         if (Augmentations.hasPassive(player.getMainHandItem(), "tooltips.forgermod.passive.chain_lightning")) chainLightning(target, player);
         if (!(target instanceof Mob)) return;
@@ -92,25 +97,28 @@ public class ElectriumWeapon extends SwordItemWithEffect {
     public static float chargeMultiplier(ServerPlayer player){return CHARGE_ATTACK.damageMultiplier(player.getUUID());}
     public static void recordLightningHit(Mob target,ServerPlayer player){dischargeChargeIfReady(target,player);}
 
-    private void chainLightning(LivingEntity original, ServerPlayer player) {
+    private void chainLightning(LivingEntity original, ServerPlayer player) {passiveChainLightning(original,player);}
+    public void passiveChainLightning(LivingEntity original, LivingEntity player) {
         Set<UUID> visited = new HashSet<>();
         visited.add(original.getUUID());
         LivingEntity previous = original;
         for (int chain = 0; chain < 10; chain++) {
             if (!ChainLightningTargets.shouldContinue(player.getRandom())) break;
             LivingEntity mob = ChainLightningTargets.next(
-                    player.serverLevel().getEntitiesOfClass(LivingEntity.class, previous.getBoundingBox().inflate(10)),
-                    candidate -> candidate != player && candidate.isAlive() && !candidate.isRemoved() && !candidate.isSpectator(),
+                    PassiveActors.level(player).getEntitiesOfClass(LivingEntity.class, previous.getBoundingBox().inflate(10)),
+                    candidate -> candidate != player && PassiveActors.canAffect(player,candidate) && candidate.isAlive() && !candidate.isRemoved() && !candidate.isSpectator(),
                     previous::distanceToSqr, visited, LivingEntity::getUUID);
             if (mob == null) break;
             visited.add(mob.getUUID());
             int previousInvulnerableTime = mob.invulnerableTime;
             mob.invulnerableTime = 0;
             if (mob.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT, player),
-                    (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F
+                    (player instanceof Mob mobActor && mobActor instanceof net.bananashelp20.forgermod.item.custom.abilities.BoneGuardEvents.FriendlyGuard
+                            ?net.bananashelp20.forgermod.item.custom.abilities.NecromancerPassiveCombat.weaponDamage(mobActor,net.bananashelp20.forgermod.item.custom.abilities.NecromancerPassiveCombat.striking(mobActor))
+                            :(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)) * 0.5F
                             * CHARGE_ATTACK.damageMultiplier(player.getUUID()))) {
-                dischargeChargeIfReady(mob, player);
-                net.bananashelp20.forgermod.particle.LightningArcParticles.emit(player.serverLevel(),
+                if(player instanceof ServerPlayer serverPlayer)dischargeChargeIfReady(mob,serverPlayer);
+                net.bananashelp20.forgermod.particle.LightningArcParticles.emit(PassiveActors.level(player),
                         previous.getBoundingBox().getCenter(),mob.getBoundingBox().getCenter(),-1,5);
             } else {
                 mob.invulnerableTime = previousInvulnerableTime;

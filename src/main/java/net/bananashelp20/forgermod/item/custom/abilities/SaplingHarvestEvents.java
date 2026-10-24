@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.*;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -15,8 +15,8 @@ public final class SaplingHarvestEvents {
     private SaplingHarvestEvents() {}
     @SubscribeEvent
     public static void drops(LivingDropsEvent event) {
-        if(event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
-            || !Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.SAPLING_HARVEST) || !WeaponAbilityTargets.hostileTo(player,event.getEntity())
+        if(event.isCanceled() || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator()
+            || !Augmentations.hasPassive(PassiveActors.weapon(player,AdditionalAbilities.SAPLING_HARVEST),AdditionalAbilities.SAPLING_HARVEST) || !WeaponAbilityTargets.hostileTo(player,event.getEntity())
             || !event.getEntity().level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) return;
         var saplings=BuiltInRegistries.ITEM.getTag(ItemTags.SAPLINGS);if(saplings.isEmpty() || saplings.get().size()==0 || event.getEntity().getRandom().nextFloat()>=.15F) return;
         var candidates=saplings.get().stream().toList();var item=candidates.get(event.getEntity().getRandom().nextInt(candidates.size())).value();var target=event.getEntity();

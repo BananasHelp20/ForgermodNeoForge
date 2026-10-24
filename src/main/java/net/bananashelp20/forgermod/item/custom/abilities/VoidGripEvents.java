@@ -3,7 +3,6 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -17,18 +16,18 @@ import java.util.WeakHashMap;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class VoidGripEvents {
-    private record Hit(ServerPlayer player,ItemStack stack,long tick) {}
+    private record Hit(LivingEntity player,ItemStack stack,long tick) {}
     private static final Map<LivingEntity,Hit> HITS=new WeakHashMap<>();
     private VoidGripEvents() {}
     @SubscribeEvent
     public static void incoming(LivingIncomingDamageEvent event) {
         if(event.getEntity().level().isClientSide) return;
         HITS.remove(event.getEntity());
-        if(!event.isCanceled() && event.getAmount()>0 && event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                && event.getSource().getEntity() instanceof ServerPlayer player && player.isAlive() && !player.isSpectator()
+        if(!event.isCanceled() && event.getAmount()>0 && PassiveActors.melee(event.getSource())
+                && PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player && player.isAlive() && !player.isSpectator()
                 && WeaponAbilityTargets.enemy(player,event.getEntity())
-                && Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.VOID_GRIP))
-            HITS.put(event.getEntity(),new Hit(player,player.getMainHandItem(),player.level().getGameTime()));
+                && Augmentations.hasPassive(PassiveActors.weapon(player,AdditionalAbilities.VOID_GRIP),AdditionalAbilities.VOID_GRIP))
+            HITS.put(event.getEntity(),new Hit(player,PassiveActors.weapon(player,AdditionalAbilities.VOID_GRIP),player.level().getGameTime()));
     }
     @SubscribeEvent
     public static void knockback(LivingKnockBackEvent event) {

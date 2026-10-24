@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.abilities.PassiveActors;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.DaggerCriticalEvents;
@@ -68,8 +69,8 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
 
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent.Post event) {
-        if (event.getNewDamage() <= 0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                || !(event.getSource().getEntity() instanceof ServerPlayer player) || event.getEntity() == player
+        if (event.getNewDamage() <= 0 || !PassiveActors.melee(event.getSource())
+                || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player) || event.getEntity() == player
                 || !(player.getMainHandItem().getItem() instanceof VulnusiumWeapon weapon) || !weapon.isDagger()) return;
         String id = "tooltips.forgermod.ability.leech";
         int rank = Augmentations.hasPassive(player.getMainHandItem(), id) ? Augmentations.level(player.getMainHandItem(), id) : 0;

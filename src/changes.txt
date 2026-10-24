@@ -361,3 +361,9 @@
 - Necromancer UI offhand equipment uses the real stored item on summoned reinforcements; consuming a totem marks the bank dirty so it cannot reappear from an older save.
 
 - Necromancer hand restrictions now match special heavy axes: reject either equipment insertion order with an occupied offhand, refund invalid legacy offhands when editing/summoning, and return externally equipped conflicting offhands from live reinforcements without losing or duplicating items. Ordinary tool axes remain compatible with offhand items.
+
+- Necromancer passive actors now reuse existing combat/held-weapon passive handlers on the reinforcement itself, including material hits, healing, defensive effects, damage bonuses, marks, delayed damage, kill rewards, lightning, repair and flower storage. Real projectile shooters are distinguished from the player credited for their kills; effects do not transfer to the summoner.
+- Reinforcements use weapon attack-speed pacing, matching-material dual daggers (including shared offhand passives and gemstone damage), and the intrinsic three-fully-charged-attack axe slam. No active augment activation is granted.
+- Reinforcements automatically block with equipped shields and shields receive vanilla durability wear; Cold Bellows can ignite blocked attackers. Their passive chains, slams and death explosions spare the summoner and allies.
+- Reinforcement melee and ranged kills now award player-collectible XP at 50% of normal, rounded down; Death's Due applies its bonus before the reduction using the reinforcement's equipped weapon.
+- Per user choice, hunger, double-jump and mining passives have no effect on reinforcements; no hunger system or jumping/mining AI was added. Cooldown-only Quick Recharge has no usable active ability to recharge.

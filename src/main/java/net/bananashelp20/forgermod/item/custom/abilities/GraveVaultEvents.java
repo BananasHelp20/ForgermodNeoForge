@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.*;
 import net.minecraft.world.item.*;
@@ -34,8 +35,8 @@ public final class GraveVaultEvents {
   }
   CustomData.update(DataComponents.CUSTOM_DATA,weapon,tag->{ if(list.isEmpty()) tag.remove(STORAGE); else tag.put(STORAGE,list); });
  }
- private static SimpleContainer storage(ServerPlayer player,ItemStack weapon) {
-  return weapon==player.getMainHandItem() && player.containerMenu instanceof GraveVaultMenu menu && menu.stillValid(player)
+ private static SimpleContainer storage(LivingEntity player,ItemStack weapon) {
+  return player instanceof ServerPlayer serverPlayer && weapon==player.getMainHandItem() && serverPlayer.containerMenu instanceof GraveVaultMenu menu && menu.stillValid(serverPlayer)
     ? menu.storage : read(weapon,player.registryAccess());
  }
  /** The vault is finite even in Creative; vanilla placement otherwise skips stack consumption. */
@@ -50,9 +51,10 @@ public final class GraveVaultEvents {
   if(result.consumesAction() && after.is(block) && !after.equals(before)) flower.setCount(beforeCount-1);
   return result;
  }
- private static void save(ServerPlayer player,ItemStack weapon,SimpleContainer storage) {
+ private static void save(LivingEntity player,ItemStack weapon,SimpleContainer storage) {
   storage.setChanged();write(weapon,storage,player.registryAccess());
-  player.getInventory().setChanged();player.containerMenu.broadcastChanges();
+  if(player instanceof ServerPlayer serverPlayer){serverPlayer.getInventory().setChanged();serverPlayer.containerMenu.broadcastChanges();}
+  else if(player instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);
  }
  private static void open(ServerPlayer player) {
   int selected=player.getInventory().selected;
@@ -82,7 +84,7 @@ public final class GraveVaultEvents {
  }
  @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
  public static void onKill(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
-  if(event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
+  if(event.isCanceled() || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator()
     || event.getEntity().level()!=player.level()
     || !WeaponAbilityTargets.hostileTo(player,event.getEntity()))return;
   var weapon=player.getMainHandItem();var hand=InteractionHand.MAIN_HAND;
@@ -95,10 +97,10 @@ public final class GraveVaultEvents {
   var hit=new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(ground).add(0,.5,0),net.minecraft.core.Direction.UP,ground,false);
   for(int i=0;i<9;i++) {
    var flower=storage.getItem(i);if(flower.isEmpty())continue;
-   var context=new UseOnContext(player,hand,hit) {@Override public ItemStack getItemInHand(){return flower;}};
+   var context=new UseOnContext(PassiveActors.owner(player),hand,hit) {@Override public ItemStack getItemInHand(){return flower;}};
    var placement=new net.minecraft.world.item.context.BlockPlaceContext(context);
-   if(!placement.getClickedPos().equals(destination) || !player.level().mayInteract(player,destination)
-     || !player.mayUseItemAt(destination,placement.getClickedFace(),flower))continue;
+   if(!placement.getClickedPos().equals(destination) || !player.level().mayInteract(PassiveActors.owner(player),destination)
+     || !PassiveActors.owner(player).mayUseItemAt(destination,placement.getClickedFace(),flower))continue;
    if(placeFlower(context).consumesAction()) {save(player,weapon,storage);return;}
   }
  }

@@ -1,7 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.*;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -15,7 +15,7 @@ public final class WardenToneEvents {
  public static void onVibration(VanillaGameEvent event) {
   if(event.getLevel().isClientSide || event.getVanillaEvent().is(GameEvent.ENTITY_DAMAGE)) return;
   Entity cause=event.getCause(); if(cause instanceof Projectile projectile) cause=projectile.getOwner();
-  if(cause instanceof ServerPlayer player && player.isAlive() && !player.isSpectator() && player.level()==event.getLevel()
-   && Augmentations.ids(player.getMainHandItem(),false).contains(RecommendedAbilities.WARDEN_TONE)) event.setCanceled(true);
+  if(PassiveActors.entity(cause) instanceof LivingEntity player && player.isAlive() && !player.isSpectator() && player.level()==event.getLevel()
+   && Augmentations.ids(PassiveActors.weapon(player,RecommendedAbilities.WARDEN_TONE),false).contains(RecommendedAbilities.WARDEN_TONE)) event.setCanceled(true);
  }
 }

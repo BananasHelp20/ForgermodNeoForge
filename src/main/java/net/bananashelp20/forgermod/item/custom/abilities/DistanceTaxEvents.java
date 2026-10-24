@@ -4,7 +4,6 @@ import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -23,27 +22,27 @@ public final class DistanceTaxEvents {
     private static final Map<UUID,Mark> MARKS=new HashMap<>();
     private DistanceTaxEvents() {}
     public static float damage(double distance,int rank) { return (float)Math.min(40,Math.max(0,distance)*(.25+.25*Math.clamp(rank,1,4))); }
-    private static boolean valid(ServerPlayer player,Mark mark) {
-        return player.isAlive() && !player.isSpectator() && player.getMainHandItem()==mark.stack()
-                && player.getInventory().selected==mark.selected() && mark.target().isAlive()
+    private static boolean valid(LivingEntity player,Mark mark) {
+        return player.isAlive() && !player.isSpectator() && PassiveActors.weapon(player,RecommendedAbilities.DISTANCE_TAX)==mark.stack()
+                && PassiveActors.selected(player)==mark.selected() && mark.target().isAlive()
                 && mark.target().level()==player.level() && WeaponAbilityTargets.enemy(player,mark.target())
                 && Augmentations.hasPassive(mark.stack(),RecommendedAbilities.DISTANCE_TAX);
     }
     @SubscribeEvent
     public static void onHit(LivingDamageEvent.Post event) {
-        if(event.getNewDamage()<=0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                || !(event.getSource().getEntity() instanceof ServerPlayer player)) return;
-        var stack=player.getMainHandItem();
+        if(event.getNewDamage()<=0 || !PassiveActors.melee(event.getSource())
+                || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player)) return;
+        var stack=PassiveActors.weapon(player,RecommendedAbilities.DISTANCE_TAX);
         if(!player.isAlive() || player.isSpectator() || !Augmentations.hasPassive(stack,RecommendedAbilities.DISTANCE_TAX)
                 || !WeaponAbilityTargets.enemy(player,event.getEntity())) return;
         var old=MARKS.get(player.getUUID());
         if(old!=null && valid(player,old) && old.target()==event.getEntity()) return;
-        MARKS.put(player.getUUID(),new Mark(stack,player.getInventory().selected,event.getEntity(),player.level().getGameTime()+200,
+        MARKS.put(player.getUUID(),new Mark(stack,PassiveActors.selected(player),event.getEntity(),player.level().getGameTime()+200,
                 Augmentations.level(stack,RecommendedAbilities.DISTANCE_TAX)));
     }
     @SubscribeEvent
-    public static void onTick(PlayerTickEvent.Post event) {
-        if(!(event.getEntity() instanceof ServerPlayer player)) return;
+    public static void onTick(PassiveActorTickEvent.Post event) {
+        if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player)) return;
         var mark=MARKS.get(player.getUUID()); if(mark==null) return;
         if(!valid(player,mark)) { MARKS.remove(player.getUUID()); return; }
         var target=mark.target();
@@ -55,11 +54,12 @@ public final class DistanceTaxEvents {
                 // Player-owned magic cannot re-mark or recursively trigger melee-hit abilities.
                 target.hurt(player.damageSources().indirectMagic(player,player),damage);
                 target.invulnerableTime=Math.max(immunity,target.invulnerableTime);
-                player.serverLevel().sendParticles(ParticleTypes.PORTAL,target.getX(),target.getY()+1,target.getZ(),20,.3,.5,.3,.3);
+                PassiveActors.level(player).sendParticles(ParticleTypes.PORTAL,target.getX(),target.getY()+1,target.getZ(),20,.3,.5,.3,.3);
             }
         } else if(player.level().getGameTime()%10==0)
-            player.serverLevel().sendParticles(ParticleTypes.REVERSE_PORTAL,target.getX(),target.getY()+1,target.getZ(),3,.3,.5,.3,.01);
+            PassiveActors.level(player).sendParticles(ParticleTypes.REVERSE_PORTAL,target.getX(),target.getY()+1,target.getZ(),3,.3,.5,.3,.01);
     }
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) { MARKS.remove(event.getEntity().getUUID()); }
+    public static void onTick(PlayerTickEvent.Post event){onTick(new PassiveActorTickEvent.Post(event.getEntity()));}
 }

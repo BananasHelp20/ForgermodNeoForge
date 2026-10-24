@@ -46,6 +46,11 @@ public final class NecromancerEquipment {
         int wear=stack.getItem() instanceof AxeItem?2:stack.getItem() instanceof SwordItem || stack.getItem() instanceof TridentItem?1:0;
         if(wear>0){stack.hurtAndBreak(wear,mob,EquipmentSlot.MAINHAND);changed(mob);}
     }
+    public static void wearShield(Mob mob,float damage){
+        if(damage<3 || !mob.isUsingItem() || !mob.getUseItem().canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHIELD_BLOCK))return;
+        var shield=mob.getUseItem();var slot=mob.getUsedItemHand()==net.minecraft.world.InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND;
+        shield.hurtAndBreak(1+(int)Math.floor(damage),mob,slot);changed(mob);if(shield.isEmpty())mob.stopUsingItem();
+    }
     public static void wearBow(Mob mob){if(supplied(mob,EquipmentSlot.MAINHAND) && mob.getMainHandItem().getItem() instanceof BowItem){mob.getMainHandItem().hurtAndBreak(1,mob,EquipmentSlot.MAINHAND);changed(mob);}}
     public static void release(Mob mob){
         var binding=BINDINGS.remove(mob.getUUID());if(binding==null)return;
@@ -56,7 +61,7 @@ public final class NecromancerEquipment {
         if(event.getEntity() instanceof Mob mob)changed(mob);
     }
     @SubscribeEvent(priority=EventPriority.LOWEST)
-    public static void death(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event){if(event.getEntity() instanceof Mob mob)release(mob);}
+    public static void death(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event){if(event.getEntity() instanceof Mob mob && !mob.isAlive())release(mob);}
     @SubscribeEvent public static void leave(net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent event){if(!event.getLevel().isClientSide && event.getEntity() instanceof Mob mob)release(mob);}
     @SubscribeEvent public static void convert(net.neoforged.neoforge.event.entity.living.LivingConversionEvent.Pre event){if(event.getEntity() instanceof BoneGuardEvents.FriendlyGuard)event.setCanceled(true);}
     @SubscribeEvent public static void interact(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract event){if(event.getTarget() instanceof BoneGuardEvents.FriendlyGuard)event.setCanceled(true);}

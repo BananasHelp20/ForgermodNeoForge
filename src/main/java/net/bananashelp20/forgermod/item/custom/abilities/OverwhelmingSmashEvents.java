@@ -3,7 +3,6 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,14 +28,14 @@ import java.util.WeakHashMap;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class OverwhelmingSmashEvents {
     private static final class Hit {
-        final ServerPlayer owner; final ItemStack weapon; final DamageSource source; boolean armorProcessed;
-        Hit(ServerPlayer owner,DamageSource source) { this.owner=owner; weapon=owner.getMainHandItem(); this.source=source; }
+        final LivingEntity owner; final ItemStack weapon; final DamageSource source; boolean armorProcessed;
+        Hit(LivingEntity owner,DamageSource source) { this.owner=owner; weapon=owner.getMainHandItem(); this.source=source; }
     }
     // Incoming damage provides the source missing from NeoForge 21.1.93's ArmorHurtEvent.
     private static final Map<UUID,Hit> HITS=new HashMap<>();
     private static final Map<ItemStack,Double> FRACTIONS=new WeakHashMap<>();
     private OverwhelmingSmashEvents() {}
-    private static boolean qualifies(ServerPlayer owner,LivingEntity target) {
+    private static boolean qualifies(LivingEntity owner,LivingEntity target) {
         return owner.isAlive() && !owner.isSpectator() && owner.level()==target.level() && WeaponAbilityTargets.enemy(owner,target)
                 && Augmentations.hasPassive(owner.getMainHandItem(),RecommendedAbilities.OVERWHELMING_SMASH);
     }
@@ -47,8 +46,8 @@ public final class OverwhelmingSmashEvents {
     @SubscribeEvent(priority=EventPriority.LOWEST,receiveCanceled=true)
     public static void onIncoming(LivingIncomingDamageEvent event) {
         HITS.remove(event.getEntity().getUUID());
-        if(!event.isCanceled() && event.getAmount()>0 && event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                && event.getSource().getEntity() instanceof ServerPlayer player && qualifies(player,event.getEntity()))
+        if(!event.isCanceled() && event.getAmount()>0 && PassiveActors.melee(event.getSource())
+                && PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player && qualifies(player,event.getEntity()))
             HITS.put(event.getEntity().getUUID(),new Hit(player,event.getSource()));
     }
     @SubscribeEvent(priority=EventPriority.LOWEST)
@@ -82,8 +81,8 @@ public final class OverwhelmingSmashEvents {
     @SubscribeEvent(priority=EventPriority.LOWEST)
     public static void onShield(LivingShieldBlockEvent event) {
         var source=event.getDamageContainer().getSource(); var target=event.getEntity();
-        if(!event.getBlocked() || event.getBlockedDamage()<=0 || !source.is(DamageTypes.PLAYER_ATTACK)
-                || !(source.getEntity() instanceof ServerPlayer player) || !qualifies(player,target)) return;
+        if(!event.getBlocked() || event.getBlockedDamage()<=0 || !PassiveActors.melee(source)
+                || !(PassiveActors.entity(source.getEntity()) instanceof LivingEntity player) || !qualifies(player,target)) return;
         var shield=target.getUseItem(); if(shield.isEmpty() || !shield.canPerformAction(ItemAbilities.SHIELD_BLOCK)) return;
         var hand=target.getUsedItemHand(); var item=shield.getItem();
         target.setItemInHand(hand,shield.getCount()>1?shield.copyWithCount(shield.getCount()-1):ItemStack.EMPTY);

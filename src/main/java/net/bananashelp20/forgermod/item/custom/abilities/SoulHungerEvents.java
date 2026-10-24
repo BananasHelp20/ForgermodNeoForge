@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems;
 import net.bananashelp20.forgermod.item.custom.MorsiumWeapon;
@@ -21,27 +22,27 @@ public final class SoulHungerEvents {
     private static final class Soul {
         final ServerLevel level;float remaining,potionFloor;
         long unequippedAt = -1;
-        Soul(ServerPlayer player) {level=player.serverLevel();}
+        Soul(LivingEntity player) {level=PassiveActors.level(player);}
     }
     private static final Map<UUID,Soul> SOULS=new HashMap<>();
     private SoulHungerEvents() {}
-    private static boolean equipped(ServerPlayer player) {
+    private static boolean equipped(LivingEntity player) {
         return player.getMainHandItem().getItem() instanceof MorsiumWeapon
                 && Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.SOUL_HUNGER)
                 || DaggerItems.hasMatchingDaggers(player)
                 && Augmentations.hasPassive(player.getOffhandItem(),AdditionalAbilities.SOUL_HUNGER);
     }
-    private static void sync(ServerPlayer player,Soul soul) {
+    private static void sync(LivingEntity player,Soul soul) {
         soul.remaining=Math.min(soul.remaining,player.getAbsorptionAmount());
         // Vanilla potion refresh uses max(current, potion grant). Preserve our separate contribution.
         if(soul.potionFloor>0) {player.setAbsorptionAmount(Math.max(player.getAbsorptionAmount(),soul.remaining+soul.potionFloor));soul.potionFloor=0;}
     }
-    public static void end(ServerPlayer player) {
+    public static void end(LivingEntity player) {
         var soul=SOULS.remove(player.getUUID());if(soul==null) return;sync(player,soul);player.setAbsorptionAmount(Math.max(0,player.getAbsorptionAmount()-soul.remaining));player.getAttribute(Attributes.MAX_ABSORPTION).removeModifier(CAPACITY);
     }
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
     public static void kill(LivingDeathEvent event) {
-        if(event.isCanceled() || !(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
+        if(event.isCanceled() || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator()
             || !equipped(player) || !WeaponAbilityTargets.hostileTo(player,event.getEntity())) return;
         var soul=SOULS.get(player.getUUID());if(soul!=null && (soul.level!=player.level())) {end(player);soul=null;}
         if(soul==null) {soul=new Soul(player);SOULS.put(player.getUUID(),soul);}
@@ -56,8 +57,8 @@ public final class SoulHungerEvents {
     @SubscribeEvent
     public static void removed(MobEffectEvent.Remove event) {var soul=SOULS.get(event.getEntity().getUUID());if(!event.isCanceled() && soul!=null && event.getEffect().equals(MobEffects.ABSORPTION)) soul.potionFloor=0;}
     @SubscribeEvent
-    public static void tick(PlayerTickEvent.Post event) {
-        if(!(event.getEntity() instanceof ServerPlayer player)) return;var soul=SOULS.get(player.getUUID());if(soul==null) return;
+    public static void tick(PassiveActorTickEvent.Post event) {
+        if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player)) return;var soul=SOULS.get(player.getUUID());if(soul==null) return;
         if(!player.isAlive() || player.isSpectator() || player.level()!=soul.level) {end(player);return;}
         long now = player.level().getGameTime();
         if(equipped(player)) soul.unequippedAt = -1;
@@ -66,7 +67,8 @@ public final class SoulHungerEvents {
         sync(player,soul);
     }
     @SubscribeEvent
-    public static void travel(net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent event) {if(event.getEntity() instanceof ServerPlayer player) end(player);}
+    public static void travel(net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent event) {if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) end(player);}
     @SubscribeEvent
-    public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {if(event.getEntity() instanceof ServerPlayer player) end(player);}
+    public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) end(player);}
+    public static void tick(PlayerTickEvent.Post event){tick(new PassiveActorTickEvent.Post(event.getEntity()));}
 }

@@ -1,9 +1,9 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.level.Level;
@@ -16,10 +16,10 @@ public final class NetherBornEvents {
     private NetherBornEvents() {}
     @SubscribeEvent
     public static void onDamage(LivingIncomingDamageEvent event) {
-        if(event.isCanceled() || event.getAmount()<=0 || !(event.getSource().getEntity() instanceof ServerPlayer player)
+        if(event.isCanceled() || event.getAmount()<=0 || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player)
                 || !player.isAlive() || player.isSpectator() || player.level().dimension()!=Level.NETHER
                 || !Augmentations.hasPassive(player.getMainHandItem(),RecommendedAbilities.NETHER_BORN)
-                || !(event.getSource().is(DamageTypes.PLAYER_ATTACK) || event.getSource().is(DamageTypeTags.IS_EXPLOSION))) return;
+                || !(PassiveActors.melee(event.getSource()) || event.getSource().is(DamageTypeTags.IS_EXPLOSION))) return;
         event.setAmount(event.getAmount()*1.2F);
     }
 }

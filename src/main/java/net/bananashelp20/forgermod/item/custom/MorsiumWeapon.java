@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.abilities.PassiveActors;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.bananashelp20.forgermod.item.custom.abilities.StrengthenedBonesState;
@@ -124,18 +125,20 @@ public class MorsiumWeapon extends SwordItemWithEffect {
             event.setCanceled(true);
         }
         if (event.isCanceled()) return;
-        if (!(event.getSource().getEntity() instanceof ServerPlayer attacker)
+        if (!(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity attacker)
                 || attacker == event.getEntity()) return;
-        boolean morsiumDaggerHit = event.getSource().is(DamageTypes.PLAYER_ATTACK)
+        boolean morsiumDaggerHit = PassiveActors.melee(event.getSource())
                 && attacker.getMainHandItem().getItem() instanceof MorsiumWeapon weapon
-                && (Augmentations.hasActive(attacker.getMainHandItem()) || !Augmentations.ids(attacker.getMainHandItem(), false).isEmpty());
+                && (Augmentations.hasActive(attacker.getMainHandItem()) || !Augmentations.ids(attacker.getMainHandItem(), false).isEmpty()
+                    || attacker instanceof net.bananashelp20.forgermod.item.custom.abilities.BoneGuardEvents.FriendlyGuard
+                        && (PassiveActors.has(attacker,"tooltips.forgermod.passive.death_march") || PassiveActors.has(attacker,"tooltips.forgermod.passive.revenge")));
         if (morsiumDaggerHit) {
             ItemStack held = attacker.getMainHandItem();
             float multiplier = 1;
-            if (Augmentations.hasPassive(held, "tooltips.forgermod.passive.death_march")) {
+            if (PassiveActors.has(attacker, "tooltips.forgermod.passive.death_march")) {
                 multiplier *= DeathMarchDamage.multiplier(event.getEntity().getHealth(), event.getEntity().getMaxHealth());
             }
-            if (Augmentations.hasPassive(held, "tooltips.forgermod.passive.revenge")) {
+            if (PassiveActors.has(attacker, "tooltips.forgermod.passive.revenge")) {
                 multiplier *= RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD));
             }
             event.setAmount(event.getAmount() * multiplier);

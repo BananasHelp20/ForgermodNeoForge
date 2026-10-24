@@ -3,7 +3,6 @@ package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Enemy;
@@ -26,25 +25,28 @@ public final class UnfinishedDreamEvents {
     private UnfinishedDreamEvents() {}
     @SubscribeEvent
     public static void damaged(LivingDamageEvent.Post event) {
-        if(event.getEntity() instanceof ServerPlayer player
+        if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player
                 && event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)>0
-                && event.getSource().getEntity() instanceof LivingEntity attacker && WeaponAbilityTargets.enemy(player,attacker))
+                && PassiveActors.attacker(event.getSource()) instanceof LivingEntity attacker && WeaponAbilityTargets.enemy(player,attacker))
             INJURED.computeIfAbsent(attacker,key->new HashSet<>()).add(player.getUUID());
     }
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
     public static void death(LivingDeathEvent event) {
         if(event.isCanceled() || event.getEntity().level().isClientSide) return;
         var injured=INJURED.remove(event.getEntity());
-        if(!(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
-                || !Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.UNFINISHED_DREAM)) return;
+        if(!(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator()
+                || !Augmentations.hasPassive(PassiveActors.weapon(player,AdditionalAbilities.UNFINISHED_DREAM),AdditionalAbilities.UNFINISHED_DREAM)) return;
         var victim=event.getEntity();
         boolean enemy=victim!=player && !victim.isAlliedTo(player) && (victim instanceof Enemy
                 || victim instanceof Mob mob && mob.getTarget()==player
-                || victim instanceof Player other && player.server.isPvpAllowed() && player.canHarmPlayer(other));
+                || victim instanceof Player other && PassiveActors.owner(player).server.isPvpAllowed() && PassiveActors.owner(player).canHarmPlayer(other));
         if(enemy && (injured==null || !injured.contains(player.getUUID()))) player.heal(1);
     }
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {
         var owner=event.getEntity().getUUID();INJURED.values().forEach(set->set.remove(owner));INJURED.values().removeIf(Set::isEmpty);
+    }
+    @SubscribeEvent public static void leave(net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent event){
+        if(event.getLevel().isClientSide)return;var id=event.getEntity().getUUID();INJURED.values().forEach(set->set.remove(id));INJURED.remove(event.getEntity());INJURED.values().removeIf(Set::isEmpty);
     }
 }

@@ -50,6 +50,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -70,6 +71,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -90,6 +92,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -110,6 +113,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -130,6 +134,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -150,6 +155,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -170,6 +176,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }
@@ -190,6 +197,7 @@ public final class NecromancerUndead {
         @Override public boolean canAttack(LivingEntity target){return owner!=null && BoneGuardEvents.enemy(owner,target) && super.canAttack(target);}
         @Override public ItemStack getProjectile(ItemStack weapon){return weapon.getItem() instanceof ProjectileWeaponItem?new ItemStack(Items.ARROW):super.getProjectile(weapon);}
         @Override protected void hurtArmor(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.FEET,EquipmentSlot.LEGS,EquipmentSlot.CHEST,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
+        @Override protected void hurtCurrentlyUsedShield(float damage){NecromancerEquipment.wearShield(this,damage);}
         @Override protected void hurtHelmet(DamageSource source,float damage){doHurtEquipment(source,damage,EquipmentSlot.HEAD);NecromancerEquipment.changed(this);}
         @Override public boolean doHurtTarget(Entity target){boolean hit=!getMainHandItem().isEmpty()?NecromancerCombat.weaponStrike(this,target):super.doHurtTarget(target);if(hit)NecromancerEquipment.wearWeapon(this);return hit;}
     }

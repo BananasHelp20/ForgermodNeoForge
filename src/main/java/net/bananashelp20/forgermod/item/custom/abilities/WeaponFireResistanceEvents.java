@@ -1,10 +1,10 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.bananashelp20.forgermod.augmentation.JadeAugments;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
@@ -36,14 +36,14 @@ public final class WeaponFireResistanceEvents {
         return Augmentations.hasPassive(stack,RecommendedAbilities.FIRE_RESISTANCE)
                 && Augmentations.level(stack,RecommendedAbilities.FIRE_RESISTANCE)>=rank;
     }
-    private static boolean eligible(ServerPlayer player) {
+    private static boolean eligible(LivingEntity player) {
         return player.isAlive() && !player.isSpectator() && (held(player.getMainHandItem(),1) || held(player.getOffhandItem(),2));
     }
-    private static void add(ServerPlayer player,MobEffectInstance effect) {
+    private static void add(LivingEntity player,MobEffectInstance effect) {
         INTERNAL.add(player.getUUID());
         try { player.addEffect(effect); } finally { INTERNAL.remove(player.getUUID()); }
     }
-    private static void end(ServerPlayer player,Grant grant) {
+    private static void end(LivingEntity player,Grant grant) {
         GRANTS.remove(player.getUUID());
         if(grant!=null && player.getEffect(MobEffects.FIRE_RESISTANCE)==grant.owned) {
             player.removeEffect(MobEffects.FIRE_RESISTANCE);
@@ -51,8 +51,8 @@ public final class WeaponFireResistanceEvents {
         }
     }
     @SubscribeEvent
-    public static void onTick(PlayerTickEvent.Pre event) {
-        if(!(event.getEntity() instanceof ServerPlayer player)) return;
+    public static void onTick(PassiveActorTickEvent.Pre event) {
+        if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player)) return;
         Grant grant=GRANTS.get(player.getUUID());
         MobEffectInstance current=player.getEffect(MobEffects.FIRE_RESISTANCE);
         // Milk/removal or replacement ends ownership; do not resurrect a deliberately removed potion.
@@ -73,7 +73,7 @@ public final class WeaponFireResistanceEvents {
     }
     @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event) {
-        if(!(event.getEntity() instanceof ServerPlayer player) || INTERNAL.contains(player.getUUID())
+        if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) || INTERNAL.contains(player.getUUID())
                 || !event.getEffectInstance().getEffect().equals(MobEffects.FIRE_RESISTANCE)) return;
         Grant grant=GRANTS.get(player.getUUID()); if(grant==null) return;
         var effect=copy(event.getEffectInstance());
@@ -81,6 +81,7 @@ public final class WeaponFireResistanceEvents {
     }
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        if(event.getEntity() instanceof ServerPlayer player) end(player,GRANTS.get(player.getUUID()));
+        if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) end(player,GRANTS.get(player.getUUID()));
     }
+    public static void onTick(PlayerTickEvent.Pre event){onTick(new PassiveActorTickEvent.Pre(event.getEntity()));}
 }

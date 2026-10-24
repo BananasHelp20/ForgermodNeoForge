@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.minecraft.server.level.*;
 import net.minecraft.world.item.ItemStack;
@@ -16,25 +17,26 @@ public final class FinalStrikeEvents {
     private record Last(ItemStack stack,int slot,ServerLevel level,UUID target) {}
     private static final Map<UUID,Last> LAST=new HashMap<>();
     private FinalStrikeEvents() {}
-    private static boolean ready(ServerPlayer player) {
+    private static boolean ready(LivingEntity player) {
         var last=LAST.get(player.getUUID());if(last==null) return false;
-        if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=last.stack || player.getInventory().selected!=last.slot || player.serverLevel()!=last.level || !Augmentations.hasPassive(last.stack,AdditionalAbilities.FINAL_STRIKE)) {LAST.remove(player.getUUID());return false;}return true;
+        if(!player.isAlive() || player.isSpectator() || PassiveActors.weapon(player,AdditionalAbilities.FINAL_STRIKE)!=last.stack || PassiveActors.selected(player)!=last.slot || PassiveActors.level(player)!=last.level || !Augmentations.hasPassive(last.stack,AdditionalAbilities.FINAL_STRIKE)) {LAST.remove(player.getUUID());return false;}return true;
     }
     @SubscribeEvent
     public static void damage(LivingIncomingDamageEvent event) {
-        if(!event.isCanceled() && event.getAmount()>0 && event.getSource().is(DamageTypes.PLAYER_ATTACK) && event.getSource().getEntity() instanceof ServerPlayer player && ready(player)
+        if(!event.isCanceled() && event.getAmount()>0 && PassiveActors.melee(event.getSource()) && PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player && ready(player)
             && LAST.get(player.getUUID()).target.equals(event.getEntity().getUUID()) && WeaponAbilityTargets.enemy(player,event.getEntity()) && event.getEntity().getHealth()<event.getEntity().getMaxHealth()*.1F)
             event.setAmount(event.getAmount()*1.5F);
     }
     @SubscribeEvent
     public static void hit(LivingDamageEvent.Post event) {
-        if(event.getSource().is(DamageTypes.PLAYER_ATTACK) && event.getSource().getEntity() instanceof ServerPlayer player && player.isAlive() && !player.isSpectator()
-            && Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.FINAL_STRIKE) && WeaponAbilityTargets.hostileTo(player,event.getEntity())
+        if(PassiveActors.melee(event.getSource()) && PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player && player.isAlive() && !player.isSpectator()
+            && Augmentations.hasPassive(PassiveActors.weapon(player,AdditionalAbilities.FINAL_STRIKE),AdditionalAbilities.FINAL_STRIKE) && WeaponAbilityTargets.hostileTo(player,event.getEntity())
             && event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)>0)
-            LAST.put(player.getUUID(),new Last(player.getMainHandItem(),player.getInventory().selected,player.serverLevel(),event.getEntity().getUUID()));
+            LAST.put(player.getUUID(),new Last(PassiveActors.weapon(player,AdditionalAbilities.FINAL_STRIKE),PassiveActors.selected(player),PassiveActors.level(player),event.getEntity().getUUID()));
     }
     @SubscribeEvent
-    public static void tick(PlayerTickEvent.Post event) {if(event.getEntity() instanceof ServerPlayer player) ready(player);}
+    public static void tick(PassiveActorTickEvent.Post event) {if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) ready(player);}
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {LAST.remove(event.getEntity().getUUID());}
+    public static void tick(PlayerTickEvent.Post event){tick(new PassiveActorTickEvent.Post(event.getEntity()));}
 }

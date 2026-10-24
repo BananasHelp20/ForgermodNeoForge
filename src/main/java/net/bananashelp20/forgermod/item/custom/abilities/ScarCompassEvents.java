@@ -43,21 +43,21 @@ public final class ScarCompassEvents {
     }
     @SubscribeEvent
     public static void hit(LivingDamageEvent.Post event) {
-        if(!event.getSource().is(DamageTypes.PLAYER_ATTACK) || !(event.getSource().getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
-            || !Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.SCAR_COMPASS) || !WeaponAbilityTargets.enemy(player,event.getEntity())
+        if(!PassiveActors.melee(event.getSource()) || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator()
+            || !Augmentations.hasPassive(PassiveActors.weapon(player,AdditionalAbilities.SCAR_COMPASS),AdditionalAbilities.SCAR_COMPASS) || !WeaponAbilityTargets.enemy(player,event.getEntity())
             || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0) return;
         var previous=MARKS.get(player.getUUID());var target=event.getEntity();
-        if(previous!=null && (previous.target!=target || previous.stack!=player.getMainHandItem() || previous.slot!=player.getInventory().selected)) end(player.getUUID());
+        if(previous!=null && (previous.target!=target || previous.stack!=PassiveActors.weapon(player,AdditionalAbilities.SCAR_COMPASS) || previous.slot!=PassiveActors.selected(player))) end(player.getUUID());
         var oldGlow=GLOWS.get(target);if(oldGlow!=null && target.getEffect(MobEffects.GLOWING)!=oldGlow.owned) {for(var owner:oldGlow.owners.keySet()) MARKS.remove(owner);GLOWS.remove(target);}
         var glow=GLOWS.computeIfAbsent(target,Glow::new);long expires=player.level().getGameTime()
-                +JadeAugments.duration(player.getMainHandItem(),AdditionalAbilities.SCAR_COMPASS,12000);
-        glow.owners.put(player.getUUID(),expires);MARKS.put(player.getUUID(),new Mark(player.getMainHandItem(),player.getInventory().selected,player.serverLevel(),target,expires));refresh(target,glow);
+                +JadeAugments.duration(PassiveActors.weapon(player,AdditionalAbilities.SCAR_COMPASS),AdditionalAbilities.SCAR_COMPASS,12000);
+        glow.owners.put(player.getUUID(),expires);MARKS.put(player.getUUID(),new Mark(PassiveActors.weapon(player,AdditionalAbilities.SCAR_COMPASS),PassiveActors.selected(player),PassiveActors.level(player),target,expires));refresh(target,glow);
     }
     @SubscribeEvent
     public static void tick(ServerTickEvent.Post event) {
         for(var owner:List.copyOf(MARKS.keySet())) {
-            var player=event.getServer().getPlayerList().getPlayer(owner);var mark=MARKS.get(owner);
-            if(player==null || !player.isAlive() || player.isSpectator() || player.getMainHandItem()!=mark.stack || player.getInventory().selected!=mark.slot || player.serverLevel()!=mark.level
+            var player=PassiveActors.find(event.getServer(),owner);var mark=MARKS.get(owner);
+            if(player==null || !player.isAlive() || player.isSpectator() || PassiveActors.weapon(player,AdditionalAbilities.SCAR_COMPASS)!=mark.stack || PassiveActors.selected(player)!=mark.slot || PassiveActors.level(player)!=mark.level
                 || !mark.target.isAlive() || mark.target.level()!=mark.level || mark.level.getGameTime()>=mark.expires || !Augmentations.hasPassive(mark.stack,AdditionalAbilities.SCAR_COMPASS)) end(owner);
         }
         for(var entry:List.copyOf(GLOWS.entrySet())) {

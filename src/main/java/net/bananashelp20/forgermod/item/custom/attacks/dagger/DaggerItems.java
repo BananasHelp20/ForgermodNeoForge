@@ -13,7 +13,9 @@ public final class DaggerItems {
                 || stack.is(ModItems.RUSTY_DAGGER);
     }
 
-    public static boolean hasMatchingDaggers(Player player) {
+    public static boolean hasMatchingDaggers(Player player){return hasMatchingDaggers((net.minecraft.world.entity.LivingEntity)player);}
+
+    public static boolean hasMatchingDaggers(net.minecraft.world.entity.LivingEntity player) {
         ItemStack mainhand = player.getMainHandItem();
         return (!net.bananashelp20.forgermod.augmentation.Augmentations.eligible(mainhand)
                 || net.bananashelp20.forgermod.augmentation.Augmentations.hasPassive(mainhand,

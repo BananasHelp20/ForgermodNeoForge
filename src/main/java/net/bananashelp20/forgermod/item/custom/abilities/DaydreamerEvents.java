@@ -1,10 +1,10 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.JadeAugments;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
@@ -36,16 +36,16 @@ public final class DaydreamerEvents {
         return Augmentations.hasPassive(stack,AdditionalAbilities.DAYDREAMER)
                 && Augmentations.level(stack,AdditionalAbilities.DAYDREAMER)>=rank;
     }
-    private static boolean eligible(ServerPlayer player) {
+    private static boolean eligible(LivingEntity player) {
         long time=Math.floorMod(player.level().getDayTime(),24000);
         return player.isAlive() && !player.isSpectator() && player.level().dimensionType().hasSkyLight()
-                && (time<13000 || time>=23000) && held(player.getMainHandItem(),1);
+                && (time<13000 || time>=23000) && held(PassiveActors.weapon(player,AdditionalAbilities.DAYDREAMER),1);
     }
-    private static void add(ServerPlayer player,MobEffectInstance effect) {
+    private static void add(LivingEntity player,MobEffectInstance effect) {
         INTERNAL.add(player.getUUID());
         try { player.addEffect(effect); } finally { INTERNAL.remove(player.getUUID()); }
     }
-    private static void end(ServerPlayer player,Grant grant) {
+    private static void end(LivingEntity player,Grant grant) {
         GRANTS.remove(player.getUUID());
         if(grant!=null && player.getEffect(MobEffects.JUMP)==grant.owned) {
             player.removeEffect(MobEffects.JUMP);
@@ -53,14 +53,14 @@ public final class DaydreamerEvents {
         }
     }
     @SubscribeEvent
-    public static void onTick(PlayerTickEvent.Pre event) {
-        if(!(event.getEntity() instanceof ServerPlayer player)) return;
+    public static void onTick(PassiveActorTickEvent.Pre event) {
+        if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player)) return;
         Grant grant=GRANTS.get(player.getUUID());
         MobEffectInstance current=player.getEffect(MobEffects.JUMP);
         // Milk/removal or replacement ends ownership; do not resurrect a deliberately removed potion.
         if(grant!=null && current!=grant.owned) { GRANTS.remove(player.getUUID()); grant=null; }
         if(!eligible(player)) { end(player,grant); return; }
-        var desired=JadeAugments.reinforce(player.getMainHandItem(),AdditionalAbilities.DAYDREAMER,
+        var desired=JadeAugments.reinforce(PassiveActors.weapon(player,AdditionalAbilities.DAYDREAMER),AdditionalAbilities.DAYDREAMER,
                 new MobEffectInstance(MobEffects.JUMP,-1,1,false,false,true));
         // Reconcile gemstone changes and externally strengthened effects without retaining our old strength.
         if(grant!=null && (current==null || current.getAmplifier()!=desired.getAmplifier())) {
@@ -78,7 +78,7 @@ public final class DaydreamerEvents {
     }
     @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event) {
-        if(!(event.getEntity() instanceof ServerPlayer player) || INTERNAL.contains(player.getUUID())
+        if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) || INTERNAL.contains(player.getUUID())
                 || !event.getEffectInstance().getEffect().equals(MobEffects.JUMP)) return;
         Grant grant=GRANTS.get(player.getUUID()); if(grant==null) return;
         var effect=copy(event.getEffectInstance());
@@ -86,6 +86,7 @@ public final class DaydreamerEvents {
     }
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        if(event.getEntity() instanceof ServerPlayer player) end(player,GRANTS.get(player.getUUID()));
+        if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) end(player,GRANTS.get(player.getUUID()));
     }
+    public static void onTick(PlayerTickEvent.Pre event){onTick(new PassiveActorTickEvent.Pre(event.getEntity()));}
 }

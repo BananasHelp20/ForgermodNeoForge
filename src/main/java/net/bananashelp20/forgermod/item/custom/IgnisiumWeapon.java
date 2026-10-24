@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.item.custom;
 
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.abilities.PassiveActors;
 import net.bananashelp20.forgermod.item.ModSpecialRegistry;
 import net.bananashelp20.forgermod.item.ModToolTiers;
 import net.minecraft.core.Holder;
@@ -58,8 +59,8 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
     @SubscribeEvent
     public static void onDamageDealt(net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
         if (event.getNewDamage() <= 0 || !(event.getEntity() instanceof net.minecraft.world.entity.Mob)
-                || !event.getSource().is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)
-                || !(event.getSource().getEntity() instanceof ServerPlayer player)
+                || !PassiveActors.melee(event.getSource())
+                || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player)
                 || !player.isAlive() || player.isSpectator() || player.getRemainingFireTicks() <= 0
                 || !(player.getMainHandItem().getItem() instanceof IgnisiumWeapon weapon) || !weapon.isDagger()) return;
         boolean learned = Augmentations.hasPassive(player.getMainHandItem(), PYROMANIAC);

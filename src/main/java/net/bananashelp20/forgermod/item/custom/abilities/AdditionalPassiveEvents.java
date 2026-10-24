@@ -1,9 +1,9 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,26 +23,26 @@ public final class AdditionalPassiveEvents {
     @SubscribeEvent
     public static void onFallDamage(LivingIncomingDamageEvent event) {
         if(!event.isCanceled() && event.getAmount()>0 && event.getSource().is(DamageTypes.FALL)
-                && event.getEntity() instanceof ServerPlayer player && player.isAlive() && !player.isSpectator()
-                && Augmentations.hasPassive(player.getMainHandItem(),AdditionalAbilities.PILLOW_ARMOR))
+                && PassiveActors.entity(event.getEntity()) instanceof LivingEntity player && player.isAlive() && !player.isSpectator()
+                && PassiveActors.has(player,AdditionalAbilities.PILLOW_ARMOR))
             event.setAmount(event.getAmount()*.75F);
     }
     @SubscribeEvent
     public static void onDamage(LivingIncomingDamageEvent event) {
-        if(event.isCanceled() || event.getAmount()<=0 || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                || !(event.getSource().getEntity() instanceof ServerPlayer player)
+        if(event.isCanceled() || event.getAmount()<=0 || !PassiveActors.melee(event.getSource())
+                || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player)
                 || !player.isAlive() || player.isSpectator() || !WeaponAbilityTargets.enemy(player,event.getEntity())) return;
         var stack=player.getMainHandItem();
-        if(Augmentations.hasPassive(stack,AdditionalAbilities.HEAVY_CURRENT) && fullyArmored(event.getEntity()))
+        if(PassiveActors.has(player,AdditionalAbilities.HEAVY_CURRENT) && fullyArmored(event.getEntity()))
             event.setAmount(event.getAmount()*1.15F);
-        if(Augmentations.hasPassive(stack,AdditionalAbilities.CONDUCTIVE_EDGE) && event.getEntity().isInWaterOrRain())
+        if(PassiveActors.has(player,AdditionalAbilities.CONDUCTIVE_EDGE) && event.getEntity().isInWaterOrRain())
             event.setAmount(event.getAmount()*1.2F);
         long time=Math.floorMod(player.level().getDayTime(),24000L);
-        if(Augmentations.hasPassive(stack,AdditionalAbilities.SLEEPWALKER) && player.level().dimensionType().hasSkyLight() && time>=13000 && time<23000)
+        if(PassiveActors.has(player,AdditionalAbilities.SLEEPWALKER) && player.level().dimensionType().hasSkyLight() && time>=13000 && time<23000)
             event.setAmount(event.getAmount()*1.1F);
-        if(Augmentations.hasPassive(stack,AdditionalAbilities.CHARRED_EDGE) && event.getEntity().hasEffect(MobEffects.FIRE_RESISTANCE))
+        if(PassiveActors.has(player,AdditionalAbilities.CHARRED_EDGE) && event.getEntity().hasEffect(MobEffects.FIRE_RESISTANCE))
             event.setAmount(event.getAmount()*1.15F);
-        if(Augmentations.hasPassive(stack,AdditionalAbilities.BACKSTAB)) {
+        if(PassiveActors.has(player,AdditionalAbilities.BACKSTAB)) {
             var fromTarget=player.position().subtract(event.getEntity().position()).multiply(1,0,1);
             var facing=net.minecraft.world.phys.Vec3.directionFromRotation(0,event.getEntity().getYRot());
             if(fromTarget.lengthSqr()>.0001 && fromTarget.normalize().dot(facing)<-.5)

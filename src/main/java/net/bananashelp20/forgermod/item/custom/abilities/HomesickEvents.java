@@ -1,13 +1,13 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.minecraft.world.entity.LivingEntity;
 import net.bananashelp20.forgermod.augmentation.AdditionalAbilities;
 import net.bananashelp20.forgermod.augmentation.Augmentations;
 import net.bananashelp20.forgermod.augmentation.JadeAugments;
 import net.bananashelp20.forgermod.item.custom.PulsiteWeapon;
 import net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +21,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public final class HomesickEvents {
     private HomesickEvents() {}
 
-    private static ItemStack source(ServerPlayer player) {
+    private static ItemStack source(LivingEntity player) {
         ItemStack main = player.getMainHandItem();
         if (!(main.getItem() instanceof PulsiteWeapon)) return ItemStack.EMPTY;
         ItemStack best = Augmentations.hasPassive(main, AdditionalAbilities.HOMESICK) ? main : ItemStack.EMPTY;
@@ -31,7 +31,7 @@ public final class HomesickEvents {
         return best;
     }
 
-    private static void refresh(ServerPlayer player, ItemStack stack, MobEffectInstance effect) {
+    private static void refresh(LivingEntity player, ItemStack stack, MobEffectInstance effect) {
         MobEffectInstance granted = JadeAugments.reinforce(stack, AdditionalAbilities.HOMESICK, effect);
         MobEffectInstance current = player.getEffect(granted.getEffect());
         // Avoid reapplying attributes every tick, and never replace longer or stronger external effects.
@@ -41,8 +41,8 @@ public final class HomesickEvents {
     }
 
     @SubscribeEvent
-    public static void onTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
+    public static void onTick(PassiveActorTickEvent.Post event) {
+        if (!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator()
                 || !player.onGround() || !player.level().getBlockState(player.getOnPos()).is(Blocks.SCULK)) return;
         ItemStack stack = source(player);
         if (stack.isEmpty()) return;
@@ -52,12 +52,13 @@ public final class HomesickEvents {
         double phase = player.tickCount * 0.08;
         for (int i = 0; i < 8; i++) {
             double angle = phase + i * Math.PI / 4;
-            player.serverLevel().sendParticles(ParticleTypes.SCULK_SOUL,
+            PassiveActors.level(player).sendParticles(ParticleTypes.SCULK_SOUL,
                     player.getX() + Math.cos(angle) * 0.65,
                     player.getY() + 0.25 + 0.2 * Math.sin(angle * 2),
                     player.getZ() + Math.sin(angle) * 0.65, 0, 0, 1, 0, 0.035);
         }
-        player.serverLevel().sendParticles(ParticleTypes.SCULK_CHARGE_POP,
+        PassiveActors.level(player).sendParticles(ParticleTypes.SCULK_CHARGE_POP,
                 player.getX(), player.getY() + 0.7, player.getZ(), 3, 0.35, 0.45, 0.35, 0.02);
     }
+    public static void onTick(PlayerTickEvent.Post event){onTick(new PassiveActorTickEvent.Post(event.getEntity()));}
 }

@@ -24,6 +24,18 @@ public final class WeaponAbilityTargets {
             || target instanceof net.minecraft.world.entity.TamableAnimal pet && pet.isOwnedBy(owner)
             || target instanceof Player player && (!owner.server.isPvpAllowed() || !owner.canHarmPlayer(player)));
     }
+    public static boolean hostileTo(LivingEntity actor,LivingEntity target){
+        if(actor instanceof ServerPlayer player)return hostileTo(player,target);
+        if(!(actor instanceof BoneGuardEvents.FriendlyGuard guard))return false;
+        return target!=actor && target!=guard.owner() && !(target instanceof BoneGuardEvents.FriendlyGuard)
+                && !ally(guard.owner(),target) && (hostileTo(guard.owner(),target) || target instanceof Mob mob && mob.getTarget()==actor);
+    }
+    public static boolean enemy(LivingEntity actor,LivingEntity target){return target.isAlive() && hostileTo(actor,target);}
+    public static boolean ally(LivingEntity actor,LivingEntity target){
+        if(actor instanceof ServerPlayer player)return ally(player,target);
+        if(!(actor instanceof BoneGuardEvents.FriendlyGuard guard))return false;
+        return target!=actor && target.isAlive() && (target==guard.owner() || target instanceof BoneGuardEvents.FriendlyGuard other && other.owner()==guard.owner() || ally(guard.owner(),target));
+    }
     public static LivingEntity aimedEnemy(ServerPlayer player,double range) {
         var start=player.getEyePosition(); var end=start.add(player.getLookAngle().scale(range));
         var wall=player.level().clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player));

@@ -16,7 +16,7 @@ import java.util.EnumSet;
 /** Native melee/skeleton AI stays intact; supplied ranged weapons also work on the other undead types. */
 public final class NecromancerCombat {
     private NecromancerCombat(){}
-    public static void configure(Mob mob){mob.goalSelector.addGoal(1,new Ranged(mob));mob.goalSelector.addGoal(3,new Follow(mob));}
+    public static void configure(Mob mob){mob.goalSelector.addGoal(-2,new NecromancerPassiveCombat.Shield(mob));mob.goalSelector.addGoal(-1,new NecromancerPassiveCombat.Melee(mob));mob.goalSelector.addGoal(1,new Ranged(mob));mob.goalSelector.addGoal(3,new Follow(mob));}
     private static final class Follow extends Goal {
         final Mob mob;
         Follow(Mob mob){this.mob=mob;setFlags(EnumSet.of(Flag.MOVE));}
