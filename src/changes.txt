@@ -388,3 +388,5 @@
 
 - Strong-arm arming fix: activate the learned ability without first aiming at an armored enemy in melee range. It prepares the next fully charged, successful critical hit against an armored enemy; ordinary, partial, rejected and unarmored hits keep the attempt ready.
 - Strong-arm arming fix: retain 30/55/80/100% armor-break chances and cooldown on the qualifying attempt or weapon switch; reject unlearned, offhand, frozen, dead or spectator activation.
+
+- Crucible grapple acceleration buff: block grappling now adds 0.45 blocks/tick of pull velocity per tick instead of 0.12 (3.75x acceleration), reaching its existing 2.5-block/tick speed cap much sooner. Release retains momentum.

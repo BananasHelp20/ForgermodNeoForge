@@ -20,6 +20,7 @@ import java.util.*;
 public final class CrucibleGrapplerEvents {
     private record Grapple(ItemStack stack,int slot,ServerLevel level,BlockPos block,Vec3 destination,boolean autoRelease){}
     private static final Map<UUID,Grapple> GRAPPLES=new HashMap<>();
+    private static final double PULL_ACCELERATION=.45;
     private CrucibleGrapplerEvents(){}
     public static boolean activate(ServerPlayer player,ItemStack stack,boolean autoRelease){
         int rank=Augmentations.level(stack,RecommendedAbilities.CRUCIBLE_HOOK);int range=ReviewedRanks.grappleRange(rank);
@@ -48,7 +49,7 @@ public final class CrucibleGrapplerEvents {
         boolean reaching=direction.lengthSqr()<=1 || direction.subtract(velocity.scale(t)).lengthSqr()<=.64;
         if(grapple.autoRelease && reaching){cancel(player.getUUID());return;}
         if(direction.lengthSqr()>.000001){
-            velocity=velocity.add(direction.normalize().scale(.12));if(velocity.lengthSqr()>6.25)velocity=velocity.normalize().scale(2.5);
+            velocity=velocity.add(direction.normalize().scale(PULL_ACCELERATION));if(velocity.lengthSqr()>6.25)velocity=velocity.normalize().scale(2.5);
             player.setDeltaMovement(velocity);player.hasImpulse=true;player.hurtMarked=true;player.connection.send(new ClientboundSetEntityMotionPacket(player));
         }
     }

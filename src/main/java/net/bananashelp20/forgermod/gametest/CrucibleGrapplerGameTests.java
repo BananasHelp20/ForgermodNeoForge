@@ -32,8 +32,11 @@ public final class CrucibleGrapplerGameTests {
             var stack=Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.CRUCIBLE_HOOK,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());player.setDeltaMovement(Vec3.ZERO);
             int range=ReviewedRanks.grappleRange(rank);var inside=BlockPos.containing(player.getEyePosition()).above(range);test.getLevel().setBlockAndUpdate(inside,Blocks.STONE.defaultBlockState());
             AbilityTestPackets.use(player,0);var anchor=CrucibleHookRope.blockAnchor(player);var first=player.getDeltaMovement();
-            test.assertTrue(CrucibleHookEvents.active(player) && anchor!=null && anchor.distanceTo(player.getEyePosition())<=range && first.y>0 && player.position().equals(origin),"No in-range accelerating grapple at "+rank);
+            test.assertTrue(CrucibleHookEvents.active(player) && anchor!=null && anchor.distanceTo(player.getEyePosition())<=range && first.y>=.4 && player.position().equals(origin),"No in-range accelerating grapple at "+rank);
             CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));test.assertTrue(player.getDeltaMovement().length()>first.length() && player.position().equals(origin),"Grapple teleports or has no acceleration");
+            // Reach useful traversal speed within a few updates, retaining the existing safe maximum.
+            for(int tick=0;tick<4;tick++)CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            test.assertTrue(player.getDeltaMovement().length()>2.4 && player.getDeltaMovement().length()<=2.50001 && player.position().equals(origin),"Grapple still has a slow wind-up, exceeds its speed cap or teleports");
             var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
             try{var snapshot=CrucibleHookRope.snapshot(player);CrucibleHookRope.Payload.CODEC.encode(buffer,snapshot);test.assertTrue(snapshot.equals(CrucibleHookRope.Payload.CODEC.decode(buffer)),"Block rope codec loses anchor");}finally{buffer.release();}
             var momentum=player.getDeltaMovement();test.getLevel().setBlockAndUpdate(inside,Blocks.AIR.defaultBlockState());
