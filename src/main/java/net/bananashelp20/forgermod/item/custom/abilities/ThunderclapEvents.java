@@ -21,24 +21,21 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import org.joml.Vector3f;
 import java.util.*;
 
 /** Collision-respecting velocity bursts. Neither player position nor view angles are assigned. */
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class ThunderclapEvents {
     public static final double AIM_RANGE=20, CHAIN_RANGE=10;
-    private static final DustParticleOptions GOLD=new DustParticleOptions(new Vector3f(1,.78F,.15F),1.1F);
-    private static final DustParticleOptions WHITE=new DustParticleOptions(new Vector3f(1,1,.9F),.75F);
     private static final class Dash {
         final ServerPlayer owner;final ItemStack stack;final int slot,rank;final ServerLevel level;final boolean noGravity;
-        final Set<UUID> visited=new HashSet<>();Mob target;Vec3 previous;int legTicks,stalled;
+        final Set<UUID> visited=new HashSet<>();Mob target;Vec3 previous;int legTicks,stalled,impactTicks;
         Dash(ServerPlayer player,ItemStack stack,Mob target,int rank){owner=player;this.stack=stack;slot=player.getInventory().selected;
             this.target=target;this.rank=rank;level=player.serverLevel();noGravity=player.isNoGravity();previous=player.position();}
     }
     private static final Map<UUID,Dash> DASHES=new HashMap<>();
     private ThunderclapEvents(){}
-    public static double speed(int rank){return 2.4+.25*(Math.clamp(rank,1,4)-1);}
+    public static double speed(int rank){return 3.5+.1*(Math.clamp(rank,1,4)-1);}
     private static boolean eligible(Mob mob){return mob.isAlive() && !mob.isRemoved() && !mob.isSpectator();}
     private static boolean clear(ServerLevel level,Vec3 from,Vec3 to,ServerPlayer player){
         return level.clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,player)).getType()==HitResult.Type.MISS;
@@ -66,7 +63,7 @@ public final class ThunderclapEvents {
         if(player.isAlive() && !player.isRemoved() && !player.isSpectator() && !player.isPassenger() && !player.isFallFlying()
                 && !WeaponControlLocks.frozen(player) && player.serverLevel()==dash.level && player.getMainHandItem()==dash.stack
                 && player.getInventory().selected==dash.slot && Augmentations.level(dash.stack,AdditionalAbilities.THUNDERCLAP)>0
-                && dash.target.level()==dash.level && eligible(dash.target) && dash.legTicks<40 && dash.stalled<8)return true;
+                && dash.target.level()==dash.level && (eligible(dash.target) || dash.visited.contains(dash.target.getUUID())) && dash.legTicks<40 && dash.stalled<8)return true;
         cancel(player.getUUID());return false;
     }
     public static void cancel(UUID owner){
@@ -80,22 +77,23 @@ public final class ThunderclapEvents {
     private static Vec3 destination(ServerPlayer player,Mob target){
         var delta=target.position().subtract(player.position());var horizontal=new Vec3(delta.x,0,delta.z);
         if(horizontal.lengthSqr()<.000001)horizontal=new Vec3(0,0,1);
-        double gap=target.getBbWidth()*.5+player.getBbWidth()*.5+.4;
+        double gap=Math.min(.75,target.getBbWidth()*.5+player.getBbWidth()*.5+.1);
         return target.position().subtract(horizontal.normalize().scale(gap));
     }
     public static void tick(ServerPlayer player){
         if(!active(player))return;var dash=DASHES.get(player.getUUID());dash.legTicks++;
         var now=player.position();double moved=now.distanceToSqr(dash.previous);
         if(moved>64){cancel(player.getUUID());return;} // An external teleport must not become a dash hit.
-        if(moved>.0001){trail(dash.level,dash.previous.add(0,.9,0),now.add(0,.9,0),player.tickCount);dash.stalled=0;}
-        else if(dash.legTicks>1)dash.stalled++;
+        if(moved>.0001){net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,dash.previous.add(0,.9,0),now.add(0,.9,0),player.getId(),2);dash.stalled=0;}
+        else if(dash.legTicks>1 && dash.impactTicks==0)dash.stalled++;
         dash.previous=now;player.fallDistance=0;
+        if(dash.impactTicks>0){dash.impactTicks--;dash.stalled=0;motion(player,Vec3.ZERO);return;}
         Vec3 point=destination(player,dash.target),direction=point.subtract(now);
         if(!dash.level.getWorldBorder().isWithinBounds(dash.target.blockPosition()) || player.distanceToSqr(dash.target)>24*24
                 || !player.hasLineOfSight(dash.target)){cancel(player.getUUID());return;}
-        if(direction.lengthSqr()<=.35*.35 && player.canInteractWithEntity(dash.target,0)){
-            motion(player,Vec3.ZERO);Mob struck=dash.target;dash.visited.add(struck.getUUID());
-            strike(player,dash,struck);
+        if(direction.lengthSqr()<=.35*.35 && player.distanceToSqr(dash.target)<=1 && player.canInteractWithEntity(dash.target,0)){
+            motion(player,Vec3.ZERO);Mob struck=dash.target;
+            if(dash.visited.add(struck.getUUID())){strike(player,dash,struck);dash.impactTicks=2;dash.stalled=0;return;}
             if(DASHES.get(player.getUUID())!=dash)return;
             if(!player.isAlive() || player.getMainHandItem()!=dash.stack || dash.stack.isEmpty()){cancel(player.getUUID());return;}
             // Each hop is measured from the last victim, not from the caster's original position.
@@ -104,6 +102,7 @@ public final class ThunderclapEvents {
                     && player.hasLineOfSight(mob) && clear(dash.level,struck.getEyePosition(),mob.getEyePosition(),player))
                     .stream().min(Comparator.comparingDouble(struck::distanceToSqr)).orElse(null);
             if(next==null){cancel(player.getUUID());return;}
+            player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,next.getEyePosition());
             dash.target=next;dash.legTicks=0;dash.stalled=0;direction=destination(player,next).subtract(now);
         }
         double length=direction.length();if(length<.000001)return;
@@ -136,19 +135,8 @@ public final class ThunderclapEvents {
         var center=target.getBoundingBox().getCenter();
         dash.level.sendParticles(ParticleTypes.FLASH,center.x,center.y,center.z,1,0,0,0,0);
         dash.level.sendParticles(ParticleTypes.ELECTRIC_SPARK,center.x,center.y,center.z,32,.4,.65,.4,.15);
-        trail(dash.level,center.add(0,2.5,0),center,player.tickCount);
+        net.bananashelp20.forgermod.particle.LightningArcParticles.emit(dash.level,center.add(0,2.5,0),center,-1,4);
         dash.level.playSound(null,target.blockPosition(),SoundEvents.LIGHTNING_BOLT_IMPACT,SoundSource.PLAYERS,.75F,1.5F);
-    }
-    /** Short jagged gold/white strokes follow real movement, rather than a beam ahead of the player. */
-    private static void trail(ServerLevel level,Vec3 from,Vec3 to,int seed){
-        int samples=Math.clamp((int)Math.ceil(from.distanceTo(to)*3),2,10);
-        for(int i=0;i<=samples;i++){
-            double t=i/(double)samples,jitter=(i==0 || i==samples)?0:((i+seed)%2==0?.13:-.13);
-            var point=from.lerp(to,t).add(jitter,-jitter,jitter*.5);
-            level.sendParticles(GOLD,point.x,point.y,point.z,1,0,0,0,0);
-            level.sendParticles(WHITE,point.x,point.y+.025,point.z,1,0,0,0,0);
-            if(i%2==0)level.sendParticles(ParticleTypes.ELECTRIC_SPARK,point.x,point.y,point.z,1,.035,.035,.035,.03);
-        }
     }
     @SubscribeEvent public static void playerTick(PlayerTickEvent.Post event){if(event.getEntity() instanceof ServerPlayer player)tick(player);}
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event){cancel(event.getEntity().getUUID());}

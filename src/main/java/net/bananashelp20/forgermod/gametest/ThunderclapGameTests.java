@@ -48,8 +48,44 @@ public class ThunderclapGameTests {
         WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
         player.server.getPlayerList().remove(player);
     }
+    private static final class ViewConnection extends net.minecraft.network.Connection {
+        int snaps,swings;final List<net.minecraft.core.particles.ParticleOptions> particles=new ArrayList<>();
+        ViewConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundPlayerLookAtPacket)snaps++;
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundAnimatePacket)swings++;
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle)particles.add(particle.getParticle());
+        }
+    }
+    @GameTest(template="riftfang_test",batch="thunderclap_view_and_impact")
+    public static void impactPrecedesNextTargetAndCameraSnapsOnceWithoutLocking(GameTestHelper test)throws Exception{
+        var player=player(test);var origin=player.position();var first=mob(test,EntityType.COW,origin.add(0,0,5));var second=mob(test,EntityType.COW,origin.add(4,0,7));
+        var previous=player.connection;var wire=new ViewConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        var stack=Augmentations.apply(new ItemStack(ModItems.STATIC_DAGGER.get()),AdditionalAbilities.THUNDERCLAP);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setXRot((float)Math.toDegrees(Math.atan2(player.getEyeY()-origin.y-.7,5)));
+        try{
+            AbilityTestPackets.use(player,0);
+            for(int i=0;i<12 && first.getHealth()==200;i++){player.move(MoverType.SELF,player.getDeltaMovement());ThunderclapEvents.tick(player);}
+            test.assertTrue(first.getHealth()<200 && second.getHealth()==200 && player.distanceToSqr(first)<=1 && wire.snaps==0 && wire.swings>0,"Chain target selected before a visible hit within one block");
+            for(int i=0;i<2;i++){ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==0 && player.getDeltaMovement().equals(Vec3.ZERO),"No visible strike beat before chaining");}
+            ThunderclapEvents.tick(player);test.assertTrue(wire.snaps==1 && Math.abs(player.getYRot())>1,"No one-time camera turn to the off-axis next mob");
+            player.setYRot(137);player.setXRot(20);ThunderclapEvents.tick(player);test.assertTrue(player.getYRot()==137 && player.getXRot()==20 && wire.snaps==1,"Camera remains forced after snap");
+            test.assertTrue(wire.particles.stream().anyMatch(value->value instanceof net.bananashelp20.forgermod.particle.LightningArcParticles.Options options && options.owner()==player.getId()),"Movement trail is not attached to rendered player");
+            advance(player);test.assertTrue(second.getHealth()<200 && wire.snaps==1,"Next strike misses or repeatedly controls camera");
+        }finally{ThunderclapEvents.cancel(player.getUUID());first.discard();second.discard();player.connection=previous;cleanup(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void lightningArcPacketsAndGeometryKeepFiniteAnchoredJaggedStrokes(GameTestHelper test){
+        var option=new net.bananashelp20.forgermod.particle.LightningArcParticles.Options(3,4,5,17,99,4);
+        var buffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
+        try{net.bananashelp20.forgermod.particle.LightningArcParticles.Options.STREAM.encode(buffer,option);test.assertTrue(option.equals(net.bananashelp20.forgermod.particle.LightningArcParticles.Options.STREAM.decode(buffer)),"Arc packet loses endpoints/owner/seed/lifetime");}finally{buffer.release();}
+        for(var delta:List.of(Vec3.ZERO,new Vec3(10,0,0),new Vec3(0,10,0))){
+            test.assertTrue(net.bananashelp20.forgermod.particle.LightningArcParticles.point(delta,0,99,0).equals(Vec3.ZERO) && net.bananashelp20.forgermod.particle.LightningArcParticles.point(delta,16,99,0).equals(delta),"Arc endpoints drift");
+            for(int i=0;i<=16;i++){var point=net.bananashelp20.forgermod.particle.LightningArcParticles.point(delta,i,99,0);test.assertTrue(Double.isFinite(point.x) && Double.isFinite(point.y) && Double.isFinite(point.z),"Vertical or zero-length arc is invalid");}
+        }
+        test.succeed();
+    }
     @GameTest(template="riftfang_test",batch="thunderclap_variants")
-    public static void allTenVariantsAndRanksChainBeyondFourTargetsWithoutRevisitsOrCameraChanges(GameTestHelper test)throws Exception{
+    public static void allTenVariantsAndRanksChainBeyondFourTargetsWithArrivalSlashesAndViewSnaps(GameTestHelper test)throws Exception{
         var player=player(test);var origin=player.position();int checked=0;
         var method=Class.forName("net.bananashelp20.forgermod.mixin.AttackStrengthAccess");
         test.assertTrue(method.isInstance(player),"Full-strength vanilla attack accessor missing");
@@ -78,7 +114,7 @@ public class ThunderclapGameTests {
                         test.assertFalse(ThunderclapEvents.active(player),"Chain does not end when nearby unvisited mobs run out");
                         for(var target:targets)test.assertTrue(Math.abs(target.getHealth()-(200-1.5F*damage))<.01,"Wrong full melee + half lightning damage or repeated hit at rank "+rank+": "+target.getType()+" health="+target.getHealth()+" damage="+damage);
                         test.assertTrue(stack.getDamageValue()==6,"Each melee hit must use exactly one durability");
-                        test.assertTrue(player.getZ()>origin.z+25 && player.getYRot()==0 && Math.abs(player.getXRot()-(float)Math.toDegrees(Math.atan2(player.getEyeY()-origin.y-.7,4)))<.001,"Chain is capped by rank, anchored to the first target or forces the camera");
+                        test.assertTrue(player.getZ()>origin.z+25 && Float.isFinite(player.getYRot()) && Float.isFinite(player.getXRot()),"Chain is capped by rank, anchored to the first target or forces the camera");
                         test.assertTrue(player.isNoGravity() && player.getDeltaMovement().equals(Vec3.ZERO),"Original gravity or arrival precision lost");
                         WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
                         test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).containsValue(player.level().getGameTime()+700-100*rank),"Wrong end-of-chain rank cooldown");

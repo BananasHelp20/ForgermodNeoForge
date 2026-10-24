@@ -339,3 +339,5 @@
 - Separated Bone Guard/Necromancer summon lifetimes from equipped-weapon activation sessions. Reinforcements remain active when other abilities are cast or weapons change; their activation cooldown is independent of the newly held weapon and its ability slots. Weapon-bound effects retain their existing switch/cancellation rules.
 
 - Gravity Swing now affects passive, allied and tamed mobs as well as hostile mobs, and lifts surviving targets to the highest unobstructed point when a ceiling prevents the full rank height. Preserves player PvP rules, world/chunk bounds and riding safety.
+
+- Thunderclap now uses faster 3.5/3.6/3.7/3.8-block-per-tick bursts, waits for a hit within one block and a brief strike/thunder impact before selecting the next mob, and turns the camera once toward each newly selected target without locking it. Replaced white-yellow dots with animated blue-yellow lightning ribbons attached behind the rendered player so the trail cannot overtake the dash.
