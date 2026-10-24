@@ -335,3 +335,5 @@
 - Reworked /augment into new|upgrade|super <targets> <abilityName>: new learns an eligible augment at I, upgrade increments an already applied augment without exceeding its cap, and super applies the first super rank on a compatible item. Accepts readable names and IDs, completes only usable abilities, preserves operator permissions, prerequisites, slot limits, item data and multi-target selectors, and rejects duplicate applications/downgrades.
 
 - /augment now automatically learns missing prerequisite augments at level I when the complete request fits the held weapon. Existing prerequisite levels are preserved; failed dependency/application checks leave the item unchanged. Command completion uses the same dependency checks. Augmentation Table/anvil restrictions and independent template storage remain unchanged.
+
+- Separated Bone Guard/Necromancer summon lifetimes from equipped-weapon activation sessions. Reinforcements remain active when other abilities are cast or weapons change; their activation cooldown is independent of the newly held weapon and its ability slots. Weapon-bound effects retain their existing switch/cancellation rules.
