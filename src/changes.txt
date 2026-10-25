@@ -495,3 +495,5 @@
 - Config screen translations: added readable labels and help text for all six mod settings, configuration headings and the item-list button, replacing raw forgermod.configuration keys. Unused example fields are identified honestly; saved keys, defaults and behavior are unchanged.
 
 - Review 43 Magma Toss implemented: Applied approved full-word current-rank duration (3-7 seconds) in white for tooltip and card/upgrade values; burn duration, radius and cooldown unchanged. Updated existing native current-rank/style regression. User now requests direct implementation after each approval, superseding the review deferral. Build and all 421 required GameTests passed; reviewed.
+
+- Review 44 Magnetic Throw implemented: Applied the exact approved aim-and-activate wording in item and learning-card descriptions, preserving melee targeting range, launch velocity and cooldown. Build and all 421 required GameTests passed; existing unit tests rerun after review.
