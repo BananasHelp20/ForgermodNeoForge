@@ -497,3 +497,5 @@
 - Review 43 Magma Toss implemented: Applied approved full-word current-rank duration (3-7 seconds) in white for tooltip and card/upgrade values; burn duration, radius and cooldown unchanged. Updated existing native current-rank/style regression. User now requests direct implementation after each approval, superseding the review deferral. Build and all 421 required GameTests passed; reviewed.
 
 - Review 44 Magnetic Throw implemented: Applied the exact approved aim-and-activate wording in item and learning-card descriptions, preserving melee targeting range, launch velocity and cooldown. Build and all 421 required GameTests passed; existing unit tests rerun after review.
+
+- Review 45 Null Receipt implemented: Applied approved wording with the entire current hit-count phrase in white. Shared the existing five-hit count between runtime and text; expiry, stored knockback, trigger and cooldown unchanged. Build and all 421 required GameTests passed; unit checks rerun after review.

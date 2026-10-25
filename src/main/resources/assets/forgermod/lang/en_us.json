@@ -28,8 +28,8 @@
   "tooltips.forgermod.passive.overwhelming_smash": "Break blocking shields and deal 20% more damage to armor durability.",
   "tooltips.forgermod.passive.overwhelming_smash.card": "Break shields and deal 20% more armor durability damage.",
   "tooltips.forgermod.ability.null_receipt.name": "Null Receipt",
-  "tooltips.forgermod.ability.null_receipt": "Absorb knockback from five incoming hits, then release it with a vertical strike.",
-  "tooltips.forgermod.ability.null_receipt.card": "Store knockback from five incoming hits; release it in a slam.",
+  "tooltips.forgermod.ability.null_receipt": "Absorb knockback for the next 5 incoming hits, then release it with the next vertical strike.",
+  "tooltips.forgermod.ability.null_receipt.card": "Absorb knockback for the next 5 incoming hits, then release it with the next vertical strike.",
   "tooltips.forgermod.passive.distance_tax.name": "Distance Tax",
   "tooltips.forgermod.passive.distance_tax": "Activate to mark the next mob you hit. After 10 seconds, it takes damage based on your distance, up to 40 damage.",
   "tooltips.forgermod.passive.distance_tax.card": "Arm your next hit; distance deals damage after 10 seconds, up to 40.",
@@ -1012,5 +1012,6 @@
   "forgermod.configuration.items.button": "Edit List",
   "forgermod.configuration.grappleAutoRelease.tooltip": "Automatically release Crucible Grappler when you reach its anchor. You keep your momentum when released.",
   "forgermod.configuration.explosionTerrain.tooltip": "Allow Explosion and Blazing Blast to break blocks and start fires. Disabled by default.",
-  "augmentation.forgermod.preview.value.seconds_long": "%s seconds"
+  "augmentation.forgermod.preview.value.seconds_long": "%s seconds",
+  "tooltips.forgermod.ability.null_receipt.reviewed": "Absorb knockback for the next %s, then release it with the next vertical strike."
 }

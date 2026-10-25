@@ -23,9 +23,10 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class NullReceiptEvents {
+    public static final int HIT_COUNT=5;
     private static final class Receipt {
         final ItemStack stack; final int selected; final long expires; final net.minecraft.server.level.ServerLevel level;
-        int remaining=5; long hitTick=Long.MIN_VALUE; boolean capture; double stored;
+        int remaining=HIT_COUNT; long hitTick=Long.MIN_VALUE; boolean capture; double stored;
         Receipt(ServerPlayer player,ItemStack stack) { this.stack=stack; selected=player.getInventory().selected; level=player.serverLevel(); expires=player.level().getGameTime()+600; }
     }
     private static final Map<UUID,Receipt> RECEIPTS=new HashMap<>();

@@ -45,6 +45,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case RecommendedAbilities.NULL_RECEIPT -> text(id+".reviewed","Absorb knockback for the next %s, then release it with the next vertical strike.",
+                    net.bananashelp20.forgermod.item.custom.abilities.NullReceiptEvents.HIT_COUNT+" incoming hits");
             case AdditionalAbilities.THUNDERCLAP -> text(id+".current","Aim at a mob within %s and dash to it with a lightning slash. Deal a full melee hit plus %s lightning damage. Chain to the nearest unhit mob within %s of each previous target until none remain.",
                     number(net.bananashelp20.forgermod.item.custom.abilities.ThunderclapEvents.AIM_RANGE)+" blocks","half weapon",number(net.bananashelp20.forgermod.item.custom.abilities.ThunderclapEvents.CHAIN_RANGE)+" blocks");
             case AdditionalAbilities.BONE_GUARD -> rank<4
