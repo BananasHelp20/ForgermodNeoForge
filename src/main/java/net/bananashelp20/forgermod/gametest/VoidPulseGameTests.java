@@ -16,6 +16,31 @@ import net.neoforged.neoforge.gametest.*;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class VoidPulseGameTests {
+    private static final class SoundWire extends net.minecraft.network.Connection {
+        final java.util.List<net.minecraft.network.protocol.game.ClientboundSoundPacket> sounds=new java.util.ArrayList<>();
+        SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound)sounds.add(sound);
+        }
+    }
+    @GameTest(template="riftfang_test",timeoutTicks=50)
+    public static void reversedChargePrecedesNormalTeleportReleaseAndCancellationDoesNotBurst(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var old=player.connection;var wire=new SoundWire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        Runnable cleanup=()->{VoidPulseAbility.cancel(player.getUUID());WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.connection=old;player.server.getPlayerList().remove(player);};
+        try{
+            var stack=Augmentations.apply(new ItemStack(ModItems.CLAYMORE_OF_THE_VOID.get()),AdditionalAbilities.VOID_PULSE);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            AbilityTestPackets.use(player,0);AbilityTestPackets.use(player,0);
+            test.assertTrue(wire.sounds.size()==1 && wire.sounds.getFirst().getSound().value()==net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_CHARGE.get(),"Charge is silent, duplicated or plays forward teleport");
+            test.runAfterDelay(11,()->{try{
+                VoidPulseAbility.active(player);
+                test.assertTrue(wire.sounds.size()==2 && wire.sounds.getLast().getSound().value()==net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT,"Outward phase does not play one normal teleport");
+                VoidPulseAbility.active(player);test.assertTrue(wire.sounds.size()==2,"Completed pulse repeats release audio");
+                test.assertTrue(VoidPulseAbility.activate(player,stack),"Cancellation fixture cannot charge");player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.IRON_SWORD));VoidPulseAbility.active(player);
+                test.runAfterDelay(11,()->{try{VoidPulseAbility.active(player);test.assertTrue(wire.sounds.size()==3 && wire.sounds.getLast().getSound().value()==net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_CHARGE.get(),"Canceled charge plays an outward sound");test.succeed();}finally{cleanup.run();}});
+            }catch(Exception|Error failure){cleanup.run();throw failure;}});
+        }catch(Exception|Error failure){cleanup.run();throw failure;}
+    }
     @GameTest(template="riftfang_test")
     public static void allFifteenVariantsActivateThroughKeysAndKeepIndependentCooldowns(GameTestHelper test) throws Exception {
         var player=TestPlayers.survival(test);int count=0;

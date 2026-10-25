@@ -422,3 +422,5 @@
 - Heavy Vertical Strike impact: replaced the Iron Golem swing sound with a low-pitched heavy mace impact plus metallic anvil landing at the strike location; shared by player/reinforcement strikes, ability-triggered Vertical Strikes and Echo Salvage releases.
 
 - Fiery Flaming Stomp impact: layered a low-pitched fire-charge burst over the heavy Vertical Strike impact, playing together at the stomp landing location.
+
+- Void Pulse implode/explode audio: replaced the inward chime with a reversed vanilla teleport sample fitted to its half-second contraction, then plays normal vanilla teleport on outward release instead of a generic explosion. Added registered custom sound and subtitle.

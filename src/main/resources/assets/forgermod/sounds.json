@@ -1,0 +1,8 @@
+{
+  "void_pulse_charge": {
+    "subtitle": "subtitles.forgermod.void_pulse_charge",
+    "sounds": [
+      "forgermod:ability/void_pulse_charge"
+    ]
+  }
+}
