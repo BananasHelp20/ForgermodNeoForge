@@ -14,7 +14,10 @@ public final class SonicCritStateTest {
         expect(true, state.isArmed(first), "normal hit leaves charge");
         expect(true, state.consume(first), "critical consumes charge");
         expect(false, state.consume(first), "only one charged critical");
-        expect(3.0F, SonicCritState.bonusDamage(20), "fifteen percent bonus");
+        expect(1.0F, SonicCritState.bonusDamage(20), "five percent base bonus");
+        for(int rank=1;rank<=4;rank++)expect((float)rank,SonicCritState.bonusDamage(20,rank),"reviewed rank bonus");
+        expect(4.0F,SonicCritState.bonusDamage(20,5),"extra template rank respects twenty percent cap");
+        expect(4.0F,SonicCritState.bonusDamage(20,Integer.MAX_VALUE),"large rank respects cap");
         expect(0.0F, SonicCritState.bonusDamage(-1), "invalid health does not reverse damage");
         state.arm(first);
         state.clear(first);

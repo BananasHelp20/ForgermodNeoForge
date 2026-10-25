@@ -131,7 +131,8 @@ public class PulsiteWeapon extends SwordItemWithEffect {
                 || !(player.getMainHandItem().getItem() instanceof PulsiteWeapon weapon)
                 || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.sonic_crit") || !SONIC_CRIT.isArmed(player.getUUID())
                 || !DaggerCriticalEvents.matches(player, event.getEntity(), player.getMainHandItem())) return;
-        event.setAmount(event.getAmount() + SonicCritState.bonusDamage(event.getEntity().getMaxHealth()));
+        event.setAmount(event.getAmount() + SonicCritState.bonusDamage(event.getEntity().getMaxHealth(),
+                Augmentations.level(player.getMainHandItem(),"tooltips.forgermod.ability.sonic_crit")));
     }
 
     @SubscribeEvent

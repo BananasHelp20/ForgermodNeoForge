@@ -45,6 +45,9 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.sonic_crit" -> text(id+".reviewed",
+                    "Your next critical dagger hit adds %s of the target's maximum health as damage.",
+                    net.bananashelp20.forgermod.item.custom.abilities.SonicCritState.percentage(rank)+"%");
             case "tooltips.forgermod.ability.sonic_boom" -> text(id+".reviewed",
                     "Activate this ability to fire a piercing Sonic Boom with a %s for %s.",
                     number(net.bananashelp20.forgermod.item.custom.abilities.SonicBoomBlast.RANGE)+" block range",

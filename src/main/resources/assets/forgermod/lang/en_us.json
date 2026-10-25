@@ -134,7 +134,7 @@
   "message.forgermod.storing_anger.active": "Storing Anger: damage is stored for 10 seconds",
   "tooltips.forgermod.passive.death_march": "Deal more dagger damage as the target loses health, up to double damage.",
   "tooltips.forgermod.passive.revenge": "Deal 20% more dagger damage to undead.",
-  "tooltips.forgermod.ability.sonic_crit": "Your next critical dagger hit adds 15% of the target's maximum health as damage.",
+  "tooltips.forgermod.ability.sonic_crit": "Your next critical dagger hit adds 5% of the target's maximum health as damage.",
   "message.forgermod.sonic_crit.armed": "Sonically Charged Crit armed for your next critical hit",
   "tooltips.forgermod.ability.sonic_boom": "Activate this ability to fire a piercing Sonic Boom with a 50 block range for double weapon damage.",
   "tooltips.forgermod.passive.axe": "Three fully charged attacks within 10 seconds trigger an area slam. Requires an empty offhand.",
@@ -471,7 +471,7 @@
   "tooltips.forgermod.ability.storing_anger.card": "Store damage for 10 seconds; release it on your next hit.",
   "tooltips.forgermod.passive.death_march.card": "Deal more damage to wounded enemies, up to double.",
   "tooltips.forgermod.passive.revenge.card": "Deal 20% more damage to undead.",
-  "tooltips.forgermod.ability.sonic_crit.card": "Your next crit adds 15% of the target's maximum health as damage.",
+  "tooltips.forgermod.ability.sonic_crit.card": "Your next critical dagger hit adds 5% of the target's maximum health as damage.",
   "tooltips.forgermod.ability.sonic_boom.card": "Activate this ability to fire a piercing Sonic Boom with a 50 block range for double weapon damage.",
   "augmentation.forgermod.card.learn": "Learn",
   "augmentation.forgermod.card.upgrade": "Upgrade",
@@ -1020,5 +1020,7 @@
   "augmentation.forgermod.preview.weapon_wear": "Durability damage: %s.",
   "tooltips.forgermod.ability.rooting_roots.reviewed": "Activate this ability for roots shooting out of the ground that immobilize and poison all enemies within %s for %s.",
   "tooltips.forgermod.ability.skull_throw.reviewed": "Fire a fast skull projectile that bursts within %s and applies %s for %s.",
-  "tooltips.forgermod.ability.sonic_boom.reviewed": "Activate this ability to fire a piercing Sonic Boom with a %s for %s."
+  "tooltips.forgermod.ability.sonic_boom.reviewed": "Activate this ability to fire a piercing Sonic Boom with a %s for %s.",
+  "tooltips.forgermod.ability.sonic_crit.reviewed": "Your next critical dagger hit adds %s of the target's maximum health as damage.",
+  "augmentation.forgermod.preview.max_health_bonus": "Maximum-health bonus: %s."
 }

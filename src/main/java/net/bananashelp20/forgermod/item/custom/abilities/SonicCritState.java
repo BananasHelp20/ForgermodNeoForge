@@ -25,6 +25,12 @@ public final class SonicCritState {
     }
 
     public static float bonusDamage(float targetMaxHealth) {
-        return Math.max(0, targetMaxHealth) * 0.15F;
+        return bonusDamage(targetMaxHealth,1);
+    }
+
+    public static int percentage(int rank) {return 5*Math.clamp(rank,1,4);}
+
+    public static float bonusDamage(float targetMaxHealth,int rank) {
+        return Math.max(0, targetMaxHealth) * (percentage(rank)/100F);
     }
 }

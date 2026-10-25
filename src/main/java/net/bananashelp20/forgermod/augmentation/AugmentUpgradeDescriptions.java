@@ -130,6 +130,8 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats,"charge_bonus",net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.maximumBonus(rank)*100,"percent");
                 numeric(stats,"lightning_damage",net.bananashelp20.forgermod.item.custom.abilities.ChargeAttackState.lightningDamage(rank),"damage");
             }
+            case "tooltips.forgermod.ability.sonic_crit" -> numeric(stats,"max_health_bonus",
+                    net.bananashelp20.forgermod.item.custom.abilities.SonicCritState.percentage(rank),"percent");
             case AdditionalAbilities.DREAM_FEAST, AdditionalAbilities.GREEN_FEAST -> numeric(stats,"food",ReviewedRanks.foodPoints(rank),"food_points");
             case RecommendedAbilities.DELUSION -> seconds(stats,"duration",ReviewedRanks.delusionTicks(rank));
             case AdditionalAbilities.BLOOD_SACRAFICE -> seconds(stats,"duration",net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank));
