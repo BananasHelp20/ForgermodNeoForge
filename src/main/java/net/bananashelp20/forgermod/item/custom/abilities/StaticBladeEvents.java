@@ -21,6 +21,7 @@ import java.util.*;
 
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class StaticBladeEvents {
+    public static final int RANGE=20;
     private static final class Blade {
         final ItemStack stack;final int selected;final ServerLevel level;long expires;
         Vec3 start,direction,right,up;float damage;double traveled;final Set<UUID> hit=new HashSet<>();
@@ -60,7 +61,7 @@ public final class StaticBladeEvents {
         blade.expires=blade.secondary.expires;return true;
     }
     private static void launch(ServerPlayer player,Blade blade) {
-        blade.expires=player.level().getGameTime()+21;
+        blade.expires=player.level().getGameTime()+RANGE+1;
         blade.start=player.getEyePosition();blade.direction=player.getLookAngle();blade.right=blade.direction.cross(new Vec3(0,1,0));
         if(blade.right.lengthSqr()<.0001) blade.right=new Vec3(1,0,0);else blade.right=blade.right.normalize();
         blade.up=blade.right.cross(blade.direction).normalize();blade.damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
@@ -80,7 +81,7 @@ public final class StaticBladeEvents {
     }
     private static void advance(ServerPlayer player,Blade blade) {
         if(blade.finished) return;
-        var from=blade.start.add(blade.direction.scale(blade.traveled));double step=Math.min(1,20-blade.traveled);boolean blocked=true;
+        var from=blade.start.add(blade.direction.scale(blade.traveled));double step=Math.min(1,RANGE-blade.traveled);boolean blocked=true;
         double furthestWall=0;
         // Any open sample lets the echo pass: only a fully occupied cross-section stops it.
         for(int x=-4;x<=4;x++) for(int y=-1;y<=1;y++) {
@@ -102,7 +103,7 @@ public final class StaticBladeEvents {
         for(int x=-4;x<=4;x++) {
             var point=front.add(blade.right.scale(x*.5));blade.level.sendParticles(ParticleTypes.ELECTRIC_SPARK,point.x,point.y,point.z,2,.05,.12,.05,.01);
         }
-        blade.traveled+=step;if(blocked || blade.traveled>=20) blade.finished=true;
+        blade.traveled+=step;if(blocked || blade.traveled>=RANGE) blade.finished=true;
     }
     @SubscribeEvent
     public static void attack(AttackEntityEvent event) {if(!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) release(player);}

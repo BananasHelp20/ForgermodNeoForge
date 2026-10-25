@@ -45,6 +45,9 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.STATIC_BLADE -> text(id+".reviewed",
+                    "Your next swing sends out a piercing echo with %s range for %s, this also works in dual wield.",
+                    net.bananashelp20.forgermod.item.custom.abilities.StaticBladeEvents.RANGE+" blocks",number(weaponDamage(stack))+" damage");
             case "tooltips.forgermod.ability.sonic_crit" -> text(id+".reviewed",
                     "Your next critical dagger hit adds %s of the target's maximum health as damage.",
                     net.bananashelp20.forgermod.item.custom.abilities.SonicCritState.percentage(rank)+"%");

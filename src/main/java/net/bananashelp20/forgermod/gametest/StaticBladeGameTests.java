@@ -19,6 +19,29 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class StaticBladeGameTests {
+    @GameTest(template="sonic_boom_test")
+    public static void reviewedEchoRangeDamageAndColorsMatchEveryWeaponVariant(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,16,8)));player.setPos(origin);player.setYRot(0);player.setXRot(0);player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1);
+        var target=EntityType.CREEPER.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);target.setPos(origin.add(0,0,5));test.getLevel().addFreshEntity(target);int checked=0;
+        try {
+            for(var entry:ModItems.ITEMS.getEntries())if(entry.get() instanceof ElectriumWeapon weapon && weapon.isDagger())for(int rank=1;rank<=4;rank++) {
+                checked++;var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.STATIC_BLADE,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setPos(origin);player.setYRot(0);player.setXRot(0);
+                double expected=AbilityDescriptions.weaponDamage(stack);String damage=AbilityDescriptions.number(expected)+" damage";
+                for(boolean compact:new boolean[]{false,true}) {
+                    var text=AbilityDescriptions.description(stack,AdditionalAbilities.STATIC_BLADE,rank,compact);var white=new StringBuilder();var gray=new StringBuilder();
+                    text.visit((style,part)->{if(style.getColor()!=null){if(style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);if(style.getColor().getValue()==net.minecraft.ChatFormatting.GRAY.getColor())gray.append(part);}return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+                    test.assertTrue(text.getString().equals("Your next swing sends out a piercing echo with 20 blocks range for "+damage+", this also works in dual wield."),"Static Blade description does not show approved current values");
+                    test.assertTrue(white.toString().equals("20 blocks"+damage) && gray.toString().contains(" range for ") && gray.toString().contains("this also works in dual wield"),"Static Blade colors unannotated prose or misses white values");
+                }
+                test.assertTrue(Math.abs(expected-player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.0001,"Weapon tooltip differs from baseline echo damage");
+                target.setPos(origin.add(0,0,5));target.setHealth(1000);target.invulnerableTime=0;target.setDeltaMovement(Vec3.ZERO);
+                test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.STATIC_BLADE) && StaticBladeEvents.release(player),"Cannot release current-rank echo");
+                for(int tick=0;tick<25;tick++)StaticBladeEvents.tick(new PlayerTickEvent.Post(player));
+                test.assertTrue(Math.abs(1000-target.getHealth()-expected)<.001 && !StaticBladeEvents.active(player),"Actual echo damage or lifetime differs from description");
+            }
+            test.assertTrue(checked==20,"Skipped Static Blade variant/rank");test.succeed();
+        }finally{StaticBladeEvents.cancel(player.getUUID());target.discard();player.server.getPlayerList().remove(player);}
+    }
     private static final class SoundWire extends net.minecraft.network.Connection {
         final java.util.List<net.minecraft.sounds.SoundEvent> sounds=new java.util.ArrayList<>();
         SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}

@@ -601,8 +601,8 @@
   "tooltips.forgermod.passive.conductive_edge": "Deal 20% more melee damage to enemies in water or rain.",
   "tooltips.forgermod.passive.conductive_edge.card": "Deal 20% more melee damage to wet enemies.",
   "tooltips.forgermod.ability.static_blade.name": "Static blade",
-  "tooltips.forgermod.ability.static_blade": "Your next swing sends a piercing echo up to 20 blocks for weapon damage. A matching offhand dagger sends a second echo.",
-  "tooltips.forgermod.ability.static_blade.card": "Your next swing fires an echo; matching dual daggers fire two.",
+  "tooltips.forgermod.ability.static_blade": "Your next swing sends out a piercing echo with 20 blocks range for weapon damage, this also works in dual wield.",
+  "tooltips.forgermod.ability.static_blade.card": "Your next swing sends out a piercing echo with 20 blocks range for weapon damage, this also works in dual wield.",
   "tooltips.forgermod.passive.homesick.name": "Homesick",
   "tooltips.forgermod.passive.homesick": "Standing on sculk grants Speed II and Strength I for 3 seconds.",
   "tooltips.forgermod.passive.homesick.card": "Standing on sculk grants Speed II and Strength I.",
@@ -1022,5 +1022,6 @@
   "tooltips.forgermod.ability.skull_throw.reviewed": "Fire a fast skull projectile that bursts within %s and applies %s for %s.",
   "tooltips.forgermod.ability.sonic_boom.reviewed": "Activate this ability to fire a piercing Sonic Boom with a %s for %s.",
   "tooltips.forgermod.ability.sonic_crit.reviewed": "Your next critical dagger hit adds %s of the target's maximum health as damage.",
-  "augmentation.forgermod.preview.max_health_bonus": "Maximum-health bonus: %s."
+  "augmentation.forgermod.preview.max_health_bonus": "Maximum-health bonus: %s.",
+  "tooltips.forgermod.ability.static_blade.reviewed": "Your next swing sends out a piercing echo with %s range for %s, this also works in dual wield."
 }
