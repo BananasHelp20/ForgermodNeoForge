@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 /** An instantaneous, block-clipped piercing ray using the Warden's sonic effects. */
 public final class SonicBoomBlast {
     public static final double RANGE = 50;
+    public static float damageForAttack(double attackDamage) {return (float)(2*attackDamage);}
 
     private SonicBoomBlast() {}
 
@@ -60,7 +61,7 @@ public final class SonicBoomBlast {
         Vec3 right = Math.abs(direction.y) > .999 ? new Vec3(1, 0, 0)
                 : direction.cross(new Vec3(0, 1, 0)).normalize();
         Vec3 up = right.cross(direction).normalize();
-        float damage = (float)(2 * player.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        float damage = damageForAttack(player.getAttributeValue(Attributes.ATTACK_DAMAGE));
         for (Entity target : level.getEntitiesOfClass(Entity.class, new AABB(start, end).inflate(2.13),
                 entity -> entity != player && entity.isAlive() && !entity.isSpectator()
                         && !(entity instanceof ItemEntity)

@@ -40,6 +40,31 @@ import java.util.UUID;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class SonicBoomGameTests {
+    @GameTest(template="sonic_boom_test")
+    public static void reviewedNumericDamageAndWhitePhrasesMatchEachWeaponVariant(GameTestHelper test) {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,16,8))));player.setYRot(0);player.setXRot(0);
+        player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1);
+        var target=enemy(test,player.position().add(0,0,5));int checked=0;
+        try {
+            for(var entry:ModItems.ITEMS.getEntries())if(entry.get() instanceof PulsiteWeapon weapon && weapon.isDagger())for(int rank=1;rank<=4;rank++) {
+                checked++;var stack=net.bananashelp20.forgermod.augmentation.Augmentations.setLevel(new ItemStack(entry.get()),"tooltips.forgermod.ability.sonic_boom",rank);
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
+                float expected=net.bananashelp20.forgermod.item.custom.abilities.SonicBoomBlast.damageForAttack(net.bananashelp20.forgermod.augmentation.AbilityDescriptions.weaponDamage(stack));
+                String damage=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.number(expected)+" damage";
+                for(boolean compact:new boolean[]{false,true}) {
+                    var text=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,"tooltips.forgermod.ability.sonic_boom",rank,compact);var white=new StringBuilder();var gray=new StringBuilder();
+                    text.visit((style,part)->{if(style.getColor()!=null){if(style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);if(style.getColor().getValue()==net.minecraft.ChatFormatting.GRAY.getColor())gray.append(part);}return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+                    test.assertTrue(text.getString().equals("Activate this ability to fire a piercing Sonic Boom with a 50 block range for "+damage+"."),"Sonic Boom does not show approved current wording");
+                    test.assertTrue(white.toString().equals("50 block range"+damage) && gray.toString().contains(" for "),"Sonic range/damage phrases or prose have wrong colors");
+                }
+                test.assertTrue(Math.abs(expected-2*player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.0001,"Numeric weapon damage differs from baseline runtime attack damage");
+                target.setHealth(100);target.invulnerableTime=0;target.setPos(player.position().add(0,0,5));target.setDeltaMovement(Vec3.ZERO);
+                net.bananashelp20.forgermod.item.custom.abilities.SonicBoomBlast.fire(player);
+                test.assertTrue(Math.abs(100-target.getHealth()-expected)<.0001,"Actual blast damage differs from the displayed weapon value");
+            }
+            test.assertTrue(checked==20,"Skipped Sonic Boom dagger variant/rank");test.succeed();
+        }finally{target.discard();player.server.getPlayerList().remove(player);}
+    }
     private static boolean hasTranslation(Component message, String key) {
         if (message.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals(key)) return true;
         return message.getSiblings().stream().anyMatch(child -> hasTranslation(child, key));

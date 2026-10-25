@@ -45,6 +45,10 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.sonic_boom" -> text(id+".reviewed",
+                    "Activate this ability to fire a piercing Sonic Boom with a %s for %s.",
+                    number(net.bananashelp20.forgermod.item.custom.abilities.SonicBoomBlast.RANGE)+" block range",
+                    number(net.bananashelp20.forgermod.item.custom.abilities.SonicBoomBlast.damageForAttack(weaponDamage(stack)))+" damage");
             case AdditionalAbilities.SKULL_THROW -> {
                 var radius=white(number(net.bananashelp20.forgermod.item.custom.abilities.SkullThrowEvents.burstRadius(rank))+" blocks");
                 var effect=Component.literal("Wither "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(1+jade))
