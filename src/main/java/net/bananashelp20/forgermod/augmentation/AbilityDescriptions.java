@@ -123,6 +123,8 @@ public final class AbilityDescriptions {
                             net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.launchHeight(true,rank)+" blocks",
                             number(net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.SMASH_RADIUS)+" block radius")
                     :null;
+            case AdditionalAbilities.BACKSTAB -> text(id+".reviewed","Deal %s more damage from behind.",
+                    net.bananashelp20.forgermod.item.custom.abilities.AdditionalPassiveEvents.BACKSTAB_PERCENT+"%");
             case AdditionalAbilities.VOID_PULSE -> text(id+".reviewed","Push living entities in a %s away from you.",
                     net.bananashelp20.forgermod.item.custom.abilities.VoidPulseAbility.radius(rank)+" block radius");
             case AdditionalAbilities.STUNNING_PRESENCE -> text(id+".reviewed",

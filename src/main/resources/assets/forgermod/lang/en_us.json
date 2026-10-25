@@ -558,6 +558,7 @@
   "tooltips.forgermod.ability.displace.name": "Displace",
   "tooltips.forgermod.ability.displace": "Swap places with a visible enemy within 10 blocks.",
   "tooltips.forgermod.ability.displace.card": "Swap places with a visible enemy within 10 blocks.",
+  "tooltips.forgermod.passive.backstab.reviewed": "Deal %s more damage from behind.",
   "tooltips.forgermod.passive.backstab.name": "Backstab",
   "tooltips.forgermod.passive.backstab": "Deal 20% more melee damage from behind.",
   "tooltips.forgermod.passive.backstab.card": "Deal 20% more melee damage from behind.",
