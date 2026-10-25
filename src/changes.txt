@@ -420,3 +420,5 @@
 - Bulk held augment upgrade: /augment upgrade <target> without an ability name upgrades every compatible learned augment once on both mainhand and offhand, skipping capped/unavailable upgrades and preserving the existing named-ability command.
 
 - Heavy Vertical Strike impact: replaced the Iron Golem swing sound with a low-pitched heavy mace impact plus metallic anvil landing at the strike location; shared by player/reinforcement strikes, ability-triggered Vertical Strikes and Echo Salvage releases.
+
+- Fiery Flaming Stomp impact: layered a low-pitched fire-charge burst over the heavy Vertical Strike impact, playing together at the stomp landing location.
