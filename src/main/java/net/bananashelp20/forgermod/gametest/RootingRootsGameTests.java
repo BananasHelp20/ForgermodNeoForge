@@ -19,6 +19,43 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class RootingRootsGameTests {
+    @GameTest(template="riftfang_test",timeoutTicks=250)
+    public static void jadeImmobilizationAndPoisonBothLastElevenSeconds(GameTestHelper test) throws Exception {
+        var player=TestPlayers.survival(test);player.setNoGravity(true);
+        var start=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(start);
+        for(int x=6;x<=10;x++)for(int z=6;z<=12;z++) {test.setBlock(new BlockPos(x,4,z),net.minecraft.world.level.block.Blocks.STONE);for(int y=5;y<=8;y++)test.setBlock(new BlockPos(x,y,z),net.minecraft.world.level.block.Blocks.AIR);}
+        var mob=target(test,start.add(0,0,2));var anchor=mob.position();
+        var stack=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(ModItems.LEAFCUTTER_DAGGER_JADE.get()),"tooltips.forgermod.ability.rooting_roots");player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        AbilityTestPackets.use(player,0);
+        test.assertTrue(mob.getEffect(MobEffects.POISON)!=null && mob.getEffect(MobEffects.POISON).getDuration()==220 && mob.getEffect(MobEffects.POISON).getAmplifier()==1,"Jade poison no longer lasts eleven seconds at level II");
+        test.runAfterDelay(201,()->{
+            mob.setPos(anchor.add(1,0,0));LushWeapon.onEntityTick(new net.neoforged.neoforge.event.tick.EntityTickEvent.Post(mob));
+            test.assertTrue(mob.position().distanceTo(anchor)<.001 && ((LushWeapon)stack.getItem()).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Jade roots expire at the old ten-second boundary");
+        });
+        test.runAfterDelay(221,()->{try{
+            var free=anchor.add(1,0,0);mob.setPos(free);LushWeapon.onEntityTick(new net.neoforged.neoforge.event.tick.EntityTickEvent.Post(mob));
+            test.assertTrue(mob.position().equals(free) && !((LushWeapon)stack.getItem()).isAbilityActive(player,WeaponAbilitySlot.PRIMARY),"Jade immobilization does not end after eleven seconds");
+            test.assertFalse(mob.hasEffect(MobEffects.POISON),"Poison and roots expire at different times");test.succeed();
+        }finally{LushWeapon.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));mob.discard();player.server.getPlayerList().remove(player);}});
+    }
+    @GameTest(template="empty")
+    public static void reviewedRootDescriptionUsesWhiteRangeAndConditionalDuration(GameTestHelper test) {
+        for(var item:new net.minecraft.world.item.Item[]{ModItems.LEAFCUTTER_DAGGER.get(),ModItems.LEAFCUTTER_DAGGER_RUBY.get(),ModItems.LEAFCUTTER_DAGGER_AMBER.get(),ModItems.LEAFCUTTER_DAGGER_AMETHYST.get(),ModItems.LEAFCUTTER_DAGGER_JADE.get()})
+        for(int rank=1;rank<=4;rank++)for(boolean compact:new boolean[]{false,true}) {
+            var stack=new ItemStack(item);boolean jade=net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack);
+            var description=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,"tooltips.forgermod.ability.rooting_roots",rank,compact);
+            var white=new StringBuilder();var green=new StringBuilder();var gray=new StringBuilder();
+            description.visit((style,part)->{int color=style.getColor()==null?-1:style.getColor().getValue();
+                if(color==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);
+                if(color==net.minecraft.ChatFormatting.GREEN.getColor())green.append(part);
+                if(color==net.minecraft.ChatFormatting.GRAY.getColor())gray.append(part);
+                return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+            test.assertTrue(description.getString().equals("Activate this ability for roots shooting out of the ground that immobilize and poison all enemies within 10 blocks for "+(jade?11:10)+" seconds."),"Rooting Roots does not show approved current wording");
+            test.assertTrue(white.toString().equals(jade?"10 blocks":"10 blocks10 seconds") && green.toString().equals(jade?"11 seconds":""),"Range/duration conditional colors are wrong");
+            test.assertTrue(gray.toString().contains("immobilize and poison all enemies within ") && gray.toString().contains(" for "),"Root prose is not gray");
+        }
+        test.succeed();
+    }
     private static java.util.List<net.bananashelp20.forgermod.item.custom.abilities.RootingRootsVisuals.Root> models(GameTestHelper test,Vec3 center) {
         return test.getLevel().getEntitiesOfClass(net.bananashelp20.forgermod.item.custom.abilities.RootingRootsVisuals.Root.class,net.minecraft.world.phys.AABB.ofSize(center,12,12,12));
     }

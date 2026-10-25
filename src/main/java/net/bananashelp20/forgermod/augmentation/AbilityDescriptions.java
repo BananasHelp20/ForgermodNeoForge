@@ -45,6 +45,14 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.rooting_roots" -> {
+                var range=white(net.bananashelp20.forgermod.item.custom.abilities.RootingRootsState.RANGE+" blocks");
+                var duration=Component.literal((net.bananashelp20.forgermod.item.custom.abilities.RootingRootsState.durationTicks(jade>0)/20)+" seconds")
+                        .withStyle(jade>0?ChatFormatting.GREEN:ChatFormatting.WHITE);
+                yield Component.translatableWithFallback(id+".reviewed",
+                        "Activate this ability for roots shooting out of the ground that immobilize and poison all enemies within %s for %s.",range,duration)
+                        .withStyle(ChatFormatting.GRAY);
+            }
             case AdditionalAbilities.RINGING_STEEL -> text(id+".reviewed","Your next hit will damage the enemy's held weapon(s) for %s.",
                     net.bananashelp20.forgermod.item.custom.abilities.RingingSteelEvents.durabilityDamage(rank)+" durability");
             case "tooltips.forgermod.ability.poisoned_vein" -> {

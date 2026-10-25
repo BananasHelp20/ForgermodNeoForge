@@ -4,14 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Horizontal anchors expire after ten seconds; vertical gravity remains free. */
+/** Horizontal anchors expire with the poison: ten seconds, or eleven with Jade. */
 public final class RootingRootsState {
+    public static final int RANGE=10;
+    public static final int BASE_DURATION_TICKS=200;
+    public static int durationTicks(boolean jade) {return BASE_DURATION_TICKS+(jade?20:0);}
     public record Anchor(double x, double z) {}
     private record Root(UUID owner, Anchor anchor, long endTick) {}
     private final Map<UUID, Root> roots = new HashMap<>();
 
     public void root(UUID owner, UUID mob, double x, double z, long now) {
-        roots.put(mob, new Root(owner, new Anchor(x, z), now + 200));
+        root(owner,mob,x,z,now,false);
+    }
+
+    public void root(UUID owner, UUID mob, double x, double z, long now, boolean jade) {
+        roots.put(mob, new Root(owner, new Anchor(x, z), now + durationTicks(jade)));
     }
 
     public Anchor anchor(UUID mob, long now) {

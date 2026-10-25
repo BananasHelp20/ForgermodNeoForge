@@ -87,17 +87,18 @@ public class LushWeapon extends SwordItemWithEffect {
         }
         if (ROOTS.hasRoots(player.getUUID(), player.level().getGameTime())) return false;
         List<Mob> targets = AreaDischargeTargets.select(
-                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(10)),
-                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, 10);
+                player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(RootingRootsState.RANGE)),
+                mob -> mob instanceof Enemy && mob.isAlive(), player::distanceToSqr, RootingRootsState.RANGE);
         if (targets.isEmpty()) return false;
         long now = player.level().getGameTime();
         for (Mob mob : targets) {
-            ROOTS.root(player.getUUID(), mob.getUUID(), mob.getX(), mob.getZ(), now);
+            ROOTS.root(player.getUUID(), mob.getUUID(), mob.getX(), mob.getZ(), now,
+                    net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack));
             RootingRootsVisuals.grow(player.getUUID(), mob);
             mob.getNavigation().stop();
             mob.addEffect(net.bananashelp20.forgermod.augmentation.JadeAugments.reinforce(stack,
                     "tooltips.forgermod.ability.rooting_roots",
-                    new MobEffectInstance(MobEffects.POISON, 200, 0)));
+                    new MobEffectInstance(MobEffects.POISON, RootingRootsState.BASE_DURATION_TICKS, 0)));
             player.serverLevel().sendParticles(ParticleTypes.COMPOSTER,
                     mob.getX(), mob.getY() + 0.2, mob.getZ(), 12, 0.4, 0.1, 0.4, 0.03);
         }
