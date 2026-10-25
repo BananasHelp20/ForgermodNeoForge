@@ -115,10 +115,38 @@ public class RiftfangTeleportGameTests {
         for (Item main : variants) {
             for (Item off : variants) {
                 ServerPlayer player = player(test, main, off, -45);
+                player.setItemInHand(InteractionHand.OFF_HAND, net.bananashelp20.forgermod.augmentation.Augmentations.apply(
+                        new ItemStack(off),"tooltips.forgermod.ability.void_step"));
                 expectDistance(test, player, 20);
                 test.assertTrue(weapon(player).abilityCooldownTicks(WeaponAbilitySlot.PRIMARY) == 140, "Primary cooldown is not seven seconds");
                 test.assertTrue(weapon(player).abilityCooldownTicks(WeaponAbilitySlot.SECONDARY) == 2400, "Secondary cooldown changed");
             }
+        }
+        test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
+    public static void doubleRangeRequiresBothAugmentsAndDualWieldOnEitherHand(GameTestHelper test) {
+        String id="tooltips.forgermod.ability.void_step";
+        for(var item:new Item[]{ModItems.RIFTFANG_DAGGER.get(),ModItems.RIFTFANG_DAGGER_RUBY.get(),ModItems.RIFTFANG_DAGGER_AMBER.get(),ModItems.RIFTFANG_DAGGER_AMETHYST.get(),ModItems.RIFTFANG_DAGGER_JADE.get()}) {
+            var offItem=item==ModItems.RIFTFANG_DAGGER_RUBY.get()?ModItems.RIFTFANG_DAGGER.get():ModItems.RIFTFANG_DAGGER_RUBY.get();
+            for(int mode=0;mode<4;mode++) {
+                var player=player(test,item,offItem,-45);
+                var main=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(item),id);
+                var off=net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(offItem),id);
+                if(mode==1 || mode==3)main=net.bananashelp20.forgermod.augmentation.Augmentations.apply(main,net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD);
+                if(mode==2)off=net.bananashelp20.forgermod.augmentation.Augmentations.apply(off,net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD);
+                if(mode==3)off=new ItemStack(offItem);
+                player.setItemInHand(InteractionHand.MAIN_HAND,main);player.setItemInHand(InteractionHand.OFF_HAND,off);
+                expectDistance(test,player,mode==1 || mode==2?20:10);
+                for(boolean compact:new boolean[]{false,true}) {
+                    var text=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(main,id,1,compact);var white=new StringBuilder();
+                    text.visit((style,part)->{if(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+                    test.assertTrue(text.getString().equals("On activation, teleport 10 blocks in the direction you look. Having this ability on both daggers in dual wield doubles the range.") && white.toString().equals("10 blocks"),"Void Step description does not show the approved base range and doubling rule");
+                }
+            }
+            var missing=player(test,item,offItem,-45);missing.setItemInHand(InteractionHand.MAIN_HAND,net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(item),net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD));missing.setItemInHand(InteractionHand.OFF_HAND,net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(offItem),id));
+            var start=missing.position();test.assertFalse(weapon(missing).activateAbility(missing,missing.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Offhand augment incorrectly grants the missing main-hand ability");test.assertTrue(missing.position().equals(start),"Missing main-hand ability still teleports");
         }
         test.succeed();
     }

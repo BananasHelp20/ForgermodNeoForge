@@ -74,7 +74,10 @@ public class InanisiumWeapon extends SwordItemWithEffect {
     private static boolean stepThroughVoid(ServerPlayer player) {
         Vec3 direction = player.getLookAngle().normalize();
         boolean paired = player.getMainHandItem().getItem() instanceof SwordItemWithEffect actual && actual.isDagger()
-                && player.getOffhandItem().getItem() instanceof InanisiumWeapon offhand && offhand.isDagger();
+                && player.getOffhandItem().getItem() instanceof InanisiumWeapon offhand && offhand.isDagger()
+                && net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player)
+                && Augmentations.level(player.getMainHandItem(),"tooltips.forgermod.ability.void_step")>0
+                && Augmentations.level(player.getOffhandItem(),"tooltips.forgermod.ability.void_step")>0;
         int maxSteps = paired ? VoidStepPath.PAIRED_STEPS : VoidStepPath.STEPS;
         ServerLevel level = player.serverLevel();
         Vec3 start = player.position();

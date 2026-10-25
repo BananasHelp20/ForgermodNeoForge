@@ -45,6 +45,9 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.void_step" -> text(id+".reviewed",
+                    "On activation, teleport %s in the direction you look. Having this ability on both daggers in dual wield doubles the range.",
+                    number(net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath.STEPS*net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath.STEP_DISTANCE)+" blocks");
             case AdditionalAbilities.STATIC_BLADE -> text(id+".reviewed",
                     "Your next swing sends out a piercing echo with %s range for %s, this also works in dual wield.",
                     net.bananashelp20.forgermod.item.custom.abilities.StaticBladeEvents.RANGE+" blocks",number(weaponDamage(stack))+" damage");
