@@ -19,6 +19,42 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class StaticBladeGameTests {
+    private static final class SoundWire extends net.minecraft.network.Connection {
+        final java.util.List<net.minecraft.sounds.SoundEvent> sounds=new java.util.ArrayList<>();
+        SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound)sounds.add(sound.getSound().value());
+        }
+    }
+    @GameTest(template="riftfang_test")
+    public static void soundWaitsForSlashAndPlaysOnceForEachPairedBlade(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var old=player.connection;var wire=new SoundWire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        int checked=0;
+        try{
+            for(var entry:ModItems.ITEMS.getEntries()){
+                if(!(entry.get() instanceof ElectriumWeapon weapon) || !weapon.isDagger())continue;
+                for(boolean dual:new boolean[]{false,true}){
+                    WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));StaticBladeEvents.cancel(player.getUUID());player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                    var stack=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.STATIC_BLADE);
+                    if(dual)stack=Augmentations.apply(stack,Augmentations.DUAL_WIELD);
+                    player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setItemInHand(InteractionHand.OFF_HAND,dual?new ItemStack(entry.get()==ModItems.STATIC_DAGGER_RUBY.get()?ModItems.STATIC_DAGGER.get():ModItems.STATIC_DAGGER_RUBY.get()):ItemStack.EMPTY);
+                    wire.sounds.clear();AbilityTestPackets.use(player,0);test.assertTrue(StaticBladeEvents.active(player) && wire.sounds.isEmpty(),"Static Blade sounds while armed");
+                    test.assertTrue(StaticBladeEvents.release(player),"Main slash cannot release blade");
+                    var single=java.util.List.of(net.minecraft.sounds.SoundEvents.TRIDENT_THROW.value(),net.minecraft.sounds.SoundEvents.FIREWORK_ROCKET_BLAST);
+                    test.assertTrue(wire.sounds.equals(single),"Main flying blade misses or duplicates slash audio");
+                    test.assertFalse(StaticBladeEvents.release(player),"Main blade can be launched twice");
+                    test.assertTrue(StaticBladeEvents.releaseOffhand(player)==dual,"Paired blade release does not match dual-wield state");
+                    var expected=dual?java.util.List.of(single.get(0),single.get(1),single.get(0),single.get(1)):single;
+                    test.assertTrue(wire.sounds.equals(expected),"Offhand blade does not play its own slash sound");
+                    test.assertFalse(StaticBladeEvents.releaseOffhand(player),"Extra offhand release accepted");
+                    for(int tick=0;tick<25;tick++)StaticBladeEvents.tick(new PlayerTickEvent.Post(player));
+                    test.assertTrue(wire.sounds.equals(expected),"Rejected slash or flight ticks repeat audio");checked++;
+                }
+            }
+            test.assertTrue(checked==10,"Skipped single/dual dagger variants");
+        }finally{WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));StaticBladeEvents.cancel(player.getUUID());player.connection=old;player.server.getPlayerList().remove(player);}test.succeed();
+    }
     @GameTest(template="riftfang_test")
     public static void blockedMainEchoKeepsPairedSwingButSwitchCancelsBothFlights(GameTestHelper test) {
         var player=TestPlayers.survival(test);var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));

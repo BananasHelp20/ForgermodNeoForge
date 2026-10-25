@@ -11,7 +11,7 @@ import static net.bananashelp20.forgermod.augmentation.AdditionalAbilities.*;
 public final class WeaponAbilitySounds {
     public record Clip(SoundEvent sound,float volume,float pitch){}
     private static final Set<String> EXISTING=Set.of(EXPLOSION,CINDER_DECOY,EXPLOSIVE_HITS,CRUCIBLE_HOOK,SWING_ATTACK,DEATH_STARE,
-            UPWIND,FLAMING_STOMP,FLAMEBORN,ENDER_SWING,FLAME_BREATH,VOID_PULSE,GRAVITY_WELL,THUNDERCLAP,WINDCHARGE,POCKET_STORM,SKULL_THROW,CHALLENGE_ROAR,
+            STATIC_BLADE,UPWIND,FLAMING_STOMP,FLAMEBORN,ENDER_SWING,FLAME_BREATH,VOID_PULSE,GRAVITY_WELL,THUNDERCLAP,WINDCHARGE,POCKET_STORM,SKULL_THROW,CHALLENGE_ROAR,
             Augmentations.AREA_DISCHARGE,"tooltips.forgermod.ability.strengthened_bones","tooltips.forgermod.ability.void_step","tooltips.forgermod.ability.sudden_presence","tooltips.forgermod.ability.sonic_boom");
     private WeaponAbilitySounds(){}
     private static Clip cue(SoundEvent sound,float volume,float pitch){return new Clip(sound,volume,pitch);}
@@ -34,7 +34,6 @@ public final class WeaponAbilitySounds {
             case DREAM_FEAST -> List.of(cue(SoundEvents.PLAYER_BURP,0.4F,1.2F), cue(SoundEvents.AMETHYST_BLOCK_CHIME,0.5F,1.3F));
             case MAGNETIC_THROW -> List.of(cue(SoundEvents.TRIDENT_THROW,0.55F,1.3F), cue(SoundEvents.AMETHYST_CLUSTER_HIT,0.4F,1.5F));
             case LIVE_WIRE -> List.of(cue(SoundEvents.RESPAWN_ANCHOR_CHARGE,0.45F,1.7F), cue(SoundEvents.CONDUIT_ACTIVATE,0.4F,1.3F));
-            case STATIC_BLADE -> List.of(cue(SoundEvents.TRIDENT_THROW,0.65F,1.7F), cue(SoundEvents.FIREWORK_ROCKET_BLAST,0.3F,1.7F));
             case ALTERNATING_CURRENT -> List.of(cue(SoundEvents.COPPER_BULB_TURN_ON,0.5F,1.5F), cue(SoundEvents.AMETHYST_BLOCK_RESONATE,0.5F,1.6F));
             case DIRECT_CURRENT -> List.of(cue(SoundEvents.BEACON_POWER_SELECT,0.5F,1.5F), cue(SoundEvents.COPPER_BULB_TURN_ON,0.4F,1.6F));
             case STUNNING_PRESENCE -> List.of(cue(SoundEvents.CONDUIT_ACTIVATE,0.6F,1.3F), cue(SoundEvents.TRIDENT_THUNDER,0.25F,1.8F));
@@ -73,6 +72,10 @@ public final class WeaponAbilitySounds {
     public static void grappleCast(ServerPlayer player){
         player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.FISHING_BOBBER_THROW,SoundSource.PLAYERS,.8F,.8F);
         player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.CHAIN_STEP,SoundSource.PLAYERS,.6F,.85F);
+    }
+    public static void staticBladeSlash(ServerPlayer player){
+        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.TRIDENT_THROW.value(),SoundSource.PLAYERS,.65F,1.7F);
+        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.FIREWORK_ROCKET_BLAST,SoundSource.PLAYERS,.3F,1.7F);
     }
     public static boolean covered(ItemStack stack,String id){return id!=null && (EXISTING.contains(id) || !profile(stack,id).isEmpty());}
     public static void play(ServerPlayer player,ItemStack stack,String id){

@@ -64,6 +64,7 @@ public final class StaticBladeEvents {
         blade.start=player.getEyePosition();blade.direction=player.getLookAngle();blade.right=blade.direction.cross(new Vec3(0,1,0));
         if(blade.right.lengthSqr()<.0001) blade.right=new Vec3(1,0,0);else blade.right=blade.right.normalize();
         blade.up=blade.right.cross(blade.direction).normalize();blade.damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        WeaponAbilitySounds.staticBladeSlash(player);
     }
     private static double extent(AABB box,Vec3 axis) {
         return (Math.abs(axis.x)*box.getXsize()+Math.abs(axis.y)*box.getYsize()+Math.abs(axis.z)*box.getZsize())*.5;
