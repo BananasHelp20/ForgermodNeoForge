@@ -454,3 +454,5 @@
 - Gravity Well ender pull and heavy strike: added reversed teleport audio for a successful pull and a deep ender layer at the arrived smash, preserving the native heavy Vertical Strike sound and gameplay. Blocked/out-of-reach/canceled pulls cannot play the smash layer. Gravity Swing is unchanged.
 
 - Static Field lightning boundaries: replaced barrier spark dots with bounded jagged lightning arcs, including closed triangle/quadrilateral edges, while retaining the interior particle shimmer. Applies the same barrier rendering to Direct Current; refresh matches the eight-tick arc lifetime.
+
+- Dungeons current sound mix: replaced synthesized electrical travel audio with three randomized, normal-pitch Minecraft Dungeons Thundering/Thundering Quiver mixes for Alternating Current and live Direct Current/Static Field paths. Preserved five-tick spatial movement and allowed the finite sound tail to finish at the destination.

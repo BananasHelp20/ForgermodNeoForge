@@ -22,7 +22,7 @@ public final class ElectricalTravelSound extends AbstractTickableSoundInstance {
         var mc=Minecraft.getInstance();if(mc.level!=null && mc.level.dimension().location().equals(arc.dimension()))mc.getSoundManager().play(new ElectricalTravelSound(arc,mc.level));
     }
     @Override public void tick(){
-        if(Minecraft.getInstance().level!=level || ++age>ElectricalTravel.TICKS+1){stop();return;}
+        if(Minecraft.getInstance().level!=level || ++age>ElectricalTravel.MAX_SOUND_TICKS){stop();return;}
         move(age);
     }
 }

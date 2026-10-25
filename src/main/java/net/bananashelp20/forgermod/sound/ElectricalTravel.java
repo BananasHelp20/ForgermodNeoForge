@@ -12,6 +12,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 /** One finite moving sound per visible electrical arc; no server tick jobs or persistent entities. */
 public final class ElectricalTravel {
     public static final int TICKS=5;
+    public static final int MAX_SOUND_TICKS=24;
     private ElectricalTravel(){}
     public record Payload(ResourceLocation dimension,Vec3 from,Vec3 to) implements CustomPacketPayload {
         public static final Type<Payload> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"electrical_travel"));

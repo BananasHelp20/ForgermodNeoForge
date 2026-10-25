@@ -8,7 +8,9 @@
   "electric_travel": {
     "subtitle": "subtitles.forgermod.electric_travel",
     "sounds": [
-      "forgermod:ability/electric_travel"
+      "forgermod:ability/electric_travel",
+      "forgermod:ability/electric_travel_2",
+      "forgermod:ability/electric_travel_3"
     ]
   }
 }
