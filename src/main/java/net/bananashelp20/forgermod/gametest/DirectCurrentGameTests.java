@@ -118,9 +118,11 @@ public final class DirectCurrentGameTests {
     }
     private static final class ParticleConnection extends net.minecraft.network.Connection {
         final List<Vec3> sparks=new ArrayList<>();
+        final List<net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket> arcs=new ArrayList<>();
         ParticleConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);}
         @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
             if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle && particle.getParticle()==net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK)sparks.add(new Vec3(particle.getX(),particle.getY(),particle.getZ()));
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle && particle.getParticle() instanceof net.bananashelp20.forgermod.particle.LightningArcParticles.Options)arcs.add(particle);
         }
     }
     @GameTest(template="riftfang_test",batch="static_field_triangle_closure",timeoutTicks=45)
@@ -129,11 +131,11 @@ public final class DirectCurrentGameTests {
         for(int x=-1;x<=10;x++)for(int y=0;y<=9;y++)for(int z=-1;z<=10;z++)test.getLevel().setBlockAndUpdate(net.minecraft.core.BlockPos.containing(origin).offset(x,y,z),Blocks.AIR.defaultBlockState());
         var a=zombie(test,origin);var b=zombie(test,origin.add(8,0,0));var c=zombie(test,origin.add(0,0,8));var edge=zombie(test,origin.add(.3,0,4));var inside=zombie(test,origin.add(2,0,2));var actors=List.of(a,b,c,edge,inside);
         var old=player.connection;var wire=new ParticleConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
-        try{equip(player,4);mark(player,a);DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(wire.sparks.isEmpty() && !WeaponControlLocks.frozen(a),"Single mark already creates a field");
-            mark(player,b);wire.sparks.clear();DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
-            test.assertTrue(edge.getHealth()==200 && inside.getHealth()==200 && wire.sparks.stream().noneMatch(point->point.distanceToSqr(origin.add(0,1,4))<.01),"Two marks form more than a line");
-            mark(player,c);wire.sparks.clear();DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
-            test.assertTrue(wire.sparks.stream().anyMatch(point->point.distanceToSqr(origin.add(0,1,4))<.01),"Third mark does not return current to first anchor");
+        try{equip(player,4);mark(player,a);DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(wire.sparks.isEmpty() && wire.arcs.isEmpty() && !WeaponControlLocks.frozen(a),"Single mark already creates a field");
+            mark(player,b);wire.sparks.clear();wire.arcs.clear();DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+            test.assertTrue(edge.getHealth()==200 && inside.getHealth()==200 && wire.arcs.size()==1 && wire.sparks.stream().noneMatch(point->point.distanceToSqr(origin.add(0,1,4))<.01),"Two marks form more than a line");
+            mark(player,c);wire.sparks.clear();wire.arcs.clear();DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));
+            test.assertTrue(wire.arcs.size()==3 && wire.arcs.stream().anyMatch(packet->{var options=(net.bananashelp20.forgermod.particle.LightningArcParticles.Options)packet.getParticle();var from=new Vec3(packet.getX(),packet.getY(),packet.getZ());return from.distanceToSqr(c.position().add(0,1,0))<.01 && from.add(options.delta()).distanceToSqr(a.position().add(0,1,0))<.01 && options.ticks()==8;}),"Third mark does not close the field with a jagged lightning arc");
             test.assertTrue(wire.sparks.stream().anyMatch(point->Math.abs(point.y-origin.y-.08)<.01 && DirectCurrentEvents.inside(point,List.of(a.position(),b.position(),c.position()))),"Triangle has no interior visual shimmer");
             player.connection=old;
             later(test,20,player,actors,()->{try{DirectCurrentEvents.tick(new PlayerTickEvent.Post(player));test.assertTrue(edge.getHealth()==199 && inside.getHealth()==199 && WeaponControlLocks.frozen(inside),"Closed triangle fails to damage/stun its interior and closing edge");test.succeed();}finally{player.connection=old;cleanup(player,actors);}});

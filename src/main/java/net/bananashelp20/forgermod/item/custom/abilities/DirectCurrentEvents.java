@@ -157,11 +157,10 @@ public final class DirectCurrentEvents {
         }
         if(now>=circuit.nextParticles) {
             for(var barrier:barriers) {
-                var from=barrier.from().add(0,1,0);var delta=barrier.to().subtract(barrier.from());int samples=Math.min(24,Math.max(2,(int)(delta.length()/2)));
-                for(int n=0;n<=samples;n++) {var p=from.add(delta.scale((double)n/samples));circuit.level.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,p.x,p.y,p.z,1,0,.2,0,.01);}
+                net.bananashelp20.forgermod.particle.LightningArcParticles.emit(circuit.level,barrier.from().add(0,1,0),barrier.to().add(0,1,0),-1,8);
             }
             if(field)showInterior(circuit,polygon);
-            circuit.nextParticles=now+10;
+            circuit.nextParticles=now+8;
         }
     }
     @SubscribeEvent

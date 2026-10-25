@@ -452,3 +452,5 @@
 - Chain Lightning traveling energy audio: each successful damaging/visible hop now carries the shared moving electrical zip between its actual targets, including reinforcement passives. Failed chain chances and rejected hop damage emit no travel sound.
 
 - Gravity Well ender pull and heavy strike: added reversed teleport audio for a successful pull and a deep ender layer at the arrived smash, preserving the native heavy Vertical Strike sound and gameplay. Blocked/out-of-reach/canceled pulls cannot play the smash layer. Gravity Swing is unchanged.
+
+- Static Field lightning boundaries: replaced barrier spark dots with bounded jagged lightning arcs, including closed triangle/quadrilateral edges, while retaining the interior particle shimmer. Applies the same barrier rendering to Direct Current; refresh matches the eight-tick arc lifetime.
