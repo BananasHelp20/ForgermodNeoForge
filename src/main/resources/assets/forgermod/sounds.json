@@ -54,5 +54,17 @@
       "forgermod:ability/strengthened_bones_hit",
       "forgermod:ability/strengthened_bones_hit_2"
     ]
+  },
+  "void_pulse_implode": {
+    "subtitle": "subtitles.forgermod.void_pulse_implode",
+    "sounds": [
+      "forgermod:ability/void_pulse_implode"
+    ]
+  },
+  "void_pulse_release": {
+    "subtitle": "subtitles.forgermod.void_pulse_release",
+    "sounds": [
+      "forgermod:ability/void_pulse_release"
+    ]
   }
 }

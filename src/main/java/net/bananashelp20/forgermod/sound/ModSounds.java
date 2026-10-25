@@ -18,6 +18,10 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent,SoundEvent> RINGING_STEEL_HIT=SOUNDS.register("ringing_steel_hit",
             ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"ringing_steel_hit")));
     private ModSounds() {}
+    public static final DeferredHolder<SoundEvent,SoundEvent> VOID_PULSE_IMPLODE=SOUNDS.register("void_pulse_implode",
+            ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"void_pulse_implode")));
+    public static final DeferredHolder<SoundEvent,SoundEvent> VOID_PULSE_RELEASE=SOUNDS.register("void_pulse_release",
+            ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"void_pulse_release")));
     public static final DeferredHolder<SoundEvent,SoundEvent> STRENGTHENED_BONES_HIT=SOUNDS.register("strengthened_bones_hit",
             ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"strengthened_bones_hit")));
     public static final DeferredHolder<SoundEvent,SoundEvent> ROOTING_ROOTS_GROW=SOUNDS.register("rooting_roots_grow",

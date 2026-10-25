@@ -7,7 +7,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -27,7 +26,7 @@ public final class VoidPulseAbility {
             double a=i*Math.PI/32,r=radius*(.8+.2*(i%3)/2.0);
             player.serverLevel().sendParticles(new VoidPulseParticles.Options(false,player.getId()),player.getX()+Math.cos(a)*r,player.getY()+.25+(i%4)*.45,player.getZ()+Math.sin(a)*r,0,0,0,0,1);
         }
-        player.serverLevel().playSound(null,player.blockPosition(),net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_CHARGE.get(),player.getSoundSource(),.8f,1f);return true;
+        player.serverLevel().playSound(null,player.blockPosition(),net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_IMPLODE.get(),player.getSoundSource(),.8f,1f);return true;
     }
     public static boolean active(ServerPlayer player) {
         var pulse=PULSES.get(player.getUUID());if(pulse==null)return false;
@@ -52,7 +51,7 @@ public final class VoidPulseAbility {
             player.serverLevel().sendParticles(new VoidPulseParticles.Options(true,player.getId()),center.x,center.y,center.z,0,velocity.x,velocity.y,velocity.z,1);
         }
         player.serverLevel().sendParticles(ParticleTypes.FLASH,center.x,center.y,center.z,1,0,0,0,0);
-        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.ENDERMAN_TELEPORT,player.getSoundSource(),.8f,1f);
+        player.serverLevel().playSound(null,player.blockPosition(),net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_RELEASE.get(),player.getSoundSource(),.8f,1f);
     }
     @SubscribeEvent public static void tick(PlayerTickEvent.Post event){if(event.getEntity() instanceof ServerPlayer player)active(player);}
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event){cancel(event.getEntity().getUUID());}

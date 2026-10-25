@@ -473,3 +473,6 @@
 
 - Strengthened Bones hit audio: replaced quiet bone placement/skeleton ambient cues with a dedicated full-volume bone-crack impact at the protection-granting killing hit; two custom mono mixes with decaying bone rattles and a subtitle.
 - Strengthened Bones: verified native dagger attacks across all five variants; arming, nonlethal hits, spell kills and already-consumed charges do not replay the protection cue. Hostile melee kill and invulnerability mechanics unchanged.
+
+- Void Pulse End Portal sound pair: replaced Void Pulse teleport audio with a resonant End Portal Frame sound, reversed for the half-second inward charge and forward for the outward release. Added two dedicated sound events, mono clips and subtitles.
+- Void Pulse: preserved particle synchronization, cancellation, targeting, push and cooldown behavior; Gravity Well retains the original shared reversed teleport sound unchanged.
