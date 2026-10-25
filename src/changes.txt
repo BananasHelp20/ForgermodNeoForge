@@ -456,3 +456,5 @@
 - Static Field lightning boundaries: replaced barrier spark dots with bounded jagged lightning arcs, including closed triangle/quadrilateral edges, while retaining the interior particle shimmer. Applies the same barrier rendering to Direct Current; refresh matches the eight-tick arc lifetime.
 
 - Dungeons current sound mix: replaced synthesized electrical travel audio with three randomized, normal-pitch Minecraft Dungeons Thundering/Thundering Quiver mixes for Alternating Current and live Direct Current/Static Field paths. Preserved five-tick spatial movement and allowed the finite sound tail to finish at the destination.
+
+- Dungeons Chain Lightning impact mix: added three heavier real Dungeons charged-arrow/zap/fast-thunder mixes for successful chain hops, distinct from lighter repeating currents. Traveling audio packets now explicitly select the profile; preserved movement, gameplay and finite playback.

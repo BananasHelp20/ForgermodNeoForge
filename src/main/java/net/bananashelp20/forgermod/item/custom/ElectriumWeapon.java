@@ -120,7 +120,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
                 if(player instanceof ServerPlayer serverPlayer)dischargeChargeIfReady(mob,serverPlayer);
                 net.bananashelp20.forgermod.particle.LightningArcParticles.emit(PassiveActors.level(player),
                         previous.getBoundingBox().getCenter(),mob.getBoundingBox().getCenter(),-1,5);
-                net.bananashelp20.forgermod.sound.ElectricalTravel.emit(PassiveActors.level(player),previous.getBoundingBox().getCenter(),mob.getBoundingBox().getCenter());
+                net.bananashelp20.forgermod.sound.ElectricalTravel.emitChain(PassiveActors.level(player),previous.getBoundingBox().getCenter(),mob.getBoundingBox().getCenter());
             } else {
                 mob.invulnerableTime = previousInvulnerableTime;
             }

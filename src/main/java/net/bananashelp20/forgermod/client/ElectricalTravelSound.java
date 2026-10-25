@@ -15,7 +15,7 @@ public final class ElectricalTravelSound extends AbstractTickableSoundInstance {
     private final ClientLevel level;
     private int age;
     private ElectricalTravelSound(ElectricalTravel.Payload arc,ClientLevel level){
-        super(ModSounds.ELECTRIC_TRAVEL.get(),SoundSource.PLAYERS,RandomSource.create());this.arc=arc;this.level=level;volume=.65F;pitch=1;move(0);
+        super(arc.chain()?ModSounds.ELECTRIC_CHAIN.get():ModSounds.ELECTRIC_TRAVEL.get(),SoundSource.PLAYERS,RandomSource.create());this.arc=arc;this.level=level;volume=arc.chain()?.8F:.65F;pitch=1;move(0);
     }
     private void move(int tick){var at=ElectricalTravel.position(arc.from(),arc.to(),tick);x=at.x;y=at.y;z=at.z;}
     public static void play(ElectricalTravel.Payload arc){

@@ -13,5 +13,7 @@ public final class ModSounds {
             ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"void_pulse_charge")));
     public static final DeferredHolder<SoundEvent,SoundEvent> ELECTRIC_TRAVEL=SOUNDS.register("electric_travel",
             ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"electric_travel")));
+    public static final DeferredHolder<SoundEvent,SoundEvent> ELECTRIC_CHAIN=SOUNDS.register("electric_chain",
+            ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"electric_chain")));
     private ModSounds() {}
 }

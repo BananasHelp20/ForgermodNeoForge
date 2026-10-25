@@ -14,16 +14,18 @@ public final class ElectricalTravel {
     public static final int TICKS=5;
     public static final int MAX_SOUND_TICKS=24;
     private ElectricalTravel(){}
-    public record Payload(ResourceLocation dimension,Vec3 from,Vec3 to) implements CustomPacketPayload {
+    public record Payload(ResourceLocation dimension,Vec3 from,Vec3 to,boolean chain) implements CustomPacketPayload {
         public static final Type<Payload> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"electrical_travel"));
         public static final StreamCodec<RegistryFriendlyByteBuf,Payload> CODEC=StreamCodec.of((b,p)->{
-            b.writeResourceLocation(p.dimension());b.writeDouble(p.from.x);b.writeDouble(p.from.y);b.writeDouble(p.from.z);b.writeDouble(p.to.x);b.writeDouble(p.to.y);b.writeDouble(p.to.z);
-        },b->new Payload(b.readResourceLocation(),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),new Vec3(b.readDouble(),b.readDouble(),b.readDouble())));
+            b.writeResourceLocation(p.dimension());b.writeDouble(p.from.x);b.writeDouble(p.from.y);b.writeDouble(p.from.z);b.writeDouble(p.to.x);b.writeDouble(p.to.y);b.writeDouble(p.to.z);b.writeBoolean(p.chain);
+        },b->new Payload(b.readResourceLocation(),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),b.readBoolean()));
         public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     public static Vec3 position(Vec3 from,Vec3 to,int age){return from.lerp(to,Math.clamp(age/(double)TICKS,0,1));}
-    public static void emit(ServerLevel level,Vec3 from,Vec3 to){
-        var packet=new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new Payload(level.dimension().location(),from,to));
+    public static void emit(ServerLevel level,Vec3 from,Vec3 to){emit(level,from,to,false);}
+    public static void emitChain(ServerLevel level,Vec3 from,Vec3 to){emit(level,from,to,true);}
+    private static void emit(ServerLevel level,Vec3 from,Vec3 to,boolean chain){
+        var packet=new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new Payload(level.dimension().location(),from,to,chain));
         var delta=to.subtract(from);double length=delta.lengthSqr();
         for(var player:level.players()){
             double t=length<.000001?0:Math.clamp(player.getEyePosition().subtract(from).dot(delta)/length,0,1);
@@ -32,6 +34,6 @@ public final class ElectricalTravel {
         }
     }
     public static void register(RegisterPayloadHandlersEvent event){
-        event.registrar("1").playToClient(Payload.TYPE,Payload.CODEC,(payload,context)->context.enqueueWork(()->net.bananashelp20.forgermod.client.ElectricalTravelSound.play(payload)));
+        event.registrar("2").playToClient(Payload.TYPE,Payload.CODEC,(payload,context)->context.enqueueWork(()->net.bananashelp20.forgermod.client.ElectricalTravelSound.play(payload)));
     }
 }

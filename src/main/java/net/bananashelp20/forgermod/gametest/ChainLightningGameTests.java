@@ -54,7 +54,9 @@ public class ChainLightningGameTests {
                 player.getRandom().setSeed(seed);method.invoke(weapon,original,player);
                 test.assertTrue(wire.arcs.size()==4,"A successful hop did not send one jagged lightning arc");
                 var sounds=new java.util.ArrayList<>(wire.travel);sounds.addAll(otherWire.travel);
-                test.assertTrue(sounds.size()==4,"Successful chains lack their individual traveling sound, or far observers receive extra paths");
+                test.assertTrue(sounds.size()==4 && sounds.stream().allMatch(net.bananashelp20.forgermod.sound.ElectricalTravel.Payload::chain),"Successful chains lack their individual traveling sound, or far observers receive extra paths");
+                var soundBuffer=new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),test.getLevel().registryAccess());
+                try{net.bananashelp20.forgermod.sound.ElectricalTravel.Payload.CODEC.encode(soundBuffer,sounds.getFirst());test.assertTrue(net.bananashelp20.forgermod.sound.ElectricalTravel.Payload.CODEC.decode(soundBuffer).equals(sounds.getFirst()),"Chain audio profile is lost in packet codec");}finally{soundBuffer.release();}
                 LivingEntity previous=original;
                 for(int hop=0;hop<targets.size();hop++){
                     var expectedFrom=previous.getBoundingBox().getCenter();var expectedTo=targets.get(hop).getBoundingBox().getCenter();

@@ -12,5 +12,13 @@
       "forgermod:ability/electric_travel_2",
       "forgermod:ability/electric_travel_3"
     ]
+  },
+  "electric_chain": {
+    "subtitle": "subtitles.forgermod.electric_travel",
+    "sounds": [
+      "forgermod:ability/electric_chain",
+      "forgermod:ability/electric_chain_2",
+      "forgermod:ability/electric_chain_3"
+    ]
   }
 }
