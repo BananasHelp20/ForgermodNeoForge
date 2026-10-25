@@ -25,6 +25,29 @@ public class AbilitySoundGameTests {
         @Override public void send(Packet<?> packet,PacketSendListener listener,boolean flush){if(packet instanceof ClientboundSoundPacket sound)sounds.add(sound);}
     }
     @GameTest(template="riftfang_test")
+    public static void strengthenedBonesIsSilentUntilHostileMeleeKillGrantsProtection(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        var old=player.connection;var wire=new Wire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        var mobs=new java.util.ArrayList<net.minecraft.world.entity.Mob>();int checked=0;
+        java.util.function.LongSupplier cues=()->wire.sounds.stream().filter(sound->sound.getSound().value()==SoundEvents.BONE_BLOCK_PLACE || sound.getSound().value()==SoundEvents.SKELETON_AMBIENT).count();
+        try{
+            for(var entry:ModItems.ITEMS.getEntries()){
+                if(!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.MorsiumWeapon weapon) || !weapon.isDagger())continue;checked++;
+                WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
+                var stack=Augmentations.apply(new ItemStack(entry.get()),"tooltips.forgermod.ability.strengthened_bones");player.setItemInHand(InteractionHand.MAIN_HAND,stack);wire.sounds.clear();
+                AbilityTestPackets.use(player,0);test.assertTrue(cues.getAsLong()==0,"Strengthened Bones plays sound when armed");
+                for(int hit=0;hit<3;hit++){
+                    var mob=net.minecraft.world.entity.EntityType.ZOMBIE.create(test.getLevel());mobs.add(mob);mob.setNoAi(true);mob.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(mob);
+                    if(hit==0)mob.hurt(player.damageSources().indirectMagic(player,player),100);else mob.hurt(player.damageSources().playerAttack(player),100);
+                    test.assertTrue(cues.getAsLong()==(hit==0?0:2),"Protection sound triggers on wrong kill or repeats");
+                }
+                test.assertTrue(wire.sounds.stream().anyMatch(sound->sound.getSound().value()==SoundEvents.BONE_BLOCK_PLACE) && wire.sounds.stream().anyMatch(sound->sound.getSound().value()==SoundEvents.SKELETON_AMBIENT),"Protection misses a sound layer");
+                player.setHealth(20);player.invulnerableTime=0;player.hurt(player.damageSources().generic(),4);test.assertTrue(player.getHealth()==20,"Audible kill does not grant invulnerability");
+            }
+            test.assertTrue(checked==5,"Skipped Morsium dagger variants");
+        }finally{WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));net.bananashelp20.forgermod.item.custom.MorsiumWeapon.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));for(var mob:mobs)mob.discard();player.connection=old;player.server.getPlayerList().remove(player);}test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void allActiveVariantsAndRanksHaveExistingAudioOrBoundedRegisteredCues(GameTestHelper test){
         Set<String> ids=new HashSet<>();int checked=0;
         for(var entry:ModItems.ITEMS.getEntries()){

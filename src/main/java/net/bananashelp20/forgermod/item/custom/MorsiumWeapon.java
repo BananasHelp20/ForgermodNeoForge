@@ -114,6 +114,8 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                 || !(player.getMainHandItem().getItem() instanceof MorsiumWeapon weapon)
                 || !Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.strengthened_bones")) return;
         if (BONES.consumeKill(player.getUUID(), player.level().getGameTime())) {
+            player.serverLevel().playSound(null,player.blockPosition(),net.minecraft.sounds.SoundEvents.BONE_BLOCK_PLACE,net.minecraft.sounds.SoundSource.PLAYERS,.7F,.7F);
+            player.serverLevel().playSound(null,player.blockPosition(),net.minecraft.sounds.SoundEvents.SKELETON_AMBIENT,net.minecraft.sounds.SoundSource.PLAYERS,.3F,1.2F);
             player.displayClientMessage(Component.translatable("message.forgermod.strengthened_bones.active"), true);
         }
     }

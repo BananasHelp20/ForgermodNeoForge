@@ -430,3 +430,5 @@
 - Windcharge vanilla burst audio: changed the successful launch cue from wind-charge throw to vanilla wind-charge burst at natural pitch, including Skybreaker launch; retained Skybreaker heavy landing audio.
 
 - Ringing Steel resonant hit: empowered melee hits now play a hard metallic clang with a higher ringing tail and ten brief impact sparks at the enemy; damage and weapon durability effects remain unchanged.
+
+- Strengthened Bones protection sound: moved the bone/skeleton cue from arming to the successful qualifying melee kill that grants invulnerability, with no repeated cue on later kills during protection.

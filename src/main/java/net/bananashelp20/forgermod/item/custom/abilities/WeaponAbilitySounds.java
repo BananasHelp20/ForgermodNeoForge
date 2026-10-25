@@ -12,7 +12,7 @@ public final class WeaponAbilitySounds {
     public record Clip(SoundEvent sound,float volume,float pitch){}
     private static final Set<String> EXISTING=Set.of(EXPLOSION,CINDER_DECOY,EXPLOSIVE_HITS,CRUCIBLE_HOOK,SWING_ATTACK,DEATH_STARE,
             UPWIND,FLAMING_STOMP,FLAMEBORN,ENDER_SWING,FLAME_BREATH,VOID_PULSE,GRAVITY_WELL,THUNDERCLAP,WINDCHARGE,POCKET_STORM,SKULL_THROW,CHALLENGE_ROAR,
-            Augmentations.AREA_DISCHARGE,"tooltips.forgermod.ability.void_step","tooltips.forgermod.ability.sudden_presence","tooltips.forgermod.ability.sonic_boom");
+            Augmentations.AREA_DISCHARGE,"tooltips.forgermod.ability.strengthened_bones","tooltips.forgermod.ability.void_step","tooltips.forgermod.ability.sudden_presence","tooltips.forgermod.ability.sonic_boom");
     private WeaponAbilitySounds(){}
     private static Clip cue(SoundEvent sound,float volume,float pitch){return new Clip(sound,volume,pitch);}
     private static Clip cue(Holder<SoundEvent> sound,float volume,float pitch){return cue(sound.value(),volume,pitch);}
@@ -51,7 +51,6 @@ public final class WeaponAbilitySounds {
             case "tooltips.forgermod.ability.sonic_crit" -> List.of(cue(SoundEvents.SCULK_BLOCK_CHARGE,0.6F,0.9F));
             case "tooltips.forgermod.ability.rooting_roots" -> List.of(cue(SoundEvents.AZALEA_PLACE,0.6F,0.65F), cue(SoundEvents.BONE_MEAL_USE,0.5F,0.8F));
             case "tooltips.forgermod.ability.poisoned_vein" -> List.of(cue(SoundEvents.BREWING_STAND_BREW,0.65F,0.75F), cue(SoundEvents.SLIME_SQUISH_SMALL,0.4F,0.8F));
-            case "tooltips.forgermod.ability.strengthened_bones" -> List.of(cue(SoundEvents.BONE_BLOCK_PLACE,0.7F,0.7F), cue(SoundEvents.SKELETON_AMBIENT,0.3F,1.2F));
             case "tooltips.forgermod.ability.storing_anger" -> List.of(cue(SoundEvents.WARDEN_HEARTBEAT,0.65F,0.7F), cue(SoundEvents.BEACON_POWER_SELECT,0.4F,0.65F));
             case "tooltips.forgermod.ability.absolute_nightmare" -> List.of(cue(SoundEvents.AMBIENT_CAVE,0.8F,1.0F));
             case "tooltips.forgermod.ability.lucid_dreaming" -> List.of(cue(SoundEvents.AMETHYST_BLOCK_CHIME,0.65F,1.1F), cue(SoundEvents.ENCHANTMENT_TABLE_USE,0.4F,1.1F));
