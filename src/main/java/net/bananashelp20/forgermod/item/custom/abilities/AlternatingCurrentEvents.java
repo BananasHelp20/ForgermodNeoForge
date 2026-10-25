@@ -60,6 +60,7 @@ public final class AlternatingCurrentEvents {
         }
         var from=link.pulseFirst?link.first:link.second;var to=link.pulseFirst?link.second:link.first;
         net.bananashelp20.forgermod.particle.LightningArcParticles.emit(player.serverLevel(),from.getEyePosition(),to.getEyePosition(),-1,5);
+        net.bananashelp20.forgermod.sound.ElectricalTravel.emit(player.serverLevel(),from.getEyePosition(),to.getEyePosition());
         link.pulseFirst=!link.pulseFirst;
     }
     @SubscribeEvent

@@ -444,3 +444,5 @@
 - Static Blade sound per slash: moved its existing two-layer cue from arming to actual blade launch; the paired offhand launch plays the same cue a second time, even with an unaugmented matching offhand dagger. Rejected releases and ongoing flight remain silent.
 
 - Sonically Charged critical impact: added a punchy Warden sonic-boom sound at the target when a successful critical consumes the charge, synchronized with the existing sonic impact particles. Ordinary/uncharged hits do not play it.
+
+- Alternating Current traveling energy audio: added an original short electrical zip whose positional source moves with each visible current jump. Registered client playback, subtitle and finite world-bound sound lifetime; first marks and blocked jumps stay silent.

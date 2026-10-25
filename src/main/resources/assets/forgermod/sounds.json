@@ -4,5 +4,11 @@
     "sounds": [
       "forgermod:ability/void_pulse_charge"
     ]
+  },
+  "electric_travel": {
+    "subtitle": "subtitles.forgermod.electric_travel",
+    "sounds": [
+      "forgermod:ability/electric_travel"
+    ]
   }
 }

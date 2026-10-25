@@ -56,6 +56,7 @@ public class ForgerMod {
         modEventBus.addListener(net.bananashelp20.forgermod.item.custom.abilities.NecromancerNetwork::register);
         WeaponCooldownAttachments.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.sound.ModSounds.SOUNDS.register(modEventBus);
+        modEventBus.addListener(net.bananashelp20.forgermod.sound.ElectricalTravel::register);
         net.bananashelp20.forgermod.particle.VoidPulseParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.StunningPresenceParticles.TYPES.register(modEventBus);
