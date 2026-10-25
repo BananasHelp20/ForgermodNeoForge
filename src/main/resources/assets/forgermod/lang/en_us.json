@@ -97,6 +97,7 @@
   "tooltips.forgermod.ability.anger_of_zeus.name": "Anger of Zeus",
   "tooltips.forgermod.ability.lucid_dreaming.name": "Lucid Dreaming",
   "tooltips.forgermod.ability.absolute_nightmare.name": "Absolute Nightmare",
+  "tooltips.forgermod.ability.sudden_presence.reviewed": "Teleport behind the nearest hostile mob within %s",
   "tooltips.forgermod.ability.sudden_presence.name": "Sudden Presence",
   "tooltips.forgermod.ability.void_step.name": "Stepping Through the Void",
   "tooltips.forgermod.ability.pyromaniac.name": "Pyromaniac",

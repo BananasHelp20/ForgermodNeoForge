@@ -13,6 +13,7 @@ public final class ReviewedRanks {
             case "tooltips.forgermod.ability.delusion" -> 5;
             case "tooltips.forgermod.ability.deep_wound" -> 3;
             case "tooltips.forgermod.ability.thunderclap" -> 4;
+            case "tooltips.forgermod.ability.sudden_presence" -> 7;
             default -> -1;
         };
     }
@@ -32,6 +33,7 @@ public final class ReviewedRanks {
         };
     }
     public static int at(int rank,int... values) {return values[Math.clamp(rank-1,0,values.length-1)];}
+    public static int suddenPresenceRange(int rank) {return 10+5*(Math.clamp(rank,1,7)-1);}
     public static int roarRange(int rank) {return at(rank,16,20,24,28,35,40,45,50);}
     public static int grappleRange(int rank) {return at(rank,0,0,0,0,25,30,35,40);}
     public static double blastProjectileMultiplier(int rank){return 1+.15*(Math.clamp(rank,5,8)-5);}

@@ -121,6 +121,7 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats,"radius",ReviewedRanks.stormRadius(rank),"blocks");
                 seconds(stats,"duration",ReviewedRanks.stormTicks(rank)+jadeTicks);
             }
+            case "tooltips.forgermod.ability.sudden_presence" -> numeric(stats,"range",ReviewedRanks.suddenPresenceRange(rank),"blocks");
             case AdditionalAbilities.DISPLACE -> {
                 if(rank>=4)text(stats,"range","unlimited","visible_range");
                 else numeric(stats,"range",10,"blocks");

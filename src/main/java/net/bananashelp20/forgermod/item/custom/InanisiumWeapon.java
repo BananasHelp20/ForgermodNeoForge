@@ -66,7 +66,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         if (!isDagger() || !player.isAlive() || player.isPassenger()) return false;
         return switch (slot) {
             case PRIMARY -> stepThroughVoid(player);
-            case SECONDARY -> suddenPresence(player);
+            case SECONDARY -> suddenPresence(player, stack);
             case TERTIARY -> false;
         };
     }
@@ -183,11 +183,13 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         return true;
     }
 
-    private static boolean suddenPresence(ServerPlayer player) {
+    private static boolean suddenPresence(ServerPlayer player, ItemStack stack) {
+        int radius=net.bananashelp20.forgermod.augmentation.ReviewedRanks.suddenPresenceRange(
+                Augmentations.level(stack,"tooltips.forgermod.ability.sudden_presence"));
         List<Mob> targets = player.serverLevel().getEntitiesOfClass(Mob.class,
-                        player.getBoundingBox().inflate(20),
+                        player.getBoundingBox().inflate(radius),
                         mob -> mob instanceof Enemy && mob.isAlive()
-                                && player.distanceToSqr(mob) <= 400.0);
+                                && player.distanceToSqr(mob) <= (double)radius*radius);
         targets.sort(Comparator.comparingDouble(player::distanceToSqr));
         for (Mob target : targets) {
             Vec3 look = target.getLookAngle();
