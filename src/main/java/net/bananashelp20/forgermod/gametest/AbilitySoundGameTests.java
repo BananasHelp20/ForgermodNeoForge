@@ -25,6 +25,28 @@ public class AbilitySoundGameTests {
         @Override public void send(Packet<?> packet,PacketSendListener listener,boolean flush){if(packet instanceof ClientboundSoundPacket sound)sounds.add(sound);}
     }
     @GameTest(template="riftfang_test")
+    public static void sonicallyChargedNativeCriticalPlaysOneImpactAfterAnOrdinaryHit(GameTestHelper test)throws Exception{
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries()){
+            if(!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.PulsiteWeapon weapon) || !weapon.isDagger())continue;checked++;
+            var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+            var old=player.connection;var wire=new Wire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+            var target=net.minecraft.world.entity.EntityType.COW.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);target.setPos(player.position().add(0,0,2));target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);test.getLevel().addFreshEntity(target);
+            java.util.function.LongSupplier impacts=()->wire.sounds.stream().filter(sound->sound.getSound().value()==SoundEvents.WARDEN_SONIC_BOOM).count();
+            try{
+                var stack=Augmentations.apply(new ItemStack(entry.get()),"tooltips.forgermod.ability.sonic_crit");player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
+                AbilityTestPackets.use(player,0);test.assertTrue(impacts.getAsLong()==0,"Arming plays charged-hit sound");
+                player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);player.attack(target);
+                test.assertTrue(weapon.isAbilityActive(player,net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.PRIMARY) && impacts.getAsLong()==0,"Ordinary hit consumes or sounds charged crit");
+                for(int tick=0;tick<60;tick++)player.doTick();target.invulnerableTime=0;player.setOnGround(false);player.fallDistance=1;player.attack(target);
+                test.assertTrue(!weapon.isAbilityActive(player,net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.PRIMARY) && impacts.getAsLong()==1,"Native charged critical misses or duplicates impact sound");
+                for(int tick=0;tick<60;tick++)player.doTick();target.invulnerableTime=0;player.setOnGround(false);player.fallDistance=1;player.attack(target);
+                test.assertTrue(impacts.getAsLong()==1,"Uncharged critical replays sonic impact");
+            }finally{WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));net.bananashelp20.forgermod.item.custom.PulsiteWeapon.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));DaggerCriticalEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.connection=old;player.server.getPlayerList().remove(player);}
+        }
+        test.assertTrue(checked==5,"Skipped Pulsite dagger variants");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void strengthenedBonesIsSilentUntilHostileMeleeKillGrantsProtection(GameTestHelper test)throws Exception{
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
         var old=player.connection;var wire=new Wire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));

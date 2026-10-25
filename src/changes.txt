@@ -442,3 +442,5 @@
 - Pocket Storm impact-only sound: added native ability-key/packet regression coverage across all five axes to verify silent arming, no sound on unrelated damage/cancellation, and exactly one sound on the empowered melee hit. Existing runtime already follows this behavior.
 
 - Static Blade sound per slash: moved its existing two-layer cue from arming to actual blade launch; the paired offhand launch plays the same cue a second time, even with an unaugmented matching offhand dagger. Rejected releases and ongoing flight remain silent.
+
+- Sonically Charged critical impact: added a punchy Warden sonic-boom sound at the target when a successful critical consumes the charge, synchronized with the existing sonic impact particles. Ordinary/uncharged hits do not play it.

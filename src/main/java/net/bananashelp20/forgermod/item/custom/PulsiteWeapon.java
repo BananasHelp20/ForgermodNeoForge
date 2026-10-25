@@ -80,6 +80,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
                 && Augmentations.ids(player.getMainHandItem(), true).contains("tooltips.forgermod.ability.sonic_crit")
                 && DaggerCriticalEvents.consume(player, target, player.getMainHandItem())
                 && SONIC_CRIT.consume(player.getUUID())) {
+            player.serverLevel().playSound(null,target.blockPosition(),net.minecraft.sounds.SoundEvents.WARDEN_SONIC_BOOM,net.minecraft.sounds.SoundSource.PLAYERS,.9F,1.35F);
             player.serverLevel().sendParticles(ParticleTypes.SONIC_BOOM,
                     target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
                     1, 0, 0, 0, 0);
