@@ -51,19 +51,27 @@ public class AbilitySoundGameTests {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
         var old=player.connection;var wire=new Wire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
         var mobs=new java.util.ArrayList<net.minecraft.world.entity.Mob>();int checked=0;
-        java.util.function.LongSupplier cues=()->wire.sounds.stream().filter(sound->sound.getSound().value()==SoundEvents.BONE_BLOCK_PLACE || sound.getSound().value()==SoundEvents.SKELETON_AMBIENT).count();
+        java.util.function.LongSupplier cues=()->wire.sounds.stream().filter(sound->sound.getSound().value()==net.bananashelp20.forgermod.sound.ModSounds.STRENGTHENED_BONES_HIT.get()).count();
         try{
             for(var entry:ModItems.ITEMS.getEntries()){
                 if(!(entry.get() instanceof net.bananashelp20.forgermod.item.custom.MorsiumWeapon weapon) || !weapon.isDagger())continue;checked++;
                 WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));
                 var stack=Augmentations.apply(new ItemStack(entry.get()),"tooltips.forgermod.ability.strengthened_bones");player.setItemInHand(InteractionHand.MAIN_HAND,stack);wire.sounds.clear();
                 AbilityTestPackets.use(player,0);test.assertTrue(cues.getAsLong()==0,"Strengthened Bones plays sound when armed");
-                for(int hit=0;hit<3;hit++){
-                    var mob=net.minecraft.world.entity.EntityType.ZOMBIE.create(test.getLevel());mobs.add(mob);mob.setNoAi(true);mob.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(mob);
-                    if(hit==0)mob.hurt(player.damageSources().indirectMagic(player,player),100);else mob.hurt(player.damageSources().playerAttack(player),100);
-                    test.assertTrue(cues.getAsLong()==(hit==0?0:2),"Protection sound triggers on wrong kill or repeats");
+                for(int hit=0;hit<4;hit++){
+                    var mob=net.minecraft.world.entity.EntityType.ZOMBIE.create(test.getLevel());mobs.add(mob);mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(mob);
+                    if(hit==0)mob.hurt(player.damageSources().indirectMagic(player,player),100);
+                    else {
+                        mob.setHealth(hit==1?20:1);
+                        for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);player.attack(mob);
+                        test.assertTrue(mob.isAlive()==(hit==1),"Native attack fixture failed to produce the intended surviving/killing hit");
+                    }
+                    test.assertTrue(cues.getAsLong()==(hit<2?0:1),"Protection sound triggers on wrong hit or repeats");
+                    if(hit==2) {
+                        var cue=wire.sounds.stream().filter(sound->sound.getSound().value()==net.bananashelp20.forgermod.sound.ModSounds.STRENGTHENED_BONES_HIT.get()).findFirst().orElseThrow();
+                        test.assertTrue(cue.getSource()==SoundSource.PLAYERS && cue.getVolume()==1F && cue.getPitch()==1F && Math.abs(cue.getZ()-(double)(float)mob.getZ())<.25,"Protection impact is too quiet or not placed at the killing hit");
+                    }
                 }
-                test.assertTrue(wire.sounds.stream().anyMatch(sound->sound.getSound().value()==SoundEvents.BONE_BLOCK_PLACE) && wire.sounds.stream().anyMatch(sound->sound.getSound().value()==SoundEvents.SKELETON_AMBIENT),"Protection misses a sound layer");
                 player.setHealth(20);player.invulnerableTime=0;player.hurt(player.damageSources().generic(),4);test.assertTrue(player.getHealth()==20,"Audible kill does not grant invulnerability");
             }
             test.assertTrue(checked==5,"Skipped Morsium dagger variants");

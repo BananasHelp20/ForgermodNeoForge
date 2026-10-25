@@ -47,5 +47,12 @@
       "forgermod:ability/rooting_roots_retreat",
       "forgermod:ability/rooting_roots_retreat_2"
     ]
+  },
+  "strengthened_bones_hit": {
+    "subtitle": "subtitles.forgermod.strengthened_bones_hit",
+    "sounds": [
+      "forgermod:ability/strengthened_bones_hit",
+      "forgermod:ability/strengthened_bones_hit_2"
+    ]
   }
 }

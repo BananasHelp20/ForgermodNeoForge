@@ -992,5 +992,6 @@
   "commands.forgermod.augment.updated.multiple": "Updated %s on %s targets.",
   "subtitles.forgermod.rooting_roots_grow": "Roots erupt and entwine",
   "subtitles.forgermod.rooting_roots_hold": "Roots creak and tighten",
-  "subtitles.forgermod.rooting_roots_retreat": "Roots withdraw into earth"
+  "subtitles.forgermod.rooting_roots_retreat": "Roots withdraw into earth",
+  "subtitles.forgermod.strengthened_bones_hit": "Bones crack and harden"
 }
