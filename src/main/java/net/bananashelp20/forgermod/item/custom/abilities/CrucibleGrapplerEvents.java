@@ -33,7 +33,7 @@ public final class CrucibleGrapplerEvents {
         // Validate the new anchor completely before replacing any live grapple or rope.
         var destination=hit.getLocation().add(Vec3.atLowerCornerOf(hit.getDirection().getNormal()).scale(.8)).add(0,-player.getBbHeight()*.5,0);
         GRAPPLES.put(player.getUUID(),new Grapple(stack,player.getInventory().selected,player.serverLevel(),hit.getBlockPos().immutable(),destination,autoRelease));
-        CrucibleHookRope.beginBlock(player,hit.getLocation());tick(player);return true;
+        CrucibleHookRope.beginBlock(player,hit.getLocation());WeaponAbilitySounds.grappleCast(player);tick(player);return true;
     }
     public static boolean active(ServerPlayer player){
         var grapple=GRAPPLES.get(player.getUUID());if(grapple==null)return false;

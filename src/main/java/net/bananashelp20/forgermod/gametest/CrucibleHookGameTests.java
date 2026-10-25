@@ -26,8 +26,10 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 public class CrucibleHookGameTests {
     private static final class RopeConnection extends net.minecraft.network.Connection {
         final java.util.List<net.bananashelp20.forgermod.item.custom.abilities.CrucibleHookRope.Payload> ropes=new java.util.ArrayList<>();
+        final java.util.List<net.minecraft.sounds.SoundEvent> sounds=new java.util.ArrayList<>();
         RopeConnection(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);net.neoforged.neoforge.network.registration.ChannelAttributes.getOrCreateAdHocChannels(this).add(net.bananashelp20.forgermod.item.custom.abilities.CrucibleHookRope.Payload.TYPE.id());}
         @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush) {
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound && java.util.List.of(net.minecraft.sounds.SoundEvents.FISHING_BOBBER_THROW,net.minecraft.sounds.SoundEvents.CHAIN_STEP,net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY,net.minecraft.sounds.SoundEvents.ANVIL_LAND,net.minecraft.sounds.SoundEvents.FIRECHARGE_USE).contains(sound.getSound().value()))sounds.add(sound.getSound().value());
             if(packet instanceof net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket custom && custom.payload() instanceof net.bananashelp20.forgermod.item.custom.abilities.CrucibleHookRope.Payload rope)ropes.add(rope);
         }
     }
@@ -95,20 +97,27 @@ public class CrucibleHookGameTests {
         for(int x=-3;x<=10;x++)for(int y=0;y<=4;y++)for(int z=-3;z<=12;z++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
         var stack=Augmentations.apply(new ItemStack(ModItems.MOLTEN_AXE.get()),RecommendedAbilities.CRUCIBLE_HOOK);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
         var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.setHealth(200);mob.setPos(start.add(0,0,2.8));test.getLevel().addFreshEntity(mob);
+        var old=player.connection;var wire=new RopeConnection();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
         try {
             test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CRUCIBLE_HOOK),"Cannot start close-range hook");
+            var castSounds=java.util.List.of(net.minecraft.sounds.SoundEvents.FISHING_BOBBER_THROW,net.minecraft.sounds.SoundEvents.CHAIN_STEP);
+            test.assertTrue(wire.sounds.equals(castSounds),"Hook cast is silent or plays smash before arrival");
             test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && mob.getRemainingFireTicks()<=0 && stack.getDamageValue()==0,"Entering ordinary melee reach smashes before arriving");
             player.setYRot(90);player.setXRot(-85);player.setPos(start.add(.75,0,0));mob.setPos(start.add(0,0,2.6));
             CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
             test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && Math.abs(mob.getDeltaMovement().x)<.0001 && mob.getDeltaMovement().z<0,"Turning/moving shifts the captured point or smashes early");
             player.setPos(start.add(8,0,0));mob.setPos(destination);mob.setDeltaMovement(1,1,1);CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
             test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && mob.getDeltaMovement().lengthSqr()==0,"Arrival smashes outside actual reach or retains incoming pull velocity");
+            test.assertTrue(wire.sounds.equals(castSounds),"Pull or out-of-reach arrival plays impact sound");
             player.setPos(start.add(.75,0,0));CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
             float expected=200-(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*1.25F;
             test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(mob.getHealth()-expected)<.001 && mob.getRemainingFireTicks()==60 && stack.getDamageValue()==1,"Arrived target does not receive exactly one smash");
+            var allSounds=java.util.List.of(net.minecraft.sounds.SoundEvents.FISHING_BOBBER_THROW,net.minecraft.sounds.SoundEvents.CHAIN_STEP,net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY,net.minecraft.sounds.SoundEvents.ANVIL_LAND,net.minecraft.sounds.SoundEvents.FIRECHARGE_USE);
+            test.assertTrue(wire.sounds.equals(allSounds),"Arrived smash does not follow grappling with a fiery Vertical Strike");
             CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));test.assertTrue(Math.abs(mob.getHealth()-expected)<.001 && stack.getDamageValue()==1,"Arrival repeats the smash");
+            test.assertTrue(wire.sounds.equals(allSounds),"Hook impact audio repeats after smash");
             test.succeed();
-        } finally {CrucibleHookEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
+        } finally {CrucibleHookEvents.cancel(player.getUUID());mob.discard();player.connection=old;player.server.getPlayerList().remove(player);}
     }
     @GameTest(template="riftfang_test")
     public static void passiveTeamAlliesAndOwnedPetsReceiveTheWholeHookAndSmash(GameTestHelper test) {

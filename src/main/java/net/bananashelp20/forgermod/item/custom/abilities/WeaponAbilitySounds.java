@@ -66,6 +66,14 @@ public final class WeaponAbilitySounds {
         level.playSound(null,center,SoundEvents.MACE_SMASH_GROUND_HEAVY,source,1.0F,.75F);
         level.playSound(null,center,SoundEvents.ANVIL_LAND,source,.45F,.65F);
     }
+    public static void fieryVerticalStrikeImpact(net.minecraft.server.level.ServerLevel level,net.minecraft.core.BlockPos center,SoundSource source){
+        verticalStrikeImpact(level,center,source);
+        level.playSound(null,center,SoundEvents.FIRECHARGE_USE,source,.9F,.75F);
+    }
+    public static void grappleCast(ServerPlayer player){
+        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.FISHING_BOBBER_THROW,SoundSource.PLAYERS,.8F,.8F);
+        player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.CHAIN_STEP,SoundSource.PLAYERS,.6F,.85F);
+    }
     public static boolean covered(ItemStack stack,String id){return id!=null && (EXISTING.contains(id) || !profile(stack,id).isEmpty());}
     public static void play(ServerPlayer player,ItemStack stack,String id){
         for(var cue:profile(stack,id))player.serverLevel().playSound(null,player.blockPosition(),cue.sound(),SoundSource.PLAYERS,cue.volume(),cue.pitch());

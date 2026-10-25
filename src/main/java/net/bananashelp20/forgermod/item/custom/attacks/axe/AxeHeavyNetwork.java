@@ -11,7 +11,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -248,8 +247,8 @@ public final class AxeHeavyNetwork {
                         5, 0.25, 0.05, 0.25, 0.02);
             }
         }
-        net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilitySounds.verticalStrikeImpact(level,center,SoundSource.PLAYERS);
-        if(slam.flaming())level.playSound(null,center,SoundEvents.FIRECHARGE_USE,SoundSource.PLAYERS,.9F,.75F);
+        if(slam.flaming())net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilitySounds.fieryVerticalStrikeImpact(level,center,SoundSource.PLAYERS);
+        else net.bananashelp20.forgermod.item.custom.abilities.WeaponAbilitySounds.verticalStrikeImpact(level,center,SoundSource.PLAYERS);
     }
 
     @SubscribeEvent

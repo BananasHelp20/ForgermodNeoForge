@@ -6,7 +6,6 @@ import net.bananashelp20.forgermod.augmentation.RecommendedAbilities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -59,6 +58,7 @@ public final class CrucibleHookEvents {
         HOOKS.put(player.getUUID(),new Hook(stack,player.getInventory().selected,target,player.level().getGameTime()+40,rank,
                 player.serverLevel(),destination));
         CrucibleHookRope.begin(player,target,player.level().getGameTime()+40);
+        WeaponAbilitySounds.grappleCast(player);
         advance(player); return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -92,7 +92,7 @@ public final class CrucibleHookEvents {
                 hook.stack().getItem().postHurtEnemy(hook.stack(),target,player);
             } else target.invulnerableTime=immunity;
             player.serverLevel().sendParticles(ParticleTypes.CRIT,target.getX(),target.getY()+.3,target.getZ(),24,.6,.2,.6,.1);
-            player.serverLevel().playSound(null,target.blockPosition(),SoundEvents.IRON_GOLEM_ATTACK,SoundSource.PLAYERS,1,.7F);
+            WeaponAbilitySounds.fieryVerticalStrikeImpact(player.serverLevel(),target.blockPosition(),SoundSource.PLAYERS);
             return;
         }
         target.setDeltaMovement(direction.normalize().scale(Math.min(direction.length(),.7+.1*hook.rank())));
