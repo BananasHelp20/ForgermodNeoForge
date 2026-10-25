@@ -1,6 +1,5 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 import net.bananashelp20.forgermod.augmentation.*;
-import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.*;
@@ -19,10 +18,7 @@ public final class WeaponAbilitySounds {
     private static Clip cue(Holder<SoundEvent> sound,float volume,float pitch){return cue(sound.value(),volume,pitch);}
     public static List<Clip> profile(ItemStack stack,String id){
         if(id==null)return List.of();
-        if(WINDCHARGE.equals(id)){
-            if(stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe() && Augmentations.level(stack,id)>=4)return List.of(); // Skybreaker already has its heavy landing sound.
-            return List.of(cue(SoundEvents.WIND_CHARGE_THROW,.7F,1.2F));
-        }
+        if(WINDCHARGE.equals(id))return List.of(cue(SoundEvents.WIND_CHARGE_BURST,.9F,1.0F));
         return switch(id){
             case STRONG_ARM -> List.of(cue(SoundEvents.ARMOR_EQUIP_IRON,0.6F,0.7F), cue(SoundEvents.PLAYER_ATTACK_STRONG,0.45F,0.7F));
             case DISTANCE_TAX -> List.of(cue(SoundEvents.AMETHYST_BLOCK_CHIME,.5F,.65F));
