@@ -19,6 +19,25 @@ public class ElectricalTravelGameTests {
         @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){if(packet instanceof net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket custom && custom.payload() instanceof ElectricalTravel.Payload arc)arcs.add(arc);}
     }
     private static void aim(net.minecraft.server.level.ServerPlayer player,LivingEntity target){var d=target.getEyePosition().subtract(player.getEyePosition());player.setYRot((float)-Math.toDegrees(Math.atan2(d.x,d.z)));player.setXRot((float)-Math.toDegrees(Math.atan2(d.y,Math.hypot(d.x,d.z))));}
+    @GameTest(template="riftfang_test",timeoutTicks=50)
+    public static void liveCircuitsSoundAlongEveryEdgeWithoutTickSpam(GameTestHelper test){
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());var origin=player.position();
+        for(int x=-2;x<=7;x++)for(int y=0;y<=5;y++)for(int z=0;z<=11;z++)test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
+        var targets=new java.util.ArrayList<net.minecraft.world.entity.animal.Cow>();for(var offset:java.util.List.of(new Vec3(0,0,4),new Vec3(4,0,4),new Vec3(4,0,8),new Vec3(0,0,8))){var mob=EntityType.COW.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(origin.add(offset));test.getLevel().addFreshEntity(mob);targets.add(mob);}
+        var old=player.connection;var wire=new Wire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
+        Runnable cleanup=()->{net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.cancel(player.getUUID());for(var mob:targets)mob.discard();player.connection=old;player.server.getPlayerList().remove(player);};
+        try{
+            for(int rank:new int[]{1,4}){
+                net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.cancel(player.getUUID());wire.arcs.clear();player.setItemInHand(InteractionHand.MAIN_HAND,Augmentations.setLevel(new ItemStack(ModItems.CLAYMORE_OF_THUNDER.get()),AdditionalAbilities.DIRECT_CURRENT,rank));
+                for(int i=0;i<2;i++){var mob=targets.get(i);player.setPos(mob.position().add(0,0,-2));aim(player,mob);test.assertTrue(net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.activate(player,player.getMainHandItem()),"Cannot form current");net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));if(i==0)test.assertTrue(wire.arcs.isEmpty(),"Single mark plays traveling circuit");}
+                test.assertTrue(wire.arcs.size()==1 && wire.arcs.getFirst().from().equals(targets.get(0).position().add(0,1,0)) && wire.arcs.getFirst().to().equals(targets.get(1).position().add(0,1,0)),"Two marks lack their single directed current sound");
+                for(int i=0;i<10;i++)net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(wire.arcs.size()==1,"Current sound repeats every tick");
+                if(rank==4)for(int i=2;i<4;i++){var mob=targets.get(i);player.setPos(mob.position().add(0,0,-2));aim(player,mob);test.assertTrue(net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.activate(player,player.getMainHandItem()),"Cannot add Static Field corner");wire.arcs.clear();net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(wire.arcs.size()==i+1,"Closed field misses a traveling edge");}
+            }
+            test.runAfterDelay(19,()->test.assertTrue(wire.arcs.size()==4,"Circuit audio repeats too soon"));
+            test.runAfterDelay(20,()->{try{net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(wire.arcs.size()==8,"Live field does not refresh its current audio once per second");net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.cancel(player.getUUID());net.bananashelp20.forgermod.item.custom.abilities.DirectCurrentEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(wire.arcs.size()==8,"Canceled field emits audio");test.succeed();}finally{cleanup.run();}});
+        }catch(RuntimeException|Error e){cleanup.run();throw e;}
+    }
     @GameTest(template="riftfang_test",timeoutTicks=60)
     public static void alternatingJumpAudioReversesDirectionAndStopsAtWalls(GameTestHelper test){
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());var origin=player.position();

@@ -446,3 +446,5 @@
 - Sonically Charged critical impact: added a punchy Warden sonic-boom sound at the target when a successful critical consumes the charge, synchronized with the existing sonic impact particles. Ordinary/uncharged hits do not play it.
 
 - Alternating Current traveling energy audio: added an original short electrical zip whose positional source moves with each visible current jump. Registered client playback, subtitle and finite world-bound sound lifetime; first marks and blocked jumps stay silent.
+
+- Direct Current and Static Field energy audio: visible live edges now carry a moving electrical zip on connection changes and at most once per second per edge, including the closing triangle/quadrilateral edge. Single marks, obstructed edges and canceled circuits stay silent.

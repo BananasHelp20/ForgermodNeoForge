@@ -26,7 +26,7 @@ public final class DirectCurrentEvents {
             ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"direct_current"));
     private static final String FIELD_LOCK = AdditionalAbilities.DIRECT_CURRENT + ".field";
     private static final class Circuit {
-        final ItemStack stack;final int selected,rank;final ServerLevel level;long expires,nextField,nextParticles;
+        final ItemStack stack;final int selected,rank;final ServerLevel level;long expires,nextField,nextParticles,nextAudio;
         boolean connected;
         final List<LivingEntity> anchors=new ArrayList<>();final Map<UUID,Vec3> previous=new HashMap<>();final Map<UUID,Long> shockReady=new HashMap<>();
         Circuit(ServerPlayer player,ItemStack stack) {this.stack=stack;selected=player.getInventory().selected;rank=Augmentations.level(stack,AdditionalAbilities.DIRECT_CURRENT);level=player.serverLevel();expires=level.getGameTime()+600;}
@@ -47,7 +47,7 @@ public final class DirectCurrentEvents {
         long now=player.level().getGameTime();
         if(!circuit.connected){circuit.connected=true;circuit.expires=now+400;circuit.nextField=now+20;}
         for(var anchor:circuit.anchors)WeaponControlLocks.acquire(anchor,player.getUUID(),AdditionalAbilities.DIRECT_CURRENT,(int)(circuit.expires-now));
-        circuit.nextParticles=now;seed(circuit);return true;
+        circuit.nextParticles=now;circuit.nextAudio=now;seed(circuit);return true;
     }
     private static boolean tooFar(Circuit circuit) {
         for(int i=0;i<circuit.anchors.size();i++) for(int j=i+1;j<circuit.anchors.size();j++) if(circuit.anchors.get(i).distanceToSqr(circuit.anchors.get(j))>2500) return true;
@@ -151,6 +151,10 @@ public final class DirectCurrentEvents {
             circuit.previous.put(id,entity.position());
         }
         circuit.previous.keySet().retainAll(seen);circuit.shockReady.keySet().retainAll(seen);if(fieldPulse) circuit.nextField=now+20;
+        if(now>=circuit.nextAudio){
+            for(var barrier:barriers)net.bananashelp20.forgermod.sound.ElectricalTravel.emit(circuit.level,barrier.from().add(0,1,0),barrier.to().add(0,1,0));
+            circuit.nextAudio=now+20;
+        }
         if(now>=circuit.nextParticles) {
             for(var barrier:barriers) {
                 var from=barrier.from().add(0,1,0);var delta=barrier.to().subtract(barrier.from());int samples=Math.min(24,Math.max(2,(int)(delta.length()/2)));
