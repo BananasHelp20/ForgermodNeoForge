@@ -224,6 +224,8 @@ public final class AugmentUpgradeDescriptions {
             case AdditionalAbilities.VACUUM_BURST -> numeric(stats, "radius", 4 + 2 * rank, "blocks");
             case AdditionalAbilities.FEATHER_SHELTER -> numeric(stats, "radius", 2 + 2 * rank, "blocks");
             case AdditionalAbilities.POCKET_STORM -> text(stats, "knockback", .8 + .2 * rank, "stronger_launch");
+            case AdditionalAbilities.RINGING_STEEL -> numeric(stats,"weapon_wear",
+                    net.bananashelp20.forgermod.item.custom.abilities.RingingSteelEvents.durabilityDamage(rank),"durability");
             case AdditionalAbilities.GHOSTWALK -> {
                 seconds(stats, "duration", 200 + 40 * Math.max(0, rank - 4) + jadeTicks);
                 if (rank >= 4) numeric(stats, "opening_hit", 2, "weapon_damage");

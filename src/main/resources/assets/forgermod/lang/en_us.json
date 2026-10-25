@@ -727,8 +727,8 @@
   "death.attack.forgermod.aftershock": "%1$s was silenced by an aftershock from %2$s",
   "death.attack.forgermod.aftershock.player": "%1$s was silenced by an aftershock from %2$s",
   "tooltips.forgermod.ability.ringing_steel.name": "Ringing Steel",
-  "tooltips.forgermod.ability.ringing_steel": "Next melee hit: 15 durability damage to the target's held weapon.",
-  "tooltips.forgermod.ability.ringing_steel.card": "Next hit: 15 durability damage to the target's weapon.",
+  "tooltips.forgermod.ability.ringing_steel": "Your next hit will damage the enemy's held weapon(s) for 15 durability.",
+  "tooltips.forgermod.ability.ringing_steel.card": "Your next hit will damage the enemy's held weapon(s) for 15 durability.",
   "tooltips.forgermod.passive.stone_song.name": "Stone Song",
   "tooltips.forgermod.passive.stone_song": "Gain 2 armor below Y=0.",
   "tooltips.forgermod.passive.stone_song.card": "Gain 2 armor below Y=0.",
@@ -1014,5 +1014,8 @@
   "forgermod.configuration.explosionTerrain.tooltip": "Allow Explosion and Blazing Blast to break blocks and start fires. Disabled by default.",
   "augmentation.forgermod.preview.value.seconds_long": "%s seconds",
   "tooltips.forgermod.ability.null_receipt.reviewed": "Absorb knockback for the next %s, then release it with the next vertical strike.",
-  "tooltips.forgermod.ability.poisoned_vein.reviewed": "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives %s for %s."
+  "tooltips.forgermod.ability.poisoned_vein.reviewed": "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives %s for %s.",
+  "tooltips.forgermod.ability.ringing_steel.reviewed": "Your next hit will damage the enemy's held weapon(s) for %s.",
+  "augmentation.forgermod.preview.value.durability": "%s durability",
+  "augmentation.forgermod.preview.weapon_wear": "Durability damage: %s."
 }

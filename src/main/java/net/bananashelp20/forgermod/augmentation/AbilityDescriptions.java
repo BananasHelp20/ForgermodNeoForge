@@ -45,6 +45,8 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.RINGING_STEEL -> text(id+".reviewed","Your next hit will damage the enemy's held weapon(s) for %s.",
+                    net.bananashelp20.forgermod.item.custom.abilities.RingingSteelEvents.durabilityDamage(rank)+" durability");
             case "tooltips.forgermod.ability.poisoned_vein" -> {
                 var effect=Component.literal("Poison "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(1+jade))
                         .withStyle(jade>0?ChatFormatting.GREEN:ChatFormatting.GRAY);

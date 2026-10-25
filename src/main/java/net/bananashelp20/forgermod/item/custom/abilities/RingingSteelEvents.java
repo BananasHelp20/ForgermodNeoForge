@@ -17,6 +17,7 @@ public final class RingingSteelEvents {
     private record Ring(ItemStack stack,int slot,ServerLevel level) {}
     private static final Map<UUID,Ring> RINGS=new HashMap<>();
     private RingingSteelEvents() {}
+    public static int durabilityDamage(int rank) {return 15+5*(Math.max(1,rank)-1);}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         if(active(player))return false;
         RINGS.put(player.getUUID(),new Ring(stack,player.getInventory().selected,player.serverLevel()));return true;
@@ -39,14 +40,16 @@ public final class RingingSteelEvents {
                 || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0)return;
         cancel(player.getUUID());
         var target=event.getEntity();
+        int damage=durabilityDamage(Augmentations.level(player.getMainHandItem(),AdditionalAbilities.RINGING_STEEL));
         player.serverLevel().playSound(null,target.blockPosition(),net.bananashelp20.forgermod.sound.ModSounds.RINGING_STEEL_HIT.get(),net.minecraft.sounds.SoundSource.PLAYERS,1F,1F);
         player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,target.getX(),target.getY()+target.getBbHeight()*.5,target.getZ(),10,.2,.25,.2,.12);
+        boolean changed=false;
         for(var slot:List.of(EquipmentSlot.MAINHAND,EquipmentSlot.OFFHAND)) {
             var held=event.getEntity().getItemBySlot(slot);if(!weapon(held))continue;
-            held.hurtAndBreak(15,event.getEntity(),slot);
-            if(event.getEntity() instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);
-            break;
+            held.hurtAndBreak(damage,event.getEntity(),slot);
+            changed=true;
         }
+        if(changed && target instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);
     }
     @SubscribeEvent public static void tick(PlayerTickEvent.Post event) {if(event.getEntity() instanceof ServerPlayer player)active(player);}
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {cancel(event.getEntity().getUUID());}
