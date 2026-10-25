@@ -63,6 +63,8 @@ public final class WindchargeEvents {
     private static final Map<UUID,ImpactGuard> IMPACT_GUARDS=new HashMap<>();
     private static final Map<UUID,Strike> STRIKES=new HashMap<>();
     private WindchargeEvents() {}
+    public static final double SMASH_RADIUS=5;
+    public static int launchHeight(boolean axe,int rank) {return axe?new int[]{10,16,23,30}[Math.clamp(rank,1,4)-1]:5*Math.clamp(rank,1,5);}
     public static double launchVelocity(double height) {
         double low=0,high=4;
         for(int j=0;j<40;j++) {double v=(low+high)/2,y=0;for(double speed=v;speed>0;speed=(speed-.08)*.98) y+=speed;if(y<height) low=v;else high=v;}
@@ -73,7 +75,7 @@ public final class WindchargeEvents {
         if(active(player) || player.isFallFlying() || player.isPassenger()) return false;
         IMPACT_GUARDS.remove(player.getUUID());
         int rank=Augmentations.level(stack,AdditionalAbilities.WINDCHARGE);boolean axe=stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe();
-        double height=axe?new int[]{10,16,23,30}[Math.clamp(rank,1,4)-1]:5*Math.clamp(rank,1,5);
+        double height=launchHeight(axe,rank);
         VerticalMotionNetwork.apply(player,launchVelocity(height),false,true);
         if(axe && rank>=4) FLIGHTS.put(player.getUUID(),new Flight(player,stack,rank));
         else LANDING_GUARDS.put(player.getUUID(),new LandingGuard(player,stack));
@@ -87,8 +89,7 @@ public final class WindchargeEvents {
     }
     public static void cancel(UUID id) {FLIGHTS.remove(id);LANDING_GUARDS.remove(id);IMPACT_GUARDS.remove(id);STRIKES.remove(id);}
     private static boolean skybreakerTarget(ServerPlayer owner,LivingEntity target) {
-        return target.isAlive() && !target.isSpectator() && target!=owner
-            && (target instanceof net.minecraft.world.entity.Mob || WeaponAbilityTargets.enemy(owner,target));
+        return target.isAlive() && !target.isSpectator() && target!=owner;
     }
     public static float attackBonus(net.minecraft.world.entity.Entity target,net.minecraft.world.damagesource.DamageSource source) {
         if(!(source.getEntity() instanceof ServerPlayer owner) || !source.is(DamageTypes.PLAYER_ATTACK) || !active(owner)
@@ -141,13 +142,13 @@ public final class WindchargeEvents {
     private static void smash(ServerPlayer player,float distance) {
         var flight=FLIGHTS.get(player.getUUID());var center=player.position();
         cancel(player.getUUID());float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+fallBonus(distance)*flight.bonusMultiplier;
-        for(var target:player.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(center,center).inflate(5),e->skybreakerTarget(player,e))) {
-            if(target.position().distanceToSqr(center)>25 || !player.hasLineOfSight(target)) continue;
+        for(var target:player.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(center,center).inflate(SMASH_RADIUS),e->skybreakerTarget(player,e))) {
+            if(target.position().distanceToSqr(center)>SMASH_RADIUS*SMASH_RADIUS || !player.hasLineOfSight(target)) continue;
             int immunity=target.invulnerableTime;target.invulnerableTime=0;boolean hurt;
             try {hurt=target.hurt(player.damageSources().playerAttack(player),damage);}finally {target.invulnerableTime=Math.max(immunity,target.invulnerableTime);}
             if(!hurt) continue;
             var away=target.position().subtract(center);double resistance=1-target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
-            double power=Math.max(0,5-away.length())*.7*(distance>5?2:1)*resistance;
+            double power=Math.max(0,SMASH_RADIUS-away.length())*.7*(distance>5?2:1)*resistance;
             var push=away.normalize().scale(power);target.push(push.x,.7*resistance,push.z);
             if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
         }

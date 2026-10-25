@@ -16,6 +16,55 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public class WindchargeGameTests {
     @GameTest(template="riftfang_test")
+    public static void approvedSkybreakerTextShowsOnlyCurrentHeightAndRadiusWhite(GameTestHelper test) {
+        int count=0;
+        for(var entry:ModItems.ITEMS.getEntries()) {
+            if(!(entry.get() instanceof TaifuniteWeapon weapon) || !weapon.isAxe()) continue;
+            count++;
+            for(int rank=4;rank<=7;rank++) for(boolean compact:new boolean[]{false,true}) {
+                var text=AbilityDescriptions.description(new ItemStack(entry.get()),AdditionalAbilities.WINDCHARGE,rank,compact);var white=new StringBuilder();
+                text.visit((style,part)->{if(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+                test.assertTrue(text.getString().equals("Launch about 30 blocks upward. Upon landing, smash all living entities within a 5 block radius with a mace-like smash attack. Falldamage is negated."),"Wrong Skybreaker description");
+                test.assertTrue(white.toString().equals("30 blocks5 block radius"),"Wrong Skybreaker highlights");
+            }
+        }
+        test.assertTrue(count==5,"Skipped Skybreaker variants");test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="review_skybreaker_allied_players")
+    public static void alliedPlayersReceiveMaceBonusAndLandingSmash(GameTestHelper test) throws Exception {
+        var owner=TestPlayers.survival(test);var ally=TestPlayers.survival(test);
+        var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
+        for(int x=6;x<=12;x++)for(int y=5;y<=8;y++)for(int z=6;z<=10;z++)test.setBlock(new BlockPos(x,y,z),net.minecraft.world.level.block.Blocks.AIR);
+        owner.setPos(origin);ally.setPos(origin.add(2,0,0));
+        ally.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);ally.getAttribute(Attributes.ARMOR).setBaseValue(0);ally.setHealth(1000);
+        var scoreboard=owner.getScoreboard();String ownerName=owner.getScoreboardName(),allyName=ally.getScoreboardName();
+        var oldOwner=scoreboard.getPlayersTeam(ownerName);var oldAlly=scoreboard.getPlayersTeam(allyName);
+        var team=scoreboard.addPlayerTeam("sky"+java.util.UUID.randomUUID().toString().substring(0,10));team.setAllowFriendlyFire(true);
+        scoreboard.addPlayerToTeam(ownerName,team);scoreboard.addPlayerToTeam(allyName,team);
+        boolean pvp=owner.server.isPvpAllowed();owner.server.setPvpAllowed(true);
+        var smash=WindchargeEvents.class.getDeclaredMethod("smash",net.minecraft.server.level.ServerPlayer.class,float.class);smash.setAccessible(true);
+        try {
+            test.assertTrue(owner.isAlliedTo(ally) && !WeaponAbilityTargets.enemy(owner,ally),"Player fixture is not allied");
+            for(int rank=4;rank<=7;rank++) {
+                var stack=Augmentations.setLevel(new ItemStack(ModItems.SKYBREAKER_AXE.get()),AdditionalAbilities.WINDCHARGE,rank);owner.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                owner.setPos(origin);ally.setPos(origin.add(2,0,0));ally.setHealth(1000);ally.invulnerableTime=0;owner.setDeltaMovement(Vec3.ZERO);float health=owner.getHealth();
+                test.assertTrue(WindchargeEvents.activate(owner,stack),"Ally smash activation rejected");owner.setOnGround(false);owner.fallDistance=12;owner.setDeltaMovement(0,-1,0);
+                float bonus=WindchargeEvents.attackBonus(ally,owner.damageSources().playerAttack(owner));
+                test.assertTrue(Math.abs(bonus-WindchargeEvents.fallBonus(12)*(1+.1f*(rank-4)))<.001,"Direct mace bonus excludes ally");
+                float damage=(float)owner.getAttributeValue(Attributes.ATTACK_DAMAGE)+bonus;
+                smash.invoke(null,owner,12F);
+                test.assertTrue(Math.abs(ally.getHealth()-(1000-damage))<.01,"Landing smash excludes ally or changes damage scaling");
+                test.assertTrue(owner.getHealth()==health,"Landing smash hurts caster");
+            }
+        } finally {
+            WindchargeEvents.cancel(owner.getUUID());owner.server.setPvpAllowed(pvp);scoreboard.removePlayerTeam(team);
+            if(oldOwner!=null)scoreboard.addPlayerToTeam(ownerName,oldOwner);if(oldAlly!=null)scoreboard.addPlayerToTeam(allyName,oldAlly);
+            owner.server.getPlayerList().remove(ally);owner.server.getPlayerList().remove(owner);
+        }
+        test.succeed();
+    }
+
+    @GameTest(template="riftfang_test")
     public static void ordinaryLaunchPreventsOneRealFallAndSwitchEndsProtection(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
         try {

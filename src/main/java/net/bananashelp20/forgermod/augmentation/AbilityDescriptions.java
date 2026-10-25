@@ -118,6 +118,11 @@ public final class AbilityDescriptions {
                     number(ReviewedRanks.stormRadius(rank))+" block radius",(ReviewedRanks.stormTicks(rank)/20+jade)+" seconds");
             case "tooltips.forgermod.ability.sudden_presence" -> text(id+".reviewed",
                     "Teleport behind the nearest hostile mob within %s",ReviewedRanks.suddenPresenceRange(rank)+" blocks");
+            case AdditionalAbilities.WINDCHARGE -> rank>=4 && stack.getItem() instanceof net.bananashelp20.forgermod.item.custom.SwordItemWithEffect weapon && weapon.isAxe()
+                    ?text(id+".super.reviewed","Launch about %s upward. Upon landing, smash all living entities within a %s with a mace-like smash attack. Falldamage is negated.",
+                            net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.launchHeight(true,rank)+" blocks",
+                            number(net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.SMASH_RADIUS)+" block radius")
+                    :null;
             case AdditionalAbilities.VOID_PULSE -> text(id+".reviewed","Push living entities in a %s away from you.",
                     net.bananashelp20.forgermod.item.custom.abilities.VoidPulseAbility.radius(rank)+" block radius");
             case AdditionalAbilities.STUNNING_PRESENCE -> text(id+".reviewed",

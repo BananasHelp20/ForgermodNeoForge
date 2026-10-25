@@ -645,6 +645,7 @@
   "tooltips.forgermod.ability.windcharge.name": "Windcharge",
   "tooltips.forgermod.ability.windcharge": "Launch upward and avoid damage on your next landing.",
   "tooltips.forgermod.ability.windcharge.card": "Launch upward and avoid damage on your next landing.",
+  "tooltips.forgermod.ability.windcharge.super.reviewed": "Launch about %s upward. Upon landing, smash all living entities within a %s with a mace-like smash attack. Falldamage is negated.",
   "tooltips.forgermod.ability.skybreaker.name": "Skybreaker",
   "tooltips.forgermod.ability.vacuum_burst.name": "Vacuum Burst",
   "tooltips.forgermod.ability.vacuum_burst": "Pull nearby dropped items and experience toward you.",

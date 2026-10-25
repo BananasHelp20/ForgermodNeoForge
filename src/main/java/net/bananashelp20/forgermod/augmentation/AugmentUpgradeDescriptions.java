@@ -224,8 +224,8 @@ public final class AugmentUpgradeDescriptions {
             }
             case AdditionalAbilities.UPWIND -> text(stats, "knockback", .4 + .2 * rank, "stronger_launch");
             case AdditionalAbilities.WINDCHARGE -> {
-                if (!axe) numeric(stats, "launch", 5 * Math.clamp(rank, 1, 5), "blocks");
-                if (axe || template) numeric(stats, template ? "axe_launch" : "launch", new int[]{10, 16, 23, 30}[Math.clamp(rank, 1, 4) - 1], "blocks");
+                if (!axe) numeric(stats, "launch", net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.launchHeight(false,rank), "blocks");
+                if (axe || template) numeric(stats, template ? "axe_launch" : "launch", net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.launchHeight(true,rank), "blocks");
                 if ((axe || template) && rank >= 4) {
                     text(stats, "unlocks", true, template ? "axe_skybreaker" : "skybreaker");
                     numeric(stats, "smash_damage", 100 + 10 * Math.clamp(rank - 4, 0, 3), "percent");

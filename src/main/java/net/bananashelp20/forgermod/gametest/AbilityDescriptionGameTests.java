@@ -34,7 +34,7 @@ public final class AbilityDescriptionGameTests {
         var axe=new ItemStack(ModItems.SKYBREAKER_AXE.get());
         test.assertFalse(AbilityDescriptions.canBecomeSuper(dagger,AdditionalAbilities.WINDCHARGE,3),"Dagger claims Skybreaker");
         test.assertTrue(key(AbilityDescriptions.description(dagger,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.current"),"Dagger gets axe mechanics");
-        test.assertTrue(key(AbilityDescriptions.description(axe,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.super.current"),"Skybreaker has base description");
+        test.assertTrue(key(AbilityDescriptions.description(axe,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.super.reviewed"),"Skybreaker has base description");
         var ghost=new ItemStack(ModItems.HOLLOW_CLAYMORE.get());
         var baseGhost=AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,3,false);
         var superGhost=AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,4,false);
