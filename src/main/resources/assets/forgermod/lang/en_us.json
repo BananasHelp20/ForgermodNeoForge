@@ -997,5 +997,19 @@
   "subtitles.forgermod.void_pulse_implode": "Void energy draws inward",
   "subtitles.forgermod.void_pulse_release": "Void energy erupts",
   "subtitles.forgermod.echo_salvage_release": "Stored echoes resound",
-  "tooltips.forgermod.gemstone_bonus.jade.duration": "+1 second effect duration"
+  "tooltips.forgermod.gemstone_bonus.jade.duration": "+1 second effect duration",
+  "forgermod.configuration.title": "%s Settings",
+  "forgermod.configuration.section.forgermod.common.toml": "General Settings",
+  "forgermod.configuration.section.forgermod.common.toml.title": "%s General Settings",
+  "forgermod.configuration.logDirtBlock": "Dirt Block Logging",
+  "forgermod.configuration.logDirtBlock.tooltip": "Unused example setting. Changing it has no effect.",
+  "forgermod.configuration.magicNumber": "Example Number",
+  "forgermod.configuration.magicNumber.tooltip": "Unused example setting. Changing it has no effect.",
+  "forgermod.configuration.magicNumberIntroduction": "Example Number Message",
+  "forgermod.configuration.magicNumberIntroduction.tooltip": "Unused example setting. Changing it has no effect.",
+  "forgermod.configuration.items": "Example Item List",
+  "forgermod.configuration.items.tooltip": "Unused example setting. Changing it has no effect.",
+  "forgermod.configuration.items.button": "Edit List",
+  "forgermod.configuration.grappleAutoRelease.tooltip": "Automatically release Crucible Grappler when you reach its anchor. You keep your momentum when released.",
+  "forgermod.configuration.explosionTerrain.tooltip": "Allow Explosion and Blazing Blast to break blocks and start fires. Disabled by default."
 }

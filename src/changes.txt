@@ -491,3 +491,5 @@
 - Stepping Through the Void: corrected vanilla ray-clip inside-point look-ahead using exact collision-box face intersection, preventing tiny below-floor landings and needless retreat.
 
 - Strengthened Bones non-vocal cue: replaced both bone/skeleton-hurt mixes entirely with an original synthesized locking click and rising protective resonance. No mob, hurt, death or skeletal-rattle samples remain in the cue; its existing killing-hit trigger and invulnerability are unchanged.
+
+- Config screen translations: added readable labels and help text for all six mod settings, configuration headings and the item-list button, replacing raw forgermod.configuration keys. Unused example fields are identified honestly; saved keys, defaults and behavior are unchanged.
