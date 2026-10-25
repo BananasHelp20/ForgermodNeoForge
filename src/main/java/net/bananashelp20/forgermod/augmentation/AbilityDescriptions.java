@@ -45,6 +45,16 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case AdditionalAbilities.SKULL_THROW -> {
+                var radius=white(number(net.bananashelp20.forgermod.item.custom.abilities.SkullThrowEvents.burstRadius(rank))+" blocks");
+                var effect=Component.literal("Wither "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(1+jade))
+                        .withStyle(jade>0?ChatFormatting.GREEN:ChatFormatting.GRAY);
+                var duration=Component.literal((net.bananashelp20.forgermod.item.custom.abilities.SkullThrowEvents.witherTicks(rank)/20+jade)+" seconds")
+                        .withStyle(jade>0?ChatFormatting.GREEN:ChatFormatting.WHITE);
+                yield Component.translatableWithFallback(id+".reviewed",
+                        "Fire a fast skull projectile that bursts within %s and applies %s for %s.",radius,effect,duration)
+                        .withStyle(ChatFormatting.GRAY);
+            }
             case "tooltips.forgermod.ability.rooting_roots" -> {
                 var range=white(net.bananashelp20.forgermod.item.custom.abilities.RootingRootsState.RANGE+" blocks");
                 var duration=Component.literal((net.bananashelp20.forgermod.item.custom.abilities.RootingRootsState.durationTicks(jade>0)/20)+" seconds")

@@ -240,7 +240,10 @@ public final class AugmentUpgradeDescriptions {
                 }
                 seconds(stats,"duration",12000);
             }
-            case AdditionalAbilities.SKULL_THROW -> numeric(stats, "radius", 1.5 + .5 * rank, "blocks");
+            case AdditionalAbilities.SKULL_THROW -> {
+                numeric(stats,"radius",net.bananashelp20.forgermod.item.custom.abilities.SkullThrowEvents.burstRadius(rank),"blocks");
+                numeric(stats,"duration",(net.bananashelp20.forgermod.item.custom.abilities.SkullThrowEvents.witherTicks(rank)+jadeTicks)/20.0,"seconds_long");
+            }
             case AdditionalAbilities.CHALLENGE_ROAR -> {
                 numeric(stats,"range",ReviewedRanks.roarRange(rank),"blocks");
                 seconds(stats,"duration",ReviewedRanks.roarTicks(rank)+jadeTicks);

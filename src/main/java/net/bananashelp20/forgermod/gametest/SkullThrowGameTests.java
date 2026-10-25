@@ -26,6 +26,29 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class SkullThrowGameTests {
+    @GameTest(template="empty")
+    public static void reviewedSkullDescriptionAndPreviewsMatchConditionalCurrentValues(GameTestHelper test) {
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries())if(entry.get() instanceof MorsiumWeapon weapon && weapon.isAxe())for(int rank=1;rank<=4;rank++) {
+            checked++;var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.SKULL_THROW,rank);
+            boolean jade=JadeAugments.isJade(stack);int seconds=8+2*rank+(jade?1:0);
+            String radius=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.number(1.5+.5*rank)+" blocks";
+            for(boolean compact:new boolean[]{false,true}) {
+                var text=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(stack,AdditionalAbilities.SKULL_THROW,rank,compact);
+                var white=new StringBuilder();var green=new StringBuilder();var gray=new StringBuilder();
+                text.visit((style,part)->{int color=style.getColor()==null?-1:style.getColor().getValue();
+                    if(color==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);
+                    if(color==net.minecraft.ChatFormatting.GREEN.getColor())green.append(part);
+                    if(color==net.minecraft.ChatFormatting.GRAY.getColor())gray.append(part);
+                    return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+                test.assertTrue(text.getString().equals("Fire a fast skull projectile that bursts within "+radius+" and applies Wither "+(jade?"II":"I")+" for "+seconds+" seconds."),"Skull description uses wrong current values or stale wording");
+                test.assertTrue(white.toString().equals(radius+(jade?"":seconds+" seconds")) && green.toString().equals(jade?"Wither II"+seconds+" seconds":""),"Skull radius/effect/duration conditional styles are wrong");
+                test.assertTrue(gray.toString().contains(" and applies ") && gray.toString().contains(" for ") && (jade || gray.toString().contains("Wither I")),"Unannotated Skull Throw prose is not gray");
+            }
+            if(rank<4)test.assertTrue(net.bananashelp20.forgermod.augmentation.AugmentUpgradeDescriptions.changes(stack,AdditionalAbilities.SKULL_THROW,rank).stream().anyMatch(change->change.property().equals("duration") && ((Number)change.after()).doubleValue()==seconds+2),"Upgrade preview omits the longer Wither duration");
+        }
+        test.assertTrue(checked==20,"Skipped Skull Throw variant/rank descriptions");test.succeed();
+    }
     private static WitherSkull skull(net.minecraft.server.level.ServerPlayer player) {
         return player.level().getEntitiesOfClass(WitherSkull.class,player.getBoundingBox().inflate(5),e->e.getOwner()==player).getFirst();
     }
@@ -181,7 +204,7 @@ public class SkullThrowGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void impactDamagesAndIgnitesAllVariantsWithoutTerrainOrCasterDamage(GameTestHelper test) {
+    public static void impactUsesReviewedWitherAtEveryRankAndVariant(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);
         var point=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));player.setPos(point);player.setYRot(0);player.setXRot(0);
         for(int x=5;x<=11;x++) for(int y=5;y<=8;y++) for(int z=6;z<=14;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
@@ -192,21 +215,23 @@ public class SkullThrowGameTests {
             for(var entry:ModItems.ITEMS.getEntries()) {
                 var fresh=new ItemStack(entry.get());
                 if(!(entry.get() instanceof MorsiumWeapon weapon) || !weapon.isAxe()) continue;
-                count++;player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
-                test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.SKULL_THROW),"Fresh axe throws magma");
-                var stack=Augmentations.apply(fresh,AdditionalAbilities.SKULL_THROW);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
-                test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.SKULL_THROW),"Magma Toss cannot activate");
-                var rock=player.level().getEntitiesOfClass(WitherSkull.class,player.getBoundingBox().inflate(3),e->e.getOwner()==player).getFirst();
-                test.assertTrue(Math.abs(rock.getDeltaMovement().length()-3.5)<.0001,"Skull does not launch at its faster speed");
-                target.invulnerableTime=0;target.removeEffect(net.minecraft.world.effect.MobEffects.WITHER);float before=target.getHealth(),owner=player.getHealth();
-                var event=new ProjectileImpactEvent(rock,new EntityHitResult(target,target.getBoundingBox().getCenter()));SkullThrowEvents.impact(event);
-                test.assertTrue(event.isCanceled() && !rock.isAlive() && !SkullThrowEvents.active(player),"Impact does not end rock");
-                test.assertTrue(Math.abs(before-target.getHealth()-player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.001 && target.hasEffect(net.minecraft.world.effect.MobEffects.WITHER) && target.getEffect(net.minecraft.world.effect.MobEffects.WITHER).getDuration()==100+(JadeAugments.isJade(stack)?20:0),"Impact damage or Wither duration wrong");
-                test.assertTrue(player.getHealth()==owner,"Magma blast damages caster");
-                test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.SKULL_THROW),"Cannot start next direct-runtime test");
-                player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(SkullThrowEvents.active(player),"Switch does not cancel rock");
+                for(int rank=1;rank<=4;rank++) {
+                    count++;player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
+                    test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.SKULL_THROW),"Fresh axe throws a skull");
+                    var stack=Augmentations.setLevel(fresh,AdditionalAbilities.SKULL_THROW,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+                    test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.SKULL_THROW),"Skull Throw cannot activate");
+                    var rock=player.level().getEntitiesOfClass(WitherSkull.class,player.getBoundingBox().inflate(3),e->e.getOwner()==player).getFirst();
+                    test.assertTrue(Math.abs(rock.getDeltaMovement().length()-3.5)<.0001,"Skull does not launch at its faster speed");
+                    target.invulnerableTime=0;target.removeEffect(net.minecraft.world.effect.MobEffects.WITHER);float before=target.getHealth(),owner=player.getHealth();
+                    var event=new ProjectileImpactEvent(rock,new EntityHitResult(target,target.getBoundingBox().getCenter()));SkullThrowEvents.impact(event);
+                    test.assertTrue(event.isCanceled() && !rock.isAlive() && !SkullThrowEvents.active(player),"Impact does not end rock");
+                    test.assertTrue(Math.abs(before-target.getHealth()-player.getAttributeValue(Attributes.ATTACK_DAMAGE))<.001 && target.hasEffect(net.minecraft.world.effect.MobEffects.WITHER) && target.getEffect(net.minecraft.world.effect.MobEffects.WITHER).getDuration()==(8+2*rank)*20+(JadeAugments.isJade(stack)?20:0) && target.getEffect(net.minecraft.world.effect.MobEffects.WITHER).getAmplifier()==(JadeAugments.isJade(stack)?1:0),"Impact damage or Wither duration wrong");
+                    test.assertTrue(player.getHealth()==owner,"Skull blast damages caster");
+                    test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.SKULL_THROW),"Cannot start next direct-runtime test");
+                    player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(SkullThrowEvents.active(player),"Switch does not cancel rock");
+                }
             }
-            test.assertTrue(count==5,"Skipped magma variants");
+            test.assertTrue(count==20,"Skipped Skull Throw variant/rank");
         } finally {SkullThrowEvents.cancel(player.getUUID());target.discard();player.server.getPlayerList().remove(player);}
         test.succeed();
     }

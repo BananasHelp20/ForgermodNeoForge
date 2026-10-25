@@ -33,6 +33,8 @@ import java.util.UUID;
 public final class SkullThrowEvents {
     public static final double MAX_DISTANCE=500;
     public static final double LAUNCH_SPEED=3.5;
+    public static double burstRadius(int rank) {return 1.5+.5*rank;}
+    public static int witherTicks(int rank) {return (8+2*Math.max(1,rank))*20;}
     private static final net.minecraft.server.level.TicketType<UUID> FLIGHT_TICKET=
             net.minecraft.server.level.TicketType.create("forgermod_skull_throw",UUID::compareTo,40);
     private record Flight(ItemStack stack,int selected,WitherSkull rock,int rank,float damage) {}
@@ -74,7 +76,7 @@ public final class SkullThrowEvents {
     private static void burst(ServerPlayer player,WitherSkull rock,net.minecraft.world.phys.Vec3 point) {
         var flight=FLIGHTS.get(player.getUUID());
         if(flight==null || flight.rock()!=rock || !active(player)) return;
-        double radius=1.5+.5*flight.rank();
+        double radius=burstRadius(flight.rank());
         for(var target:player.level().getEntitiesOfClass(LivingEntity.class,new AABB(point,point).inflate(radius),
                 entity->WeaponAbilityTargets.enemy(player,entity))) {
             if(target.getBoundingBox().getCenter().distanceToSqr(point)>radius*radius) continue;
@@ -82,7 +84,7 @@ public final class SkullThrowEvents {
             if(obstruction.getType()!=HitResult.Type.MISS) continue;
             if(target.hurt(player.damageSources().indirectMagic(player,player),flight.damage()))
                 target.addEffect(JadeAugments.reinforce(flight.stack(),AdditionalAbilities.SKULL_THROW,
-                        new MobEffectInstance(MobEffects.WITHER,100,0)),player);
+                        new MobEffectInstance(MobEffects.WITHER,witherTicks(flight.rank()),0)),player);
         }
         player.serverLevel().sendParticles(ParticleTypes.SOUL,point.x,point.y,point.z,45,radius*.4,radius*.4,radius*.4,.06);
         player.serverLevel().sendParticles(new net.minecraft.core.particles.BlockParticleOption(ParticleTypes.BLOCK,
