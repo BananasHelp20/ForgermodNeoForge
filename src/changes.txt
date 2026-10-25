@@ -436,3 +436,5 @@
 - Crucible Hook grapple then fiery impact: successful mob/block casts play a thrown-hook and chain cue; the mob smash plays the heavy mace/anvil/fire burst shared with Flaming Stomp only on arrival. Rehooks play cast audio only after validation. Gameplay and cooldowns are unchanged.
 
 - Rooting Roots earth-and-wood audio: replaced the soft planting/bonemeal cue with deeper cracking mangrove roots layered with disturbed rooted dirt for a stronger eruption sound.
+
+- Gravity Swing spatial audio: per the user?s one-task Gravity Well/Gravity Swing correction, added bright departure and lower airborne-arrival ender sounds, followed by one deep gravity-pressure cue per swing that successfully lifts targets. Gravity Well and gameplay are unchanged.

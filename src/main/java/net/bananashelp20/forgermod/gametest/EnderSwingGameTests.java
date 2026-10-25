@@ -28,12 +28,20 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class EnderSwingGameTests {
+    private static final class SoundWire extends net.minecraft.network.Connection {
+        final java.util.List<net.minecraft.network.protocol.game.ClientboundSoundPacket> sounds=new java.util.ArrayList<>();
+        SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound && (sound.getSound().value()==net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT || sound.getSound().value()==net.minecraft.sounds.SoundEvents.RESPAWN_ANCHOR_DEPLETE.value()))sounds.add(sound);
+        }
+    }
     @GameTest(template="riftfang_test")
     public static void reviewedRanksLiftApplyGravityAmplifyFallAndRestoreOnLanding(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
         for(int x=-6;x<=6;x++)for(int z=-6;z<=6;z++)for(int y=0;y<=24;y++)
             test.getLevel().setBlockAndUpdate(player.blockPosition().offset(x,y,z),Blocks.AIR.defaultBlockState());
         var target=zombie(test,player.position());
+        var old=player.connection;var wire=new SoundWire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
         try {
             for(var item:java.util.List.of(ModItems.NULLIFIED_AXE.get(),ModItems.NULLIFIED_AXE_RUBY.get(),ModItems.NULLIFIED_AXE_AMBER.get(),ModItems.NULLIFIED_AXE_AMETHYST.get(),ModItems.NULLIFIED_AXE_JADE.get())) {
                 for(int rank=1;rank<=3;rank++) {
@@ -42,8 +50,10 @@ public class EnderSwingGameTests {
                     double radius=net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingRadius(rank);
                     double bonus=net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingBonus(rank);
                     target.setPos(player.position().add(radius,0,0));target.setHealth(100);target.invulnerableTime=0;
-                    double start=target.getY();
+                    double start=target.getY();wire.sounds.clear();
                     test.assertTrue(EnderSwingAbility.activate(player,stack),"Ranked swing rejected");
+                    test.assertTrue(wire.sounds.size()==3 && wire.sounds.get(0).getSound().value()==net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT && wire.sounds.get(1).getSound().value()==net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT && wire.sounds.get(2).getSound().value()==net.minecraft.sounds.SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(),"Lift misses departure, arrival or gravity-pressure sound");
+                    test.assertTrue(Math.abs(wire.sounds.get(0).getY()-start)<.126 && Math.abs(wire.sounds.get(1).getY()-target.getY())<.126 && wire.sounds.get(0).getPitch()>wire.sounds.get(1).getPitch(),"Ender sounds miss the two teleport endpoints or pitch descent");
                     test.assertTrue(target.getY()==start+net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingHeight(rank),"Wrong lift at rank "+rank);
                     test.assertTrue(Math.abs(target.getAttributeValue(Attributes.GRAVITY)-.08*(1+bonus))<.00001
                             && target.getAttributeValue(Attributes.FALL_DAMAGE_MULTIPLIER)==1+bonus,"Gravity/fall multiplier not applied");
@@ -58,7 +68,7 @@ public class EnderSwingGameTests {
                 test.assertTrue(Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.ENDER_SWING,4).isEmpty(),"Rank IV bypasses cap");
             }
         } finally {
-            net.bananashelp20.forgermod.item.custom.abilities.GravitySwingEffects.clear(target);target.discard();player.server.getPlayerList().remove(player);
+            net.bananashelp20.forgermod.item.custom.abilities.GravitySwingEffects.clear(target);target.discard();player.connection=old;player.server.getPlayerList().remove(player);
         }
         test.succeed();
     }

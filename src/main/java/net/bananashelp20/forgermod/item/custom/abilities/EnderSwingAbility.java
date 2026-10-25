@@ -38,6 +38,7 @@ public final class EnderSwingAbility {
         float damage = (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         if (rank > 1) damage *= 1.2f;
         player.swing(InteractionHand.MAIN_HAND);
+        boolean lifted=false;
         for (LivingEntity target : player.serverLevel().getEntitiesOfClass(LivingEntity.class,
                 player.getBoundingBox().inflate(radius),
                 living -> living!=player && living.isAlive() && !living.isRemoved() && (living instanceof net.minecraft.world.entity.Mob || WeaponAbilityTargets.enemy(player,living)) && player.distanceToSqr(living) <= radius * radius)) {
@@ -45,12 +46,13 @@ public final class EnderSwingAbility {
             target.invulnerableTime = 0;
             if (target.hurt(player.damageSources().playerAttack(player), damage)) {
                 stack.getItem().postHurtEnemy(stack, target, player);
-                if (target.isAlive()) {double available=availableLift(player,target,height);if(available>.001)lift(player,target,available,rank);}
+                if (target.isAlive()) {double available=availableLift(player,target,height);if(available>.001)lifted|=lift(player,target,available,rank);}
             } else {
                 target.invulnerableTime = previousImmunity;
             }
             if (stack.isEmpty()) break;
         }
+        if(lifted)player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(),SoundSource.PLAYERS,.65F,.6F);
         for (int point = 0; point < 16; point++) {
             double angle = 2 * Math.PI * point / 16;
             player.serverLevel().sendParticles(ParticleTypes.SWEEP_ATTACK,
@@ -76,11 +78,11 @@ public final class EnderSwingAbility {
         return Math.max(0,low-.0001);
     }
 
-    private static void lift(ServerPlayer player, LivingEntity target,double height,int rank) {
+    private static boolean lift(ServerPlayer player, LivingEntity target,double height,int rank) {
         Vec3 start = target.position();
         if (target instanceof ServerPlayer other) {
             if (!other.teleportTo(player.serverLevel(), start.x, start.y + height, start.z,
-                    Set.of(), other.getYRot(), other.getXRot())) return;
+                    Set.of(), other.getYRot(), other.getXRot())) return false;
         } else {
             target.teleportTo(start.x, start.y + height, start.z);
         }
@@ -92,7 +94,8 @@ public final class EnderSwingAbility {
                 24, .4, .8, .4, .1);
         player.serverLevel().sendParticles(ParticleTypes.PORTAL, target.getX(), target.getY() + 1, target.getZ(),
                 24, .4, .8, .4, .1);
-        player.serverLevel().playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_TELEPORT,
-                SoundSource.PLAYERS, .8f, 1.2f);
+        player.serverLevel().playSound(null,start.x,start.y,start.z,SoundEvents.ENDERMAN_TELEPORT,SoundSource.PLAYERS,.6F,1.35F);
+        player.serverLevel().playSound(null,target.getX(),target.getY(),target.getZ(),SoundEvents.ENDERMAN_TELEPORT,SoundSource.PLAYERS,1.5F,.85F);
+        return true;
     }
 }
