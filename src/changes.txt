@@ -481,3 +481,5 @@
 - Echo Salvage: discharge sound plays once per consumed bank for both native Vertical Strikes and converted successful melee hits, including reinforcements; misses, rejected/indirect hits and empty-bank strikes do not play it. Damage, storage and persistence unchanged.
 
 - Jade bonus tooltip rows: replaced the long infusion bonus sentence with two separate Jade-green tooltip lines: "+1 effect level" and "+1 second effect duration".
+
+- Ancient grave chest loot: assigned both chests in the ancient grave and matching city-room templates a dedicated chest loot table that includes the complete vanilla Ancient City loot plus one independent 10% chance for one sapphire gemstone. Loot generates once when a newly placed/generated chest is opened.
