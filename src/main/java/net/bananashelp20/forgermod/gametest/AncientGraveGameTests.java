@@ -58,6 +58,8 @@ public class AncientGraveGameTests {
             rotations.add(root.getRotation());
             var grave = (PoolElementStructurePiece)pieces.getLast();
             test.assertTrue(grave.getElement().toString().contains("forgermod:ancient_grave"), "Grave missing");
+            test.assertTrue(grave.getPosition().getY() == root.getPosition().getY() + 1,
+                    "Grave is not lifted exactly one block above its previous city-relative height");
             var bounds = grave.getBoundingBox();
             test.assertTrue((bounds.minX() >> 4) >= chunk.x - 8 && (bounds.maxX() >> 4) <= chunk.x + 8
                     && (bounds.minZ() >> 4) >= chunk.z - 8 && (bounds.maxZ() >> 4) <= chunk.z + 8,

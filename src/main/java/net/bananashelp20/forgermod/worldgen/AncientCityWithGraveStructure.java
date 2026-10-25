@@ -53,7 +53,7 @@ public final class AncientCityWithGraveStructure extends Structure {
             for (int side = 0; side < origins.length; side++) {
                 var box = grave.getBoundingBox(manager, origins[side], rotations[side]);
                 if (builder.findCollisionPiece(box.inflatedBy(3)) == null) {
-                    builder.addPiece(new PoolElementStructurePiece(manager, grave, origins[side],
+                    addRaisedGrave(builder, new PoolElementStructurePiece(manager, grave, origins[side],
                             grave.getGroundLevelDelta(), rotations[side], box, LiquidSettings.IGNORE_WATERLOGGING));
                     return;
                 }
@@ -62,8 +62,14 @@ public final class AncientCityWithGraveStructure extends Structure {
         // Dense layouts: just beyond the easternmost city piece is always clear.
         int edge = cityPieces.stream().mapToInt(piece -> piece.getBoundingBox().maxX()).max().orElseThrow();
         BlockPos origin = new BlockPos(edge + 4, y, z - 10);
-        builder.addPiece(new PoolElementStructurePiece(manager, grave, origin, grave.getGroundLevelDelta(),
+        addRaisedGrave(builder, new PoolElementStructurePiece(manager, grave, origin, grave.getGroundLevelDelta(),
                 Rotation.NONE, grave.getBoundingBox(manager, origin, Rotation.NONE), LiquidSettings.IGNORE_WATERLOGGING));
+    }
+
+    private static void addRaisedGrave(StructurePiecesBuilder builder, PoolElementStructurePiece grave) {
+        // Choose the same horizontal gap and rotation as before, then lift the entire piece.
+        grave.move(0, 1, 0);
+        builder.addPiece(grave);
     }
 
     @Override
