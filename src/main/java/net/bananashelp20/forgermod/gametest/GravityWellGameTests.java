@@ -21,6 +21,13 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class GravityWellGameTests {
+    private static final class SoundWire extends net.minecraft.network.Connection {
+        final java.util.List<net.minecraft.sounds.SoundEvent> sounds=new java.util.ArrayList<>();
+        SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
+        @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound && java.util.List.of(net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_CHARGE.get(),net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY,net.minecraft.sounds.SoundEvents.ANVIL_LAND,net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT).contains(sound.getSound().value()))sounds.add(sound.getSound().value());
+        }
+    }
     @GameTest(template="riftfang_test")
     public static void aimedTargetAloneIsPulledAndArrivalHitsTheVerticalStrikeArea(GameTestHelper test) {
         var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setYRot(0);player.setXRot(0);
@@ -51,14 +58,17 @@ public class GravityWellGameTests {
         for(int x=5;x<=11;x++) for(int y=5;y<=8;y++) for(int z=6;z<=14;z++) test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
         var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.setPos(origin.add(0,0,5));test.getLevel().addFreshEntity(mob);
         int count=0;
+        var old=player.connection;var wire=new SoundWire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));
         try {
             for(var entry:ModItems.ITEMS.getEntries()) {
                 var fresh=new ItemStack(entry.get());boolean eligible=entry.get() instanceof InanisiumWeapon weapon && weapon.isAxe();
                 test.assertTrue(Augmentations.pool(fresh).stream().anyMatch(a->a.id().equals(AdditionalAbilities.GRAVITY_WELL))==eligible,"Wrong Gravity Well assignment");
                 if(!eligible) continue;count++;mob.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR).setBaseValue(0);mob.setHealth(20);mob.setPos(origin.add(0,0,5));mob.setDeltaMovement(Vec3.ZERO);player.setItemInHand(InteractionHand.MAIN_HAND,fresh);
-                test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.GRAVITY_WELL),"Fresh axe pulls");
+                wire.sounds.clear();test.assertFalse(RecommendedAbilityRuntime.activate(player,fresh,AdditionalAbilities.GRAVITY_WELL),"Fresh axe pulls");
                 var stack=Augmentations.apply(fresh,AdditionalAbilities.GRAVITY_WELL);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
                 test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.GRAVITY_WELL),"Learned pull rejected");
+                var pullSound=net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_CHARGE.get();
+                test.assertTrue(wire.sounds.equals(java.util.List.of(pullSound)),"Pull lacks reversed ender cue or plays strike early");
                 test.assertTrue(mob.position().equals(origin.add(0,0,5)) && Math.abs(mob.getDeltaMovement().z+.6)<.0001,"Pull teleports or has wrong velocity");
                 test.assertTrue(mob.getHealth()==20,"Pull itself deals damage");
                 mob.setPos(origin.add(0,0,2.8));mob.setDeltaMovement(Vec3.ZERO);GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
@@ -68,13 +78,16 @@ public class GravityWellGameTests {
                 test.assertTrue(Math.abs(mob.getDeltaMovement().x)<.0001,"Turning moves the captured destination");player.setYRot(0);
                 player.setPos(origin.add(0,0,-2));mob.setPos(origin.add(0,0,2));GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
                 test.assertTrue(mob.getHealth()==20 && GravityWellEvents.active(player) && mob.getDeltaMovement().equals(Vec3.ZERO),"Moving away shifts destination or permits a smash outside reach");
+                test.assertTrue(wire.sounds.equals(java.util.List.of(pullSound)),"Approach/out-of-reach arrival plays impact audio");
                 player.setPos(origin);GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));
                 test.assertFalse(GravityWellEvents.active(player),"Arrival does not finish visual smash");test.assertTrue(Math.abs(mob.getHealth()-(20-player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)))<.0001,"Arrival smash does not deal weapon damage");
-                float health=mob.getHealth();GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(mob.getHealth()==health,"Smash repeats after arrival");
+                var impactSounds=java.util.List.of(pullSound,net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY,net.minecraft.sounds.SoundEvents.ANVIL_LAND,net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT);
+                test.assertTrue(wire.sounds.equals(impactSounds),"Arrival loses native Vertical Strike or ender impact layer");
+                float health=mob.getHealth();GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(mob.getHealth()==health && wire.sounds.equals(impactSounds),"Smash or impact sound repeats after arrival");
                 mob.setPos(origin.add(0,0,5));test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.GRAVITY_WELL),"Cannot start switch test");
-                player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(GravityWellEvents.active(player),"Switch retains pull state");
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());test.assertFalse(GravityWellEvents.active(player),"Switch retains pull state");GravityWellEvents.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(player));test.assertTrue(wire.sounds.size()==5 && wire.sounds.getLast()==pullSound,"Canceled pull plays ender smash audio");
             }
-        } finally {GravityWellEvents.cancel(player.getUUID());mob.discard();player.server.getPlayerList().remove(player);}
+        } finally {GravityWellEvents.cancel(player.getUUID());mob.discard();player.connection=old;player.server.getPlayerList().remove(player);}
         test.assertTrue(count==5,"Skipped Gravity Well variants");test.succeed();
     }
 

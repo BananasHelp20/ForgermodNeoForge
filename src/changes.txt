@@ -450,3 +450,5 @@
 - Direct Current and Static Field energy audio: visible live edges now carry a moving electrical zip on connection changes and at most once per second per edge, including the closing triangle/quadrilateral edge. Single marks, obstructed edges and canceled circuits stay silent.
 
 - Chain Lightning traveling energy audio: each successful damaging/visible hop now carries the shared moving electrical zip between its actual targets, including reinforcement passives. Failed chain chances and rejected hop damage emit no travel sound.
+
+- Gravity Well ender pull and heavy strike: added reversed teleport audio for a successful pull and a deep ender layer at the arrived smash, preserving the native heavy Vertical Strike sound and gameplay. Blocked/out-of-reach/canceled pulls cannot play the smash layer. Gravity Swing is unchanged.

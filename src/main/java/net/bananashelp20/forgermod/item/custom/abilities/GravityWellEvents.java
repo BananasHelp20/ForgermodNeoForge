@@ -37,6 +37,7 @@ public final class GravityWellEvents {
         var destination=player.position().add(forward.scale(2));
         PULLS.put(player.getUUID(),new Pull(stack,player.getInventory().selected,player.level().getGameTime()+40,
                 player.serverLevel(),destination,.5+.1*rank,new HashSet<>(Set.of(target))));
+        player.serverLevel().playSound(null,player.blockPosition(),net.bananashelp20.forgermod.sound.ModSounds.VOID_PULSE_CHARGE.get(),SoundSource.PLAYERS,.8F,1F);
         advance(player);return true;
     }
     public static boolean active(ServerPlayer player) {
@@ -65,7 +66,10 @@ public final class GravityWellEvents {
             target.hasImpulse=true;
             if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
             if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return false;
-            return net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.abilityVerticalStrike(player,pull.stack(),target.position());
+            var impact=target.blockPosition();
+            boolean smashed=net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.abilityVerticalStrike(player,pull.stack(),target.position());
+            if(smashed)player.serverLevel().playSound(null,impact,SoundEvents.ENDERMAN_TELEPORT,SoundSource.PLAYERS,.65F,.7F);
+            return smashed;
         });
         if(pull.awaiting().isEmpty()) cancel(player.getUUID());
     }
