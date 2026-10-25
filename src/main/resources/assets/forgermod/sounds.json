@@ -66,5 +66,12 @@
     "sounds": [
       "forgermod:ability/void_pulse_release"
     ]
+  },
+  "echo_salvage_release": {
+    "subtitle": "subtitles.forgermod.echo_salvage_release",
+    "sounds": [
+      "forgermod:ability/echo_salvage_release",
+      "forgermod:ability/echo_salvage_release_2"
+    ]
   }
 }

@@ -54,13 +54,18 @@ public final class EchoSalvageEvents {
  public static void onImpact(LivingEntity actor,boolean hitAnything,boolean attemptedHit,boolean solidImpact,float strikeDamage){
   if(RELEASING.contains(actor.getUUID()))return;
   var stack=PassiveActors.weapon(actor,RecommendedAbilities.ECHO_SALVAGE);float bonus=bonus(actor);
-  if(hitAnything){if(bonus>0){write(actor,stack,List.of());spark(actor,8);}return;}
+  if(hitAnything){if(bonus>0){releaseSound(actor,storedCount(stack));write(actor,stack,List.of());spark(actor,8);}return;}
   if(attemptedHit || !solidImpact || !actor.isAlive() || actor.isSpectator() || !Augmentations.hasPassive(stack,RecommendedAbilities.ECHO_SALVAGE))return;
   var values=new ArrayList<>(stored(stack));float value=strikeDamage*.5F;
   if(values.size()>=capacity(Augmentations.level(stack,RecommendedAbilities.ECHO_SALVAGE)) || !Float.isFinite(value) || value<=0)return;
   values.add(value);write(actor,stack,values);spark(actor,4);
  }
  private static void spark(LivingEntity actor,int count){PassiveActors.level(actor).sendParticles(ParticleTypes.SCULK_CHARGE_POP,actor.getX(),actor.getY()+.6,actor.getZ(),count,.3,.3,.3,.03);}
+ private static void releaseSound(LivingEntity actor,int strikes){
+  // One cue per consumed bank, not per victim or stored strike; a fuller bank sounds deeper.
+  PassiveActors.level(actor).playSound(null,actor.getX(),actor.getY()+.6,actor.getZ(),
+    net.bananashelp20.forgermod.sound.ModSounds.ECHO_SALVAGE_RELEASE.get(),actor.getSoundSource(),1F,1.12F-.04F*Math.clamp(strikes,1,5));
+ }
  @SubscribeEvent(priority=EventPriority.LOWEST,receiveCanceled=true)
  public static void attack(AttackEntityEvent event){
   if(!(event.getEntity() instanceof ServerPlayer actor))return;HITS.remove(actor.getUUID());
@@ -84,7 +89,7 @@ public final class EchoSalvageEvents {
   var hit=HITS.get(actor.getUUID());
   if(hit==null || hit.source!=event.getSource() || !hit.target.equals(event.getEntity().getUUID()) || hit.tick!=actor.level().getGameTime()
     || hit.stack!=actor.getMainHandItem() || hit.bonus<=0 || event.getNewDamage()+event.getReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ABSORPTION)<=0)return;
-  HITS.remove(actor.getUUID());write(actor,hit.stack,List.of());spark(actor,8);RELEASING.add(actor.getUUID());
+  HITS.remove(actor.getUUID());releaseSound(actor,storedCount(hit.stack));write(actor,hit.stack,List.of());spark(actor,8);RELEASING.add(actor.getUUID());
   try{
    if(actor instanceof ServerPlayer player)AxeHeavyNetwork.echoVerticalStrike(player,hit.stack,event.getEntity(),hit.bonus);
    else if(actor instanceof Mob mob)NecromancerPassiveCombat.echoVerticalStrike(mob,hit.stack,event.getEntity(),hit.bonus);

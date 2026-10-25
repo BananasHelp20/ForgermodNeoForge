@@ -476,3 +476,6 @@
 
 - Void Pulse End Portal sound pair: replaced Void Pulse teleport audio with a resonant End Portal Frame sound, reversed for the half-second inward charge and forward for the outward release. Added two dedicated sound events, mono clips and subtitles.
 - Void Pulse: preserved particle synchronization, cancellation, targeting, push and cooldown behavior; Gravity Well retains the original shared reversed teleport sound unchanged.
+
+- Echo Salvage discharge sound: added two custom sonic/sculk resonance mixes with descending crystalline echoes over the normal heavy Vertical Strike impact; fuller stored banks sound slightly deeper. Added a dedicated sound event and subtitle.
+- Echo Salvage: discharge sound plays once per consumed bank for both native Vertical Strikes and converted successful melee hits, including reinforcements; misses, rejected/indirect hits and empty-bank strikes do not play it. Damage, storage and persistence unchanged.
