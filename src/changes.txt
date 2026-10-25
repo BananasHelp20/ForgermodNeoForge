@@ -493,3 +493,5 @@
 - Strengthened Bones non-vocal cue: replaced both bone/skeleton-hurt mixes entirely with an original synthesized locking click and rising protective resonance. No mob, hurt, death or skeletal-rattle samples remain in the cue; its existing killing-hit trigger and invulnerability are unchanged.
 
 - Config screen translations: added readable labels and help text for all six mod settings, configuration headings and the item-list button, replacing raw forgermod.configuration keys. Unused example fields are identified honestly; saved keys, defaults and behavior are unchanged.
+
+- Review 43 Magma Toss implemented: Applied approved full-word current-rank duration (3-7 seconds) in white for tooltip and card/upgrade values; burn duration, radius and cooldown unchanged. Updated existing native current-rank/style regression. User now requests direct implementation after each approval, superseding the review deferral. Build and all 421 required GameTests passed; reviewed.

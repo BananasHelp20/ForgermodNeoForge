@@ -1011,5 +1011,6 @@
   "forgermod.configuration.items.tooltip": "Unused example setting. Changing it has no effect.",
   "forgermod.configuration.items.button": "Edit List",
   "forgermod.configuration.grappleAutoRelease.tooltip": "Automatically release Crucible Grappler when you reach its anchor. You keep your momentum when released.",
-  "forgermod.configuration.explosionTerrain.tooltip": "Allow Explosion and Blazing Blast to break blocks and start fires. Disabled by default."
+  "forgermod.configuration.explosionTerrain.tooltip": "Allow Explosion and Blazing Blast to break blocks and start fires. Disabled by default.",
+  "augmentation.forgermod.preview.value.seconds_long": "%s seconds"
 }

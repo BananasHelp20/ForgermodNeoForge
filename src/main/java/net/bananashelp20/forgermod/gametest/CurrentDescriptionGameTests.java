@@ -41,11 +41,11 @@ public final class CurrentDescriptionGameTests {
         test.succeed();
     }
     @GameTest(template="riftfang_test")
-    public static void unreviewedMagmaTossResolvesOnlyCurrentRankAndKeepsWhiteValues(GameTestHelper test) {
+    public static void reviewedMagmaTossResolvesOnlyCurrentRankAndKeepsWhiteFullDuration(GameTestHelper test) {
         var stack = new ItemStack(ModItems.MOLTEN_AXE.get());
         var description = AbilityDescriptions.description(stack,AdditionalAbilities.MAGMA_TOSS,3,false);
         String text = description.getString();
-        test.assertTrue(text.contains("3 blocks") && text.contains("5 s"), "Wrong current-rank values: " + text);
+        test.assertTrue(text.contains("3 blocks") && text.contains("5 seconds"), "Wrong current-rank values: " + text);
         test.assertTrue(net.bananashelp20.forgermod.augmentation.RecommendedAbilities.cooldown(AdditionalAbilities.MAGMA_TOSS,3)==500,"Wrong separately displayed cooldown");
         test.assertFalse(text.contains("/") || text.contains("%s"), "Unresolved rank list or argument");
         var white = new StringBuilder();
@@ -53,7 +53,7 @@ public final class CurrentDescriptionGameTests {
             if (style.getColor()!=null && style.getColor().getValue()==ChatFormatting.WHITE.getColor()) white.append(part);
             return Optional.<Void>empty();
         },Style.EMPTY);
-        test.assertTrue(white.toString().contains("3 blocks") && white.toString().contains("5 s"), "Rank values lost their white style: " + white);
+        test.assertTrue(white.toString().contains("3 blocks") && white.toString().contains("5 seconds"), "Rank values lost their white style: " + white);
         test.assertTrue(description.getStyle().getColor().getValue()==ChatFormatting.GRAY.getColor(), "Prose must remain gray");
         test.succeed();
     }

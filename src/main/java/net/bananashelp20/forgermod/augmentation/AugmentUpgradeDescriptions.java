@@ -189,7 +189,7 @@ public final class AugmentUpgradeDescriptions {
             }
             case AdditionalAbilities.MAGMA_TOSS -> {
                 numeric(stats, "radius", 1.5 + .5 * rank, "blocks");
-                seconds(stats, "burn", (2 + rank) * 20);
+                numeric(stats, "burn", 2 + rank, "seconds_long");
             }
             case AdditionalAbilities.VOID_PULSE -> {
                 numeric(stats, "radius", 3 + rank, "blocks");
