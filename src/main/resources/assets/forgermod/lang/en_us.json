@@ -102,7 +102,7 @@
   "tooltips.forgermod.ability.heading": "Active Abilities:",
   "tooltips.forgermod.ability.tooltip": "%1$s: [%2$s]",
   "tooltips.forgermod.ability.pyromaniac": "Hit a mob while burning to extinguish yourself and heal 2 HP.",
-  "tooltips.forgermod.ability.void_step": "Teleport up to 10 blocks in your look direction, stopping before obstacles. A matching offhand dagger doubles the range.",
+  "tooltips.forgermod.ability.void_step": "Blink up to 10 blocks where you look, stopping before solid obstacles. A matching offhand dagger doubles the range.",
   "tooltips.forgermod.ability.sudden_presence": "Teleport behind the nearest hostile mob within 20 blocks.",
   "message.forgermod.ability.cooldown": "Ability ready in %s s",
   "message.forgermod.ability.unavailable": "Ability cannot be used right now",

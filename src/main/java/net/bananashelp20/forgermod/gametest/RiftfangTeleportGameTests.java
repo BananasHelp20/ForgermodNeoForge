@@ -68,6 +68,21 @@ public class RiftfangTeleportGameTests {
     }
 
     @GameTest(template="riftfang_test")
+    public static void diagonalCornerOutsideActualBodySweepDoesNotStopBlink(GameTestHelper test){
+        for(int x=7;x<=20;x++)for(int y=2;y<=6;y++)for(int z=7;z<=20;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        test.setBlock(new BlockPos(8,3,9),Blocks.STONE);test.setBlock(new BlockPos(8,4,9),Blocks.STONE);
+        var player=player(test,ModItems.RIFTFANG_DAGGER.get(),null,0);player.setPos(Vec3.atLowerCornerOf(test.absolutePos(START)).add(.82,0,.18));player.setYRot(-45);var start=player.position();var expected=start.add(player.getLookAngle().normalize().scale(10));
+        test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Clear diagonal blink rejected");
+        test.assertTrue(player.position().distanceTo(expected)<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Conservative broad-phase corner stops an actually clear diagonal blink");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void sweptBodyDistinguishesCornerMissFromRealContact(GameTestHelper test){
+        var box=new net.minecraft.world.phys.AABB(0,0,0,.6,1.8,.6);var step=new Vec3(.25,0,.25);
+        test.assertTrue(net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath.collisionFraction(box,step,new net.minecraft.world.phys.AABB(-.5,0,.74,.08,2,1))==1,"Diagonal broad-phase corner is mistaken for collision");
+        double hit=net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath.collisionFraction(box,step,new net.minecraft.world.phys.AABB(.8,0,.8,1,2,1));
+        test.assertTrue(Math.abs(hit-.8)<.0001,"True diagonal contact misses its earliest safe distance");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
     public static void voidStepPacketLeavesClientMouseLookFree(GameTestHelper test) {
         for(int x=1;x<=19;x++)for(int y=3;y<=17;y++)for(int z=1;z<=19;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
         for(Item item:new Item[]{ModItems.RIFTFANG_DAGGER.get(),ModItems.RIFTFANG_DAGGER_RUBY.get(),ModItems.RIFTFANG_DAGGER_AMBER.get(),ModItems.RIFTFANG_DAGGER_AMETHYST.get(),ModItems.RIFTFANG_DAGGER_JADE.get()}) {
@@ -154,7 +169,7 @@ public class RiftfangTeleportGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void downwardAimThroughGrassContinuesAlongGround(GameTestHelper test) {
+    public static void passableGrassDoesNotBlockBlinkAndDownwardAimNeverSlides(GameTestHelper test) {
         for(int x=7;x<=9;x++)for(int z=8;z<=20;z++) {
             test.setBlock(new BlockPos(x,2,z),Blocks.GRASS_BLOCK);
             for(int y=3;y<=5;y++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
@@ -163,9 +178,16 @@ public class RiftfangTeleportGameTests {
         test.setBlock(new BlockPos(8,3,10),Blocks.TALL_GRASS);
         test.setBlock(new BlockPos(8,4,10),Blocks.TALL_GRASS.defaultBlockState().setValue(net.minecraft.world.level.block.DoublePlantBlock.HALF,net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER));
         for(var item:new Item[]{ModItems.RIFTFANG_DAGGER.get(),ModItems.RIFTFANG_DAGGER_RUBY.get(),ModItems.RIFTFANG_DAGGER_AMBER.get(),ModItems.RIFTFANG_DAGGER_AMETHYST.get(),ModItems.RIFTFANG_DAGGER_JADE.get()}) {
-            var player=player(test,item,null,35);var start=player.position();
-            test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Looking down at grass rejects step");
+            var player=player(test,item,null,0);var start=player.position();
+            test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Passable grass rejects level blink");
             test.assertTrue(player.position().distanceTo(start.add(0,0,10))<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Grass obstructs step or downward look enters the ground");
+            player.setPos(start);player.setXRot(35);
+            test.assertFalse(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Downward blink slides along the floor instead of stopping");
+            test.assertTrue(player.position().equals(start),"Blocked ground aim redirects movement");
+            player.setPos(start.add(0,2,0));var raised=player.position();var look=player.getLookAngle().normalize();
+            test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Clear downward path rejected");
+            double distance=2/-look.y;
+            test.assertTrue(player.position().distanceTo(raised.add(look.scale(distance)))<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Downward blink fails to stop on its actual ray at the floor");
         }
         test.succeed();
     }

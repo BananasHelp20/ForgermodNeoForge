@@ -124,6 +124,8 @@ public class MaterialEffectGameTests {
             ServerPlayer player = test.makeMockServerPlayerInLevel();
             player.setNoGravity(true);
             player.setPos(test.getBounds().getCenter());
+            // Refresh native tracking after the mock leaves spawn, before broadcasting cosmetic swings.
+            player.serverLevel().getChunkSource().move(player);
             equip(player, dagger);
             player.setItemInHand(InteractionHand.MAIN_HAND, net.bananashelp20.forgermod.augmentation.Augmentations.apply(
                     new ItemStack(dagger), net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD));

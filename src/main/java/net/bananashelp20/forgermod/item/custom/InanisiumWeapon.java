@@ -85,25 +85,17 @@ public class InanisiumWeapon extends SwordItemWithEffect {
             double length = Math.min(VoidStepPath.STEP_DISTANCE, remaining);
             Vec3 step = direction.scale(length);
             AABB current = originalBox.move(destination.subtract(start));
-            // A downward aim at grass should continue forward along the floor, just like walking.
-            // Keep real vertical aim in open air, and never slide along walls or ceilings.
-            if (step.y < 0 && direction.horizontalDistance() > 1.0E-4
-                    && loadedBox(level, current.expandTowards(step))) {
-                Vec3 clipped = net.minecraft.world.entity.Entity.collideBoundingBox(player, step, current, level, List.of());
-                if (clipped.y > step.y + 1.0E-7) {
-                    double horizontal = Math.sqrt(Math.max(0, length*length-clipped.y*clipped.y));
-                    step = new Vec3(direction.x / direction.horizontalDistance() * horizontal, clipped.y,
-                            direction.z / direction.horizontalDistance() * horizontal);
-                }
-            }
-            Vec3 travel = step;
             double fraction = VoidStepPath.clearFraction(t -> {
-                AABB swept = current.expandTowards(travel.scale(t));
+                AABB swept = current.expandTowards(step.scale(t));
                 return swept.minY >= level.getMinBuildHeight() && swept.maxY <= level.getMaxBuildHeight()
                         && level.getWorldBorder().isWithinBounds(swept)
-                        && loadedBox(level, swept) && level.noCollision(player, swept);
+                        && loadedBox(level, swept);
             });
-            destination = destination.add(travel.scale(fraction));
+            // The swept AABB is only broad-phase: a diagonal corner inside that box may miss the actual path.
+            if(fraction>0)for(var shape:level.getCollisions(player,current.expandTowards(step.scale(fraction)))){
+                for(var obstacle:shape.toAabbs())fraction=Math.min(fraction,VoidStepPath.collisionFraction(current,step,obstacle));
+            }
+            destination = destination.add(step.scale(fraction));
             if (fraction < 1) break;
             remaining -= length;
         }
