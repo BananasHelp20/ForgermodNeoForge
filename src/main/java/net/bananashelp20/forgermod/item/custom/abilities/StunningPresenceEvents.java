@@ -35,7 +35,7 @@ public final class StunningPresenceEvents {
         if(!active(player)) return;var aura=AURAS.get(player.getUUID());long now=player.level().getGameTime();
         if(now<aura.nextPulse) {animate(player,aura,now);return;}
         double radius=RADIUS;
-        for(var target:aura.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(radius),e->WeaponAbilityTargets.enemy(player,e) && player.distanceToSqr(e)<=radius*radius && player.hasLineOfSight(e))) {
+        for(var target:aura.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(radius),e->e!=player && e.isAlive() && !e.isSpectator() && player.distanceToSqr(e)<=radius*radius && player.hasLineOfSight(e))) {
             int immunity=target.invulnerableTime;target.invulnerableTime=0;
             try {target.hurt(player.damageSources().indirectMagic(player,player),1);}finally {target.invulnerableTime=Math.max(immunity,target.invulnerableTime);}
             WeaponControlLocks.acquire(target,player.getUUID(),AdditionalAbilities.STUNNING_PRESENCE,10);

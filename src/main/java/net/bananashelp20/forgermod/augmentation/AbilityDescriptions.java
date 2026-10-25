@@ -113,6 +113,9 @@ public final class AbilityDescriptions {
                             number(net.bananashelp20.forgermod.item.custom.abilities.ZeusStrikePlan.waveRadius(rank-4))+" blocks",Math.clamp(rank-4,1,4)+(rank==5?" wave":" waves"));
             case "tooltips.forgermod.ability.eye_of_the_storm" -> text(id+".reviewed","you create a small storm around you with you being the center. This storm affects all enemies within a %s and lasts %s.",
                     number(ReviewedRanks.stormRadius(rank))+" block radius",(ReviewedRanks.stormTicks(rank)/20+jade)+" seconds");
+            case AdditionalAbilities.STUNNING_PRESENCE -> text(id+".reviewed",
+                    "Create an area (%s) around you where you stun every entity for a short time every %s.",
+                    "10 blocks radius", number(Math.round(40-(rank-1)*20F/3)/20.0)+" seconds");
             case AdditionalAbilities.DISPLACE -> rank>=4
                     ?text(id+".reviewed.max","Aim at any %s to swap places with it when activating the ability while aiming at it.","visible entity")
                     :text(id+".reviewed","Aim at any living entity within %s to swap places with it when activating the ability while aiming at it.","10 blocks");

@@ -616,6 +616,7 @@
   "tooltips.forgermod.ability.direct_current": "Mark two mobs with the ability key to stun them and create a damaging line.",
   "tooltips.forgermod.ability.direct_current.card": "Mark two mobs with the ability key to stun them and create a damaging line.",
   "tooltips.forgermod.ability.static_field.name": "Static Field",
+  "tooltips.forgermod.ability.stunning_presence.reviewed": "Create an area (%s) around you where you stun every entity for a short time every %s.",
   "tooltips.forgermod.ability.stunning_presence.name": "Stunning Presence",
   "tooltips.forgermod.ability.stunning_presence": "For 30 seconds, repeatedly damage and briefly stun visible enemies within 10 blocks.",
   "tooltips.forgermod.ability.stunning_presence.card": "Repeatedly damage and stun nearby enemies for 30 seconds.",
