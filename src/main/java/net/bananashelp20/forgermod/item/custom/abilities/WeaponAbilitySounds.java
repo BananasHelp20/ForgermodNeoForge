@@ -12,7 +12,7 @@ import static net.bananashelp20.forgermod.augmentation.AdditionalAbilities.*;
 public final class WeaponAbilitySounds {
     public record Clip(SoundEvent sound,float volume,float pitch){}
     private static final Set<String> EXISTING=Set.of(EXPLOSION,CINDER_DECOY,EXPLOSIVE_HITS,CRUCIBLE_HOOK,SWING_ATTACK,DEATH_STARE,
-            FLAMING_STOMP,FLAMEBORN,ENDER_SWING,FLAME_BREATH,VOID_PULSE,GRAVITY_WELL,THUNDERCLAP,WINDCHARGE,POCKET_STORM,SKULL_THROW,CHALLENGE_ROAR,
+            UPWIND,FLAMING_STOMP,FLAMEBORN,ENDER_SWING,FLAME_BREATH,VOID_PULSE,GRAVITY_WELL,THUNDERCLAP,WINDCHARGE,POCKET_STORM,SKULL_THROW,CHALLENGE_ROAR,
             Augmentations.AREA_DISCHARGE,"tooltips.forgermod.ability.void_step","tooltips.forgermod.ability.sudden_presence","tooltips.forgermod.ability.sonic_boom");
     private WeaponAbilitySounds(){}
     private static Clip cue(SoundEvent sound,float volume,float pitch){return new Clip(sound,volume,pitch);}
@@ -44,7 +44,6 @@ public final class WeaponAbilitySounds {
             case STUNNING_PRESENCE -> List.of(cue(SoundEvents.CONDUIT_ACTIVATE,0.6F,1.3F), cue(SoundEvents.TRIDENT_THUNDER,0.25F,1.8F));
             case DOWNDRAFT_BELL -> List.of(cue(SoundEvents.BREEZE_WIND_CHARGE_BURST,0.75F,0.65F));
             case CROSSWIND -> List.of(cue(SoundEvents.BREEZE_WIND_CHARGE_BURST,0.6F,1.5F));
-            case UPWIND -> List.of(cue(SoundEvents.BREEZE_SHOOT,0.65F,1.3F));
             case VACUUM_BURST -> List.of(cue(SoundEvents.BREEZE_WIND_CHARGE_BURST,0.75F,1.25F));
             case FEATHER_SHELTER -> List.of(cue(SoundEvents.PHANTOM_FLAP,0.6F,1.2F));
             case BLOOD_RUSH -> List.of(cue(SoundEvents.PLAYER_ATTACK_STRONG,0.6F,1.15F), cue(SoundEvents.WARDEN_HEARTBEAT,0.55F,1.5F));

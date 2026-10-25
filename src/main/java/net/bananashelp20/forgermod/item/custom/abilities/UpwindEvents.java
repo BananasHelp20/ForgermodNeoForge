@@ -48,6 +48,7 @@ public final class UpwindEvents {
             target.setDeltaMovement(motion.x,Math.max(motion.y,strength*(1-resistance)),motion.z);target.hasImpulse=true;
             if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
             player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.CLOUD,target.getX(),target.getY()+.2,target.getZ(),16,.4,.2,.4,.07);
+            player.serverLevel().playSound(null,target.blockPosition(),net.minecraft.sounds.SoundEvents.BREEZE_SHOOT,net.minecraft.sounds.SoundSource.PLAYERS,.65F,1.3F);
         }
     }
     @SubscribeEvent

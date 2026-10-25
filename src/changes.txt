@@ -424,3 +424,5 @@
 - Fiery Flaming Stomp impact: layered a low-pitched fire-charge burst over the heavy Vertical Strike impact, playing together at the stomp landing location.
 
 - Void Pulse implode/explode audio: replaced the inward chime with a reversed vanilla teleport sample fitted to its half-second contraction, then plays normal vanilla teleport on outward release instead of a generic explosion. Added registered custom sound and subtitle.
+
+- Upwind sound on empowered hit: removed the arming sound and moved its wind burst to the affected enemy when the successful empowered melee hit applies its launch.
