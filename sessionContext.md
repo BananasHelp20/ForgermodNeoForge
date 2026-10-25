@@ -803,3 +803,5 @@ The user clarified that ordinary tool sets are only for tungsten, titanium, dama
 - Review 44 Magnetic Throw implemented: Applied the exact approved aim-and-activate wording in item and learning-card descriptions, preserving melee targeting range, launch velocity and cooldown. Build and all 421 required GameTests passed; existing unit tests rerun after review.
 
 - Review 45 Null Receipt implemented: Applied approved wording with the entire current hit-count phrase in white. Shared the existing five-hit count between runtime and text; expiry, stored knockback, trigger and cooldown unchanged. Build and all 421 required GameTests passed; unit checks rerun after review.
+
+- Review 46 Pocket Storm implemented: Applied the exact approved sentence to weapon and learning-card descriptions, retaining all existing melee trigger, area damage, knockback and cooldown behavior. Build and all 421 required GameTests passed; unit checks rerun after review.
