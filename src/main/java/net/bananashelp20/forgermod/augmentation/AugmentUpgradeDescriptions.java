@@ -202,7 +202,7 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats, "burn", 2 + rank, "seconds_long");
             }
             case AdditionalAbilities.VOID_PULSE -> {
-                numeric(stats, "radius", 3 + rank, "blocks");
+                numeric(stats, "radius", net.bananashelp20.forgermod.item.custom.abilities.VoidPulseAbility.radius(rank), "blocks");
                 text(stats, "knockback", .4 + .2 * rank, "stronger_knockback");
             }
             case AdditionalAbilities.GRAVITY_WELL -> text(stats, "pull", .5 + .1 * rank, "stronger_pull");

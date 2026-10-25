@@ -564,6 +564,7 @@
   "tooltips.forgermod.passive.void_grip.name": "Void Grip",
   "tooltips.forgermod.passive.void_grip": "Your melee hits cause 25% less knockback.",
   "tooltips.forgermod.passive.void_grip.card": "Your melee hits cause 25% less knockback.",
+  "tooltips.forgermod.ability.void_pulse.reviewed": "Push living entities in a %s away from you.",
   "tooltips.forgermod.ability.void_pulse.name": "Void Pulse",
   "tooltips.forgermod.ability.void_pulse": "Release a burst that pushes nearby mobs away without dealing damage.",
   "tooltips.forgermod.ability.void_pulse.card": "Push nearby mobs away without dealing damage.",

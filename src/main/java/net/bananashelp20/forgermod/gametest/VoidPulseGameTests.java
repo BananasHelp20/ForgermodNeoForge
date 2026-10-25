@@ -16,6 +16,42 @@ import net.neoforged.neoforge.gametest.*;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 @GameTestHolder(ForgerMod.MOD_ID) @PrefixGameTestTemplate(false)
 public class VoidPulseGameTests {
+    @GameTest(template="riftfang_test")
+    public static void approvedDescriptionHasOnlyCurrentRadiusWhite(GameTestHelper test) {
+        int count=0;
+        for(var entry:ModItems.ITEMS.getEntries()) {
+            if(!(entry.get() instanceof InanisiumWeapon)) continue;
+            count++;
+            for(int rank=1;rank<=4;rank++) for(boolean compact:new boolean[]{false,true}) {
+                var text=AbilityDescriptions.description(new ItemStack(entry.get()),AdditionalAbilities.VOID_PULSE,rank,compact);var white=new StringBuilder();
+                text.visit((style,part)->{if(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+                test.assertTrue(text.getString().equals("Push living entities in a "+(3+rank)+" block radius away from you."),"Wrong current pulse description");
+                test.assertTrue(white.toString().equals((3+rank)+" block radius"),"Wrong pulse highlighting");
+            }
+        }
+        test.assertTrue(count==15,"Skipped pulse variants");test.succeed();
+    }
+    @GameTest(template="riftfang_test",batch="review_void_pulse_all_living")
+    public static void pulsePushesNonhostilePlayersButNotCasterOrItems(GameTestHelper test) throws Exception {
+        var owner=TestPlayers.survival(test);var other=TestPlayers.survival(test);
+        var origin=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,5,8)));
+        for(int x=6;x<=12;x++) for(int y=5;y<=8;y++) for(int z=6;z<=10;z++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        owner.setPos(origin);other.setPos(origin.add(2,0,0));
+        var item=new net.minecraft.world.entity.item.ItemEntity(test.getLevel(),origin.x,origin.y,origin.z+2,new ItemStack(Items.STONE));item.setNoGravity(true);test.getLevel().addFreshEntity(item);
+        boolean pvp=owner.server.isPvpAllowed();owner.server.setPvpAllowed(false);
+        var release=VoidPulseAbility.class.getDeclaredMethod("release",net.minecraft.server.level.ServerPlayer.class,int.class);release.setAccessible(true);
+        try {
+            test.assertFalse(WeaponAbilityTargets.enemy(owner,other),"Fixture player is hostile");
+            for(int rank=1;rank<=4;rank++) {
+                owner.setDeltaMovement(Vec3.ZERO);other.setDeltaMovement(Vec3.ZERO);item.setDeltaMovement(Vec3.ZERO);float health=other.getHealth();
+                release.invoke(null,owner,rank);
+                test.assertTrue(Math.abs(other.getDeltaMovement().x-(.4+.2*rank))<.0001,"Nonhostile player is excluded or has wrong rank knockback");
+                test.assertTrue(owner.getDeltaMovement().equals(Vec3.ZERO) && item.getDeltaMovement().equals(Vec3.ZERO),"Pulse affects caster or nonliving item");
+                test.assertTrue(other.getHealth()==health,"Pulse deals damage");
+            }
+        } finally {owner.server.setPvpAllowed(pvp);item.discard();owner.server.getPlayerList().remove(other);owner.server.getPlayerList().remove(owner);}
+        test.succeed();
+    }
     private static final class SoundWire extends net.minecraft.network.Connection {
         final java.util.List<net.minecraft.network.protocol.game.ClientboundSoundPacket> sounds=new java.util.ArrayList<>();
         SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}

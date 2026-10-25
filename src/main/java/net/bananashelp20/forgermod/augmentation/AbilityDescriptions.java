@@ -118,6 +118,8 @@ public final class AbilityDescriptions {
                     number(ReviewedRanks.stormRadius(rank))+" block radius",(ReviewedRanks.stormTicks(rank)/20+jade)+" seconds");
             case "tooltips.forgermod.ability.sudden_presence" -> text(id+".reviewed",
                     "Teleport behind the nearest hostile mob within %s",ReviewedRanks.suddenPresenceRange(rank)+" blocks");
+            case AdditionalAbilities.VOID_PULSE -> text(id+".reviewed","Push living entities in a %s away from you.",
+                    net.bananashelp20.forgermod.item.custom.abilities.VoidPulseAbility.radius(rank)+" block radius");
             case AdditionalAbilities.STUNNING_PRESENCE -> text(id+".reviewed",
                     "Create an area (%s) around you where you stun every entity for a short time every %s.",
                     "10 blocks radius", number(Math.round(40-(rank-1)*20F/3)/20.0)+" seconds");

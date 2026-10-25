@@ -17,11 +17,12 @@ public final class VoidPulseAbility {
     private record Pulse(ItemStack stack,int slot,ServerLevel level,int rank,long release) {}
     private static final Map<UUID,Pulse> PULSES=new HashMap<>();
     private VoidPulseAbility() {}
+    public static int radius(int rank) {return 3+Math.max(1,rank);}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
         int rank=Augmentations.level(stack,AdditionalAbilities.VOID_PULSE);
         if(rank<=0 || active(player))return false;
         PULSES.put(player.getUUID(),new Pulse(stack,player.getInventory().selected,player.serverLevel(),rank,player.level().getGameTime()+VoidPulseParticles.CHARGE_TICKS));
-        double radius=3+rank;
+        double radius=radius(rank);
         for(int i=0;i<64;i++) {
             double a=i*Math.PI/32,r=radius*(.8+.2*(i%3)/2.0);
             player.serverLevel().sendParticles(new VoidPulseParticles.Options(false,player.getId()),player.getX()+Math.cos(a)*r,player.getY()+.25+(i%4)*.45,player.getZ()+Math.sin(a)*r,0,0,0,0,1);
@@ -35,8 +36,8 @@ public final class VoidPulseAbility {
     }
     public static void cancel(UUID owner){PULSES.remove(owner);}
     private static void release(ServerPlayer player,int rank) {
-        double radius=3+rank,strength=.4+.2*rank;
-        for(var target:player.level().getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(radius),e->e.isAlive() && (e instanceof Mob || WeaponAbilityTargets.enemy(player,e)))) {
+        double radius=radius(rank),strength=.4+.2*rank;
+        for(var target:player.level().getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(radius),e->e!=player && e.isAlive() && !e.isSpectator())) {
             if(player.distanceToSqr(target)>radius*radius || !player.hasLineOfSight(target))continue;
             double dx=target.getX()-player.getX(),dz=target.getZ()-player.getZ();
             if(dx*dx+dz*dz<.0001){dx=player.getLookAngle().x;dz=player.getLookAngle().z;if(dx*dx+dz*dz<.0001)dz=1;}
