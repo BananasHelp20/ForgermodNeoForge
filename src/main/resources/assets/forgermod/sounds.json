@@ -20,5 +20,11 @@
       "forgermod:ability/electric_chain_2",
       "forgermod:ability/electric_chain_3"
     ]
+  },
+  "ringing_steel_hit": {
+    "subtitle": "subtitles.forgermod.ringing_steel_hit",
+    "sounds": [
+      "forgermod:ability/ringing_steel_hit"
+    ]
   }
 }

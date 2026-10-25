@@ -462,3 +462,7 @@
 - Stepping Through the Void normal blink: follows the view direction without ground sliding, using exact swept collision against actual shapes so diagonal near-misses do not shorten the teleport. Retained level I 10-block range, existing matching-dagger range bonus, cooldowns, camera freedom and passable-plant handling; no mana, Etherwarp or speed boost.
 
 - Stepping Through the Void normal blink verification: corrected the existing offhand-material GameTest fixture to refresh native player tracking after mock relocation, preventing stale spawn viewers from producing false networking failures.
+
+- Ringing Steel reinforcement and metal impact: accepts successful hits on all mobs, including allied Necromancer guards, and marks their actual bank-owned weapon wear/breakage for saving. Replaced stone-hit/bell layers with a true metallic impact and decaying steel ring; retained fifteen durability damage and spark feedback.
+
+- Ringing Steel reinforcement and metal impact: shortened its descriptions and refer to the target rather than implying only hostile enemies qualify.

@@ -35,16 +35,17 @@ public final class RingingSteelEvents {
     }
     @SubscribeEvent public static void landed(LivingDamageEvent.Post event) {
         if(!event.getSource().is(DamageTypes.PLAYER_ATTACK) || !(event.getSource().getEntity() instanceof ServerPlayer player)
-                || !active(player) || !WeaponAbilityTargets.hostileTo(player,event.getEntity())
+                || !active(player) || !(event.getEntity() instanceof net.minecraft.world.entity.Mob || WeaponAbilityTargets.hostileTo(player,event.getEntity()))
                 || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0)return;
         cancel(player.getUUID());
         var target=event.getEntity();
-        player.serverLevel().playSound(null,target.blockPosition(),net.minecraft.sounds.SoundEvents.ANVIL_HIT,net.minecraft.sounds.SoundSource.PLAYERS,.9F,1.1F);
-        player.serverLevel().playSound(null,target.blockPosition(),net.minecraft.sounds.SoundEvents.BELL_BLOCK,net.minecraft.sounds.SoundSource.PLAYERS,.35F,1.8F);
+        player.serverLevel().playSound(null,target.blockPosition(),net.bananashelp20.forgermod.sound.ModSounds.RINGING_STEEL_HIT.get(),net.minecraft.sounds.SoundSource.PLAYERS,1F,1F);
         player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,target.getX(),target.getY()+target.getBbHeight()*.5,target.getZ(),10,.2,.25,.2,.12);
         for(var slot:List.of(EquipmentSlot.MAINHAND,EquipmentSlot.OFFHAND)) {
             var held=event.getEntity().getItemBySlot(slot);if(!weapon(held))continue;
-            held.hurtAndBreak(15,event.getEntity(),slot);break;
+            held.hurtAndBreak(15,event.getEntity(),slot);
+            if(event.getEntity() instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);
+            break;
         }
     }
     @SubscribeEvent public static void tick(PlayerTickEvent.Post event) {if(event.getEntity() instanceof ServerPlayer player)active(player);}

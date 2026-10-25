@@ -17,9 +17,40 @@ public class RingingSteelGameTests {
         int sparks;
         SoundWire(){super(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);new io.netty.channel.embedded.EmbeddedChannel(this);}
         @Override public void send(net.minecraft.network.protocol.Packet<?> packet,net.minecraft.network.PacketSendListener listener,boolean flush){
-            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound && (sound.getSound().value()==net.minecraft.sounds.SoundEvents.ANVIL_HIT || sound.getSound().value()==net.minecraft.sounds.SoundEvents.BELL_BLOCK))clangs.add(sound);
+            if(packet instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket sound && sound.getSound().value()==net.bananashelp20.forgermod.sound.ModSounds.RINGING_STEEL_HIT.get())clangs.add(sound);
             if(packet instanceof net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket particle && particle.getParticle()==net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK)sparks+=particle.getCount();
         }
+    }
+    @GameTest(template="riftfang_test",batch="ringing_steel_real_reinforcement")
+    public static void nativeHitsRingAndWearActualNecromancerBankWeapons(GameTestHelper test)throws Exception{
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());player.setYRot(0);player.setXRot(0);
+        var summon=Augmentations.setLevel(new ItemStack(ModItems.GHOST_AXE.get()),AdditionalAbilities.BONE_GUARD,5);player.setItemInHand(InteractionHand.MAIN_HAND,summon);
+        var bank=NecromancerLoadouts.get(player,summon);bank.types.clear();bank.types.add(0);bank.gear.setItem(0,new ItemStack(Items.IRON_SWORD));
+        var dirty=new java.util.concurrent.atomic.AtomicInteger();bank.gear.addListener(ignored->dirty.incrementAndGet());
+        test.assertTrue(BoneGuardEvents.activate(player,summon),"Cannot summon the reinforcement fixture");
+        var guard=test.getLevel().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(12),mob->mob instanceof BoneGuardEvents.FriendlyGuard friend && friend.owner()==player && mob.isAlive()).getFirst();
+        guard.setNoAi(true);guard.setNoGravity(true);guard.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);guard.setHealth(1000);guard.getAttribute(Attributes.ARMOR).setBaseValue(0);
+        var old=player.connection;var wire=new SoundWire();new net.minecraft.server.network.ServerGamePacketListenerImpl(player.server,wire,player,net.minecraft.server.network.CommonListenerCookie.createInitial(player.getGameProfile(),false));int checked=0;
+        try{
+            for(var entry:ModItems.ITEMS.getEntries()){
+                if(!(entry.get() instanceof PulsiteWeapon weapon) || weapon.isAxe() || weapon.isDagger())continue;checked++;
+                var stack=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.RINGING_STEEL);player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int i=0;i<60;i++)player.doTick();player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                var sword=new ItemStack(Items.IRON_SWORD);sword.setDamageValue(5);bank.gear.setItem(0,sword);guard.setItemSlot(EquipmentSlot.MAINHAND,bank.gear.getItem(0));guard.setPos(player.position().add(0,0,2));guard.invulnerableTime=0;guard.setHealth(1000);guard.setDeltaMovement(0,0,0);
+                wire.clangs.clear();wire.sparks=0;AbilityTestPackets.use(player,0);test.assertTrue(RingingSteelEvents.active(player) && wire.clangs.isEmpty(),"Charge is not armed or plays the impact early");
+                test.assertTrue(guard.isAlliedTo(player) && guard.getMainHandItem()==bank.gear.getItem(0),"Fixture is not an allied guard with actual bank gear");dirty.set(0);player.setOnGround(false);player.fallDistance=0;player.setSprinting(false);player.attack(guard);
+                test.assertTrue(!RingingSteelEvents.active(player) && sword.getDamageValue()==20 && bank.gear.getItem(0).getDamageValue()==20 && dirty.get()>0,"Allied reinforcement is excluded or its saved weapon does not wear");
+                test.assertTrue(wire.clangs.size()==1 && wire.sparks==10,"Actual reinforcement hit lacks its single ringing metal sound/sparks");
+                WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));AbilityTestPackets.use(player,0);test.assertFalse(RingingSteelEvents.active(player),"Successful reinforcement strike bypasses cooldown");
+                player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());AbilityTestPackets.use(player,0);test.assertTrue(RingingSteelEvents.active(player),"Cannot arm the weapon-break case");sword.setDamageValue(sword.getMaxDamage()-1);for(int i=0;i<60;i++)player.doTick();guard.invulnerableTime=0;guard.setPos(player.position().add(0,0,2));guard.setDeltaMovement(0,0,0);dirty.set(0);player.setOnGround(false);player.fallDistance=0;player.attack(guard);
+                test.assertTrue(bank.gear.getItem(0).isEmpty() && guard.getMainHandItem().isEmpty() && dirty.get()>0 && wire.clangs.size()==2,"Weapon break is not shared/persisted or its impact repeats");
+                WeaponAbilityNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre(player));
+            }
+            var deathSword=new ItemStack(Items.IRON_SWORD);bank.gear.setItem(0,deathSword);guard.setItemSlot(EquipmentSlot.MAINHAND,deathSword);player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());for(int i=0;i<60;i++)player.doTick();AbilityTestPackets.use(player,0);
+            guard.setHealth(1);guard.invulnerableTime=0;guard.setPos(player.position().add(0,0,2));wire.clangs.clear();dirty.set(0);player.setOnGround(false);player.fallDistance=0;player.attack(guard);
+            test.assertTrue(!guard.isAlive() && deathSword.getDamageValue()==15 && dirty.get()>0 && wire.clangs.size()==1,"Lethal reinforcement hit loses its weapon wear or ringing impact");
+            NecromancerEquipment.death(new net.neoforged.neoforge.event.tick.EntityTickEvent.Post(guard));test.assertTrue(bank.gear.getItem(0).getDamageValue()==15 && guard.getMainHandItem().isEmpty(),"Dead reinforcement cleanup loses bank weapon wear");
+            test.assertTrue(checked==5,"Skipped ringing claymore variants");
+        }finally{RingingSteelEvents.cancel(player.getUUID());BoneGuardEvents.cancel(player.getUUID());WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.connection=old;player.server.getPlayerList().remove(player);}test.succeed();
     }
     @GameTest(template="riftfang_test",timeoutTicks=650)
     public static void allVariantsStayArmedBeyondThirtySecondsAndCooldownStartsOnlyOnUseOrSwitch(GameTestHelper test) throws Exception {
@@ -69,9 +100,9 @@ public class RingingSteelGameTests {
             test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL),"Cannot arm");wire.clangs.clear();wire.sparks=0;
             mob.invulnerableTime=0;mob.hurt(player.damageSources().indirectMagic(player,player),1);test.assertTrue(RingingSteelEvents.active(player) && sword.getDamageValue()==6,"Spell consumes strike");test.assertTrue(wire.clangs.isEmpty() && wire.sparks==0,"Spell plays metallic impact");
             mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);
-            test.assertTrue(wire.clangs.size()==2 && wire.clangs.get(0).getSound().value()==net.minecraft.sounds.SoundEvents.ANVIL_HIT && wire.clangs.get(1).getSound().value()==net.minecraft.sounds.SoundEvents.BELL_BLOCK && wire.clangs.stream().allMatch(sound->sound.getSource()==net.minecraft.sounds.SoundSource.PLAYERS) && wire.sparks==10,"Empowered hit lacks its one clang, ringing tail or spark burst");
+            test.assertTrue(wire.clangs.size()==1 && wire.clangs.getFirst().getSound().value()==net.bananashelp20.forgermod.sound.ModSounds.RINGING_STEEL_HIT.get() && wire.clangs.stream().allMatch(sound->sound.getSource()==net.minecraft.sounds.SoundSource.PLAYERS) && wire.sparks==10,"Empowered hit lacks its one clang, ringing tail or spark burst");
             test.assertTrue(sword.getDamageValue()==21 && shield.getDamageValue()==10 && chest.getDamageValue()==10,"Wrong durability target or amount");test.assertFalse(RingingSteelEvents.active(player),"Strike not consumed");
-            mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(sword.getDamageValue()==21 && wire.clangs.size()==2 && wire.sparks==10,"Strike or metallic feedback repeats");
+            mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(sword.getDamageValue()==21 && wire.clangs.size()==1 && wire.sparks==10,"Strike or metallic feedback repeats");
             var axe=new ItemStack(Items.IRON_AXE);mob.setItemSlot(EquipmentSlot.MAINHAND,shield);mob.setItemSlot(EquipmentSlot.OFFHAND,axe);RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(axe.getDamageValue()==15 && shield.getDamageValue()==10,"Offhand fallback damages shield");
             mob.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(Items.SHIELD));RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(shield.getDamageValue()==10 && !RingingSteelEvents.active(player),"No-weapon strike damages shield or fails to consume");
             sword=new ItemStack(Items.IRON_SWORD);sword.setDamageValue(sword.getMaxDamage()-1);mob.setItemSlot(EquipmentSlot.MAINHAND,sword);RecommendedAbilityRuntime.activate(player,stack,AdditionalAbilities.RINGING_STEEL);mob.invulnerableTime=0;mob.hurt(player.damageSources().playerAttack(player),1);test.assertTrue(sword.isEmpty(),"Last durability does not break weapon");

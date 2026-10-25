@@ -15,5 +15,7 @@ public final class ModSounds {
             ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"electric_travel")));
     public static final DeferredHolder<SoundEvent,SoundEvent> ELECTRIC_CHAIN=SOUNDS.register("electric_chain",
             ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"electric_chain")));
+    public static final DeferredHolder<SoundEvent,SoundEvent> RINGING_STEEL_HIT=SOUNDS.register("ringing_steel_hit",
+            ()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"ringing_steel_hit")));
     private ModSounds() {}
 }

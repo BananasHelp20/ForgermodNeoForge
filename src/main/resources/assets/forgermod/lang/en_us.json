@@ -1,4 +1,5 @@
 {
+  "subtitles.forgermod.ringing_steel_hit": "Steel rings",
   "subtitles.forgermod.electric_travel": "Electric current crackles",
   "subtitles.forgermod.void_pulse_charge": "Void energy gathers",
   "gui.forgermod.necromancer.add": "Add",
@@ -726,8 +727,8 @@
   "death.attack.forgermod.aftershock": "%1$s was silenced by an aftershock from %2$s",
   "death.attack.forgermod.aftershock.player": "%1$s was silenced by an aftershock from %2$s",
   "tooltips.forgermod.ability.ringing_steel.name": "Ringing Steel",
-  "tooltips.forgermod.ability.ringing_steel": "Your next melee hit deals 15 durability damage to the enemy's held weapon.",
-  "tooltips.forgermod.ability.ringing_steel.card": "Your next hit deals 15 durability damage to the enemy's weapon.",
+  "tooltips.forgermod.ability.ringing_steel": "Next melee hit: 15 durability damage to the target's held weapon.",
+  "tooltips.forgermod.ability.ringing_steel.card": "Next hit: 15 durability damage to the target's weapon.",
   "tooltips.forgermod.passive.stone_song.name": "Stone Song",
   "tooltips.forgermod.passive.stone_song": "Gain 2 armor below Y=0.",
   "tooltips.forgermod.passive.stone_song.card": "Gain 2 armor below Y=0.",
