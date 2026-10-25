@@ -434,3 +434,5 @@
 - Strengthened Bones protection sound: moved the bone/skeleton cue from arming to the successful qualifying melee kill that grants invulnerability, with no repeated cue on later kills during protection.
 
 - Crucible Hook grapple then fiery impact: successful mob/block casts play a thrown-hook and chain cue; the mob smash plays the heavy mace/anvil/fire burst shared with Flaming Stomp only on arrival. Rehooks play cast audio only after validation. Gameplay and cooldowns are unchanged.
+
+- Rooting Roots earth-and-wood audio: replaced the soft planting/bonemeal cue with deeper cracking mangrove roots layered with disturbed rooted dirt for a stronger eruption sound.
