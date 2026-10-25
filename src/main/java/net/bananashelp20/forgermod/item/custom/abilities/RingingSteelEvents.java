@@ -38,6 +38,10 @@ public final class RingingSteelEvents {
                 || !active(player) || !WeaponAbilityTargets.hostileTo(player,event.getEntity())
                 || event.getNewDamage()+event.getReduction(DamageContainer.Reduction.ABSORPTION)<=0)return;
         cancel(player.getUUID());
+        var target=event.getEntity();
+        player.serverLevel().playSound(null,target.blockPosition(),net.minecraft.sounds.SoundEvents.ANVIL_HIT,net.minecraft.sounds.SoundSource.PLAYERS,.9F,1.1F);
+        player.serverLevel().playSound(null,target.blockPosition(),net.minecraft.sounds.SoundEvents.BELL_BLOCK,net.minecraft.sounds.SoundSource.PLAYERS,.35F,1.8F);
+        player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,target.getX(),target.getY()+target.getBbHeight()*.5,target.getZ(),10,.2,.25,.2,.12);
         for(var slot:List.of(EquipmentSlot.MAINHAND,EquipmentSlot.OFFHAND)) {
             var held=event.getEntity().getItemBySlot(slot);if(!weapon(held))continue;
             held.hurtAndBreak(15,event.getEntity(),slot);break;
