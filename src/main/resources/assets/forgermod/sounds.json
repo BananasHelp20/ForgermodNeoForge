@@ -26,5 +26,26 @@
     "sounds": [
       "forgermod:ability/ringing_steel_hit"
     ]
+  },
+  "rooting_roots_grow": {
+    "subtitle": "subtitles.forgermod.rooting_roots_grow",
+    "sounds": [
+      "forgermod:ability/rooting_roots_grow",
+      "forgermod:ability/rooting_roots_grow_2"
+    ]
+  },
+  "rooting_roots_hold": {
+    "subtitle": "subtitles.forgermod.rooting_roots_hold",
+    "sounds": [
+      "forgermod:ability/rooting_roots_hold",
+      "forgermod:ability/rooting_roots_hold_2"
+    ]
+  },
+  "rooting_roots_retreat": {
+    "subtitle": "subtitles.forgermod.rooting_roots_retreat",
+    "sounds": [
+      "forgermod:ability/rooting_roots_retreat",
+      "forgermod:ability/rooting_roots_retreat_2"
+    ]
   }
 }

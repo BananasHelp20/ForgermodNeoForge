@@ -989,5 +989,8 @@
   "commands.forgermod.augment.already": "%s is already applied. Use /augment upgrade to increase its level.",
   "commands.forgermod.augment.missing": "%s is not applied to the held item. Use /augment new first.",
   "commands.forgermod.augment.no_super": "%s has no super form on this item.",
-  "commands.forgermod.augment.updated.multiple": "Updated %s on %s targets."
+  "commands.forgermod.augment.updated.multiple": "Updated %s on %s targets.",
+  "subtitles.forgermod.rooting_roots_grow": "Roots erupt and entwine",
+  "subtitles.forgermod.rooting_roots_hold": "Roots creak and tighten",
+  "subtitles.forgermod.rooting_roots_retreat": "Roots withdraw into earth"
 }

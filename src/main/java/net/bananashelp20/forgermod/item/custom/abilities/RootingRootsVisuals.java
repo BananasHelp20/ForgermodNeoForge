@@ -51,9 +51,13 @@ public final class RootingRootsVisuals {
     }
     private static final class Binding {
         final UUID owner;final Mob target;final ServerLevel level;final double ground;final long born;final List<Root> models=new ArrayList<>();
-        boolean grown;float lastHeight;long retreat=-1;
+        boolean grown;float lastHeight;long retreat=-1,lastCreak=Long.MIN_VALUE;
         Binding(UUID owner,Mob target,ServerLevel level,double ground) {this.owner=owner;this.target=target;this.level=level;this.ground=ground;born=level.getGameTime();}
         float height() {return (float)Math.max(.3,target.getY()-ground+Math.min(2,target.getBbHeight()*.7));}
+        void sound(RootingRootsSounds.Phase phase) {
+            var root=models.getFirst();
+            RootingRootsSounds.play(level,root.getX(),ground,root.getZ(),phase);
+        }
     }
     private RootingRootsVisuals() {}
     public static void grow(UUID owner,Mob target) {
@@ -77,6 +81,7 @@ public final class RootingRootsVisuals {
         // A rapid replacement may have one old animation, never an unbounded display pile.
         RETIRING.removeIf(old->{if(old.target.getUUID().equals(binding.target.getUUID())) {destroy(old);return true;}return false;});
         binding.retreat=binding.level.getGameTime();
+        binding.sound(RootingRootsSounds.Phase.RETREAT);
         for(var root:binding.models) root.shape(binding.lastHeight,false,ANIMATION_TICKS);
         RETIRING.add(binding);
     }
@@ -93,11 +98,17 @@ public final class RootingRootsVisuals {
                 || !state.rootedBy(binding.target.getUUID(),binding.owner,now)) {ACTIVE.remove(binding.target.getUUID());retreat(binding);continue;}
             if(!binding.grown && now>binding.born) {
                 binding.grown=true;binding.lastHeight=binding.height();
+                binding.sound(RootingRootsSounds.Phase.GROW);
                 for(var root:binding.models) root.shape(binding.lastHeight,true,ANIMATION_TICKS);
             } else if(binding.grown && Math.abs(binding.height()-binding.lastHeight)>.05f) {
                 // Adapt only to actual vertical movement, never restart a stationary hold.
                 binding.lastHeight=binding.height();
                 for(var root:binding.models) root.shape(binding.lastHeight,true,ANIMATION_TICKS);
+            }
+            // Quiet tension creaks while held, staggered across targets; never restart growth.
+            if(binding.grown && now>=binding.born+ANIMATION_TICKS+20
+                && Math.floorMod(now-binding.born+binding.target.getId(),50)==0 && binding.lastCreak!=now) {
+                binding.lastCreak=now;binding.sound(RootingRootsSounds.Phase.HOLD);
             }
         }
         RETIRING.removeIf(binding->{if(binding.level==level && now>=binding.retreat+ANIMATION_TICKS+2) {destroy(binding);return true;}return false;});

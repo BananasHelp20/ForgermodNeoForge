@@ -12,7 +12,7 @@ public final class WeaponAbilitySounds {
     public record Clip(SoundEvent sound,float volume,float pitch){}
     private static final Set<String> EXISTING=Set.of(EXPLOSION,CINDER_DECOY,EXPLOSIVE_HITS,CRUCIBLE_HOOK,SWING_ATTACK,DEATH_STARE,
             STATIC_BLADE,UPWIND,FLAMING_STOMP,FLAMEBORN,ENDER_SWING,FLAME_BREATH,VOID_PULSE,GRAVITY_WELL,THUNDERCLAP,WINDCHARGE,POCKET_STORM,SKULL_THROW,CHALLENGE_ROAR,
-            Augmentations.AREA_DISCHARGE,"tooltips.forgermod.ability.strengthened_bones","tooltips.forgermod.ability.void_step","tooltips.forgermod.ability.sudden_presence","tooltips.forgermod.ability.sonic_boom");
+            Augmentations.AREA_DISCHARGE,"tooltips.forgermod.ability.rooting_roots","tooltips.forgermod.ability.strengthened_bones","tooltips.forgermod.ability.void_step","tooltips.forgermod.ability.sudden_presence","tooltips.forgermod.ability.sonic_boom");
     private WeaponAbilitySounds(){}
     private static Clip cue(SoundEvent sound,float volume,float pitch){return new Clip(sound,volume,pitch);}
     private static Clip cue(Holder<SoundEvent> sound,float volume,float pitch){return cue(sound.value(),volume,pitch);}
@@ -48,7 +48,6 @@ public final class WeaponAbilitySounds {
             case BONE_GUARD -> List.of(cue(SoundEvents.SKELETON_AMBIENT,0.4F,0.8F), cue(SoundEvents.SOUL_ESCAPE,0.6F,1.05F));
             case RINGING_STEEL -> List.of(cue(SoundEvents.ANVIL_HIT,0.6F,1.5F));
             case "tooltips.forgermod.ability.sonic_crit" -> List.of(cue(SoundEvents.SCULK_BLOCK_CHARGE,0.6F,0.9F));
-            case "tooltips.forgermod.ability.rooting_roots" -> List.of(cue(SoundEvents.MANGROVE_ROOTS_BREAK,0.9F,0.6F), cue(SoundEvents.ROOTED_DIRT_BREAK,0.7F,0.8F));
             case "tooltips.forgermod.ability.poisoned_vein" -> List.of(cue(SoundEvents.BREWING_STAND_BREW,0.65F,0.75F), cue(SoundEvents.SLIME_SQUISH_SMALL,0.4F,0.8F));
             case "tooltips.forgermod.ability.storing_anger" -> List.of(cue(SoundEvents.WARDEN_HEARTBEAT,0.65F,0.7F), cue(SoundEvents.BEACON_POWER_SELECT,0.4F,0.65F));
             case "tooltips.forgermod.ability.absolute_nightmare" -> List.of(cue(SoundEvents.AMBIENT_CAVE,0.8F,1.0F));

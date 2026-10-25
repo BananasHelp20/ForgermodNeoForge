@@ -466,3 +466,7 @@
 - Ringing Steel reinforcement and metal impact: accepts successful hits on all mobs, including allied Necromancer guards, and marks their actual bank-owned weapon wear/breakage for saving. Replaced stone-hit/bell layers with a true metallic impact and decaying steel ring; retained fifteen durability damage and spark feedback.
 
 - Ringing Steel reinforcement and metal impact: shortened its descriptions and refer to the target rather than implying only hostile enemies qualify.
+
+- Rooting Roots layered audio: added six root-heavy growth, binding-creak and withdrawal sound mixes using mangrove roots, rooted dirt, wood and azalea; two variations per phase and matching subtitles.
+- Rooting Roots: replaced generic activation-only audio with positional sounds synchronized to growth, hold and retraction; switching/expiry stop future binding creaks.
+- Rooting Roots audio: limited overlapping phase cues locally and staggered hold creaks to keep large groups controlled without silencing other areas; gameplay values unchanged.
