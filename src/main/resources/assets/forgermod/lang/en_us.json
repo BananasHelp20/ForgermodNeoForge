@@ -522,7 +522,7 @@
   "tooltips.forgermod.fire_resistant": "Item is fire-resistant",
   "tooltips.forgermod.gemstone_bonus.ruby": "+1 Damage",
   "tooltips.forgermod.gemstone_bonus.amethyst": "+0.4 Attack Speed",
-  "tooltips.forgermod.gemstone_bonus.jade": "Learned status-effect augments: +1 effect level, +1 second duration",
+  "tooltips.forgermod.gemstone_bonus.jade": "+1 effect level",
   "tooltips.forgermod.ability.swap_hint": "Shift + Alt + S cycles ability assignments through your configured keys",
   "tooltips.forgermod.ability.always_the_gardeners.name": "Always the Gardeners",
   "tooltips.forgermod.ability.always_the_gardeners": "Your next kill plants a 5-minute poison cloud. Everyone inside, including you, receives Poison I for 20 seconds.",
@@ -996,5 +996,6 @@
   "subtitles.forgermod.strengthened_bones_hit": "Bones crack and harden",
   "subtitles.forgermod.void_pulse_implode": "Void energy draws inward",
   "subtitles.forgermod.void_pulse_release": "Void energy erupts",
-  "subtitles.forgermod.echo_salvage_release": "Stored echoes resound"
+  "subtitles.forgermod.echo_salvage_release": "Stored echoes resound",
+  "tooltips.forgermod.gemstone_bonus.jade.duration": "+1 second effect duration"
 }

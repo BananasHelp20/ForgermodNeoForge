@@ -38,15 +38,17 @@ public class TooltipExamplesGameTests {
         test.assertFalse(contains(plain, "tooltips.forgermod.passive.heading") || contains(plain, "tooltips.forgermod.ability.shift_hint")
                 || contains(plain, "tooltips.forgermod.gemstone"), "Fresh example contains ability/gemstone clutter");
         var freshJade = tooltip(test, new ItemStack(ModItems.DEATHWISPER_DAGGER_JADE.get()));
-        test.assertTrue(freshJade.size() == 6 && key(freshJade.get(0)).equals("tooltips.forgermod.deathwisper_dagger.tooltip")
+        test.assertTrue(freshJade.size() == 7 && key(freshJade.get(0)).equals("tooltips.forgermod.deathwisper_dagger.tooltip")
                 && freshJade.get(1).getString().isEmpty() && key(freshJade.get(2)).equals("tooltips.forgermod.gemstone")
                 && key(freshJade.get(3)).equals("tooltips.forgermod.gemstone_bonus.jade")
-                && freshJade.get(4).getString().isEmpty() && key(freshJade.get(5)).equals("tooltips.forgermod.can_augment"),
+                && key(freshJade.get(4)).equals("tooltips.forgermod.gemstone_bonus.jade.duration")
+                && freshJade.get(5).getString().isEmpty() && key(freshJade.get(6)).equals("tooltips.forgermod.can_augment"),
                 "Fresh Jade example does not follow lore, blank, gemstone, bonuses, blank, augmentation notice");
         Component jadeName = (Component)((TranslatableContents)freshJade.get(2).getContents()).getArgs()[0];
         test.assertTrue(key(jadeName).equals("gemstone.forgermod.jade")
                 && jadeName.getStyle().getColor().getValue() == ChatFormatting.GREEN.getColor()
-                && freshJade.get(3).getStyle().getColor().getValue() == ChatFormatting.GREEN.getColor(),
+                && freshJade.get(3).getStyle().getColor().getValue() == ChatFormatting.GREEN.getColor()
+                && freshJade.get(4).getStyle().getColor().getValue() == ChatFormatting.GREEN.getColor(),
                 "Fresh Jade name/bonuses are not green");
         test.assertFalse(contains(freshJade, "tooltips.forgermod.can_infuse") || contains(freshJade, "tooltips.forgermod.fire_resistant")
                 || contains(freshJade, "tooltips.forgermod.passive.heading") || contains(freshJade, "tooltips.forgermod.ability.heading")

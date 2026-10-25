@@ -171,6 +171,7 @@ public class SwordItemWithEffect extends SwordItem {
             tooltip.add(Component.translatable("tooltips.forgermod.gemstone", Component.translatable("gemstone.forgermod." + gemstone).withStyle(color)).withStyle(ChatFormatting.GRAY));
             if (stack.has(net.minecraft.core.component.DataComponents.FIRE_RESISTANT)) tooltip.add(Component.translatable("tooltips.forgermod.fire_resistant").withStyle(ChatFormatting.GRAY));
             if (!"amber".equals(gemstone)) tooltip.add(Component.translatable("tooltips.forgermod.gemstone_bonus." + gemstone).withStyle(color));
+            if ("jade".equals(gemstone)) tooltip.add(Component.translatable("tooltips.forgermod.gemstone_bonus.jade.duration").withStyle(color));
         }
         boolean canAugment = !augmented && !hasAbilities;
         boolean canInfuse = net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack);

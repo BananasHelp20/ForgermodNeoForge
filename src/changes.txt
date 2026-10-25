@@ -479,3 +479,5 @@
 
 - Echo Salvage discharge sound: added two custom sonic/sculk resonance mixes with descending crystalline echoes over the normal heavy Vertical Strike impact; fuller stored banks sound slightly deeper. Added a dedicated sound event and subtitle.
 - Echo Salvage: discharge sound plays once per consumed bank for both native Vertical Strikes and converted successful melee hits, including reinforcements; misses, rejected/indirect hits and empty-bank strikes do not play it. Damage, storage and persistence unchanged.
+
+- Jade bonus tooltip rows: replaced the long infusion bonus sentence with two separate Jade-green tooltip lines: "+1 effect level" and "+1 second effect duration".
