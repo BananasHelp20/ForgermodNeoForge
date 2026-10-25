@@ -73,17 +73,16 @@ public class InanisiumWeapon extends SwordItemWithEffect {
 
     private static boolean stepThroughVoid(ServerPlayer player) {
         Vec3 direction = player.getLookAngle().normalize();
-        boolean paired = player.getMainHandItem().getItem() instanceof SwordItemWithEffect actual && actual.isDagger()
-                && player.getOffhandItem().getItem() instanceof InanisiumWeapon offhand && offhand.isDagger()
-                && net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player)
-                && Augmentations.level(player.getMainHandItem(),"tooltips.forgermod.ability.void_step")>0
-                && Augmentations.level(player.getOffhandItem(),"tooltips.forgermod.ability.void_step")>0;
-        int maxSteps = paired ? VoidStepPath.PAIRED_STEPS : VoidStepPath.STEPS;
+        int rank=Augmentations.level(player.getMainHandItem(),net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.ID);
+        boolean paired=net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.paired(player);
+        if(net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.etherwarpCast(player,player.getMainHandItem()))
+            return etherwarp(player,direction,net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.etherwarp(rank,paired));
+        double range=net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.blink(rank,paired);
         ServerLevel level = player.serverLevel();
         Vec3 start = player.position();
         AABB originalBox = player.getBoundingBox();
         Vec3 destination = start;
-        double remaining = maxSteps * VoidStepPath.STEP_DISTANCE;
+        double remaining = range;
         while (remaining > 1.0E-6) {
             double length = Math.min(VoidStepPath.STEP_DISTANCE, remaining);
             Vec3 step = direction.scale(length);
@@ -104,7 +103,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         }
         if (remaining > 1.0E-6 && direction.y < -1.0E-6) {
             // A blink may land on the visible surface; it need not sweep the player's feet through the floor.
-            Vec3 surface = aimedSurfaceLanding(player, direction, maxSteps * VoidStepPath.STEP_DISTANCE);
+            Vec3 surface = aimedSurfaceLanding(player, direction, range);
             if (surface != null) destination = surface;
         }
         if (destination.distanceToSqr(start) < 1.0E-8) return false;
@@ -112,6 +111,33 @@ public class InanisiumWeapon extends SwordItemWithEffect {
         // Zero relative rotation preserves mouse look updated while the teleport packet is in flight.
         return teleportWithSound(player, destination, player.getYRot(), player.getXRot(),
                 Set.of(net.minecraft.world.entity.RelativeMovement.Y_ROT,net.minecraft.world.entity.RelativeMovement.X_ROT));
+    }
+
+    private static boolean etherwarp(ServerPlayer player,Vec3 direction,double range) {
+        var level=player.serverLevel();
+        Vec3 eye=player.getEyePosition();
+        // Segment the ray so looking into an unloaded chunk never loads or generates it.
+        for(double distance=0;distance<range;distance+=VoidStepPath.STEP_DISTANCE) {
+            Vec3 from=eye.add(direction.scale(distance));
+            Vec3 to=eye.add(direction.scale(Math.min(range,distance+VoidStepPath.STEP_DISTANCE)));
+            if(!blinkVolumeLoaded(level,new AABB(from,to).inflate(1.0E-7))) return false;
+            var hit=clipBlinkRay(player,from,to);
+            if(hit.getType()==net.minecraft.world.phys.HitResult.Type.MISS) continue;
+            var pos=hit.getBlockPos();
+            var shape=level.getBlockState(pos).getCollisionShape(level,pos,net.minecraft.world.phys.shapes.CollisionContext.of(player));
+            if(shape.isEmpty() || hit.isInside()) return false;
+            double y=pos.getY()+shape.max(net.minecraft.core.Direction.Axis.Y)+1.0E-6;
+            Vec3 landing=new Vec3(pos.getX()+.5,y,pos.getZ()+.5);
+            AABB box=player.getBoundingBox().move(landing.subtract(player.position()));
+            if(!blinkVolumeLoaded(level,box) || !safeLanding(player,landing)) return false;
+            Vec3 departure=player.position();
+            if(!teleportWithSound(player,landing,player.getYRot(),player.getXRot(),
+                    Set.of(net.minecraft.world.entity.RelativeMovement.Y_ROT,net.minecraft.world.entity.RelativeMovement.X_ROT))) return false;
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.PORTAL,departure.x,departure.y+.9,departure.z,40,.35,.7,.35,.12);
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.REVERSE_PORTAL,landing.x,landing.y+.9,landing.z,24,.35,.7,.35,.06);
+            return true;
+        }
+        return false;
     }
 
     private static Vec3 aimedSurfaceLanding(ServerPlayer player, Vec3 direction, double range) {

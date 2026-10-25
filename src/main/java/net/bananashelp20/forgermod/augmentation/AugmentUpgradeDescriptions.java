@@ -121,6 +121,13 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats,"radius",ReviewedRanks.stormRadius(rank),"blocks");
                 seconds(stats,"duration",ReviewedRanks.stormTicks(rank)+jadeTicks);
             }
+            case "tooltips.forgermod.ability.void_step" -> {
+                numeric(stats,"range",net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.blink(rank),"blocks");
+                if(rank>=4) {
+                    numeric(stats,"etherwarp_range",net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.etherwarp(rank),"blocks");
+                    numeric(stats,"etherwarp_cooldown",net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.etherwarpCooldown(rank)/20.0,"seconds_long");
+                }
+            }
             case "tooltips.forgermod.ability.sudden_presence" -> numeric(stats,"range",ReviewedRanks.suddenPresenceRange(rank),"blocks");
             case AdditionalAbilities.DISPLACE -> {
                 if(rank>=4)text(stats,"range","unlimited","visible_range");

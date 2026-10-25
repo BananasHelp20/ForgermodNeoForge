@@ -45,9 +45,12 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
-            case "tooltips.forgermod.ability.void_step" -> text(id+".reviewed",
-                    "On activation, teleport %s in the direction you look. Having this ability on both daggers in dual wield doubles the range.",
-                    number(net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath.STEPS*net.bananashelp20.forgermod.item.custom.abilities.VoidStepPath.STEP_DISTANCE)+" blocks");
+            case "tooltips.forgermod.ability.void_step" -> rank<4
+                    ?text(id+".reviewed","On activation, teleport %s in the direction you look. Having this ability on both daggers in dual wield doubles the range.",
+                            net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.blink(rank)+" blocks")
+                    :text(id+".super.reviewed","Blink %s in the direction you look, or sneak to warp onto a targeted block within %s. Dual wield doubles both ranges, with Etherwarp capped at %s. Etherwarp has a separate cooldown.",
+                            net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.blink(rank)+" blocks",
+                            net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.etherwarp(rank)+" blocks","100 blocks");
             case AdditionalAbilities.STATIC_BLADE -> text(id+".reviewed",
                     "Your next swing sends out a piercing echo with %s range for %s, this also works in dual wield.",
                     net.bananashelp20.forgermod.item.custom.abilities.StaticBladeEvents.RANGE+" blocks",number(weaponDamage(stack))+" damage");

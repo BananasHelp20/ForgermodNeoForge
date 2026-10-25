@@ -147,6 +147,9 @@ public class SwordItemWithEffect extends SwordItem {
                         tooltip.add(AbilityDescriptions.description(stack, id, Augmentations.level(stack,id), false).copy().withStyle(ChatFormatting.GRAY));
                         tooltip.add(Component.translatable("augmentation.forgermod.cooldown",
                                 AbilityDescriptions.white(String.format(java.util.Locale.ROOT, "%.2f", Augmentations.cooldown(stack, slot, Augmentations.canonical(stack)) / 20.0))).withStyle(ChatFormatting.GRAY));
+                        if(net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.ID.equals(id) && Augmentations.level(stack,id)>=4)
+                            tooltip.add(AbilityDescriptions.text(id+".etherwarp_cooldown","Etherwarp cooldown: %s",
+                                    net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.etherwarpCooldown(Augmentations.level(stack,id))/20+" seconds"));
                         AbilityDescriptions.appendSuperHint(tooltip, stack, id, Augmentations.level(stack,id));
                     }
                 }

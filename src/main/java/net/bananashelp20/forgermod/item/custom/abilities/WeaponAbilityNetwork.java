@@ -99,7 +99,8 @@ public final class WeaponAbilityNetwork {
         String id=Augmentations.activeId(stack, slot);
         if (id == null) return;
         boolean grappleCast=RecommendedAbilities.CRUCIBLE_HOOK.equals(id) && CrucibleHookEvents.grappleCast(player,stack);
-        String key = cooldownKey(stack, slot)+(grappleCast?":grapple":"");
+        boolean etherwarpCast=VoidStepRanges.ID.equals(id) && VoidStepRanges.etherwarpCast(player,stack);
+        String key = cooldownKey(stack, slot)+(grappleCast?":grapple":etherwarpCast?":etherwarp":"");
         long now = player.level().getGameTime();
         Map<String, Long> playerCooldowns = player.getData(WeaponCooldownAttachments.COOLDOWNS);
         long readyAt = playerCooldowns.getOrDefault(key, 0L);
@@ -113,7 +114,8 @@ public final class WeaponAbilityNetwork {
         WeaponAbilitySlot source = Augmentations.sourceSlot(stack, slot);
         boolean recommended=RecommendedAbilities.active(id);
         // Instant attacks can break their weapon; capture the learned cooldown before activation.
-        int cooldownTicks = grappleCast?CrucibleGrapplerEvents.cooldownTicks(Augmentations.level(stack,id)):Augmentations.cooldown(stack, slot, weapon);
+        int cooldownTicks = grappleCast?CrucibleGrapplerEvents.cooldownTicks(Augmentations.level(stack,id))
+                :etherwarpCast?VoidStepRanges.etherwarpCooldown(Augmentations.level(stack,id)):Augmentations.cooldown(stack, slot, weapon);
         boolean activationCooldown=net.bananashelp20.forgermod.augmentation.RecommendedAbilities.CINDER_DECOY.equals(id)
                 || Augmentations.AREA_DISCHARGE.equals(id)
                 || net.bananashelp20.forgermod.augmentation.AdditionalAbilities.CHALLENGE_ROAR.equals(id)

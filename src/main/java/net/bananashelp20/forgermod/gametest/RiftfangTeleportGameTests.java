@@ -43,7 +43,7 @@ public class RiftfangTeleportGameTests {
         player.setPos(Vec3.atBottomCenterOf(test.absolutePos(START)));
         player.setYRot(0);
         player.setXRot(pitch);
-        player.setItemInHand(InteractionHand.MAIN_HAND, TestWeapons.ready(main));
+        player.setItemInHand(InteractionHand.MAIN_HAND, net.bananashelp20.forgermod.augmentation.Augmentations.setLevel(TestWeapons.ready(main),"tooltips.forgermod.ability.void_step",2));
         player.setItemInHand(InteractionHand.OFF_HAND, off == null ? ItemStack.EMPTY : new ItemStack(off));
         // Tests explicitly load their clear test path, never depending on neighboring tests' chunks.
         for (int x = -1; x <= 2; x++) {
@@ -138,11 +138,11 @@ public class RiftfangTeleportGameTests {
                 if(mode==2)off=net.bananashelp20.forgermod.augmentation.Augmentations.apply(off,net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD);
                 if(mode==3)off=new ItemStack(offItem);
                 player.setItemInHand(InteractionHand.MAIN_HAND,main);player.setItemInHand(InteractionHand.OFF_HAND,off);
-                expectDistance(test,player,mode==1 || mode==2?20:10);
+                expectDistance(test,player,mode==1 || mode==2?10:5);
                 for(boolean compact:new boolean[]{false,true}) {
                     var text=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(main,id,1,compact);var white=new StringBuilder();
                     text.visit((style,part)->{if(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
-                    test.assertTrue(text.getString().equals("On activation, teleport 10 blocks in the direction you look. Having this ability on both daggers in dual wield doubles the range.") && white.toString().equals("10 blocks"),"Void Step description does not show the approved base range and doubling rule");
+                    test.assertTrue(text.getString().equals("On activation, teleport 5 blocks in the direction you look. Having this ability on both daggers in dual wield doubles the range.") && white.toString().equals("5 blocks"),"Void Step description does not show the approved base range and doubling rule");
                 }
             }
             var missing=player(test,item,offItem,-45);missing.setItemInHand(InteractionHand.MAIN_HAND,net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(item),net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD));missing.setItemInHand(InteractionHand.OFF_HAND,net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(offItem),id));

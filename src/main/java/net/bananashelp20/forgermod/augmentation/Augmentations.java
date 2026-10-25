@@ -53,6 +53,7 @@ public final class Augmentations {
         if(AdditionalAbilities.CHALLENGE_ROAR.equals(id))return "tooltips.forgermod.ability.intimidating_roar.name";
         if(RecommendedAbilities.CRUCIBLE_HOOK.equals(id))return "tooltips.forgermod.ability.crucible_grappler.name";
         if(RecommendedAbilities.EXPLOSION.equals(id))return "tooltips.forgermod.ability.blazing_blast.name";
+        if ("tooltips.forgermod.ability.void_step".equals(id)) return "tooltips.forgermod.ability.warping_space.name";
         if (AdditionalAbilities.BONE_GUARD.equals(id)) return "tooltips.forgermod.ability.necromancer.name";
         if (AdditionalAbilities.GHOSTWALK.equals(id)) return "tooltips.forgermod.ability.jumpscare_horror.name";
         if (AdditionalAbilities.DIRECT_CURRENT.equals(id)) return "tooltips.forgermod.ability.static_field.name";
