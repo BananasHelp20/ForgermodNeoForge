@@ -105,7 +105,7 @@ public final class NecromancerPassiveCombat {
         }}finally{if(previous==null)CURRENT.remove();else CURRENT.set(previous);}
         EchoSalvageEvents.onImpact(mob,hitAnything,attemptedHit,!mob.level().getBlockState(center.below()).getCollisionShape(mob.level(),center.below()).isEmpty(),slam.damage());
         mob.swing(InteractionHand.MAIN_HAND);for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)PassiveActors.level(mob).sendParticles(ParticleTypes.CLOUD,center.getX()+x+.5,center.getY()+.1,center.getZ()+z+.5,5,.25,.05,.25,.02);
-        PassiveActors.level(mob).playSound(null,center,SoundEvents.IRON_GOLEM_ATTACK,SoundSource.HOSTILE,1,.7F);
+        WeaponAbilitySounds.verticalStrikeImpact(PassiveActors.level(mob),center,SoundSource.HOSTILE);
     }
     @SubscribeEvent public static void leave(net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent event){LAST.remove(event.getEntity().getUUID());COMBOS.remove(event.getEntity().getUUID());SLAMS.remove(event.getEntity().getUUID());}
     public static final class Shield extends Goal {

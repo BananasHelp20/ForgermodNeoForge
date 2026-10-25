@@ -67,6 +67,11 @@ public final class WeaponAbilitySounds {
             default -> List.of();
         };
     }
+    /** Shared landing cue for native, ability-triggered and reinforcement Vertical Strikes. */
+    public static void verticalStrikeImpact(net.minecraft.server.level.ServerLevel level,net.minecraft.core.BlockPos center,SoundSource source){
+        level.playSound(null,center,SoundEvents.MACE_SMASH_GROUND_HEAVY,source,1.0F,.75F);
+        level.playSound(null,center,SoundEvents.ANVIL_LAND,source,.45F,.65F);
+    }
     public static boolean covered(ItemStack stack,String id){return id!=null && (EXISTING.contains(id) || !profile(stack,id).isEmpty());}
     public static void play(ServerPlayer player,ItemStack stack,String id){
         for(var cue:profile(stack,id))player.serverLevel().playSound(null,player.blockPosition(),cue.sound(),SoundSource.PLAYERS,cue.volume(),cue.pitch());
