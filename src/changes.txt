@@ -438,3 +438,5 @@
 - Rooting Roots earth-and-wood audio: replaced the soft planting/bonemeal cue with deeper cracking mangrove roots layered with disturbed rooted dirt for a stronger eruption sound.
 
 - Gravity Swing spatial audio: per the user?s one-task Gravity Well/Gravity Swing correction, added bright departure and lower airborne-arrival ender sounds, followed by one deep gravity-pressure cue per swing that successfully lifts targets. Gravity Well and gameplay are unchanged.
+
+- Pocket Storm impact-only sound: added native ability-key/packet regression coverage across all five axes to verify silent arming, no sound on unrelated damage/cancellation, and exactly one sound on the empowered melee hit. Existing runtime already follows this behavior.
