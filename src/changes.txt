@@ -485,3 +485,7 @@
 - Ancient grave chest loot: assigned both chests in the ancient grave and matching city-room templates a dedicated chest loot table that includes the complete vanilla Ancient City loot plus one independent 10% chance for one sapphire gemstone. Loot generates once when a newly placed/generated chest is opened.
 
 - Ancient grave one-block lift: raised the Ancient City grave add-on by exactly one block after selecting its existing placement, preserving horizontal offsets and rotation in both normal and fallback placements.
+
+- Void Step aimed surface landings: downward Stepping Through the Void now resolves a safe landing from the eye ray instead of immediately failing when the foot-level sweep hits the ground. Nearby aimed block/slab tops and floors beneath nonblocking plants can be used.
+- Stepping Through the Void: obstructed downward blinks find and refine the farthest supported safe landing before the first solid eye-ray obstruction, checking full-body clearance, headroom, range, loaded chunks and world bounds. Clear airborne movement, dual-wield range, cooldowns and free camera rotation are retained.
+- Stepping Through the Void: corrected vanilla ray-clip inside-point look-ahead using exact collision-box face intersection, preventing tiny below-floor landings and needless retreat.

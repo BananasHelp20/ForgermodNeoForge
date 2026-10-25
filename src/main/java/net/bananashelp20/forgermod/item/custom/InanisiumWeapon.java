@@ -99,11 +99,76 @@ public class InanisiumWeapon extends SwordItemWithEffect {
             if (fraction < 1) break;
             remaining -= length;
         }
+        if (remaining > 1.0E-6 && direction.y < -1.0E-6) {
+            // A blink may land on the visible surface; it need not sweep the player's feet through the floor.
+            Vec3 surface = aimedSurfaceLanding(player, direction, maxSteps * VoidStepPath.STEP_DISTANCE);
+            if (surface != null) destination = surface;
+        }
         if (destination.distanceToSqr(start) < 1.0E-8) return false;
 
         // Zero relative rotation preserves mouse look updated while the teleport packet is in flight.
         return teleportWithSound(player, destination, player.getYRot(), player.getXRot(),
                 Set.of(net.minecraft.world.entity.RelativeMovement.Y_ROT,net.minecraft.world.entity.RelativeMovement.X_ROT));
+    }
+
+    private static Vec3 aimedSurfaceLanding(ServerPlayer player, Vec3 direction, double range) {
+        var level = player.serverLevel();
+        Vec3 eye = player.getEyePosition();
+        double limit = 0;
+        // Trace collision shapes, not selection outlines: grass, flowers and vines are transparent.
+        while (limit < range - 1.0E-6) {
+            double next = Math.min(range, limit + VoidStepPath.STEP_DISTANCE);
+            Vec3 from = eye.add(direction.scale(limit)), to = eye.add(direction.scale(next));
+            AABB segment = new AABB(from, to).inflate(1.0E-7);
+            if (!blinkVolumeLoaded(level, segment)) break;
+            var hit = clipBlinkRay(player, from, to);
+            if (hit.getType() != net.minecraft.world.phys.HitResult.Type.MISS) {
+                limit += from.distanceTo(hit.getLocation());
+                break;
+            }
+            limit = next;
+        }
+        // Work back from the first obstruction, preserving the furthest supported, unobstructed destination.
+        for (double distance = limit; distance > 1.0E-6; distance = Math.max(0, distance - VoidStepPath.STEP_DISTANCE)) {
+            Vec3 landing = surfaceAt(player, eye.add(direction.scale(distance)), range);
+            if (landing == null) continue;
+            double base = distance, span = Math.min(VoidStepPath.STEP_DISTANCE, limit - distance);
+            double fraction = VoidStepPath.clearFraction(t -> surfaceAt(player, eye.add(direction.scale(base + span * t)), range) != null);
+            Vec3 refined = surfaceAt(player, eye.add(direction.scale(base + span * fraction)), range);
+            return refined == null ? landing : refined;
+        }
+        return null;
+    }
+
+    private static Vec3 surfaceAt(ServerPlayer player, Vec3 point, double range) {
+        var level = player.serverLevel();
+        // Search only between the eye ray and its corresponding foot position, never above the aimed surface.
+        var hit = clipBlinkRay(player, point.add(0, 1.0E-5, 0), point.add(0, -player.getEyeHeight() - 1.0E-5, 0));
+        if (hit.getType() == net.minecraft.world.phys.HitResult.Type.MISS || hit.isInside() || hit.getDirection() != net.minecraft.core.Direction.UP) return null;
+        Vec3 landing = hit.getLocation().add(0, 1.0E-6, 0);
+        double distance = landing.distanceToSqr(player.position());
+        if (distance < 1.0E-8 || distance > range * range + 1.0E-6) return null;
+        AABB box = player.getBoundingBox().move(landing.subtract(player.position()));
+        return blinkVolumeLoaded(level, box) && safeLanding(player, landing) ? landing : null;
+    }
+
+    private static net.minecraft.world.phys.BlockHitResult clipBlinkRay(ServerPlayer player, Vec3 from, Vec3 to) {
+        var level = player.serverLevel();
+        var hit = level.clip(new net.minecraft.world.level.ClipContext(from, to,
+                net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                net.minecraft.world.level.ClipContext.Fluid.NONE, player));
+        if (hit.getType() == net.minecraft.world.phys.HitResult.Type.MISS) return hit;
+        // Vanilla's ray clip probes 0.1% ahead and may return an inside point just below a floor.
+        // Resolve the exact face so safe landings do not retreat unnecessarily or sink into the surface.
+        var boxes = level.getBlockState(hit.getBlockPos()).getCollisionShape(level, hit.getBlockPos(),
+                net.minecraft.world.phys.shapes.CollisionContext.of(player)).toAabbs();
+        var exact = AABB.clip(boxes, from, to, hit.getBlockPos());
+        return exact == null ? hit : exact;
+    }
+
+    private static boolean blinkVolumeLoaded(ServerLevel level, AABB box) {
+        return box.minY >= level.getMinBuildHeight() && box.maxY <= level.getMaxBuildHeight()
+                && level.getWorldBorder().isWithinBounds(box) && loadedBox(level, box);
     }
 
     private static boolean loadedBox(ServerLevel level, AABB box) {

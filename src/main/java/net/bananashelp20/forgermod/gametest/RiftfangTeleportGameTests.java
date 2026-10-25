@@ -169,7 +169,7 @@ public class RiftfangTeleportGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void passableGrassDoesNotBlockBlinkAndDownwardAimNeverSlides(GameTestHelper test) {
+    public static void passableGrassDoesNotBlockBlinkAndDownwardAimLandsOnVisibleFloor(GameTestHelper test) {
         for(int x=7;x<=9;x++)for(int z=8;z<=20;z++) {
             test.setBlock(new BlockPos(x,2,z),Blocks.GRASS_BLOCK);
             for(int y=3;y<=5;y++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
@@ -182,14 +182,64 @@ public class RiftfangTeleportGameTests {
             test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Passable grass rejects level blink");
             test.assertTrue(player.position().distanceTo(start.add(0,0,10))<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Grass obstructs step or downward look enters the ground");
             player.setPos(start);player.setXRot(35);
-            test.assertFalse(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Downward blink slides along the floor instead of stopping");
-            test.assertTrue(player.position().equals(start),"Blocked ground aim redirects movement");
-            player.setPos(start.add(0,2,0));var raised=player.position();var look=player.getLookAngle().normalize();
+            var eye=player.getEyePosition();var look=player.getLookAngle().normalize();
+            var ground=eye.add(look.scale((start.y-eye.y)/look.y));
+            test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Downward blink rejects the visible floor beneath grass");
+            test.assertTrue(player.position().distanceTo(ground)<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Downward blink does not land on the aimed floor surface: "+player.position()+" expected "+ground);
+            player.setPos(start.add(0,2,0));var raised=player.position();
             test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Clear downward path rejected");
-            double distance=2/-look.y;
-            test.assertTrue(player.position().distanceTo(raised.add(look.scale(distance)))<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Downward blink fails to stop on its actual ray at the floor");
+            var raisedEye=raised.add(0,player.getEyeHeight(),0);double distance=(raisedEye.y-start.y)/-look.y;
+            test.assertTrue(player.position().distanceTo(raisedEye.add(look.scale(distance)))<.0001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Downward blink fails to land on its eye-ray floor target");
         }
         test.succeed();
+    }
+
+    private static void clearGroundedPath(GameTestHelper test) {
+        for(int x=6;x<=10;x++)for(int z=7;z<=20;z++) {
+            test.setBlock(new BlockPos(x,2,z),Blocks.GRASS_BLOCK);
+            for(int y=3;y<=8;y++)test.setBlock(new BlockPos(x,y,z),Blocks.AIR);
+        }
+    }
+    private static void aimAt(ServerPlayer player,Vec3 target) {
+        var delta=target.subtract(player.getEyePosition());
+        player.setYRot((float)Math.toDegrees(Math.atan2(-delta.x,delta.z)));
+        player.setXRot((float)-Math.toDegrees(Math.atan2(delta.y,delta.horizontalDistance())));
+    }
+    @GameTest(template="riftfang_test")
+    public static void nearbyBlockAndSlabTopsWorkThroughTallGrassForEveryVariant(GameTestHelper test) {
+        clearGroundedPath(test);
+        test.setBlock(new BlockPos(8,3,9),Blocks.TALL_GRASS);
+        test.setBlock(new BlockPos(8,4,9),Blocks.TALL_GRASS.defaultBlockState().setValue(net.minecraft.world.level.block.DoublePlantBlock.HALF,net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER));
+        for(var block:new net.minecraft.world.level.block.Block[]{Blocks.STONE,Blocks.STONE_SLAB}) {
+            test.setBlock(new BlockPos(8,3,10),block);
+            var target=Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,3,10))).add(0,block==Blocks.STONE?1:.5,0);
+            for(var item:new Item[]{ModItems.RIFTFANG_DAGGER.get(),ModItems.RIFTFANG_DAGGER_RUBY.get(),ModItems.RIFTFANG_DAGGER_AMBER.get(),ModItems.RIFTFANG_DAGGER_AMETHYST.get(),ModItems.RIFTFANG_DAGGER_JADE.get()}) {
+                var player=player(test,item,null,0);aimAt(player,target);
+                test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Visible nearby block top rejects blink");
+                test.assertTrue(player.position().distanceTo(target)<.001 && test.getLevel().noCollision(player,player.getBoundingBox()),"Blink fails to land on the actual full-block/slab top through tall grass");
+            }
+        }
+        test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void grassAndFlowersBeforeWallGiveFarthestSafeGroundLanding(GameTestHelper test) {
+        clearGroundedPath(test);
+        test.setBlock(new BlockPos(8,3,9),Blocks.SHORT_GRASS);test.setBlock(new BlockPos(8,3,10),Blocks.DANDELION);
+        test.setBlock(new BlockPos(8,3,11),Blocks.FERN);test.setBlock(new BlockPos(8,3,12),Blocks.POPPY);
+        for(int x=6;x<=10;x++)for(int y=3;y<=7;y++)test.setBlock(new BlockPos(x,y,14),Blocks.STONE);
+        var player=player(test,ModItems.RIFTFANG_DAGGER.get(),null,5);var start=player.position();
+        test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Grounded blink refuses the available path before a wall");
+        test.assertTrue(player.getZ()>start.z && Math.abs(player.getY()-start.y)<.001 && Math.abs(player.getBoundingBox().maxZ-test.absolutePos(new BlockPos(8,3,14)).getZ())<.001,"Grass/flowers shorten the blink or it fails to stop at the nearest safe wall boundary");
+        test.assertTrue(test.getLevel().noCollision(player,player.getBoundingBox()),"Shortened blink clips into a solid wall");test.succeed();
+    }
+    @GameTest(template="riftfang_test")
+    public static void unsafeAimedTopFallsBackBeforeTheBlockInsteadOfClippingHead(GameTestHelper test) {
+        clearGroundedPath(test);test.setBlock(new BlockPos(8,3,10),Blocks.STONE);test.setBlock(new BlockPos(8,5,10),Blocks.STONE);
+        var player=player(test,ModItems.RIFTFANG_DAGGER.get(),null,0);var start=player.position();
+        aimAt(player,Vec3.atBottomCenterOf(test.absolutePos(new BlockPos(8,4,10))));
+        test.assertTrue(weapon(player).activateAbility(player,player.getMainHandItem(),WeaponAbilitySlot.PRIMARY),"Unsafe top discards the shorter safe landing before the block");
+        test.assertTrue(player.getZ()>start.z && Math.abs(player.getY()-start.y)<.001 && player.getBoundingBox().maxZ<=test.absolutePos(new BlockPos(8,3,10)).getZ()+.001,"Blink enters the one-block headroom gap or passes its obstruction");
+        test.assertTrue(test.getLevel().noCollision(player,player.getBoundingBox()),"Aimed top suffocates the player");test.succeed();
     }
 
     @GameTest(template="riftfang_test")
