@@ -125,7 +125,7 @@
   "tooltips.forgermod.ability.leech": "Heal for 10% of the damage you deal with this dagger.",
   "message.forgermod.leech.armed": "Leech armed for 10 hits",
   "tooltips.forgermod.ability.rooting_roots": "Root and poison hostile mobs within 10 blocks for 10 seconds.",
-  "tooltips.forgermod.ability.poisoned_vein": "Your next dagger kill leaves a 5-second cloud. Everyone within 3 blocks, including you, receives Poison I for 30 seconds.",
+  "tooltips.forgermod.ability.poisoned_vein": "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives Poison I for 30 seconds.",
   "message.forgermod.poisoned_vein.armed": "Poisoned Vein armed for your next hostile kill",
   "tooltips.forgermod.ability.strengthened_bones": "Your next dagger kill grants 10 seconds of invulnerability.",
   "message.forgermod.strengthened_bones.armed": "Strengthened Bones armed for your next hostile kill",
@@ -466,7 +466,7 @@
   "tooltips.forgermod.ability.deep_wound.card": "Your next crit deals double damage and Slowness III for 5 seconds.",
   "tooltips.forgermod.ability.leech.card": "Dagger damage heals you.",
   "tooltips.forgermod.ability.rooting_roots.card": "Root and poison nearby hostile mobs for 10 seconds.",
-  "tooltips.forgermod.ability.poisoned_vein.card": "Your next kill leaves a cloud that poisons everyone, including you.",
+  "tooltips.forgermod.ability.poisoned_vein.card": "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives Poison I for 30 seconds.",
   "tooltips.forgermod.ability.strengthened_bones.card": "Your next kill grants 10 seconds of invulnerability.",
   "tooltips.forgermod.ability.storing_anger.card": "Store damage for 10 seconds; release it on your next hit.",
   "tooltips.forgermod.passive.death_march.card": "Deal more damage to wounded enemies, up to double.",
@@ -920,7 +920,7 @@
   "tooltips.forgermod.ability.lucid_dreaming.jade": "Your next dagger kill grants Speed III for 31 seconds and halves fall damage for 15 seconds.",
   "tooltips.forgermod.ability.deep_wound.jade": "Your next critical dagger hit deals double damage and inflicts Slowness IV for 6 seconds.",
   "tooltips.forgermod.ability.rooting_roots.jade": "Root hostile mobs within 10 blocks for 10 seconds and inflict Poison II for 11 seconds.",
-  "tooltips.forgermod.ability.poisoned_vein.jade": "Your next dagger kill leaves a 5-second cloud. Everyone within 3 blocks, including you, receives Poison II for 31 seconds.",
+  "tooltips.forgermod.ability.poisoned_vein.jade": "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives Poison II for 31 seconds.",
   "tooltips.forgermod.ability.blood_rush.jade": "Spend 2 HP to gain Speed III for 11 seconds.",
   "tooltips.forgermod.passive.daydreamer.jade": "Gain Jump Boost III during the day.",
   "tooltips.forgermod.passive.homesick.jade": "Standing on sculk grants Speed III and Strength II for 4 seconds.",
@@ -1013,5 +1013,6 @@
   "forgermod.configuration.grappleAutoRelease.tooltip": "Automatically release Crucible Grappler when you reach its anchor. You keep your momentum when released.",
   "forgermod.configuration.explosionTerrain.tooltip": "Allow Explosion and Blazing Blast to break blocks and start fires. Disabled by default.",
   "augmentation.forgermod.preview.value.seconds_long": "%s seconds",
-  "tooltips.forgermod.ability.null_receipt.reviewed": "Absorb knockback for the next %s, then release it with the next vertical strike."
+  "tooltips.forgermod.ability.null_receipt.reviewed": "Absorb knockback for the next %s, then release it with the next vertical strike.",
+  "tooltips.forgermod.ability.poisoned_vein.reviewed": "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives %s for %s."
 }

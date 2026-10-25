@@ -166,7 +166,7 @@ public class LushWeapon extends SwordItemWithEffect {
             if (now % 10 != 0) continue;
             AABB area = AABB.ofSize(new Vec3(cloud.x(), cloud.y(), cloud.z()), 6, 4, 6);
             for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area)) {
-                if (!target.isAlive()
+                if (!target.isAlive() || target.getUUID().equals(cloud.owner())
                         || target.distanceToSqr(cloud.x(), cloud.y(), cloud.z()) > 9) continue;
                 target.addEffect(new MobEffectInstance(MobEffects.POISON,
                         cloud.jade() ? 620 : 600, cloud.jade() ? 1 : 0));

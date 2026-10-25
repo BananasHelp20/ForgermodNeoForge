@@ -45,6 +45,14 @@ public final class AbilityDescriptions {
     private static Component reviewed(ItemStack stack,String id,int rank) {
         int jade=JadeAugments.isJade(stack)?1:0;
         return switch(id) {
+            case "tooltips.forgermod.ability.poisoned_vein" -> {
+                var effect=Component.literal("Poison "+net.bananashelp20.forgermod.item.custom.WeaponTooltips.romanNumeral(1+jade))
+                        .withStyle(jade>0?ChatFormatting.GREEN:ChatFormatting.GRAY);
+                var duration=Component.literal((30+jade)+" seconds").withStyle(jade>0?ChatFormatting.GREEN:ChatFormatting.WHITE);
+                yield Component.translatableWithFallback(id+".reviewed",
+                        "Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives %s for %s.",effect,duration)
+                        .withStyle(ChatFormatting.GRAY);
+            }
             case RecommendedAbilities.NULL_RECEIPT -> text(id+".reviewed","Absorb knockback for the next %s, then release it with the next vertical strike.",
                     net.bananashelp20.forgermod.item.custom.abilities.NullReceiptEvents.HIT_COUNT+" incoming hits");
             case AdditionalAbilities.THUNDERCLAP -> text(id+".current","Aim at a mob within %s and dash to it with a lightning slash. Deal a full melee hit plus %s lightning damage. Chain to the nearest unhit mob within %s of each previous target until none remain.",
