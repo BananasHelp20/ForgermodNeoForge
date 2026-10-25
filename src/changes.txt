@@ -489,3 +489,5 @@
 - Void Step aimed surface landings: downward Stepping Through the Void now resolves a safe landing from the eye ray instead of immediately failing when the foot-level sweep hits the ground. Nearby aimed block/slab tops and floors beneath nonblocking plants can be used.
 - Stepping Through the Void: obstructed downward blinks find and refine the farthest supported safe landing before the first solid eye-ray obstruction, checking full-body clearance, headroom, range, loaded chunks and world bounds. Clear airborne movement, dual-wield range, cooldowns and free camera rotation are retained.
 - Stepping Through the Void: corrected vanilla ray-clip inside-point look-ahead using exact collision-box face intersection, preventing tiny below-floor landings and needless retreat.
+
+- Strengthened Bones non-vocal cue: replaced both bone/skeleton-hurt mixes entirely with an original synthesized locking click and rising protective resonance. No mob, hurt, death or skeletal-rattle samples remain in the cue; its existing killing-hit trigger and invulnerability are unchanged.

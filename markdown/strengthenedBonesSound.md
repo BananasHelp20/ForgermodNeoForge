@@ -1,9 +1,11 @@
-# Strengthened Bones impact
+# Strengthened Bones protection cue
 
-The killing dagger hit that grants invulnerability plays a dedicated, full-volume bone-crack impact at the victim's body. It combines a sharp bone snap, a lower hardening crunch and a short decaying bone rattle. Two randomly selected mixes reduce repetition.
+The killing dagger hit that grants invulnerability plays an original, non-vocal protection cue: two firm locking clicks, a brief rounded impact, and an ascending harmonic seal. Its rising tone is intended to stay distinct from the victim's death sound. There are no mob samples, hurt cries, death sounds or skeletal rattles in either variation.
 
-This replaces the quiet bone-block placement and skeleton ambient pair. Arming, nonlethal hits, spell kills and later kills after the charge is consumed do not play the protection cue. The existing hostile-melee-kill requirement and ten-second invulnerability are unchanged.
+The old bone-block/skeleton-hurt mix has been replaced entirely. The cue still plays once at the protection-granting hit, at full volume. Arming, nonlethal hits, spell kills and later kills after consumption remain silent. The hostile-melee-kill requirement and ten-second invulnerability are unchanged.
 
-Both mono 44.1 kHz Vorbis clips last 0.95 seconds, with faded ends and decoded peaks below clipping. Sources are the project's vanilla Minecraft 1.21.1 samples: `block/bone_block/break1–4` and `mob/skeleton/hurt1–2`. Each mix layers one bone sample at 90% playback speed, another at 62%, and skeleton hurt at 82%, followed by quieter bone echoes at 0.16, 0.29 and 0.42 seconds. No skeleton ambient sound is used.
+## Synthesis
 
-The native attack regression checks all five dagger variants: silent arming and nonlethal hits, one correctly positioned full-volume protection sound on a killing hit, no replay after consumption, and actual damage protection.
+Both original mono 44.1 kHz Vorbis clips last 0.95 seconds. No recorded samples are used. Two short inharmonic resonators (385 and 510 Hz, 42 ms apart) create the locking transient; a restrained 105 Hz impact supplies body. Two harmonic tones at approximately C5 (523 Hz) and G5 (784 Hz), beginning at 45 and 190 ms, form the rising protection signature. A quiet filtered-noise swell supports the seal. The second variation changes tuning by 2.5% and uses a different deterministic noise seed.
+
+The mix has faded edges, normalization headroom and decoded peaks below clipping. The existing dedicated sound event, positional playback and two-variation registration are retained. Native attack regression covers all five dagger variants, one protection cue per qualifying kill and actual invulnerability.
