@@ -724,6 +724,8 @@
   "tooltips.forgermod.ability.skull_throw.name": "Skull Throw",
   "tooltips.forgermod.ability.skull_throw": "Fire a fast skull projectile that bursts within 2 blocks and applies Wither I for 10 seconds.",
   "tooltips.forgermod.ability.skull_throw.card": "Fire a fast skull projectile that bursts within 2 blocks and applies Wither I for 10 seconds.",
+  "tooltips.forgermod.passive.deaths_due.reviewed": "Enemy kills grant %s more xp.",
+  "augmentation.forgermod.preview.experience_bonus": "Experience bonus: %s.",
   "tooltips.forgermod.passive.deaths_due.name": "Death's Due",
   "tooltips.forgermod.passive.deaths_due": "Kills grant 25% more experience.",
   "tooltips.forgermod.passive.deaths_due.card": "Kills grant 25% more experience.",

@@ -123,6 +123,8 @@ public final class AbilityDescriptions {
                             net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.launchHeight(true,rank)+" blocks",
                             number(net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.SMASH_RADIUS)+" block radius")
                     :null;
+            case AdditionalAbilities.DEATHS_DUE -> text(id+".reviewed","Enemy kills grant %s more xp.",
+                    net.bananashelp20.forgermod.item.custom.abilities.DeathsDueEvents.bonusPercent(rank)+"%");
             case "tooltips.forgermod.passive.death_march" -> text(id+".reviewed","Deal more damage depending on the targets health. Up to %s.",
                     net.bananashelp20.forgermod.item.custom.abilities.DeathMarchDamage.maximumBonusPercent(rank)+"% more damage");
             case AdditionalAbilities.BACKSTAB -> text(id+".reviewed","Deal %s more damage from behind.",

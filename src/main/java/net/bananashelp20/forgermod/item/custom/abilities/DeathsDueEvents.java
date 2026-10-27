@@ -8,6 +8,7 @@ import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID)
 public final class DeathsDueEvents {
     private DeathsDueEvents(){}
+    public static int bonusPercent(int rank){return 25*Math.clamp(rank,1,2);}
     @SubscribeEvent(priority=EventPriority.LOWEST)
     public static void experience(LivingExperienceDropEvent event){
         if(event.isCanceled())return;
@@ -17,7 +18,8 @@ public final class DeathsDueEvents {
         boolean reinforcement=wielder instanceof BoneGuardEvents.FriendlyGuard;
         if(!reinforcement && (!wielder.isAlive() || wielder.isSpectator()))return;
         long xp=Math.max(0,event.getDroppedExperience());
-        if(PassiveActors.has(wielder,AdditionalAbilities.DEATHS_DUE))xp+=xp/4;
+        if(PassiveActors.has(wielder,AdditionalAbilities.DEATHS_DUE))
+            xp+=xp*bonusPercent(Augmentations.level(PassiveActors.weapon(wielder,AdditionalAbilities.DEATHS_DUE),AdditionalAbilities.DEATHS_DUE))/100;
         if(reinforcement)xp/=2;
         event.setDroppedExperience((int)Math.min(Integer.MAX_VALUE,xp));
     }

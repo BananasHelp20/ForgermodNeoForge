@@ -124,7 +124,7 @@ public final class AdditionalAbilities {
             new Definition(LAST_STAND, false, 1, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe")),
             new Definition(BONE_GUARD, true, 4, 1200, 200, Set.of("Morsium:claymore", "Morsium:axe")),
             new Definition(SKULL_THROW, true, 4, 1000, 200, Set.of("Morsium:axe")),
-            new Definition(DEATHS_DUE, false, 1, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe")),
+            new Definition(DEATHS_DUE, false, 2, 0, 0, Set.of("Morsium:dagger", "Morsium:claymore", "Morsium:axe")),
             new Definition(ECHO_APPETITE, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe")),
             new Definition(RESONANCE_CRIT, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore")),
             new Definition(AFTERSHOCK, false, 1, 0, 0, Set.of("Pulsite:dagger", "Pulsite:claymore", "Pulsite:axe")),
