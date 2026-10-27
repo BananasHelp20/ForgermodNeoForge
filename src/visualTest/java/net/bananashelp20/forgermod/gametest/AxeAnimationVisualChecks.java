@@ -24,7 +24,12 @@ public final class AxeAnimationVisualChecks {
     private static final AxeAnimationData.Clip[] CLIPS={AxeAnimationData.Clip.IDLE,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.SWING2,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.IDLE,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST};
     private static final double[] TIMES={0,.5,.625,.5,.83333,1.25,.5,1.625,3.25,0,.625,1.25,.5,1.625,3.25};
     @SubscribeEvent public static void tick(ClientTickEvent.Post event){
-        if(!ENABLED)return;var mc=Minecraft.getInstance();if(mc.player==null || mc.level==null || mc.getSingleplayerServer()==null)return;
+        var mc=Minecraft.getInstance();
+        // Launch arguments may survive an IDE devlaunch using generated argument files.
+        // Never mutate a normal game directory, even when an old test flag is present.
+        if(!ENABLED || !mc.gameDirectory.toPath().toAbsolutePath().normalize().endsWith(java.nio.file.Path.of("build","axe-client-run")))return;
+        if(mc.player==null || mc.level==null || mc.getSingleplayerServer()==null)return;
+        if(Boolean.getBoolean("forgermod.axe.cameraAttackQA")){cameraAttackTest(mc);return;}
         if(!initialized){
             initialized=true;mc.options.hideGui=false;mc.options.pauseOnLostFocus=false;
             mc.getSingleplayerServer().execute(()->{
@@ -79,6 +84,39 @@ public final class AxeAnimationVisualChecks {
         var p=AxeAnimationData.sample(sample.clip(),bone,sample.seconds());
         matrix.translate((float)p.position().x(),(float)p.position().y(),(float)p.position().z()).translate(x,y,z)
                 .rotateZ((float)Math.toRadians(rz+p.rotation().z())).rotateY((float)Math.toRadians(ry+p.rotation().y())).rotateX((float)Math.toRadians(rx+p.rotation().x())).translate(-x,-y,-z);
+    }
+
+    private static void cameraAttackTest(Minecraft mc){
+        if(!initialized){
+            initialized=true;mc.options.setCameraType(CameraType.FIRST_PERSON);mc.options.pauseOnLostFocus=false;
+            mc.getSingleplayerServer().execute(()->{
+                var p=mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());
+                p.setGameMode(GameType.SURVIVAL);p.setNoGravity(true);p.teleportTo(.5,70,.5);p.setYRot(0);p.setXRot(0);
+                p.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.MOLTEN_AXE.get()));p.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
+                for(int x=-3;x<=3;x++)for(int z=-3;z<=5;z++){
+                    p.serverLevel().setBlockAndUpdate(new BlockPos(x,69,z),Blocks.STONE.defaultBlockState());
+                    for(int y=70;y<=74;y++)p.serverLevel().setBlockAndUpdate(new BlockPos(x,y,z),Blocks.AIR.defaultBlockState());
+                }
+                var mob=net.minecraft.world.entity.EntityType.ZOMBIE.create(p.serverLevel());mob.setNoAi(true);mob.setNoGravity(true);
+                mob.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD,new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));
+                mob.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);mob.setHealth(1000);mob.setPos(.5,70,2.5);p.serverLevel().addFreshEntity(mob);
+            });return;
+        }
+        ticks++;
+        if(ticks==100 || ticks==145 || ticks==190){
+            mc.options.setCameraType(ticks==145?CameraType.THIRD_PERSON_BACK:CameraType.FIRST_PERSON);
+            mc.player.setYRot(0);mc.player.setXRot(0);
+            var target=mc.level.getEntitiesOfClass(net.minecraft.world.entity.monster.Zombie.class,mc.player.getBoundingBox().inflate(4)).stream().filter(m->m.getMaxHealth()==1000).findFirst().orElseThrow();
+            mc.gameMode.attack(mc.player,target);mc.player.swing(InteractionHand.MAIN_HAND);
+            ForgerMod.LOGGER.info("Camera attack regression: attack {} in {}",ticks,mc.options.getCameraType());
+        }
+        if(ticks==235)mc.getSingleplayerServer().execute(()->{
+            var p=mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());
+            var target=p.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Zombie.class,p.getBoundingBox().inflate(4)).stream().filter(m->m.getMaxHealth()==1000).findFirst().orElseThrow();
+            if(target.getHealth()>970)throw new IllegalStateException("Camera-switch attacks failed to damage target: "+target.getHealth());
+            ForgerMod.LOGGER.info("Camera attack regression passed: three attacks, remaining HP {}",target.getHealth());
+            mc.execute(mc::stop);
+        });
     }
 
 }

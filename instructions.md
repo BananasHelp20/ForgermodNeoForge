@@ -19,3 +19,5 @@ and is named forgermod_ancient_grave_v2 as a nbt file. The structure should be n
 - [x] Test/review all animation resources, model fallback coverage, timings/cancellation/critical charge/combat regressions; run datagen/build and meaningful native/client validation; fix failures and rerun, then scoped commit/push preserving unrelated changes. Resume manual description review at78 Echo Appetite only after animation task complete.
 
 - [x] Axe animation visual review: correct source arm-cube rest rotation/pivots, held-mesh scale/grip, first-person exposed shoulder caps and root/particle alignment; compare real-client poses against the source hierarchy without editing animation keyframes.
+
+- [x] Axe camera-switch crash: read actual crash report, remove visual assertions from normal mod/runtime sources, hard-guard isolated test directory, reproduce three actual attacks across first/third/first person, restore generated normal launch files, verify artifact/classpath exclusion and build, review and scoped commit/push.
