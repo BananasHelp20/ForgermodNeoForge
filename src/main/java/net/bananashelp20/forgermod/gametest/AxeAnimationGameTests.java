@@ -33,11 +33,21 @@ public class AxeAnimationGameTests {
     private static void close(ServerPlayer p){AxeAnimationImpacts.cancel(p.getUUID());AxeHeavyNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(p));p.server.getPlayerList().remove(p);}
     @GameTest(template="riftfang_test")
     public static void authoredCurvesDurationsAndAllAxeModelsArePresent(GameTestHelper test) {
-        test.assertTrue(AxeAnimationData.length(AxeAnimationData.Clip.SWING)==1 && AxeAnimationData.length(AxeAnimationData.Clip.SWING2)==.9375 && AxeAnimationData.length(AxeAnimationData.Clip.GRAVITY_CAST)==6,"Authored clip lengths changed");
+        test.assertTrue(AxeAnimationData.length(AxeAnimationData.Clip.SWING)==.91667 && AxeAnimationData.length(AxeAnimationData.Clip.SWING2)==.9375 && AxeAnimationData.length(AxeAnimationData.Clip.GRAVITY_CAST)==5.25,"Authored clip lengths changed");
         var jump=AxeAnimationData.sample(AxeAnimationData.Clip.VERTICAL,"player_model",.83333);
         test.assertTrue(jump.position().y()==15 && jump.position().z()==-16,"Authored jump keyframe changed");
-        test.assertTrue(AxeAnimationData.sample(AxeAnimationData.Clip.GRAVITY_CAST,"tornado_emitter",6).rotation().y()==2880,"Emitter full turns were normalized away");
+        test.assertTrue(AxeAnimationData.sample(AxeAnimationData.Clip.GRAVITY_CAST,"tornado_emitter",5.25).rotation().y()==17280,"Emitter full turns were normalized away");
         test.assertTrue(AxeAnimationData.Clip.VERTICAL.impactTicks()==25 && AxeAnimationData.Clip.GRAVITY_CAST.impactTicks()==33,"Impact deadlines do not match source times");
+        test.assertTrue(AxeAnimationData.length(AxeAnimationData.Clip.SPIN)==2.08333 && AxeAnimationData.Clip.SPIN.impactTicks()==15,"Authored spin duration or impact changed");
+        var idle=AxeAnimationData.sample(AxeAnimationData.Clip.IDLE,"axe",0);
+        test.assertTrue(idle.position().equals(new AxeAnimationData.Vec(0,5,-7)),"Two-handed idle grip missing");
+        var smooth=AxeAnimationData.sample(AxeAnimationData.Clip.SWING2,"axe",.3).rotation();
+        // Source control points evaluated independently using THREE.SplineCurve's cubic basis.
+        test.assertTrue(Math.abs(smooth.x()+.05581637675600733)<1e-8 && Math.abs(smooth.z()+.11163275351201465)<1e-8,"Catmull-Rom playback differs from Blockbench");
+        var walk=AxeAnimationData.sample(AxeAnimationData.Clip.WALK,"left_arm",.25).rotation();
+        var loop=AxeAnimationData.sample(AxeAnimationData.Clip.WALK,"left_arm",1.25).rotation();
+        test.assertTrue(Math.abs(walk.x()-53.71785)<1e-8 && walk.equals(loop),"Smooth walking loop differs from source");
+        test.assertTrue(AxeAnimationData.locator("end_axe").equals(new AxeAnimationData.Vec(5.10225,30.6,-11.70658)),"Updated swirl locator missing");
         int count=0;
         for(var entry:ModItems.ITEMS.getEntries())if(AxeAnimationItems.isModAxe(new ItemStack(entry.get()))){
             count++;var resource="/assets/forgermod/models/item/"+entry.getId().getPath()+".json";

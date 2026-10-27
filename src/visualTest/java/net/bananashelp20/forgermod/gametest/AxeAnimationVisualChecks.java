@@ -21,8 +21,8 @@ public final class AxeAnimationVisualChecks {
     private static int ticks,index=-1;
     private static boolean initialized;
     private static int verified=-1;
-    private static final AxeAnimationData.Clip[] CLIPS={AxeAnimationData.Clip.IDLE,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.SWING2,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.IDLE,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST};
-    private static final double[] TIMES={0,.5,.625,.5,.83333,1.25,.5,1.625,3.25,0,.625,1.25,.5,1.625,3.25};
+    private static final AxeAnimationData.Clip[] CLIPS={AxeAnimationData.Clip.IDLE,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.SWING2,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.IDLE,AxeAnimationData.Clip.SWING,AxeAnimationData.Clip.VERTICAL,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.GRAVITY_CAST,AxeAnimationData.Clip.SPIN,AxeAnimationData.Clip.SPIN,AxeAnimationData.Clip.WALK,AxeAnimationData.Clip.SWING2};
+    private static final double[] TIMES={0,.5,.625,.5,.83333,1.25,.5,1.625,3.25,0,.625,1.25,.5,1.625,3.25,.75,1.5,.25,.3};
     @SubscribeEvent public static void tick(ClientTickEvent.Post event){
         var mc=Minecraft.getInstance();
         // Launch arguments may survive an IDE devlaunch using generated argument files.
@@ -35,13 +35,14 @@ public final class AxeAnimationVisualChecks {
             mc.getSingleplayerServer().execute(()->{
                 var p=mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());if(p==null)return;
                 p.setGameMode(GameType.CREATIVE);
+                for(var entity:p.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.Mob.class,new net.minecraft.world.phys.AABB(-16,60,-16,16,90,16)))entity.discard();
                 for(int x=-8;x<=8;x++)for(int z=-8;z<=8;z++)p.serverLevel().setBlockAndUpdate(new BlockPos(x,69,z),Blocks.STONE.defaultBlockState());
                 p.teleportTo(.5,70,.5);p.setYRot(0);p.setXRot(0);p.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Boolean.getBoolean("forgermod.axe.visualVoid")?ModItems.NULLIFIED_AXE.get():ModItems.MOLTEN_AXE.get()));p.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
             });return;
         }
         if(++ticks<100)return;
         int next=(ticks-100)/20;if(next>=CLIPS.length){if(ticks>100+CLIPS.length*20+30)mc.stop();return;}
-        if(next!=index){index=next;mc.options.setCameraType(index>=9?CameraType.FIRST_PERSON:CameraType.THIRD_PERSON_FRONT);mc.player.setYRot(0);mc.player.setXRot(0);mc.player.yBodyRot=mc.player.yBodyRotO=0;}
+        if(next!=index){index=next;mc.options.setCameraType(index>=9 && index<15?CameraType.FIRST_PERSON:CameraType.THIRD_PERSON_FRONT);mc.player.setYRot(0);mc.player.setXRot(0);mc.player.yBodyRot=mc.player.yBodyRotO=0;}
         var tag=mc.player.getPersistentData();tag.putInt(AxeAnimationNetwork.CLIP,CLIPS[index].ordinal());tag.putLong(AxeAnimationNetwork.START,mc.level.getGameTime()-(long)(TIMES[index]*20));tag.putLong(AxeAnimationNetwork.SEQUENCE,10_000L+ticks);
         if(verified!=index){verifyRig(mc);verified=index;}
         if((ticks-100)%20==10)Screenshot.grab(mc.gameDirectory,String.format(java.util.Locale.ROOT,"axe-%02d-%s.png",index,CLIPS[index].name),mc.getMainRenderTarget(),message->ForgerMod.LOGGER.info("Axe visual check: {}",message.getString()));

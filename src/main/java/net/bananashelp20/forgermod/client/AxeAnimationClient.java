@@ -57,6 +57,17 @@ public final class AxeAnimationClient {
         var sample=sample(player,partial);
         return sample!=null && !(player.swinging && (sample.clip==AxeAnimationData.Clip.IDLE || sample.clip==AxeAnimationData.Clip.WALK));
     }
+    private static AxeAnimationData.Pose poseSample(Sample sample,String bone){
+        var value=AxeAnimationData.sample(sample.clip,bone,sample.seconds);
+        if(sample.weight>=1)return value;
+        // Recovery is outside the authored clip; settle into its new two-handed idle,
+        // taking the shortest rotation path after multi-turn root/emitter motion.
+        var idle=AxeAnimationData.sample(AxeAnimationData.Clip.IDLE,bone,0);double f=1-sample.weight;
+        var a=value.rotation();var b=idle.rotation();
+        var rotation=new AxeAnimationData.Vec(a.x()+Math.IEEEremainder(b.x()-a.x(),360)*f,
+                a.y()+Math.IEEEremainder(b.y()-a.y(),360)*f,a.z()+Math.IEEEremainder(b.z()-a.z(),360)*f);
+        return new AxeAnimationData.Pose(value.position().lerp(idle.position(),f),rotation,value.scale().lerp(idle.scale(),f));
+    }
     private static boolean slim(Player player){return player instanceof AbstractClientPlayer client && client.getSkin().model()==net.minecraft.client.resources.PlayerSkin.Model.SLIM;}
     private static String bone(Player player,String name){
         if(player.getMainArm()!=HumanoidArm.LEFT)return name;
@@ -72,7 +83,7 @@ public final class AxeAnimationClient {
         model.rightPants.copyFrom(model.rightLeg);model.leftPants.copyFrom(model.leftLeg);model.jacket.copyFrom(model.body);
     }
     private static void apply(Player player,ModelPart part,String name,Sample sample){
-        String bone=bone(player,name);var value=AxeAnimationData.sample(sample.clip,bone,sample.seconds);float w=(float)sample.weight;
+        String bone=bone(player,name);var value=poseSample(sample,bone);float w=1;
         float mirror=player.getMainArm()==HumanoidArm.LEFT?-1:1;
         boolean arm=name.endsWith("_arm");
         float x=(float)Math.toRadians(-value.rotation().x()*w),y=(float)Math.toRadians(-value.rotation().y()*mirror*w),z=(float)Math.toRadians(value.rotation().z()*mirror*w);
@@ -93,7 +104,7 @@ public final class AxeAnimationClient {
     }
     public static void root(AbstractClientPlayer player,float partial,PoseStack pose){
         if(firstPerson)return;var sample=sample(player,partial);if(sample==null)return;
-        var root=AxeAnimationData.sample(sample.clip,"player_model",sample.seconds);float mirror=player.getMainArm()==HumanoidArm.LEFT?-1:1,w=(float)sample.weight;
+        var root=poseSample(sample,"player_model");float mirror=player.getMainArm()==HumanoidArm.LEFT?-1:1,w=1;
         float yaw=net.minecraft.util.Mth.rotLerp(partial,player.yBodyRotO,player.yBodyRot);
         pose.mulPose(Axis.YP.rotationDegrees(-yaw));pose.translate(-root.position().x()*mirror*w*.9375/16,root.position().y()*w*.9375/16,-root.position().z()*w*.9375/16);
         pose.translate(0,17.33333/16*.9375,0);rotate(pose,-root.rotation().x()*w,root.rotation().y()*mirror*w,-root.rotation().z()*mirror*w);pose.translate(0,-17.33333/16*.9375,0);
@@ -107,8 +118,8 @@ public final class AxeAnimationClient {
     }
     /** Shared by rendering and the opt-in rig comparison against source-space transforms. */
     public static void heldTransform(Player player,ItemStack stack,HumanoidArm arm,PoseStack pose,float partial){
-        var sample=sample(player,partial);if(sample==null)return;var axe=AxeAnimationData.sample(sample.clip,"axe",sample.seconds);
-        double mirror=arm==HumanoidArm.LEFT?-1:1,w=sample.weight;
+        var sample=sample(player,partial);if(sample==null)return;var axe=poseSample(sample,"axe");
+        double mirror=arm==HumanoidArm.LEFT?-1:1,w=1;
         // Undo only the cube offset/rest rotation to recover its animated parent bone.
         pose.translate(mirror*(slim(player)?1.5:1)/16,0,0);
         if(bone(player,arm==HumanoidArm.RIGHT?"right_arm":"left_arm").equals("right_arm"))pose.mulPose(Axis.XP.rotationDegrees(37.5F));
@@ -161,15 +172,16 @@ public final class AxeAnimationClient {
         arm.copyFrom(source);arm.render(pose,buffer,light,OverlayTexture.NO_OVERLAY);
     }
     private static void rig(org.joml.Matrix4f matrix,Sample sample,String bone,float x,float y,float z,float rx,float ry,float rz){
-        var value=AxeAnimationData.sample(sample.clip,bone,sample.seconds);matrix.translate((float)value.position().x(),(float)value.position().y(),(float)value.position().z());
+        var value=poseSample(sample,bone);matrix.translate((float)value.position().x(),(float)value.position().y(),(float)value.position().z());
         matrix.translate(x,y,z).rotateZ((float)Math.toRadians(rz+value.rotation().z())).rotateY((float)Math.toRadians(ry+value.rotation().y())).rotateX((float)Math.toRadians(rx+value.rotation().x())).translate(-x,-y,-z);
     }
     private static void emit(AbstractClientPlayer player,Sample sample){
         var matrix=new org.joml.Matrix4f();rig(matrix,sample,"player_model",0,17.33333F,1,0,0,0);rig(matrix,sample,"right_arm",4,22,1,0,0,0);
-        rig(matrix,sample,"axe",6,15.25F,-4,-90,37.5F,-90);rig(matrix,sample,"tornado_emitter",6,30.6F,-4.05F,0,0,0);
+        rig(matrix,sample,"axe",6,15.25F,-4,-90,37.5F,-90);var emitter=AxeAnimationData.origin("tornado_emitter");rig(matrix,sample,"tornado_emitter",(float)emitter.x(),(float)emitter.y(),(float)emitter.z(),0,0,0);
         double yaw=Math.toRadians(player.yBodyRot),mirror=player.getMainArm()==HumanoidArm.LEFT?-1:1;
-        for(float z:new float[]{-13.1F,4.9F}){
-            var local=matrix.transformPosition(new org.joml.Vector3f(6,30.6F,z));double x=-local.x*.9375/16*mirror,dz=-(local.z-1)*.9375/16;
+        for(String name:new String[]{"end_axe","end_axe2"}){
+            var locator=AxeAnimationData.locator(name);
+            var local=matrix.transformPosition(new org.joml.Vector3f((float)locator.x(),(float)locator.y(),(float)locator.z()));double x=-local.x*.9375/16*mirror,dz=-(local.z-1)*.9375/16;
             double wx=x*Math.cos(yaw)-dz*Math.sin(yaw),wz=x*Math.sin(yaw)+dz*Math.cos(yaw);
             // Authored disc/upward acceleration/lifetime; bound the original 2,000/s emitter for multiplayer.
             for(int n=0;n<4;n++) {
@@ -182,7 +194,7 @@ public final class AxeAnimationClient {
         var level=Minecraft.getInstance().level;if(level==null){PLAYING.clear();SEEN.clear();world=null;return;}
         var ids=new HashSet<UUID>();for(var player:level.players()){
             ids.add(player.getUUID());var sample=sample(player,0);
-            if(sample!=null && sample.clip==AxeAnimationData.Clip.GRAVITY_CAST && sample.seconds>=1.75 && sample.seconds<=6)emit(player,sample);
+            if(sample!=null && sample.clip==AxeAnimationData.Clip.GRAVITY_CAST && sample.seconds>=1.75 && sample.seconds<=AxeAnimationData.length(sample.clip))emit(player,sample);
         }PLAYING.keySet().retainAll(ids);SEEN.keySet().retainAll(ids);
     }
 }

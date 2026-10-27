@@ -8,10 +8,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationData;
+import net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts;
 
 public final class SwingAttackAbility {
     private SwingAttackAbility() {}
     public static boolean activate(ServerPlayer player,ItemStack stack) {
+        // One area hit at the start of the authored full-body spin, never one per revolution.
+        return AxeAnimationImpacts.queue(player,stack,"swing_attack",AxeAnimationData.Clip.SPIN,()->hit(player,stack));
+    }
+    private static void hit(ServerPlayer player,ItemStack stack) {
         double range=player.entityInteractionRange();
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         player.swing(InteractionHand.MAIN_HAND);
@@ -31,6 +37,5 @@ public final class SwingAttackAbility {
                     player.getY()+1,player.getZ()+Math.sin(angle)*particleRadius,1,0,0,0,0);
         }
         player.serverLevel().playSound(null,player.blockPosition(),SoundEvents.PLAYER_ATTACK_SWEEP,SoundSource.PLAYERS,1,.8F);
-        return true;
     }
 }

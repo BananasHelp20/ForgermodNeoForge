@@ -27,9 +27,12 @@ def write_json(path, value):
     path.write_text(json.dumps(value, indent=2)+'\n', encoding='utf-8')
 
 
-def main(folder):
-    folder = Path(folder)
-    source = json.loads((folder/'axe_playerplaceholder_animations(1).bbmodel').read_text(encoding='utf-8-sig'))
+def main(source_path, animations_only=False):
+    source_path = Path(source_path)
+    if source_path.is_dir():
+        source_path = max(source_path.glob('axe_playerplaceholder_animations*.bbmodel'), key=lambda p: p.stat().st_mtime)
+    folder = source_path.parent
+    source = json.loads(source_path.read_text(encoding='utf-8-sig'))
     groups = {g['uuid']: g for g in source['groups']}
     curves = {}
     for animation in source['animations']:
@@ -41,20 +44,26 @@ def main(folder):
             for key in track.get('keyframes', []):
                 if key['channel'] not in ('rotation', 'position', 'scale'):
                     continue
-                assert key['interpolation'] == 'linear', 'Importer must support the source interpolation exactly'
+                assert key['interpolation'] in ('linear', 'catmullrom'), 'Unsupported authored interpolation'
+                assert len(key['data_points']) == 1, 'Discontinuous keys require pre/post support'
                 point = key['data_points'][0]
-                frames.append({'time': key['time'], 'channel': key['channel'],
+                frames.append({'time': key['time'], 'channel': key['channel'], 'interpolation': key['interpolation'],
                                'value': [float(str(point.get(axis, '')).strip() or 0) for axis in 'xyz']})
             if frames:
                 tracks[groups[uuid]['name']] = sorted(frames, key=lambda k: (k['time'], k['channel']))
         curves[animation['name']] = {'length': animation['length'], 'loop': animation['loop'] == 'loop', 'bones': tracks}
-    write_json(ASSETS/'animations/axe_player.json', {'clips': curves})
+    rig = {g['name']: {'origin': g['origin'], 'rotation': g.get('rotation', [0, 0, 0])} for g in source['groups']}
+    locators = {e['name']: e['position'] for e in source['elements'] if e.get('type') == 'locator'}
+    write_json(ASSETS/'animations/axe_player.json', {'source': source_path.name, 'rig': rig, 'locators': locators, 'clips': curves})
     texture = next(t for t in source['textures'] if t.get('name') == 'swirl_grtg.png')
     particle = ASSETS/'textures/particle/axe_cast_swirl.png'
     particle.parent.mkdir(parents=True, exist_ok=True)
     particle.write_bytes(base64.b64decode(texture['source'].split(',', 1)[1]))
     write_json(particle.with_suffix('.png.mcmeta'), {'animation': {'frametime': 3}})
     write_json(ASSETS/'particles/axe_cast_swirl.json', {'textures': ['forgermod:axe_cast_swirl']})
+    if animations_only:
+        print(f'Imported {len(curves)} authored clips from {source_path.name}; mesh untouched.')
+        return
 
     model = json.loads((folder/'Axe - Converted(1).bbmodel').read_text(encoding='utf-8-sig'))
     assert not any(any(g.get('rotation', [0, 0, 0])) for g in model['groups']), 'Rotated mesh groups require hierarchy baking'
@@ -104,4 +113,4 @@ def main(folder):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main(sys.argv[1], '--animations-only' in sys.argv[2:])
