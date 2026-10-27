@@ -91,7 +91,7 @@ public final class AugmentUpgradeDescriptionGameTests {
     @GameTest(template="riftfang_test")
     public static void fixedRanksAndRosterChangesAreNotMisrepresented(GameTestHelper test) {
         var dagger=new ItemStack(ModItems.DEAD_CALM_DAGGER.get());
-        test.assertTrue(AugmentUpgradeDescriptions.changes(dagger,Augmentations.DOUBLE_JUMP,1).isEmpty(),"Double Jump II invents a bonus");
+        test.assertTrue(has(dagger,Augmentations.DOUBLE_JUMP,1,"air_jumps") && !has(dagger,Augmentations.DOUBLE_JUMP,1,"jump_height"),"Double Jump II must add one jump without changing height");
         test.assertTrue(AugmentUpgradeDescriptions.changes(dagger,Augmentations.MATERIAL_HIT,1).isEmpty(),"Material Hit rank invents a bonus");
         var claymore=new ItemStack(ModItems.HOLLOW_CLAYMORE.get());
         var roster=property(test,claymore,AdditionalAbilities.BONE_GUARD,2,"summons");

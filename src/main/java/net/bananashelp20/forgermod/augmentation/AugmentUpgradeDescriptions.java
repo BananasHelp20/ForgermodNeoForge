@@ -192,8 +192,8 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats,"damage",net.bananashelp20.forgermod.item.custom.abilities.FlamebornAbility.damageMultiplier(rank),"weapon_damage");
             }
             case Augmentations.DOUBLE_JUMP -> {
-                numeric(stats, "air_jumps", rank >= 4 ? 2 : 1, "jumps");
-                text(stats, "jump_height", .55 + .05 * Math.clamp(rank - 4, 0, 3), "higher_jumps");
+                numeric(stats, "air_jumps", net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.jumps(rank), "jumps");
+                text(stats, "jump_height", net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.lift(rank), "higher_jumps");
             }
             case "tooltips.forgermod.ability.absolute_nightmare" -> seconds(stats, "duration", (rank == 1 ? 100 : 200) + jadeTicks);
             case "tooltips.forgermod.ability.leech" -> numeric(stats, "healing", 10 + 2 * (rank - 1), "damage_healed");

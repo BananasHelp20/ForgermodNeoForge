@@ -79,6 +79,7 @@
   "tooltips.forgermod.passive.death_march.reviewed": "Deal more damage depending on the targets health. Up to %s.",
   "augmentation.forgermod.preview.max_damage_bonus": "Maximum damage bonus: %s.",
   "tooltips.forgermod.passive.death_march.name": "Death March",
+  "tooltips.forgermod.passive.double_jump.reviewed": "Gain the ability to do %s in midair. Matching dual-wielded daggers combine their jumps.",
   "tooltips.forgermod.passive.double_jump.name": "Double Jump",
   "tooltips.forgermod.passive.windwalker.name": "Windwalker",
   "tooltips.forgermod.passive.chain_lightning.name": "Chain Lightning",

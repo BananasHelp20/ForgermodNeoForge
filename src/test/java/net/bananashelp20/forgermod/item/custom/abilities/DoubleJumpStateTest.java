@@ -15,6 +15,13 @@ public final class DoubleJumpStateTest {
         state.normalJump(first);
         state.clear(first);
         expect(false, state.consume(first), "landing or logout clears jump");
+        state.normalJump(first,8);
+        for(int i=0;i<8;i++)expect(true,state.consume(first),"Eight-jump dual Windwalker budget");
+        expect(false,state.consume(first),"Ninth air jump rejected");
+        state.normalJump(first,99);
+        for(int i=0;i<8;i++)expect(true,state.consume(first),"Budget clamped to eight");
+        expect(false,state.consume(first),"Budget exceeds eight");
+        state.normalJump(first,-1);expect(false,state.consume(first),"Negative budget grants jumps");
     }
 
     private static void expect(boolean expected, boolean actual, String description) {

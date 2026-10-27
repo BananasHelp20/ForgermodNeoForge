@@ -28,7 +28,7 @@ public final class DoubleJumpNetwork {
     private static int jumpRank(net.minecraft.world.item.ItemStack stack) {
         return Augmentations.hasPassive(stack,Augmentations.DOUBLE_JUMP)?Augmentations.level(stack,Augmentations.DOUBLE_JUMP):0;
     }
-    private static int jumps(int rank) {return rank==0?0:rank>=4?2:1;}
+    private static int jumps(int rank) {return DoubleJumpProgression.jumps(rank);}
     public static int airJumps(Player player) {
         int main=jumpRank(player.getMainHandItem());
         return jumps(main)+(net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player)?jumps(jumpRank(player.getOffhandItem())):0);
@@ -36,7 +36,7 @@ public final class DoubleJumpNetwork {
     public static double lift(Player player) {
         int rank=jumpRank(player.getMainHandItem());
         if(net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player))rank=Math.max(rank,jumpRank(player.getOffhandItem()));
-        return .55+.05*Math.clamp(rank-4,0,3);
+        return DoubleJumpProgression.lift(rank);
     }
     private static boolean unchanged(ServerPlayer player) {
         var old=LOADOUTS.get(player.getUUID());return old!=null && old.main==player.getMainHandItem() && old.off==player.getOffhandItem() && old.slot==player.getInventory().selected && old.level==player.level();

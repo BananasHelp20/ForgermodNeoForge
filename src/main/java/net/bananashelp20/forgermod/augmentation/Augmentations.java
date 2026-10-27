@@ -45,8 +45,8 @@ public final class Augmentations {
         if(ReviewedRanks.hardCap(id)>0) return ReviewedRanks.hardCap(id);
         return hasSuperForm(stack, id) ? superStart(id)+3 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
     }
-    /** Existing forms start after base III; newly reviewed four-rank bases start after IV. */
-    public static int superStart(String id) {return AREA_DISCHARGE.equals(id) || AdditionalAbilities.CHALLENGE_ROAR.equals(id) || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) || RecommendedAbilities.EXPLOSION.equals(id)?5:4;}
+    /** Each super form begins after its approved base-level cap. */
+    public static int superStart(String id) {if(DOUBLE_JUMP.equals(id))return 3;return AREA_DISCHARGE.equals(id) || AdditionalAbilities.CHALLENGE_ROAR.equals(id) || RecommendedAbilities.CRUCIBLE_HOOK.equals(id) || RecommendedAbilities.EXPLOSION.equals(id)?5:4;}
     public static boolean isSuper(ItemStack stack,String id,int rank) {return hasSuperForm(stack,id) && rank>=superStart(id);}
     public static String superName(ItemStack stack, String id) {
         if(AREA_DISCHARGE.equals(id))return "tooltips.forgermod.ability.anger_of_zeus.name";
@@ -120,6 +120,8 @@ public final class Augmentations {
             CompoundTag row = (CompoundTag)tag;
             String id = migrateId(row.getString("id"));
             int level = row.getInt("level");
+            if(DOUBLE_JUMP.equals(id) && data(stack).getInt("double_jump_revision")<1)
+                level=net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.migrate(level);
             if(ReviewedRanks.hardCap(id)>0) level=Math.min(level,ReviewedRanks.hardCap(id));
             if (valid.contains(id) && level >= 1 && level <= storedMax(stack,id)) result.put(id, level);
         }
@@ -285,7 +287,7 @@ public final class Augmentations {
         learned.forEach((key, level) -> {
             CompoundTag row = new CompoundTag(); row.putString("id", key); row.putInt("level", level); levels.add(row);
         });
-        augments.put("levels", levels); augments.putInt("count", count); augments.putInt("version", 2);
+        augments.put("levels", levels); augments.putInt("count", count); augments.putInt("version", 2); augments.putInt("double_jump_revision",1);
         if (augments.contains("active_order", Tag.TAG_LIST)) {
             ListTag order = new ListTag();
             for (Tag tag : augments.getList("active_order", Tag.TAG_STRING)) {
@@ -392,7 +394,7 @@ public final class Augmentations {
         learned(stack).forEach((id, rank) -> {
             CompoundTag row = new CompoundTag(); row.putString("id", id); row.putInt("level", rank); levels.add(row);
         });
-        augments.put("levels", levels); augments.putInt("version", 2);
+        augments.put("levels", levels); augments.putInt("version", 2); augments.putInt("double_jump_revision",1);
         ListTag savedOrder = new ListTag();
         for (String id : order) savedOrder.add(net.minecraft.nbt.StringTag.valueOf(id));
         augments.put("active_order", savedOrder);augments.remove("swapped");

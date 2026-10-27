@@ -81,8 +81,8 @@ public final class AbilityDescriptionGameTests {
         var rows=new ArrayList<Component>();
         method.invoke(dagger.getItem(),dagger,rows,"test.lore","no_gemstone",true);
         var keys=rows.stream().map(AbilityDescriptionGameTests::key).toList();
-        test.assertTrue(keys.indexOf("augmentation.forgermod.super_available")==keys.indexOf(Augmentations.DOUBLE_JUMP+".current")+1,"Passive note is misplaced");
-        var windwalker=Augmentations.setLevel(dagger,Augmentations.DOUBLE_JUMP,4);
+        test.assertTrue(keys.indexOf("augmentation.forgermod.super_available")==keys.indexOf(Augmentations.DOUBLE_JUMP+".reviewed")+1,"Passive note is misplaced");
+        var windwalker=Augmentations.setLevel(dagger,Augmentations.DOUBLE_JUMP,3);
         rows.clear();method.invoke(windwalker.getItem(),windwalker,rows,"test.lore","no_gemstone",false);
         var passive=rows.stream().filter(row->row.getString().contains("Windwalker")).findFirst().orElseThrow();
         test.assertTrue(passive.getString().equals("k Windwalker I k"),"Super passive glyph follows the name instead of the rank");

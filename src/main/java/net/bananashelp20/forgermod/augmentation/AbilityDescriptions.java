@@ -123,6 +123,9 @@ public final class AbilityDescriptions {
                             net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.launchHeight(true,rank)+" blocks",
                             number(net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.SMASH_RADIUS)+" block radius")
                     :null;
+            case Augmentations.DOUBLE_JUMP -> text(id+".reviewed","Gain the ability to do %s in midair. Matching dual-wielded daggers combine their jumps.",
+                    net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.jumps(rank)+" more "+
+                            (net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.jumps(rank)==1?"jump":"jumps"));
             case AdditionalAbilities.DEATHS_DUE -> text(id+".reviewed","Enemy kills grant %s more xp.",
                     net.bananashelp20.forgermod.item.custom.abilities.DeathsDueEvents.bonusPercent(rank)+"%");
             case "tooltips.forgermod.passive.death_march" -> text(id+".reviewed","Deal more damage depending on the targets health. Up to %s.",
@@ -225,8 +228,6 @@ public final class AbilityDescriptions {
     private static Component currentDescription(ItemStack stack, String id, int rank, boolean compact) {
         rank = Math.max(1, rank);
         var values = AugmentUpgradeDescriptions.values(stack, id, rank);
-        if (id.equals(Augmentations.DOUBLE_JUMP) && rank < 4)
-            values.put("air_jumps", Component.translatable("augmentation.forgermod.preview.value.one_air_jump"));
         if (id.equals(AdditionalAbilities.BONE_GUARD) && rank >= 4)
             values.put("equipment", Component.translatable(rank >= 7
                     ? "tooltips.forgermod.ability.bone_guard.elite_equipment"

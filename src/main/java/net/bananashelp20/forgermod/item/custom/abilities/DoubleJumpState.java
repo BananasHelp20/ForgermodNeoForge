@@ -6,7 +6,7 @@ import java.util.UUID;
 public final class DoubleJumpState {
     private final Map<UUID,Integer> remaining = new HashMap<>();
     public void normalJump(UUID player) { normalJump(player,1); }
-    public void normalJump(UUID player,int count) { remaining.put(player,Math.clamp(count,0,4)); }
+    public void normalJump(UUID player,int count) { remaining.put(player,Math.clamp(count,0,DoubleJumpProgression.MAX_AIR_JUMPS)); }
     public boolean consume(UUID player) {
         int count=remaining.getOrDefault(player,0);if(count<=0)return false;
         if(count==1)remaining.remove(player);else remaining.put(player,count-1);return true;

@@ -54,19 +54,19 @@ public class SuperAugmentGameTests {
         test.succeed();
     }
     public static void progression(GameTestHelper test,ItemStack fresh,String id,String name) {
-        ItemStack stack=fresh;
-        for(int rank=1;rank<=7;rank++) {
+        ItemStack stack=fresh;int start=Augmentations.superStart(id),max=Augmentations.maxRank(fresh,id);
+        for(int rank=1;rank<=max;rank++) {
             stack=Augmentations.apply(stack,id);
             test.assertFalse(stack.isEmpty(),"Upgrade refused at "+rank);
-            test.assertTrue(Augmentations.level(stack,id)==rank && Augmentations.displayRank(stack,id,rank)==(rank<4?rank:rank-3),"Stored/displayed rank wrong");
+            test.assertTrue(Augmentations.level(stack,id)==rank && Augmentations.displayRank(stack,id,rank)==(rank<start?rank:rank-start+1),"Stored/displayed rank wrong");
             test.assertTrue(Augmentations.learned(stack).size()==1,"Super form consumes another slot");
-            if(rank>=4) test.assertTrue(Augmentations.abilityName(stack,id,rank).getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals(name),"Super name missing");
+            if(rank>=start) test.assertTrue(Augmentations.abilityName(stack,id,rank).getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text && text.getKey().equals(name),"Super name missing");
         }
         test.assertTrue(Augmentations.apply(stack,id).isEmpty(),"Super IV can upgrade again");
         var extracted=Augmentations.extractFirst(stack,new ItemStack(ModItems.AUGMENT_TEMPLATE.get()));
-        test.assertTrue(extracted!=null && Augmentations.level(extracted.template(),id)==7,"Extraction loses super rank");
+        test.assertTrue(extracted!=null && Augmentations.level(extracted.template(),id)==max,"Extraction loses super rank");
         var merged=Augmentations.merge(fresh,extracted.template());
-        test.assertTrue(Augmentations.level(merged,id)==7 && Augmentations.displayRank(merged,id,7)==4,"Anvil transfer loses super rank");
+        test.assertTrue(Augmentations.level(merged,id)==max && Augmentations.displayRank(merged,id,max)==4,"Anvil transfer loses super rank");
         test.assertTrue(Augmentations.merge(merged,extracted.template()).isEmpty(),"Equal super IV ranks exceed cap");
     }
     @GameTest(template="riftfang_test")
