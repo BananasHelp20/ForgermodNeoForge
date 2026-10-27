@@ -138,7 +138,8 @@ public class MorsiumWeapon extends SwordItemWithEffect {
             ItemStack held = attacker.getMainHandItem();
             float multiplier = 1;
             if (PassiveActors.has(attacker, "tooltips.forgermod.passive.death_march")) {
-                multiplier *= DeathMarchDamage.multiplier(event.getEntity().getHealth(), event.getEntity().getMaxHealth());
+                multiplier *= DeathMarchDamage.multiplier(event.getEntity().getHealth(), event.getEntity().getMaxHealth(),
+                        Augmentations.level(PassiveActors.weapon(attacker,"tooltips.forgermod.passive.death_march"),"tooltips.forgermod.passive.death_march"));
             }
             if (PassiveActors.has(attacker, "tooltips.forgermod.passive.revenge")) {
                 multiplier *= RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD));

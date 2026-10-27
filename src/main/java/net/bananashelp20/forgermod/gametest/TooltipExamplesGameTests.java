@@ -74,8 +74,11 @@ public class TooltipExamplesGameTests {
             test.assertTrue(contains(rows, "tooltips.forgermod.fire_resistant") != jade, "Jade inherited Amber fire resistance text");
             test.assertTrue(contains(rows, "tooltips.forgermod.gemstone_bonus.jade") == jade, "Jade bonus text missing or shown on Amber");
             test.assertTrue(rows.stream().filter(c -> key(c).equals("augmentation.forgermod.rank")).count() == 3, "Material hit and two passives not displayed together");
-            for (Component line : rows) if (key(line).equals("augmentation.forgermod.rank"))
-                test.assertTrue(((TranslatableContents)line.getContents()).getArgs()[1].equals("IV"), "Maxed passive lacks IV");
+            for (Component line : rows) if (key(line).equals("augmentation.forgermod.rank")) {
+                var args=((TranslatableContents)line.getContents()).getArgs();
+                boolean deathMarch=key((Component)args[0]).equals("tooltips.forgermod.passive.death_march.name");
+                test.assertTrue(args[1].equals(deathMarch?"V":"IV"), "Maxed passive has wrong displayed rank");
+            }
             var hint = rows.getLast();
             test.assertTrue(key(hint).equals("tooltips.forgermod.ability.shift_hint"), "Shift hint is not last");
             Component shift = (Component)((TranslatableContents)hint.getContents()).getArgs()[0];

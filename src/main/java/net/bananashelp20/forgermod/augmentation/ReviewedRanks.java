@@ -14,6 +14,7 @@ public final class ReviewedRanks {
             case "tooltips.forgermod.ability.deep_wound" -> 3;
             case "tooltips.forgermod.ability.thunderclap" -> 4;
             case "tooltips.forgermod.ability.sudden_presence" -> 7;
+            case "tooltips.forgermod.passive.death_march" -> 5;
             default -> -1;
         };
     }

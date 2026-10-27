@@ -121,6 +121,8 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats,"radius",ReviewedRanks.stormRadius(rank),"blocks");
                 seconds(stats,"duration",ReviewedRanks.stormTicks(rank)+jadeTicks);
             }
+            case "tooltips.forgermod.passive.death_march" -> numeric(stats,"max_damage_bonus",
+                    net.bananashelp20.forgermod.item.custom.abilities.DeathMarchDamage.maximumBonusPercent(rank),"percent");
             case "tooltips.forgermod.ability.void_step" -> {
                 numeric(stats,"range",net.bananashelp20.forgermod.item.custom.abilities.VoidStepRanges.blink(rank),"blocks");
                 if(rank>=4) {
