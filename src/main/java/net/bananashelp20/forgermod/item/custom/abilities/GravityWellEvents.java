@@ -67,8 +67,11 @@ public final class GravityWellEvents {
             if(target instanceof ServerPlayer other) other.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(other));
             if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return false;
             var impact=target.blockPosition();
-            boolean smashed=net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.abilityVerticalStrike(player,pull.stack(),target.position());
-            if(smashed)player.serverLevel().playSound(null,impact,SoundEvents.ENDERMAN_TELEPORT,SoundSource.PLAYERS,.65F,.7F);
+            boolean smashed=net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.queue(player,pull.stack(),"gravity_well_slam",
+                    net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationData.Clip.VERTICAL,()->{
+                if(net.bananashelp20.forgermod.item.custom.attacks.axe.AxeHeavyNetwork.abilityVerticalStrike(player,pull.stack(),net.minecraft.world.phys.Vec3.atBottomCenterOf(impact)))
+                    player.serverLevel().playSound(null,impact,SoundEvents.ENDERMAN_TELEPORT,SoundSource.PLAYERS,.65F,.7F);
+            });
             return smashed;
         });
         if(pull.awaiting().isEmpty()) cancel(player.getUUID());

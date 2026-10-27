@@ -89,7 +89,7 @@ public class AxeChargedStrikeGameTests {
         var target=EntityType.ZOMBIE.create(test.getLevel());target.setNoAi(true);target.setNoGravity(true);target.setPos(origin.add(0,0,2));
         target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);target.getAttribute(Attributes.ARMOR).setBaseValue(0);target.setHealth(1000);test.getLevel().addFreshEntity(target);
         try {
-            swing(player);float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);player.attack(target);
+            swing(player);float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);player.attack(target);AxeAnimationTestDriver.finish(player);
             test.assertTrue(Math.abs(target.getHealth()-(1000-damage))<.001,"Accepted charge packet weakens real melee hit: health="+target.getHealth()+" damage="+damage);
             test.assertTrue(player.getAttackStrengthScale(0)==0,"Vanilla melee did not reset charge");swing(player);test.assertTrue(count(player)==1,"Immediate weak melee advances combo");
         } finally {clear(player);target.discard();player.server.getPlayerList().remove(player);}

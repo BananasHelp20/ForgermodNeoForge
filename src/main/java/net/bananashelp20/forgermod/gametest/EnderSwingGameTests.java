@@ -51,7 +51,7 @@ public class EnderSwingGameTests {
                     double bonus=net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingBonus(rank);
                     target.setPos(player.position().add(radius,0,0));target.setHealth(100);target.invulnerableTime=0;
                     double start=target.getY();wire.sounds.clear();
-                    test.assertTrue(EnderSwingAbility.activate(player,stack),"Ranked swing rejected");
+                    test.assertTrue(EnderSwingAbility.activate(player,stack),"Ranked swing rejected");AxeAnimationTestDriver.finish(player);
                     test.assertTrue(wire.sounds.size()==3 && wire.sounds.get(0).getSound().value()==net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT && wire.sounds.get(1).getSound().value()==net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT && wire.sounds.get(2).getSound().value()==net.minecraft.sounds.SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(),"Lift misses departure, arrival or gravity-pressure sound");
                     test.assertTrue(Math.abs(wire.sounds.get(0).getY()-start)<.126 && Math.abs(wire.sounds.get(1).getY()-target.getY())<.126 && wire.sounds.get(0).getPitch()>wire.sounds.get(1).getPitch(),"Ender sounds miss the two teleport endpoints or pitch descent");
                     test.assertTrue(target.getY()==start+net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingHeight(rank),"Wrong lift at rank "+rank);
@@ -85,7 +85,7 @@ public class EnderSwingGameTests {
                 for(var mob:java.util.List.of(cow,wolf)){net.bananashelp20.forgermod.item.custom.abilities.GravitySwingEffects.clear(mob);mob.setHealth(200);mob.invulnerableTime=0;}
                 cow.setPos(player.position().add(1,0,0));wolf.setPos(player.position().add(-1,0,0));
                 var stack=Augmentations.setLevel(new ItemStack(entry.get()),RecommendedAbilities.ENDER_SWING,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();
-                EnderSwingAbility.activate(player,stack);
+                EnderSwingAbility.activate(player,stack);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(cow.getHealth()<200 && cow.getY()>player.getY() && cow.getBoundingBox().maxY<=ceiling.getY() && ceiling.getY()-cow.getBoundingBox().maxY<.01,"Passive mob is excluded or not lifted to exact ceiling clearance");
                 test.assertTrue(wolf.getHealth()<200 && Math.abs(wolf.getY()-player.getY()-net.bananashelp20.forgermod.augmentation.ReviewedRanks.gravitySwingHeight(rank))<.001,"Owned mob is excluded or full clear lift changed");
             }
@@ -117,7 +117,7 @@ public class EnderSwingGameTests {
     }
 
     @GameTest(template="riftfang_test")
-    public static void activationImmediatelyHitsAllNearbyMobsAndRespectsCeilings(GameTestHelper test) throws Exception {
+    public static void authoredImpactHitsAllNearbyMobsAndRespectsCeilings(GameTestHelper test) throws Exception {
         ServerPlayer player=TestPlayers.survival(test);
         player.setNoGravity(true); player.setPos(test.getBounds().getCenter());
         BlockPos feet=player.blockPosition();
@@ -140,7 +140,7 @@ public class EnderSwingGameTests {
         test.getLevel().setBlockAndUpdate(obstruction,Blocks.STONE.defaultBlockState());
         double liftedY=lifted.getY(),blockedY=blocked.getY(),edgeY=edge.getY();
         float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        AbilityTestPackets.use(player,0);
+        AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);
         test.assertFalse(net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,RecommendedAbilities.ENDER_SWING),"Instant swing leaves an armed state");
         test.assertTrue(Math.abs(lifted.getHealth()-(100-damage))<.001 && Math.abs(lifted.getY()-(liftedY+10))<.001,
                 "Nearby enemy was not struck and lifted exactly ten blocks");
@@ -167,12 +167,12 @@ public class EnderSwingGameTests {
             for(var item:java.util.List.of(ModItems.NULLIFIED_AXE.get(),ModItems.NULLIFIED_AXE_RUBY.get(),ModItems.NULLIFIED_AXE_AMBER.get(),ModItems.NULLIFIED_AXE_AMETHYST.get(),ModItems.NULLIFIED_AXE_JADE.get())) {
                 ItemStack stack=Augmentations.apply(new ItemStack(item),RecommendedAbilities.ENDER_SWING);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
                 test.assertTrue(Augmentations.learned(stack).size()==1,"Fixture has another augment");
-                AbilityTestPackets.use(player,0);
+                AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);
                 String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.ENDER_SWING;
                 long ready=player.level().getGameTime()+1800;
                 test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==ready,"Cooldown does not begin immediately without a followup attack");
                 player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.STICK));WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-                player.setItemInHand(InteractionHand.MAIN_HAND,stack);AbilityTestPackets.use(player,0);
+                player.setItemInHand(InteractionHand.MAIN_HAND,stack);AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==ready,"Switching or repeated activation changes cooldown");
                 test.assertFalse(net.bananashelp20.forgermod.item.custom.abilities.RecommendedAbilityRuntime.active(player,RecommendedAbilities.ENDER_SWING),"Swing remains armed");
             }
@@ -188,10 +188,10 @@ public class EnderSwingGameTests {
         var target=zombie(test,player.position().add(.8,0,0));
         try {
             String key=BuiltInRegistries.ITEM.getKey(stack.getItem())+":"+RecommendedAbilities.ENDER_SWING;
-            AbilityTestPackets.use(player,2);
-            test.assertTrue(target.getHealth()<100 && stack.isEmpty(),"Tertiary activation does not strike immediately or break the last-durability axe");
+            AbilityTestPackets.use(player,2);AxeAnimationTestDriver.finish(player);
+            test.assertTrue(target.getHealth()<100 && stack.isEmpty(),"Tertiary impact does not strike or break the last-durability axe");
             test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+1800,"Breaking the axe loses its instant cooldown");
-            var replacement=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),RecommendedAbilities.ENDER_SWING);player.setItemInHand(InteractionHand.MAIN_HAND,replacement);target.setPos(player.position().add(.8,0,0));target.invulnerableTime=0;float health=target.getHealth();AbilityTestPackets.use(player,0);
+            var replacement=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),RecommendedAbilities.ENDER_SWING);player.setItemInHand(InteractionHand.MAIN_HAND,replacement);target.setPos(player.position().add(.8,0,0));target.invulnerableTime=0;float health=target.getHealth();AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);
             test.assertTrue(target.getHealth()==health,"Replacement axe bypasses cooldown");
         } finally {target.discard();WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
         test.succeed();

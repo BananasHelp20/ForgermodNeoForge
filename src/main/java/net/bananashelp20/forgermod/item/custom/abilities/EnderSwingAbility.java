@@ -27,10 +27,12 @@ public final class EnderSwingAbility {
                 || !(stack.getItem() instanceof InanisiumWeapon weapon) || !weapon.isAxe()
                 || !player.getOffhandItem().isEmpty()
                 || !Augmentations.ids(stack, true).contains(RecommendedAbilities.ENDER_SWING)) return false;
-        strike(player, stack);
-        return true;
+        return net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.queue(player,stack,"gravity_swing",
+                net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationData.Clip.GRAVITY_CAST,()->strike(player,stack));
     }
 
+    public static boolean active(ServerPlayer player){return net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.pending(player.getUUID(),"gravity_swing");}
+    public static void cancel(java.util.UUID player){net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.cancel(player,"gravity_swing");}
     private static void strike(ServerPlayer player, ItemStack stack) {
         int rank=Augmentations.level(stack,RecommendedAbilities.ENDER_SWING);
         double radius=ReviewedRanks.gravitySwingRadius(rank);

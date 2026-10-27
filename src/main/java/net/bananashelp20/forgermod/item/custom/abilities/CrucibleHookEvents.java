@@ -66,7 +66,7 @@ public final class CrucibleHookEvents {
         Hook hook=HOOKS.get(player.getUUID()); if(hook==null) return false;
         if(!player.isAlive() || player.isSpectator() || player.getMainHandItem()!=hook.stack()
                 || player.getInventory().selected!=hook.selected() || !hook.target().isAlive()
-                || player.serverLevel()!=hook.level() || hook.target().level()!=player.level() || player.level().getGameTime()>=hook.expires()
+                || player.serverLevel()!=hook.level() || hook.target().level()!=player.level() || (player.level().getGameTime()>=hook.expires() && !net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.pending(player.getUUID(),"crucible_slam"))
                 || player.distanceToSqr(hook.target())>24*24
                 || !Augmentations.ids(hook.stack(),true).contains(RecommendedAbilities.CRUCIBLE_HOOK)
                 || !player.hasLineOfSight(hook.target()) || !validTarget(player,hook.target())) {
@@ -74,17 +74,22 @@ public final class CrucibleHookEvents {
         }
         return true;
     }
-    public static void cancel(UUID owner) { HOOKS.remove(owner);CrucibleGrapplerEvents.cancel(owner);CrucibleHookRope.end(owner); }
+    public static void cancel(UUID owner) { HOOKS.remove(owner);net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.cancel(owner,"crucible_slam");CrucibleGrapplerEvents.cancel(owner);CrucibleHookRope.end(owner); }
     private static void advance(ServerPlayer player) {
         if(CrucibleGrapplerEvents.active(player)){CrucibleGrapplerEvents.tick(player);return;}
         if(!active(player)) return;
         Hook hook=HOOKS.get(player.getUUID()); var target=hook.target();
+        if(net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.pending(player.getUUID(),"crucible_slam"))return;
         var direction=hook.destination().subtract(target.position());
         if(direction.lengthSqr()<=.25*.25) {
             target.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);target.hasImpulse=true;
             if(target instanceof ServerPlayer other) other.connection.send(new ClientboundSetEntityMotionPacket(other));
             if(player.distanceToSqr(target)>player.entityInteractionRange()*player.entityInteractionRange()) return;
-            cancel(player.getUUID()); player.swing(InteractionHand.MAIN_HAND);
+            net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.queue(player,hook.stack(),"crucible_slam",
+                    net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationData.Clip.VERTICAL,()->{
+                cancel(player.getUUID());
+                if(!net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationImpacts.reachable(player,target))return;
+                player.swing(InteractionHand.MAIN_HAND);
             int immunity=target.invulnerableTime; target.invulnerableTime=0;
             float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*(1+.25F*hook.rank());
             if(target.hurt(player.damageSources().playerAttack(player),damage)) {
@@ -93,6 +98,7 @@ public final class CrucibleHookEvents {
             } else target.invulnerableTime=immunity;
             player.serverLevel().sendParticles(ParticleTypes.CRIT,target.getX(),target.getY()+.3,target.getZ(),24,.6,.2,.6,.1);
             WeaponAbilitySounds.fieryVerticalStrikeImpact(player.serverLevel(),target.blockPosition(),SoundSource.PLAYERS);
+            });
             return;
         }
         target.setDeltaMovement(direction.normalize().scale(Math.min(direction.length(),.7+.1*hook.rank())));

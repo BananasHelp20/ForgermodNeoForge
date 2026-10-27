@@ -31,11 +31,11 @@ public class QuickRechargeGameTests {
                 String item=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();String primary=item+":"+AdditionalAbilities.MAGNETIC_THROW;
                 String second=secondary!=null && RecommendedAbilities.active(secondary.id())?item+":"+secondary.id():WeaponCooldownKey.of(item,secondary==null?WeaponAbilitySlot.SECONDARY:Augmentations.sourceSlot(stack,WeaponAbilitySlot.SECONDARY));long now=player.level().getGameTime();
                 player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of(primary,now+100,second,now+200,"other-variant",now+300));
-                player.setOnGround(false);player.fallDistance=1;player.setSprinting(false);mob.setHealth(200);mob.invulnerableTime=0;player.attack(mob);
+                mob.setPos(player.position().add(0,0,2));player.setOnGround(false);player.fallDistance=1;player.setSprinting(false);mob.setHealth(200);mob.invulnerableTime=0;player.attack(mob);AxeAnimationTestDriver.finish(player);
                 var cds=player.getData(WeaponCooldownAttachments.COOLDOWNS);test.assertTrue(cds.get(primary)==now+80,"Critical does not shorten primary by one second: "+item+" scale="+player.getAttackStrengthScale(.5F));test.assertTrue(cds.get(second)==now+200 && cds.get("other-variant")==now+300,"Recharge modifies secondary or another variant");
-                for(int i=0;i<60;i++) player.doTick();player.setOnGround(false);player.fallDistance=1;mob.invulnerableTime=0;player.attack(mob);
+                for(int i=0;i<60;i++) player.doTick();player.setOnGround(false);player.fallDistance=1;mob.invulnerableTime=0;player.attack(mob);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(primary)==now+80,"Recharge ignores two-second trigger interval");
-                QuickRechargeEvents.logout(new PlayerEvent.PlayerLoggedOutEvent(player));for(int i=0;i<60;i++) player.doTick();player.setOnGround(true);player.fallDistance=0;mob.invulnerableTime=0;player.attack(mob);
+                QuickRechargeEvents.logout(new PlayerEvent.PlayerLoggedOutEvent(player));for(int i=0;i<60;i++) player.doTick();player.setOnGround(true);player.fallDistance=0;mob.invulnerableTime=0;player.attack(mob);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(primary)==now+80,"Noncritical hit recharges");
                 player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of(primary,now+5));test.assertTrue(WeaponAbilityNetwork.reducePrimaryCooldown(player,stack,20),"Short cooldown rejected");test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(primary)==now,"Recharge moves readiness before current time");
             }

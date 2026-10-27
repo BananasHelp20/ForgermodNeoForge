@@ -51,7 +51,7 @@ public final class RecommendedAbilityRuntime {
         return AdditionalAbilityRuntime.activate(player,stack,id);
     }
     public static boolean active(ServerPlayer player,String id) {
-        return AdditionalAbilityRuntime.active(player,id) || RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
+        return RecommendedAbilities.ENDER_SWING.equals(id) && EnderSwingAbility.active(player) || AdditionalAbilityRuntime.active(player,id) || RecommendedAbilities.CINDER_DECOY.equals(id) && CinderDecoyEvents.active(player)
                 || RecommendedAbilities.STRONG_ARM.equals(id) && StrongArmAbility.active(player)
                 || RecommendedAbilities.DISTANCE_TAX.equals(id) && DistanceTaxEvents.active(player)
                 || RecommendedAbilities.FLAMEBORN.equals(id) && FlamebornAbility.active(player)
@@ -66,6 +66,7 @@ public final class RecommendedAbilityRuntime {
     }
     public static void cancel(ServerPlayer player,String id) {
         AdditionalAbilityRuntime.cancel(player,id);
+        if(RecommendedAbilities.ENDER_SWING.equals(id))EnderSwingAbility.cancel(player.getUUID());
         if(RecommendedAbilities.STRONG_ARM.equals(id)) StrongArmAbility.cancel(player.getUUID());
         if(RecommendedAbilities.DISTANCE_TAX.equals(id)) DistanceTaxEvents.cancel(player.getUUID());
         if(RecommendedAbilities.FLAMEBORN.equals(id)) FlamebornAbility.cancel(player);

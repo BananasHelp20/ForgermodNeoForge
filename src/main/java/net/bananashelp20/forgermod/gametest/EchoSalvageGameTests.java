@@ -43,7 +43,7 @@ public class EchoSalvageGameTests {
   var mob=EntityType.ZOMBIE.create(test.getLevel());mob.setNoAi(true);mob.setNoGravity(true);mob.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.CARVED_PUMPKIN));mob.getAttribute(Attributes.ARMOR).setBaseValue(0);mob.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(10000);mob.setHealth(10000);mob.setPos(Vec3.atBottomCenterOf(center));test.getLevel().addFreshEntity(mob);return mob;
  }
  private static void attack(ServerPlayer player,LivingEntity target){
-  ((AttackStrengthAccess)player).forgermod$setAttackStrengthTicker(100);player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);target.invulnerableTime=0;player.attack(target);
+  ((AttackStrengthAccess)player).forgermod$setAttackStrengthTicker(100);player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);target.invulnerableTime=0;player.attack(target);AxeAnimationTestDriver.finish(player);
  }
  private static void cleanup(ServerPlayer player){EchoSalvageEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));player.server.getPlayerList().remove(player);}
  @GameTest(template="riftfang_test")

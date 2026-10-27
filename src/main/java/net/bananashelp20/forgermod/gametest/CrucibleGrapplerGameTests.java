@@ -31,7 +31,7 @@ public final class CrucibleGrapplerGameTests {
         try{for(var item:variants())for(int rank=5;rank<=8;rank++){
             var stack=Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.CRUCIBLE_HOOK,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());player.setDeltaMovement(Vec3.ZERO);
             int range=ReviewedRanks.grappleRange(rank);var inside=BlockPos.containing(player.getEyePosition()).above(range);test.getLevel().setBlockAndUpdate(inside,Blocks.STONE.defaultBlockState());
-            AbilityTestPackets.use(player,0);var anchor=CrucibleHookRope.blockAnchor(player);var first=player.getDeltaMovement();
+            AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);var anchor=CrucibleHookRope.blockAnchor(player);var first=player.getDeltaMovement();
             test.assertTrue(CrucibleHookEvents.active(player) && anchor!=null && anchor.distanceTo(player.getEyePosition())<=range && first.y>=.4 && player.position().equals(origin),"No in-range accelerating grapple at "+rank);
             CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));test.assertTrue(player.getDeltaMovement().length()>first.length() && player.position().equals(origin),"Grapple teleports or has no acceleration");
             // Reach useful traversal speed within a few updates, retaining the existing safe maximum.
@@ -43,7 +43,7 @@ public final class CrucibleGrapplerGameTests {
             test.assertFalse(CrucibleHookEvents.active(player),"Destroyed anchor retains grapple");test.assertTrue(player.getDeltaMovement().equals(momentum),"Destroyed anchor clears momentum");WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             String key=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.CRUCIBLE_HOOK+":grapple";
             test.assertTrue(rank==8?!player.getData(WeaponCooldownAttachments.COOLDOWNS).containsKey(key):player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(key,0L)==player.level().getGameTime()+500,"Wrong per-mode grapple cooldown at "+rank);
-            player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());var outside=inside.above();test.getLevel().setBlockAndUpdate(outside,Blocks.STONE.defaultBlockState());AbilityTestPackets.use(player,0);
+            player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());var outside=inside.above();test.getLevel().setBlockAndUpdate(outside,Blocks.STONE.defaultBlockState());AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);
             test.assertFalse(CrucibleHookEvents.active(player),"Out-of-range block selected");test.getLevel().setBlockAndUpdate(outside,Blocks.AIR.defaultBlockState());
             test.assertTrue(Augmentations.maxRank(stack,RecommendedAbilities.CRUCIBLE_HOOK)==8 && Augmentations.displayRank(stack,RecommendedAbilities.CRUCIBLE_HOOK,rank)==rank-4,"Wrong Grappler super ranks");
         }
@@ -61,10 +61,10 @@ public final class CrucibleGrapplerGameTests {
             test.assertTrue(CrucibleHookEvents.active(player),"Disabled auto release still disconnects on arrival");var momentum=player.getDeltaMovement();
             var click=new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem(player,InteractionHand.MAIN_HAND);CrucibleGrapplerEvents.release(click);
             test.assertTrue(click.isCanceled() && !CrucibleHookEvents.active(player) && player.getDeltaMovement().equals(momentum),"Right-click fails to release with momentum");
-            WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setPos(origin);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());Config.GRAPPLE_AUTO_RELEASE.set(true);AbilityTestPackets.use(player,0);
+            WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setPos(origin);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());Config.GRAPPLE_AUTO_RELEASE.set(true);AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);
             player.setPos(destination);player.setDeltaMovement(.4,.2,.6);momentum=player.getDeltaMovement();CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
             test.assertTrue(!CrucibleHookEvents.active(player) && player.getDeltaMovement().equals(momentum) && CrucibleHookRope.blockAnchor(player)==null,"Auto release clears velocity or keeps rope");
-            WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setPos(origin);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());AbilityTestPackets.use(player,0);momentum=player.getDeltaMovement();player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
+            WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setPos(origin);player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);momentum=player.getDeltaMovement();player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
             test.assertTrue(!CrucibleHookEvents.active(player) && player.getDeltaMovement().equals(momentum),"Weapon switch leaves grapple or erases velocity");
         }finally{Config.GRAPPLE_AUTO_RELEASE.set(previous);test.getLevel().setBlockAndUpdate(block,Blocks.AIR.defaultBlockState());cleanup(player);}test.succeed();
     }
@@ -73,7 +73,7 @@ public final class CrucibleGrapplerGameTests {
         var player=player(test);player.setXRot(0);var zombie=EntityType.ZOMBIE.create(test.getLevel());zombie.setNoAi(true);zombie.setNoGravity(true);zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);zombie.getAttribute(Attributes.ARMOR).setBaseValue(0);zombie.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(zombie);
         try{for(var item:variants())for(int rank=5;rank<=8;rank++){
             var stack=Augmentations.setLevel(new ItemStack(item),RecommendedAbilities.CRUCIBLE_HOOK,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());zombie.setHealth(200);zombie.invulnerableTime=0;zombie.setRemainingFireTicks(0);
-            AbilityTestPackets.use(player,0);double expected=200-player.getAttributeValue(Attributes.ATTACK_DAMAGE)*(1+.25*rank);
+            AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);double expected=200-player.getAttributeValue(Attributes.ATTACK_DAMAGE)*(1+.25*rank);
             test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(zombie.getHealth()-expected)<.01 && zombie.getRemainingFireTicks()==(2+rank)*20 && stack.getDamageValue()==1,"Wrong super mob smash at "+rank);
             var description=AbilityDescriptions.description(stack,RecommendedAbilities.CRUCIBLE_HOOK,rank,false).getString();test.assertTrue(description.contains(ReviewedRanks.grappleRange(rank)+" blocks") && description.contains((2+rank)+" seconds"),"Missing current grapple description");
         }}finally{zombie.discard();cleanup(player);}test.succeed();
@@ -102,10 +102,10 @@ public final class CrucibleGrapplerGameTests {
             player.setData(WeaponCooldownAttachments.COOLDOWNS,Map.of());player.setXRot(0);player.setYRot(0);
             var zombie=EntityType.ZOMBIE.create(test.getLevel());zombie.setNoAi(true);zombie.setNoGravity(true);zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);zombie.setHealth(200);zombie.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(zombie);
             try{
-                AbilityTestPackets.use(player,0);String attackKey=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.CRUCIBLE_HOOK;
+                AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));String attackKey=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.CRUCIBLE_HOOK;
                 long deadline=player.level().getGameTime()+500;
                 test.assertTrue(zombie.getHealth()<200 && player.getData(WeaponCooldownAttachments.COOLDOWNS).getOrDefault(attackKey,0L)==deadline,"Mob hook lost usual cooldown");
-                float health=zombie.getHealth();AbilityTestPackets.use(player,0);test.assertTrue(zombie.getHealth()==health,"Mob-hook cooldown is bypassed");
+                float health=zombie.getHealth();AbilityTestPackets.use(player,0);AxeAnimationTestDriver.finish(player);test.assertTrue(zombie.getHealth()==health,"Mob-hook cooldown is bypassed");
                 player.setXRot(-90);AbilityTestPackets.use(player,0,false);
                 test.assertTrue(CrucibleHookEvents.active(player) && player.getData(WeaponCooldownAttachments.COOLDOWNS).get(attackKey)==deadline,"Mob cooldown blocks grapple or grapple changes mob deadline");
                 CrucibleGrapplerEvents.cancel(player.getUUID());WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));

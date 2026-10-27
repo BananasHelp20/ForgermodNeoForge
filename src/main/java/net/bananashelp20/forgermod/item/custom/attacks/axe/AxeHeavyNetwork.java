@@ -90,19 +90,19 @@ public final class AxeHeavyNetwork {
         // including weak misses, after sampling charge; entity hits reset themselves.
         if (payload.attackKind() == 1) player.resetAttackStrengthTicker();
         if (slam) sendAnimation(player);
+        else if(!hasPending(player) && payload.attackKind()==1 && AxeAnimationItems.isModAxe(player.getMainHandItem()))AxeAnimationImpacts.miss(player);
     }
 
     private static void sendAnimation(ServerPlayer player) {
         player.getPersistentData().putLong(ANIMATION_TAG,player.level().getGameTime());
-        var viewers=new java.util.HashSet<>(player.serverLevel().getChunkSource().chunkMap.getPlayers(player.chunkPosition(),false));
-        viewers.add(player);
-        for(var viewer:viewers)
-            if(net.neoforged.neoforge.network.registration.NetworkRegistry.hasChannel(viewer.connection,SlamAnimationPayload.TYPE.id()))
-                PacketDistributor.sendToPlayer(viewer,new SlamAnimationPayload(player.getId()));
+        if(!AxeAnimationImpacts.atImpact(AxeAnimationData.Clip.VERTICAL)){AxeAnimationImpacts.interrupt(player.getUUID());AxeAnimationNetwork.play(player,AxeAnimationData.Clip.VERTICAL);}
     }
+    public static void cancelPending(ServerPlayer player){PENDING.remove(player.getUUID());}
+    public static boolean hasPending(ServerPlayer player){return PENDING.containsKey(player.getUUID());}
 
     private static boolean queueAttack(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();
+        if(PENDING.containsKey(player.getUUID()))return false;
         if (!AxeItems.canAttackPacket(stack) || !player.getOffhandItem().isEmpty()) {
             COMBOS.remove(player.getUUID());
             PENDING.remove(player.getUUID());
@@ -115,7 +115,7 @@ public final class AxeHeavyNetwork {
             COMBOS.remove(id);
             BlockPos center = findGroundAhead(player);
             if (center == null) center = BlockPos.containing(player.position().add(player.getLookAngle().multiply(2, 0, 2)));
-            PENDING.put(id, new PendingSlam(player.serverLevel(), stack.getItem(), now + 3, center,
+            PENDING.put(id, new PendingSlam(player.serverLevel(), stack.getItem(), now + AxeAnimationData.Clip.VERTICAL.impactTicks(), center,
                     (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE), true, stack));
             return true;
         }
@@ -142,7 +142,7 @@ public final class AxeHeavyNetwork {
         if (center == null) return false;
 
         float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        PENDING.put(id, new PendingSlam(player.serverLevel(), stack.getItem(), now + 3, center, damage, false, stack));
+        PENDING.put(id, new PendingSlam(player.serverLevel(), stack.getItem(), now + AxeAnimationData.Clip.VERTICAL.impactTicks(), center, damage, false, stack));
         return true;
     }
 
@@ -169,26 +169,28 @@ public final class AxeHeavyNetwork {
         COMBOS.remove(player.getUUID());PENDING.remove(player.getUUID());
         sendAnimation(player);
         player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
-        landSlam(player,new PendingSlam(player.serverLevel(),source.getItem(),player.level().getGameTime(),
-                BlockPos.containing(center),(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),false,source));
+        var slam=new PendingSlam(player.serverLevel(),source.getItem(),player.level().getGameTime()+AxeAnimationData.Clip.VERTICAL.impactTicks(),
+                BlockPos.containing(center),(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),false,source);
+        if(AxeAnimationImpacts.atImpact(AxeAnimationData.Clip.VERTICAL))landSlam(player,slam);else PENDING.put(player.getUUID(),slam);
         return true;
     }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        if (!AxeItems.canAttackPacket(player.getMainHandItem()) || !player.getOffhandItem().isEmpty()
+        if (!AxeItems.isAxe(player.getMainHandItem()) || !player.getOffhandItem().isEmpty()
                 || !player.isAlive() || player.isSpectator() || net.bananashelp20.forgermod.item.custom.abilities.WeaponControlLocks.frozen(player)) {
             COMBOS.remove(player.getUUID());
             PENDING.remove(player.getUUID());
             return;
         }
         PendingSlam slam = PENDING.get(player.getUUID());
-        if (slam == null || player.level().getGameTime() < slam.dueTick()) return;
-        PENDING.remove(player.getUUID());
+        if(slam==null)return;
+        if(slam.source().isEmpty() && !AxeItems.canAttackPacket(player.getMainHandItem())){PENDING.remove(player.getUUID());return;}
         if (player.level() != slam.level() || !player.getMainHandItem().is(slam.axe())
-                || !slam.source().isEmpty() && player.getMainHandItem() != slam.source()) return;
-        landSlam(player, slam);
+                || !slam.source().isEmpty() && player.getMainHandItem() != slam.source()) {PENDING.remove(player.getUUID());return;}
+        if(player.level().getGameTime()<slam.dueTick())return;
+        PENDING.remove(player.getUUID());landSlam(player, slam);
     }
 
     /** Convert an accepted melee hit without striking its primary victim twice. */
@@ -196,7 +198,9 @@ public final class AxeHeavyNetwork {
         if(source!=player.getMainHandItem() || !player.isAlive())return;
         COMBOS.remove(player.getUUID());PENDING.remove(player.getUUID());sendAnimation(player);player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
         var slam=new PendingSlam(player.serverLevel(),source.getItem(),player.level().getGameTime(),primary.blockPosition(),(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE),false,source);
-        net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.vertical(player,()->landSlamBody(player,slam,primary,bonus));
+        Runnable impact=()->net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.vertical(player,()->landSlamBody(player,slam,primary,bonus));
+        if(AxeAnimationImpacts.atImpact(AxeAnimationData.Clip.VERTICAL))impact.run();
+        else AxeAnimationImpacts.queue(player,source,"echo_vertical",AxeAnimationData.Clip.VERTICAL,impact);
     }
     private static void landSlam(ServerPlayer player, PendingSlam slam) {
         net.bananashelp20.forgermod.item.custom.abilities.EchoSalvageEvents.vertical(player,()->landSlamBody(player,slam,null,Float.NaN));

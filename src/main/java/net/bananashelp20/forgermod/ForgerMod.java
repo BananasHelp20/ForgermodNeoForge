@@ -45,6 +45,7 @@ public class ForgerMod {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(DualWieldNetwork::register);
         modEventBus.addListener(AxeHeavyNetwork::register);
+        modEventBus.addListener(net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationNetwork::register);
         modEventBus.addListener(WeaponAbilityNetwork::register);
         modEventBus.addListener(DoubleJumpNetwork::register);
         modEventBus.addListener(net.bananashelp20.forgermod.augmentation.AugmentAnvilNetwork::register);
@@ -58,6 +59,7 @@ public class ForgerMod {
         net.bananashelp20.forgermod.sound.ModSounds.SOUNDS.register(modEventBus);
         modEventBus.addListener(net.bananashelp20.forgermod.sound.ElectricalTravel::register);
         net.bananashelp20.forgermod.particle.VoidPulseParticles.TYPES.register(modEventBus);
+        net.bananashelp20.forgermod.particle.AxeCastParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.CinderDecoyParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.StunningPresenceParticles.TYPES.register(modEventBus);
         net.bananashelp20.forgermod.particle.LightningArcParticles.TYPES.register(modEventBus);

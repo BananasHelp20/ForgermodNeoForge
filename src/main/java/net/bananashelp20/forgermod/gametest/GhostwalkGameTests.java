@@ -25,10 +25,10 @@ public class GhostwalkGameTests {
                 player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
                 player.setOnGround(true);target.invulnerableTime=0;target.setInvulnerable(true);
                 test.assertTrue(GhostwalkEvents.activate(player,stack),"Cannot activate form");
-                player.attack(target);
+                player.attack(target);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(GhostwalkEvents.active(player) && GhostwalkVisibility.hidden(player),"Rejected hit reveals player");
                 target.setInvulnerable(false);target.setAbsorptionAmount(100);
-                for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.attack(target);
+                for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.attack(target);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(target.getHealth()==10 && target.getAbsorptionAmount()<100,"Absorbed-hit fixture failed");
                 test.assertFalse(GhostwalkEvents.active(player) || GhostwalkVisibility.hidden(player),"A successful absorbed hit does not reveal player");
             }
@@ -86,7 +86,7 @@ public class GhostwalkGameTests {
             for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;
             var target=net.minecraft.world.entity.EntityType.COW.create(test.getLevel());target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);target.setNoAi(true);target.setNoGravity(true);target.setPos(player.position().add(0,0,2));test.getLevel().addFreshEntity(target);
             try {
-                player.attack(target);test.assertTrue(GhostwalkEvents.activate(player,stack),"Cannot vanish between paired swings");float health=target.getHealth(),damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
+                player.attack(target);AxeAnimationTestDriver.finish(player);test.assertTrue(GhostwalkEvents.activate(player,stack),"Cannot vanish between paired swings");float health=target.getHealth(),damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
                 var context=(net.neoforged.neoforge.network.handling.IPayloadContext)java.lang.reflect.Proxy.newProxyInstance(contextType.getClassLoader(),new Class<?>[]{contextType},(proxy,m,args)->{if(m.getName().equals("player"))return player;throw new UnsupportedOperationException(m.getName());});
                 method.invoke(null,new net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork.OffhandAttackPayload(target.getId()),context);
                 test.assertTrue(Math.abs(target.getHealth()-(health-damage*2))<.01 && !GhostwalkEvents.active(player) && !player.hasEffect(MobEffects.INVISIBILITY),"Invisible offhand hit fails to double and reveal");
@@ -106,10 +106,10 @@ public class GhostwalkGameTests {
                 test.assertTrue(GhostwalkEvents.activate(player,stack),"Ghost form will not activate");
                 test.assertTrue(GhostwalkVisibility.hidden(player),"Ghost form leaves armor/held items visible");
                 test.assertTrue(player.getEffect(MobEffects.INVISIBILITY).getDuration()==200+40*Math.max(0,rank-4)+(net.bananashelp20.forgermod.augmentation.JadeAugments.isJade(stack)?20:0),"Super duration progression wrong");
-                float damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);player.attack(target);
+                float damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);player.attack(target);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(Math.abs(target.getHealth()-(1000-damage*(rank>=4?2:1)))<.01,"Invisible hit multiplier wrong at rank "+rank);
                 test.assertFalse(player.hasEffect(MobEffects.INVISIBILITY) || GhostwalkEvents.active(player) || GhostwalkVisibility.hidden(player),"Invisible attack does not reveal player and equipment");
-                for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);target.invulnerableTime=0;float health=target.getHealth();player.attack(target);test.assertTrue(Math.abs(target.getHealth()-(health-damage))<.01,"Visible second hit retains double damage");
+                for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);target.invulnerableTime=0;float health=target.getHealth();player.attack(target);AxeAnimationTestDriver.finish(player);test.assertTrue(Math.abs(target.getHealth()-(health-damage))<.01,"Visible second hit retains double damage");
                 if(rank>=4)test.assertTrue(Augmentations.displayRank(stack,AdditionalAbilities.GHOSTWALK,rank)==rank-3 && Augmentations.abilityName(stack,AdditionalAbilities.GHOSTWALK,rank).getString().equals("Jumpscare Horror"),"Super name/rank wrong");
             }
             test.assertTrue(Augmentations.apply(stack,AdditionalAbilities.GHOSTWALK).isEmpty(),"Super IV accepts fifth level");

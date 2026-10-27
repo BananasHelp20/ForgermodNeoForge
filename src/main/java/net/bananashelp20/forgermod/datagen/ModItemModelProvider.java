@@ -275,6 +275,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         daggerItem(ModItems.DEAD_CALM_DAGGER_AMBER, "dead_calm_dagger_amber");
         daggerItem(ModItems.DEAD_CALM_DAGGER_AMETHYST, "dead_calm_dagger_amethyst");
         daggerItem(ModItems.DEAD_CALM_DAGGER_JADE, "dead_calm_dagger_jade");
+        // Register every axe, including special families that previously had no item model.
+        for(var entry:ModItems.ITEMS.getEntries()) {
+            var stack=new net.minecraft.world.item.ItemStack(entry.get());
+            if(net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationItems.isModAxe(stack)
+                    && !entry.getId().getPath().startsWith("axe_of_the_void"))handheldItem(entry);
+        }
         //items
         basicItem(ModItems.CARBON_STEEL_CROSS_GUARD.get());
         handheldItem(ModItems.SHARPENED_BLADE);
@@ -283,7 +289,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.ANCIENT_UPGRADE_TEMPLATE.get());
     }
 
-    private ItemModelBuilder handheldItem(DeferredItem<?> item) {
+    private ItemModelBuilder handheldItem(net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.item.Item,?> item) {
+        if(net.bananashelp20.forgermod.item.custom.attacks.axe.AxeAnimationItems.isModAxe(new net.minecraft.world.item.ItemStack(item.get()))
+                && ITEM_TEXTURE_FOLDERS.stream().noneMatch(folder->existingFileHelper.exists(modLoc("item/"+folder+item.getId().getPath()),TEXTURE)))
+            return withExistingParent(item.getId().getPath(),modLoc("item/axe_fallback"));
         // Generated sprites always span 16 model units, even with 20x20 source art.
         // Claymores compensate by 20/16 through shared display transforms.
         ResourceLocation parent = item.getId().getPath().contains("claymore")

@@ -40,7 +40,7 @@ public class StrongArmGameTests {
         if(charge==1)test.assertTrue(player.getAttackStrengthScale(0)<1 && player.getAttackStrengthScale(.5F)>.9F,"Partial vanilla-critical fixture is not between 90% and 100% charge");
         target.invulnerableTime=0;target.setHealth(target.getMaxHealth());target.setPos(player.position().add(0,0,2));
         player.setOnGround(!critical);player.fallDistance=critical?1:0;player.setSprinting(false);player.setDeltaMovement(0,0,0);player.getRandom().setSeed(seed);
-        player.attack(target);
+        player.attack(target);AxeAnimationTestDriver.finish(player);
     }
     @GameTest(template="riftfang_test")
     public static void failedCriticalRollStartsCooldownButArmorlessHitDoesNot(GameTestHelper test) throws Exception {

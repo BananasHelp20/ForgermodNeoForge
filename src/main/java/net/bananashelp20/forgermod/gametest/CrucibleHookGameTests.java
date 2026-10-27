@@ -104,17 +104,17 @@ public class CrucibleHookGameTests {
             test.assertTrue(wire.sounds.equals(castSounds),"Hook cast is silent or plays smash before arrival");
             test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && mob.getRemainingFireTicks()<=0 && stack.getDamageValue()==0,"Entering ordinary melee reach smashes before arriving");
             player.setYRot(90);player.setXRot(-85);player.setPos(start.add(.75,0,0));mob.setPos(start.add(0,0,2.6));
-            CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);
             test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && Math.abs(mob.getDeltaMovement().x)<.0001 && mob.getDeltaMovement().z<0,"Turning/moving shifts the captured point or smashes early");
-            player.setPos(start.add(8,0,0));mob.setPos(destination);mob.setDeltaMovement(1,1,1);CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            player.setPos(start.add(8,0,0));mob.setPos(destination);mob.setDeltaMovement(1,1,1);CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);
             test.assertTrue(CrucibleHookEvents.active(player) && mob.getHealth()==200 && mob.getDeltaMovement().lengthSqr()==0,"Arrival smashes outside actual reach or retains incoming pull velocity");
             test.assertTrue(wire.sounds.equals(castSounds),"Pull or out-of-reach arrival plays impact sound");
-            player.setPos(start.add(.75,0,0));CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+            player.setPos(start.add(.75,0,0));CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);
             float expected=200-(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*1.25F;
             test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(mob.getHealth()-expected)<.001 && mob.getRemainingFireTicks()==60 && stack.getDamageValue()==1,"Arrived target does not receive exactly one smash");
             var allSounds=java.util.List.of(net.minecraft.sounds.SoundEvents.FISHING_BOBBER_THROW,net.minecraft.sounds.SoundEvents.CHAIN_STEP,net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY,net.minecraft.sounds.SoundEvents.ANVIL_LAND,net.minecraft.sounds.SoundEvents.FIRECHARGE_USE);
             test.assertTrue(wire.sounds.equals(allSounds),"Arrived smash does not follow grappling with a fiery Vertical Strike");
-            CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));test.assertTrue(Math.abs(mob.getHealth()-expected)<.001 && stack.getDamageValue()==1,"Arrival repeats the smash");
+            CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);test.assertTrue(Math.abs(mob.getHealth()-expected)<.001 && stack.getDamageValue()==1,"Arrival repeats the smash");
             test.assertTrue(wire.sounds.equals(allSounds),"Hook impact audio repeats after smash");
             test.succeed();
         } finally {CrucibleHookEvents.cancel(player.getUUID());mob.discard();player.connection=old;player.server.getPlayerList().remove(player);}
@@ -140,7 +140,7 @@ public class CrucibleHookGameTests {
                     var before=mob.position();int wear=stack.getDamageValue();
                     test.assertTrue(RecommendedAbilityRuntime.activate(player,stack,RecommendedAbilities.CRUCIBLE_HOOK),"Cannot acquire passive/allied mob");
                     test.assertTrue(CrucibleHookEvents.active(player) && mob.position().equals(before) && mob.getDeltaMovement().z<0 && mob.getHealth()==200,"Allied hook cancels, teleports or damages during pull");
-                    for(int tick=0;tick<30 && CrucibleHookEvents.active(player);tick++){mob.tick();CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));}
+                    for(int tick=0;tick<30 && CrucibleHookEvents.active(player);tick++){mob.tick();CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);}
                     test.assertTrue(mob.position().distanceTo(player.position().add(0,0,2))<=.251,"Allied smash occurs before reaching the two-block destination");
                     test.assertTrue(!CrucibleHookEvents.active(player) && Math.abs(mob.getHealth()-(200-player.getAttributeValue(Attributes.ATTACK_DAMAGE)*2))<.001
                         && mob.getRemainingFireTicks()==120 && stack.getDamageValue()==wear+1,"Allied mob does not receive normal smash damage, ignition and weapon wear");
@@ -171,7 +171,7 @@ public class CrucibleHookGameTests {
             test.assertTrue(zombie.position().equals(before) && zombie.getDeltaMovement().z<0,"Hook teleports instead of applying pull velocity");
             float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)*2;
             for(int tick=0;tick<30 && CrucibleHookEvents.active(player);tick++) {
-                zombie.tick(); CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+                zombie.tick(); CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);
             }
             test.assertFalse(CrucibleHookEvents.active(player),"Hook never reaches/strikes pulled target");
             test.assertTrue(net.bananashelp20.forgermod.item.custom.abilities.CrucibleHookRope.link(player).targetId()<0,"Smash leaves the rope active");
@@ -197,7 +197,7 @@ public class CrucibleHookGameTests {
         test.getLevel().setBlockAndUpdate(wall,Blocks.AIR.defaultBlockState()); AbilityTestPackets.use(player,0);
         test.assertTrue(CrucibleHookEvents.active(player),"Unobstructed packet activation failed");
         player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-        CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));
+        CrucibleHookEvents.onTick(new PlayerTickEvent.Post(player));AxeAnimationTestDriver.finish(player);
         test.assertFalse(CrucibleHookEvents.active(player),"Switch leaves hook running");
         test.assertTrue(zombie.getHealth()==20,"Canceled hook still smashes target");
         test.assertTrue(player.getData(WeaponCooldownAttachments.COOLDOWNS).get(key)==player.level().getGameTime()+800,"Canceled hook lacks full cooldown");

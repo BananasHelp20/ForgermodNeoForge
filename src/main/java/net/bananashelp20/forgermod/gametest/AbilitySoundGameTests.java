@@ -36,11 +36,11 @@ public class AbilitySoundGameTests {
             try{
                 var stack=Augmentations.apply(new ItemStack(entry.get()),"tooltips.forgermod.ability.sonic_crit");player.setItemInHand(InteractionHand.MAIN_HAND,stack);for(int tick=0;tick<60;tick++)player.doTick();
                 AbilityTestPackets.use(player,0);test.assertTrue(impacts.getAsLong()==0,"Arming plays charged-hit sound");
-                player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);player.attack(target);
+                player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);player.attack(target);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(weapon.isAbilityActive(player,net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.PRIMARY) && impacts.getAsLong()==0,"Ordinary hit consumes or sounds charged crit");
-                for(int tick=0;tick<60;tick++)player.doTick();target.invulnerableTime=0;player.setOnGround(false);player.fallDistance=1;player.attack(target);
+                for(int tick=0;tick<60;tick++)player.doTick();target.invulnerableTime=0;player.setOnGround(false);player.fallDistance=1;player.attack(target);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(!weapon.isAbilityActive(player,net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot.PRIMARY) && impacts.getAsLong()==1,"Native charged critical misses or duplicates impact sound");
-                for(int tick=0;tick<60;tick++)player.doTick();target.invulnerableTime=0;player.setOnGround(false);player.fallDistance=1;player.attack(target);
+                for(int tick=0;tick<60;tick++)player.doTick();target.invulnerableTime=0;player.setOnGround(false);player.fallDistance=1;player.attack(target);AxeAnimationTestDriver.finish(player);
                 test.assertTrue(impacts.getAsLong()==1,"Uncharged critical replays sonic impact");
             }finally{WeaponAbilityNetwork.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));net.bananashelp20.forgermod.item.custom.PulsiteWeapon.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));DaggerCriticalEvents.onLogout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.connection=old;player.server.getPlayerList().remove(player);}
         }
@@ -63,7 +63,7 @@ public class AbilitySoundGameTests {
                     if(hit==0)mob.hurt(player.damageSources().indirectMagic(player,player),100);
                     else {
                         mob.setHealth(hit==1?20:1);
-                        for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);player.attack(mob);
+                        for(int tick=0;tick<60;tick++)player.doTick();player.setOnGround(true);player.fallDistance=0;player.setSprinting(false);player.attack(mob);AxeAnimationTestDriver.finish(player);
                         test.assertTrue(mob.isAlive()==(hit==1),"Native attack fixture failed to produce the intended surviving/killing hit");
                     }
                     test.assertTrue(cues.getAsLong()==(hit<2?0:1),"Protection sound triggers on wrong hit or repeats");
