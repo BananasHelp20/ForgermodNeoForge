@@ -27,3 +27,5 @@ and is named forgermod_ancient_grave_v2 as a nbt file. The structure should be n
 - [x] Speed up ordinary axe swings and matching hit deadlines, restore natural walking/sprinting strides, fix shoulder/torso separation and audit all upgraded axe animation mappings/channels; verify native timing and both camera views.
 
 - [x] Replace Vertical Strike fake forward/jump root motion with an automatic real jump, retain voluntary horizontal movement, hold the raised axe while airborne, and resolve all player vertical-strike variants only on landing; test cancellation, damage once, synchronization and in-game physics.
+
+- [x] Ease normal axe swings back to a natural moderate speed with minimal hit delay; add the Vertical Strike raise/hold/landing animation to Skybreaker while preserving its launch, damage, fall protection and cleanup. Verify timings, all variants and real-client flight; commit only this task.

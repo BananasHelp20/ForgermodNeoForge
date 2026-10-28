@@ -115,12 +115,13 @@ public final class AxeAnimationVisualChecks {
 
     private static boolean sawJump,sawHold;
     private static void landingTest(Minecraft mc){
+        final boolean sky=Boolean.getBoolean("forgermod.axe.skybreakerQA");
         if(!initialized){
             initialized=true;mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);mc.options.pauseOnLostFocus=false;
             mc.getSingleplayerServer().execute(()->{
                 var p=mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());p.setGameMode(GameType.SURVIVAL);p.setNoGravity(false);p.setInvulnerable(true);
                 p.getAbilities().flying=false;p.onUpdateAbilities();p.teleportTo(.5,70,.5);p.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);p.setYRot(0);p.setXRot(0);
-                p.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(ModItems.NULLIFIED_AXE.get()));p.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
+                p.setItemInHand(InteractionHand.MAIN_HAND,sky?net.bananashelp20.forgermod.augmentation.Augmentations.setLevel(new ItemStack(ModItems.SKYBREAKER_AXE.get()),net.bananashelp20.forgermod.augmentation.AdditionalAbilities.WINDCHARGE,7):new ItemStack(ModItems.NULLIFIED_AXE.get()));p.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
                 for(int x=-4;x<=4;x++)for(int z=-4;z<=6;z++){
                     p.serverLevel().setBlockAndUpdate(new BlockPos(x,69,z),Blocks.STONE.defaultBlockState());
                     for(int y=70;y<=92;y++)p.serverLevel().setBlockAndUpdate(new BlockPos(x,y,z),Blocks.AIR.defaultBlockState());
@@ -131,24 +132,24 @@ public final class AxeAnimationVisualChecks {
             });return;
         }
         ticks++;mc.player.setYRot(0);mc.player.setXRot(15);
-        if(ticks==100 || ticks==150){final boolean high=ticks==150;mc.getSingleplayerServer().execute(()->{
+        if(ticks==100 || !sky && ticks==150){final boolean high=ticks==150;mc.getSingleplayerServer().execute(()->{
             var p=mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());
             if(high){p.teleportTo(.5,90,.5);p.setOnGround(false);p.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);}
             else p.setOnGround(true);
             var mob=p.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Zombie.class,new net.minecraft.world.phys.AABB(-4,69,-4,4,73,6)).getFirst();mob.setHealth(1000);mob.invulnerableTime=0;
-            if(!AxeHeavyNetwork.abilityVerticalStrike(p,p.getMainHandItem(),mob.position()))throw new IllegalStateException("Real landing strike rejected");
+            if(!(sky?net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.activate(p,p.getMainHandItem()):AxeHeavyNetwork.abilityVerticalStrike(p,p.getMainHandItem(),mob.position())))throw new IllegalStateException("Real landing strike rejected");
         });}
         if(ticks>100 && ticks<135 && mc.player.getY()>70.1)sawJump=true;
-        if(ticks>160 && ticks<180 && mc.player.getY()>70.5){
+        if(ticks>(sky?110:160) && ticks<180 && mc.player.getY()>70.5){
             var sample=net.bananashelp20.forgermod.client.AxeAnimationClient.sample(mc.player,0);
             if(sample!=null && sample.clip()==AxeAnimationData.Clip.VERTICAL && Math.abs(sample.seconds()-AxeVerticalMotion.HOLD)<.0001)sawHold=true;
         }
-        if(ticks==110 || ticks==167 || ticks==190)Screenshot.grab(mc.gameDirectory,"axe-landing-"+ticks+".png",mc.getMainRenderTarget(),message->ForgerMod.LOGGER.info("Landing visual: {}",message.getString()));
-        if(ticks==140 || ticks==210){final boolean last=ticks==210;mc.getSingleplayerServer().execute(()->{
+        if(ticks==110 || ticks==167 || ticks==190)Screenshot.grab(mc.gameDirectory,(sky?"axe-skybreaker-":"axe-landing-")+ticks+".png",mc.getMainRenderTarget(),message->ForgerMod.LOGGER.info("Landing visual: {}",message.getString()));
+        if(!sky && ticks==140 || ticks==210){final boolean last=ticks==210;mc.getSingleplayerServer().execute(()->{
             var p=mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());var mob=p.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Zombie.class,new net.minecraft.world.phys.AABB(-4,69,-4,4,73,6)).getFirst();
             float expected=1000-(float)p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
-            if(Math.abs(mob.getHealth()-expected)>.01 || AxeHeavyNetwork.hasPending(p) || !p.onGround() || Math.abs(p.getX()-.5)>.01 || Math.abs(p.getZ()-.5)>.01)throw new IllegalStateException("Landing physics/damage failed: "+mob.getHealth()+" at "+p.position());
-            if(last){if(!sawJump || !sawHold)throw new IllegalStateException("Real jump/airborne hold not seen");ForgerMod.LOGGER.info("Vertical landing QA passed: real automatic jump, no forced forward motion, long-fall held pose and one landing hit");mc.execute(mc::stop);}
+            if((sky?(mob.getHealth()>1000-2*p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE) || p.getHealth()!=20 || net.bananashelp20.forgermod.item.custom.abilities.WindchargeEvents.active(p)):Math.abs(mob.getHealth()-expected)>.01) || AxeHeavyNetwork.hasPending(p) || !p.onGround() || Math.abs(p.getX()-.5)>.01 || Math.abs(p.getZ()-.5)>.01)throw new IllegalStateException("Landing physics/damage failed: "+mob.getHealth()+" at "+p.position());
+            if(last){if(!sawJump || !sawHold)throw new IllegalStateException("Real jump/airborne hold not seen");ForgerMod.LOGGER.info(sky?"Skybreaker animation QA passed: native high launch, held vertical pose, mace landing damage and fall protection":"Vertical landing QA passed: real automatic jump, no forced forward motion, long-fall held pose and one landing hit");mc.execute(mc::stop);}
         });}
     }
 

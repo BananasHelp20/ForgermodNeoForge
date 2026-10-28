@@ -1,5 +1,6 @@
 package net.bananashelp20.forgermod.gametest;
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.attacks.axe.*;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.*;
@@ -15,6 +16,34 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class WindchargeGameTests {
+    @GameTest(template="riftfang_test",batch="skybreaker_animation_lifecycle")
+    public static void skybreakerOwnsOnlyItsAnimationAndPreservesItsLaunch(GameTestHelper test){
+        var player=TestPlayers.survival(test);player.setNoGravity(true);player.setPos(test.getBounds().getCenter());
+        try{
+            var stack=Augmentations.setLevel(new ItemStack(ModItems.SKYBREAKER_AXE.get()),AdditionalAbilities.WINDCHARGE,7);
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setDeltaMovement(.25,0,.5);player.setOnGround(true);
+            AxeAnimationImpacts.queue(player,stack,"existing_attack",AxeAnimationData.Clip.SWING,()->{});
+            test.assertTrue(WindchargeEvents.activate(player,stack),"Skybreaker rejected");
+            test.assertTrue(AxeAnimationImpacts.pending(player.getUUID(),"existing_attack"),"Visual Skybreaker change cancels an existing attack");
+            AxeAnimationImpacts.cancel(player.getUUID(),"existing_attack");
+            var motion=player.getDeltaMovement();
+            test.assertTrue(Math.abs(motion.y-WindchargeEvents.launchVelocity(30))<1e-8 && motion.x==.25 && motion.z==.5,"Animation changes launch height or horizontal momentum");
+            test.assertTrue(!AxeVerticalMotion.airborne(player) && !AxeHeavyNetwork.hasPending(player),"Animation starts a second strike/jump");
+            long sequence=player.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE);AxeAnimationImpacts.miss(player);
+            test.assertTrue(player.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE)==sequence,"Air swing replaces Skybreaker hold");
+            player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());
+            test.assertFalse(WindchargeEvents.active(player),"Stack switch retains Skybreaker");
+            test.assertTrue(player.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==2,"Stack switch leaves held animation stuck");
+            stack=Augmentations.setLevel(new ItemStack(ModItems.SKYBREAKER_AXE.get()),AdditionalAbilities.WINDCHARGE,7);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            WindchargeEvents.activate(player,stack);AxeAnimationNetwork.play(player,AxeAnimationData.Clip.GRAVITY_CAST);
+            sequence=player.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE);WindchargeEvents.cancel(player.getUUID());
+            test.assertTrue(player.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE)==sequence && player.getPersistentData().getInt(AxeAnimationNetwork.CLIP)==AxeAnimationData.Clip.GRAVITY_CAST.ordinal(),"Cancel clears a newer ability animation");
+            stack=Augmentations.setLevel(new ItemStack(ModItems.SKYBREAKER_AXE.get()),AdditionalAbilities.WINDCHARGE,1);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+            WindchargeEvents.activate(player,stack);
+            test.assertTrue(player.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE)==sequence,"Ordinary Windcharge gets Skybreaker animation");
+            test.succeed();
+        }finally{WindchargeEvents.cancel(player.getUUID());AxeAnimationImpacts.cancel(player.getUUID());player.server.getPlayerList().remove(player);}
+    }
     @GameTest(template="riftfang_test")
     public static void approvedSkybreakerTextShowsOnlyCurrentHeightAndRadiusWhite(GameTestHelper test) {
         int count=0;
@@ -116,11 +145,14 @@ public class WindchargeGameTests {
                     player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.doTick();player.setPos(origin);
                     edge.setPos(origin.add(5,0,0));outside.setPos(origin.add(-5.1,0,0));hidden.setPos(origin.add(0,0,4));neutral.setPos(origin.add(-2,0,0));pet.setPos(origin.add(1,0,-2));golem.setPos(origin.add(2,0,-1));
                     for(var mob:java.util.List.of(edge,outside,hidden,neutral,pet,golem)){mob.setHealth(1000);mob.invulnerableTime=20;}
-                    test.assertTrue(WindchargeEvents.activate(player,stack),"Ground-only flight rejected");connection.packets.clear();
+                    test.assertTrue(WindchargeEvents.activate(player,stack),"Ground-only flight rejected");
+                    test.assertTrue(player.getPersistentData().getInt(AxeAnimationNetwork.CLIP)==AxeAnimationData.Clip.VERTICAL.ordinal() && player.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==0,"Skybreaker variant lacks vertical flight animation");
+                    test.assertTrue(!AxeVerticalMotion.airborne(player) && !AxeHeavyNetwork.hasPending(player),"Skybreaker also queues ordinary Vertical Strike damage");connection.packets.clear();
                     var fall=new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,30,1);WindchargeEvents.landing(fall);
                     float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+44*(1+.1f*(rank-4));
                     test.assertTrue(Math.abs(edge.getHealth()-(1000-damage))<.01 && outside.getHealth()==1000 && hidden.getHealth()==1000 && Math.abs(neutral.getHealth()-(1000-damage))<.01 && Math.abs(pet.getHealth()-(1000-damage))<.01 && Math.abs(golem.getHealth()-(1000-damage))<.01,"Five-block all-mob damage, rank scaling, immunity or wall exclusion is wrong");
                     test.assertTrue(fall.getDamageMultiplier()==0 && !WindchargeEvents.active(player),"Landing hurts owner or leaves flight active");
+                    test.assertTrue(player.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==1,"Skybreaker landing cancels instead of completing its animation");
                     test.assertTrue(connection.packets.stream().anyMatch(p->p instanceof net.minecraft.network.protocol.game.ClientboundLevelEventPacket e && e.getType()==2013 && e.getData()==750),"Native mace smash animation not sent");
                     test.assertTrue(connection.packets.stream().anyMatch(p->p instanceof net.minecraft.network.protocol.game.ClientboundSoundPacket s && s.getSound().value()==net.minecraft.sounds.SoundEvents.MACE_SMASH_GROUND_HEAVY),"Heavy mace sound not sent");
                     float health=edge.getHealth();WindchargeEvents.landing(new net.neoforged.neoforge.event.entity.living.LivingFallEvent(player,30,1));test.assertTrue(edge.getHealth()==health,"Landing damage repeats");

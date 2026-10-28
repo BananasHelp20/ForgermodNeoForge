@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.item.custom.abilities;
 
 import net.bananashelp20.forgermod.ForgerMod;
+import net.bananashelp20.forgermod.item.custom.attacks.axe.*;
 import net.bananashelp20.forgermod.augmentation.*;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.minecraft.server.level.*;
@@ -23,8 +24,10 @@ import java.util.*;
 public final class WindchargeEvents {
     private static final class Flight {
         final ItemStack stack;final int slot;final ServerLevel level;final long expires;final float bonusMultiplier;
+        final ServerPlayer owner;final long animationSequence;
         double peakY;float fall;boolean airborne,directHit;
         Flight(ServerPlayer player,ItemStack stack,int rank) {
+            owner=player;animationSequence=player.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE);
             this.stack=stack;slot=player.getInventory().selected;level=player.serverLevel();expires=level.getGameTime()+200;
             bonusMultiplier=1+.1f*Math.clamp(rank-4,0,3);peakY=player.getY();
         }
@@ -77,7 +80,10 @@ public final class WindchargeEvents {
         int rank=Augmentations.level(stack,AdditionalAbilities.WINDCHARGE);boolean axe=stack.getItem() instanceof SwordItemWithEffect weapon && weapon.isAxe();
         double height=launchHeight(axe,rank);
         VerticalMotionNetwork.apply(player,launchVelocity(height),false,true);
-        if(axe && rank>=4) FLIGHTS.put(player.getUUID(),new Flight(player,stack,rank));
+        if(axe && rank>=4){
+            AxeAnimationNetwork.playVerticalFlight(player);
+            FLIGHTS.put(player.getUUID(),new Flight(player,stack,rank));
+        }
         else LANDING_GUARDS.put(player.getUUID(),new LandingGuard(player,stack));
         player.serverLevel().sendParticles(ParticleTypes.GUST,player.getX(),player.getY(),player.getZ(),8,.3,.2,.3,.02);return true;
     }
@@ -87,7 +93,12 @@ public final class WindchargeEvents {
             || player.level().getGameTime()>=flight.expires || !Augmentations.ids(flight.stack,true).contains(AdditionalAbilities.WINDCHARGE)
             || player.isInWaterOrBubble() || player.isInLava() || player.onClimbable() || player.isFallFlying() || player.isPassenger()) {cancel(player.getUUID());return false;}return true;
     }
-    public static void cancel(UUID id) {FLIGHTS.remove(id);LANDING_GUARDS.remove(id);IMPACT_GUARDS.remove(id);STRIKES.remove(id);}
+    public static void cancel(UUID id) {
+        var flight=FLIGHTS.remove(id);
+        if(flight!=null && flight.owner.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE)==flight.animationSequence)
+            AxeAnimationNetwork.verticalPhase(flight.owner,2);
+        LANDING_GUARDS.remove(id);IMPACT_GUARDS.remove(id);STRIKES.remove(id);
+    }
     private static boolean skybreakerTarget(ServerPlayer owner,LivingEntity target) {
         return target.isAlive() && !target.isSpectator() && target!=owner;
     }
@@ -141,6 +152,7 @@ public final class WindchargeEvents {
     }
     private static void smash(ServerPlayer player,float distance) {
         var flight=FLIGHTS.get(player.getUUID());var center=player.position();
+        AxeAnimationNetwork.verticalPhase(player,1);
         cancel(player.getUUID());float damage=(float)player.getAttributeValue(Attributes.ATTACK_DAMAGE)+fallBonus(distance)*flight.bonusMultiplier;
         for(var target:player.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(center,center).inflate(SMASH_RADIUS),e->skybreakerTarget(player,e))) {
             if(target.position().distanceToSqr(center)>SMASH_RADIUS*SMASH_RADIUS || !player.hasLineOfSight(target)) continue;

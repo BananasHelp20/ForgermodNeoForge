@@ -37,8 +37,8 @@ public class AxeAnimationGameTests {
         var jump=AxeAnimationData.sample(AxeAnimationData.Clip.VERTICAL,"player_model",.83333);
         test.assertTrue(jump.position().y()==15 && jump.position().z()==-16,"Authored jump keyframe changed");
         test.assertTrue(AxeAnimationData.sample(AxeAnimationData.Clip.GRAVITY_CAST,"tornado_emitter",5.25).rotation().y()==17280,"Emitter full turns were normalized away");
-        test.assertTrue(AxeAnimationData.Clip.SWING.impactTicks()==5 && AxeAnimationData.Clip.SWING2.impactTicks()==5,"Ordinary axe hits are not accelerated to five ticks");
-        test.assertTrue(Math.abs(AxeAnimationData.playbackLength(AxeAnimationData.Clip.SWING)-.366668)<1e-8,"Normal animation duration uses a different speed from its impact");
+        test.assertTrue(AxeAnimationData.Clip.SWING.impactTicks()==7 && AxeAnimationData.Clip.SWING2.impactTicks()==7,"Ordinary axe hits are not synchronized at seven ticks");
+        test.assertTrue(Math.abs(AxeAnimationData.playbackLength(AxeAnimationData.Clip.SWING)-(.91667/1.8))<1e-8,"Normal animation duration uses a different speed from its impact");
         test.assertTrue(AxeAnimationData.Clip.VERTICAL.impactTicks()==25 && AxeAnimationData.Clip.GRAVITY_CAST.impactTicks()==33,"Impact deadlines do not match source times");
         test.assertTrue(AxeAnimationData.length(AxeAnimationData.Clip.SPIN)==2.08333 && AxeAnimationData.Clip.SPIN.impactTicks()==15,"Authored spin duration or impact changed");
         test.assertTrue(AxeVerticalMotion.sourceTime(0,10)==AxeVerticalMotion.HOLD && AxeVerticalMotion.sourceTime(1,0)==AxeVerticalMotion.HOLD
@@ -65,8 +65,8 @@ public class AxeAnimationGameTests {
         var item=ModItems.ITEMS.getEntries().stream().map(e->e.get()).filter(i->i instanceof AxeItem).findFirst().orElseThrow();var p=player(test,new ItemStack(item));var mob=target(test,p);float damage=(float)p.getAttributeValue(Attributes.ATTACK_DAMAGE);
         p.attack(mob);test.assertTrue(mob.getHealth()==1000,"Normal hit lands before wind-up");
         test.assertTrue(p.getPersistentData().getInt(AxeAnimationNetwork.CLIP)==AxeAnimationData.Clip.SWING.ordinal(),"First attack uses wrong clip");
-        test.runAfterDelay(4,()->test.assertTrue(mob.getHealth()==1000,"First swing hits before .25s"));
-        test.runAfterDelay(6,()->{
+        test.runAfterDelay(6,()->test.assertTrue(mob.getHealth()==1000,"First swing hits before its .35s deadline"));
+        test.runAfterDelay(8,()->{
             test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"First swing impact missing or weak");
             long sequence=p.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE);p.attack(mob);
             test.assertTrue(p.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE)==sequence,"A repeat attack interrupts the accelerated swing recovery");
@@ -75,8 +75,8 @@ public class AxeAnimationGameTests {
             mob.setHealth(1000);mob.invulnerableTime=0;mob.setPos(p.position().add(0,0,2));for(int i=0;i<60;i++)p.doTick();p.attack(mob);
             test.assertTrue(mob.getHealth()==1000 && p.getPersistentData().getInt(AxeAnimationNetwork.CLIP)==AxeAnimationData.Clip.SWING2.ordinal(),"Second attack does not alternate or damages immediately");
         });
-        test.runAfterDelay(26,()->test.assertTrue(mob.getHealth()==1000,"Second swing hits before its accelerated impact"));
-        test.runAfterDelay(28,()->{try{test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"Second swing impact missing");test.succeed();}finally{mob.discard();close(p);}});
+        test.runAfterDelay(28,()->test.assertTrue(mob.getHealth()==1000,"Second swing hits before its accelerated impact"));
+        test.runAfterDelay(30,()->{try{test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"Second swing impact missing");test.succeed();}finally{mob.discard();close(p);}});
     }
     @GameTest(template="riftfang_test",batch="axe_authored_vertical_timing",timeoutTicks=80)
     public static void suppliedVerticalStrikeJumpsWithoutForwardImpulseAndWaitsForLanding(GameTestHelper test){

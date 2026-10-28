@@ -53,7 +53,7 @@ public final class AxeAnimationImpacts {
     }
     private static AxeAnimationData.Clip next(ServerPlayer player){int n=SWINGS.merge(player.getUUID(),1,Integer::sum);return n%2==1?AxeAnimationData.Clip.SWING:AxeAnimationData.Clip.SWING2;}
     public static void miss(ServerPlayer player){
-        if(AxeVerticalMotion.airborne(player))return;
+        if(AxeVerticalMotion.airborne(player) || WindchargeEvents.active(player))return;
         if(player.level().getGameTime()<NEXT_SWING.getOrDefault(player.getUUID(),Long.MIN_VALUE))return;
         var clip=next(player);NEXT_SWING.put(player.getUUID(),player.level().getGameTime()+(long)Math.ceil(AxeAnimationData.playbackLength(clip)*20));
         queue(player,player.getMainHandItem(),"ordinary",clip,()->player.serverLevel().playSound(null,player.blockPosition(),net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_SWEEP,player.getSoundSource(),.45F,.7F));

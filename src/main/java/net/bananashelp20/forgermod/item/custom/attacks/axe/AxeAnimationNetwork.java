@@ -26,6 +26,8 @@ public final class AxeAnimationNetwork {
         if(clip==AxeAnimationData.Clip.VERTICAL)AxeVerticalMotion.begin(player);
         send(player,clip,0);
     }
+    /** Animation only: Skybreaker already owns its launch, fall protection and impact damage. */
+    public static void playVerticalFlight(ServerPlayer player){send(player,AxeAnimationData.Clip.VERTICAL,0);}
     public static void verticalPhase(ServerPlayer player,int phase){send(player,AxeAnimationData.Clip.VERTICAL,phase);}
     private static void send(ServerPlayer player,AxeAnimationData.Clip clip,int phase){
         long sequence=player.getPersistentData().getLong(SEQUENCE)+1;mark(player,clip,sequence,phase);
