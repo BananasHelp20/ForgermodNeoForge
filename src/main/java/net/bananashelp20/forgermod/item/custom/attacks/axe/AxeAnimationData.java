@@ -12,7 +12,8 @@ public final class AxeAnimationData {
         VERTICAL("axe_jump_attack",1.25), GRAVITY_CAST("axe_grtg_axe_slam",1.625), SPIN("animation",.75);
         public final String name;public final double impact;
         Clip(String name,double impact){this.name=name;this.impact=impact;}
-        public int impactTicks(){return (int)Math.ceil(impact*20-1e-5);}
+        public double speed(){return this==SWING || this==SWING2?2.5:1;}
+        public int impactTicks(){return (int)Math.ceil(impact/speed()*20-1e-5);}
     }
     public record Vec(double x,double y,double z) {
         public static final Vec ZERO=new Vec(0,0,0),ONE=new Vec(1,1,1);
@@ -52,6 +53,7 @@ public final class AxeAnimationData {
             return result;
     }
     public static double length(Clip clip){return DATA.get(clip).length;}
+    public static double playbackLength(Clip clip){return length(clip)/clip.speed();}
     public static Pose sample(Clip clip,String bone,double seconds){
         var data=DATA.get(clip);double time=data.loop && data.length>0?Math.floorMod((long)(seconds*1_000_000),(long)(data.length*1_000_000))/1_000_000.0:Math.clamp(seconds,0,data.length);
         var channels=data.bones.getOrDefault(bone,Map.of());

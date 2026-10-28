@@ -26,7 +26,7 @@ import java.util.*;
 @EventBusSubscriber(modid=ForgerMod.MOD_ID,value=Dist.CLIENT)
 public final class AxeAnimationClient {
     public record Sample(AxeAnimationData.Clip clip,double seconds,double weight) {}
-    private record Playback(long sequence,AxeAnimationData.Clip clip,long start,String item,int slot) {}
+    private record Playback(long sequence,AxeAnimationData.Clip clip,long start,String item,int slot,int phase) {}
     private static final Map<UUID,Playback> PLAYING=new HashMap<>();
     private static final Map<UUID,Long> SEEN=new HashMap<>();
     private static Object world;
@@ -42,16 +42,22 @@ public final class AxeAnimationClient {
         var data=player.getPersistentData();long seq=data.getLong(AxeAnimationNetwork.SEQUENCE);var old=PLAYING.get(player.getUUID());
         if(seq>0 && SEEN.getOrDefault(player.getUUID(),0L)!=seq){
             SEEN.put(player.getUUID(),seq);int clip=data.getInt(AxeAnimationNetwork.CLIP);
-            if(clip>=0 && clip<AxeAnimationData.Clip.values().length)old=new Playback(seq,AxeAnimationData.Clip.values()[clip],data.getLong(AxeAnimationNetwork.START),item,player.getInventory().selected);
+            if(clip>=0 && clip<AxeAnimationData.Clip.values().length)old=new Playback(seq,AxeAnimationData.Clip.values()[clip],data.getLong(AxeAnimationNetwork.START),item,player.getInventory().selected,data.getInt(AxeAnimationNetwork.PHASE));
             if(old!=null)PLAYING.put(player.getUUID(),old);
         }
         if(old!=null && (!old.item.equals(item) || old.slot!=player.getInventory().selected)){PLAYING.remove(player.getUUID());old=null;}
         if(old!=null){
-            double time=(player.level().getGameTime()-old.start+partial)/20.0,length=AxeAnimationData.length(old.clip);
-            if(time>=0 && time<length+.15)return new Sample(old.clip,time,time<=length?1:Math.max(0,1-(time-length)/.15));
+            double time=(player.level().getGameTime()-old.start+partial)/20.0,length=AxeAnimationData.playbackLength(old.clip);
+            if(old.clip==AxeAnimationData.Clip.VERTICAL){
+                if(old.phase==0)return new Sample(old.clip,AxeVerticalMotion.sourceTime(0,time),1);
+                if(old.phase==1 && time>=0 && time<.66667){
+                    double source=AxeVerticalMotion.sourceTime(1,time);
+                    return new Sample(old.clip,source,source<=AxeAnimationData.length(old.clip)?1:Math.max(0,1-(source-AxeAnimationData.length(old.clip))/.15));
+                }
+            }else if(time>=0 && time<length+.15)return new Sample(old.clip,time*old.clip.speed(),time<=length?1:Math.max(0,1-(time-length)/.15));
         }
         boolean walking=player.walkAnimation.speed(partial)>.01;
-        return new Sample(walking?AxeAnimationData.Clip.WALK:AxeAnimationData.Clip.IDLE,walking?player.walkAnimation.position(partial)/(2*Math.PI):0,1);
+        return new Sample(walking?AxeAnimationData.Clip.WALK:AxeAnimationData.Clip.IDLE,walking?player.walkAnimation.position(partial)*.6662/(2*Math.PI):0,1);
     }
     public static boolean authoredPose(Player player,float partial){
         var sample=sample(player,partial);
@@ -68,7 +74,6 @@ public final class AxeAnimationClient {
                 a.y()+Math.IEEEremainder(b.y()-a.y(),360)*f,a.z()+Math.IEEEremainder(b.z()-a.z(),360)*f);
         return new AxeAnimationData.Pose(value.position().lerp(idle.position(),f),rotation,value.scale().lerp(idle.scale(),f));
     }
-    private static boolean slim(Player player){return player instanceof AbstractClientPlayer client && client.getSkin().model()==net.minecraft.client.resources.PlayerSkin.Model.SLIM;}
     private static String bone(Player player,String name){
         if(player.getMainArm()!=HumanoidArm.LEFT)return name;
         return name.startsWith("left_")?name.replace("left_","right_"):name.startsWith("right_")?name.replace("right_","left_"):name;
@@ -77,10 +82,24 @@ public final class AxeAnimationClient {
         if(firstPerson)return;var sample=sample(player,partial);if(sample==null)return;
         // Block breaking keeps vanilla arm swings whenever no authored attack is playing.
         if(player.swinging && (sample.clip==AxeAnimationData.Clip.IDLE || sample.clip==AxeAnimationData.Clip.WALK))return;
+        // Vanilla attack torso twist must not fight the authored root/arm pose.
+        model.body.yRot=0;
         apply(player,model.head,"head",sample);apply(player,model.rightArm,"right_arm",sample);apply(player,model.leftArm,"left_arm",sample);
-        apply(player,model.rightLeg,"right_leg",sample);apply(player,model.leftLeg,"left_leg",sample);
+        // Preserve vanilla speed-scaled strides (including sprinting) under the two-handed hold.
+        if(sample.clip!=AxeAnimationData.Clip.IDLE && sample.clip!=AxeAnimationData.Clip.WALK){
+            apply(player,model.rightLeg,"right_leg",sample);apply(player,model.leftLeg,"left_leg",sample);
+        }
+        attachShoulder(model.rightArm,model.body,false);attachShoulder(model.leftArm,model.body,true);
         model.hat.copyFrom(model.head);model.rightSleeve.copyFrom(model.rightArm);model.leftSleeve.copyFrom(model.leftArm);
         model.rightPants.copyFrom(model.rightLeg);model.leftPants.copyFrom(model.leftLeg);model.jacket.copyFrom(model.body);
+    }
+    private static void attachShoulder(ModelPart arm,ModelPart body,boolean left){
+        float side=left?1:-1;
+        var bodyRotation=new org.joml.Quaternionf().rotationZYX(body.zRot,body.yRot,body.xRot);
+        var joint=new org.joml.Vector3f(side*4,2,0).rotate(bodyRotation).add(body.x,body.y,body.z);
+        // Both classic and slim vanilla arms have their medial edge one pixel from the pivot.
+        var medial=new org.joml.Vector3f(-side,0,0).rotate(new org.joml.Quaternionf().rotationZYX(arm.zRot,arm.yRot,arm.xRot));
+        arm.x=joint.x-medial.x;arm.y=joint.y-medial.y;arm.z=joint.z-medial.z;
     }
     private static void apply(Player player,ModelPart part,String name,Sample sample){
         String bone=bone(player,name);var value=poseSample(sample,bone);float w=1;
@@ -92,9 +111,7 @@ public final class AxeAnimationClient {
             // Source arm pivots are +/-4, whereas vanilla uses +/-5 with offset cubes.
             if(bone.equals("right_arm"))x-=(float)Math.toRadians(37.5);
             part.xRot=x;part.yRot=y;part.zRot=z;
-            float side=name.equals("right_arm")?-1:1;
-            var offset=new org.joml.Vector3f(side*(slim(player)?1.5F:1),0,0).rotate(new org.joml.Quaternionf().rotationZYX(z,y,x));
-            part.x=side*4+offset.x;part.y=2+offset.y;part.z=offset.z;
+            return; // Shoulder position is retargeted to the actual torso after all rotations.
         }else if(AxeAnimationData.has(sample.clip,bone,"rotation")){
             if(name.equals("head")){part.xRot+=x;part.yRot+=y;part.zRot+=z;}
             else{part.xRot=x;part.yRot=y;part.zRot=z;}
@@ -104,7 +121,9 @@ public final class AxeAnimationClient {
     }
     public static void root(AbstractClientPlayer player,float partial,PoseStack pose){
         if(firstPerson)return;var sample=sample(player,partial);if(sample==null)return;
-        var root=poseSample(sample,"player_model");float mirror=player.getMainArm()==HumanoidArm.LEFT?-1:1,w=1;
+        var root=poseSample(sample,"player_model");
+        if(sample.clip==AxeAnimationData.Clip.VERTICAL)root=new AxeAnimationData.Pose(AxeAnimationData.Vec.ZERO,root.rotation(),root.scale());
+        float mirror=player.getMainArm()==HumanoidArm.LEFT?-1:1,w=1;
         float yaw=net.minecraft.util.Mth.rotLerp(partial,player.yBodyRotO,player.yBodyRot);
         pose.mulPose(Axis.YP.rotationDegrees(-yaw));pose.translate(-root.position().x()*mirror*w*.9375/16,root.position().y()*w*.9375/16,-root.position().z()*w*.9375/16);
         pose.translate(0,17.33333/16*.9375,0);rotate(pose,-root.rotation().x()*w,root.rotation().y()*mirror*w,-root.rotation().z()*mirror*w);pose.translate(0,-17.33333/16*.9375,0);
@@ -121,7 +140,7 @@ public final class AxeAnimationClient {
         var sample=sample(player,partial);if(sample==null)return;var axe=poseSample(sample,"axe");
         double mirror=arm==HumanoidArm.LEFT?-1:1,w=1;
         // Undo only the cube offset/rest rotation to recover its animated parent bone.
-        pose.translate(mirror*(slim(player)?1.5:1)/16,0,0);
+        pose.translate(mirror/16,0,0);
         if(bone(player,arm==HumanoidArm.RIGHT?"right_arm":"left_arm").equals("right_arm"))pose.mulPose(Axis.XP.rotationDegrees(37.5F));
         pose.translate((-2-axe.position().x()*w)*mirror/16,(6.75-axe.position().y()*w)/16,(-5+axe.position().z()*w)/16);
         rotate(pose,90-axe.rotation().x()*w,(-37.5-axe.rotation().y()*w)*mirror,(-90+axe.rotation().z()*w)*mirror);

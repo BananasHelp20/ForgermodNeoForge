@@ -37,8 +37,12 @@ public class AxeAnimationGameTests {
         var jump=AxeAnimationData.sample(AxeAnimationData.Clip.VERTICAL,"player_model",.83333);
         test.assertTrue(jump.position().y()==15 && jump.position().z()==-16,"Authored jump keyframe changed");
         test.assertTrue(AxeAnimationData.sample(AxeAnimationData.Clip.GRAVITY_CAST,"tornado_emitter",5.25).rotation().y()==17280,"Emitter full turns were normalized away");
+        test.assertTrue(AxeAnimationData.Clip.SWING.impactTicks()==5 && AxeAnimationData.Clip.SWING2.impactTicks()==5,"Ordinary axe hits are not accelerated to five ticks");
+        test.assertTrue(Math.abs(AxeAnimationData.playbackLength(AxeAnimationData.Clip.SWING)-.366668)<1e-8,"Normal animation duration uses a different speed from its impact");
         test.assertTrue(AxeAnimationData.Clip.VERTICAL.impactTicks()==25 && AxeAnimationData.Clip.GRAVITY_CAST.impactTicks()==33,"Impact deadlines do not match source times");
         test.assertTrue(AxeAnimationData.length(AxeAnimationData.Clip.SPIN)==2.08333 && AxeAnimationData.Clip.SPIN.impactTicks()==15,"Authored spin duration or impact changed");
+        test.assertTrue(AxeVerticalMotion.sourceTime(0,10)==AxeVerticalMotion.HOLD && AxeVerticalMotion.sourceTime(1,0)==AxeVerticalMotion.HOLD
+                && Math.abs(AxeVerticalMotion.sourceTime(1,.1)-AxeVerticalMotion.IMPACT)<1e-8,"Held pose or landing downswing timing changed");
         var idle=AxeAnimationData.sample(AxeAnimationData.Clip.IDLE,"axe",0);
         test.assertTrue(idle.position().equals(new AxeAnimationData.Vec(0,5,-7)),"Two-handed idle grip missing");
         var smooth=AxeAnimationData.sample(AxeAnimationData.Clip.SWING2,"axe",.3).rotation();
@@ -61,21 +65,43 @@ public class AxeAnimationGameTests {
         var item=ModItems.ITEMS.getEntries().stream().map(e->e.get()).filter(i->i instanceof AxeItem).findFirst().orElseThrow();var p=player(test,new ItemStack(item));var mob=target(test,p);float damage=(float)p.getAttributeValue(Attributes.ATTACK_DAMAGE);
         p.attack(mob);test.assertTrue(mob.getHealth()==1000,"Normal hit lands before wind-up");
         test.assertTrue(p.getPersistentData().getInt(AxeAnimationNetwork.CLIP)==AxeAnimationData.Clip.SWING.ordinal(),"First attack uses wrong clip");
-        test.runAfterDelay(12,()->test.assertTrue(mob.getHealth()==1000,"First swing hits before .625s"));
-        test.runAfterDelay(14,()->test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"First swing impact missing or weak"));
+        test.runAfterDelay(4,()->test.assertTrue(mob.getHealth()==1000,"First swing hits before .25s"));
+        test.runAfterDelay(6,()->{
+            test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"First swing impact missing or weak");
+            long sequence=p.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE);p.attack(mob);
+            test.assertTrue(p.getPersistentData().getLong(AxeAnimationNetwork.SEQUENCE)==sequence,"A repeat attack interrupts the accelerated swing recovery");
+        });
         test.runAfterDelay(22,()->{
             mob.setHealth(1000);mob.invulnerableTime=0;mob.setPos(p.position().add(0,0,2));for(int i=0;i<60;i++)p.doTick();p.attack(mob);
             test.assertTrue(mob.getHealth()==1000 && p.getPersistentData().getInt(AxeAnimationNetwork.CLIP)==AxeAnimationData.Clip.SWING2.ordinal(),"Second attack does not alternate or damages immediately");
         });
-        test.runAfterDelay(33,()->test.assertTrue(mob.getHealth()==1000,"Second swing hits before .58333s"));
-        test.runAfterDelay(35,()->{try{test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"Second swing impact missing");test.succeed();}finally{mob.discard();close(p);}});
+        test.runAfterDelay(26,()->test.assertTrue(mob.getHealth()==1000,"Second swing hits before its accelerated impact"));
+        test.runAfterDelay(28,()->{try{test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"Second swing impact missing");test.succeed();}finally{mob.discard();close(p);}});
     }
-    @GameTest(template="riftfang_test",batch="axe_authored_vertical_timing",timeoutTicks=60)
-    public static void suppliedVerticalStrikeWaitsForJumpImpactWithoutNeedingPassive(GameTestHelper test){
+    @GameTest(template="riftfang_test",batch="axe_authored_vertical_timing",timeoutTicks=80)
+    public static void suppliedVerticalStrikeJumpsWithoutForwardImpulseAndWaitsForLanding(GameTestHelper test){
         var stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),AdditionalAbilities.GRAVITY_WELL);var p=player(test,stack);var mob=target(test,p);float damage=(float)p.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        test.assertTrue(AxeHeavyNetwork.abilityVerticalStrike(p,stack,mob.position()),"Supplied strike rejected");test.assertTrue(mob.getHealth()==1000,"Supplied strike hits immediately");
-        test.runAfterDelay(24,()->test.assertTrue(mob.getHealth()==1000,"Vertical Strike hits before1.25 seconds"));
-        test.runAfterDelay(26,()->{try{test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01,"Jump impact missing or ability-only axe canceled the wind-up");test.succeed();}finally{mob.discard();close(p);}});
+        var movement=new Vec3(.12,0,.08);p.setOnGround(true);p.setDeltaMovement(movement);
+        test.assertTrue(AxeHeavyNetwork.abilityVerticalStrike(p,stack,mob.position()),"Supplied strike rejected");
+        test.assertTrue(!p.onGround() && p.getDeltaMovement().y>0 && p.getDeltaMovement().x==movement.x && p.getDeltaMovement().z==movement.z,"Strike does not jump or forces forward movement");
+        test.runAfterDelay(35,()->{
+            test.assertTrue(mob.getHealth()==1000 && AxeHeavyNetwork.hasPending(p),"Airborne strike damages before landing or expires at old deadline");
+            test.assertTrue(p.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==0,"Airborne animation is not held");
+            p.setOnGround(true);
+        });
+        test.runAfterDelay(37,()->test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01 && p.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==1,"Landing does not damage or play impact phase"));
+        test.runAfterDelay(45,()->{try{test.assertTrue(Math.abs(mob.getHealth()-(1000-damage))<.01 && !AxeHeavyNetwork.hasPending(p),"Landing deals damage more than once");test.succeed();}finally{mob.discard();close(p);}});
+    }
+    @GameTest(template="riftfang_test",batch="axe_vertical_airborne_job",timeoutTicks=90)
+    public static void airborneVerticalJobsDoNotBoostAgainAndOnlyImpactOnLanding(GameTestHelper test){
+        var stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),Augmentations.VERTICAL_STRIKE);var p=player(test,stack);
+        var landing=p.position();p.setPos(landing.add(0,8,0));p.setOnGround(false);var movement=new Vec3(.2,-.15,-.1);p.setDeltaMovement(movement);var count=new java.util.concurrent.atomic.AtomicInteger();
+        test.assertTrue(AxeAnimationImpacts.queue(p,stack,"airborne_test",AxeAnimationData.Clip.VERTICAL,count::incrementAndGet),"Midair strike rejected");
+        test.assertTrue(p.getDeltaMovement().equals(movement),"Midair strike adds another jump or horizontal impulse");
+        test.runAfterDelay(30,()->p.setOnGround(true));
+        test.runAfterDelay(40,()->{test.assertTrue(count.get()==0 && AxeAnimationImpacts.pending(p.getUUID(),"airborne_test"),"Midair strike resolves without physical ground contact");p.setPos(landing);p.setOnGround(true);});
+        test.runAfterDelay(42,()->test.assertTrue(count.get()==1 && p.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==1,"Generic vertical job misses landing"));
+        test.runAfterDelay(48,()->{try{test.assertTrue(count.get()==1,"Generic vertical impact repeats");test.succeed();}finally{close(p);}});
     }
     @GameTest(template="riftfang_test",batch="axe_authored_cast_timing",timeoutTicks=65)
     public static void gravitySwingCastsAtSlamFrameAndKeepsActivationCooldown(GameTestHelper test) throws Exception {
@@ -91,6 +117,8 @@ public class AxeAnimationGameTests {
         var stack=Augmentations.apply(new ItemStack(ModItems.NULLIFIED_AXE.get()),Augmentations.VERTICAL_STRIKE);var p=player(test,stack);var mob=target(test,p);
         AxeHeavyNetwork.abilityVerticalStrike(p,stack,mob.position());p.setItemInHand(InteractionHand.MAIN_HAND,stack.copy());
         AxeHeavyNetwork.onPlayerTick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(p));test.assertFalse(AxeHeavyNetwork.hasPending(p),"Switch waits until impact before canceling");
+        AxeVerticalMotion.tick(new net.neoforged.neoforge.event.tick.PlayerTickEvent.Post(p));
+        test.assertTrue(p.getPersistentData().getInt(AxeAnimationNetwork.PHASE)==2,"Canceled midair strike leaves a held client pose");
         test.runAfterDelay(27,()->{try{test.assertTrue(mob.getHealth()==1000,"Canceled wind-up deals delayed damage");test.succeed();}finally{mob.discard();close(p);}});
     }
     @GameTest(template="riftfang_test",batch="axe_authored_critical_timing",timeoutTicks=65)

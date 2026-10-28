@@ -24,6 +24,7 @@ final class AxeAnimationTestDriver {
             if(slam!=null){var source=slam.getClass().getDeclaredMethod("source");source.setAccessible(true);if(source.invoke(slam)==player.getMainHandItem()){
                 var land=AxeHeavyNetwork.class.getDeclaredMethod("landSlam",ServerPlayer.class,slam.getClass());land.setAccessible(true);land.invoke(null,player,slam);
             }}
+            AxeVerticalMotion.cancel(player);
             field=AxeAnimationImpacts.class.getDeclaredField("NEXT_SWING");field.setAccessible(true);((Map<UUID,Long>)field.get(null)).remove(player.getUUID());
         }catch(ReflectiveOperationException e){throw new AssertionError("Cannot enter axe impact test phase",e);}
     }

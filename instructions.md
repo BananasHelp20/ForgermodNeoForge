@@ -23,3 +23,7 @@ and is named forgermod_ancient_grave_v2 as a nbt file. The structure should be n
 - [x] Axe camera-switch crash: read actual crash report, remove visual assertions from normal mod/runtime sources, hard-guard isolated test directory, reproduce three actual attacks across first/third/first person, restore generated normal launch files, verify artifact/classpath exclusion and build, review and scoped commit/push.
 
 - [x] Import the upgraded axe_playerplaceholder_animations_2.bbmodel from Downloads without retiming authored keys; preserve smooth curves/new two-handed idle and updated swirl, use its new spinning animation for all Swing Attack variants, align damage timing, verify both camera views/build/GameTests, and restore normal launch settings.
+
+- [x] Speed up ordinary axe swings and matching hit deadlines, restore natural walking/sprinting strides, fix shoulder/torso separation and audit all upgraded axe animation mappings/channels; verify native timing and both camera views.
+
+- [x] Replace Vertical Strike fake forward/jump root motion with an automatic real jump, retain voluntary horizontal movement, hold the raised axe while airborne, and resolve all player vertical-strike variants only on landing; test cancellation, damage once, synchronization and in-game physics.

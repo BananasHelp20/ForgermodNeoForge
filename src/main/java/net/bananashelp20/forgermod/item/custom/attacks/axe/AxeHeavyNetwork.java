@@ -97,12 +97,12 @@ public final class AxeHeavyNetwork {
         player.getPersistentData().putLong(ANIMATION_TAG,player.level().getGameTime());
         if(!AxeAnimationImpacts.atImpact(AxeAnimationData.Clip.VERTICAL)){AxeAnimationImpacts.interrupt(player.getUUID());AxeAnimationNetwork.play(player,AxeAnimationData.Clip.VERTICAL);}
     }
-    public static void cancelPending(ServerPlayer player){PENDING.remove(player.getUUID());}
+    public static void cancelPending(ServerPlayer player){PENDING.remove(player.getUUID());AxeVerticalMotion.cancelIfWaiting(player.getUUID());}
     public static boolean hasPending(ServerPlayer player){return PENDING.containsKey(player.getUUID());}
 
     private static boolean queueAttack(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();
-        if(PENDING.containsKey(player.getUUID()))return false;
+        if(PENDING.containsKey(player.getUUID()) || AxeVerticalMotion.airborne(player))return false;
         if (!AxeItems.canAttackPacket(stack) || !player.getOffhandItem().isEmpty()) {
             COMBOS.remove(player.getUUID());
             PENDING.remove(player.getUUID());
@@ -139,7 +139,7 @@ public final class AxeHeavyNetwork {
         // Keep the last accepted tick even after the third swing to reject duplicate packets.
         COMBOS.put(id, new Combo(stack.getItem(), now, now, 0));
         BlockPos center = findGroundAhead(player);
-        if (center == null) return false;
+        if (center == null) center=player.blockPosition();
 
         float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         PENDING.put(id, new PendingSlam(player.serverLevel(), stack.getItem(), now + AxeAnimationData.Clip.VERTICAL.impactTicks(), center, damage, false, stack));
@@ -189,8 +189,10 @@ public final class AxeHeavyNetwork {
         if(slam.source().isEmpty() && !AxeItems.canAttackPacket(player.getMainHandItem())){PENDING.remove(player.getUUID());return;}
         if (player.level() != slam.level() || !player.getMainHandItem().is(slam.axe())
                 || !slam.source().isEmpty() && player.getMainHandItem() != slam.source()) {PENDING.remove(player.getUUID());return;}
-        if(player.level().getGameTime()<slam.dueTick())return;
-        PENDING.remove(player.getUUID());landSlam(player, slam);
+        if(!AxeVerticalMotion.ready(player))return;
+        PENDING.remove(player.getUUID());
+        var ground=findGroundAhead(player);if(ground==null)ground=player.blockPosition();
+        landSlam(player,new PendingSlam(slam.level(),slam.axe(),slam.dueTick(),ground,slam.damage(),slam.flaming(),slam.source()));
     }
 
     /** Convert an accepted melee hit without striking its primary victim twice. */
@@ -257,6 +259,7 @@ public final class AxeHeavyNetwork {
 
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        AxeVerticalMotion.forget(event.getEntity().getUUID());
         COMBOS.remove(event.getEntity().getUUID());
         PENDING.remove(event.getEntity().getUUID());
     }

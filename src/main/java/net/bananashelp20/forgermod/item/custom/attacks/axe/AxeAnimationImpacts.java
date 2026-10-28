@@ -31,27 +31,31 @@ public final class AxeAnimationImpacts {
         JOBS.computeIfAbsent(player.getUUID(),ignored->new HashMap<>()).put(channel,new Job(player,stack,player.getInventory().selected,player.serverLevel(),player.level().getGameTime()+clip.impactTicks(),clip,action));
         AxeAnimationNetwork.play(player,clip);return true;
     }
-    public static void cancel(UUID owner,String channel){var jobs=JOBS.get(owner);if(jobs!=null){jobs.remove(channel);if(jobs.isEmpty())JOBS.remove(owner);}}
+    public static void cancel(UUID owner,String channel){var jobs=JOBS.get(owner);if(jobs!=null){jobs.remove(channel);if(jobs.isEmpty())JOBS.remove(owner);if(jobs.values().stream().noneMatch(j->j.clip==AxeAnimationData.Clip.VERTICAL))AxeVerticalMotion.cancelIfWaiting(owner);}}
     public static void interrupt(UUID owner){
         var old=JOBS.remove(owner);
+        var server=net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer();
+        if(server!=null){var player=server.getPlayerList().getPlayer(owner);if(player!=null)AxeVerticalMotion.cancel(player);}
         if(old!=null && old.containsKey("crucible_slam"))CrucibleHookEvents.cancel(owner);
     }
-    public static void cancel(UUID owner){JOBS.remove(owner);SWINGS.remove(owner);NEXT_SWING.remove(owner);}
-    private static boolean valid(Job job){var p=job.player;return p.isAlive() && !p.isSpectator() && p.getMainHandItem()==job.stack
-            && p.getInventory().selected==job.slot && p.serverLevel()==job.level && !WeaponControlLocks.frozen(p);}
+    public static void cancel(UUID owner){AxeVerticalMotion.forget(owner);JOBS.remove(owner);SWINGS.remove(owner);NEXT_SWING.remove(owner);}
+    private static boolean valid(Job job){var p=job.player;return !job.stack.isEmpty() && p.isAlive() && !p.isSpectator() && p.getMainHandItem()==job.stack
+            && p.getInventory().selected==job.slot && p.serverLevel()==job.level && !WeaponControlLocks.frozen(p)
+            && (job.clip!=AxeAnimationData.Clip.VERTICAL || p.getOffhandItem().isEmpty());}
     @SubscribeEvent public static void tick(PlayerTickEvent.Post event){
         if(!(event.getEntity() instanceof ServerPlayer player))return;var jobs=JOBS.get(player.getUUID());if(jobs==null)return;
         for(var entry:List.copyOf(jobs.entrySet())){
             var job=entry.getValue();if(!valid(job)){cancel(player.getUUID(),entry.getKey());continue;}
-            if(player.level().getGameTime()<job.due)continue;
+            if(job.clip==AxeAnimationData.Clip.VERTICAL?!AxeVerticalMotion.ready(player):player.level().getGameTime()<job.due)continue;
             cancel(player.getUUID(),entry.getKey());var previous=IMPACT.get();IMPACT.set(job.clip);
             try{job.action.run();}finally{if(previous==null)IMPACT.remove();else IMPACT.set(previous);}
         }
     }
     private static AxeAnimationData.Clip next(ServerPlayer player){int n=SWINGS.merge(player.getUUID(),1,Integer::sum);return n%2==1?AxeAnimationData.Clip.SWING:AxeAnimationData.Clip.SWING2;}
     public static void miss(ServerPlayer player){
+        if(AxeVerticalMotion.airborne(player))return;
         if(player.level().getGameTime()<NEXT_SWING.getOrDefault(player.getUUID(),Long.MIN_VALUE))return;
-        var clip=next(player);NEXT_SWING.put(player.getUUID(),player.level().getGameTime()+(long)Math.ceil(AxeAnimationData.length(clip)*20));
+        var clip=next(player);NEXT_SWING.put(player.getUUID(),player.level().getGameTime()+(long)Math.ceil(AxeAnimationData.playbackLength(clip)*20));
         queue(player,player.getMainHandItem(),"ordinary",clip,()->player.serverLevel().playSound(null,player.blockPosition(),net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_SWEEP,player.getSoundSource(),.45F,.7F));
     }
     public static boolean reachable(ServerPlayer player,Entity target){
@@ -64,12 +68,12 @@ public final class AxeAnimationImpacts {
     public static void attack(AttackEntityEvent event){
         if(event.isCanceled() || event.getEntity() instanceof ServerPlayer p && (p.isSpectator() || WeaponControlLocks.frozen(p) || WindchargeEvents.active(p)) || IMPACT.get()!=null || !(event.getEntity() instanceof ServerPlayer player) || !AxeAnimationItems.isModAxe(player.getMainHandItem()))return;
         event.setCanceled(true);
-        if(AxeHeavyNetwork.hasPending(player) || pending(player.getUUID(),"ordinary") || player.level().getGameTime()<NEXT_SWING.getOrDefault(player.getUUID(),Long.MIN_VALUE))return;
+        if(AxeVerticalMotion.airborne(player) || AxeHeavyNetwork.hasPending(player) || pending(player.getUUID(),"ordinary") || player.level().getGameTime()<NEXT_SWING.getOrDefault(player.getUUID(),Long.MIN_VALUE))return;
         var target=event.getTarget();var stack=player.getMainHandItem();var access=(AttackStrengthAccess)player;
         int charge=access.forgermod$getAttackStrengthTicker();float fall=player.fallDistance;boolean grounded=player.onGround(),sprinting=player.isSprinting();
         var clip=AxeItems.canVerticalStrike(stack) && EchoSalvageEvents.bonus(player)>0?AxeAnimationData.Clip.VERTICAL:next(player);
         if(clip==AxeAnimationData.Clip.VERTICAL)player.getPersistentData().putLong(AxeHeavyNetwork.ANIMATION_TAG,player.level().getGameTime());
-        NEXT_SWING.put(player.getUUID(),player.level().getGameTime()+(long)Math.ceil(AxeAnimationData.length(clip)*20));
+        NEXT_SWING.put(player.getUUID(),player.level().getGameTime()+(long)Math.ceil(AxeAnimationData.playbackLength(clip)*20));
         player.resetAttackStrengthTicker();
         queue(player,stack,"ordinary",clip,()->{
             if(!reachable(player,target))return;
