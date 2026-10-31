@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T16:45:33.8656733	Item Models: forgermod
+// 1.21.1	2026-10-31T23:14:50.1793016	Item Models: forgermod
 75de34fad2e659907fff98b8601834d666c057a9 assets/forgermod/models/item/advanced_handle.json
 12228e4b222313c37bb5be0551d8cf6d6d28dbd3 assets/forgermod/models/item/amber_gemstone.json
 c3aad4d5e6bbadeeab736c4989ef97383d9a8108 assets/forgermod/models/item/amethyst_gemstone.json
@@ -15,6 +15,7 @@ c6d328a3a0bda888b8d9017ef0c4a0305e1f2859 assets/forgermod/models/item/carbon_ste
 f09a71ed61f454c76c5a206415de0b17591b5f57 assets/forgermod/models/item/carbon_steel_hoe.json
 f96cc081384befc431082df6c46ce64c30d1319f assets/forgermod/models/item/carbon_steel_ingot.json
 602bc4f29338434faeec9fce29db988809701549 assets/forgermod/models/item/carbon_steel_pickaxe.json
+121a9a84143f12cdcd5aee65c047a8b9faaa2a4a assets/forgermod/models/item/carbon_steel_shovel.json
 41a30c65d7207fd57322526bd53f0e850b552cd8 assets/forgermod/models/item/carbon_steel_sword.json
 e4359a122e2ef102af5dbef4e48a2803a8a10c9a assets/forgermod/models/item/claymore.json
 217a76f565848e3faec6899d81106656b4d0c629 assets/forgermod/models/item/claymore_of_the_void.json
@@ -58,6 +59,7 @@ e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/damask_hoe
 7b59e06b6066f04ad7894dde6f3efe73c5c423c5 assets/forgermod/models/item/damask_ingot.json
 f4196b65ce8a2b0c78c45f5393ce02167dcb5f54 assets/forgermod/models/item/damask_knife.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/damask_pickaxe.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/damask_shovel.json
 d2c358059692f7cdee01fce285dd0de3960048b9 assets/forgermod/models/item/damask_sword.json
 7dfa75370b9272ee63c7841397afc400b278cb04 assets/forgermod/models/item/developium_ingot.json
 3a25ebf570ad2e9c4b2441a721a68fb2879b230d assets/forgermod/models/item/developium_shard.json
@@ -123,6 +125,7 @@ e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/meteoric_i
 e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/meteoric_iron_hoe.json
 229f00140ada207cba48ec78f1b0901bb7d1d8b9 assets/forgermod/models/item/meteoric_iron_ingot.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/meteoric_iron_pickaxe.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/meteoric_iron_shovel.json
 c238733bfaede8a505ed5ecb2c6903b399f66c95 assets/forgermod/models/item/meteoric_iron_sword.json
 e5719a2a0d2eabd2da4f04d510ed09c97b41727a assets/forgermod/models/item/morsium_ingot.json
 d79cd1cec330bb121d366bd438f67477b52560ed assets/forgermod/models/item/morsium_shard.json
@@ -151,6 +154,7 @@ e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/reinforced
 e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/reinforced_iron_hoe.json
 087dc9ea33864370eca54388536a9108399afedc assets/forgermod/models/item/reinforced_iron_ingot.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/reinforced_iron_pickaxe.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/reinforced_iron_shovel.json
 c238733bfaede8a505ed5ecb2c6903b399f66c95 assets/forgermod/models/item/reinforced_iron_sword.json
 bc74a3d3dd63f1e889538b9f75068c3333dce298 assets/forgermod/models/item/ruby_gemstone.json
 e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/rusty_axe.json
@@ -162,6 +166,7 @@ e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/scrap_hoe.
 abb980494323651168e7595f3aa878d2711348c5 assets/forgermod/models/item/scrap_iron_ingot.json
 057717fb5f8057eef829879e231a20d50b71d252 assets/forgermod/models/item/scrap_iron_sword.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/scrap_pickaxe.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/scrap_shovel.json
 dca8df06407a38a4c6597efeec43becd66a8850a assets/forgermod/models/item/scrap_sword.json
 9b44b480f66f2c07f425b6b0a1f27ea3353e19ac assets/forgermod/models/item/sharpened_blade.json
 e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/shrieking_axe.json
@@ -185,6 +190,7 @@ e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/steel_axe.
 e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/steel_hoe.json
 dee16b5ae85d69dd5d9f2eda69d1178c7b3944b2 assets/forgermod/models/item/steel_ingot.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/steel_pickaxe.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/steel_shovel.json
 bf57df6da963e97db59b8de528fa7d4fb353e59d assets/forgermod/models/item/steel_sword.json
 e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/storming_axe.json
 e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/storming_axe_amber.json
@@ -209,6 +215,7 @@ e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/titanium_a
 e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/titanium_hoe.json
 7c6d7a92958a68fe9ec59b0cd0f739cd1f1cf3c4 assets/forgermod/models/item/titanium_ingot.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/titanium_pickaxe.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/titanium_shovel.json
 21aea843a00e8d119827ffe0c27a6569d7769dce assets/forgermod/models/item/titanium_sponge.json
 7a7240bbd83edb1d455419e7423b176faab371c3 assets/forgermod/models/item/titanium_sword.json
 e868f245222fd6fa02e2ba32e6b7abb9498c88d9 assets/forgermod/models/item/tungsten_axe.json
@@ -216,6 +223,7 @@ e60d7a163a34965d2423787bbca6a8630904d1bc assets/forgermod/models/item/tungsten_h
 f5f6a54d7bb6c863250773c07d062e440e838d0b assets/forgermod/models/item/tungsten_ingot.json
 568979331febd3c348f7c149ff6d4a841507ae6a assets/forgermod/models/item/tungsten_pickaxe.json
 df240346338ff0617dba4ece52c6effd85479b88 assets/forgermod/models/item/tungsten_powder.json
+3a1a298f6e18bd3d6a7b70b0f5cab9899a706c0f assets/forgermod/models/item/tungsten_shovel.json
 79d553ee77a9089c677794016bc3a7daa222c67b assets/forgermod/models/item/tungsten_sword.json
 dcaa40908c646d77f3e324341855329e8944fc27 assets/forgermod/models/item/unrefined_carbon_steel.json
 7d110860e7f4b359a90e1da1cfa3facf3441b4b4 assets/forgermod/models/item/unrefined_steel.json

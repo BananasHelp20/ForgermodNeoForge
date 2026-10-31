@@ -1,5 +1,6 @@
-// 1.21.1	2026-10-23T21:52:29.7947917	Tags for minecraft:item mod id forgermod
+// 1.21.1	2026-10-31T23:14:50.178302	Tags for minecraft:item mod id forgermod
 b18a1b50cc4ae53997c85b13ca144065a54191c0 data/minecraft/tags/item/axes.json
 e5357800a2f402af6aab502cfc64205933697c28 data/minecraft/tags/item/hoes.json
 5e40bf03865d42c4b59bf12a92dd79943fc8ddd6 data/minecraft/tags/item/pickaxes.json
+4df6f5d26b5e010289c518bdaae0fde83d5ab93c data/minecraft/tags/item/shovels.json
 4a47590e77f980e66a00e0799788e9e10db755b3 data/minecraft/tags/item/swords.json

@@ -138,6 +138,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                     .pattern("MM").pattern(" S").pattern(" S")
                     .define('M', material).define('S', Items.STICK)
                     .unlockedBy(getHasName(material), has(material)).save(output);
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, set.shovel().get())
+                    .pattern("M").pattern("S").pattern("S")
+                    .define('M', material).define('S', Items.STICK)
+                    .unlockedBy(getHasName(material), has(material)).save(output);
             if (set.sword().getId().getPath().endsWith("_sword")
                     && !List.of("reinforced_iron", "steel", "damask").contains(entry.getKey())) {
                 ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, set.sword().get())

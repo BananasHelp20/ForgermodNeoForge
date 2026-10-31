@@ -25,6 +25,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
             tag(ItemTags.PICKAXES).add(set.pickaxe().get());
             tag(ItemTags.AXES).add(set.axe().get());
             tag(ItemTags.HOES).add(set.hoe().get());
+            tag(ItemTags.SHOVELS).add(set.shovel().get());
             if (!java.util.Set.of("scrap", "reinforced_iron", "steel", "damask").contains(entry.getKey())) {
                 tag(ItemTags.SWORDS).add(set.sword().get());
             }

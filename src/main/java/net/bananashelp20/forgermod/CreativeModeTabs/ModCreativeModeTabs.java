@@ -64,6 +64,7 @@ public class ModCreativeModeTabs {
                             output.accept(set.pickaxe().get());
                             output.accept(set.axe().get());
                             output.accept(set.hoe().get());
+                            output.accept(set.shovel().get());
                             if (!java.util.Set.of("scrap", "reinforced_iron", "steel", "damask").contains(entry.getKey())) {
                                 output.accept(set.sword().get());
                             }

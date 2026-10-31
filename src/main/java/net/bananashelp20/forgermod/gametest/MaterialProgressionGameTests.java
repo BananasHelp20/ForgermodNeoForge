@@ -72,7 +72,7 @@ public class MaterialProgressionGameTests {
         test.assertTrue(ModItems.TOOL_SETS.keySet().equals(java.util.Set.of("scrap", "meteoric_iron", "reinforced_iron", "steel", "damask", "titanium", "tungsten", "carbon_steel")),
                 "Ordinary tool sets must contain exactly the eight approved metals");
         for (String supreme : java.util.List.of("inanisium", "ignisium", "morsium", "somnium", "vulnusium", "lush", "pulsite", "electrium", "taifunite")) {
-            for (String type : java.util.List.of("pickaxe", "axe", "hoe", "sword")) {
+            for (String type : java.util.List.of("pickaxe", "axe", "hoe", "shovel", "sword")) {
                 test.assertFalse(net.minecraft.core.registries.BuiltInRegistries.ITEM.containsKey(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, supreme + "_" + type)),
                         "Unapproved supreme-material ordinary tool remains registered: " + supreme + "_" + type);
             }

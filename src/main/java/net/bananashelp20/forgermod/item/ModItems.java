@@ -374,7 +374,7 @@ public class ModItems {
     public static final DeferredItem<SwordItem> LEAFCUTTER_DAGGER_JADE = createSpecialSwordItem("overgrown_dagger_jade",() -> new LushWeapon("jade", "dagger"));
 
     public record ToolSet(DeferredItem<PickaxeItem> pickaxe, DeferredItem<AxeItem> axe,
-                          DeferredItem<HoeItem> hoe, DeferredItem<SwordItem> sword,
+                          DeferredItem<HoeItem> hoe, DeferredItem<ShovelItem> shovel, DeferredItem<SwordItem> sword,
                           Supplier<? extends net.minecraft.world.level.ItemLike> material) {}
 
     private static ToolSet toolSet(String name, Tier tier, Supplier<? extends net.minecraft.world.level.ItemLike> material,
@@ -391,10 +391,12 @@ public class ModItems {
         });
         DeferredItem<HoeItem> hoe = ITEMS.register(name + "_hoe", () -> new HoeItem(tier,
                 new Item.Properties().attributes(HoeItem.createAttributes(tier, -2, -1.0f))));
+        DeferredItem<ShovelItem> shovel = ITEMS.register(name + "_shovel", () -> new ShovelItem(tier,
+                new Item.Properties().attributes(ShovelItem.createAttributes(tier, 1.5f, -3.0f))));
         DeferredItem<SwordItem> sword = existingSword == null
                 ? createSwordItem(name + "_sword", tier, 3, "meteoric_iron".equals(name) ? 1.65f : 1.6f)
                 : existingSword;
-        return new ToolSet(pickaxe, axe, hoe, sword, material);
+        return new ToolSet(pickaxe, axe, hoe, shovel, sword, material);
     }
 
     private static Map<String, ToolSet> createToolSets() {

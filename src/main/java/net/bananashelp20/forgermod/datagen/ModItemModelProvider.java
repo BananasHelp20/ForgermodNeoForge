@@ -26,6 +26,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             handheldItem(set.pickaxe());
             handheldItem(set.axe());
             handheldItem(set.hoe());
+            handheldItem(set.shovel());
             String material = set.sword().getId().getPath();
             if (!java.util.Set.of("scrap_sword", "reinforced_iron_sword", "steel_sword", "damask_sword").contains(material)) {
                 handheldItem(set.sword());
