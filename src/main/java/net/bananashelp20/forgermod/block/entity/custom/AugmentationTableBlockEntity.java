@@ -25,6 +25,47 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
     private int phase,progress,duration=100,selected=-1,firstRank,secondRank;
     private String first="",second="";
     private boolean internalMutation,legacyPaid;
+    private int sentVisualPhase=-1,clientVisualPhase;
+    private ItemStack sentVisualItem=ItemStack.EMPTY,clientVisualItem=ItemStack.EMPTY;
+    private float previousSpin,spin,previousActivity,activity;
+    private ItemStack storedDisplayItem() {return inventory.getStackInSlot(phase==AugmentationAnimation.COMPLETE?OUTPUT:GEAR);}
+    /** Synchronized rendering copy; never an input to crafting or inventory operations. */
+    public ItemStack displayItem() {return clientVisualItem;}
+    public boolean visuallyWorking() {
+        int current=level==null || level.isClientSide?clientVisualPhase:phase;
+        return current>=AugmentationAnimation.ANALYZE && current<=AugmentationAnimation.CHOOSE;
+    }
+    public void clientAnimationTick() {
+        previousActivity=activity;activity=net.minecraft.util.Mth.approach(activity,visuallyWorking()?1:0,visuallyWorking()?.05F:.025F);
+        // A shared twenty-turn period also closes the renderer's .85 and .2 rotation ratios.
+        previousSpin=spin;spin=(spin+activity*2.65F)%7200;
+    }
+    public float visualSpin(float partial) {return net.minecraft.util.Mth.rotLerp(partial,previousSpin,spin);}
+    public float visualActivity(float partial) {return net.minecraft.util.Mth.lerp(partial,previousActivity,activity);}
+    @Override public void setChanged() {
+        super.setChanged();
+        if(level!=null && !level.isClientSide && (sentVisualPhase!=phase || !ItemStack.matches(sentVisualItem,storedDisplayItem()))) {
+            sentVisualPhase=phase;sentVisualItem=storedDisplayItem().copy();clientVisualItem=sentVisualItem;clientVisualPhase=phase;
+            level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+        }
+    }
+    @Override public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        var tag=new CompoundTag();tag.putInt("visual_phase",phase);
+        if(!storedDisplayItem().isEmpty())tag.put("visual_item",storedDisplayItem().save(registries));
+        return tag;
+    }
+    @Override public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+    @Override public void handleUpdateTag(CompoundTag tag,HolderLookup.Provider registries) {
+        clientVisualPhase=Math.clamp(tag.getInt("visual_phase"),0,AugmentationAnimation.COMPLETE);
+        clientVisualItem=ItemStack.parseOptional(registries,tag.getCompound("visual_item"));
+    }
+    @Override public void onDataPacket(net.minecraft.network.Connection connection,
+            net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket packet,HolderLookup.Provider registries) {
+        handleUpdateTag(packet.getTag(),registries);
+    }
+
     public final ItemStackHandler inventory=new ItemStackHandler(4) {
         @Override protected void onContentsChanged(int slot) {
             if(!internalMutation) {

@@ -33,17 +33,17 @@ public class AlternatingCurrentGameTests {
         for(var mob:java.util.List.of(cow,wolf)){mob.setNoGravity(true);mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);mob.getAttribute(Attributes.ARMOR).setBaseValue(0);test.getLevel().addFreshEntity(mob);}
         var team=player.getScoreboard().addPlayerTeam("ac_"+player.getUUID().toString().substring(0,8));player.getScoreboard().addPlayerToTeam(player.getScoreboardName(),team);player.getScoreboard().addPlayerToTeam(cow.getScoreboardName(),team);int checked=0;
         try{for(var entry:ModItems.ITEMS.getEntries())if(entry.get() instanceof ElectriumWeapon){
-            checked++;for(boolean reverse:new boolean[]{false,true}){
+            checked++;for(boolean reverse:new boolean[]{false,true}){for(int rank=1;rank<=4;rank++){
                 var first=reverse?wolf:cow;var second=reverse?cow:wolf;first.setPos(origin.add(0,0,4));second.setPos(origin.add(3,0,8));
                 for(var mob:java.util.List.of(first,second)){mob.setHealth(100);mob.invulnerableTime=0;mob.setNoAi(false);}
-                var stack=Augmentations.apply(new ItemStack(entry.get()),AdditionalAbilities.ALTERNATING_CURRENT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
+                var stack=Augmentations.setLevel(new ItemStack(entry.get()),AdditionalAbilities.ALTERNATING_CURRENT,rank);player.setItemInHand(InteractionHand.MAIN_HAND,stack);WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));player.setData(WeaponCooldownAttachments.COOLDOWNS,java.util.Map.of());
                 aim(player,first);AbilityTestPackets.use(player,0);test.assertTrue(AlternatingCurrentEvents.active(player) && !WeaponControlLocks.frozen(first) && !WeaponControlLocks.frozen(second),"First mark automatically selected/stunned another mob");
                 aim(player,second);AbilityTestPackets.use(player,0);
-                test.assertTrue(WeaponControlLocks.frozen(first) && WeaponControlLocks.frozen(second) && first.getHealth()==98 && second.getHealth()==98,"Current does not deal 2 HP and stun both allies");
+                test.assertTrue(WeaponControlLocks.frozen(first) && WeaponControlLocks.frozen(second) && first.getHealth()==99-rank && second.getHealth()==99-rank,"Current does not deal rank damage and stun both allies");
                 test.assertTrue(player.level().getEntitiesOfClass(net.minecraft.world.entity.LightningBolt.class,player.getBoundingBox().inflate(24)).isEmpty(),"Exchange spawns real lightning");
                 test.assertTrue(AlternatingCurrentEvents.remainingTicks(player)==1200,"Link lifetime did not start when second target was selected");
                 AlternatingCurrentEvents.cancel(player.getUUID());test.assertTrue(!WeaponControlLocks.frozen(first) && !WeaponControlLocks.frozen(second) && !first.isNoAi() && !second.isNoAi(),"Cancel leaks stun/AI locks");WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
-            }
+            }}
         }test.assertTrue(checked==15,"Skipped Electrium variants");}finally{AlternatingCurrentEvents.cancel(player.getUUID());player.getScoreboard().removePlayerTeam(team);cow.discard();wolf.discard();player.server.getPlayerList().remove(player);}test.succeed();
     }
     @GameTest(template="riftfang_test")

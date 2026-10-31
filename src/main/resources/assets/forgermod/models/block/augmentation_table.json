@@ -1,771 +1,30 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "top": "forgermod:block/augmentation_table/top",
-    "rim": "forgermod:block/augmentation_table/rim",
-    "column": "forgermod:block/augmentation_table/column",
-    "base": "forgermod:block/augmentation_table/base",
-    "particle": "forgermod:block/augmentation_table/base"
+    "steel": "forgermod:block/steel_block",
+    "carbon": "forgermod:block/carbon_steel_block",
+    "housing": "minecraft:block/netherite_block",
+    "anvil": "minecraft:block/anvil",
+    "ceramic": "forgermod:block/steel_block",
+    "blue": "minecraft:block/blue_concrete",
+    "energy": "minecraft:block/sea_lantern",
+    "gem": "forgermod:item/gemstones/sapphire_gemstone",
+    "furnace": "minecraft:block/blast_furnace_front",
+    "vent": "minecraft:block/blast_furnace_side",
+    "particle": "forgermod:block/carbon_steel_block"
   },
   "elements": [
     {
-      "from": [
-        1,
-        0,
-        1
-      ],
-      "to": [
-        15,
-        2,
-        15
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        0,
-        2,
-        0
-      ],
-      "to": [
-        16,
-        3,
-        16
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        2,
-        3,
-        2
-      ],
-      "to": [
-        14,
-        11,
-        14
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#column"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        1,
-        3,
-        1
-      ],
-      "to": [
-        3,
-        12,
-        3
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        13,
-        3,
-        1
-      ],
-      "to": [
-        15,
-        12,
-        3
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        1,
-        3,
-        13
-      ],
-      "to": [
-        3,
-        12,
-        15
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        13,
-        3,
-        13
-      ],
-      "to": [
-        15,
-        12,
-        15
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        1,
-        11,
-        1
-      ],
-      "to": [
-        15,
-        13,
-        15
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        0,
-        13,
-        0
-      ],
-      "to": [
-        16,
-        15,
-        16
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        2,
-        15,
-        2
-      ],
-      "to": [
-        14,
-        15.5,
-        14
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#top"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
+      "name": "front_forged_sled",
       "from": [
         0.5,
-        15,
-        0.5
-      ],
-      "to": [
-        3,
-        16,
-        3
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#rim"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#base"
-        }
-      }
-    },
-    {
-      "from": [
-        13,
-        15,
+        0,
         0.5
       ],
       "to": [
         15.5,
-        16,
-        3
+        2,
+        4.5
       ],
       "faces": {
         "north": {
@@ -775,7 +34,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "east": {
           "uv": [
@@ -784,7 +43,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "south": {
           "uv": [
@@ -793,7 +52,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "west": {
           "uv": [
@@ -802,7 +61,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "up": {
           "uv": [
@@ -811,7 +70,7 @@
             16,
             16
           ],
-          "texture": "#base"
+          "texture": "#anvil"
         },
         "down": {
           "uv": [
@@ -820,19 +79,20 @@
             16,
             16
           ],
-          "texture": "#base"
+          "texture": "#anvil"
         }
       }
     },
     {
+      "name": "rear_forged_sled",
       "from": [
         0.5,
-        15,
-        13
+        0,
+        11.5
       ],
       "to": [
-        3,
-        16,
+        15.5,
+        2,
         15.5
       ],
       "faces": {
@@ -843,7 +103,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "east": {
           "uv": [
@@ -852,7 +112,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "south": {
           "uv": [
@@ -861,7 +121,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "west": {
           "uv": [
@@ -870,7 +130,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#anvil"
         },
         "up": {
           "uv": [
@@ -879,7 +139,7 @@
             16,
             16
           ],
-          "texture": "#base"
+          "texture": "#anvil"
         },
         "down": {
           "uv": [
@@ -888,20 +148,21 @@
             16,
             16
           ],
-          "texture": "#base"
+          "texture": "#anvil"
         }
       }
     },
     {
+      "name": "flared_carbon_steel_foot",
       "from": [
-        13,
-        15,
-        13
+        0,
+        2,
+        0
       ],
       "to": [
-        15.5,
         16,
-        15.5
+        3.5,
+        16
       ],
       "faces": {
         "north": {
@@ -911,7 +172,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#carbon"
         },
         "east": {
           "uv": [
@@ -920,7 +181,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#carbon"
         },
         "south": {
           "uv": [
@@ -929,7 +190,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#carbon"
         },
         "west": {
           "uv": [
@@ -938,7 +199,7 @@
             16,
             16
           ],
-          "texture": "#rim"
+          "texture": "#carbon"
         },
         "up": {
           "uv": [
@@ -947,7 +208,7 @@
             16,
             16
           ],
-          "texture": "#base"
+          "texture": "#carbon"
         },
         "down": {
           "uv": [
@@ -956,7 +217,2008 @@
             16,
             16
           ],
-          "texture": "#base"
+          "texture": "#carbon"
+        }
+      }
+    },
+    {
+      "name": "netherite_furnace_shell",
+      "from": [
+        2,
+        3.5,
+        2
+      ],
+      "to": [
+        14,
+        10.5,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "name": "forged_corner_brace",
+      "from": [
+        1.5,
+        3.5,
+        1.5
+      ],
+      "to": [
+        3.5,
+        10.5,
+        3.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "forged_corner_brace",
+      "from": [
+        1.5,
+        3.5,
+        12.5
+      ],
+      "to": [
+        3.5,
+        10.5,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "forged_corner_brace",
+      "from": [
+        12.5,
+        3.5,
+        1.5
+      ],
+      "to": [
+        14.5,
+        10.5,
+        3.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "forged_corner_brace",
+      "from": [
+        12.5,
+        3.5,
+        12.5
+      ],
+      "to": [
+        14.5,
+        10.5,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "furnace_door_surround",
+      "from": [
+        3.5,
+        4,
+        1.5
+      ],
+      "to": [
+        12.5,
+        9.75,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        }
+      }
+    },
+    {
+      "name": "recessed_blast_furnace_door",
+      "from": [
+        4.25,
+        4.5,
+        1.4375
+      ],
+      "to": [
+        11.75,
+        9.25,
+        1.5625
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#furnace"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        }
+      }
+    },
+    {
+      "name": "rear_air_intake",
+      "from": [
+        4,
+        4.25,
+        14
+      ],
+      "to": [
+        12,
+        9.5,
+        14.125
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "south": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#vent"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        }
+      }
+    },
+    {
+      "name": "left_heat_shield",
+      "from": [
+        1.375,
+        4.25,
+        4
+      ],
+      "to": [
+        1.625,
+        9.5,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "west": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#vent"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        }
+      }
+    },
+    {
+      "name": "right_heat_shield",
+      "from": [
+        14.375,
+        4.25,
+        4
+      ],
+      "to": [
+        14.625,
+        9.5,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "east": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#vent"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        }
+      }
+    },
+    {
+      "name": "narrow_anvil_waist",
+      "from": [
+        4,
+        10.5,
+        3.5
+      ],
+      "to": [
+        12,
+        12.5,
+        12.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "name": "flared_anvil_head",
+      "from": [
+        1,
+        12.5,
+        1
+      ],
+      "to": [
+        15,
+        13.5,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "forged_working_face",
+      "from": [
+        0,
+        13.5,
+        0
+      ],
+      "to": [
+        16,
+        14.75,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#anvil"
+        }
+      }
+    },
+    {
+      "name": "recessed_carbon_steel_workbed",
+      "from": [
+        2,
+        14.75,
+        2
+      ],
+      "to": [
+        14,
+        15,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#carbon"
+        }
+      }
+    },
+    {
+      "name": "netherite_worktop_edge",
+      "from": [
+        0,
+        14.75,
+        0
+      ],
+      "to": [
+        16,
+        15.5,
+        1.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "name": "netherite_worktop_edge",
+      "from": [
+        0,
+        14.75,
+        14.5
+      ],
+      "to": [
+        16,
+        15.5,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "name": "netherite_worktop_edge",
+      "from": [
+        0,
+        14.75,
+        1.5
+      ],
+      "to": [
+        1.5,
+        15.5,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "name": "netherite_worktop_edge",
+      "from": [
+        14.5,
+        14.75,
+        1.5
+      ],
+      "to": [
+        16,
+        15.5,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "name": "left_forged_workholding_jaw",
+      "from": [
+        2,
+        15,
+        3
+      ],
+      "to": [
+        4,
+        16,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "right_forged_workholding_jaw",
+      "from": [
+        12,
+        15,
+        3
+      ],
+      "to": [
+        14,
+        16,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "sapphire_engraved_circuit",
+      "from": [
+        4.5,
+        15,
+        2.5
+      ],
+      "to": [
+        11.5,
+        15.0625,
+        2.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        }
+      }
+    },
+    {
+      "name": "sapphire_engraved_circuit",
+      "from": [
+        4.5,
+        15,
+        13.25
+      ],
+      "to": [
+        11.5,
+        15.0625,
+        13.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        }
+      }
+    },
+    {
+      "name": "sapphire_engraved_circuit",
+      "from": [
+        4.5,
+        15,
+        2.75
+      ],
+      "to": [
+        4.75,
+        15.0625,
+        13.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        }
+      }
+    },
+    {
+      "name": "sapphire_engraved_circuit",
+      "from": [
+        11.25,
+        15,
+        2.75
+      ],
+      "to": [
+        11.5,
+        15.0625,
+        13.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        }
+      }
+    },
+    {
+      "name": "blade_alignment_engraving",
+      "from": [
+        7.75,
+        15,
+        4
+      ],
+      "to": [
+        8.25,
+        15.0625,
+        9.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "guard_alignment_engraving",
+      "from": [
+        6.75,
+        15,
+        9.75
+      ],
+      "to": [
+        9.25,
+        15.0625,
+        10.125
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "grip_alignment_engraving",
+      "from": [
+        7.8125,
+        15,
+        10.125
+      ],
+      "to": [
+        8.1875,
+        15.0625,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "front_sapphire_heat_gauge",
+      "from": [
+        6.75,
+        9.625,
+        1.4375
+      ],
+      "to": [
+        9.25,
+        10,
+        1.5625
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        }
+      }
+    },
+    {
+      "name": "rear_sapphire_heat_gauge",
+      "from": [
+        6.75,
+        9.625,
+        14
+      ],
+      "to": [
+        9.25,
+        10,
+        14.125
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#blue"
         }
       }
     }
@@ -965,20 +2227,30 @@
     "gui": {
       "rotation": [
         30,
-        45,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        -1,
         0
       ],
       "scale": [
-        0.75,
-        0.75,
-        0.75
+        0.72,
+        0.72,
+        0.72
       ]
     },
     "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
       "scale": [
-        0.5,
-        0.5,
-        0.5
+        0.4,
+        0.4,
+        0.4
       ]
     },
     "fixed": {

@@ -1,6 +1,6 @@
 package net.bananashelp20.forgermod.block.entity.custom;
 
-import net.bananashelp20.forgermod.block.custom.ForgeBlock;
+import net.bananashelp20.forgermod.block.custom.InfusionTableBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.augmentation.JadeAugments;
@@ -44,9 +44,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (level != null && !level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
+            syncDisplay();
         }
     };
 
@@ -90,16 +88,54 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         };
     }
 
+    private ItemStack clientDisplayGemstone=ItemStack.EMPTY,clientDisplayWeapon=ItemStack.EMPTY;
+    private ItemStack sentDisplayGemstone=ItemStack.EMPTY,sentDisplayWeapon=ItemStack.EMPTY;
+    private boolean clientInfusing,sentInfusing;
+    private float activity,previousActivity;
+    private double animationTime,previousAnimationTime;
+
+    public boolean infusing(){return level!=null && !level.isClientSide?displayActive():clientInfusing;}
+    public float visualActivity(float partial){return previousActivity+(activity-previousActivity)*partial;}
+    public double animationTime(float partial){return previousAnimationTime+(animationTime-previousAnimationTime)*partial;}
+    public void clientTick(){
+        previousActivity=activity;previousAnimationTime=animationTime;
+        activity=Math.clamp(activity+(clientInfusing?.05F:-.05F),0,1);
+        animationTime+=activity;
+    }
+
+    private boolean displayActive() { return progress>0 && hasRecipe(); }
+    public ItemStack displayGemstone() {
+        if(level==null || level.isClientSide)return clientDisplayGemstone;
+        return inputGemstone();
+    }
+    private ItemStack inputGemstone(){
+        var stack=itemHandler.getStackInSlot(GEMSTONE_SLOT);
+        return net.bananashelp20.forgermod.screen.custom.TableInputs.gemstone(stack)?stack:ItemStack.EMPTY;
+    }
+    public ItemStack displayWeapon() {
+        if(level==null || level.isClientSide)return clientDisplayWeapon;
+        return inputWeapon();
+    }
+    private ItemStack inputWeapon(){
+        var stack=itemHandler.getStackInSlot(GEAR_SLOT);
+        return net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack)?stack:ItemStack.EMPTY;
+    }
+    private void syncDisplay() {
+        if(level==null || level.isClientSide)return;
+        boolean active=displayActive();
+        var gem=displayGemstone().copyWithCount(1);
+        var weapon=displayWeapon().copyWithCount(1);
+        if(ItemStack.matches(gem,sentDisplayGemstone) && ItemStack.matches(weapon,sentDisplayWeapon) && active==sentInfusing)return;
+        sentDisplayGemstone=gem;sentDisplayWeapon=weapon;sentInfusing=active;
+        level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+    }
     public String getCorrectGemstoneTexturePath() {
-        if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.RUBY_GEMSTONE.get()) {
-            return "textures/gui/infusion_table_progress_ruby.png";
-        } else if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.AMBER_GEMSTONE.get())  {
-            return "textures/gui/infusion_table_progress_amber.png";
-        } else if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.AMETHYST_GEMSTONE.get()) {
-            return "textures/gui/infusion_table_progress_amethyst.png";
-        } else if (INFUSION_TABLE_RECIPE_INPUTS[recipeUsed][0] == ModItems.JADE_GEMSTONE.get()) {
-            return "textures/gui/infusion_table_progress_jade.png";
-        }
+        var gemstone=itemHandler.getStackInSlot(GEMSTONE_SLOT);
+        if(gemstone.isEmpty())gemstone=clientDisplayGemstone;
+        if(gemstone.is(ModItems.RUBY_GEMSTONE.get()))return "textures/gui/infusion_table_progress_ruby.png";
+        if(gemstone.is(ModItems.AMBER_GEMSTONE.get()))return "textures/gui/infusion_table_progress_amber.png";
+        if(gemstone.is(ModItems.AMETHYST_GEMSTONE.get()))return "textures/gui/infusion_table_progress_amethyst.png";
+        if(gemstone.is(ModItems.JADE_GEMSTONE.get()))return "textures/gui/infusion_table_progress_jade.png";
         return "textures/gui/infusion_table_progress.png";
     }
 
@@ -153,7 +189,20 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        return saveWithoutMetadata(pRegistries);
+        var tag=new CompoundTag();
+        if(!inputGemstone().isEmpty())tag.put("display_gemstone",inputGemstone().copyWithCount(1).save(pRegistries));
+        if(!inputWeapon().isEmpty())tag.put("display_weapon",inputWeapon().copyWithCount(1).save(pRegistries));
+        tag.putBoolean("infusing",displayActive());
+        return tag;
+    }
+
+    @Override public void handleUpdateTag(CompoundTag tag,HolderLookup.Provider registries) {
+        clientDisplayGemstone=ItemStack.parseOptional(registries,tag.getCompound("display_gemstone"));
+        clientDisplayWeapon=ItemStack.parseOptional(registries,tag.getCompound("display_weapon"));
+        clientInfusing=tag.getBoolean("infusing");
+    }
+    @Override public void onDataPacket(net.minecraft.network.Connection connection,ClientboundBlockEntityDataPacket packet,HolderLookup.Provider registries) {
+        handleUpdateTag(packet.getTag(),registries);
     }
 
     private boolean hasCraftingFinished() {
@@ -175,22 +224,27 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public static int recipeUsed = 0;
+    private int recipeUsed = 0;
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         if (hasRecipe()) {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, true));
+            setLit(level,blockPos,true);
             increaseCraftingProgress();
             setChanged(level, blockPos, blockState);
             if (hasCraftingFinished()) {
                 craftItem(recipeUsed);
                 resetProgress();
-                level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
+                setLit(level,blockPos,false);
             }
         } else {
             resetProgress();
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
+            setLit(level,blockPos,false);
         }
+        syncDisplay();
+    }
+    private static void setLit(Level level,BlockPos pos,boolean lit) {
+        var state=level.getBlockState(pos);
+        if(state.getValue(InfusionTableBlock.LIT)!=lit)level.setBlockAndUpdate(pos,state.setValue(InfusionTableBlock.LIT,lit));
     }
 
     private void craftItem(int recipeUsed) {

@@ -26,7 +26,7 @@ public final class NecromancerMenu extends AbstractContainerMenu {
         if(loadout!=null && owner instanceof ServerPlayer player)for(int row=0;row<loadout.types.size();row++)NecromancerEquipment.normalizeHands(loadout,row,player);
         Arrays.fill(remote,-1);remote[10]=0;
         for(int index=0;index<15;index++){final int key=index;addDataSlot(new DataSlot(){@Override public int get(){return value(key);}@Override public void set(int value){remote[key]=value;}});}
-        int[][] positions={{9,26},{33,8},{33,26},{33,44},{33,62},{57,26}};
+        int[][] positions={{10,26},{34,8},{34,26},{34,44},{34,62},{58,26}};
         for(int i=0;i<NecromancerCatalog.EQUIPMENT_SLOTS;i++){final int column=i;addSlot(new Slot(equipment,i,positions[i][0],positions[i][1]){
             @Override public boolean isActive(){return !picking() && canEquip();}
             @Override public boolean mayPlace(ItemStack stack){return !picking() && canEquip() && stillValid(owner) && NecromancerEquipment.validItem(column,stack)

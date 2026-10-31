@@ -23,6 +23,7 @@ public final class EchoAppetiteEvents {
                 || !player.isAlive() || player.isSpectator()
                 || !(player.getMainHandItem().getItem() instanceof PulsiteWeapon)
                 || !Augmentations.hasPassive(player.getMainHandItem(), AdditionalAbilities.ECHO_APPETITE)) return;
-        player.getFoodData().eat(4, 0);
+        player.getFoodData().eat(net.bananashelp20.forgermod.augmentation.EchoAppetiteValues.wardenFood(
+                Augmentations.level(player.getMainHandItem(),AdditionalAbilities.ECHO_APPETITE)), 0);
     }
 }

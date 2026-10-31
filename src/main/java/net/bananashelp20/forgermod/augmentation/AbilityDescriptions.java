@@ -23,10 +23,13 @@ public final class AbilityDescriptions {
         return (value instanceof Component component?component.copy():Component.literal(String.valueOf(value))).withStyle(ChatFormatting.WHITE);
     }
     public static Component text(String key,String fallback,Object... values) {
-        return Component.translatableWithFallback(key,fallback,java.util.Arrays.stream(values).map(AbilityDescriptions::white).toArray()).withStyle(ChatFormatting.GRAY);
+        return Component.translatableWithFallback(key,fallback.replaceAll("(?<!%)%(?![%s]|\\d+\\$s)","%%"),java.util.Arrays.stream(values).map(AbilityDescriptions::white).toArray()).withStyle(ChatFormatting.GRAY);
     }
     public static Component description(ItemStack stack,String id,int rank,boolean compact) {
         if(compact && AdditionalAbilities.THUNDERCLAP.equals(id))return text(id+".card","Dash and slash through nearby mobs; each hit adds half weapon damage as lightning.");
+        if(compact) {Component preview=FinalReviewedDescriptions.card(stack,id,Math.max(1,rank));if(preview!=null)return preview;}
+        Component finalReview=FinalReviewedDescriptions.description(stack,id,Math.max(1,rank));
+        if(finalReview!=null)return finalReview;
         Component reviewed=reviewed(stack,id,Math.max(1,rank));
         if(reviewed!=null) return reviewed;
         Component current=currentDescription(stack,id,rank,compact);
@@ -126,6 +129,29 @@ public final class AbilityDescriptions {
             case Augmentations.DOUBLE_JUMP -> text(id+".reviewed","Gain the ability to do %s in midair. Matching dual-wielded daggers combine their jumps.",
                     net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.jumps(rank)+" more "+
                             (net.bananashelp20.forgermod.item.custom.abilities.DoubleJumpProgression.jumps(rank)==1?"jump":"jumps"));
+            case net.bananashelp20.forgermod.item.custom.IgnisiumWeapon.PYROMANIAC -> text(id+".reviewed",
+                    "Hit a mob while burning to extinguish yourself and %s.",
+                    "heal "+net.bananashelp20.forgermod.item.custom.IgnisiumWeapon.pyromaniacHealing(rank)+" HP");
+            case AdditionalAbilities.PHOTOSYNTHESIS -> text(id+".reviewed", "Restore %s every %s in daylight.",
+                    net.bananashelp20.forgermod.item.custom.abilities.PhotosynthesisEvents.restoredDurability(rank)+" weapon durability", "15 seconds");
+            case RecommendedAbilities.OVERWHELMING_SMASH -> text(id+".reviewed",
+                    "Break and damage blocking enemies and deal %s to armor.",
+                    net.bananashelp20.forgermod.item.custom.abilities.OverwhelmingSmashEvents.armorBonusPercent()+"% more durability damage");
+            case "tooltips.forgermod.passive.revenge" -> text(id+".reviewed", "Deal %s to undead.",
+                    net.bananashelp20.forgermod.item.custom.abilities.RevengeDamage.bonusPercent(rank)+"% more damage");
+            case AdditionalAbilities.UNFINISHED_DREAM -> text(id+".reviewed", "Killing an enemy before it damages you heals %s.",
+                    net.bananashelp20.forgermod.item.custom.abilities.UnfinishedDreamEvents.healing(rank)+" HP");
+            case AdditionalAbilities.SLEEPWALKER -> text(id+".reviewed", "Deal %s at night.",
+                    net.bananashelp20.forgermod.item.custom.abilities.AdditionalPassiveEvents.sleepwalkerBonusPercent(rank)+"% more melee damage");
+            case RecommendedAbilities.NETHER_BORN -> text(id+".reviewed", "Deal %s in the Nether.",
+                    net.bananashelp20.forgermod.item.custom.abilities.NetherBornEvents.bonusPercent(rank)+"% more damage");
+            case AdditionalAbilities.LAST_STAND -> {
+                int ticks=net.bananashelp20.forgermod.item.custom.abilities.LastStandEvents.cooldownTicks(rank);
+                yield text(id+".reviewed","Survive a fatal hit with %s once every %s.","1 HP",number(ticks/1200.0)+(ticks==1200?" minute":" minutes"));
+            }
+            case RecommendedAbilities.GRAVE_VAULT -> text(id+".reviewed","Sneak-right-click to open a nine-slot flower vault. Enemy kills plant a stored flower where the enemy stood, if possible.");
+            case AdditionalAbilities.ECHO_APPETITE -> text(id+".reviewed","Breaking Sculk restores hunger based on what sculk block you broke. Killing a Warden also restores %s.",
+                    (EchoAppetiteValues.wardenFood(rank)/2)+" hunger bars");
             case AdditionalAbilities.DEATHS_DUE -> text(id+".reviewed","Enemy kills grant %s more xp.",
                     net.bananashelp20.forgermod.item.custom.abilities.DeathsDueEvents.bonusPercent(rank)+"%");
             case "tooltips.forgermod.passive.death_march" -> text(id+".reviewed","Deal more damage depending on the targets health. Up to %s.",

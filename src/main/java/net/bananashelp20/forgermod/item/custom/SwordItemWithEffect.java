@@ -103,9 +103,13 @@ public class SwordItemWithEffect extends SwordItem {
                 if (materialRank > 0) {
                     tooltip.add(Component.translatable("augmentation.forgermod.rank", materialAbilityName(),
                             WeaponTooltips.romanNumeral(materialRank)).withStyle(ChatFormatting.GRAY));
-                    if (expanded) tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect",
-                            materialEffect.value().getDisplayName(), AbilityDescriptions.white(WeaponTooltips.romanNumeral(materialEffectAmplifier + 1)),
-                            AbilityDescriptions.white(String.format(java.util.Locale.ROOT, "%.2f", materialEffectDuration / 20.0))).withStyle(ChatFormatting.GRAY));
+                    if (expanded) {
+                        var effectColor="jade".equals(gemstone)?ChatFormatting.GREEN:ChatFormatting.WHITE;
+                        tooltip.add(Component.translatable("tooltips.forgermod.passive.material_effect",
+                                materialEffect.value().getDisplayName().copy().withStyle(effectColor),
+                                Component.literal(WeaponTooltips.romanNumeral(materialEffectAmplifier+1)).withStyle(effectColor),
+                                Component.literal(String.format(java.util.Locale.ROOT,"%.2f",materialEffectDuration/20.0)+" seconds").withStyle(effectColor)).withStyle(ChatFormatting.GRAY));
+                    }
                 }
                 for (String id : passives) {
                     int rank = Augmentations.level(stack,id);

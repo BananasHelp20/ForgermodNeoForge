@@ -113,7 +113,7 @@ public final class NecromancerPassiveCombat {
         public Shield(Mob mob){this.mob=mob;setFlags(EnumSet.of(Flag.MOVE,Flag.LOOK));}
         @Override public boolean requiresUpdateEveryTick(){return true;}
         @Override public boolean canUse(){
-            if(!(mob instanceof BoneGuardEvents.FriendlyGuard) || !mob.isAlive() || mob.tickCount<ready || WeaponControlLocks.frozen(mob)
+            if(!(mob instanceof BoneGuardEvents.FriendlyGuard) || !mob.isAlive() || mob.tickCount<ready || mob.level().getGameTime()<mob.getPersistentData().getLong("forgermod_shield_disabled_until") || WeaponControlLocks.frozen(mob)
                     || !mob.getOffhandItem().canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHIELD_BLOCK))return false;
             threat=null;
             for(var projectile:mob.level().getEntitiesOfClass(net.minecraft.world.entity.projectile.Projectile.class,mob.getBoundingBox().inflate(8))){

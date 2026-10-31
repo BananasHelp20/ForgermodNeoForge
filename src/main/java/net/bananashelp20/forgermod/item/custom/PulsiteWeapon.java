@@ -47,14 +47,13 @@ public class PulsiteWeapon extends SwordItemWithEffect {
     @Override
     public boolean mineBlock(ItemStack stack, net.minecraft.world.level.Level level, net.minecraft.world.level.block.state.BlockState state,
                              net.minecraft.core.BlockPos pos, LivingEntity miner) {
-        boolean feeds = Augmentations.hasPassive(stack, net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ECHO_APPETITE)
-                && java.util.Set.of(net.minecraft.world.level.block.Blocks.SCULK, net.minecraft.world.level.block.Blocks.SCULK_VEIN,
-                    net.minecraft.world.level.block.Blocks.SCULK_SENSOR, net.minecraft.world.level.block.Blocks.CALIBRATED_SCULK_SENSOR,
-                    net.minecraft.world.level.block.Blocks.SCULK_CATALYST, net.minecraft.world.level.block.Blocks.SCULK_SHRIEKER).contains(state.getBlock());
+        int food=Augmentations.hasPassive(stack,net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ECHO_APPETITE)
+                ?net.bananashelp20.forgermod.augmentation.EchoAppetiteValues.blockFood(state,
+                    Augmentations.level(stack,net.bananashelp20.forgermod.augmentation.AdditionalAbilities.ECHO_APPETITE)):0;
         boolean result = super.mineBlock(stack, level, state, pos, miner);
-        // Capture the learned passive before normal tool wear can break its final durability point.
-        if (feeds && !level.isClientSide && miner instanceof ServerPlayer player && player.isAlive() && !player.isSpectator())
-            player.getFoodData().eat(1, 0);
+        // Capture the learned rank before normal tool wear can break its final durability point.
+        if (food>0 && !level.isClientSide && miner instanceof ServerPlayer player && player.isAlive() && !player.isSpectator())
+            player.getFoodData().eat(food, 0);
         return result;
     }
 

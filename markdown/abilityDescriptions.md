@@ -16,7 +16,7 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Augmentation card:**
 
-> Two hits inflict Weakness IV and Darkness V for 5-10 seconds.
+> Your next two dagger hits inflict Weakness IV and Darkness V for 5 seconds.
 
 ### Alternating Current
 
@@ -24,11 +24,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next hit links two mobs within 20 blocks, including allies. For 1 minute, they alternate half-second stuns each second.
+> Aim at 2 mobs within 20 blocks of each other and activate once for each to link them for 1 minute. The current deals 2 damage and stuns both for 0.5 seconds each time it jumps.
 
 **Augmentation card:**
 
-> Link two mobs, including allies; brief stuns alternate for 1 minute.
+> Mark 2 mobs. For 1 minute, each jump deals 2 damage and stuns both for 0.5 s.
 
 ### Always the Gardeners
 
@@ -36,11 +36,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Your next kill plants a 5-minute poison cloud. Everyone inside, including you, receives Poison I for 20 seconds.
+> Your next kill will create a poison cloud that stays for 5 minutes. Everyone besides you receives Poison I while inside the 2-block radius.
 
 **Augmentation card:**
 
-> Your next kill plants a lasting cloud that poisons everyone.
+> Next kill creates a 5-minute, 2-block radius cloud. Applies Poison I to others.
 
 ### Area Discharge
 
@@ -48,11 +48,11 @@ Special weapons learn these abilities through augmentation. Each assignment incl
 
 **Item tooltip:**
 
-> Strike hostile mobs within 5 blocks with lightning for half weapon damage. These hits also build Charge Attack.
+> Activating this ability strikes hostile mobs within a 5 block radius with lightning, dealing half your weapon damage.
 
 **Augmentation card:**
 
-> Lightning hits nearby enemies for half damage and builds charge.
+> Strike hostile mobs within 5 blocks for half weapon damage.
 
 Anger of Zeus uses initial wave radii of 5/10/15/20 blocks at super levels I/II/III/IV. Lightning chains still reach 10 blocks from each previous target.
 
@@ -62,11 +62,11 @@ Anger of Zeus uses initial wave radii of 5/10/15/20 blocks at super levels I/II/
 
 **Item tooltip:**
 
-> Spend 2 HP to gain Speed II for 10 seconds.
+> On activation pays 1 heart to gain speed II for 10 seconds.
 
 **Augmentation card:**
 
-> Spend 2 HP for 10 seconds of Speed II.
+> On activation pays 1 heart to gain speed II for 10 seconds.
 
 ### Blood Sacrafice
 
@@ -74,11 +74,11 @@ Anger of Zeus uses initial wave radii of 5/10/15/20 blocks at super levels I/II/
 
 **Item tooltip:**
 
-> Sacrifice half your health and absorption to deal double weapon damage for 20 seconds.
+> Requires more than 4 HP. Sacrifice half of your total HP to deal double weapon damage for 15 seconds.
 
 **Augmentation card:**
 
-> Spend half your health and absorption for 20 seconds of double damage.
+> Requires more than 4 HP. Sacrifice half of your total HP to deal double weapon damage for 15 seconds.
 
 ### Bone Guard
 
@@ -90,7 +90,7 @@ Anger of Zeus uses initial wave radii of 5/10/15/20 blocks at super levels I/II/
 
 **Augmentation card:**
 
-> Activate this ability to summon 1 Skeleton that will fight for you in battle. Reinforcements disappear after 10 minutes
+> Summon 1 Skeleton to fight for you for 10 minutes.
 
 **Super I-IV name (transforms at original IV):** Necromancer
 
@@ -106,11 +106,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Taunt nearby hostile mobs into targeting you and gain Strength I for 10 seconds.
+> Agro all hostile mobs within 16 blocks on you, and giving you strength I for 10 seconds. Agroed enemis will not target any other entitiy during that time.
 
 **Augmentation card:**
 
-> Taunt nearby hostile mobs and gain Strength I for 10 seconds.
+> Force hostile mobs within 16 blocks to target you. Gain Strength I for 10 s.
 
 ### Charge Attack
 
@@ -118,11 +118,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Each hit adds 5% damage, up to +100%. Hit 21 releases a lightning strike for 20 extra damage.
+> Progressively gain +100% damage in the next 20 hits. The last hit fully charges a lightning attack dealing 20 damage.
 
 **Augmentation card:**
 
-> Build +5% damage per hit; hit 21 releases lightning.
+> Build +100% damage over 20 hits. Final hit strikes lightning for 20 damage.
 
 ### Cinder Decoy
 
@@ -130,11 +130,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Leave a decoy that attracts hostile mobs, then explodes and ignites enemies when struck or when it fades.
+> Creates a decoy that atrackts all hostile mobs for 600 seconds. When it disappears or is being dealt the player's health as total damage, the decoy explodes in a fire explosion with a radius of 2 blocks, making enemies burn for 3 seconds.
 
 **Augmentation card:**
 
-> Lure mobs with a decoy that explodes when struck or when it fades.
+> Create a decoy. Defeat or expiry: fiery blast within 2 blocks; ignites for 3 s.
 
 ### Crosswind
 
@@ -142,11 +142,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deflect incoming projectiles for 2 minutes.
+> Deflect incoming projectiles away from you for 2 minutes. Your own shots are unaffected. Cooldown: 180 seconds.
 
 **Augmentation card:**
 
-> Deflect incoming projectiles for 2 minutes.
+> Deflect incoming projectiles away from you for 2 minutes. Your own shots are unaffected. Cooldown: 180 seconds.
 
 ### Crucible Hook
 
@@ -154,11 +154,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Pull any mob within 20 blocks to a point 2 blocks in front of you, then smash and ignite it.
+> Activate the ability while aiming at a target mob. You will pull the mob to you and automatically hit with a smash attack dealing 21.25 damage. The smash will also set the enemy ablaze. Burn duration: 3 seconds.
 
 **Augmentation card:**
 
-> Pull a mob 2 blocks in front of you, then smash and ignite it.
+> Pull a mob within 20 blocks to you. Smash for 21.25 damage and ignite for 3 s.
 
 ### Death Stare
 
@@ -166,11 +166,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Teleport beside the mob under your crosshair within 30 blocks.
+> Teleport beside the mob you aim at when activating the ability. The mob has to be within a distance of 30 blocks.
 
 **Augmentation card:**
 
-> Teleport beside the mob under your crosshair.
+> Teleport beside the mob you aim at when activating the ability. The mob has to be within a distance of 30 blocks.
 
 ### Deep Wound
 
@@ -178,11 +178,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next critical dagger hit deals double damage and inflicts Slowness III for 5 seconds.
+> Your next critical hit deals double damage and inflicts Slowness III for 5 seconds.
 
 **Augmentation card:**
 
-> Your next crit deals double damage and Slowness III for 5 seconds.
+> Your next critical hit deals double damage and inflicts Slowness III for 5 seconds.
 
 ### Delusion
 
@@ -190,11 +190,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next hit makes a mob lose its aggression for 20 seconds.
+> Your next hit stops the mob from targeting anything for 10 seconds.
 
 **Augmentation card:**
 
-> Your next hit calms a mob for 20 seconds.
+> Your next hit stops the mob from targeting anything for 10 seconds.
 
 ### Direct Current
 
@@ -202,11 +202,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Mark two mobs with melee hits to stun them and create damaging barriers.
+> Mark up to 2 mobs by aiming at them and pressing the ability activation key. By marking them, they get connected one by one, forming a constant current that connects them. Enemies entering/passing the current are being dealt 4 damage every 0.5s.
 
 **Augmentation card:**
 
-> Mark two mobs with melee hits to stun them and create damaging barriers.
+> Mark 2 mobs. Electrical barriers damage and stun mobs between them.
 
 **Super I-IV name (transforms at original IV):** Static Field
 
@@ -216,11 +216,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Swap places with a visible enemy within 10 blocks.
+> Aim at any living entity within 10 blocks to swap places with it when activating the ability while aiming at it.
 
 **Augmentation card:**
 
-> Swap places with a visible enemy within 10 blocks.
+> Aim at any living entity within 10 blocks to swap places with it when activating the ability while aiming at it.
 
 ### Downdraft Bell
 
@@ -228,11 +228,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> For 10 seconds, pull airborne mobs and elytra flyers above you down while inside your radius. Unlimited height.
+> Force all flying mobs within a 4 block radius to the ground. (phantom's worst nightmare)
 
 **Augmentation card:**
 
-> For 10 seconds, pull nearby airborne mobs and elytra flyers down.
+> Force all flying mobs within a 4 block radius to the ground. (phantom's worst nightmare)
 
 ### Dream Feast
 
@@ -240,11 +240,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Restore 8 hunger and 8 saturation.
+> Instantly gain 1 hunger bars.
 
 **Augmentation card:**
 
-> Restore 8 hunger and 8 saturation.
+> Instantly gain 1 hunger bars.
 
 ### Echo Hearing
 
@@ -252,23 +252,23 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Listen for nearby sounds and briefly outline noisy entities. Only you see these outlines.
+> In the next 10 seconds after activating this ability, you will be able to hear sounds made from all entities within a 32 block radius. After entities make a sound, they glow for 1 seconds.
 
 **Augmentation card:**
 
-> Listen for sounds; privately outline noisy entities.
+> For 10 s, hear noises within 32 blocks. Highlights noisy entities only for you.
 
-### Ender Swing
+### Gravity Swing
 
 **Weapons:** Nullified Axe
 
 **Item tooltip:**
 
-> Strike enemies within 3 blocks for weapon damage and launch them up to 20 blocks upward.
+> Swing at all mobs within a 2 block radius, lifting them up to 10 blocks or the highest clear space below a ceiling. Increase their gravity and fall damage by +50%.
 
 **Augmentation card:**
 
-> Strike enemies within 3 blocks and launch them into the air.
+> Lift all mobs within 2 blocks by up to 10 blocks. Gravity and fall damage +50%.
 
 ### Explosion
 
@@ -288,11 +288,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next 10 hits explode for 30% weapon damage to nearby enemies, without harming you or blocks.
+> Your next 10 melee hits create small blasts that deal an additional 30% areal damage. The areal blast has a radius of 3 blocks around the hit enemy.
 
 **Augmentation card:**
 
-> Ten hits explode for 30% weapon damage. You and blocks are safe.
+> Next 10 melee hits add 30% area damage in a 3-block radius blast.
 
 ### Eye of the Storm
 
@@ -300,11 +300,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Whirl entities within 10 blocks for 5 seconds, levitating living targets.
+> you create a small storm around you with you being the center. This storm affects all enemies within a 5 block radius and lasts 5 seconds.
 
 **Augmentation card:**
 
-> Whirl nearby entities and levitate living targets for 5 seconds.
+> Create a storm affecting mobs within 5 blocks for 5 s.
 
 ### False Awakening
 
@@ -312,11 +312,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Mark an enemy within 20 blocks and distract mobs with a decoy. Your next hit on the marked enemy deals bonus damage.
+> Create a decoy directly beside the enemy you aim at. When that enemy is distracted, you deal 10% more damage to that enemy for a duration of 30 seconds.
 
 **Augmentation card:**
 
-> Distract mobs with a decoy; deal bonus damage to the marked enemy.
+> Decoy distracts your aimed enemy. Deal 10% more damage to it for 30 s.
 
 ### Feather Shelter
 
@@ -324,11 +324,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Give yourself and nearby allies Slow Falling for 10 seconds.
+> Give yourself and allies within 4 blocks slow falling for 10 seconds.
 
 **Augmentation card:**
 
-> Grant yourself and nearby allies 10 seconds of Slow Falling.
+> Give yourself and allies within 4 blocks slow falling for 10 seconds.
 
 ### Flame Breath
 
@@ -336,11 +336,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Breathe a cone of fire that deals weapon damage and ignites enemies ahead.
+> Incinerate the area in front of you with a range of 7 blocks, igninting enemies for 3 seconds.
 
 **Augmentation card:**
 
-> Breathe fire to damage and ignite enemies ahead.
+> Incinerate the area in front of you with a range of 7 blocks, igninting enemies for 3 seconds.
 
 ### Flameborn
 
@@ -348,11 +348,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Gain Fire Resistance for 30 seconds and ignite yourself and enemies within 10 blocks.
+> You gain fire resistance for 30 seconds, and explode in a burst of fire dealing 7 damage and setting all entities within 10 blocks ablaze for 5 seconds.
 
 **Augmentation card:**
 
-> Gain Fire Resistance; ignite yourself and nearby enemies.
+> Fire resistance for 30 s. Explode for 7 damage within 10 blocks; ignite for 5 s.
 
 ### Flaming Stomp
 
@@ -360,11 +360,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next axe attack becomes a fiery 5x5 slam, dealing weapon damage and igniting enemies for 5 seconds.
+> your next axe attack becomes a vertical 5x5 strike dealing 17 damage and setting enemies ablaze for 5 seconds.
 
 **Augmentation card:**
 
-> Your next axe attack becomes a fiery 5x5 area slam.
+> your next axe attack becomes a vertical 5x5 strike dealing 17 damage and setting enemies ablaze for 5 seconds.
 
 ### Ghostwalk
 
@@ -372,11 +372,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Hide yourself, armor and held items for 10 seconds, ending when you attack.
+> Become invisible for 10 seconds or until striking an enemy.
 
 **Augmentation card:**
 
-> Hide yourself, armor and held items for 10 seconds, ending when you attack.
+> Become invisible for 10 seconds or until striking an enemy.
 
 **Super I-IV name (transforms at original IV):** Jumpscare Horror
 
@@ -386,11 +386,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Pull visible enemies within 6 blocks to a point ahead of you, then smash those that reach it for weapon damage.
+> Aim at an enemy and activate the ability to pull an enemy within 6 blocks to you and immediately strike it with a vertical strike.
 
 **Augmentation card:**
 
-> Pull enemies close, then smash them for weapon damage.
+> Aim at an enemy and activate the ability to pull an enemy within 6 blocks to you and immediately strike it with a vertical strike.
 
 ### Green Feast
 
@@ -398,11 +398,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Consume 1 wheat to heal 1 heart and restore 2 saturation.
+> remove 1 wheat from your inventory to heal 2 health and gain 1 hungerbars.
 
 **Augmentation card:**
 
-> Consume 1 wheat for 1 heart and 2 saturation.
+> remove 1 wheat from your inventory to heal 2 health and gain 1 hungerbars.
 
 ### Just a Dream
 
@@ -410,11 +410,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Teleport to your respawn point, or world spawn if it is unavailable.
+> Immediately teleport to your respawn point across all dimensions. if it's not available, return to the world spawn.
 
 **Augmentation card:**
 
-> Teleport to your respawn point, or world spawn if unavailable.
+> Teleport to your respawn point. Uses world spawn if unavailable.
 
 ### Live Wire
 
@@ -422,11 +422,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> For 8 seconds, melee attackers take 2 damage when they hit you.
+> In the next 8 seconds, enemies that hit you take 1 hearts damage in return.
 
 **Augmentation card:**
 
-> For 8 seconds, melee attackers take 2 damage on hit.
+> In the next 8 seconds, enemies that hit you take 1 hearts damage in return.
 
 ### Lucid Dreaming
 
@@ -434,11 +434,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next dagger kill grants Speed II for 30 seconds and halves fall damage for 15 seconds.
+> Your next kill grants Speed II and 50% less fall damage for 30 seconds.
 
 **Augmentation card:**
 
-> Your next kill grants Speed II and halves fall damage.
+> Your next kill grants Speed II and 50% less fall damage for 30 seconds.
 
 ### Lullaby
 
@@ -446,11 +446,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Put a targeted entity to sleep for 3 seconds, until damaged. Players receive Slowness II instead.
+> Aim at a mob within 10 blocks to put it to sleep for 3 seconds. Any form of damage wakes it.
 
 **Augmentation card:**
 
-> Put any mob to sleep until hit. Slows players instead.
+> Aim at a mob within 10 blocks to put it to sleep for 3 seconds. Any form of damage wakes it.
 
 ### Magma Toss
 
@@ -458,11 +458,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Throw a molten rock that bursts on impact, dealing weapon damage and igniting nearby enemies.
+> Throw a molten rock that bursts within 2 blocks, dealing weapon damage and igniting enemies for 3 seconds.
 
 **Augmentation card:**
 
-> Throw a molten rock that bursts and ignites nearby enemies.
+> Burst within 2 blocks; weapon damage, burning for 3 seconds.
 
 ### Magnetic Throw
 
@@ -470,11 +470,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Launch an enemy within melee range in the direction you look.
+> Aim at an enemy and activate this ability to launch the enemy in the direction you look.
 
 **Augmentation card:**
 
-> Launch a nearby enemy in your look direction.
+> Aim at an enemy and activate this ability to launch the enemy in the direction you look.
 
 ### Null Receipt
 
@@ -482,11 +482,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Absorb knockback from five incoming hits, then release it with a vertical strike.
+> Absorb knockback for the next 5 incoming hits, then release it with the next vertical strike.
 
 **Augmentation card:**
 
-> Store knockback from five incoming hits; release it in a slam.
+> Absorb knockback for the next 5 incoming hits, then release it with the next vertical strike.
 
 ### Pocket Storm
 
@@ -494,11 +494,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next melee hit smashes nearby enemies for weapon damage and strong knockback.
+> Your next hit smashes enemies with strong knockback.
 
 **Augmentation card:**
 
-> Your next hit creates an area smash with strong knockback.
+> Your next hit smashes enemies with strong knockback.
 
 ### Poisoned Vein
 
@@ -506,11 +506,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next dagger kill leaves a 5-second cloud. Everyone within 3 blocks, including you, receives Poison I for 30 seconds.
+> Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives Poison I for 30 seconds.
 
 **Augmentation card:**
 
-> Your next kill leaves a cloud that poisons everyone, including you.
+> Next dagger kill: 5-second cloud within 3 blocks. Poisons others for 30 s.
 
 ### Ringing Steel
 
@@ -518,11 +518,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next melee hit deals 15 durability damage to the enemy's held weapon.
+> Your next hit will damage the enemy's held weapon(s) for 15 durability.
 
 **Augmentation card:**
 
-> Your next hit deals 15 durability damage to the enemy's weapon.
+> Your next hit will damage the enemy's held weapon(s) for 15 durability.
 
 ### Rooting Roots
 
@@ -530,11 +530,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Root and poison hostile mobs within 10 blocks for 10 seconds.
+> Activate this ability for roots shooting out of the ground that immobilize and poison all enemies within 10 blocks for 10 seconds.
 
 **Augmentation card:**
 
-> Root and poison nearby hostile mobs for 10 seconds.
+> Root and poison enemies within 10 blocks for 10 s.
 
 ### Skull Throw
 
@@ -542,11 +542,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Fire a fast wither skull up to 500 blocks. It bursts on impact for weapon damage and Wither I for 5 seconds.
+> Fire a fast skull projectile that bursts within 2 blocks and applies Wither I for 10 seconds.
 
 **Augmentation card:**
 
-> Fire a fast skull up to 500 blocks; bursts on impact for weapon damage and Wither.
+> Fire a fast skull projectile that bursts within 2 blocks and applies Wither I for 10 seconds.
 
 ### Sonic Boom
 
@@ -554,11 +554,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Fire a piercing sonic blast up to 50 blocks for double attack damage. Blocks stop it.
+> Activate this ability to fire a piercing Sonic Boom with a 50 block range for 28 damage.
 
 **Augmentation card:**
 
-> Fire a piercing sonic blast for double damage. Blocks stop it.
+> Activate this ability to fire a piercing Sonic Boom with a 50 block range for 28 damage.
 
 ### Sonically Charged Crit
 
@@ -566,11 +566,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next critical dagger hit adds 15% of the target's maximum health as damage.
+> Your next critical dagger hit adds 5% of the target's maximum health as damage.
 
 **Augmentation card:**
 
-> Your next crit adds 15% of the target's maximum health as damage.
+> Your next critical dagger hit adds 5% of the target's maximum health as damage.
 
 ### Static blade
 
@@ -578,11 +578,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next swing sends a piercing echo up to 20 blocks for weapon damage. A matching offhand dagger sends a second echo.
+> Your next swing sends out a piercing echo with 20 blocks range for 14 damage, this also works in dual wield.
 
 **Augmentation card:**
 
-> Your next swing fires an echo; matching dual daggers fire two.
+> Your next swing sends out a piercing echo with 20 blocks range for 14 damage, this also works in dual wield.
 
 ### Stepping Through the Void
 
@@ -590,11 +590,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Teleport up to 10 blocks in your look direction, stopping before obstacles. A matching offhand dagger doubles the range.
+> On activation, teleport 5 blocks in the direction you look. Having this ability on both daggers in dual wield doubles the range.
 
 **Augmentation card:**
 
-> Teleport 10 blocks ahead, or 20 with a matching offhand dagger.
+> Blink 5 blocks in your view direction. Both daggers need this ability to double range.
 
 ### Storing Anger
 
@@ -602,11 +602,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Store your damage instead of dealing it for 10 seconds, then release it on your next dagger hit.
+> In the next 10 seconds, you won't deal any damage since it will be stored for the next hit after those 10 seconds end.
 
 **Augmentation card:**
 
-> Store damage for 10 seconds; release it on your next hit.
+> Store damage for 10 seconds, then release it on your next hit.
 
 ### Strengthened Bones
 
@@ -614,11 +614,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next dagger kill grants 10 seconds of invulnerability.
+> Your next dagger kill grants 10 seconds of absolute invulnerability.
 
 **Augmentation card:**
 
-> Your next kill grants 10 seconds of invulnerability.
+> Your next dagger kill grants 10 seconds of absolute invulnerability.
 
 ### Strong-arm
 
@@ -626,11 +626,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your next fully charged critical hit has a 30% chance to break one random armor piece.
+> Your next critical hit has a 30% chance to break a random armor piece of the enemy.
 
 **Augmentation card:**
 
-> Your next fully charged critical hit can break one armor piece.
+> Next critical hit: 30% chance to break one enemy armor piece.
 
 ### Stunning Presence
 
@@ -638,11 +638,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> For 30 seconds, repeatedly damage and briefly stun visible enemies within 10 blocks.
+> Create an area (10 blocks radius) around you where you stun every entity for a short time every 2 seconds.
 
 **Augmentation card:**
 
-> Repeatedly damage and stun nearby enemies for 30 seconds.
+> Stun other living entities within 10 blocks every 2 s.
 
 ### Sudden Presence
 
@@ -650,11 +650,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Teleport behind the nearest hostile mob within 20 blocks.
+> Teleport behind the nearest hostile mob within 10 blocks
 
 **Augmentation card:**
 
-> Teleport behind the nearest hostile mob within 20 blocks.
+> Teleport behind the nearest hostile mob within 10 blocks
 
 ### Swing Attack
 
@@ -662,11 +662,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Strike all visible enemies within melee range for weapon damage.
+> Strike all enemies within melee range for 17 damage.
 
 **Augmentation card:**
 
-> Strike all visible enemies within melee range.
+> Strike all enemies within melee range for 17 damage.
 
 ### Thunderclap
 
@@ -674,7 +674,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Dash to an aimed mob within 10 blocks with a full melee hit plus half weapon damage as lightning. Chain to the nearest unhit mob within 10 blocks of each victim until none remain.
+> Aim at a mob within 10 blocks and dash to it with a lightning slash. Deal a full melee hit plus half weapon lightning damage. Chain to the nearest unhit mob within 10 blocks of each previous target until none remain.
 
 **Augmentation card:**
 
@@ -698,11 +698,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Pull nearby dropped items and experience toward you.
+> Pull items and xp within a 6 blocks radius around you into your inventory.
 
 **Augmentation card:**
 
-> Pull nearby drops and experience toward you.
+> Pull items and xp within a 6 blocks radius around you into your inventory.
 
 ### Void Pulse
 
@@ -710,11 +710,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Release a burst that pushes nearby mobs away without dealing damage.
+> Push living entities in a 4 block radius away from you.
 
 **Augmentation card:**
 
-> Push nearby mobs away without dealing damage.
+> Push living entities in a 4 block radius away from you.
 
 ### Windcharge
 
@@ -722,11 +722,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Launch upward and avoid damage on your next landing.
+> Launch about 5 blocks upward and negate falldamage on your next landing.
 
 **Augmentation card:**
 
-> Launch upward and avoid damage on your next landing.
+> Launch about 5 blocks upward and negate falldamage on your next landing.
 
 **Axe super I-IV name (transforms at original IV):** Skybreaker
 
@@ -736,11 +736,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Dash in the direction you look.
+> Dash into the direction you look.
 
 **Augmentation card:**
 
-> Dash in the direction you look.
+> Dash into the direction you look.
 
 ## Passives
 
@@ -750,11 +750,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Fully charged hits deal 1 extra damage after 1 second.
+> Fully charged hits deal 1 delayed extra damage after 1 second.
 
 **Augmentation card:**
 
-> Charged hits echo for 1 damage after 1 second.
+> Fully charged hits deal 1 delayed extra damage after 1 second.
 
 ### Backstab
 
@@ -762,11 +762,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 20% more melee damage from behind.
+> Deal 20% more damage from behind.
 
 **Augmentation card:**
 
-> Deal 20% more melee damage from behind.
+> Deal 20% more damage from behind.
 
 ### Chain Lightning
 
@@ -774,11 +774,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Hits can chain lightning between nearby living entities for half weapon damage. Each jump has a 50% chance, up to 10 jumps.
+> Hits have a 50% chance to chain to nearby enemies on hit. A chain lightning can travel up to 10 mobs.
 
 **Augmentation card:**
 
-> Hits can chain lightning for half weapon damage.
+> Hits have a 50% chance to chain to nearby enemies on hit. A chain lightning can travel up to 10 mobs.
 
 ### Charred Edge
 
@@ -786,7 +786,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 15% more melee damage to enemies with Fire Resistance.
+> Deal 15% more damage to enemies with Fire Resistance.
 
 **Augmentation card:**
 
@@ -798,11 +798,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Shield blocks ignite the attacker, including projectile shooters.
+> Blocking an attack with a shield ignites the attacker for 3 seconds.
 
 **Augmentation card:**
 
-> Shield blocks ignite attackers, including shooters.
+> Blocking an attack with a shield ignites the attacker for 3 seconds.
 
 ### Compost
 
@@ -810,11 +810,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Eat rotten flesh without getting Hunger.
+> Eating rotten flesh doesn't give you the Hunger effect.
 
 **Augmentation card:**
 
-> Eat rotten flesh without getting Hunger.
+> Eating rotten flesh doesn't give you the Hunger effect.
 
 ### Conductive Edge
 
@@ -822,11 +822,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 20% more melee damage to enemies in water or rain.
+> Deal 20% more damage to enemies exposed to water.
 
 **Augmentation card:**
 
-> Deal 20% more melee damage to wet enemies.
+> Deal 20% more damage to enemies exposed to water.
 
 ### Daydreamer
 
@@ -846,11 +846,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal more dagger damage as the target loses health, up to double damage.
+> Deal more damage depending on the targets health. Up to 50% more damage.
 
 **Augmentation card:**
 
-> Deal more damage to wounded enemies, up to double.
+> Deal more damage depending on the targets health. Up to 50% more damage.
 
 ### Death's Due
 
@@ -858,11 +858,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Kills grant 25% more experience.
+> Enemy kills grant 25% more xp.
 
 **Augmentation card:**
 
-> Kills grant 25% more experience.
+> Enemy kills grant 25% more xp.
 
 ### Distance Tax
 
@@ -870,11 +870,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your last hit marks an enemy. After 10 seconds, it takes damage based on your distance, up to 40 damage.
+> Activate to mark the next mob you hit. After 10 seconds, it takes 0.5 damage per block of separation, up to 40 damage.
 
 **Augmentation card:**
 
-> Mark on hit; distance deals damage after 10 seconds, up to 40.
+> Arm next hit; after 10 seconds, deal 0.5 damage per block of separation; max 40.
 
 ### Double Jump
 
@@ -882,11 +882,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Jump once in midair. Matching dual-wielded daggers can add more jumps.
+> Gain the ability to do 1 more jump in midair. Matching dual-wielded daggers combine their jumps.
 
 **Augmentation card:**
 
-> Jump once in midair. Matching dual-wielded daggers can add more jumps.
+> Gain the ability to do 1 more jump in midair. Matching dual-wielded daggers combine their jumps.
 
 **Super I-IV name (transforms at original IV):** Windwalker
 
@@ -896,23 +896,21 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Wield two daggers of the same material to attack with both. Gemstones may differ.
+> Allows you to dual wield daggers of the same material. Only one dagger needs this passive.
 
 **Augmentation card:**
 
-> Attack with two daggers of the same material.
+> Dual wield matching-material daggers. Only one needs this passive.
 
 ### Echo Appetite
 
-**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore
+**Weapons:** Echoing Axe, Resonance Dagger, Shrieking Claymore (all gemstone variants)
 
-**Item tooltip:**
+**Item tooltip / augmentation card:**
 
-> Breaking sculk restores half a drumstick; killing a Warden restores 2 drumsticks.
+> Breaking Sculk restores hunger based on what sculk block you broke. Killing a Warden also restores {hungerBars} hunger bars.
 
-**Augmentation card:**
-
-> Restore hunger by breaking sculk or killing a Warden.
+The complete Warden reward is white: 2 hunger bars at I, 4 at II. Other prose is light gray. Maximum II, no super form. Sculk rewards in hunger points at I/II: Sculk2/4, Vein1/2, Sensor3/6, Calibrated Sensor4/8, Catalyst6/12, Shrieker4/8. No saturation is added.
 
 ### Echo Salvage
 
@@ -920,11 +918,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> A vertical strike that hits terrain but misses enemies stores bonus damage for your next successful slam, lasting 30 seconds.
+> If you miss with a Vertical Strike, it stores half it's damage which is being released on the next successful melee hit with an automatic Vertical Strike. Up to 2 Strike Echoes stay stored in this weapon.
 
 **Augmentation card:**
 
-> A slam that hits terrain stores bonus damage for the next slam.
+> Missed Vertical Strikes store half damage. Next melee hit releases echoes. Capacity: 2 echoes.
 
 ### Echoing Speed
 
@@ -932,11 +930,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Consecutive hits on the same enemy build attack speed. Changing targets or pausing for 8 seconds resets the bonus.
+> Consecutive hits on the same enemy grant 5% attack speed per hit, up to 20% more attack speed. Changing targets or not hitting for 8 seconds resets the bonus.
 
 **Augmentation card:**
 
-> Build attack speed by repeatedly hitting the same enemy.
+> Same target: +5% speed per hit, up to +20%. Resets on target change or after 8 s.
 
 ### Final strike
 
@@ -944,11 +942,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 50% more damage to your last hit enemy when it is below 10% health.
+> Deal 50% more damage to the last enemy you hit if it has less than 10% health.
 
 **Augmentation card:**
 
-> Deal 50% more damage to your last hit enemy below 10% health.
+> Deal 50% more damage to your last target below 10% health.
 
 ### Fire Resistance
 
@@ -956,23 +954,21 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Gain Fire Resistance while held in your main hand.
+> Gain Fire Resistance I while holding this weapon in your main hand.
 
 **Augmentation card:**
 
-> Fire Resistance in your main hand; at II, either hand.
+> Gain Fire Resistance I while holding this weapon in your main hand.
 
 ### Grave Vault
 
-**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe
+**Weapons:** Leafcutter Dagger, Overgrown Claymore, Verdant Axe (all gemstone variants)
 
-**Item tooltip:**
+**Item tooltip / augmentation card:**
 
-> Store flowers in a nine-slot vault. Sneak-right-click to open it; kills and right-clicks on blocks plant stored flowers.
+> Sneak-right-click to open a nine-slot flower vault. Enemy kills plant a stored flower where the enemy stood, if possible.
 
-**Augmentation card:**
-
-> Store flowers; sneak-right-click to open. Kills plant a flower.
+Entirely light gray. Ordinary block right-clicks do not plant or consume stored flowers. One level, no super form or cooldown.
 
 ### Headwind
 
@@ -992,11 +988,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Heal slowly instead of taking fire damage while burning. Does not work in lava.
+> While burning, heal 1 HP every 2 seconds instead of taking fire damage. Does not work in lava.
 
 **Augmentation card:**
 
-> Fire heals you instead of hurting you. Excludes lava.
+> While burning, heal 1 HP every 2 seconds instead of taking fire damage. Does not work in lava.
 
 ### Heavy Current
 
@@ -1020,19 +1016,17 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Augmentation card:**
 
-> Standing on sculk grants Speed II and Strength I.
+> Standing on sculk grants Speed II and Strength I for 3 seconds.
 
 ### Last Stand
 
-**Weapons:** Deathwisper Dagger, Ghost Axe, Hollow Claymore
+**Weapons:** Deathwisper Dagger, Hollow Claymore, Ghost Axe (all gemstone variants)
 
-**Item tooltip:**
+**Item tooltip / augmentation card:**
 
-> Survive a fatal hit with 1 HP once every 2 minutes.
+> Survive a fatal hit with 1 HP once every {cooldown}.
 
-**Augmentation card:**
-
-> Survive a fatal hit with 1 HP once every 2 minutes.
+Complete1HP and cooldown phrases white; remaining prose light gray. Levels I/II/III:2minutes/1.5minutes/1minute. MaximumIII, no super form. Cooldown belongs to the wielder and does not reset with weapon swaps or respawn. Requires more than1HP before the lethal hit.
 
 ### Leech
 
@@ -1040,11 +1034,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Heal for 10% of the damage you deal with this dagger.
+> Melee hits heal you for 10% of the damage dealt.
 
 **Augmentation card:**
 
-> Dagger damage heals you.
+> Melee hits heal you for 10% of the damage dealt.
 
 ### Lightning Rod
 
@@ -1052,11 +1046,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Attract lightning under open sky. Strikes grant 5 absorption hearts and Strength I instead of harming you.
+> Attract lightning under open sky, averaging one strike every 600 s. Strikes grant 5 absorption hearts and Strength I for 30 seconds instead of harming you.
 
 **Augmentation card:**
 
-> Attract harmless lightning for 5 absorption hearts and Strength I.
+> Lightning averages every 600 s; grants absorption and Strength.
 
 ### Lonely Dream
 
@@ -1068,7 +1062,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Augmentation card:**
 
-> Gain 5% attack speed per enemy within 10 blocks.
+> Gain 5% attack speed for each enemy within 10 blocks.
 
 ### Lumberjack
 
@@ -1088,11 +1082,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Kills bonemeal the block beneath the enemy.
+> Enemy kills bonemeal the block beneath them, if possible.
 
 **Augmentation card:**
 
-> Kills bonemeal the block beneath the enemy.
+> Enemy kills bonemeal the block beneath them, if possible.
 
 ### Nether Born
 
@@ -1100,11 +1094,14 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 20% more weapon damage in the Nether.
+> Deal 6% more damage in the Nether.
 
 **Augmentation card:**
 
-> Deal 20% more weapon damage in the Nether.
+> Deal 6% more damage in the Nether.
+
+
+**Levels I-V:** 6% / 12% / 18% / 24% / 30% more damage. The complete percentage + "more damage" phrase is white; remaining text is light gray.
 
 ### Overwhelming Smash
 
@@ -1112,11 +1109,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Break blocking shields and deal 20% more damage to armor durability.
+> Break and damage blocking enemies and deal 20% more durability damage to armor.
 
 **Augmentation card:**
 
-> Break shields and deal 20% more armor durability damage.
+> Break and damage blocking enemies and deal 20% more durability damage to armor.
 
 ### Photosynthesis
 
@@ -1128,7 +1125,10 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Augmentation card:**
 
-> Slowly repair this weapon in daylight.
+> Restore 1 weapon durability every 15 seconds in daylight.
+
+
+**Levels I-IV:** 1 / 2 / 3 / 5 durability every 15 seconds. Complete repair amount + "weapon durability" and "15 seconds" are white; remaining text is light gray.
 
 ### Pillow Armor
 
@@ -1148,11 +1148,14 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Hit a mob while burning to extinguish yourself and heal 2 HP.
+> Hit a mob while burning to extinguish yourself and heal 1 HP.
 
 **Augmentation card:**
 
-> Hit while burning to extinguish yourself and heal 2 HP.
+> Hit a mob while burning to extinguish yourself and heal 1 HP.
+
+
+**Levels I-IV:** 1 / 2 / 4 / 6 HP. Complete "heal {hp} HP" phrase is white; remaining text is light gray.
 
 ### Quick Recharge
 
@@ -1160,11 +1163,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Fully charged critical hits shorten your primary cooldown by 1 second, once every 2 seconds.
+> Fully charged critical hits reduce your primary ability's cooldown by 1 second once every 2 seconds.
 
 **Augmentation card:**
 
-> Charged crits reduce your primary cooldown by 1 second.
+> Charged critical hits: primary cooldown -1 second. Once every 2 seconds.
 
 ### Resonance Crit
 
@@ -1184,11 +1187,14 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 20% more dagger damage to undead.
+> Deal 6% more damage to undead.
 
 **Augmentation card:**
 
-> Deal 20% more damage to undead.
+> Deal 6% more damage to undead.
+
+
+**Levels I-V:** 6% / 12% / 18% / 24% / 30% more damage. Complete percentage + "more damage" phrase is white; remaining text is light gray.
 
 ### Revengeful Exit
 
@@ -1196,11 +1202,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> When killed by an enemy, deal weapon damage within 5 blocks and five times weapon damage to your killer.
+> When killed by an enemy, deal 14 damage within 5 blocks and an additional 70 damage to the killer.
 
 **Augmentation card:**
 
-> When killed by an enemy, blast nearby foes and deal fivefold damage to your killer.
+> On death: 14 damage within 5 blocks, plus 70 damage to your killer.
 
 ### Sapling Harvest
 
@@ -1208,11 +1214,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Kills have a 15% chance to drop an extra sapling.
+> Enemy kills have a 15% chance to drop an extra sapling.
 
 **Augmentation card:**
 
-> Kills have a 15% chance to drop an extra sapling.
+> Enemy kills have a 15% chance to drop an extra sapling.
 
 ### Scar Compass
 
@@ -1220,11 +1226,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Your most recently hit enemy glows for 10 minutes.
+> Your most recently hit enemy receives Glowing I for 10 minutes.
 
 **Augmentation card:**
 
-> Your last hit enemy glows for 10 minutes.
+> Your most recently hit enemy receives Glowing I for 10 minutes.
 
 ### Sleepwalker
 
@@ -1232,11 +1238,14 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Deal 10% more melee damage at night.
+> Deal 6% more melee damage at night.
 
 **Augmentation card:**
 
-> Deal 10% more melee damage at night.
+> Deal 6% more melee damage at night.
+
+
+**Levels I-V:** 6% / 12% / 18% / 24% / 30% more melee damage. Complete percentage + "more melee damage" phrase is white; remaining text is light gray.
 
 ### Slipstream
 
@@ -1248,7 +1257,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Augmentation card:**
 
-> Sprint behind a moving ally for 10% more speed.
+> Sprint behind a moving ally within 3 blocks to gain 10% movement speed.
 
 ### Soul Hunger
 
@@ -1256,11 +1265,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Kills grant 1 absorption heart, up to 3 hearts. These fade after 10 seconds without Soul Hunger equipped; switching back in time keeps them.
+> Enemy kills grant 1 absorption heart, up to 3 hearts. These disappear after 10 seconds without Soul Hunger equipped.
 
 **Augmentation card:**
 
-> Kills grant absorption, up to 3 hearts. Switch back within 10 seconds to keep them.
+> Kills grant 1 absorption heart (cap 3 hearts). Lost after 10 seconds without this passive.
 
 ### Stone Song
 
@@ -1284,7 +1293,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Augmentation card:**
 
-> Sunlight restores hunger and saturation every 15 seconds.
+> Sunlight restores 1 hunger and 1 saturation every 15 seconds.
 
 ### Unfinished Dream
 
@@ -1292,11 +1301,14 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Killing an enemy before it damages you heals half a heart.
+> Killing an enemy before it damages you heals 2 HP.
 
 **Augmentation card:**
 
-> Kill an enemy before it hurts you to heal half a heart.
+> Killing an enemy before it damages you heals 2 HP.
+
+
+**Levels I-III:** 2 / 4 / 6 HP. Complete amount + HP phrase is white; remaining text is light gray.
 
 ### Vertical Strike
 
@@ -1304,11 +1316,11 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 **Item tooltip:**
 
-> Three fully charged attacks within 10 seconds trigger an area slam. Requires an empty offhand.
+> Every third fully charged attack in a 10 second combo triggers an area slam.
 
 **Augmentation card:**
 
-> Three charged attacks trigger an area slam. Keep your offhand empty.
+> Every third fully charged attack in a 10 second combo triggers an area slam.
 
 ### Void Grip
 
@@ -1337,7 +1349,7 @@ The roster placeholder resolves to the actual selected reinforcement names/count
 
 These are learned separately through augmentation. Each material has one effect; the tooltip substitutes its name, effect strength and weapon-specific duration into the following in-game template:
 
-> On hit: %1$s %2$s for %3$s seconds
+> Apply %1$s %2$s for %3$s seconds on hit.
 
 The tables below expand that template into the actual English item descriptions for every registered special weapon variant. Roman numerals here are the status-effect strength, not the augmentation rank.
 
@@ -1347,11 +1359,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Glowing II for 53.35 seconds | On hit: Glowing II for 100.00 seconds | On hit: Glowing II for 177.80 seconds |
-| Ruby | On hit: Glowing II for 53.35 seconds | On hit: Glowing II for 100.00 seconds | On hit: Glowing II for 177.80 seconds |
-| Amber | On hit: Glowing II for 53.35 seconds | On hit: Glowing II for 100.00 seconds | On hit: Glowing II for 177.80 seconds |
-| Amethyst | On hit: Glowing II for 58.80 seconds | On hit: Glowing II for 100.00 seconds | On hit: Glowing II for 153.85 seconds |
-| Jade | On hit: Glowing III for 53.85 seconds | On hit: Glowing III for 101.00 seconds | On hit: Glowing III for 179.55 seconds |
+| None (base) | Apply Glowing II for 53.35 seconds on hit. | Apply Glowing II for 100.00 seconds on hit. | Apply Glowing II for 177.80 seconds on hit. |
+| Ruby | Apply Glowing II for 53.35 seconds on hit. | Apply Glowing II for 100.00 seconds on hit. | Apply Glowing II for 177.80 seconds on hit. |
+| Amber | Apply Glowing II for 53.35 seconds on hit. | Apply Glowing II for 100.00 seconds on hit. | Apply Glowing II for 177.80 seconds on hit. |
+| Amethyst | Apply Glowing II for 58.80 seconds on hit. | Apply Glowing II for 100.00 seconds on hit. | Apply Glowing II for 153.85 seconds on hit. |
+| Jade | Apply Glowing III for 53.85 seconds on hit. | Apply Glowing III for 101.00 seconds on hit. | Apply Glowing III for 179.55 seconds on hit. |
 
 ### Blindness Hit (Inanisium)
 
@@ -1359,11 +1371,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Blindness II for 2.15 seconds | On hit: Blindness II for 4.00 seconds | On hit: Blindness II for 7.10 seconds |
-| Ruby | On hit: Blindness II for 2.15 seconds | On hit: Blindness II for 4.00 seconds | On hit: Blindness II for 7.10 seconds |
-| Amber | On hit: Blindness II for 2.15 seconds | On hit: Blindness II for 4.00 seconds | On hit: Blindness II for 7.10 seconds |
-| Amethyst | On hit: Blindness II for 2.35 seconds | On hit: Blindness II for 4.00 seconds | On hit: Blindness II for 6.15 seconds |
-| Jade | On hit: Blindness III for 2.65 seconds | On hit: Blindness III for 5.00 seconds | On hit: Blindness III for 8.90 seconds |
+| None (base) | Apply Blindness II for 2.15 seconds on hit. | Apply Blindness II for 4.00 seconds on hit. | Apply Blindness II for 7.10 seconds on hit. |
+| Ruby | Apply Blindness II for 2.15 seconds on hit. | Apply Blindness II for 4.00 seconds on hit. | Apply Blindness II for 7.10 seconds on hit. |
+| Amber | Apply Blindness II for 2.15 seconds on hit. | Apply Blindness II for 4.00 seconds on hit. | Apply Blindness II for 7.10 seconds on hit. |
+| Amethyst | Apply Blindness II for 2.35 seconds on hit. | Apply Blindness II for 4.00 seconds on hit. | Apply Blindness II for 6.15 seconds on hit. |
+| Jade | Apply Blindness III for 2.65 seconds on hit. | Apply Blindness III for 5.00 seconds on hit. | Apply Blindness III for 8.90 seconds on hit. |
 
 ### Nausea Hit (Somnium)
 
@@ -1371,11 +1383,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Nausea V for 5.35 seconds | On hit: Nausea V for 10.00 seconds | On hit: Nausea V for 17.80 seconds |
-| Ruby | On hit: Nausea V for 5.35 seconds | On hit: Nausea V for 10.00 seconds | On hit: Nausea V for 17.80 seconds |
-| Amber | On hit: Nausea V for 5.35 seconds | On hit: Nausea V for 10.00 seconds | On hit: Nausea V for 17.80 seconds |
-| Amethyst | On hit: Nausea V for 5.90 seconds | On hit: Nausea V for 10.00 seconds | On hit: Nausea V for 15.40 seconds |
-| Jade | On hit: Nausea VI for 5.85 seconds | On hit: Nausea VI for 11.00 seconds | On hit: Nausea VI for 19.55 seconds |
+| None (base) | Apply Nausea V for 5.35 seconds on hit. | Apply Nausea V for 10.00 seconds on hit. | Apply Nausea V for 17.80 seconds on hit. |
+| Ruby | Apply Nausea V for 5.35 seconds on hit. | Apply Nausea V for 10.00 seconds on hit. | Apply Nausea V for 17.80 seconds on hit. |
+| Amber | Apply Nausea V for 5.35 seconds on hit. | Apply Nausea V for 10.00 seconds on hit. | Apply Nausea V for 17.80 seconds on hit. |
+| Amethyst | Apply Nausea V for 5.90 seconds on hit. | Apply Nausea V for 10.00 seconds on hit. | Apply Nausea V for 15.40 seconds on hit. |
+| Jade | Apply Nausea VI for 5.85 seconds on hit. | Apply Nausea VI for 11.00 seconds on hit. | Apply Nausea VI for 19.55 seconds on hit. |
 
 ### Slowness Hit (Electrium)
 
@@ -1383,11 +1395,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Slowness IV for 2.65 seconds | On hit: Slowness IV for 5.00 seconds | On hit: Slowness IV for 8.90 seconds |
-| Ruby | On hit: Slowness IV for 2.65 seconds | On hit: Slowness IV for 5.00 seconds | On hit: Slowness IV for 8.90 seconds |
-| Amber | On hit: Slowness IV for 2.65 seconds | On hit: Slowness IV for 5.00 seconds | On hit: Slowness IV for 8.90 seconds |
-| Amethyst | On hit: Slowness IV for 2.95 seconds | On hit: Slowness IV for 5.00 seconds | On hit: Slowness IV for 7.70 seconds |
-| Jade | On hit: Slowness V for 3.20 seconds | On hit: Slowness V for 6.00 seconds | On hit: Slowness V for 10.65 seconds |
+| None (base) | Apply Slowness IV for 2.65 seconds on hit. | Apply Slowness IV for 5.00 seconds on hit. | Apply Slowness IV for 8.90 seconds on hit. |
+| Ruby | Apply Slowness IV for 2.65 seconds on hit. | Apply Slowness IV for 5.00 seconds on hit. | Apply Slowness IV for 8.90 seconds on hit. |
+| Amber | Apply Slowness IV for 2.65 seconds on hit. | Apply Slowness IV for 5.00 seconds on hit. | Apply Slowness IV for 8.90 seconds on hit. |
+| Amethyst | Apply Slowness IV for 2.95 seconds on hit. | Apply Slowness IV for 5.00 seconds on hit. | Apply Slowness IV for 7.70 seconds on hit. |
+| Jade | Apply Slowness V for 3.20 seconds on hit. | Apply Slowness V for 6.00 seconds on hit. | Apply Slowness V for 10.65 seconds on hit. |
 
 ### Levitation Hit (Taifunite)
 
@@ -1395,11 +1407,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Levitation III for 1.60 seconds | On hit: Levitation III for 3.00 seconds | On hit: Levitation III for 5.35 seconds |
-| Ruby | On hit: Levitation III for 1.60 seconds | On hit: Levitation III for 3.00 seconds | On hit: Levitation III for 5.35 seconds |
-| Amber | On hit: Levitation III for 1.60 seconds | On hit: Levitation III for 3.00 seconds | On hit: Levitation III for 5.35 seconds |
-| Amethyst | On hit: Levitation III for 1.75 seconds | On hit: Levitation III for 3.00 seconds | On hit: Levitation III for 4.60 seconds |
-| Jade | On hit: Levitation IV for 2.15 seconds | On hit: Levitation IV for 4.00 seconds | On hit: Levitation IV for 7.10 seconds |
+| None (base) | Apply Levitation III for 1.60 seconds on hit. | Apply Levitation III for 3.00 seconds on hit. | Apply Levitation III for 5.35 seconds on hit. |
+| Ruby | Apply Levitation III for 1.60 seconds on hit. | Apply Levitation III for 3.00 seconds on hit. | Apply Levitation III for 5.35 seconds on hit. |
+| Amber | Apply Levitation III for 1.60 seconds on hit. | Apply Levitation III for 3.00 seconds on hit. | Apply Levitation III for 5.35 seconds on hit. |
+| Amethyst | Apply Levitation III for 1.75 seconds on hit. | Apply Levitation III for 3.00 seconds on hit. | Apply Levitation III for 4.60 seconds on hit. |
+| Jade | Apply Levitation IV for 2.15 seconds on hit. | Apply Levitation IV for 4.00 seconds on hit. | Apply Levitation IV for 7.10 seconds on hit. |
 
 ### Wither Hit (Vulnusium)
 
@@ -1407,11 +1419,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Wither II for 4.80 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 16.00 seconds |
-| Ruby | On hit: Wither II for 4.80 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 16.00 seconds |
-| Amber | On hit: Wither II for 4.80 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 16.00 seconds |
-| Amethyst | On hit: Wither II for 5.30 seconds | On hit: Wither II for 9.00 seconds | On hit: Wither II for 13.85 seconds |
-| Jade | On hit: Wither III for 5.35 seconds | On hit: Wither III for 10.00 seconds | On hit: Wither III for 17.80 seconds |
+| None (base) | Apply Wither II for 4.80 seconds on hit. | Apply Wither II for 9.00 seconds on hit. | Apply Wither II for 16.00 seconds on hit. |
+| Ruby | Apply Wither II for 4.80 seconds on hit. | Apply Wither II for 9.00 seconds on hit. | Apply Wither II for 16.00 seconds on hit. |
+| Amber | Apply Wither II for 4.80 seconds on hit. | Apply Wither II for 9.00 seconds on hit. | Apply Wither II for 16.00 seconds on hit. |
+| Amethyst | Apply Wither II for 5.30 seconds on hit. | Apply Wither II for 9.00 seconds on hit. | Apply Wither II for 13.85 seconds on hit. |
+| Jade | Apply Wither III for 5.35 seconds on hit. | Apply Wither III for 10.00 seconds on hit. | Apply Wither III for 17.80 seconds on hit. |
 
 ### Hunger Hit (Overgrown / Lush)
 
@@ -1419,11 +1431,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Hunger IV for 5.35 seconds | On hit: Hunger IV for 10.00 seconds | On hit: Hunger IV for 17.80 seconds |
-| Ruby | On hit: Hunger IV for 5.35 seconds | On hit: Hunger IV for 10.00 seconds | On hit: Hunger IV for 17.80 seconds |
-| Amber | On hit: Hunger IV for 5.35 seconds | On hit: Hunger IV for 10.00 seconds | On hit: Hunger IV for 17.80 seconds |
-| Amethyst | On hit: Hunger IV for 5.90 seconds | On hit: Hunger IV for 10.00 seconds | On hit: Hunger IV for 15.40 seconds |
-| Jade | On hit: Hunger V for 5.85 seconds | On hit: Hunger V for 11.00 seconds | On hit: Hunger V for 19.55 seconds |
+| None (base) | Apply Hunger IV for 5.35 seconds on hit. | Apply Hunger IV for 10.00 seconds on hit. | Apply Hunger IV for 17.80 seconds on hit. |
+| Ruby | Apply Hunger IV for 5.35 seconds on hit. | Apply Hunger IV for 10.00 seconds on hit. | Apply Hunger IV for 17.80 seconds on hit. |
+| Amber | Apply Hunger IV for 5.35 seconds on hit. | Apply Hunger IV for 10.00 seconds on hit. | Apply Hunger IV for 17.80 seconds on hit. |
+| Amethyst | Apply Hunger IV for 5.90 seconds on hit. | Apply Hunger IV for 10.00 seconds on hit. | Apply Hunger IV for 15.40 seconds on hit. |
+| Jade | Apply Hunger V for 5.85 seconds on hit. | Apply Hunger V for 11.00 seconds on hit. | Apply Hunger V for 19.55 seconds on hit. |
 
 ### Weakness Hit (Morsium)
 
@@ -1431,11 +1443,11 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Weakness IV for 2.65 seconds | On hit: Weakness IV for 5.00 seconds | On hit: Weakness IV for 8.90 seconds |
-| Ruby | On hit: Weakness IV for 2.65 seconds | On hit: Weakness IV for 5.00 seconds | On hit: Weakness IV for 8.90 seconds |
-| Amber | On hit: Weakness IV for 2.65 seconds | On hit: Weakness IV for 5.00 seconds | On hit: Weakness IV for 8.90 seconds |
-| Amethyst | On hit: Weakness IV for 2.95 seconds | On hit: Weakness IV for 5.00 seconds | On hit: Weakness IV for 7.70 seconds |
-| Jade | On hit: Weakness V for 3.20 seconds | On hit: Weakness V for 6.00 seconds | On hit: Weakness V for 10.65 seconds |
+| None (base) | Apply Weakness IV for 2.65 seconds on hit. | Apply Weakness IV for 5.00 seconds on hit. | Apply Weakness IV for 8.90 seconds on hit. |
+| Ruby | Apply Weakness IV for 2.65 seconds on hit. | Apply Weakness IV for 5.00 seconds on hit. | Apply Weakness IV for 8.90 seconds on hit. |
+| Amber | Apply Weakness IV for 2.65 seconds on hit. | Apply Weakness IV for 5.00 seconds on hit. | Apply Weakness IV for 8.90 seconds on hit. |
+| Amethyst | Apply Weakness IV for 2.95 seconds on hit. | Apply Weakness IV for 5.00 seconds on hit. | Apply Weakness IV for 7.70 seconds on hit. |
+| Jade | Apply Weakness V for 3.20 seconds on hit. | Apply Weakness V for 6.00 seconds on hit. | Apply Weakness V for 10.65 seconds on hit. |
 
 ### Darkness Hit (Pulsite)
 
@@ -1443,10 +1455,15 @@ The tables below expand that template into the actual English item descriptions 
 
 | Gemstone | Dagger tooltip | Claymore tooltip | Axe tooltip |
 | --- | --- | --- | --- |
-| None (base) | On hit: Darkness VI for 3.75 seconds | On hit: Darkness VI for 7.00 seconds | On hit: Darkness VI for 12.45 seconds |
-| Ruby | On hit: Darkness VI for 3.75 seconds | On hit: Darkness VI for 7.00 seconds | On hit: Darkness VI for 12.45 seconds |
-| Amber | On hit: Darkness VI for 3.75 seconds | On hit: Darkness VI for 7.00 seconds | On hit: Darkness VI for 12.45 seconds |
-| Amethyst | On hit: Darkness VI for 4.10 seconds | On hit: Darkness VI for 7.00 seconds | On hit: Darkness VI for 10.75 seconds |
-| Jade | On hit: Darkness VII for 4.25 seconds | On hit: Darkness VII for 8.00 seconds | On hit: Darkness VII for 14.20 seconds |
+| None (base) | Apply Darkness VI for 3.75 seconds on hit. | Apply Darkness VI for 7.00 seconds on hit. | Apply Darkness VI for 12.45 seconds on hit. |
+| Ruby | Apply Darkness VI for 3.75 seconds on hit. | Apply Darkness VI for 7.00 seconds on hit. | Apply Darkness VI for 12.45 seconds on hit. |
+| Amber | Apply Darkness VI for 3.75 seconds on hit. | Apply Darkness VI for 7.00 seconds on hit. | Apply Darkness VI for 12.45 seconds on hit. |
+| Amethyst | Apply Darkness VI for 4.10 seconds on hit. | Apply Darkness VI for 7.00 seconds on hit. | Apply Darkness VI for 10.75 seconds on hit. |
+| Jade | Apply Darkness VII for 4.25 seconds on hit. | Apply Darkness VII for 8.00 seconds on hit. | Apply Darkness VII for 14.20 seconds on hit. |
 
 Anger of Zeus waves now strike from the outermost occupied band toward the player. After the enemy strikes and chains finish, Lightning Rod on the casting weapon or a valid matching dual-wield partner adds a player-only lightning strike, granting its usual buffs.
+
+
+Documentation refreshed from final in-game component snapshots. Numeric damage examples use the first eligible weapon listed in registry order; the actual tooltip computes values for the hovered weapon.
+
+Cards use compact previews to fit the augmentation table. Hovering a card shows the complete reviewed description and all upgrade changes. Item descriptions retain the approved wording and colors.

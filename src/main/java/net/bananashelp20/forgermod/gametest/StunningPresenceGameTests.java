@@ -31,8 +31,8 @@ public class StunningPresenceGameTests {
                 var white=new StringBuilder();
                 text.visit((style,part)->{if(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
                 String pulse=new java.math.BigDecimal(Math.round(40-(rank-1)*20F/3)).divide(java.math.BigDecimal.valueOf(20)).stripTrailingZeros().toPlainString();
-                test.assertTrue(text.getString().equals("Create an area (10 blocks radius) around you where you stun every entity for a short time every "+pulse+" seconds."),"Wrong current aura description: "+text.getString());
-                test.assertTrue(white.toString().equals("10 blocks radius"+pulse+" seconds"),"Wrong aura highlights: "+white);
+                test.assertTrue(text.getString().equals(compact?"Stun other living entities within 10 blocks every "+pulse+" s.":"Create an area (10 blocks radius) around you where you stun every entity for a short time every "+pulse+" seconds."),"Wrong current aura description: "+text.getString());
+                test.assertTrue(white.toString().equals(compact?"10 blocks"+pulse+" s":"10 blocks radius"+pulse+" seconds"),"Wrong aura highlights: "+white);
             }
         }
         test.assertTrue(count==5,"Skipped aura variants");test.succeed();

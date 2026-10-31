@@ -72,7 +72,9 @@ public class NecromancerGameTests {
         try{
             var menu=new NecromancerMenu(1,player.getInventory(),player.getInventory().selected);
             test.assertTrue(menu.selected()==0 && menu.rosterSize()==2 && menu.slots.size()==42 && menu.getSlot(0).getItem()==sword,"Default selection, six equipment slots or inventory layout wrong");
-            test.assertTrue(menu.getSlot(0).x==9 && menu.getSlot(1).y==8 && menu.getSlot(5).x==57 && menu.getSlot(6).y==84 && menu.getSlot(33).y==142,"Slots do not align with redesigned texture");
+            int[][] equipmentCenters={{10,26},{34,8},{34,26},{34,44},{34,62},{58,26}};
+            for(int index=0;index<equipmentCenters.length;index++)test.assertTrue(menu.getSlot(index).x==equipmentCenters[index][0] && menu.getSlot(index).y==equipmentCenters[index][1],"Equipment item/empty icon does not align with texture interior for slot "+index);
+            test.assertTrue(menu.getSlot(6).y==84 && menu.getSlot(33).y==142,"Player inventory layout moved");
             test.assertTrue(menu.clickMenuButton(player,11) && menu.getSlot(0).getItem()==bow && menu.getSlot(5).getItem()==shield,"Selection does not expose correct hand items");
             test.assertFalse(menu.clickMenuButton(player,200),"Forged selection appends without opening picker");
             test.assertTrue(menu.clickMenuButton(player,1) && menu.picking() && bank.types.equals(List.of(0,1)),"Add mutates roster before a mob is chosen");

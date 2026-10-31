@@ -1,0 +1,618 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "steel": "forgermod:block/steel_block",
+    "carbon": "forgermod:block/carbon_steel_block",
+    "housing": "minecraft:block/netherite_block",
+    "anvil": "minecraft:block/anvil",
+    "ceramic": "forgermod:block/steel_block",
+    "blue": "minecraft:block/blue_concrete",
+    "energy": "minecraft:block/sea_lantern",
+    "gem": "forgermod:item/gemstones/sapphire_gemstone",
+    "furnace": "minecraft:block/blast_furnace_front",
+    "vent": "minecraft:block/blast_furnace_side",
+    "particle": "forgermod:block/carbon_steel_block"
+  },
+  "elements": [
+    {
+      "name": "luminous_rune_stem",
+      "from": [
+        7.75,
+        0.625,
+        1.2
+      ],
+      "to": [
+        8.25,
+        0.8125,
+        2.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_bar",
+      "from": [
+        7.3,
+        0.625,
+        1.8
+      ],
+      "to": [
+        8.7,
+        0.8125,
+        2.2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_stem",
+      "from": [
+        13.75,
+        0.625,
+        7.2
+      ],
+      "to": [
+        14.25,
+        0.8125,
+        8.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_bar",
+      "from": [
+        13.3,
+        0.625,
+        7.8
+      ],
+      "to": [
+        14.7,
+        0.8125,
+        8.2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_stem",
+      "from": [
+        7.75,
+        0.625,
+        13.2
+      ],
+      "to": [
+        8.25,
+        0.8125,
+        14.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_bar",
+      "from": [
+        7.3,
+        0.625,
+        13.8
+      ],
+      "to": [
+        8.7,
+        0.8125,
+        14.2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_stem",
+      "from": [
+        1.75,
+        0.625,
+        7.2
+      ],
+      "to": [
+        2.25,
+        0.8125,
+        8.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "luminous_rune_bar",
+      "from": [
+        1.3,
+        0.625,
+        7.8
+      ],
+      "to": [
+        2.7,
+        0.8125,
+        8.2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#energy",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

@@ -23,6 +23,7 @@ import java.util.List;
 @EventBusSubscriber(modid = ForgerMod.MOD_ID)
 public class IgnisiumWeapon extends SwordItemWithEffect {
     public static final String PYROMANIAC = "tooltips.forgermod.ability.pyromaniac";
+    public static int pyromaniacHealing(int rank) { return net.bananashelp20.forgermod.augmentation.ReviewedRanks.at(rank,1,2,4,6); }
     public static Holder<MobEffect> effect = MobEffects.GLOWING;
     public static int durationInTicks = 2000;
     public static int effectAmplifier = 1;
@@ -63,12 +64,13 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
                 || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity player)
                 || !player.isAlive() || player.isSpectator() || player.getRemainingFireTicks() <= 0
                 || !(player.getMainHandItem().getItem() instanceof IgnisiumWeapon weapon) || !weapon.isDagger()) return;
-        boolean learned = Augmentations.hasPassive(player.getMainHandItem(), PYROMANIAC);
-        if (net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player))
-            learned |= Augmentations.hasPassive(player.getOffhandItem(), PYROMANIAC);
-        if (learned) {
+        int rank = Augmentations.hasPassive(player.getMainHandItem(), PYROMANIAC) ? Augmentations.level(player.getMainHandItem(), PYROMANIAC) : 0;
+        if (net.bananashelp20.forgermod.item.custom.attacks.dagger.DaggerItems.hasMatchingDaggers(player)
+                && Augmentations.hasPassive(player.getOffhandItem(), PYROMANIAC))
+            rank = Math.max(rank, Augmentations.level(player.getOffhandItem(), PYROMANIAC));
+        if (rank > 0) {
             player.clearFire();
-            player.heal(2.0F);
+            player.heal(pyromaniacHealing(rank));
         }
     }
 

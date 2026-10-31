@@ -3,6 +3,7 @@ package net.bananashelp20.forgermod.screen.custom;
 import net.bananashelp20.forgermod.ForgerMod;
 import net.bananashelp20.forgermod.item.custom.abilities.NecromancerCatalog;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -15,7 +16,15 @@ import java.util.*;
 /** Two pages of the same server menu: selected equipment/roster, then an explicit add picker. */
 public final class NecromancerScreen extends AbstractContainerScreen<NecromancerMenu> {
     private static final ResourceLocation BACKGROUND=ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID,"textures/gui/necromancer-selection/necromancer_gui.png");
-    private static final int ROWS=3;
+    private static final int ROWS=3,PICKER_HEIGHT=196;
+    private int pickerLeft,pickerTop,pickerWidth;
+    private static final class RemoveButton extends Button {
+        private RemoveButton(Builder builder){super(builder);}
+        @Override public void renderString(GuiGraphics graphics,Font font,int color){
+            int x=getX()+(getWidth()-5)/2,y=getY()+(getHeight()-1)/2;
+            graphics.fill(x,y,x+5,y+1,color);
+        }
+    }
     private final List<Button> roster=new ArrayList<>(),remove=new ArrayList<>(),choices=new ArrayList<>();
     private Button add,back;private int scroll,lastSelected=-1;private boolean dragging,lastPicking;
     public NecromancerScreen(NecromancerMenu menu,Inventory inventory,Component title){super(menu,inventory,title);imageWidth=176;imageHeight=166;}
@@ -23,19 +32,23 @@ public final class NecromancerScreen extends AbstractContainerScreen<Necromancer
     private void action(int id){if(minecraft!=null && minecraft.gameMode!=null)minecraft.gameMode.handleInventoryButtonClick(menu.containerId,id);}
     @Override protected void init(){
         super.init();roster.clear();remove.clear();choices.clear();dragging=false;
+        int longest=NecromancerCatalog.CHOICES.stream().mapToInt(choice->font.width(choice.type().getDescription())).max().orElse(0);
+        pickerWidth=Math.min(Math.max(176,width-16),Math.max(280,2*longest+48));
+        pickerLeft=(width-pickerWidth)/2;pickerTop=(height-PICKER_HEIGHT)/2;
+        int choiceWidth=(pickerWidth-24)/2;
         for(int row=0;row<ROWS;row++){
             final int visible=row;
             roster.add(addRenderableWidget(Button.builder(Component.empty(),button->action(10+scroll+visible)).bounds(leftPos+83,topPos+9+18*row,61,17).build()));
-            remove.add(addRenderableWidget(Button.builder(Component.literal("-"),button->action(300+scroll+visible)).bounds(leftPos+145,topPos+9+18*row,13,17).tooltip(Tooltip.create(text("remove"))).build()));
+            remove.add(addRenderableWidget(Button.builder(text("remove"),button->action(300+scroll+visible)).bounds(leftPos+145,topPos+9+18*row,13,17).tooltip(Tooltip.create(text("remove"))).build(RemoveButton::new)));
         }
         add=addRenderableWidget(Button.builder(text("add"),button->action(1)).bounds(leftPos+83,topPos+66,83,12).build());
         for(int i=0;i<NecromancerCatalog.CHOICES.size();i++){
             final int type=i;var choice=NecromancerCatalog.CHOICES.get(i);
-            choices.add(addRenderableWidget(Button.builder(Component.literal(font.plainSubstrByWidth(choice.type().getDescription().getString(),68)),button->action(200+type))
-                    .bounds(leftPos+8+(i%2)*80,topPos+10+(i/2)*21,76,20)
+            choices.add(addRenderableWidget(Button.builder(choice.type().getDescription(),button->action(200+type))
+                    .bounds(pickerLeft+8+(i%2)*(choiceWidth+8),pickerTop+25+(i/2)*21,choiceWidth,20)
                     .tooltip(Tooltip.create(text("choice",choice.type().getDescription(),choice.cost()))).build()));
         }
-        back=addRenderableWidget(Button.builder(Component.translatable("gui.back"),button->action(3)).bounds(leftPos+8,topPos+155,160,20).build());refresh();
+        back=addRenderableWidget(Button.builder(Component.translatable("gui.back"),button->action(3)).bounds(pickerLeft+8,pickerTop+170,pickerWidth-16,20).build());refresh();
     }
     private int maxScroll(){return Math.max(0,menu.rosterSize()-ROWS);}
     private void refresh(){
@@ -44,7 +57,7 @@ public final class NecromancerScreen extends AbstractContainerScreen<Necromancer
         for(int row=0;row<ROWS;row++){
             int index=scroll+row,type=menu.type(index);var button=roster.get(row);button.visible=!picking && type>=0;button.active=button.visible;
             remove.get(row).visible=button.visible;
-            if(type>=0){var name=NecromancerCatalog.CHOICES.get(type).type().getDescription();button.setMessage(Component.literal(font.plainSubstrByWidth((index+1)+". "+name.getString(),55)));button.setTooltip(Tooltip.create(name));}
+            if(type>=0){var name=NecromancerCatalog.CHOICES.get(type).type().getDescription();button.setMessage(name);button.setTooltip(Tooltip.create(name));}
         }
         add.visible=!picking;add.active=menu.used()<menu.capacity() && menu.rosterSize()<NecromancerCatalog.MAX_ENTRIES && menu.getCarried().isEmpty();
         add.setTooltip(Tooltip.create(text("capacity",menu.used(),menu.capacity())));
@@ -65,9 +78,9 @@ public final class NecromancerScreen extends AbstractContainerScreen<Necromancer
     }
     @Override protected void renderBg(GuiGraphics graphics,float partial,int mouseX,int mouseY){
         if(menu.picking()){
-            panel(graphics,leftPos,topPos-15,176,196);
-            graphics.drawString(font,text("choose"),leftPos+(176-font.width(text("choose")))/2,topPos-7,0x404040,false);
-            graphics.drawString(font,text("capacity",menu.used(),menu.capacity()),leftPos+8,topPos+140,0x404040,false);
+            panel(graphics,pickerLeft,pickerTop,pickerWidth,PICKER_HEIGHT);
+            graphics.drawString(font,text("choose"),pickerLeft+(pickerWidth-font.width(text("choose")))/2,pickerTop+8,0x404040,false);
+            graphics.drawString(font,text("capacity",menu.used(),menu.capacity()),pickerLeft+8,pickerTop+155,0x404040,false);
         }else{
             graphics.blit(BACKGROUND,leftPos,topPos,0,0,imageWidth,imageHeight,256,256);
             graphics.fill(leftPos+160,topPos+9,leftPos+166,topPos+63,0xFF373737);
@@ -88,6 +101,10 @@ public final class NecromancerScreen extends AbstractContainerScreen<Necromancer
                     graphics.renderTooltip(font,!menu.equipmentUnlocked()?text("locked"):menu.rosterSize()==0?text("select"):text("slot."+i),mouseX,mouseY);
             }
         }
+    }
+    @Override protected boolean hasClickedOutside(double x,double y,int left,int top,int button){
+        if(menu.picking())return x<pickerLeft || y<pickerTop || x>=pickerLeft+pickerWidth || y>=pickerTop+PICKER_HEIGHT;
+        return super.hasClickedOutside(x,y,left,top,button);
     }
     @Override public boolean mouseScrolled(double x,double y,double horizontal,double vertical){
         if(!menu.picking() && x>=leftPos+81 && x<leftPos+168 && y>=topPos+7 && y<topPos+65){scroll=Math.clamp(scroll-(int)Math.signum(vertical),0,maxScroll());refresh();return true;}

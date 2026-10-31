@@ -141,6 +141,7 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> INFUSION_TABLE = registerBlock("infusion_table",
             () -> new InfusionTableBlock(BlockBehaviour.Properties.of()
+                    .noOcclusion() // Inset cabinet/plinth must not hide the floor around its edges.
                     .strength(45f, 50)
                     .sound(SoundType.NETHERITE_BLOCK)
 //                    .lightLevel(state -> state.getValue(ForgeBlock.LIT) ? 10 : 0)

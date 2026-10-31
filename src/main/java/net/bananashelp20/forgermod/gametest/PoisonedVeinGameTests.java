@@ -55,6 +55,10 @@ public class PoisonedVeinGameTests {
                 if(color==net.minecraft.ChatFormatting.GRAY.getColor())gray.append(part);
                 return java.util.Optional.<Void>empty();
             },net.minecraft.network.chat.Style.EMPTY);
+            if(compact) {
+                test.assertTrue(text.getString().equals("Next dagger kill: 5-second cloud within 3 blocks. Poisons others for "+(jade?31:30)+" s."),"Wrong compact poison cloud summary");
+                test.assertTrue(white.toString().equals(jade?"":"30 s") && green.toString().equals(jade?"31 s":""),"Compact poison duration/color wrong");continue;
+            }
             test.assertTrue(text.getString().equals("Your next dagger kill leaves a 5-second cloud. Everyone besides you within 3 blocks receives Poison "+(jade?"II for 31":"I for 30")+" seconds."),"Poisoned Vein does not use approved current wording");
             test.assertTrue(white.toString().equals(jade?"":"30 seconds") && green.toString().equals(jade?"Poison II31 seconds":""),"Poison effect/duration conditional colors are wrong");
             test.assertTrue(gray.toString().contains("5-second cloud") && gray.toString().contains("3 blocks") && gray.toString().contains(" for "),"Unannotated prose or for lost its gray style");

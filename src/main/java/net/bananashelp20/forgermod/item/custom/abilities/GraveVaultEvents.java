@@ -71,16 +71,7 @@ public final class GraveVaultEvents {
    if(event.getEntity() instanceof ServerPlayer player) open(player);
    event.setCanceled(true); event.setCancellationResult(InteractionResult.SUCCESS); return;
   }
-  if(!(event.getEntity() instanceof ServerPlayer player)) return;
-  var weapon=player.getMainHandItem(); var storage=storage(player,weapon);
-  for(int i=0;i<9;i++) { var stack=storage.getItem(i); if(stack.isEmpty()) continue;
-   // UseOnContext uses the held weapon by default; override only the placement item.
-   var context=new UseOnContext(player,event.getHand(),event.getHitVec()) { @Override public ItemStack getItemInHand() { return stack; } };
-   var placement=new net.minecraft.world.item.context.BlockPlaceContext(context);
-   if(!player.level().mayInteract(player,placement.getClickedPos()) || !player.mayUseItemAt(placement.getClickedPos(),placement.getClickedFace(),stack)) continue;
-   var result=placeFlower(context);
-   if(result.consumesAction()) { save(player,weapon,storage); event.setCanceled(true); event.setCancellationResult(result); return; }
-  }
+
  }
  @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
  public static void onKill(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {

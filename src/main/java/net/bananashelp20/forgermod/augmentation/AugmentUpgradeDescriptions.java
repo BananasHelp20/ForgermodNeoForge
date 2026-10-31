@@ -106,6 +106,7 @@ public final class AugmentUpgradeDescriptions {
         boolean template = Augmentations.isTemplate(stack);
         int jadeTicks = JadeAugments.isJade(stack) ? 20 : 0;
         switch (id) {
+            case AdditionalAbilities.ALTERNATING_CURRENT -> numeric(stats,"damage",net.bananashelp20.forgermod.item.custom.abilities.AlternatingCurrentEvents.damage(rank),"damage");
             case AdditionalAbilities.THUNDERCLAP -> {
                 numeric(stats,"dash_speed",net.bananashelp20.forgermod.item.custom.abilities.ThunderclapEvents.speed(rank)*20,"blocks_per_second");
                 numeric(stats,"range",20,"blocks");
@@ -121,6 +122,19 @@ public final class AugmentUpgradeDescriptions {
                 numeric(stats,"radius",ReviewedRanks.stormRadius(rank),"blocks");
                 seconds(stats,"duration",ReviewedRanks.stormTicks(rank)+jadeTicks);
             }
+            case net.bananashelp20.forgermod.item.custom.IgnisiumWeapon.PYROMANIAC -> numeric(stats,"healing",
+                    net.bananashelp20.forgermod.item.custom.IgnisiumWeapon.pyromaniacHealing(rank),"hp");
+            case AdditionalAbilities.PHOTOSYNTHESIS -> numeric(stats,"durability_restored",
+                    net.bananashelp20.forgermod.item.custom.abilities.PhotosynthesisEvents.restoredDurability(rank),"durability");
+            case "tooltips.forgermod.passive.revenge" -> numeric(stats,"damage_bonus",
+                    net.bananashelp20.forgermod.item.custom.abilities.RevengeDamage.bonusPercent(rank),"percent");
+            case AdditionalAbilities.UNFINISHED_DREAM -> numeric(stats,"healing",
+                    net.bananashelp20.forgermod.item.custom.abilities.UnfinishedDreamEvents.healing(rank),"hp");
+            case AdditionalAbilities.SLEEPWALKER -> numeric(stats,"damage_bonus",
+                    net.bananashelp20.forgermod.item.custom.abilities.AdditionalPassiveEvents.sleepwalkerBonusPercent(rank),"percent");
+            case RecommendedAbilities.NETHER_BORN -> numeric(stats,"damage_bonus",
+                    net.bananashelp20.forgermod.item.custom.abilities.NetherBornEvents.bonusPercent(rank),"percent");
+            case AdditionalAbilities.LAST_STAND -> seconds(stats,"cooldown",net.bananashelp20.forgermod.item.custom.abilities.LastStandEvents.cooldownTicks(rank));
             case AdditionalAbilities.DEATHS_DUE -> numeric(stats,"experience_bonus",
                     net.bananashelp20.forgermod.item.custom.abilities.DeathsDueEvents.bonusPercent(rank),"percent");
             case "tooltips.forgermod.passive.death_march" -> numeric(stats,"max_damage_bonus",
@@ -144,6 +158,10 @@ public final class AugmentUpgradeDescriptions {
             }
             case "tooltips.forgermod.ability.sonic_crit" -> numeric(stats,"max_health_bonus",
                     net.bananashelp20.forgermod.item.custom.abilities.SonicCritState.percentage(rank),"percent");
+            case AdditionalAbilities.ECHO_APPETITE -> {
+                numeric(stats,"sculk_hunger_multiplier",EchoAppetiteValues.multiplier(rank),"hunger_multiplier");
+                numeric(stats,"warden_hunger",EchoAppetiteValues.wardenFood(rank)/2,"hunger_bars");
+            }
             case AdditionalAbilities.DREAM_FEAST, AdditionalAbilities.GREEN_FEAST -> numeric(stats,"food",ReviewedRanks.foodPoints(rank),"food_points");
             case RecommendedAbilities.DELUSION -> seconds(stats,"duration",ReviewedRanks.delusionTicks(rank));
             case AdditionalAbilities.BLOOD_SACRAFICE -> seconds(stats,"duration",net.bananashelp20.forgermod.item.custom.abilities.SacrificeCost.durationTicks(rank));

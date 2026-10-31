@@ -12,6 +12,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 public final class LastStandEvents {
     public static final String COOLDOWN="forgermod_last_stand_cooldown";
     private LastStandEvents() {}
+    public static int cooldownTicks(int rank){return (150-30*Math.clamp(rank,1,3))*20;}
     @SubscribeEvent(priority=EventPriority.LOWEST)
     public static void damage(LivingDamageEvent.Pre event) {
         if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player) || !player.isAlive() || player.isSpectator() || player.getHealth()<=1
@@ -19,7 +20,8 @@ public final class LastStandEvents {
         long now=player.getServer().overworld().getGameTime();
         if(now<player.getPersistentData().getLong(COOLDOWN) || Math.max(0,event.getNewDamage()-player.getAbsorptionAmount())<player.getHealth()) return;
         // NeoForge 21.1.93 applies absorption AFTER this event. Consume it normally and leave one real HP.
-        event.setNewDamage(player.getHealth()-1+player.getAbsorptionAmount());player.getPersistentData().putLong(COOLDOWN,now+2400);
+        event.setNewDamage(player.getHealth()-1+player.getAbsorptionAmount());player.getPersistentData().putLong(COOLDOWN,now+cooldownTicks(Augmentations.level(
+                PassiveActors.weapon(player,AdditionalAbilities.LAST_STAND),AdditionalAbilities.LAST_STAND)));
         PassiveActors.level(player).sendParticles(ParticleTypes.SOUL,player.getX(),player.getY()+1,player.getZ(),24,.4,.5,.4,.03);
         PassiveActors.level(player).playSound(null,player.blockPosition(),SoundEvents.TOTEM_USE,player.getSoundSource(),.7F,1);
     }

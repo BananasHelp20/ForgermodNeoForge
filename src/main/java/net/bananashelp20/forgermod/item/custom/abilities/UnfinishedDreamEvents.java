@@ -23,6 +23,7 @@ import java.util.WeakHashMap;
 public final class UnfinishedDreamEvents {
     private static final Map<LivingEntity,Set<UUID>> INJURED=new WeakHashMap<>();
     private UnfinishedDreamEvents() {}
+    public static int healing(int rank) { return 2*Math.clamp(rank,1,3); }
     @SubscribeEvent
     public static void damaged(LivingDamageEvent.Post event) {
         if(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player
@@ -40,7 +41,7 @@ public final class UnfinishedDreamEvents {
         boolean enemy=victim!=player && !victim.isAlliedTo(player) && (victim instanceof Enemy
                 || victim instanceof Mob mob && mob.getTarget()==player
                 || victim instanceof Player other && PassiveActors.owner(player).server.isPvpAllowed() && PassiveActors.owner(player).canHarmPlayer(other));
-        if(enemy && (injured==null || !injured.contains(player.getUUID()))) player.heal(1);
+        if(enemy && (injured==null || !injured.contains(player.getUUID()))) player.heal(healing(Augmentations.level(PassiveActors.weapon(player,AdditionalAbilities.UNFINISHED_DREAM),AdditionalAbilities.UNFINISHED_DREAM)));
     }
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {

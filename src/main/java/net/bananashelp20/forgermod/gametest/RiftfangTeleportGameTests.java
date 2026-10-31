@@ -142,7 +142,7 @@ public class RiftfangTeleportGameTests {
                 for(boolean compact:new boolean[]{false,true}) {
                     var text=net.bananashelp20.forgermod.augmentation.AbilityDescriptions.description(main,id,1,compact);var white=new StringBuilder();
                     text.visit((style,part)->{if(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.WHITE.getColor())white.append(part);return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
-                    test.assertTrue(text.getString().equals("On activation, teleport 5 blocks in the direction you look. Having this ability on both daggers in dual wield doubles the range.") && white.toString().equals("5 blocks"),"Void Step description does not show the approved base range and doubling rule");
+                    test.assertTrue(text.getString().equals(compact?"Blink 5 blocks in your view direction. Both daggers need this ability to double range.":"On activation, teleport 5 blocks in the direction you look. Having this ability on both daggers in dual wield doubles the range.") && white.toString().equals("5 blocks"),"Void Step description does not show the approved base range and doubling rule");
                 }
             }
             var missing=player(test,item,offItem,-45);missing.setItemInHand(InteractionHand.MAIN_HAND,net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(item),net.bananashelp20.forgermod.augmentation.Augmentations.DUAL_WIELD));missing.setItemInHand(InteractionHand.OFF_HAND,net.bananashelp20.forgermod.augmentation.Augmentations.apply(new ItemStack(offItem),id));

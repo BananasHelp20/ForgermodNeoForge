@@ -281,6 +281,10 @@
 
 - Learned super-ability names now appear in legendary gold with one animated obfuscated character on each side, including weapon/template tooltips, augmentation cards, anvil prompts and command feedback. Ordinary ability names and gray rank/key text retain their formatting; rejected cards remain muted.
 
+- Moved the closing obfuscated glyph on super active-ability tooltip lines after the keybinding: obfuscated glyph, name/rank, [configured key], obfuscated glyph. Names remain gold; ranks, punctuation and keybindings remain gray and readable.
+
+- All 135 special-material claymores, axes and daggers now display legendary-gold item names, including every gemstone variant and renamed/enchanted stacks. Applies to resolved item names in tooltips, hotbar labels and item links.
+
 - Buffed Ender Swing radius from 1 to 3 blocks at level I, retaining the 3-block radius on its upgraded rank. Updated its sweep particle ring and current-rank/learning descriptions to match.
 
 - Soul Hunger absorption now expires after 10 continuous seconds without the passive equipped. Reequipping before expiry cancels removal; later switches start a fresh grace period, and returning after expiry does not restore spent/expired hearts. Other absorption sources remain intact. Matching dual daggers also recognize Soul Hunger on the offhand dagger.
@@ -391,6 +395,15 @@
 
 - Crucible grapple acceleration buff: block grappling now adds 0.45 blocks/tick of pull velocity per tick instead of 0.12 (3.75x acceleration), reaching its existing 2.5-block/tick speed cap much sooner. Release retains momentum.
 
+- Augmentation workbench redesign: replaced the dark stone/brass pedestal with a compact forged-metal, silver, ivory ceramic and sapphire machine housing, cooling vents, power cells, alignment bed and four focus mounts.
+- Augmentation workbench redesign: added two counter-rotating focus rings, pulsing cyan runes, a hovering sapphire core and a floating display of the inserted/finished weapon. Crafting smoothly increases rotation and hover activity; an obstructing ceiling retracts the upper display. Existing enchanting particles and GUI workflow remain.
+- Augmentation workbench redesign: synchronize only cosmetic phase and weapon changes to nearby clients, with separate packet handling that preserves GUI slots, offers, progress and inventory. Chunk loading/reloading supplies the current visual state.
+- Augmentation workbench redesign: simplified physical collision to three boxes; floating hardware is decorative. Reuse baked models and vanilla/existing textures, limit moving details to 32-block render distance, and spawn no decorative entities.
+
+- Necromancer UI alignment: centered equipment items and empty armor/shield previews inside the texture slots by moving the six equipment slot origins one pixel right.
+- Necromancer UI alignment: roster rows show reinforcement names without numbered prefixes or permanent text truncation; remove buttons use a geometrically centered minus.
+- Necromancer UI alignment: widened and independently centered the reinforcement picker, sized columns for complete localized names, retained full label text/native scrolling for unusually narrow screens, and matched its buttons/footer/outside-click bounds to the new panel.
+
 - Thunderclap faster chaining: removed the two extra idle ticks after each successful hit. The next target is acquired and its velocity dash begins on the first following tick, retaining confirmed-melee-before-lightning ordering.
 
 - Skull Throw explosion impact: replaced the bone-crack/soul-escape impact sounds with one explosion and one skeleton death sound, layered at the projectile impact point.
@@ -414,6 +427,8 @@
 - Static Field marked corners: two marks form a line; three/four marks close the current back to the first and fill a triangle/quadrilateral using every marked mob, including concave four-corner shapes.
 - Static Field marked corners: added bounded interior electrical shimmer to show the affected area. Degenerate marks cannot create a filled field; walls and existing timing/damage/stun rules remain.
 - Static Field marked corners: Direct Current/Static Field can mark all mobs, including allied reinforcements and pets, and affect neutral mobs in their wires/field; the caster and marked anchors retain their existing immunity. Updated descriptions and geometry/native particle tests.
+
+- Added the current work checklist to instructions.md; completion boxes require implementation, relevant tests and code review. Preserved existing instructions.
 
 - Absolute Nightmare cave activation: replaced the Elder Guardian curse with vanilla cave ambience at normal pitch.
 
@@ -494,6 +509,18 @@
 
 - Config screen translations: added readable labels and help text for all six mod settings, configuration headings and the item-list button, replacing raw forgermod.configuration keys. Unused example fields are identified honestly; saved keys, defaults and behavior are unchanged.
 
+- Documentation: recorded approved Magma Toss duration wording/color for the ongoing description review and advanced to Magnetic Throw; in-game text and mechanics remain unchanged pending the review.
+
+- Documentation: recorded approved Magnetic Throw description and advanced the review to Null Receipt; in-game wording and mechanics are unchanged pending the review.
+
+- Documentation: recorded approved Null Receipt wording and variable hit-count coloring; advanced to Pocket Storm without changing current game text or mechanics.
+
+- Documentation: recorded approved concise Pocket Storm wording and advanced to Poisoned Vein; in-game text and mechanics remain unchanged pending review.
+
+- Documentation: recorded approved Poisoned Vein conditional description colors and pending caster immunity; advanced to Ringing Steel. Gameplay and game wording remain unchanged until the remaining review is complete.
+
+- Documentation: recorded Ringing Steel wording and pending both-hand/rank-scaling changes; durability progression needs clarification. Advanced to Rooting Roots; game code/text remain unchanged during review.
+
 - Review 43 Magma Toss implemented: Applied approved full-word current-rank duration (3-7 seconds) in white for tooltip and card/upgrade values; burn duration, radius and cooldown unchanged. Updated existing native current-rank/style regression. User now requests direct implementation after each approval, superseding the review deferral. Build and all 421 required GameTests passed; reviewed.
 
 - Review 44 Magnetic Throw implemented: Applied the exact approved aim-and-activate wording in item and learning-card descriptions, preserving melee targeting range, launch velocity and cooldown. Build and all 421 required GameTests passed; existing unit tests rerun after review.
@@ -518,9 +545,19 @@
 
 - Review 54 Void Step implemented: Applied approved wording with the base10 blocks phrase white. Double range now requires valid matching dual-wield daggers and Void Step learned on both main and offhand; Dual Wield itself may be on either dagger. An unaugmented offhand no longer gives20-block range. Preserved seven-second base cooldown, camera behavior and surface/plant/obstruction handling. Updated all25 positive gem pairings and added both-augment/dual-wield/style checks. Build and all 431 required GameTests passed, reviewed and unit checks rerun. Workflow clarification: record wording-only changes for later; implement wording with requested gameplay changes. Item54 changes doubling eligibility, so both are applied now. Next55 Storing Anger.
 
+- Documentation: recorded annotated Storing Anger wording and first-duration coloring for later implementation; game code/text unchanged. Review advances to Strengthened Bones.
+
+- Documentation: recorded approved Strengthened Bones wording and duration coloring for later implementation; game code/text unchanged. Review advances to Strong-arm.
+
+- Recorded approved Strong-arm description wording for later implementation: white current percentage+"% chance"; no gameplay or in-game text change. Fully charged critical trigger and existing chances retained.
+
 - Recorded deferred approved wording for all nine material-hit effects, with white/Jade-green effect and duration phrases and gray connecting prose; no material-effect mechanics/text changed yet.
 
 - Review58 Stunning Presence implemented: approved description with current radius and pulse interval phrases white; corrected duplicated every. Targeting expanded to all other visible living entities, including allies, animals and players; caster remains unaffected. Preserved damage, 30-second duration, pulse/stun timing, range, sight blocking, particles and cooldowns. Native five-variant neutral targeting, allied pet/player/caster safety and cancel cleanup, all-rank compact/full text/style checks passed. Build and all433 required GameTests passed; code reviewed and unit checks rerun successfully. All nine material descriptions separately recorded for deferred wording-only implementation. Next59 Sudden Presence.
+
+- Recorded deferred Sudden Presence description wording with the full current range phrase white; no gameplay or in-game text change.
+
+- Recorded pending Sudden Presence range change: maximum40-block radius; per-rank progression awaiting user clarification before gameplay implementation.
 
 - Review59 Sudden Presence implemented: user confirmed seven regular levelsI-VII, no super form, with10/15/20/25/30/35/40-block radius. Applied approved description with only current range phrase white. Shared progression across targeting, tooltips and upgrade previews; cap7 applies to weapons, templates, commands, stored ranks and upgrade offers. I-II range reduced from20 to10/15; III remains20, IV increased to25 and V-VII newly available. Nearest hostile selection, safe behind-target landing and120-second cooldown retained. All five variant/seven-rank boundary and description/style/preview checks, template/command caps and safety passed; build and all434 required GameTests passed, reviewed and unit checks rerun. Committing/pushing before queued Warping Space implementation; review60 Swing Attack remains next after that task.
 
@@ -528,11 +565,35 @@
 - Debuff: regular Void Step I blinks5 rather than10 blocks (dual10 rather than20); II retains10/20. Buff: baseIII becomes15/30; formerIV enters Warping SpaceI with20/40, and further super ranks reach40/80 normal blink.
 - Addition: Warping Space Etherwarp onto aimed blocks;30/40/50/60 single range, doubled up to100 in dual wield, with independent45/40/35/30-second activation cooldown and portal particles.
 
+- Recorded deferred Swing Attack description wording with current numeric damage phrase white; no gameplay or in-game text changes.
+
+- Review61 Upwind: approved existing description and confirmed existing rank-scaled knockback/launch with matching preview; no gameplay/text changes.
+
+- Recorded deferred Vacuum Burst wording with white radius phrase. Verified existing radius increases6/8/10/12 blocks and cooldown decreases30/25/20/15 seconds; no gameplay/text change needed yet.
+
 - Review63 Void Pulse implemented: applied approved "Push living entities in a {blocks} block radius away from you." Full current radius phrase white, other prose gray. Expanded targeting from all mobs/hostile players to all other living entities including nonhostile players; caster, spectators and nonliving entities excluded. Shared current radius across gameplay/particles/text/previews; retained4/5/6/7 blocks, rank-scaled push, no damage, sight blocking, charge/release audio/particles, switching cancellation and cooldowns. All15 variants/ranks/compact-full component checks, native nonhostile-player impulse/no damage/caster-item safety and existing mob/resistance/charge regressions passed. Build and all440 required GameTests passed; code reviewed and unit checks rerun successfully. Next64 Windcharge.
+
+- Recorded deferred Windcharge description wording with white current launch height; no gameplay or in-game text change.
 
 - Review64a Skybreaker implemented: approved launch/landing-smash/fall-negation description with complete current height and radius phrases white; user clarified all entities means all other living entities. Falling mace bonus and landing smash now include allied/nonhostile players as well as all mobs; caster/spectators/nonliving targets excluded, vanilla damage protections preserved. Shared existing launch heights and5-block smash radius across runtime/text/previews. Preserved30-block super launch, fall-scaled damage and rank multipliers, next-landing protection, sight blocking, native mace sound/particles and cooldowns. All five axe variants/super ranks compact/full text/style checks and native allied-player direct bonus/landing damage/caster safety passed with prior ground-hit/miss/fall regressions. Build and all442 required GameTests passed; reviewed and unit checks rerun successfully. Base Windcharge review64 wording remains deferred. Next65 Windy Dash.
 
+- Recorded deferred Windy Dash wording: "Dash into the direction you look." No gameplay/in-game text change.
+
+- Recorded deferred Aftershock wording with dynamic white damage/delay phrases, gray after and conditional plural suffix; no gameplay/in-game text change.
+
 - Review67 Backstab implemented: approved "Deal {percent}% more damage from behind." with only current20% white, remaining prose gray. Expanded rear melee bonus to any living target, including passive/tamed mobs and allied players, preserving vanilla damage/PvP rules, rear angle, melee-only source and eligible40 dagger variants. Shared20-percent constant between runtime and current description. Kept Heavy Current, Conductive Edge, Sleepwalker and Charred Edge enemy restrictions intact. Native40-variant passive/tamed rear-hit and component checks, allied-player and Sleepwalker scope regressions passed alongside existing front/side/unlearned/secondary and reinforcement tests. Corrected cow fixture maximum HP before rerunning. Build and all444 required GameTests passed; reviewed and unit checks rerun successfully. Next68 Chain Lightning.
+
+- Recorded deferred Chain Lightning wording with current white chance and jump-count phrases; no gameplay/in-game text changes. Recorded expanded ability-review presentation and coloring directive for upcoming abilities.
+
+- Recorded accepted Charred Edge description proposal for later; current percentage white, target-condition effect gray; no gameplay/in-game text change.
+
+- Recorded accepted Cold Bellows description proposal for later, with white actual burn duration; no gameplay/in-game text change.
+
+- Recorded deferred Compost wording: "Eating rotten flesh doesn't give you the Hunger effect." Entirely gray, no gameplay/in-game text change.
+
+- Recorded deferred Conductive Edge wording with white current percentage; no gameplay/in-game text change.
+
+- Recorded accepted Daydreamer proposal for later with white/Jade-green applied effect name and amplifier; no gameplay/in-game text change.
 
 - Review74 Death March implemented: approved "Deal more damage depending on the targets health. Up to {maxPercent}% more damage." Complete current maximum-bonus phrase white. Regular ranksI-V cap bonus at50/100/150/200/250%; total damage approaches1.5/2/2.5/3/3.5x near zero target HP, stays normal at full HP and scales linearly with missing HP. Runtime reads actual learned passive-weapon rank, including reinforcement offhand sharing; current text and upgrade previews share the same capped percentage. RankV available on weapons/templates/commands, noVI even via super templates. Preserved eligibility, melee-only trigger, target behavior, no super/cooldown/Jade change. Pure health/rank-boundary tests and native five-variant/rank/fraction damage, white text, previews, unlearned/secondary exclusions, template/command caps and reinforcement rankV checks passed. Updated only the old tooltip assertion to expectDeath MarchV while other maxed example passives remainIV, preserving unrelated local tooltip work. Build and all446 required GameTests passed; reviewed and unit checks rerun. Next75 Death's Due.
 - Death March balance: rankI maximum bonus reduced100%->50%; II remains100%; III/IV increased100%->150/200%; V becomes a regular level with250% maximum instead of the old extra-template rank's100%.
@@ -543,6 +604,8 @@
 - Review76 Double Jump and Windwalker implemented: approved current count+more jump(s) phrase white with singular at1, prose gray. BaseI/II grant1/2 extra jumps; next upgrade is WindwalkerI, with superI-IV2/3/3/4 extra jumps. Height rises only on superI andIII, using lift.55 for baseI-II,.60 for superI-II,.70 for superIII-IV; existing normal and maximum heights retained. Valid matching dual wield sums both counts and uses the greater height for all jumps, including requested Double JumpI+WindwalkerIV=5 high air jumps; two maxed Windwalkers grant8. Raised server budget cap to8, preserved sprint/horizontal momentum and landing/switch/logout resets. Shared progression drives runtime/text/upgrade previews and super start/max now3/6. Read-only legacy migration maps old baseIII to newII and old super4-7 to new3-6, preserving superI-IV, templates and unrelated data; writes stamp revision to prevent repeated migration. All five variants/ranks, single/dual/mixed budgets, max8 consumption, golden super display/hints, alternating jump-vs-height previews, legacy reads/upgrades/transfer/extraction passed. Build and all451 required GameTests passed, reviewed and unit checks rerun. No Jade modifier or cooldown added. Next77 Dual Wield; this gameplay change covers both Double Jump and Windwalker review.
 - Double Jump/Windwalker balance: baseII now grants2 rather than1 air jumps; superII/III now3 rather than2, superIV4 rather than2; dual maximum rises4->8. SuperI gets increased lift.60 instead of.55; superIII.70 instead of.65, superII.60 andIV.70 unchanged. Removed former baseIII while preserving its items at newbaseII and each old super level.
 
+- Recorded deferred Dual Wield description wording, entirely gray; no gameplay/in-game text change.
+
 - Axe animation: imported all six original Blockbench clips without retiming or changing keyframes; ordinary mod-axe attacks alternate axe_swing/axe_swing2, with authored idle/walk poses and synchronized first/third-person player/held-axe rendering.
 - Axe animation timing change: ordinary impacts wait 13/12 ticks, every player Vertical Strike variant waits 25 ticks (native combo, Flaming Stomp, Gravity Well, Crucible Hook and Echo Salvage), and Gravity Swing uses the full casting clip with its effect at tick33. Impact sounds follow damage; existing charge/critical input is preserved and out-of-reach delayed melee hits miss.
 - Axe animation fallback: missing axe artwork uses the converted Blockbench OBJ/embedded texture; existing artwork is preserved, including Nullified Axe gemstone variants. Ordinary tool axes gain visuals only, with vanilla block-breaking rendering retained and no new weapon abilities.
@@ -552,7 +615,32 @@
 
 - Axe camera-switch crash fix: removed visual-test fixtures from normal mod sources/artifacts, added an explicit isolated test-directory guard, and restored normal generated client launch arguments. The real crash was a visual-test assertion executing during gameplay, not a damage/animation renderer failure. Added an opt-in real-client first-person -> third-person -> first-person Molten Axe attack regression; three successful hits, no crash. Normal build passed, and both the mod JAR and runtime classes exclude the fixture. No animation keyframes, timing or weapon balance changed.
 
+- Augmentation table design: replaced the pale ceramic/iron casing with carbon-steel, steel, anvil and netherite materials. Rebuilt the base as a vented blast-furnace housing on flared forged feet, with a narrow anvil waist and reinforced recessed enchanting worktop. Base geometry reduced36->32 cuboids; existing floating sapphire, ring/rune geometry and enchanting particles retained.
+- Augmentation rings: changed metalwork/caps to dark steel. Idle rings now rest flat on the worktop with rotation stopped; crafting smoothly lifts and tilts them into their orbit. Completion or cancellation slows rotation and lowers them to rest over roughly40 ticks/two seconds. Rise remains roughly20 ticks/one second, and the sapphire continues hovering. No crafting costs, timings, offers or ability balance changed.
+- Augmentation visual verification: all material references resolved, animated component geometry preserved, real-client resting/crafting/descent/settled/night captures checked in the isolated table test world, build and all457 required GameTests passed. Normal launch arguments regenerated and visual-test classes excluded from production artifacts afterward.
+
+- Added a complete editable augmentation_table.bbmodel project: all67 cubes, separate base/outer-ring/inner-ring/rune/sapphire groups, nine embedded textures, and idle/crafting-cycle preview animations. Runtime JSON models and crafting-driven animation are unchanged. Added Blockbench editing instructions; validated hierarchy, UUIDs, geometry counts, face UV/texture references and embedded PNG data.
+
+- Added an editable infusion-table design concept:42-cuboid dark-metal gemsetting bench with red carpet/draped runner, padded compact anvil, jewellers hammer, calipers, fine chisel and four gemstone trays. User correction applied: removed proposed wood/gold/pale iron palette in favour of carbon steel, netherite and dark forged steel, with red accents. Added self-contained grouped Blockbench project with nine embedded textures, Java-model draft and two-view preview/documentation. Registered game model and gameplay are unchanged.
+
+- Applied the user's edited infusion-table JSON as the registered model, preserving all30 authored object names/bounds/rotations and all removals. The29-cube static mesh excludes the gemstone placeholder. Added facing-correct model variants and a simple two-box collision shape matching the raised anvil.
+- Added server-synchronized infusion displays: only a valid running infusion shows one active gemstone in the remaining tray and the actual weapon lying still on the small anvil. Missing/invalid inputs, blocked output, cancellation and completion clear both displays. Full weapon components/augments are preserved; cosmetic packets leave GUI inventory untouched and are sent only when displayed stacks change.
+- Made infusion recipe selection and GUI gemstone colors per-table, preventing another table from changing the displayed recipe/color. Crafting costs/duration and gemstone/Jade eligibility are unchanged.
+- Restored wood on ONLY the hammer handle with independent side/end texture aliases; cabinet/worktop/frame/anvil/calipers/hammer head remain dark metal. Corrected a shared-alias issue that had briefly applied the handle texture to cabinet parts; added an exported-model regression check.
+- Added a newly generated64x64 netherite-like metal extension for this table, with proportional UV rectangles on static faces to eliminate anisotropic stretching. Existing vanilla textures are preserved. Updated the self-contained Blockbench project, source/runtime synchronization script, native preview, documentation and exact image-generation prompt notes.
+- Infusion verification: build and all461 required GameTests passed. Real-client checks passed for claymore/3D axe/dagger displays, independent gemstones/facings and idle/cancel cleanup. Verified all30 edited geometries remain unchanged, only the handle resolves to wood, and normal launch files/artifacts exclude visual-test fixtures afterward.
+
+- Augmentation sapphire now shares the rings' eased crafting lift/settle: stationary lower hover at1.2 blocks while idle, rising to its original1.61-block active height with crafting-only bobbing. It returns smoothly after stopping/cancellation/completion, using the existing~1-second rise/~2-second return. Lower position preserves clearance for displayed weapons.
+- Slowed the sapphire's active rotation from68.9 to10.6 degrees/second at full activity; idle rotation stops and start/stop speed follows the existing activity ramp without snapping. Updated complete Blockbench rest pose/preview animations and rendered preview. Ring motion, crafting, particles, geometry and synchronization are unchanged. Build and real-client idle/active/cancelled captures passed; normal launch files restored and visual fixtures excluded from the mod artifact.
+
+- Augmentation sapphire now renders the actual Sapphire Gemstone item/model in GROUND context instead of the custom crystal block mesh. It lies flat in contact with the rear workbed while idle, lifts into the centre, turns upright, and rotates slowly/bobs like a dropped item while augmenting; it lowers flat again when stopped/cancelled/complete. Rendering uses no pickupable item entities and leaves gemstone items/crafting unchanged.
+- Idle item contact is calculated from the workbed engraving height and the real item's ground-transform depth, eliminating the former resting gap. The idle weapon preview is compact and offset toward the front, returning to its previous centre/size after the rising sapphire clears it, preventing preview intersections. Updated the complete Blockbench project and preview cycle to the actual gemstone sprite; replaced its three capped-crystal cubes with a two-sided textured editing plane. Build and real-client idle/active/cancel captures passed; normal launch files restored and test fixtures excluded from the mod artifact.
+
+- Fixed see-through world strips around the infusion table bottom: disabled neighbor-face occlusion for its inset model so the supporting floor face remains visible around the plinth. Model geometry and physical collision remain unchanged. Added native floor-culling regression for all four facings and both lit states, including collision checks; build and all462 required GameTests passed. Restart Minecraft to rebuild registered block properties/chunk meshes.
+
 - Upgraded all axe animation playback from axe_playerplaceholder_animations_2.bbmodel: all 307 authored transform keys and seven original clip lengths preserved, Catmull-Rom/mixed curves and wrapped walk neighbours supported, two-handed idle and recovery updated, casting swirl uses new source pivot/locators and duration. All 45 Swing Attack variants use the new full-body double-spin clip with one area hit at its .75-second swing frame; existing damage, targeting and activation cooldown retained, switching cancels pending damage. Fallback axe art/mesh unchanged.
+
+- Infusion-table inputs now appear immediately and independently: the weapon rests on the anvil and one gemstone rests in its tray before any valid recipe starts, including missing-template/blocked-output states. Removing one input only clears its own display. Valid infusion smoothly lifts the gemstone above the weapon, turns and rotates it with a gentle bob, gemstone-colored sparks and enchantment particles; stopping/cancelling/completing settles remaining gems back into the tray. Client-local animation uses compact item snapshots plus an active flag, retains weapon components and crafting costs, and creates no item entities. Expanded renderer bounds cover the hovering gem.
 
 - Normal axe hits now play both alternating clips at 2.5x speed and land at tick5 (about0.25 seconds), with server impact deadlines and repeat guards using the same playback rate. Preserved weapon damage/attack-speed attributes and original keyframe data; special swing/casting/Vertical Strike timing unchanged.
 - Axe holding now retains Minecraft speed-scaled leg strides for walking/sprinting and aligns the authored upper-body walk cycle to vanilla gait cadence. Authored attack leg movements remain in place.

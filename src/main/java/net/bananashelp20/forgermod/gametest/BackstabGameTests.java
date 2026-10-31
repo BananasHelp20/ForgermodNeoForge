@@ -59,7 +59,7 @@ public class BackstabGameTests {
             var cow=EntityType.COW.create(test.getLevel());cow.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);cow.setPos(origin);cow.setYRot(0);cow.setHealth(20);cow.hurt(player.damageSources().playerAttack(player),10);
             test.assertTrue(Math.abs(cow.getHealth()-8)<.001,"Other damage passive now affects nonhostile cow");
             var hostile=EntityType.ZOMBIE.create(test.getLevel());hostile.setPos(origin);hostile.setYRot(0);hostile.getAttribute(Attributes.ARMOR).setBaseValue(0);hostile.setHealth(20);hostile.hurt(player.damageSources().playerAttack(player),10);
-            test.assertTrue(Math.abs(hostile.getHealth()-6.8)<.001,"Enemy no longer receives existing Sleepwalker and Backstab combination");
+            test.assertTrue(Math.abs(hostile.getHealth()-7.28)<.001,"Enemy no longer receives existing Sleepwalker and Backstab combination");
         } finally {
             player.server.setPvpAllowed(pvp);test.getLevel().setDayTime(day);scoreboard.removePlayerTeam(team);
             if(old!=null)scoreboard.addPlayerToTeam(name,old);if(oldAlly!=null)scoreboard.addPlayerToTeam(allyName,oldAlly);

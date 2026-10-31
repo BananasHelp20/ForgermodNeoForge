@@ -17,6 +17,7 @@ public final class PhotosynthesisEvents {
     }
     private static final Map<UUID,Repair> REPAIRS=new HashMap<>();
     private PhotosynthesisEvents() {}
+    public static int restoredDurability(int rank) { return ReviewedRanks.at(rank,1,2,3,5); }
     @SubscribeEvent
     public static void tick(PassiveActorTickEvent.Pre event) {
         if(!(PassiveActors.entity(event.getEntity()) instanceof LivingEntity player)) return;
@@ -24,7 +25,7 @@ public final class PhotosynthesisEvents {
         if(!player.isAlive() || player.isSpectator() || !Augmentations.hasPassive(stack,AdditionalAbilities.PHOTOSYNTHESIS) || !player.level().dimensionType().hasSkyLight()
             || !player.level().isDay() || !stack.isDamaged()) {end(player.getUUID());return;}
         var repair=REPAIRS.get(player.getUUID());if(repair==null || repair.stack!=stack || repair.slot!=PassiveActors.selected(player) || repair.level!=player.level()) {repair=new Repair(player);REPAIRS.put(player.getUUID(),repair);}
-        if(++repair.ticks>=300) {repair.ticks=0;stack.setDamageValue(Math.max(0,stack.getDamageValue()-1));if(player instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);}
+        if(++repair.ticks>=300) {repair.ticks=0;stack.setDamageValue(Math.max(0,stack.getDamageValue()-restoredDurability(Augmentations.level(stack,AdditionalAbilities.PHOTOSYNTHESIS))));if(player instanceof net.minecraft.world.entity.Mob mob)NecromancerEquipment.changed(mob);}
     }
     public static void end(UUID owner) {REPAIRS.remove(owner);}
     @SubscribeEvent

@@ -40,9 +40,16 @@ public class AugmentTemplateGameTests {
 
     @GameTest(template = "riftfang_test")
     public static void superTemplateCarriesOneRankAboveCap(GameTestHelper test) {
-        ItemStack weapon = new ItemStack(ModItems.EMBERFANG_DAGGER.get());
-        String id = Augmentations.pool(weapon).stream()
-                .filter(a -> RecommendedAbilities.maxRank(a.id()) > 1).findFirst().orElseThrow().id();
+        // Exercise an ability that still permits a bonus template rank, rather than a reviewed hard cap.
+        var candidate = ModItems.ITEMS.getEntries().stream().map(entry -> new ItemStack(entry.get()))
+                .flatMap(stack -> Augmentations.pool(stack).stream()
+                        .filter(a -> RecommendedAbilities.maxRank(a.id()) > 1
+                                && net.bananashelp20.forgermod.augmentation.ReviewedRanks.hardCap(a.id()) < 0
+                                && !Augmentations.hasSuperForm(stack,a.id()))
+                        .map(a -> java.util.Map.entry(stack,a.id())))
+                .findFirst().orElseThrow();
+        ItemStack weapon = candidate.getKey();
+        String id = candidate.getValue();
         int cap = RecommendedAbilities.maxRank(id);
         ItemStack normal = new ItemStack(ModItems.AUGMENT_TEMPLATE.get());
         ItemStack superTemplate = new ItemStack(ModItems.SUPER_AUGMENT_TEMPLATE.get());

@@ -142,18 +142,26 @@ public class MorsiumWeapon extends SwordItemWithEffect {
                         Augmentations.level(PassiveActors.weapon(attacker,"tooltips.forgermod.passive.death_march"),"tooltips.forgermod.passive.death_march"));
             }
             if (PassiveActors.has(attacker, "tooltips.forgermod.passive.revenge")) {
-                multiplier *= RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD));
+                multiplier *= RevengeDamage.multiplier(event.getEntity().getType().is(EntityTypeTags.UNDEAD),
+                        Augmentations.level(PassiveActors.weapon(attacker,"tooltips.forgermod.passive.revenge"),"tooltips.forgermod.passive.revenge"));
             }
             event.setAmount(event.getAmount() * multiplier);
         }
-        long now = attacker.level().getGameTime();
-        if (ANGER.storeIfCharging(attacker.getUUID(), now, event.getAmount())) {
-            event.setCanceled(true);
-            return;
+    }
+
+    /** Bank/release only the triggering melee hit, after all normal hit modifiers. */
+    @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST)
+    public static void onCombinedHit(LivingIncomingDamageEvent event) {
+        if(event.isCanceled() || event.getAmount()<=0 || !PassiveActors.melee(event.getSource())
+                || !(PassiveActors.entity(PassiveActors.attacker(event.getSource())) instanceof LivingEntity attacker)
+                || attacker==event.getEntity() || !(attacker.getMainHandItem().getItem() instanceof MorsiumWeapon weapon)
+                || !weapon.isDagger() || !Augmentations.ids(attacker.getMainHandItem(),true).contains("tooltips.forgermod.ability.storing_anger"))return;
+        long now=attacker.level().getGameTime();
+        if(ANGER.storeIfCharging(attacker.getUUID(),now,event.getAmount())){
+            event.setCanceled(true);return;
         }
-        if (!morsiumDaggerHit) return;
-        float stored = ANGER.releaseOnDaggerHit(attacker.getUUID(), now);
-        if (stored >= 0) event.setAmount(event.getAmount() + stored);
+        float stored=ANGER.releaseOnDaggerHit(attacker.getUUID(),now);
+        if(stored>=0)event.setAmount(event.getAmount()+stored);
     }
 
     @SubscribeEvent

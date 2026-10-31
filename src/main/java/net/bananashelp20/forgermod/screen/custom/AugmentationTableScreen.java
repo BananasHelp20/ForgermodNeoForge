@@ -95,14 +95,10 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         gui.pose().pushPose(); gui.pose().translate(x+3,y-4,0); gui.pose().scale(.5F,.5F,1);
         gui.drawString(font,eyebrow,0,0,rejected?0xff666666:superUpgrade?0xffc58b12:0xff586672,false); gui.pose().popPose();
         // Fit and center the title in the template's upper white box, without a rank suffix.
-        float scale=.5F;
         Component cardName=rejected?offer.name().copy().withStyle(style -> style.withColor(0x666666)):offer.name();
-        List<FormattedCharSequence> titleLines=font.split(cardName,(int)(37/scale));
-        while(titleLines.size()*font.lineHeight*scale>7 && scale>.3F) {
-            scale=Math.max(.3F,scale-.025F); titleLines=font.split(cardName,(int)(37/scale));
-        }
-        int maxLines=Math.max(1,(int)(7/(font.lineHeight*scale)));
-        if(titleLines.size()>maxLines) titleLines=titleLines.subList(0,maxLines);
+        var titleLayout=AugmentationCardText.fit(font,cardName,37,7,.5F,.325F);
+        float scale=titleLayout.scale();
+        var titleLines=titleLayout.lines();
         gui.pose().pushPose();
         gui.pose().translate(x+CARD_WIDTH/2F,y+3+(7-titleLines.size()*font.lineHeight*scale)/2F,0);
         gui.pose().scale(scale,scale,1);
@@ -112,21 +108,19 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         }
         gui.pose().popPose();
         // Inset text one texture pixel from the white boxes; keep the lower heading one pixel lower.
-        gui.pose().pushPose(); gui.pose().translate(x+3,y+14,0); gui.pose().scale(.5F,.5F,1);
         Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
-        gui.drawString(font,category,(74-font.width(category))/2,0,rejected?0xff666666:superUpgrade?0xffc58b12:offer.active()?0xff2962d9:0xff00a9bd,false);
-        gui.pose().popPose();
-        Component description=AugmentUpgradeDescriptions.description(offeredStack(),offer.id(),menu.offerRank(card),true,!rejected);
-        // Changes get the available body area; preserve component colors through wrapping.
-        float bodyScale=.5F;
-        var lines=font.split(description,(int)(37/bodyScale));
-        while(lines.size()*font.lineHeight*bodyScale>36 && bodyScale>.35F) {
-            bodyScale=Math.max(.35F,bodyScale-.025F);
-            lines=font.split(description,(int)(37/bodyScale));
+        var categoryLayout=AugmentationCardText.fit(font,category,37,6,.5F,.4F);
+        gui.pose().pushPose();gui.pose().translate(x+CARD_WIDTH/2F,y+14,0);gui.pose().scale(categoryLayout.scale(),categoryLayout.scale(),1);
+        for(int row=0;row<categoryLayout.lines().size();row++) {
+            var line=categoryLayout.lines().get(row);
+            gui.drawString(font,line,-font.width(line)/2,row*font.lineHeight,rejected?0xff666666:superUpgrade?0xffc58b12:offer.active()?0xff2962d9:0xff00a9bd,false);
         }
-        gui.pose().pushPose();gui.pose().translate(x+3,y+21,0);gui.pose().scale(bodyScale,bodyScale,1);
-        for(int row=0;row<Math.min(lines.size(),(int)(36/(font.lineHeight*bodyScale)));row++)
-            gui.drawString(font,lines.get(row),0,row*font.lineHeight,rejected?0xff666666:0xff929292,false);
+        gui.pose().popPose();
+        // A card is a preview. Keep text legible and bounded; the hover retains the complete approved description.
+        var body=AugmentationCardText.offer(font,offeredStack(),offer.id(),menu.offerRank(card),!rejected);
+        gui.pose().pushPose();gui.pose().translate(x+3,y+21,0);gui.pose().scale(body.scale(),body.scale(),1);
+        for(int row=0;row<body.lines().size();row++)
+            gui.drawString(font,AugmentationCardText.readable(body.lines().get(row),rejected),0,row*font.lineHeight,AugmentationCardText.BODY,false);
         gui.pose().popPose();
         if(rejected) gui.fill(x+1,y+1,x+CARD_WIDTH-1,y+CARD_HEIGHT-1,0x55808080);
     }

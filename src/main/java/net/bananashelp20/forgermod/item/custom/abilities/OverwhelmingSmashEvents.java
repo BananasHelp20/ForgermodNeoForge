@@ -35,12 +35,13 @@ public final class OverwhelmingSmashEvents {
     private static final Map<UUID,Hit> HITS=new HashMap<>();
     private static final Map<ItemStack,Double> FRACTIONS=new WeakHashMap<>();
     private OverwhelmingSmashEvents() {}
+    public static int armorBonusPercent() { return 20; }
     private static boolean qualifies(LivingEntity owner,LivingEntity target) {
         return owner.isAlive() && !owner.isSpectator() && owner.level()==target.level() && WeaponAbilityTargets.enemy(owner,target)
                 && Augmentations.hasPassive(owner.getMainHandItem(),RecommendedAbilities.OVERWHELMING_SMASH);
     }
     private static int extra(ItemStack armor,double normalWear) {
-        double amount=FRACTIONS.getOrDefault(armor,0D)+Math.max(0,normalWear)*.2;
+        double amount=FRACTIONS.getOrDefault(armor,0D)+Math.max(0,normalWear)*armorBonusPercent()/100D;
         int whole=(int)Math.floor(amount+1e-7); FRACTIONS.put(armor,Math.max(0,amount-whole)); return whole;
     }
     @SubscribeEvent(priority=EventPriority.LOWEST,receiveCanceled=true)
@@ -84,9 +85,22 @@ public final class OverwhelmingSmashEvents {
         if(!event.getBlocked() || event.getBlockedDamage()<=0 || !PassiveActors.melee(source)
                 || !(PassiveActors.entity(source.getEntity()) instanceof LivingEntity player) || !qualifies(player,target)) return;
         var shield=target.getUseItem(); if(shield.isEmpty() || !shield.canPerformAction(ItemAbilities.SHIELD_BLOCK)) return;
-        var hand=target.getUsedItemHand(); var item=shield.getItem();
-        target.setItemInHand(hand,shield.getCount()>1?shield.copyWithCount(shield.getCount()-1):ItemStack.EMPTY);
-        target.stopUsingItem(); target.onEquippedItemBroken(item,hand==InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND);
+        if (!(target.level() instanceof net.minecraft.server.level.ServerLevel level)) return;
+        var slot=target.getUsedItemHand()==InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND;
+        // Resolve the original hit normally, including armor and all hit modifiers, without a second damage event.
+        event.setBlocked(false);
+        event.setBlockedDamage(0);
+        event.setShieldDamage(0);
+        if (target instanceof net.minecraft.world.entity.player.Player blocker) blocker.disableShield();
+        else {
+            target.stopUsingItem();
+            target.getPersistentData().putLong("forgermod_shield_disabled_until", level.getGameTime()+100);
+            level.broadcastEntityEvent(target,(byte)30);
+        }
+        if (shield.isDamageableItem()) shield.hurtAndBreak(Math.max(1,(int)Math.ceil(shield.getMaxDamage()*.1)),target,slot);
+        var burst=target.position().add(0,target.getBbHeight()*.6,0).add(player.position().subtract(target.position()).normalize().scale(.35));
+        level.sendParticles(net.minecraft.core.particles.ParticleTypes.CRIT,burst.x,burst.y,burst.z,24,.25,.3,.25,.3);
+        level.sendParticles(net.minecraft.core.particles.ParticleTypes.SWEEP_ATTACK,burst.x,burst.y,burst.z,1,0,0,0,0);
     }
     @SubscribeEvent
     public static void onTick(ServerTickEvent.Post event) { HITS.clear(); }

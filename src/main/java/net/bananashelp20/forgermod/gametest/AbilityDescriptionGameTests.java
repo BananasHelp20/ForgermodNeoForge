@@ -33,7 +33,7 @@ public final class AbilityDescriptionGameTests {
         var dagger=new ItemStack(ModItems.DEAD_CALM_DAGGER.get());
         var axe=new ItemStack(ModItems.SKYBREAKER_AXE.get());
         test.assertFalse(AbilityDescriptions.canBecomeSuper(dagger,AdditionalAbilities.WINDCHARGE,3),"Dagger claims Skybreaker");
-        test.assertTrue(key(AbilityDescriptions.description(dagger,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.current"),"Dagger gets axe mechanics");
+        test.assertTrue(key(AbilityDescriptions.description(dagger,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.final_review"),"Dagger gets axe mechanics");
         test.assertTrue(key(AbilityDescriptions.description(axe,AdditionalAbilities.WINDCHARGE,4,false)).endsWith("windcharge.super.reviewed"),"Skybreaker has base description");
         var ghost=new ItemStack(ModItems.HOLLOW_CLAYMORE.get());
         var baseGhost=AbilityDescriptions.description(ghost,AdditionalAbilities.GHOSTWALK,3,false);
@@ -42,7 +42,7 @@ public final class AbilityDescriptionGameTests {
         test.assertTrue(key(superGhost).endsWith("ghostwalk.super.reviewed") && superGhost.getString().contains("damage"),"Super opening damage missing");
         var jade=new ItemStack(ModItems.NIGHTMARE_DAGGER_JADE.get());
         var nightmare=AbilityDescriptions.description(jade,"tooltips.forgermod.ability.absolute_nightmare",1,false);
-        test.assertTrue(key(nightmare).endsWith(".current.jade") && json(test,nightmare).contains("6"),"Jade current effect is wrong");
+        test.assertTrue(key(nightmare).endsWith(".final_review") && nightmare.getString().contains("Darkness VI"),"Jade current effect is wrong");
         test.succeed();
     }
 

@@ -32,8 +32,13 @@ public class GardenersGameTests {
    test.assertTrue(cloud.getDuration()==6000 && cloud.getRadius()==2 && !cloud.shouldBeSaved() && !plant.shouldBeSaved(),"Garden duration/radius/persistence wrong");
    var cow=EntityType.COW.create(test.getLevel()); cow.setNoAi(true); cow.setPos(player.position()); test.getLevel().addFreshEntity(cow);
    for(int tick=0;tick<5;tick++) cloud.tick();
-   test.assertTrue(player.getEffect(MobEffects.POISON)!=null && cow.getEffect(MobEffects.POISON)!=null,"Caster or neutral entity excluded");
+   test.assertTrue(player.getEffect(MobEffects.POISON)==null && cow.getEffect(MobEffects.POISON)!=null,"Caster poisoned or neutral entity excluded");
    test.assertTrue(cow.getEffect(MobEffects.POISON).getDuration()==400+(JadeAugments.isJade(stack)?20:0),"Poison duration wrong");
+   player.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.POISON,700,2));
+   for(int tick=0;tick<25;tick++){cloud.tickCount++;cloud.tick();}
+   test.assertTrue(player.getEffect(MobEffects.POISON)!=null && player.getEffect(MobEffects.POISON).getDuration()==700,"Own cloud removes or replaces unrelated poison");
+   player.removeEffect(MobEffects.POISON);cloud.setOwner(cow);for(int tick=0;tick<25;tick++){cloud.tickCount++;cloud.tick();}
+   test.assertTrue(player.getEffect(MobEffects.POISON)!=null,"Another caster's cloud incorrectly grants immunity");cloud.setOwner(player);
    player.setItemInHand(InteractionHand.MAIN_HAND,stack.copy()); WeaponAbilityNetwork.onPlayerTick(new PlayerTickEvent.Pre(player));
    test.assertTrue(!cloud.isRemoved() && !plant.isRemoved() && !GardenersEvents.active(player),"Switch deletes placed garden");
    String key=BuiltInRegistries.ITEM.getKey(item)+":"+RecommendedAbilities.GARDENERS;

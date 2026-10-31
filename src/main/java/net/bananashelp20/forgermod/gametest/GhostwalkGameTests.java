@@ -88,6 +88,9 @@ public class GhostwalkGameTests {
             try {
                 player.attack(target);AxeAnimationTestDriver.finish(player);test.assertTrue(GhostwalkEvents.activate(player,stack),"Cannot vanish between paired swings");float health=target.getHealth(),damage=(float)player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
                 var context=(net.neoforged.neoforge.network.handling.IPayloadContext)java.lang.reflect.Proxy.newProxyInstance(contextType.getClassLoader(),new Class<?>[]{contextType},(proxy,m,args)->{if(m.getName().equals("player"))return player;throw new UnsupportedOperationException(m.getName());});
+                for(var recipient:player.server.getPlayerList().getPlayers())
+                    net.neoforged.neoforge.network.registration.ChannelAttributes.getOrCreateCommonChannels(recipient.connection.getConnection(),net.minecraft.network.ConnectionProtocol.PLAY)
+                            .add(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("forgermod","offhand_swing"));
                 method.invoke(null,new net.bananashelp20.forgermod.item.custom.attacks.dagger.DualWieldNetwork.OffhandAttackPayload(target.getId()),context);
                 test.assertTrue(Math.abs(target.getHealth()-(health-damage*2))<.01 && !GhostwalkEvents.active(player) && !player.hasEffect(MobEffects.INVISIBILITY),"Invisible offhand hit fails to double and reveal");
             }finally {GhostwalkEvents.logout(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent(player));target.discard();player.server.getPlayerList().remove(player);}

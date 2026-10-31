@@ -19,15 +19,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class AugmentationTableBlock extends BaseEntityBlock {
     public static final MapCodec<AugmentationTableBlock> CODEC=simpleCodec(AugmentationTableBlock::new);
+    // Animated floating hardware is decorative, like an enchanting table's book.
     private static final VoxelShape SHAPE = Shapes.or(
-            box(1, 0, 1, 15, 2, 15), box(0, 2, 0, 16, 3, 16),
-            box(2, 3, 2, 14, 11, 14),
-            box(1, 3, 1, 3, 12, 3), box(13, 3, 1, 15, 12, 3),
-            box(1, 3, 13, 3, 12, 15), box(13, 3, 13, 15, 12, 15),
-            box(1, 11, 1, 15, 13, 15), box(0, 13, 0, 16, 15, 16),
-            box(2, 15, 2, 14, 15.5, 14),
-            box(0.5, 15, 0.5, 3, 16, 3), box(13, 15, 0.5, 15.5, 16, 3),
-            box(0.5, 15, 13, 3, 16, 15.5), box(13, 15, 13, 15.5, 16, 15.5));
+            box(0,0,0,16,3,16), box(.5,3,.5,15.5,12,15.5), box(0,12,0,16,16,16));
     public AugmentationTableBlock(Properties properties) { super(properties); }
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new AugmentationTableBlockEntity(pos,state); }
@@ -45,7 +39,7 @@ public final class AugmentationTableBlock extends BaseEntityBlock {
         super.onRemove(state,level,pos,replacement,moving);
     }
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type,ModBlockEntities.AUGMENTATION_TABLE_BE.get(),
-                (world,pos,block,table)->table.tick());
+        return createTickerHelper(type,ModBlockEntities.AUGMENTATION_TABLE_BE.get(),
+                (world,pos,block,table)->{if(world.isClientSide)table.clientAnimationTick();else table.tick();});
     }
 }

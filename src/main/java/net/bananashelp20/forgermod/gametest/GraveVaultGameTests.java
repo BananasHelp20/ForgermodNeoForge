@@ -73,29 +73,52 @@ public class GraveVaultGameTests {
   test.assertTrue(count==15,"Missing Lush variants"); test.succeed();
  }
  @GameTest(template="riftfang_test")
- public static void actualPlacementChecksSoilConsumesOneAndRespectsAdventure(GameTestHelper test) {
-  var player=TestPlayers.survival(test); var stack=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.OVERGROWN_CLAYMORE.get()),RecommendedAbilities.GRAVE_VAULT);
-  player.setItemInHand(InteractionHand.MAIN_HAND,stack); var storage=new SimpleContainer(9); storage.setItem(0,new ItemStack(Items.POPPY,3)); GraveVaultEvents.write(stack,storage,player.registryAccess());
-  var soil=test.absolutePos(new BlockPos(2,3,2)); player.setPos(Vec3.atBottomCenterOf(soil.south(2).above()));
-  test.getLevel().setBlockAndUpdate(soil,Blocks.STONE.defaultBlockState()); test.getLevel().setBlockAndUpdate(soil.above(),Blocks.AIR.defaultBlockState());
-  var hit=new BlockHitResult(Vec3.atCenterOf(soil).add(0,.5,0),Direction.UP,soil,false);
-  GraveVaultEvents.onBlock(new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,soil,hit));
-  test.assertTrue(test.getLevel().getBlockState(soil.above()).isAir() && GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).getCount()==3,"Invalid soil consumed flower");
-  test.getLevel().setBlockAndUpdate(soil,Blocks.DIRT.defaultBlockState());
-  var event=new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,soil,hit); GraveVaultEvents.onBlock(event);
-  test.assertTrue(event.isCanceled() && test.getLevel().getBlockState(soil.above()).is(Blocks.POPPY),"Suitable terrain placement failed");
-  test.assertTrue(GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).getCount()==2 && player.getMainHandItem()==stack,"Placement loses/duplicates flower or weapon");
-  test.getLevel().setBlockAndUpdate(soil.above(),Blocks.AIR.defaultBlockState()); player.setGameMode(GameType.ADVENTURE);
-  GraveVaultEvents.onBlock(new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,soil,hit));
-  test.assertTrue(test.getLevel().getBlockState(soil.above()).isAir() && GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).getCount()==2,"Adventure restrictions bypassed");
-  test.getLevel().getServer().getPlayerList().remove(player); test.succeed();
+ public static void allVariantsNeverPlantOrConsumeFlowersOnOrdinaryBlockClicks(GameTestHelper test){
+  var player=TestPlayers.survival(test);player.setNoGravity(true);player.setShiftKeyDown(false);
+  var soil=test.absolutePos(new BlockPos(8,4,8));player.setPos(Vec3.atBottomCenterOf(soil.north(2).above()));
+  var hit=new BlockHitResult(Vec3.atCenterOf(soil).add(0,.5,0),Direction.UP,soil,false);int count=0;
+  try{for(var item:BuiltInRegistries.ITEM)if(item instanceof LushWeapon){
+   count++;
+   for(var mode:new GameType[]{GameType.SURVIVAL,GameType.CREATIVE})for(boolean open:new boolean[]{false,true}){
+    player.containerMenu=player.inventoryMenu;player.setGameMode(mode);
+    var stack=Augmentations.apply(new ItemStack(item),RecommendedAbilities.GRAVE_VAULT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+    var storage=new SimpleContainer(9);storage.setItem(0,new ItemStack(Items.POPPY,3));GraveVaultEvents.write(stack,storage,player.registryAccess());
+    var menu=open?new GraveVaultMenu(1,player.getInventory(),player.getInventory().selected):null;if(open)player.containerMenu=menu;
+    test.getLevel().setBlockAndUpdate(soil,Blocks.DIRT.defaultBlockState());test.getLevel().setBlockAndUpdate(soil.above(),Blocks.AIR.defaultBlockState());
+    var event=new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,soil,hit);GraveVaultEvents.onBlock(event);
+    test.assertTrue(!event.isCanceled() && test.getLevel().getBlockState(soil.above()).isAir(),"Normal block interaction plants a flower or is intercepted");
+    test.assertTrue(GraveVaultEvents.read(stack,player.registryAccess()).getItem(0).getCount()==3 && (!open || menu.storage.getItem(0).getCount()==3) && player.getMainHandItem()==stack,"Normal click changes saved/live flower count or held weapon");
+   }
+  }}finally{player.containerMenu=player.inventoryMenu;player.server.getPlayerList().remove(player);}
+  test.assertTrue(count==15,"Skipped Grave Vault variants");test.succeed();
  }
  @GameTest(template="riftfang_test")
- public static void finiteStockDepletesForKillsAndManualPlacementInSurvivalAndCreative(GameTestHelper test) {
+ public static void approvedDescriptionIsGrayAndSneakingStillOpensVault(GameTestHelper test){
+  var player=TestPlayers.survival(test);var stack=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.OVERGROWN_CLAYMORE.get()),RecommendedAbilities.GRAVE_VAULT);player.setItemInHand(InteractionHand.MAIN_HAND,stack);player.setShiftKeyDown(true);
+  // Advertise the real NeoForge menu channel on this simulated client connection.
+  net.neoforged.neoforge.network.registration.ChannelAttributes.getOrCreateCommonChannels(player.connection.getConnection(),net.minecraft.network.ConnectionProtocol.PLAY)
+      .add(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("neoforge","advanced_open_screen"));
+  try{
+   for(boolean compact:new boolean[]{false,true}){
+    var text=AbilityDescriptions.description(stack,RecommendedAbilities.GRAVE_VAULT,1,compact);
+    test.assertTrue(text.getString().equals(compact?"Sneak-right-click: nine-slot flower vault. Enemy kills plant stored flowers.":"Sneak-right-click to open a nine-slot flower vault. Enemy kills plant a stored flower where the enemy stood, if possible."),"Wrong Grave Vault description");
+    text.visit((style,part)->{test.assertTrue(style.getColor()!=null && style.getColor().getValue()==net.minecraft.ChatFormatting.GRAY.getColor(),"Unexpected highlight in Grave Vault description");return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+   }
+   var air=new PlayerInteractEvent.RightClickItem(player,InteractionHand.MAIN_HAND);GraveVaultEvents.onAir(air);
+   test.assertTrue(air.isCanceled() && player.containerMenu instanceof GraveVaultMenu,"Sneak-right-click air no longer opens vault");
+   player.closeContainer();
+   var pos=test.absolutePos(new BlockPos(8,4,8));var hit=new BlockHitResult(Vec3.atCenterOf(pos),Direction.UP,pos,false);
+   var block=new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,pos,hit);GraveVaultEvents.onBlock(block);
+   test.assertTrue(block.isCanceled() && player.containerMenu instanceof GraveVaultMenu,"Sneak-right-click block no longer opens vault");
+  }finally{player.closeContainer();player.server.getPlayerList().remove(player);}
+  test.succeed();
+ }
+ @GameTest(template="riftfang_test")
+ public static void finiteStockDepletesForKillsInSurvivalAndCreative(GameTestHelper test) {
   var player=TestPlayers.survival(test);player.setNoGravity(true);var soil=test.absolutePos(new BlockPos(8,4,8));player.setPos(Vec3.atBottomCenterOf(soil.north(2).above()));
   var hit=new BlockHitResult(Vec3.atCenterOf(soil).add(0,.5,0),Direction.UP,soil,false);
   try {
-   for(var mode:new GameType[]{GameType.SURVIVAL,GameType.CREATIVE})for(boolean open:new boolean[]{false,true})for(boolean onKill:new boolean[]{false,true}) {
+   for(var mode:new GameType[]{GameType.SURVIVAL,GameType.CREATIVE})for(boolean open:new boolean[]{false,true}) {
     player.containerMenu=player.inventoryMenu;player.setGameMode(mode);
     var weapon=Augmentations.apply(new ItemStack(net.bananashelp20.forgermod.item.ModItems.OVERGROWN_CLAYMORE.get()),RecommendedAbilities.GRAVE_VAULT);player.setItemInHand(InteractionHand.MAIN_HAND,weapon);
     var stored=new SimpleContainer(9);stored.setItem(0,new ItemStack(Items.POPPY,2));GraveVaultEvents.write(weapon,stored,player.registryAccess());
@@ -103,9 +126,9 @@ public class GraveVaultGameTests {
     test.getLevel().setBlockAndUpdate(soil,Blocks.DIRT.defaultBlockState());
     for(int placed=0;placed<3;placed++) {
      test.getLevel().setBlockAndUpdate(soil.above(),Blocks.AIR.defaultBlockState());
-     if(onKill)kill(test,player,soil.above(),true);else GraveVaultEvents.onBlock(new PlayerInteractEvent.RightClickBlock(player,InteractionHand.MAIN_HAND,soil,hit));
+     kill(test,player,soil.above(),true);
      int remaining=Math.max(0,1-placed);
-     test.assertTrue(GraveVaultEvents.read(weapon,player.registryAccess()).getItem(0).getCount()==remaining,"Saved flower count does not deplete exactly once: "+mode+" open="+open+" kill="+onKill);
+     test.assertTrue(GraveVaultEvents.read(weapon,player.registryAccess()).getItem(0).getCount()==remaining,"Saved flower count does not deplete exactly once: "+mode+" open="+open);
      if(open)test.assertTrue(menu.storage.getItem(0).getCount()==remaining,"Open vault count is stale");
      test.assertTrue(test.getLevel().getBlockState(soil.above()).is(Blocks.POPPY)==(placed<2),"Empty vault produces another flower");
     }

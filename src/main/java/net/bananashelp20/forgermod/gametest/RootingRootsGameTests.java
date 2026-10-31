@@ -50,6 +50,10 @@ public class RootingRootsGameTests {
                 if(color==net.minecraft.ChatFormatting.GREEN.getColor())green.append(part);
                 if(color==net.minecraft.ChatFormatting.GRAY.getColor())gray.append(part);
                 return java.util.Optional.<Void>empty();},net.minecraft.network.chat.Style.EMPTY);
+            if(compact) {
+                test.assertTrue(description.getString().equals("Root and poison enemies within 10 blocks for "+(jade?11:10)+" s."),"Wrong compact root summary");
+                test.assertTrue(white.toString().equals(jade?"10 blocks":"10 blocks10 s") && green.toString().equals(jade?"11 s":""),"Compact root values/colors disagree");continue;
+            }
             test.assertTrue(description.getString().equals("Activate this ability for roots shooting out of the ground that immobilize and poison all enemies within 10 blocks for "+(jade?11:10)+" seconds."),"Rooting Roots does not show approved current wording");
             test.assertTrue(white.toString().equals(jade?"10 blocks":"10 blocks10 seconds") && green.toString().equals(jade?"11 seconds":""),"Range/duration conditional colors are wrong");
             test.assertTrue(gray.toString().contains("immobilize and poison all enemies within ") && gray.toString().contains(" for "),"Root prose is not gray");

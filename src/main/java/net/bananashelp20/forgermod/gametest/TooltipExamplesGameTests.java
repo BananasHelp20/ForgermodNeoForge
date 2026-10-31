@@ -20,6 +20,37 @@ import java.util.List;
 @GameTestHolder(ForgerMod.MOD_ID)
 @PrefixGameTestTemplate(false)
 public class TooltipExamplesGameTests {
+    @GameTest(template = "empty")
+    public static void allSpecialWeaponNamesAreLegendaryGold(GameTestHelper test) {
+        int checked=0;
+        for(var entry:ModItems.ITEMS.getEntries()) {
+            if(!(entry.get() instanceof SwordItemWithEffect weapon) || !weapon.hasMaterialEffect())continue;
+            checked++;
+            var stack=new ItemStack(weapon);
+            var plain=stack.copy();
+            for(boolean renamed:new boolean[]{false,true}) {
+                if(renamed)stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME,Component.literal("My weapon"));
+                for(boolean enchanted:new boolean[]{false,true}) {
+                    if(enchanted)stack.enchant(test.getLevel().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                            .getOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING),1);
+                    var before=stack.copy();
+                    test.assertTrue(stack.getHoverName().getStyle().getColor().getValue()==ChatFormatting.GOLD.getColor(),"Special weapon resolved name is not gold");
+                    var title=stack.getTooltipLines(Item.TooltipContext.of(test.getLevel()),null,TooltipFlag.NORMAL).getFirst();
+                    title.visit((style,text)->{
+                        if(!text.isEmpty())test.assertTrue(style.getColor().getValue()==ChatFormatting.GOLD.getColor() && !style.isObfuscated(),"Rarity overrides the name color or obfuscates it");
+                        return java.util.Optional.empty();
+                    },net.minecraft.network.chat.Style.EMPTY);
+                    test.assertTrue(ItemStack.matches(before,stack),"Displaying the name modifies the stack");
+                    if(renamed)test.assertTrue(stack.getHoverName().getString().equals("My weapon"),"Rename was lost");
+                }
+                stack=plain.copy();
+            }
+        }
+        test.assertTrue(checked==135,"Missing special materials, weapon types or gemstone variants");
+        for(var item:java.util.List.of(ModItems.CLAYMORE.get(),ModItems.RUSTY_CLAYMORE.get(),net.minecraft.world.item.Items.DIAMOND_SWORD))
+            test.assertTrue(new ItemStack(item).getHoverName().getStyle().getColor()==null,"Ordinary item received special name formatting");
+        test.succeed();
+    }
     private static String key(Component component) {
         return component.getContents() instanceof TranslatableContents text ? text.getKey() : "";
     }
@@ -76,8 +107,8 @@ public class TooltipExamplesGameTests {
             test.assertTrue(rows.stream().filter(c -> key(c).equals("augmentation.forgermod.rank")).count() == 3, "Material hit and two passives not displayed together");
             for (Component line : rows) if (key(line).equals("augmentation.forgermod.rank")) {
                 var args=((TranslatableContents)line.getContents()).getArgs();
-                boolean deathMarch=key((Component)args[0]).equals("tooltips.forgermod.passive.death_march.name");
-                test.assertTrue(args[1].equals(deathMarch?"V":"IV"), "Maxed passive has wrong displayed rank");
+                boolean fiveRanks=java.util.Set.of("tooltips.forgermod.passive.death_march.name", "tooltips.forgermod.passive.revenge.name").contains(key((Component)args[0]));
+                test.assertTrue(args[1].equals(fiveRanks?"V":"IV"), "Maxed passive has wrong displayed rank");
             }
             var hint = rows.getLast();
             test.assertTrue(key(hint).equals("tooltips.forgermod.ability.shift_hint"), "Shift hint is not last");

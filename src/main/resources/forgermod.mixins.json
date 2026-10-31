@@ -8,6 +8,7 @@
     "HeadwindMixin",
     "CompostMixin",
     "InfiniteBurnMixin",
+    "SpecialWeaponNameMixin",
     "ReinforcementExperienceAccess"
   ],
   "injectors": {

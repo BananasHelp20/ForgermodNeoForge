@@ -56,7 +56,7 @@ public class NecromancerPassiveGameTests {
             equip(f.guard(),main,off);f.guard().setHealth(5);float before=f.target().getHealth();NecromancerPassiveCombat.attack(f.guard(),f.target());
             test.assertTrue(f.guard().getHealth()>5 && f.target().getHealth()<before-8,"Offhand-only Leech/Dual Wield does not heal the guard and strike twice");
             var pyro=learn(ModItems.EMBERFANG_DAGGER.get(),net.bananashelp20.forgermod.item.custom.IgnisiumWeapon.PYROMANIAC,1);equip(f.guard(),pyro,ItemStack.EMPTY);f.guard().setHealth(5);f.guard().setRemainingFireTicks(100);f.target().invulnerableTime=0;
-            NecromancerPassiveCombat.attack(f.guard(),f.target());test.assertTrue(f.guard().getHealth()==7 && f.guard().getRemainingFireTicks()<=0,"Pyromaniac fails to extinguish and heal guard");
+            NecromancerPassiveCombat.attack(f.guard(),f.target());test.assertTrue(f.guard().getHealth()==6 && f.guard().getRemainingFireTicks()<=0,"Pyromaniac fails to extinguish and heal guard at rank I");
             equip(f.guard(),learn(ModItems.INFERNAL_CLAYMORE.get(),RecommendedAbilities.HEATING_UP,1),ItemStack.EMPTY);f.guard().setHealth(5);f.guard().setRemainingFireTicks(100);
             test.assertFalse(f.guard().hurt(f.guard().damageSources().onFire(),1),"Heating Up takes burn damage");for(int i=0;i<40;i++)HeatingUpEvents.onTick(new PassiveActorTickEvent.Pre(f.guard()));
             test.assertTrue(f.guard().getHealth()==6,"Heating Up does not heal burning guard");
@@ -116,7 +116,7 @@ public class NecromancerPassiveGameTests {
             equip(f.guard(),ItemStack.EMPTY,ItemStack.EMPTY);SoulHungerEvents.end(f.guard());
             var victim=EntityType.ZOMBIE.create(test.getLevel());victim.setNoAi(true);victim.setNoGravity(true);victim.setPos(f.guard().position().add(0,0,1));test.getLevel().addFreshEntity(victim);
             equip(f.guard(),learn(ModItems.DREAMBOUND_CLAYMORE.get(),AdditionalAbilities.UNFINISHED_DREAM,1),ItemStack.EMPTY);f.guard().setHealth(5);victim.setHealth(1);NecromancerPassiveCombat.attack(f.guard(),victim);
-            test.assertTrue(f.guard().getHealth()==6,"Unfinished Dream fails to heal reinforcement after untouched enemy kill");victim.discard();
+            test.assertTrue(f.guard().getHealth()==7,"Unfinished Dream fails to heal reinforcement after untouched enemy kill");victim.discard();
             equip(f.guard(),learn(ModItems.CLAYMORE_OF_THUNDER.get(),AdditionalAbilities.LIGHTNING_ROD,1),ItemStack.EMPTY);test.assertTrue(LightningRodEvents.grant(f.guard()),"Lightning Rod does not accept reinforcement");
             test.assertTrue(f.guard().getAbsorptionAmount()==10 && f.guard().hasEffect(MobEffects.DAMAGE_BOOST),"Lightning Rod grants wrong actor/buffs");
             equip(f.guard(),ItemStack.EMPTY,ItemStack.EMPTY);test.assertTrue(f.guard().getAbsorptionAmount()==0 && !f.guard().hasEffect(MobEffects.DAMAGE_BOOST),"Lightning Rod does not clean up on switch");

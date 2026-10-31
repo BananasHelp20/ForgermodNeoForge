@@ -14,8 +14,10 @@ public final class ReviewedRanks {
             case "tooltips.forgermod.ability.deep_wound" -> 3;
             case "tooltips.forgermod.ability.thunderclap" -> 4;
             case "tooltips.forgermod.ability.sudden_presence" -> 7;
-            case "tooltips.forgermod.passive.death_march" -> 5;
-            case "tooltips.forgermod.passive.deaths_due" -> 2;
+            case "tooltips.forgermod.passive.death_march", "tooltips.forgermod.passive.nether_born", "tooltips.forgermod.passive.revenge", "tooltips.forgermod.passive.sleepwalker" -> 5;
+            case "tooltips.forgermod.passive.last_stand", "tooltips.forgermod.passive.unfinished_dream" -> 3;
+            case "tooltips.forgermod.passive.photosynthesis", "tooltips.forgermod.ability.pyromaniac" -> 4;
+            case "tooltips.forgermod.passive.deaths_due", "tooltips.forgermod.passive.echo_appetite" -> 2;
             default -> -1;
         };
     }

@@ -28,13 +28,24 @@ public final class GardenersEvents {
   Plant(Level level) { super(EntityType.BLOCK_DISPLAY,level); var tag=new CompoundTag(); tag.put("block_state",NbtUtils.writeBlockState(Blocks.AZALEA.defaultBlockState())); readAdditionalSaveData(tag); }
   @Override public boolean shouldBeSaved() { return false; }
  }
+ private static final ThreadLocal<PoisonCloud> TICKING_CLOUD=new ThreadLocal<>();
  public static final class PoisonCloud extends AreaEffectCloud {
   PoisonCloud(Level level,double x,double y,double z) { super(level,x,y,z); }
+  @Override public void tick() {
+   var previous=TICKING_CLOUD.get();TICKING_CLOUD.set(this);
+   try {super.tick();} finally {if(previous==null)TICKING_CLOUD.remove();else TICKING_CLOUD.set(previous);}
+  }
   @Override public boolean shouldBeSaved() { return false; }
  }
  private static final Map<UUID,Garden> GARDENS=new HashMap<>();
  private static final Map<UUID,Garden> PLACED=new HashMap<>();
  private GardenersEvents() {}
+ @SubscribeEvent(priority=EventPriority.LOWEST)
+ public static void protectCaster(net.neoforged.neoforge.event.entity.living.MobEffectEvent.Applicable event) {
+  var cloud=TICKING_CLOUD.get();
+  if(cloud!=null && cloud.getOwner()==event.getEntity() && event.getEffectInstance().getEffect().equals(MobEffects.POISON))
+   event.setResult(net.neoforged.neoforge.event.entity.living.MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+ }
  public static boolean activate(ServerPlayer player,ItemStack stack) { if(active(player)) return false; GARDENS.put(player.getUUID(),new Garden(player,stack)); return true; }
  public static boolean active(ServerPlayer player) {
   var g=GARDENS.get(player.getUUID()); if(g==null) return false;

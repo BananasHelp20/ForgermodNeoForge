@@ -26,6 +26,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class InfusionTableBlock extends BaseEntityBlock {
@@ -52,6 +56,15 @@ public class InfusionTableBlock extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    private static final VoxelShape BASE=box(0,0,0,16,15.25,16);
+    private static final VoxelShape NORTH=Shapes.or(BASE,box(5,15.25,2,11,19.5,13));
+    private static final VoxelShape SOUTH=Shapes.or(BASE,box(5,15.25,3,11,19.5,14));
+    private static final VoxelShape EAST=Shapes.or(BASE,box(3,15.25,5,14,19.5,11));
+    private static final VoxelShape WEST=Shapes.or(BASE,box(2,15.25,5,13,19.5,11));
+    @Override protected VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext context){
+        return switch(state.getValue(FACING)){case SOUTH->SOUTH;case EAST->EAST;case WEST->WEST;default->NORTH;};
     }
 
     @Override
@@ -81,7 +94,8 @@ public class InfusionTableBlock extends BaseEntityBlock {
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide) {
-            return null;
+            return createTickerHelper(pBlockEntityType,ModBlockEntities.INFUSION_TABLE_BE.get(),
+                    (level,pos,state,table)->table.clientTick());
         }
 
         return createTickerHelper(

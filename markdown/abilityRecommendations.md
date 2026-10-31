@@ -67,7 +67,6 @@ Weapon sections cover the base item and its Ruby, Amber, Amethyst and Jade varia
 
 ### Voltage Axe — `axe_of_thunder`
 
-1. **Thunderclap — Active.** Destroy hostile projectiles within six blocks with one electrical burst. Does not damage enemies or blocks.
 3. **Insulated Handle — Passive.** Take 25% less magic damage, including damage from Poison and Wither.
 
 ## Taifunite

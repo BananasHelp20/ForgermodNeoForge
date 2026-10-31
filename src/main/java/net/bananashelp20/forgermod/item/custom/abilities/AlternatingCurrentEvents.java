@@ -22,6 +22,7 @@ public final class AlternatingCurrentEvents {
     }
     private static final Map<UUID,Link> LINKS=new HashMap<>();
     private AlternatingCurrentEvents() {}
+    public static int damage(int rank) { return 1+Math.clamp(rank,1,5); }
     private static boolean validTarget(ServerPlayer player,LivingEntity target) {
         return target.isAlive() && !target.isRemoved()
                 && (target instanceof Mob || WeaponAbilityTargets.enemy(player,target));
@@ -55,7 +56,7 @@ public final class AlternatingCurrentEvents {
         if(!link.first.hasLineOfSight(link.second))return;
         for(var target:java.util.List.of(link.first,link.second)){
             int immunity=target.invulnerableTime;target.invulnerableTime=0;
-            if(!target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT,player),2))target.invulnerableTime=immunity;
+            if(!target.hurt(player.damageSources().source(DamageTypes.LIGHTNING_BOLT,player),damage(Augmentations.level(link.stack,AdditionalAbilities.ALTERNATING_CURRENT))))target.invulnerableTime=immunity;
             WeaponControlLocks.acquire(target,player.getUUID(),AdditionalAbilities.ALTERNATING_CURRENT,10);
         }
         var from=link.pulseFirst?link.first:link.second;var to=link.pulseFirst?link.second:link.first;

@@ -14,6 +14,7 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 public final class AdditionalPassiveEvents {
     public static final int BACKSTAB_PERCENT=20;
     private AdditionalPassiveEvents() {}
+    public static int sleepwalkerBonusPercent(int rank) { return 6*Math.clamp(rank,1,5); }
     private static boolean fullyArmored(net.minecraft.world.entity.LivingEntity target) {
         for(var slot:java.util.List.of(net.minecraft.world.entity.EquipmentSlot.HEAD,net.minecraft.world.entity.EquipmentSlot.CHEST,net.minecraft.world.entity.EquipmentSlot.LEGS,net.minecraft.world.entity.EquipmentSlot.FEET)) {
             var stack=target.getItemBySlot(slot);
@@ -41,7 +42,7 @@ public final class AdditionalPassiveEvents {
             event.setAmount(event.getAmount()*1.2F);
         long time=Math.floorMod(player.level().getDayTime(),24000L);
         if(enemy && PassiveActors.has(player,AdditionalAbilities.SLEEPWALKER) && player.level().dimensionType().hasSkyLight() && time>=13000 && time<23000)
-            event.setAmount(event.getAmount()*1.1F);
+            event.setAmount(event.getAmount()*(1+sleepwalkerBonusPercent(Augmentations.level(PassiveActors.weapon(player,AdditionalAbilities.SLEEPWALKER),AdditionalAbilities.SLEEPWALKER))/100F));
         if(enemy && PassiveActors.has(player,AdditionalAbilities.CHARRED_EDGE) && event.getEntity().hasEffect(MobEffects.FIRE_RESISTANCE))
             event.setAmount(event.getAmount()*1.15F);
         if(event.getEntity()!=player && PassiveActors.has(player,AdditionalAbilities.BACKSTAB)) {
