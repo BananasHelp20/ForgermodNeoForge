@@ -89,7 +89,13 @@ public class SwordItemWithEffect extends SwordItem {
         appendWeaponTooltip(stack, tooltip, loreKey, gemstone, WeaponTooltips.descriptionsVisible());
     }
 
-    protected final void appendWeaponTooltip(ItemStack stack, List<Component> tooltip, String loreKey, String gemstone, boolean expanded) {
+    protected final void appendWeaponTooltip(ItemStack stack,List<Component> tooltip,String loreKey,String gemstone,net.minecraft.world.level.Level level){
+        appendWeaponTooltip(stack,tooltip,loreKey,gemstone,WeaponTooltips.descriptionsVisible(),level);
+    }
+    protected final void appendWeaponTooltip(ItemStack stack,List<Component> tooltip,String loreKey,String gemstone,boolean expanded){
+        appendWeaponTooltip(stack,tooltip,loreKey,gemstone,expanded,null);
+    }
+    protected final void appendWeaponTooltip(ItemStack stack, List<Component> tooltip, String loreKey, String gemstone, boolean expanded, net.minecraft.world.level.Level level) {
         tooltip.add(Component.translatable(loreKey));
         boolean augmented = Augmentations.count(stack) > 0;
         int materialRank = Augmentations.level(stack, Augmentations.MATERIAL_HIT);
@@ -181,7 +187,7 @@ public class SwordItemWithEffect extends SwordItem {
             if ("jade".equals(gemstone)) tooltip.add(Component.translatable("tooltips.forgermod.gemstone_bonus.jade.duration").withStyle(color));
         }
         boolean canAugment = !augmented && !hasAbilities;
-        boolean canInfuse = net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack);
+        boolean canInfuse = net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(level,stack);
         if (hasGemstone && (canAugment || canInfuse)) tooltip.add(Component.empty());
         if (canAugment) tooltip.add(Component.translatable("tooltips.forgermod.can_augment").withStyle(ChatFormatting.GRAY));
         if (canInfuse) tooltip.add(Component.translatable("tooltips.forgermod.can_infuse").withStyle(ChatFormatting.GRAY));

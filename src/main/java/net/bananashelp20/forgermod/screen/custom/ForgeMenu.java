@@ -64,11 +64,14 @@ public class ForgeMenu extends AbstractContainerMenu {
         Slot source = slots.get(index);
         if (!source.hasItem() || !source.mayPickup(player)) return ItemStack.EMPTY;
         ItemStack sourceStack = source.getItem(), original = sourceStack.copy();
-        if (index < 36) {
-            if (TableInputs.upgradeTemplate(sourceStack)) {
-                if (!moveItemStackTo(sourceStack, 37, 38, false)) return ItemStack.EMPTY;
-            } else if (!moveItemStackTo(sourceStack, 38, 40, true)) return ItemStack.EMPTY;
-        } else if (!moveItemStackTo(sourceStack, 0, 36, true)) return ItemStack.EMPTY;
+        if(index<36){
+            boolean moved=false;
+            for(int slot:new int[]{2,0,1}){
+                int destination=slot==0?39:slot==1?38:37;
+                if(TableInputs.accepts(level,false,slot,sourceStack) && moveItemStackTo(sourceStack,destination,destination+1,false)){moved=true;break;}
+            }
+            if(!moved)return ItemStack.EMPTY;
+        }else if(!moveItemStackTo(sourceStack,0,36,true))return ItemStack.EMPTY;
         if (sourceStack.isEmpty()) source.set(ItemStack.EMPTY); else source.setChanged();
         source.onTake(player, sourceStack);
         return original;

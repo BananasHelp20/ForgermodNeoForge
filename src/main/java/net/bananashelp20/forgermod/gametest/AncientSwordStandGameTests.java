@@ -30,6 +30,44 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 public class AncientSwordStandGameTests {
     private static final BlockPos POS = new BlockPos(2, 1, 2);
 
+    @GameTest(template = "empty")
+    public static void structureTransformsPreserveClaimAndOpeningStates(GameTestHelper test) {
+        var original = ModBlocks.ANCIENT_SWORD_STAND.get().defaultBlockState();
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            for (boolean full : new boolean[]{false, true}) for (boolean opening : new boolean[]{false, true}) {
+                var state = original.setValue(AncientSwordStandBlock.FACING, facing)
+                        .setValue(AncientSwordStandBlock.FULL, full).setValue(AncientSwordStandBlock.OPENING, opening);
+                for (var mirror : net.minecraft.world.level.block.Mirror.values()) {
+                    for (var rotation : net.minecraft.world.level.block.Rotation.values()) {
+                        var transformed = state.mirror(mirror).rotate(rotation);
+                        test.assertTrue(transformed.getValue(AncientSwordStandBlock.FACING) == rotation.rotate(mirror.mirror(facing)), "Structure transform did not update stand facing");
+                        test.assertTrue(transformed.getValue(AncientSwordStandBlock.FULL) == full
+                                && transformed.getValue(AncientSwordStandBlock.OPENING) == opening, "Transform refilled the stand or changed its animation state");
+                    }
+                    test.assertTrue(state.mirror(mirror).mirror(mirror).equals(state), "Mirroring twice did not restore stand state");
+                }
+            }
+        }
+        test.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void ironPickaxeRequirementMatchesTagsAndHarvesting(GameTestHelper test) {
+        var player = test.makeMockPlayer(GameType.SURVIVAL);
+        for (boolean full : new boolean[]{false, true}) {
+            var state = ModBlocks.ANCIENT_SWORD_STAND.get().defaultBlockState().setValue(AncientSwordStandBlock.FULL, full);
+            test.assertTrue(state.requiresCorrectToolForDrops()
+                    && state.is(net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE)
+                    && state.is(net.minecraft.tags.BlockTags.NEEDS_IRON_TOOL), "Stand properties and mining tags disagree");
+            for (var item : new net.minecraft.world.item.Item[]{Items.AIR, Items.WOODEN_PICKAXE, Items.STONE_PICKAXE, Items.IRON_AXE, Items.IRON_PICKAXE, Items.DIAMOND_PICKAXE, Items.NETHERITE_PICKAXE}) {
+                player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item));
+                boolean expected = item == Items.IRON_PICKAXE || item == Items.DIAMOND_PICKAXE || item == Items.NETHERITE_PICKAXE;
+                test.assertTrue(player.hasCorrectToolForDrops(state) == expected, "Wrong harvesting permission for " + item);
+            }
+        }
+        test.succeed();
+    }
+
     @GameTest(template = "empty", timeoutTicks = 80)
     public static void oneSwordAndOpening(GameTestHelper test) {
         test.setBlock(POS, ModBlocks.ANCIENT_SWORD_STAND.get());

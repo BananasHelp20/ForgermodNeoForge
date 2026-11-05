@@ -165,7 +165,7 @@ public class PulsiteWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.wardens_needle.tooltip";
             default -> "tooltips.forgermod.shrieking_claymore.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

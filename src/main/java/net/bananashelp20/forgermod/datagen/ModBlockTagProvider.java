@@ -66,6 +66,8 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         //generate TAGS!
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AUGMENTATION_TABLE.get())
+                .add(ModBlocks.ANCIENT_SWORD_STAND.get())
+                .add(ModBlocks.ANCIENT_DAGGER_PEDESTAL.get(), ModBlocks.ANCIENT_AXE_STAND.get())
                 .add(ModBlocks.METEORIC_IRON_STONE_ORE.get())
                 .add(ModBlocks.METEORIC_IRON_END_ORE.get())
                 .add(ModBlocks.TITANIUM_STONE_ORE.get())
@@ -143,6 +145,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.SCRAP_BLOCK.get())
                 .add(ModBlocks.SCRAP_IRON_BLOCK.get())
                 .add(ModBlocks.ANCIENT_SWORD_STAND.get())
+                .add(ModBlocks.ANCIENT_DAGGER_PEDESTAL.get(), ModBlocks.ANCIENT_AXE_STAND.get())
         ;
 
         tag(BlockTags.NEEDS_DIAMOND_TOOL)

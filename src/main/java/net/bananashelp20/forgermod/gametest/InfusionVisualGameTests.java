@@ -42,7 +42,7 @@ public final class InfusionVisualGameTests {
             test.assertTrue(mirror.displayGemstone().is(gems[i]) && mirror.displayGemstone().getCount()==1,"Wrong or multiple gemstones displayed");
             test.assertTrue(ItemStack.matches(mirror.displayWeapon(),weapon()),"Displayed weapon loses its actual augments/components");
             test.assertTrue(mirror.itemHandler.getStackInSlot(1).is(Items.DIAMOND_SWORD),"Visual update overwrites GUI inventory");
-            var saved=table.saveWithoutMetadata(registry);var restored=new InfusionTableBlockEntity(table.getBlockPos(),table.getBlockState());restored.loadWithComponents(saved,registry);
+            var saved=table.saveWithoutMetadata(registry);var restored=new InfusionTableBlockEntity(table.getBlockPos(),table.getBlockState());restored.setLevel(test.getLevel());restored.loadWithComponents(saved,registry);
             mirror.handleUpdateTag(restored.getUpdateTag(registry),registry);
             test.assertTrue(mirror.displayGemstone().is(gems[i]) && !mirror.displayWeapon().isEmpty(),"Reload loses active displays");
             table.itemHandler.extractItem(1,1,false);

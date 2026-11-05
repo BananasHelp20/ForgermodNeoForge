@@ -1,0 +1,22 @@
+{
+  "type": "forgermod:forge",
+  "ingredient1": {
+    "item": "forgermod:somnium_shard"
+  },
+  "ingredient2": {
+    "item": "forgermod:carbon_steel_ingot"
+  },
+  "template": {
+    "item": "forgermod:ancient_upgrade_template"
+  },
+  "count1": 4,
+  "count2": 1,
+  "template_count": 1,
+  "processing_time": 250,
+  "copy_components": false,
+  "requires_jade_compatible": false,
+  "result": {
+    "id": "forgermod:somnium_ingot",
+    "count": 1
+  }
+}

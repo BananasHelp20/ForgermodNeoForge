@@ -1,0 +1,22 @@
+{
+  "type": "forgermod:infusion_table",
+  "ingredient1": {
+    "item": "forgermod:jade_gemstone"
+  },
+  "ingredient2": {
+    "item": "forgermod:curseblood_axe"
+  },
+  "template": {
+    "item": "forgermod:gemstone_upgrade_template"
+  },
+  "count1": 1,
+  "count2": 1,
+  "template_count": 0,
+  "processing_time": 400,
+  "copy_components": true,
+  "requires_jade_compatible": true,
+  "result": {
+    "id": "forgermod:curseblood_axe_jade",
+    "count": 1
+  }
+}

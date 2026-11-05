@@ -123,9 +123,15 @@ public class ModBlocks {
     //non-block blocks and special blocks
     public static final DeferredBlock<Block> DEVELOPIUM_BLOCK = createBlockWithDescription("developium_block", 50f, 100, SoundType.HEAVY_CORE, "tooltips.forgermod.developium_block.tooltip");
 
+    public static final DeferredBlock<Block> ANCIENT_DAGGER_PEDESTAL = registerBlock("ancient_dagger_pedestal",
+            () -> new net.bananashelp20.forgermod.block.custom.AncientDaggerPedestalBlock(BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(45f,50).sound(SoundType.NETHERITE_BLOCK)));
+    public static final DeferredBlock<Block> ANCIENT_AXE_STAND = registerBlock("ancient_axe_stand",
+            () -> new net.bananashelp20.forgermod.block.custom.AncientAxeStandBlock(BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(45f,50).sound(SoundType.NETHERITE_BLOCK)));
+
     public static final DeferredBlock<Block> ANCIENT_SWORD_STAND = registerBlock("ancient_sword_stand",
             () -> new AncientSwordStandBlock(BlockBehaviour.Properties.of()
                     .noOcclusion()
+                    .requiresCorrectToolForDrops()
                     .strength(45f, 50)
                     .sound(SoundType.NETHERITE_BLOCK)
             )

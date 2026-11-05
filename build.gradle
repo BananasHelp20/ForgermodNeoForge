@@ -18,6 +18,11 @@ version = mod_version
 group = mod_group_id
 
 repositories {
+    maven {
+        name = "JEI"
+        url = "https://maven.blamejared.com/"
+        content { includeGroup 'mezz.jei' }
+    }
     // Add here additional repositories if required by some of the dependencies below.
 }
 
@@ -117,6 +122,11 @@ configurations {
 }
 
 dependencies {
+    // JEI stays optional at runtime; its API is needed only by the isolated client plugin.
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:19.21.0.247"
+    if (project.hasProperty('withJei')) {
+        localRuntime "mezz.jei:jei-1.21.1-neoforge:19.21.0.247"
+    }
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

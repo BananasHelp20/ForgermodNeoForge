@@ -7,12 +7,7 @@ public record ForgeRecipeInput(ItemStack input1, ItemStack input2, ItemStack tem
 
     @Override
     public ItemStack getItem(int pIndex) {
-        if (pIndex == 1) {
-            return input1;
-        } else if (pIndex == 2) {
-            return templateInput;
-        }
-        return input2; //index: 3
+        return switch(pIndex){case 0->input1;case 1->input2;case 2->templateInput;default->throw new IndexOutOfBoundsException(pIndex);};
     }
 
     @Override

@@ -97,7 +97,7 @@ public class IgnisiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.emberfang_dagger.tooltip";
             default -> "tooltips.forgermod.infernal_claymore.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

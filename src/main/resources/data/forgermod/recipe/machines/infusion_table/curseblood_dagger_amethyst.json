@@ -1,0 +1,22 @@
+{
+  "type": "forgermod:infusion_table",
+  "ingredient1": {
+    "item": "forgermod:amethyst_gemstone"
+  },
+  "ingredient2": {
+    "item": "forgermod:curseblood_dagger"
+  },
+  "template": {
+    "item": "forgermod:gemstone_upgrade_template"
+  },
+  "count1": 1,
+  "count2": 1,
+  "template_count": 0,
+  "processing_time": 400,
+  "copy_components": true,
+  "requires_jade_compatible": false,
+  "result": {
+    "id": "forgermod:curseblood_dagger_amethyst",
+    "count": 1
+  }
+}

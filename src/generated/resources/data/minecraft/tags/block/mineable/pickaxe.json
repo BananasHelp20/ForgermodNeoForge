@@ -1,6 +1,7 @@
 {
   "values": [
     "forgermod:augmentation_table",
+    "forgermod:ancient_sword_stand",
     "forgermod:meteoric_iron_stone_ore",
     "forgermod:meteoric_iron_end_ore",
     "forgermod:titanium_stone_ore",
@@ -48,6 +49,8 @@
     "forgermod:shardium_deepslate_ore",
     "forgermod:shardium_nether_ore",
     "forgermod:shardium_end_ore",
-    "forgermod:shardium_obsidian_ore"
+    "forgermod:shardium_obsidian_ore",
+    "forgermod:ancient_dagger_pedestal",
+    "forgermod:ancient_axe_stand"
   ]
 }

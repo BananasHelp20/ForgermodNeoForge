@@ -1,5 +1,7 @@
 # Project instructions
 
+- All recipes must remain JEI-compatible at all times. Custom machine recipes must be visible in JEI with accurate inputs, quantities, outputs and template-consumption rules; preserve compatibility when adding or changing recipes.
+
 - Always target Minecraft **1.21.1** and NeoForge **21.1.x**. The current `gradle.properties` specifies NeoForge **21.1.93**. Check APIs against this version.
 - Record every addition, deletion, buff, and debuff as a list entry in `src/changes.txt`.
 - Implement weapon abilities one at a time. After each ability, test it, review the code for bugs, fix them, rerun the tests, review again, then commit and push before proceeding to the next ability. If Git commit or push fails, report the commands the user can run and continue as instructed.

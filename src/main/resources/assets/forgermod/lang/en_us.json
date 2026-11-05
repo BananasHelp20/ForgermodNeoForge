@@ -1,4 +1,9 @@
 {
+  "jei.forgermod.not_consumed": "Required, but not consumed",
+  "jei.forgermod.jade_required": "Base weapon needs a learned status-effect augment",
+  "jei.forgermod.processing_time": "%s seconds",
+  "jei.forgermod.template_retained": "Template is retained",
+  "jei.forgermod.template_cost": "Template cost: %s",
   "subtitles.forgermod.ringing_steel_hit": "Steel rings",
   "subtitles.forgermod.electric_travel": "Electric current crackles",
   "subtitles.forgermod.void_pulse_charge": "Void energy gathers",
@@ -392,6 +397,8 @@
   "tooltips.forgermod.augment_template.material_hit": "Applies the receiving weapon's material effect on hit.",
   "creativetab.forgermod.forger_miscellaneous_tab": "Forger Miscellaneous",
   "block.forgermod.ancient_sword_stand": "Ancient Sword Stand",
+  "block.forgermod.ancient_dagger_pedestal": "Ancient Dagger Pedestal",
+  "block.forgermod.ancient_axe_stand": "Ancient Axe Stand",
   "block.forgermod.forge": "Forge",
   "block.forgermod.infusion_table": "Infusion Table",
   "tooltips.forgermod.gemstone_upgrade_template.tooltip": "§7This template is used to infuse weapons\nwith gemstones increasing specific weapon stats.\n\nInfuse your weapons at the Infusion Table!§r",

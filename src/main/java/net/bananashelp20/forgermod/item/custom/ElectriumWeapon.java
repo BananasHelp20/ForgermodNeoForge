@@ -225,7 +225,7 @@ public class ElectriumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.static_dagger.tooltip";
             default -> "tooltips.forgermod.claymore_of_thunder.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

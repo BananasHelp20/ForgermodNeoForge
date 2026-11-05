@@ -64,12 +64,14 @@ public class InfusionTableMenu extends AbstractContainerMenu {
         Slot source = slots.get(index);
         if (!source.hasItem() || !source.mayPickup(player)) return ItemStack.EMPTY;
         ItemStack sourceStack = source.getItem(), original = sourceStack.copy();
-        if (index < 36) {
-            int destination = TableInputs.gemstone(sourceStack) ? 39
-                    : sourceStack.is(net.bananashelp20.forgermod.item.ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()) ? 38
-                    : TableInputs.infusible(sourceStack) ? 37 : -1;
-            if (destination < 0 || !moveItemStackTo(sourceStack, destination, destination + 1, false)) return ItemStack.EMPTY;
-        } else if (!moveItemStackTo(sourceStack, 0, 36, true)) return ItemStack.EMPTY;
+        if(index<36){
+            boolean moved=false;
+            for(int slot:new int[]{0,2,1}){
+                int destination=slot==0?39:slot==1?37:38;
+                if(TableInputs.accepts(level,true,slot,sourceStack) && moveItemStackTo(sourceStack,destination,destination+1,false)){moved=true;break;}
+            }
+            if(!moved)return ItemStack.EMPTY;
+        }else if(!moveItemStackTo(sourceStack,0,36,true))return ItemStack.EMPTY;
         if (sourceStack.isEmpty()) source.set(ItemStack.EMPTY); else source.setChanged();
         source.onTake(player, sourceStack);
         return original;

@@ -149,7 +149,7 @@ public class TaifuniteWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.dead_calm_dagger.tooltip";
             default -> "tooltips.forgermod.storming_claymore.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

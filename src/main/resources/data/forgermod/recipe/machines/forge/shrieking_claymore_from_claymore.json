@@ -1,0 +1,22 @@
+{
+  "type": "forgermod:forge",
+  "ingredient1": {
+    "item": "forgermod:pulsite_ingot"
+  },
+  "ingredient2": {
+    "item": "forgermod:claymore"
+  },
+  "template": {
+    "item": "forgermod:ancient_upgrade_template"
+  },
+  "count1": 1,
+  "count2": 1,
+  "template_count": 1,
+  "processing_time": 250,
+  "copy_components": false,
+  "requires_jade_compatible": false,
+  "result": {
+    "id": "forgermod:shrieking_claymore",
+    "count": 1
+  }
+}

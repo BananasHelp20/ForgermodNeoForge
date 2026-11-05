@@ -2,8 +2,10 @@ package net.bananashelp20.forgermod.block.entity.custom;
 
 import net.bananashelp20.forgermod.block.custom.InfusionTableBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
+import net.bananashelp20.forgermod.recipe.MachineCrafting;
+import net.bananashelp20.forgermod.recipe.ModRecipes;
 import net.bananashelp20.forgermod.item.ModItems;
-import net.bananashelp20.forgermod.augmentation.JadeAugments;
+
 import net.bananashelp20.forgermod.screen.custom.InfusionTableMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -19,7 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -27,19 +29,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.INFUSION_TABLE_RECIPE_INPUTS;
-import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.INFUSION_TABLE_RECIPE_OUTPUTS;
 
 public class InfusionTableBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemHandler = new ItemStackHandler(4) { //4 -> 4 slots big
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return switch (slot) {
-                case 0 -> net.bananashelp20.forgermod.screen.custom.TableInputs.gemstone(stack);
-                case 1 -> net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack);
-                case 2 -> stack.is(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get());
-                default -> false;
-            };
+            return MachineCrafting.accepts(level,ModRecipes.INFUSION_TYPE.get(),slot,stack);
         }
         @Override
         protected void onContentsChanged(int slot) {
@@ -53,10 +48,10 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     private static final int TEMPLATE_SLOT = 2;
     private static final int OUTPUT_SLOT = 3;
 
-//    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     private static final int resetMaxProgressTo = 400;
     protected final ContainerData data;
+    private final MachineCrafting craftingState=new MachineCrafting();
     private int progress = 0;
     private int maxProgress = resetMaxProgressTo;
 
@@ -110,7 +105,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     }
     private ItemStack inputGemstone(){
         var stack=itemHandler.getStackInSlot(GEMSTONE_SLOT);
-        return net.bananashelp20.forgermod.screen.custom.TableInputs.gemstone(stack)?stack:ItemStack.EMPTY;
+        return MachineCrafting.accepts(level,ModRecipes.INFUSION_TYPE.get(),0,stack)?stack:ItemStack.EMPTY;
     }
     public ItemStack displayWeapon() {
         if(level==null || level.isClientSide)return clientDisplayWeapon;
@@ -118,7 +113,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     }
     private ItemStack inputWeapon(){
         var stack=itemHandler.getStackInSlot(GEAR_SLOT);
-        return net.bananashelp20.forgermod.screen.custom.TableInputs.infusible(stack)?stack:ItemStack.EMPTY;
+        return MachineCrafting.accepts(level,ModRecipes.INFUSION_TYPE.get(),1,stack)?stack:ItemStack.EMPTY;
     }
     private void syncDisplay() {
         if(level==null || level.isClientSide)return;
@@ -142,7 +137,6 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
     @Override
     public void onLoad() {
         super.onLoad();
-//        lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }
 
     public void drops() {
@@ -156,6 +150,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
 
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        craftingState.save(pTag,pRegistries);
         pTag.put("inventory", itemHandler.serializeNBT(pRegistries));
         pTag.putInt("infusion_table.progress", progress);
         pTag.putInt("infusion_table.max_progress", maxProgress);
@@ -167,15 +162,11 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         super.loadAdditional(pTag, pRegistries);
 
         itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
+        craftingState.load(pTag,pRegistries);
         progress = pTag.getInt("infusion_table.progress");
         maxProgress = pTag.getInt("infusion_table.max_progress");
     }
 
-//    @Override
-//    public void invalidateCaps() {
-//        super.invalidateCaps();
-//        lazyItemHandler.invalidate();
-//    }
 
     @Override
     public Component getDisplayName() {
@@ -205,88 +196,28 @@ public class InfusionTableBlockEntity extends BlockEntity implements MenuProvide
         handleUpdateTag(packet.getTag(),registries);
     }
 
-    private boolean hasCraftingFinished() {
-        return this.progress >= this.maxProgress;
-    }
 
-    private void increaseCraftingProgress() {
-        progress ++;
-    }
+    @Override public Packet<ClientGamePacketListener> getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
 
-    private void resetProgress() {
-        this.progress = 0;
-        this.maxProgress = resetMaxProgressTo;
-    }
-
-    @Override
-    @Nullable
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    private int recipeUsed = 0;
-
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        if (hasRecipe()) {
-            setLit(level,blockPos,true);
-            increaseCraftingProgress();
-            setChanged(level, blockPos, blockState);
-            if (hasCraftingFinished()) {
-                craftItem(recipeUsed);
-                resetProgress();
-                setLit(level,blockPos,false);
-            }
-        } else {
-            resetProgress();
-            setLit(level,blockPos,false);
-        }
+    public void tick(Level level,BlockPos pos,BlockState state){
+        if(level.isClientSide)return;
+        var holder=MachineCrafting.find(level,ModRecipes.INFUSION_TYPE.get(),itemHandler);
+        if(holder.isPresent() && MachineCrafting.fits(itemHandler,holder.get().value().assemble(MachineCrafting.input(itemHandler),level.registryAccess()))){
+            if(!craftingState.accept(holder.get(),itemHandler,level.registryAccess()))progress=0;
+            maxProgress=holder.get().value().processingTime();progress++;
+            if(progress>=maxProgress){MachineCrafting.craft(level,itemHandler,holder.get().value());resetProgress();}
+            setChanged();
+        }else{if(progress!=0)setChanged();resetProgress();}
+        setLit(level,pos,progress>0);
         syncDisplay();
     }
-    private static void setLit(Level level,BlockPos pos,boolean lit) {
-        var state=level.getBlockState(pos);
-        if(state.getValue(InfusionTableBlock.LIT)!=lit)level.setBlockAndUpdate(pos,state.setValue(InfusionTableBlock.LIT,lit));
+    private static void setLit(Level level,BlockPos pos,boolean lit){
+        var current=level.getBlockState(pos);
+        if(current.getValue(InfusionTableBlock.LIT)!=lit)level.setBlockAndUpdate(pos,current.setValue(InfusionTableBlock.LIT,lit));
     }
-
-    private void craftItem(int recipeUsed) {
-        ItemStack output = INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed];
-
-        ItemStack input = itemHandler.getStackInSlot(GEAR_SLOT);
-        ItemStack augmentedOutput = new ItemStack(output.getItem().builtInRegistryHolder(), 1, input.getComponentsPatch());
-        itemHandler.extractItem(GEMSTONE_SLOT, 1, false);
-        itemHandler.extractItem(GEAR_SLOT, 1, false);
-        itemHandler.setStackInSlot(OUTPUT_SLOT, augmentedOutput);
-    }
-
-    private boolean hasRecipe() {
-        return ((isValidRecipe(INFUSION_TABLE_RECIPE_INPUTS, INFUSION_TABLE_RECIPE_OUTPUTS)) && canInsertItemIntoOutputSlot(INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed]) && canInsertAmountIntoOutputSlot(INFUSION_TABLE_RECIPE_OUTPUTS[recipeUsed].getCount()));
-    }
-
-    private boolean isValidRecipe(Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN
-        if (recipeOutputs.length == recipeInputs.length) {
-            for (int i = 0; i < recipeInputs.length; i++) {
-                if (itemHandler.getStackInSlot(GEMSTONE_SLOT).is(recipeInputs[i][0]) && itemHandler.getStackInSlot(TEMPLATE_SLOT).is(recipeInputs[i][2]) && itemHandler.getStackInSlot(GEAR_SLOT).is(recipeInputs[i][1])
-                        && (recipeInputs[i][0] != ModItems.JADE_GEMSTONE.get()
-                        || JadeAugments.canInfuse(itemHandler.getStackInSlot(GEAR_SLOT)))) {
-                    recipeUsed = i;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-//    private Optional<RecipeHolder<InfusionTableRecipe>> getCurrentRecipe() {
-//        return this.level.getRecipeManager().getRecipeFor(ModRecipes.INFUSION_TABLE_TYPE.get(), new InfusionTableRecipeInput(itemHandler.getStackInSlot(GEMSTONE_SLOT), itemHandler.getStackInSlot(GEAR_SLOT), itemHandler.getStackInSlot(TEMPLATE_SLOT)), level);
-//    }
-
-    private boolean canInsertAmountIntoOutputSlot(int count) {
-        int maxCount = itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ? 64 : itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
-        int currentCount = itemHandler.getStackInSlot(OUTPUT_SLOT).getCount();
-
-        return maxCount >= currentCount + count;
-    }
-
-    private boolean canInsertItemIntoOutputSlot(ItemStack output) {
-        return itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.itemHandler.getStackInSlot(OUTPUT_SLOT).getItem() == output.getItem();
+    private void resetProgress(){progress=0;maxProgress=resetMaxProgressTo;craftingState.clear();}
+    private boolean hasRecipe(){
+        var recipe=MachineCrafting.find(level,ModRecipes.INFUSION_TYPE.get(),itemHandler);
+        return recipe.isPresent() && MachineCrafting.fits(itemHandler,recipe.get().value().assemble(MachineCrafting.input(itemHandler),level.registryAccess()));
     }
 }

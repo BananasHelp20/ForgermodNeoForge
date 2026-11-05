@@ -202,7 +202,7 @@ public class MorsiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.deathwisper_dagger.tooltip";
             default -> "tooltips.forgermod.hollow_claymore.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

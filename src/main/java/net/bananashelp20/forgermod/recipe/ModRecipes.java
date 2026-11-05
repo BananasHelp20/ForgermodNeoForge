@@ -15,11 +15,11 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, ForgerMod.MOD_ID);
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ForgeRecipe>> FORGE_SERIALIZER =
-            SERIALIZERS.register("forge", ForgeRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MachineRecipe>> FORGE_SERIALIZER =
+            SERIALIZERS.register("forge", ()->new MachineRecipe.Serializer(false));
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<ForgeRecipe>> FORGE_TYPE =
-            TYPES.register("forge", () -> new RecipeType<ForgeRecipe>() {
+    public static final DeferredHolder<RecipeType<?>, RecipeType<MachineRecipe>> FORGE_TYPE =
+            TYPES.register("forge", () -> new RecipeType<MachineRecipe>() {
                 @Override
                 public String toString() {
                     return "forge";
@@ -27,6 +27,11 @@ public class ModRecipes {
             }
     );
 
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MachineRecipe>> INFUSION_SERIALIZER =
+            SERIALIZERS.register("infusion_table", ()->new MachineRecipe.Serializer(true));
+    public static final DeferredHolder<RecipeType<?>, RecipeType<MachineRecipe>> INFUSION_TYPE =
+            TYPES.register("infusion_table", ()->new RecipeType<MachineRecipe>() { @Override public String toString(){return "infusion_table";} });
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);

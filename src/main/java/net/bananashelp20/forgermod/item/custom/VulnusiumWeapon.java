@@ -172,7 +172,7 @@ public class VulnusiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.assassin_dagger.tooltip";
             default -> "tooltips.forgermod.curseblood_claymore.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 

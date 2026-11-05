@@ -2,9 +2,10 @@ package net.bananashelp20.forgermod.block.entity.custom;
 
 import net.bananashelp20.forgermod.block.custom.ForgeBlock;
 import net.bananashelp20.forgermod.block.entity.ModBlockEntities;
-import net.bananashelp20.forgermod.item.ModItems;
-import net.bananashelp20.forgermod.recipe.ForgeRecipe;
-import net.bananashelp20.forgermod.recipe.ForgeRecipeInput;
+import net.bananashelp20.forgermod.recipe.MachineCrafting;
+
+
+
 import net.bananashelp20.forgermod.recipe.ModRecipes;
 import net.bananashelp20.forgermod.screen.custom.ForgeMenu;
 import net.minecraft.core.BlockPos;
@@ -21,26 +22,25 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
+
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
+
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
 
-import static net.bananashelp20.forgermod.recipe.ModSpecialRecipes.*;
+
+
+
 
 public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) { //4 -> 4 slots big
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return slot != 3 && (slot != 2 || net.bananashelp20.forgermod.screen.custom.TableInputs.upgradeTemplate(stack));
+            return MachineCrafting.accepts(level,ModRecipes.FORGE_TYPE.get(),slot,stack);
         }
         @Override
         protected void onContentsChanged(int slot) {
@@ -51,15 +51,9 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    //label (no functional use)
-    private static final int INPUT_SLOT2 = 0; //shards
-    private static final int TEMPLATE_SLOT = 2; //template
-    private static final int INPUT_SLOT1 = 1; //carbon material
-    private static final int OUTPUT_SLOT = 3; //output (ingot)
-    private static final int SHARD_CRAFT_COST = 4;
-
     private static final int resetMaxProgressTo = 250;
     protected final ContainerData data;
+    private final MachineCrafting craftingState=new MachineCrafting();
     private int progress = 0;
     private int maxProgress = resetMaxProgressTo;
 
@@ -113,6 +107,7 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        craftingState.save(pTag,pRegistries);
         pTag.put("inventory", itemStackHandler.serializeNBT(pRegistries));
         pTag.putInt("forge.progress", progress);
         pTag.putInt("forge.max_progress", maxProgress);
@@ -124,133 +119,35 @@ public class ForgeBlockEntity extends BlockEntity implements MenuProvider {
         super.loadAdditional(pTag, pRegistries);
 
         itemStackHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
+        craftingState.load(pTag,pRegistries);
         progress = pTag.getInt("forge.progress");
         maxProgress = pTag.getInt("forge.max_progress");
     }
 
-//    @Override
-//    public void invalidateCaps() {
-//        super.invalidateCaps();
-//        lazyItemHandler.invalidate();
-//    }
 
-    public static int recipeUsed = 0;
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        if (hasRecipe()) {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, true));
-            increaseCraftingProgress();
-            setChanged(level, blockPos, blockState);
-            if (hasCraftingFinished()) {
-                craftItem(recipeUsed);
-                resetProgress();
-                level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
-            }
-        } else {
-            resetProgress();
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ForgeBlock.LIT, false));
-        }
+
+    @Override public CompoundTag getUpdateTag(HolderLookup.Provider registry){return saveWithoutMetadata(registry);}
+    @Override @Nullable public Packet<ClientGamePacketListener> getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
+
+    public void tick(Level level,BlockPos pos,BlockState state){
+        if(level.isClientSide)return;
+        var holder=MachineCrafting.find(level,ModRecipes.FORGE_TYPE.get(),itemStackHandler);
+        if(holder.isPresent() && MachineCrafting.fits(itemStackHandler,holder.get().value().assemble(MachineCrafting.input(itemStackHandler),level.registryAccess()))){
+            if(!craftingState.accept(holder.get(),itemStackHandler,level.registryAccess()))progress=0;
+            maxProgress=holder.get().value().processingTime();progress++;
+            if(progress>=maxProgress){MachineCrafting.craft(level,itemStackHandler,holder.get().value());resetProgress();}
+            setChanged();
+        }else{if(progress!=0)setChanged();resetProgress();}
+        setLit(level,pos,progress>0);
+
     }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        return saveWithoutMetadata(pRegistries);
+    private static void setLit(Level level,BlockPos pos,boolean lit){
+        var current=level.getBlockState(pos);
+        if(current.getValue(ForgeBlock.LIT)!=lit)level.setBlockAndUpdate(pos,current.setValue(ForgeBlock.LIT,lit));
     }
-
-    @Override
-    @Nullable
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    private void resetProgress() {
-        this.progress = 0;
-        this.maxProgress = resetMaxProgressTo;
-    }
-
-    private boolean isShardRecipe(Optional<RecipeHolder<ForgeRecipe>> recipe) {
-        for (int i = 0; i < shards.size(); i++) {
-            if (recipe.get().value().ingredients().getFirst().test(new ItemStack(shards.get(i)))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private ArrayList<Item> shards = new ArrayList<>(Arrays.asList(
-            ModItems.TAIFUNITE_SHARD.get(),
-            ModItems.VULNUSIUM_SHARD.get(),
-            ModItems.MORSIUM_SHARD.get(),
-            ModItems.LUSH_SHARD.get(),
-            ModItems.IGNISIUM_SHARD.get(),
-            ModItems.ELECTRIUM_SHARD.get(),
-            ModItems.DEVELOPIUM_SHARD.get(),
-            ModItems.SOMNIUM_SHARD.get(),
-            ModItems.INANISIUM_SHARD.get(),
-            ModItems.PULSITE_SHARD.get()
-    ));
-
-    private void craftItem(int recipeUsed) {
-        ItemStack output = FORGE_RECIPE_OUTPUTS[recipeUsed];
-
-        itemStackHandler.extractItem(INPUT_SLOT1, 1, false);
-        itemStackHandler.extractItem(INPUT_SLOT2, SHARD_CRAFT_COST, false);
-        itemStackHandler.extractItem(TEMPLATE_SLOT, 1, false);
-        ItemStack result = itemStackHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()
-                ? new ItemStack(output.getItem(), 1) : itemStackHandler.getStackInSlot(OUTPUT_SLOT).copy();
-        if (!itemStackHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()) result.grow(1);
-        itemStackHandler.setStackInSlot(OUTPUT_SLOT, result);
-    }
-
-    private boolean hasCraftingFinished() {
-        return this.progress >= this.maxProgress;
-    }
-
-    private void increaseCraftingProgress() {
-        progress ++;
-    }
-
-    private boolean hasRecipe() {
-//        Optional<RecipeHolder<ForgeRecipe>> recipe = getCurrentRecipe();
-//
-//        if (recipe.isEmpty()) {
-//            return false;
-//        }
-//
-//        ItemStack output = recipe.get().value().output();
-//        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
-
-        return ((isValidRecipe((itemStackHandler.getStackInSlot(INPUT_SLOT1).is(ModItems.CARBON_STEEL_INGOT.get())), FORGE_RECIPE_INPUTS, FORGE_RECIPE_OUTPUTS))
-                && canInsertItemIntoOutputSlot(FORGE_RECIPE_OUTPUTS[recipeUsed])
-                && canInsertAmountIntoOutputSlot(FORGE_RECIPE_OUTPUTS[recipeUsed].getCount()));
-    }
-
-    private boolean isValidRecipe(Boolean isShardRecipe, Item[][] recipeInputs, ItemStack[] recipeOutputs) { //ALTERNATIVE ZU JSON DATEIEN //wenn ein recipe ned geht, geht alles nd
-        if (recipeOutputs.length == recipeInputs.length) {
-            for (int i = 0; i < recipeInputs.length; i++) {
-                if (itemStackHandler.getStackInSlot(INPUT_SLOT2).is(recipeInputs[i][0]) && (itemStackHandler.getStackInSlot(INPUT_SLOT2).getCount() >= SHARD_CRAFT_COST) && isShardRecipe && itemStackHandler.getStackInSlot(TEMPLATE_SLOT).is(recipeInputs[i][2]) && itemStackHandler.getStackInSlot(INPUT_SLOT1).is(recipeInputs[i][1])) {
-                    recipeUsed = i;
-                    return true;
-                } else if (itemStackHandler.getStackInSlot(INPUT_SLOT2).is(recipeInputs[i][0]) && !isShardRecipe && itemStackHandler.getStackInSlot(TEMPLATE_SLOT).is(recipeInputs[i][2]) && itemStackHandler.getStackInSlot(INPUT_SLOT1).is(recipeInputs[i][1])) {
-                    recipeUsed = i;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private Optional<RecipeHolder<ForgeRecipe>> getCurrentRecipe() {
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.FORGE_TYPE.get(), new ForgeRecipeInput(itemStackHandler.getStackInSlot(INPUT_SLOT1), itemStackHandler.getStackInSlot(INPUT_SLOT2), itemStackHandler.getStackInSlot(TEMPLATE_SLOT)), level);
-    }
-
-    private boolean canInsertAmountIntoOutputSlot(int count) {
-        int maxCount = itemStackHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ? 64 : itemStackHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
-        int currentCount = itemStackHandler.getStackInSlot(OUTPUT_SLOT).getCount();
-
-        return maxCount >= currentCount + count;
-    }
-
-    private boolean canInsertItemIntoOutputSlot(ItemStack output) {
-        return itemStackHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.itemStackHandler.getStackInSlot(OUTPUT_SLOT).getItem() == output.getItem();
+    private void resetProgress(){progress=0;maxProgress=resetMaxProgressTo;craftingState.clear();}
+    private boolean hasRecipe(){
+        var recipe=MachineCrafting.find(level,ModRecipes.FORGE_TYPE.get(),itemStackHandler);
+        return recipe.isPresent() && MachineCrafting.fits(itemStackHandler,recipe.get().value().assemble(MachineCrafting.input(itemStackHandler),level.registryAccess()));
     }
 }

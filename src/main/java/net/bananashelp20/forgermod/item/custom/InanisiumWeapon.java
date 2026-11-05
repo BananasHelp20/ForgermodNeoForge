@@ -306,7 +306,7 @@ public class InanisiumWeapon extends SwordItemWithEffect {
             case "dagger" -> "tooltips.forgermod.riftfang_dagger.tooltip";
             default -> "tooltips.forgermod.claymore_of_the_void.tooltip";
         };
-        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone);
+        appendWeaponTooltip(pStack, pTooltipComponents, loreKey, this.gemstone, pContext.level());
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

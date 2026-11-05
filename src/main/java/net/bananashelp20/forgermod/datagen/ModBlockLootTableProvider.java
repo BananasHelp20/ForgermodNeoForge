@@ -90,6 +90,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.INFUSION_TABLE.get());
         add(ModBlocks.ANCIENT_SWORD_STAND.get(), createSingleItemTable(ModBlocks.ANCIENT_SWORD_STAND.get())
                 .apply(CopyBlockState.copyState(ModBlocks.ANCIENT_SWORD_STAND.get()).copy(AncientSwordStandBlock.FULL)));
+        for(var display:java.util.List.of(ModBlocks.ANCIENT_DAGGER_PEDESTAL.get(),ModBlocks.ANCIENT_AXE_STAND.get()))
+            add(display,createSingleItemTable(display).apply(CopyBlockState.copyState(display).copy(net.bananashelp20.forgermod.block.custom.AncientRelicDisplayBlock.FULL)));
 
         //ores
         add(ModBlocks.METEORIC_IRON_STONE_ORE.get(), createOreDrop(ModBlocks.METEORIC_IRON_STONE_ORE.get(), ModItems.RAW_METEORIC_IRON.get()));

@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,full=false": {
+      "model": "forgermod:block/ancient_axe_stand_empty",
+      "y": 0
+    },
+    "facing=north,full=true": {
+      "model": "forgermod:block/ancient_axe_stand",
+      "y": 0
+    },
+    "facing=east,full=false": {
+      "model": "forgermod:block/ancient_axe_stand_empty",
+      "y": 90
+    },
+    "facing=east,full=true": {
+      "model": "forgermod:block/ancient_axe_stand",
+      "y": 90
+    },
+    "facing=south,full=false": {
+      "model": "forgermod:block/ancient_axe_stand_empty",
+      "y": 180
+    },
+    "facing=south,full=true": {
+      "model": "forgermod:block/ancient_axe_stand",
+      "y": 180
+    },
+    "facing=west,full=false": {
+      "model": "forgermod:block/ancient_axe_stand_empty",
+      "y": 270
+    },
+    "facing=west,full=true": {
+      "model": "forgermod:block/ancient_axe_stand",
+      "y": 270
+    }
+  }
+}
