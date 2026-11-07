@@ -66,6 +66,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         //generate TAGS!
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AUGMENTATION_TABLE.get())
+                .add(ModBlocks.WEAPON_ASSEMBLER.get())
                 .add(ModBlocks.ANCIENT_SWORD_STAND.get())
                 .add(ModBlocks.ANCIENT_DAGGER_PEDESTAL.get(), ModBlocks.ANCIENT_AXE_STAND.get())
                 .add(ModBlocks.METEORIC_IRON_STONE_ORE.get())

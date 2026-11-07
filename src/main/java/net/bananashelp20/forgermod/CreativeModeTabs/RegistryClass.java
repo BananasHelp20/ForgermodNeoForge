@@ -260,6 +260,7 @@ public class RegistryClass {
                 ModBlocks.ANCIENT_AXE_STAND.get(),
                 ModBlocks.FORGE.get(),
                 ModBlocks.AUGMENTATION_TABLE.get(),
+                ModBlocks.WEAPON_ASSEMBLER.get(),
                 ModBlocks.INFUSION_TABLE.get()
         };
     }

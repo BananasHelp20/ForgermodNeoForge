@@ -26,6 +26,8 @@ public final class AbilityDescriptions {
         return Component.translatableWithFallback(key,fallback.replaceAll("(?<!%)%(?![%s]|\\d+\\$s)","%%"),java.util.Arrays.stream(values).map(AbilityDescriptions::white).toArray()).withStyle(ChatFormatting.GRAY);
     }
     public static Component description(ItemStack stack,String id,int rank,boolean compact) {
+        if(net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem.SPECIALIZATIONS.stream().anyMatch(a->a.id().equals(id)))
+            return Component.translatable(id+".description").withStyle(ChatFormatting.GRAY);
         if(compact && AdditionalAbilities.THUNDERCLAP.equals(id))return text(id+".card","Dash and slash through nearby mobs; each hit adds half weapon damage as lightning.");
         if(compact) {Component preview=FinalReviewedDescriptions.card(stack,id,Math.max(1,rank));if(preview!=null)return preview;}
         Component finalReview=FinalReviewedDescriptions.description(stack,id,Math.max(1,rank));

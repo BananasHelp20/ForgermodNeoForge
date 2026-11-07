@@ -29,16 +29,32 @@ public final class ForgerJeiPlugin implements IModPlugin {
     public static final RecipeType<MachineRecipe> FORGE=RecipeType.create("forgermod","forge",MachineRecipe.class);
     public static final RecipeType<MachineRecipe> INFUSION=RecipeType.create("forgermod","infusion_table",MachineRecipe.class);
     @Override public ResourceLocation getPluginUid(){return ResourceLocation.fromNamespaceAndPath("forgermod","machines");}
+    @Override public void registerItemSubtypes(ISubtypeRegistration registration){
+        registration.registerSubtypeInterpreter(net.bananashelp20.forgermod.item.ModItems.ANCIENT_UPGRADE_TEMPLATE.get(),
+                new mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter<ItemStack>(){
+                    @Override public Object getSubtypeData(ItemStack stack,mezz.jei.api.ingredients.subtypes.UidContext context){
+                        return net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem.specialization(stack);
+                    }
+                    @Override public String getLegacyStringSubtypeInfo(ItemStack stack,mezz.jei.api.ingredients.subtypes.UidContext context){
+                        return net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem.specialization(stack);
+                    }
+                });
+    }
     @Override public void registerCategories(IRecipeCategoryRegistration registration){
         var gui=registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(new Category(gui,false),new Category(gui,true));
+        registration.addRecipeCategories(new AncientTemplateCategory(gui));
     }
     @Override public void registerRecipes(IRecipeRegistration registration){
+        registration.addRecipes(AncientTemplateCategory.TYPE,
+                net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem.SPECIALIZATIONS.stream()
+                        .map(ability->new AncientTemplateCategory.Specialization(ability.id())).toList());
         var level=Minecraft.getInstance().level;if(level==null)return;
         registration.addRecipes(FORGE,level.getRecipeManager().getAllRecipesFor(ModRecipes.FORGE_TYPE.get()).stream().map(holder->holder.value()).toList());
         registration.addRecipes(INFUSION,level.getRecipeManager().getAllRecipesFor(ModRecipes.INFUSION_TYPE.get()).stream().map(holder->holder.value()).toList());
     }
     @Override public void registerRecipeCatalysts(IRecipeCatalystRegistration registration){
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.AUGMENTATION_TABLE.get()),AncientTemplateCategory.TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.FORGE.get()),FORGE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.INFUSION_TABLE.get()),INFUSION);
     }

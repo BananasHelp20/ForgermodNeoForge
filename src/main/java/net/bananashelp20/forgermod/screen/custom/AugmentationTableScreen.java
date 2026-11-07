@@ -108,7 +108,8 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
         }
         gui.pose().popPose();
         // Inset text one texture pixel from the white boxes; keep the lower heading one pixel lower.
-        Component category=Component.translatable(offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
+        Component category=Component.translatable(net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem.isCraftingTemplate(offeredStack())
+                ?"crafting.forgermod.specialization":offer.active()?"augmentation.forgermod.card.active":"augmentation.forgermod.card.passive");
         var categoryLayout=AugmentationCardText.fit(font,category,37,6,.5F,.4F);
         gui.pose().pushPose();gui.pose().translate(x+CARD_WIDTH/2F,y+14,0);gui.pose().scale(categoryLayout.scale(),categoryLayout.scale(),1);
         for(int row=0;row<categoryLayout.lines().size();row++) {
@@ -142,7 +143,7 @@ public final class AugmentationTableScreen extends AbstractContainerScreen<Augme
                     Component name=rejected?offer.name().copy().withStyle(style -> style.withColor(0x666666)):offer.name();
                     var lines=new java.util.ArrayList<FormattedCharSequence>();
                     lines.add(name.getVisualOrderText());
-                    lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(Augmentations.displayRank(offeredStack(),offer.id(),menu.offerRank(i)+1)))
+                    if(!net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem.isCraftingTemplate(offeredStack()))lines.add(Component.translatable("augmentation.forgermod.card.rank",WeaponTooltips.romanNumeral(Augmentations.displayRank(offeredStack(),offer.id(),menu.offerRank(i)+1)))
                             .withStyle(ChatFormatting.GRAY).getVisualOrderText());
                     lines.addAll(font.split(AugmentUpgradeDescriptions.description(offeredStack(),offer.id(),menu.offerRank(i),false,!rejected)
                             .copy().withStyle(ChatFormatting.GRAY),180));

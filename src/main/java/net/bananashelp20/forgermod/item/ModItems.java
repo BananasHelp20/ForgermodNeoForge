@@ -30,7 +30,8 @@ public class ModItems {
                         pTooltipComponents.add(Component.translatable(descriptionName));
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
-                });
+                }
+            );
     }
 
     public static DeferredItem<Item> createItemWithRarityAndDescription(String name, String descriptionName, Rarity rarity) {
@@ -41,7 +42,8 @@ public class ModItems {
                         pTooltipComponents.add(Component.translatable(descriptionName));
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
-                });
+                }
+            );
     }
 
     public static DeferredItem<SwordItem> createSwordItem(String name, Tier tier, int damage, float speed) {
@@ -63,7 +65,8 @@ public class ModItems {
                                 WeaponTooltips.descriptionsVisible());
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
-                });
+                }
+            );
     }
 
     public static DeferredItem<SwordItem> createSwordItemWithRarityAndDescription(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName) {
@@ -79,7 +82,8 @@ public class ModItems {
                                 WeaponTooltips.descriptionsVisible());
                         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
                     }
-                });
+                }
+            );
     }
 
     public static DeferredItem<SwordItem> createSwordItemWithRarityAndDescriptionBeingFireResistent(String name, Tier tier, Rarity rarity, int damage, float speed, String descriptionName) {
@@ -131,7 +135,8 @@ public class ModItems {
     public static final DeferredItem<Item> DEVELOPIUM_SHARD = createItem("developium_shard");
     
     //templates
-    public static final DeferredItem<Item> ANCIENT_UPGRADE_TEMPLATE = createItemWithDescription("ancient_upgrade_template", "tooltips.forgermod.ancient_upgrade_template.tooltip");
+    public static final DeferredItem<Item> ANCIENT_UPGRADE_TEMPLATE = ITEMS.register("ancient_upgrade_template",
+            () -> new net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem(new Item.Properties()));
     public static final DeferredItem<Item> GEMSTONE_UPGRADE_TEMPLATE = createItemWithDescription("gemstone_upgrade_template", "tooltips.forgermod.gemstone_upgrade_template.tooltip");
     public static final DeferredItem<AugmentTemplateItem> AUGMENT_TEMPLATE = ITEMS.register("augment_template",
             () -> new AugmentTemplateItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), false));

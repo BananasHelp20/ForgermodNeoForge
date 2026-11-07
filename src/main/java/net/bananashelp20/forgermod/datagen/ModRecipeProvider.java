@@ -342,16 +342,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.NETHERITE_SCRAP), has(Items.NETHERITE_SCRAP))
                 .save(output, ForgerMod.MOD_ID + ":scrap_ingot_from_primal_crafting");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-                .pattern("ABA")
-                .pattern("ACA")
-                .pattern("AAA")
-                .define('A', Items.DIAMOND)
-                .define('B', ModItems.ANCIENT_UPGRADE_TEMPLATE.get())
-                .define('C', ModItems.DAMASK_INGOT)
-                .unlockedBy(getHasName(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()), has(ModItems.ANCIENT_UPGRADE_TEMPLATE.get()))
-                .save(output, ForgerMod.MOD_ID + ":ancient_upgrade_template_from_multiplication_crafting");
-
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GEMSTONE_UPGRADE_TEMPLATE.get())
                 .pattern("ABA")
                 .pattern("ACA")

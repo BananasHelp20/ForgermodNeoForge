@@ -111,6 +111,7 @@ public class ForgerMod {
 
         @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.WEAPON_ASSEMBLER_MENU.get(), net.bananashelp20.forgermod.screen.custom.WeaponAssemblerScreen::new);
             event.register(ModMenuTypes.NECROMANCER_MENU.get(),net.bananashelp20.forgermod.screen.custom.NecromancerScreen::new);
             event.register(ModMenuTypes.FORGE_MENU.get(), ForgeScreen::new);
             event.register(ModMenuTypes.GRAVE_VAULT_MENU.get(), net.bananashelp20.forgermod.screen.custom.GraveVaultScreen::new);

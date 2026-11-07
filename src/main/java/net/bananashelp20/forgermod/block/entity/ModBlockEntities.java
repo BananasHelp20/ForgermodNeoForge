@@ -15,6 +15,9 @@ import java.util.function.Supplier;
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, ForgerMod.MOD_ID);
+    public static final Supplier<BlockEntityType<net.bananashelp20.forgermod.block.entity.custom.WeaponAssemblerBlockEntity>> WEAPON_ASSEMBLER_BE =
+            BLOCK_ENTITIES.register("weapon_assembler", () -> BlockEntityType.Builder.of(
+                    net.bananashelp20.forgermod.block.entity.custom.WeaponAssemblerBlockEntity::new, ModBlocks.WEAPON_ASSEMBLER.get()).build(null));
 
     public static final Supplier<BlockEntityType<ForgeBlockEntity>> FORGE_BE =
             BLOCK_ENTITIES.register("forge_be", () -> BlockEntityType.Builder.of(

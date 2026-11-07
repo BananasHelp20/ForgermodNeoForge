@@ -2,6 +2,7 @@ package net.bananashelp20.forgermod.augmentation;
 
 import net.bananashelp20.forgermod.item.ModItems;
 import net.bananashelp20.forgermod.item.custom.AugmentTemplateItem;
+import net.bananashelp20.forgermod.item.custom.AncientCraftingTemplateItem;
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
 import net.bananashelp20.forgermod.item.custom.WeaponAbilitySlot;
 import net.minecraft.core.component.DataComponents;
@@ -33,7 +34,7 @@ public final class Augmentations {
         return stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect();
     }
     public static boolean augmentable(ItemStack stack) {
-        return eligible(stack) || isTemplate(stack);
+        return eligible(stack) || isTemplate(stack) || AncientCraftingTemplateItem.isCraftingTemplate(stack);
     }
     public static boolean isTemplate(ItemStack stack) {
         return stack.getItem() instanceof AugmentTemplateItem;
@@ -42,6 +43,7 @@ public final class Augmentations {
         return stack.getItem() instanceof AugmentTemplateItem template && template.isSuperTemplate();
     }
     public static int maxRank(ItemStack stack, String id) {
+        if(AncientCraftingTemplateItem.isCraftingTemplate(stack))return 1;
         if(ReviewedRanks.hardCap(id)>0) return ReviewedRanks.hardCap(id);
         return hasSuperForm(stack, id) ? superStart(id)+3 : RecommendedAbilities.maxRank(id) + (isSuperTemplate(stack) ? 1 : 0);
     }
@@ -90,6 +92,7 @@ public final class Augmentations {
     }
     /** The template can roll any registered weapon ability without appearing as a weapon itself. */
     public static List<Ability> catalog(ItemStack stack) {
+        if(AncientCraftingTemplateItem.isCraftingTemplate(stack))return AncientCraftingTemplateItem.SPECIALIZATIONS;
         return isTemplate(stack) ? templatePool() : pool(stack);
     }
     private static List<Ability> templatePool() {
@@ -106,6 +109,10 @@ public final class Augmentations {
         return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getCompound(DATA);
     }
     public static Map<String, Integer> learned(ItemStack stack) {
+        if(AncientCraftingTemplateItem.isCraftingTemplate(stack)){
+            String id=AncientCraftingTemplateItem.specialization(stack);
+            return id.isEmpty()?Map.of():Map.of(id,1);
+        }
         Map<String, Integer> result = new LinkedHashMap<>();
         ListTag saved = data(stack).getList("levels", Tag.TAG_COMPOUND);
         // Existing augmented stacks keep their former native abilities when migrating to learned-only gear.
@@ -207,6 +214,8 @@ public final class Augmentations {
         return prerequisites(stack,id).stream().allMatch(required->learned.getOrDefault(required,0)>0);
     }
     public static List<Ability> available(ItemStack stack) {
+        if(AncientCraftingTemplateItem.isCraftingTemplate(stack))
+            return learned(stack).isEmpty()?AncientCraftingTemplateItem.SPECIALIZATIONS:List.of();
         var result = new ArrayList<Ability>();
         var learned = learned(stack);
         int activeCount = ids(stack,true).size(), passiveCount = ids(stack,false).size();
@@ -235,6 +244,7 @@ public final class Augmentations {
         return List.of(first, second);
     }
     public static ItemStack apply(ItemStack stack, String id) {
+        if(AncientCraftingTemplateItem.isCraftingTemplate(stack))return AncientCraftingTemplateItem.specialize(stack,id);
         if (available(stack).stream().noneMatch(a -> a.id().equals(id))) return ItemStack.EMPTY;
         ItemStack result = stack.copyWithCount(1);
         var learned = new LinkedHashMap<>(learned(stack));
@@ -244,6 +254,8 @@ public final class Augmentations {
     }
     /** Set an exact command rank without consuming an Augmentation Table upgrade. */
     public static ItemStack setLevel(ItemStack stack, String id, int rank) {
+        if(AncientCraftingTemplateItem.isCraftingTemplate(stack))
+            return rank==1?AncientCraftingTemplateItem.specialize(stack,id):ItemStack.EMPTY;
         if (!augmentable(stack) || rank < 1 || rank > maxRank(stack, id)) return ItemStack.EMPTY;
         Ability ability = catalog(stack).stream().filter(candidate -> candidate.id().equals(id)).findFirst().orElse(null);
         if (ability == null) return ItemStack.EMPTY;
