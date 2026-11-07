@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "forgermod:axe_blade"
+    },
+    "C": {
+      "item": "forgermod:augmented_heavy_core"
+    },
+    "H": {
+      "item": "forgermod:advanced_handle"
+    }
+  },
+  "pattern": [
+    "BCB",
+    " H ",
+    " H "
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:axe"
+  }
+}

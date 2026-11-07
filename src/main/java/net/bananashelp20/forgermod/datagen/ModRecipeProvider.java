@@ -56,7 +56,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModItems.CLAYMORE.get(),
             ModItems.CARBON_STEEL_CROSS_GUARD.get(),
             ModItems.ADVANCED_HANDLE.get(),
-            ModItems.SHARPENED_BLADE.get(),
+            ModItems.CLAYMORE_BLADE.get(),
             ModItems.CARBON_STEEL_DAGGER.get(),
             ModItems.CARBON_STEEL_AXE.get()
     );
@@ -227,10 +227,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("A")
                 .pattern("B")
                 .pattern("C")
-                .define('A', ModItems.SHARPENED_BLADE.get())
+                .define('A', ModItems.CLAYMORE_BLADE.get())
                 .define('B', ModItems.CARBON_STEEL_CROSS_GUARD.get())
                 .define('C', ModItems.ADVANCED_HANDLE.get())
-                .unlockedBy(getHasName(ModItems.SHARPENED_BLADE.get()), has(ModItems.SHARPENED_BLADE.get()))
+                .unlockedBy(getHasName(ModItems.CLAYMORE_BLADE.get()), has(ModItems.CLAYMORE_BLADE.get()))
                 .unlockedBy(getHasName(ModItems.CARBON_STEEL_CROSS_GUARD.get()), has(ModItems.CARBON_STEEL_CROSS_GUARD.get()))
                 .unlockedBy(getHasName(ModItems.ADVANCED_HANDLE.get()), has(ModItems.ADVANCED_HANDLE.get()))
                 .unlockedBy(getHasName(ModItems.CARBON_STEEL_INGOT.get()), has(ModItems.CARBON_STEEL_INGOT.get()))
@@ -240,13 +240,37 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern(" A ")
                 .pattern("DBE")
                 .pattern(" C ")
-                .define('A', ModItems.SHARPENED_BLADE.get())
+                .define('A', ModItems.CLAYMORE_BLADE.get())
                 .define('B', ModItems.RUSTY_CLAYMORE.get())
                 .define('C', ModItems.HANDLE.get())
                 .define('D', ModItems.DAMASK_INGOT.get())
                 .define('E', ModItems.CARBON_STEEL_INGOT.get())
                 .unlockedBy(getHasName(ModItems.CARBON_STEEL_INGOT.get()), has(ModItems.CARBON_STEEL_INGOT.get()))
                 .save(output, ForgerMod.MOD_ID + ":claymore_from_upgrading_rusty_claymore");
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.CARBON_STEEL_AXE.get())
+                .pattern("BCB").pattern(" H ").pattern(" H ")
+                .define('B', ModItems.AXE_BLADE.get())
+                .define('C', ModItems.AUGMENTED_HEAVY_CORE.get())
+                .define('H', ModItems.ADVANCED_HANDLE.get())
+                .unlockedBy("has_augmented_heavy_core", has(ModItems.AUGMENTED_HEAVY_CORE.get()))
+                .save(output);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.CARBON_STEEL_DAGGER.get())
+                .pattern("B").pattern("G").pattern("H")
+                .define('B', ModItems.DAGGER_BLADE.get())
+                .define('G', ModItems.CARBON_STEEL_CROSS_GUARD.get())
+                .define('H', ModItems.ADVANCED_HANDLE.get())
+                .unlockedBy("has_dagger_blade", has(ModItems.DAGGER_BLADE.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DAGGER_BLADE.get())
+                .pattern("D").pattern("C")
+                .define('D', ModItems.DAMASK_INGOT.get()).define('C', ModItems.CARBON_STEEL_INGOT.get())
+                .unlockedBy("has_carbon_steel", has(ModItems.CARBON_STEEL_INGOT.get())).save(output);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AXE_BLADE.get())
+                .pattern("DC").pattern(" C")
+                .define('D', ModItems.DAMASK_INGOT.get()).define('C', ModItems.CARBON_STEEL_INGOT.get())
+                .unlockedBy("has_carbon_steel", has(ModItems.CARBON_STEEL_INGOT.get())).save(output);
 
         //items
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ADVANCED_HANDLE.get())
@@ -281,7 +305,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.DAMASK_INGOT.get()), has(ModItems.DAMASK_INGOT.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SHARPENED_BLADE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CLAYMORE_BLADE.get())
                 .pattern("A")
                 .pattern("B")
                 .pattern("B")

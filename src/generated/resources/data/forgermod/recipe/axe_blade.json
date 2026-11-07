@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "forgermod:carbon_steel_ingot"
+    },
+    "D": {
+      "item": "forgermod:damask_ingot"
+    }
+  },
+  "pattern": [
+    "DC",
+    " C"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:axe_blade"
+  }
+}

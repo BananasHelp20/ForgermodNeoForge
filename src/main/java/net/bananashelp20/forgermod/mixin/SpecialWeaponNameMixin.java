@@ -1,6 +1,7 @@
 package net.bananashelp20.forgermod.mixin;
 
 import net.bananashelp20.forgermod.item.custom.SwordItemWithEffect;
+import net.bananashelp20.forgermod.item.custom.AugmentTemplateItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,10 @@ public abstract class SpecialWeaponNameMixin {
     @Inject(method = "getHoverName", at = @At("RETURN"), cancellable = true)
     private void forgermod$legendaryWeaponName(CallbackInfoReturnable<Component> callback) {
         ItemStack stack = (ItemStack)(Object)this;
-        if (stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect())
+        if (stack.getItem() instanceof AugmentTemplateItem template)
+            callback.setReturnValue(callback.getReturnValue().copy().withStyle(
+                    template.isSuperTemplate() ? ChatFormatting.GOLD : ChatFormatting.LIGHT_PURPLE));
+        else if (stack.getItem() instanceof SwordItemWithEffect weapon && weapon.hasMaterialEffect())
             callback.setReturnValue(callback.getReturnValue().copy().withStyle(ChatFormatting.GOLD));
     }
 }

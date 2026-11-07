@@ -17,6 +17,7 @@
   "client": [
     "AncientTemplateGlintMixin",
     "EchoHearingOutlineMixin",
+    "BlueCoreGlintMixin",
     "AxePlayerModelMixin",
     "AxePlayerRendererMixin",
     "AxeItemInHandLayerMixin"

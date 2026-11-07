@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_sharpened_blade": {
+    "has_dagger_blade": {
       "conditions": {
         "items": [
           {
-            "items": "forgermod:sharpened_blade"
+            "items": "forgermod:dagger_blade"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:carbon_steel_ingot_from_blasting_sharpened_blade"
+        "recipe": "forgermod:knife"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_sharpened_blade"
+      "has_dagger_blade"
     ]
   ],
   "rewards": {
     "recipes": [
-      "forgermod:carbon_steel_ingot_from_blasting_sharpened_blade"
+      "forgermod:knife"
     ]
   }
 }

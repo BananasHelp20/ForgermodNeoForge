@@ -18,8 +18,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlockWithItem(ModBlocks.WEAPON_ASSEMBLER.get(),models().cubeBottomTop("weapon_assembler",
-                mcLoc("block/smithing_table_side"),mcLoc("block/smithing_table_bottom"),mcLoc("block/smithing_table_top")));
+        var assemblerModel=models().getExistingFile(modLoc("block/weapon_assembler"));
+        horizontalBlock(ModBlocks.WEAPON_ASSEMBLER.get(),assemblerModel);
+        simpleBlockItem(ModBlocks.WEAPON_ASSEMBLER.get(),models().getExistingFile(modLoc("block/weapon_assembler_item")));
         //generate MODELS!
         blockWithItem(ModBlocks.DAMASK_BLOCK);
         blockWithItem(ModBlocks.INANISIUM_BLOCK);

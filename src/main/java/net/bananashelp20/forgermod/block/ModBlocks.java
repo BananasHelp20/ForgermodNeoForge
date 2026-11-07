@@ -24,7 +24,7 @@ import java.util.function.ToIntFunction;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ForgerMod.MOD_ID);
     public static final DeferredBlock<net.bananashelp20.forgermod.block.custom.WeaponAssemblerBlock> WEAPON_ASSEMBLER = registerBlock("weapon_assembler",
-            () -> new net.bananashelp20.forgermod.block.custom.WeaponAssemblerBlock(BlockBehaviour.Properties.of().strength(3.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()));
+            () -> new net.bananashelp20.forgermod.block.custom.WeaponAssemblerBlock(BlockBehaviour.Properties.of().strength(3.5F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
     public static final DeferredBlock<net.bananashelp20.forgermod.block.custom.AugmentationTableBlock> AUGMENTATION_TABLE = registerBlock("augmentation_table",
             () -> new net.bananashelp20.forgermod.block.custom.AugmentationTableBlock(BlockBehaviour.Properties.of().strength(3.5F).sound(SoundType.DEEPSLATE).noOcclusion()));
 

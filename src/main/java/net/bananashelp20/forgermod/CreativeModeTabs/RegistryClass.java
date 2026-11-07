@@ -244,7 +244,10 @@ public class RegistryClass {
     public static ItemLike[] getItemTabRegister() {
         return new ItemLike[] {
                 ModItems.CARBON_STEEL_CROSS_GUARD.get(),
-                ModItems.SHARPENED_BLADE.get(),
+                ModItems.CLAYMORE_BLADE.get(),
+                ModItems.AXE_BLADE.get(),
+                ModItems.DAGGER_BLADE.get(),
+                ModItems.AUGMENTED_HEAVY_CORE.get(),
                 ModItems.HANDLE.get(),
                 ModItems.ADVANCED_HANDLE.get(),
                 ModItems.ANCIENT_UPGRADE_TEMPLATE.get(),

@@ -160,7 +160,11 @@ public class ModItems {
     public static final DeferredItem<Item> SCRAP_IRON_INGOT = createItem("scrap_iron_ingot");
     public static final DeferredItem<Item> UNREFINED_STEEL = createItem("unrefined_steel");
     public static final DeferredItem<Item> UNREFINED_CARBON_STEEL = createItem("unrefined_carbon_steel");
-    public static final DeferredItem<Item> SHARPENED_BLADE = createItemWithDescription("sharpened_blade", "tooltips.forgermod.sharpened_blade.tooltip");
+    public static final DeferredItem<Item> CLAYMORE_BLADE = createItemWithDescription("claymore_blade", "tooltips.forgermod.claymore_blade.tooltip");
+    public static final DeferredItem<Item> AXE_BLADE = createItemWithDescription("axe_blade", "tooltips.forgermod.axe_blade.tooltip");
+    public static final DeferredItem<Item> DAGGER_BLADE = createItemWithDescription("dagger_blade", "tooltips.forgermod.dagger_blade.tooltip");
+    public static final DeferredItem<Item> AUGMENTED_HEAVY_CORE = ITEMS.register("augmented_heavy_core",
+            () -> new AugmentedHeavyCoreItem(new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<Item> CARBON_STEEL_CROSS_GUARD = createItemWithDescription("carbon_steel_cross_guard", "tooltips.forgermod.carbon_steel_cross_guard.tooltip");
     public static final DeferredItem<Item> HANDLE = createItemWithDescription("handle", "tooltips.forgermod.handle.tooltip");
     public static final DeferredItem<Item> ADVANCED_HANDLE = createItemWithDescription("advanced_handle", "tooltips.forgermod.advanced_handle.tooltip");
@@ -420,6 +424,8 @@ public class ModItems {
     public static final Map<String, ToolSet> TOOL_SETS = createToolSets();
 
     public static void register(IEventBus eventBus) {
+        ITEMS.addAlias(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "sharpened_blade"),
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ForgerMod.MOD_ID, "claymore_blade"));
         ITEMS.register(eventBus);
     }
 }

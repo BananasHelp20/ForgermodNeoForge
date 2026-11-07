@@ -2,20 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "forgermod:damask_ingot"
-    },
-    "B": {
+    "C": {
       "item": "forgermod:carbon_steel_ingot"
+    },
+    "D": {
+      "item": "forgermod:damask_ingot"
     }
   },
   "pattern": [
-    "A",
-    "B",
-    "B"
+    "D",
+    "C"
   ],
   "result": {
     "count": 1,
-    "id": "forgermod:sharpened_blade"
+    "id": "forgermod:dagger_blade"
   }
 }

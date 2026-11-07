@@ -31,7 +31,7 @@ public class TableSlotGameTests {
             for(int slot=0;slot<4;slot++)test.assertTrue(table.itemHandler.insertItem(slot,new ItemStack(Items.DIRT),false).is(Items.DIRT),"Handler accepted wrong input");
             for(int tick=0;tick<recipe.processingTime();tick++)table.tick(test.getLevel(),pos,table.getBlockState());
             test.assertTrue(menu.getSlot(36).getItem().is(recipe.output().getItem()),"Data-defined recipe failed to craft");
-            test.assertTrue(table.itemHandler.getStackInSlot(2).getCount()==1,"Retained template was consumed");
+            test.assertTrue(table.itemHandler.getStackInSlot(2).isEmpty(),"Completed infusion did not consume its template");
             test.assertFalse(menu.quickMoveStack(player,36).isEmpty(),"Output extraction failed");
             test.assertTrue(menu.quickMoveStack(player,-1).isEmpty() && menu.quickMoveStack(player,40).isEmpty(),"Invalid slot accepted");
         }finally{player.server.getPlayerList().remove(player);}test.succeed();

@@ -5,7 +5,7 @@
   "experience": 1.0,
   "group": "carbon_steel_ingot",
   "ingredient": {
-    "item": "forgermod:sharpened_blade"
+    "item": "forgermod:claymore_blade"
   },
   "result": {
     "count": 1,

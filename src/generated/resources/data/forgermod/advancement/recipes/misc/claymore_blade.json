@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "forgermod:sharpened_blade"
+        "recipe": "forgermod:claymore_blade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -37,7 +37,7 @@
   ],
   "rewards": {
     "recipes": [
-      "forgermod:sharpened_blade"
+      "forgermod:claymore_blade"
     ]
   }
 }

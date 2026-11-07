@@ -52,7 +52,7 @@ public final class InfusionVisualGameTests {
             for(int t=0;t<400;t++)tick(table);
             mirror.onDataPacket(null,(ClientboundBlockEntityDataPacket)table.getUpdatePacket(),registry);
             test.assertTrue(table.itemHandler.getStackInSlot(3).is(outputs[i]) && Augmentations.level(table.itemHandler.getStackInSlot(3),Augmentations.MATERIAL_HIT)==1,"Infusion changed output or lost augments");
-            test.assertTrue(table.itemHandler.getStackInSlot(0).getCount()==6 && table.itemHandler.getStackInSlot(2).getCount()==1,"Display changed crafting costs");
+            test.assertTrue(table.itemHandler.getStackInSlot(0).getCount()==6 && table.itemHandler.getStackInSlot(2).isEmpty(),"Infusion must consume one template");
             test.assertTrue(mirror.displayGemstone().is(gems[i]) && mirror.displayWeapon().isEmpty() && !mirror.infusing(),"Completion hides remaining gem or retains consumed weapon/animation");
         }
         test.succeed();

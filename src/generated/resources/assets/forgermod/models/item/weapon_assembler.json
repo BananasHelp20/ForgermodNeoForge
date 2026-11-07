@@ -1,1 +1,3 @@
-{"parent":"forgermod:block/weapon_assembler"}
+{
+  "parent": "forgermod:block/weapon_assembler_item"
+}

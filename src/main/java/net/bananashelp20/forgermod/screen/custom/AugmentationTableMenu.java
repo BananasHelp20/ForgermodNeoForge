@@ -64,7 +64,7 @@ public final class AugmentationTableMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack,4,40,true)) return ItemStack.EMPTY;
         } else {
             if (phase()!=0) return ItemStack.EMPTY;
-            if(Augmentations.augmentable(stack)) {
+            if(AugmentationTableBlockEntity.acceptsInput(stack)) {
                 if(!moveItemStackTo(stack,0,1,false)) return ItemStack.EMPTY;
             } else if(AugmentationTableBlockEntity.ingredient(stack)) {
                 // Merge matching stacks first, then use either empty side. Both side slots accept both ingredients.

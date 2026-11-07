@@ -11,7 +11,7 @@
   },
   "count1": 1,
   "count2": 1,
-  "template_count": 0,
+  "template_count": 1,
   "processing_time": 400,
   "copy_components": true,
   "requires_jade_compatible": false,

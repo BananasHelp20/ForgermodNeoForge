@@ -76,7 +76,7 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
         }
         @Override public int getSlotLimit(int slot) { return slot==GEAR || slot==OUTPUT?1:64; }
         @Override public boolean isItemValid(int slot,ItemStack stack) {
-            return slot==GEAR?Augmentations.augmentable(stack):(slot==TEMPLATE || slot==SAPPHIRE) && ingredient(stack);
+            return slot==GEAR?acceptsInput(stack):(slot==TEMPLATE || slot==SAPPHIRE) && ingredient(stack);
         }
         @Override public ItemStack insertItem(int slot,ItemStack stack,boolean simulate) {
             if(!internalMutation && (slot==OUTPUT || phase==AugmentationAnimation.COMPLETE
@@ -110,9 +110,13 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
         return left.is(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()) && right.is(ModItems.SAPPHIRE_GEMSTONE.get())
                 || right.is(ModItems.GEMSTONE_UPGRADE_TEMPLATE.get()) && left.is(ModItems.SAPPHIRE_GEMSTONE.get());
     }
+    /** Core conversion is table-only; cores never enter the weapon ability system. */
+    public static boolean acceptsInput(ItemStack stack) {
+        return stack.is(net.minecraft.world.item.Items.HEAVY_CORE) || Augmentations.augmentable(stack);
+    }
     private boolean inputsReady() {
         ItemStack gear=inventory.getStackInSlot(GEAR);
-        return gear.getCount()==1 && Augmentations.augmentable(gear) && ingredientsReady() && inventory.getStackInSlot(OUTPUT).isEmpty();
+        return gear.getCount()==1 && acceptsInput(gear) && ingredientsReady() && inventory.getStackInSlot(OUTPUT).isEmpty();
     }
     private int offerIndex(String key) {
         var pool=Augmentations.catalog(inventory.getStackInSlot(phase==AugmentationAnimation.COMPLETE?OUTPUT:GEAR));
@@ -155,13 +159,17 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
         }
         if(!inputsReady()) { if(phase!=0) reset(); return; }
         var gear=inventory.getStackInSlot(GEAR);
+        boolean core=gear.is(net.minecraft.world.item.Items.HEAVY_CORE);
         if(phase==0) {
-            if(Augmentations.available(gear).isEmpty()) return;
-            rollOffers(); duration=Math.min(10000,Augmentations.duration(gear)); progress=0; phase=AugmentationAnimation.ANALYZE; setChanged(); return;
+            if(!core) {
+                if(Augmentations.available(gear).isEmpty()) return;
+                rollOffers();
+            }
+            duration=Math.min(10000,Augmentations.duration(gear)); progress=0; phase=AugmentationAnimation.ANALYZE; setChanged(); return;
         }
         first=Augmentations.migrateId(first); second=Augmentations.migrateId(second);
         var legal=Augmentations.available(gear);
-        if(legal.stream().noneMatch(a -> a.id().equals(first)) || legal.stream().noneMatch(a -> a.id().equals(second))) {
+        if(!core && (legal.stream().noneMatch(a -> a.id().equals(first)) || legal.stream().noneMatch(a -> a.id().equals(second)))) {
             rollOffers(); setChanged(); if(phase==0) return;
         }
         if(phase>=AugmentationAnimation.ANALYZE && phase<=AugmentationAnimation.CHOOSE
@@ -173,6 +181,9 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
             if(++progress>=AugmentationAnimation.stageTicks(phase,duration)) { phase++; progress=0; }
             setChanged();
         }
+        if(core && phase==AugmentationAnimation.CHOOSE) {
+            complete(gear.transmuteCopy(ModItems.AUGMENTED_HEAVY_CORE.get(),1),-1);
+        }
     }
     private void refund(int slot,ItemStack stack) {
         ItemStack remainder=inventory.insertItem(slot,stack,false);
@@ -180,15 +191,19 @@ public final class AugmentationTableBlockEntity extends BlockEntity implements M
     }
     public boolean choose(int button) {
         if(level==null || level.isClientSide || phase!=AugmentationAnimation.CHOOSE || button<0 || button>1 || !inputsReady()) return false;
+        if(inventory.getStackInSlot(GEAR).is(net.minecraft.world.item.Items.HEAVY_CORE)) return false;
         ItemStack output=Augmentations.apply(inventory.getStackInSlot(GEAR),button==0?first:second);
         if(output.isEmpty()) return false;
+        complete(output,button);
+        return true;
+    }
+    private void complete(ItemStack output,int button) {
         internalMutation=true;
         try {
             inventory.extractItem(TEMPLATE,1,false); inventory.extractItem(SAPPHIRE,1,false);
             inventory.setStackInSlot(GEAR,ItemStack.EMPTY); inventory.setStackInSlot(OUTPUT,output);
             selected=button; phase=AugmentationAnimation.COMPLETE; progress=0; setChanged();
         } finally { internalMutation=false; }
-        return true;
     }
     @Override protected void saveAdditional(CompoundTag tag,HolderLookup.Provider registries) {
         super.saveAdditional(tag,registries); tag.put("inventory",inventory.serializeNBT(registries));

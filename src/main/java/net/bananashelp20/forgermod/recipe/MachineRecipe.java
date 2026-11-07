@@ -50,7 +50,7 @@ public record MachineRecipe(Ingredient ingredient1, Ingredient ingredient2, Ingr
                     ItemStack.CODEC.fieldOf("result").forGetter(MachineRecipe::output),
                     Codec.intRange(1,64).optionalFieldOf("count1",1).forGetter(MachineRecipe::count1),
                     Codec.intRange(1,64).optionalFieldOf("count2",1).forGetter(MachineRecipe::count2),
-                    Codec.intRange(0,64).optionalFieldOf("template_count",infusion?0:1).forGetter(MachineRecipe::templateCount),
+                    Codec.intRange(0,64).optionalFieldOf("template_count",1).forGetter(MachineRecipe::templateCount),
                     Codec.intRange(1,32767).optionalFieldOf("processing_time",infusion?400:250).forGetter(MachineRecipe::processingTime),
                     Codec.BOOL.optionalFieldOf("copy_components",infusion).forGetter(MachineRecipe::copyComponents),
                     Codec.BOOL.optionalFieldOf("requires_jade_compatible",false).forGetter(MachineRecipe::requiresJadeCompatible)

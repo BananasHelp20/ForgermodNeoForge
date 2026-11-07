@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-15T10:06:00.8566742	Block States: forgermod
+// 1.21.1	2026-11-07T02:23:24.6223589	Block States: forgermod
 6a82138243e673106fac218daf92e78d19981827 assets/forgermod/blockstates/amber_deepslate_ore.json
 402877b963c4f7e4306033136ffd154bb2d56d56 assets/forgermod/blockstates/amber_end_ore.json
 5090dd6e2a92ec41cf46a2b85d8968e9dfc98ab3 assets/forgermod/blockstates/amber_nether_ore.json
@@ -47,6 +47,7 @@ c6ade454b0b8fe5b4c5ecaf122b2c6ce026df55f assets/forgermod/blockstates/titanium_s
 11cc8df39b9621ec79ac1cf0fa27e975e3fd6bbe assets/forgermod/blockstates/tungsten_deepslate_ore.json
 02464d255f1ddbf485b24aa8178876022ebc9eb8 assets/forgermod/blockstates/tungsten_stone_ore.json
 5f377ac242fdba4fdb9b4b5785780d9f3bf17409 assets/forgermod/blockstates/vulnusium_block.json
+a995343e7597dde0cee82202dc0d156fd440b9b6 assets/forgermod/blockstates/weapon_assembler.json
 44768783b4df2504cd0952ca2d190886444df55c assets/forgermod/models/block/amber_deepslate_ore.json
 6bc2c2187b31c7284d402c757d57be5698b806cb assets/forgermod/models/block/amber_end_ore.json
 5bec32797029dd7d234da048ebbedb98275cf825 assets/forgermod/models/block/amber_nether_ore.json
@@ -143,3 +144,4 @@ bcf455439ba19913dc0b5a5d8e063b34aa3fb3be assets/forgermod/models/item/titanium_s
 ec2c25ca7208780c41c2c5c4280b29017da9ef1b assets/forgermod/models/item/tungsten_deepslate_ore.json
 134586c866b68219c1599dbbf9d535a52c5db4ea assets/forgermod/models/item/tungsten_stone_ore.json
 da3d176544d714b099c900e7164430d2560c0b28 assets/forgermod/models/item/vulnusium_block.json
+2d39af9dc85422da529fe2b9829618361a2c5a3e assets/forgermod/models/item/weapon_assembler.json

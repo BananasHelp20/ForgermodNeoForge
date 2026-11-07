@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "forgermod:dagger_blade"
+    },
+    "G": {
+      "item": "forgermod:carbon_steel_cross_guard"
+    },
+    "H": {
+      "item": "forgermod:advanced_handle"
+    }
+  },
+  "pattern": [
+    "B",
+    "G",
+    "H"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgermod:knife"
+  }
+}

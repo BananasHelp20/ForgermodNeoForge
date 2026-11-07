@@ -63,3 +63,22 @@ CODEX DON'T YOU DARE TOUCH THE TEXT INSIDE THE BRACKETS {
 - removed the old recycling recipes for Damask weapons, Handles and Reinforced Iron Swords
 - removed gemstone weapon variants and the developer item "Stumpfl's Bat" from the creative tabs
 }
+
+## Fixed
+- centered the Augmentation Table item in inventory slots and adjusted its icon scale to fit
+## Added
+- added Axe Blades, Dagger Blades and Augmented Heavy Cores as weapon crafting components
+- added an automatic Augmentation Table conversion from Heavy Core to Augmented Heavy Core, using one Sapphire Gemstone and one Gemstone Template
+- added blade crafting recipes using Damask and Carbon Steel
+- added battle axe crafting with an Augmented Heavy Core, two Axe Blades and two Advanced Handles
+- added dagger crafting with a Dagger Blade, Carbon Steel Cross Guard and Advanced Handle
+- Augmented Heavy Cores use the vanilla Heavy Core appearance with a constant blue enchantment glint
+## Balancing (Buffed/Debuffed)
+- gemstone infusion now consumes one Gemstone Template per completed infusion; forging continues to consume one Ancient Upgrade Template per craft
+## Improvements
+- normal Augment Template names now use epic purple
+- prepared hinged Weapon Assembler arm animations, including hammer strikes and claw movement, with smooth start and return-to-rest transitions; crafting activation will be connected when assembly is implemented
+- replaced the Weapon Assembler placeholder with the authored assembler model and texture, with four placement directions and simple collision shapes
+- Super Augment Template names now use legendary yellow
+- renamed Sharpened Blade to Claymore Blade, including its recipes; existing saved blades remain compatible
+## Removed

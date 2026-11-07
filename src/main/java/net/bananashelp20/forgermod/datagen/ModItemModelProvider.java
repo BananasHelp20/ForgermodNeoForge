@@ -284,7 +284,13 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
         //items
         basicItem(ModItems.CARBON_STEEL_CROSS_GUARD.get());
-        handheldItem(ModItems.SHARPENED_BLADE);
+        withExistingParent("claymore_blade", mcLoc("item/handheld"))
+                .texture("layer0", itemTexture("claymore_blade"));
+        handheldItem(ModItems.DAGGER_BLADE);
+        // Temporary blade sprite until dedicated axe-blade artwork is supplied.
+        withExistingParent("axe_blade", mcLoc("item/handheld"))
+                .texture("layer0", itemTexture("claymore_blade"));
+        withExistingParent("augmented_heavy_core", mcLoc("item/heavy_core"));
         basicItem(ModItems.ADVANCED_HANDLE.get());
         basicItem(ModItems.HANDLE.get());
         basicItem(ModItems.ANCIENT_UPGRADE_TEMPLATE.get());
